@@ -1,0 +1,292 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+
+  &--disabled {
+    cursor: not-allowed;
+  }
+}
+
+// ── Rótulo / Label ──────────────────────────────────────────
+.orc-input__label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--orc-font-main, #141414);
+  margin-bottom: 6px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.orc-input__required-marker {
+  color: #fb2c36;
+  margin-left: 3px;
+  font-weight: 700;
+}
+
+// ── Caixa do Input (Figma Spec) ─────────────────────────────
+.orc-input-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--fill-modal, #ffffff);
+  border: 1px solid var(--orc-border, #d9d9d9);
+  border-radius: 10px;
+  box-sizing: border-box;
+  gap: 8px;
+  cursor: text;
+  transition:
+    background-color var(--transition-fast, 0.2s ease),
+    border-color var(--transition-fast, 0.2s ease),
+    box-shadow var(--transition-fast, 0.2s ease);
+
+  // Hover
+  &:hover:not(.orc-input-box--focused):not(.orc-input-box--disabled):not(.orc-input-box--error):not(.orc-input-box--success) {
+    background-color: var(--orc-th, #f9f9f9);
+    border-color: var(--orc-border, #d9d9d9);
+  }
+
+  // Focus
+  &--focused {
+    background-color: var(--fill-modal, #ffffff);
+    border-color: var(--orc-color-azul-eletrico, #1c6aed);
+    box-shadow:
+      0px 4px 4px 8px rgba(43, 127, 255, 0.04),
+      0 0 0 1px var(--orc-color-azul-eletrico, #1c6aed);
+  }
+
+  // Disabled
+  &--disabled {
+    background-color: var(--orc-highlight-cinza-claro, #ededed);
+    border-color: var(--orc-border, #d9d9d9);
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    .orc-input__native {
+      cursor: not-allowed;
+    }
+  }
+
+  // Readonly
+  &--readonly {
+    background-color: var(--orc-th, #f9f9f9);
+    cursor: default;
+
+    .orc-input__native {
+      cursor: default;
+    }
+  }
+
+  // Status: Error
+  &--error {
+    border-color: #fb2c36 !important;
+
+    &.orc-input-box--focused {
+      box-shadow: 0 0 0 3px rgba(251, 44, 54, 0.15) !important;
+    }
+  }
+
+  // Status: Success
+  &--success {
+    border-color: #00c950 !important;
+
+    &.orc-input-box--focused {
+      box-shadow: 0 0 0 3px rgba(0, 201, 80, 0.15) !important;
+    }
+  }
+
+  // ── Tamanhos (Sizes) ──────────────────────────────────────
+  &--sm {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 13px;
+
+    .orc-input__native {
+      font-size: 13px;
+    }
+  }
+
+  &--md {
+    min-height: 44px;
+    padding: 0 12px;
+    font-size: 14px;
+
+    .orc-input__native {
+      font-size: 14px;
+    }
+  }
+
+  &--lg {
+    min-height: 52px;
+    padding: 0 16px;
+    font-size: 15px;
+
+    .orc-input__native {
+      font-size: 15px;
+    }
+  }
+}
+
+// ── Native Input Element ────────────────────────────────────
+.orc-input__native {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  color: var(--orc-font-main, #141414);
+  line-height: normal;
+  padding: 0;
+  margin: 0;
+
+  &::placeholder {
+    color: var(--orc-font-secondary, #666666);
+    font-weight: 400;
+    opacity: 1;
+  }
+
+  // Remove setas padrão de type="number"
+  &[type='number']::-webkit-inner-spin-button,
+  &[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  // Remove botão padrão de limpar do input search no Webkit
+  &[type='search']::-webkit-search-cancel-button,
+  &[type='search']::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+}
+
+// ── Slots e Afixos ──────────────────────────────────────────
+.orc-input__slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orc-font-secondary, #666666);
+  flex-shrink: 0;
+  user-select: none;
+
+  &:empty {
+    display: none;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.orc-input__affix-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--orc-font-secondary, #666666);
+}
+
+// ── Botões de Ação (Clear e Password) ────────────────────────
+.orc-input__action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  color: var(--orc-font-secondary, #666666);
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+  transition:
+    color var(--transition-fast, 0.15s ease),
+    background-color var(--transition-fast, 0.15s ease);
+
+  &:hover {
+    color: var(--orc-font-main, #141414);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--orc-color-azul-eletrico, #1c6aed);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.orc-input__clear-btn {
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// ── Rodapé / Mensagens / Contador ───────────────────────────
+.orc-input__footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.orc-input__message-area {
+  flex: 1;
+  min-width: 0;
+}
+
+.orc-input__message {
+  margin: 0;
+  line-height: 1.4;
+
+  &--helper {
+    color: var(--orc-font-secondary, #666666);
+  }
+
+  &--error {
+    color: #fb2c36;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+}
+
+.orc-input__message-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.orc-input__char-count {
+  font-size: 11px;
+  color: var(--orc-font-secondary, #666666);
+  white-space: nowrap;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+
+  &--limit {
+    color: #fb2c36;
+    font-weight: 600;
+  }
+}

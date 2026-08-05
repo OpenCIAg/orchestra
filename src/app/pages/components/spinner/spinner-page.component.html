@@ -1,0 +1,248 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+        <a href="https://www.figma.com/design/zIgCRAho1NaAEOB4AHkASb/Componentes?node-id=382-5159" target="_blank"
+          rel="noopener noreferrer" class="nav-link nav-link--ghost">Figma ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Feedback</div>
+      <h1 class="section-title">Spinner / Loading</h1>
+      <p class="section-desc">
+        Indicadores visuais de carregamento e espera assíncrona com suporte a múltiplos tamanhos, estilos visuais e acessibilidade WCAG.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box" [class.preview-box--dark]="playgroundVariant() === 'white'">
+                <app-loading-spinner
+                  [size]="playgroundSize()"
+                  [variant]="playgroundVariant()"
+                  [type]="playgroundType()"
+                  [text]="playgroundText()"
+                  [textPosition]="playgroundTextPosition()"
+                  [fullScreen]="playgroundFullScreen()"
+                ></app-loading-spinner>
+              </div>
+
+              <div *ngIf="playgroundFullScreen()" style="text-align: center;">
+                <button type="button" (click)="playgroundFullScreen.set(false)" style="padding: 6px 12px; font-size: 12px; cursor: pointer;">
+                  Fechar overlay tela cheia
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Tamanho -->
+              <div class="control-group">
+                <label class="control-label">Tamanho (size)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'sm'" (click)="playgroundSize.set('sm')">SM (16px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'md'" (click)="playgroundSize.set('md')">MD (24px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'lg'" (click)="playgroundSize.set('lg')">LG (40px)</button>
+                </div>
+              </div>
+
+              <!-- Tipo / Estilo do Spinner -->
+              <div class="control-group">
+                <label class="control-label">Tipo (type)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'ring'" (click)="playgroundType.set('ring')">Ring</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'star'" (click)="playgroundType.set('star')">Star</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'dots'" (click)="playgroundType.set('dots')">Dots</button>
+                </div>
+              </div>
+
+              <!-- Variante / Cor -->
+              <div class="control-group">
+                <label class="control-label">Variante (variant)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'primary'" (click)="playgroundVariant.set('primary')">Primary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'secondary'" (click)="playgroundVariant.set('secondary')">Secondary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'neutral'" (click)="playgroundVariant.set('neutral')">Neutral</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'white'" (click)="playgroundVariant.set('white')">White</button>
+                </div>
+              </div>
+
+              <!-- Texto Opcional -->
+              <div class="control-group">
+                <label class="control-label" for="spinner-text-input">Texto descritivo (text)</label>
+                <input
+                  id="spinner-text-input"
+                  type="text"
+                  class="input-text"
+                  [value]="playgroundText()"
+                  (input)="playgroundText.set($any($event.target).value)"
+                  placeholder="Ex: Carregando dados..."
+                />
+              </div>
+
+              <!-- Posição do Texto -->
+              <div class="control-group" *ngIf="playgroundText()">
+                <label class="control-label">Posição do texto</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTextPosition() === 'right'" (click)="playgroundTextPosition.set('right')">Right</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTextPosition() === 'bottom'" (click)="playgroundTextPosition.set('bottom')">Bottom</button>
+                </div>
+              </div>
+
+              <!-- Opção Tela Cheia -->
+              <div class="control-group">
+                <label class="control-label">Overlay</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" [checked]="playgroundFullScreen()" (change)="playgroundFullScreen.set($any($event.target).checked)">
+                    Modo tela cheia (fullScreen)
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA SHOWCASE ──────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos do design Figma</h2>
+
+        <div class="figma-block">
+          <div class="figma-block__label">
+            <em>Estilos e tipos apresentados no Figma (Rollin - Full, Rollin - Small, Star e Dots):</em>
+          </div>
+
+          <div class="spinner-row">
+            <!-- Rollin - Full (Azul elétrico) -->
+            <div class="spinner-card-sample">
+              <app-loading-spinner type="ring" variant="primary" size="md"></app-loading-spinner>
+              <span class="spinner-card-sample__title">Rollin - Full (Primary)</span>
+            </div>
+
+            <!-- Rollin - Small (Neutro) -->
+            <div class="spinner-card-sample">
+              <app-loading-spinner type="ring" variant="neutral" size="sm"></app-loading-spinner>
+              <span class="spinner-card-sample__title">Rollin - Small</span>
+            </div>
+
+            <!-- Star / Radial -->
+            <div class="spinner-card-sample">
+              <app-loading-spinner type="star" variant="neutral" size="md"></app-loading-spinner>
+              <span class="spinner-card-sample__title">Star (Radial)</span>
+            </div>
+
+            <!-- Dots -->
+            <div class="spinner-card-sample">
+              <app-loading-spinner type="dots" variant="neutral" size="md"></app-loading-spinner>
+              <span class="spinner-card-sample__title">Dots (Pulsing)</span>
+            </div>
+
+            <!-- Com texto inline -->
+            <div class="spinner-card-sample">
+              <app-loading-spinner type="ring" variant="primary" size="sm" text="Salvando alterações..."></app-loading-spinner>
+              <span class="spinner-card-sample__title">Inline com texto</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── REFERÊNCIA DE API ───────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API</h2>
+
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'sm' | 'md' | 'lg'</code></td>
+                <td><code>'md'</code></td>
+                <td>Tamanho pré-definido (sm: 16px, md: 24px, lg: 40px).</td>
+              </tr>
+              <tr>
+                <td><code>customSize</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string | number</code></td>
+                <td><code>''</code></td>
+                <td>Dimensão customizada em pixels ou porcentagem (ex: <code>32</code> ou <code>'32px'</code>).</td>
+              </tr>
+              <tr>
+                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'primary' | 'secondary' | 'neutral' | 'white'</code></td>
+                <td><code>'primary'</code></td>
+                <td>Variação cromática do indicador.</td>
+              </tr>
+              <tr>
+                <td><code>type</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'ring' | 'star' | 'dots'</code></td>
+                <td><code>'ring'</code></td>
+                <td>Estilo da animação do indicador.</td>
+              </tr>
+              <tr>
+                <td><code>text</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto descritivo opcional exibido junto ao spinner.</td>
+              </tr>
+              <tr>
+                <td><code>textPosition</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'right' | 'bottom'</code></td>
+                <td><code>'right'</code></td>
+                <td>Posição do texto descritivo em relação ao indicador.</td>
+              </tr>
+              <tr>
+                <td><code>fullScreen</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Ativa o modo de bloqueio e carregamento em tela cheia com overlay.</td>
+              </tr>
+              <tr>
+                <td><code>backdrop</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code></td>
+                <td>Exibe fundo semitransparente com desfoque no modo tela cheia.</td>
+              </tr>
+              <tr>
+                <td><code>ariaLabel</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>'Carregando...'</code></td>
+                <td>Texto acessível lido por leitores de tela (WCAG).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

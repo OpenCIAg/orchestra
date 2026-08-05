@@ -1,0 +1,68 @@
+<div
+  class="orc-switch"
+  [class.orc-switch--checked]="checked()"
+  [class.orc-switch--disabled]="isDisabled()"
+  [class.orc-switch--error]="isError()"
+  [class.orc-switch--size-sm]="size() === 'sm'"
+  [class.orc-switch--size-md]="size() === 'md'"
+  [class.orc-switch--size-lg]="size() === 'lg'"
+  [class.orc-switch--label-start]="labelPosition() === 'start'"
+  [class.orc-switch--label-end]="labelPosition() === 'end'"
+>
+  <!-- Content before switch (when labelPosition === 'start') -->
+  <div
+    class="orc-switch__content"
+    *ngIf="labelPosition() === 'start' && hasContent()"
+    (click)="toggle()"
+  >
+    <span class="orc-switch__label" [id]="labelId()" *ngIf="label()">{{ label() }}</span>
+    <ng-content></ng-content>
+    <span class="orc-switch__description" [id]="descriptionId()" *ngIf="description() && !errorMessage()">
+      {{ description() }}
+    </span>
+    <span class="orc-switch__error" [id]="errorId()" *ngIf="errorMessage()">
+      {{ errorMessage() }}
+    </span>
+  </div>
+
+  <!-- Interactive Switch Control (W3C WAI-ARIA Switch Pattern) -->
+  <button
+    #switchButton
+    type="button"
+    role="switch"
+    class="orc-switch__control"
+    [id]="effectiveId()"
+    [attr.aria-checked]="checked()"
+    [disabled]="isDisabled()"
+    [attr.aria-label]="ariaLabel() || null"
+    [attr.aria-labelledby]="computedAriaLabelledBy()"
+    [attr.aria-describedby]="computedAriaDescribedBy()"
+    [attr.aria-invalid]="isError()"
+    (click)="onToggle($event)"
+    (blur)="onBlur()"
+  >
+    <span class="orc-switch__track" aria-hidden="true">
+      <span class="orc-switch__thumb"></span>
+    </span>
+  </button>
+
+  <!-- Content after switch (when labelPosition === 'end', default) -->
+  <div
+    class="orc-switch__content"
+    *ngIf="labelPosition() === 'end' && hasContent()"
+    (click)="toggle()"
+  >
+    <span class="orc-switch__label" [id]="labelId()" *ngIf="label()">{{ label() }}</span>
+    <ng-content></ng-content>
+    <span class="orc-switch__description" [id]="descriptionId()" *ngIf="description() && !errorMessage()">
+      {{ description() }}
+    </span>
+    <span class="orc-switch__error" [id]="errorId()" *ngIf="errorMessage()">
+      {{ errorMessage() }}
+    </span>
+  </div>
+
+  <div class="orc-switch__content" *ngIf="!hasContent()">
+    <ng-content></ng-content>
+  </div>
+</div>

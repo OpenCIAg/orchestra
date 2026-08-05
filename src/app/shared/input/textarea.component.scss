@@ -1,0 +1,205 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-textarea-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+
+  &--disabled {
+    cursor: not-allowed;
+  }
+}
+
+// ── Rótulo / Label ──────────────────────────────────────────
+.orc-textarea__label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--orc-font-main, #141414);
+  margin-bottom: 6px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.orc-textarea__required-marker {
+  color: #fb2c36;
+  margin-left: 3px;
+  font-weight: 700;
+}
+
+// ── Caixa do Textarea (Figma Spec) ──────────────────────────
+.orc-textarea-box {
+  display: flex;
+  width: 100%;
+  background-color: var(--fill-modal, #ffffff);
+  border: 1px solid var(--orc-border, #d9d9d9);
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: text;
+  transition:
+    background-color var(--transition-fast, 0.2s ease),
+    border-color var(--transition-fast, 0.2s ease),
+    box-shadow var(--transition-fast, 0.2s ease);
+
+  // Hover
+  &:hover:not(.orc-textarea-box--focused):not(.orc-textarea-box--disabled):not(.orc-textarea-box--error):not(.orc-textarea-box--success) {
+    background-color: var(--orc-th, #f9f9f9);
+    border-color: var(--orc-border, #d9d9d9);
+  }
+
+  // Focus
+  &--focused {
+    background-color: var(--fill-modal, #ffffff);
+    border-color: var(--orc-color-azul-eletrico, #1c6aed);
+    box-shadow:
+      0px 4px 4px 8px rgba(43, 127, 255, 0.04),
+      0 0 0 1px var(--orc-color-azul-eletrico, #1c6aed);
+  }
+
+  // Disabled
+  &--disabled {
+    background-color: var(--orc-highlight-cinza-claro, #ededed);
+    border-color: var(--orc-border, #d9d9d9);
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    .orc-textarea__native {
+      cursor: not-allowed;
+    }
+  }
+
+  // Readonly
+  &--readonly {
+    background-color: var(--orc-th, #f9f9f9);
+    cursor: default;
+
+    .orc-textarea__native {
+      cursor: default;
+    }
+  }
+
+  // Status: Error
+  &--error {
+    border-color: #fb2c36 !important;
+
+    &.orc-textarea-box--focused {
+      box-shadow: 0 0 0 3px rgba(251, 44, 54, 0.15) !important;
+    }
+  }
+
+  // Status: Success
+  &--success {
+    border-color: #00c950 !important;
+
+    &.orc-textarea-box--focused {
+      box-shadow: 0 0 0 3px rgba(0, 201, 80, 0.15) !important;
+    }
+  }
+
+  // ── Tamanhos (Sizes) ──────────────────────────────────────
+  &--sm {
+    padding: 8px 10px;
+    font-size: 13px;
+
+    .orc-textarea__native {
+      font-size: 13px;
+      min-height: 80px;
+    }
+  }
+
+  &--md {
+    padding: 10px 12px;
+    font-size: 14px;
+
+    .orc-textarea__native {
+      font-size: 14px;
+      min-height: 120px;
+    }
+  }
+
+  &--lg {
+    padding: 12px 16px;
+    font-size: 15px;
+
+    .orc-textarea__native {
+      font-size: 15px;
+      min-height: 160px;
+    }
+  }
+}
+
+// ── Native Textarea Element ─────────────────────────────────
+.orc-textarea__native {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  color: var(--orc-font-main, #141414);
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+
+  &::placeholder {
+    color: var(--orc-font-secondary, #666666);
+    font-weight: 400;
+    opacity: 1;
+  }
+}
+
+// ── Rodapé / Mensagens / Contador ───────────────────────────
+.orc-textarea__footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.orc-textarea__message-area {
+  flex: 1;
+  min-width: 0;
+}
+
+.orc-textarea__message {
+  margin: 0;
+  line-height: 1.4;
+
+  &--helper {
+    color: var(--orc-font-secondary, #666666);
+  }
+
+  &--error {
+    color: #fb2c36;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+}
+
+.orc-textarea__message-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.orc-textarea__char-count {
+  font-size: 11px;
+  color: var(--orc-font-secondary, #666666);
+  white-space: nowrap;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+
+  &--limit {
+    color: #fb2c36;
+    font-weight: 600;
+  }
+}

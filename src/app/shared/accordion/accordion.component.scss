@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-accordion {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+
+  // ── VARIANTS ──────────────────────────────────────────────
+  &--separated {
+    gap: var(--space-3, 0.75rem);
+  }
+
+  &--bordered {
+    border: 1px solid var(--border-default, #e5e5e5);
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+  }
+}

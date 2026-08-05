@@ -1,0 +1,115 @@
+<nav
+  [attr.aria-label]="ariaLabel()"
+  class="orc-breadcrumb"
+  [class.orc-breadcrumb--variant-default]="variant() === 'default'"
+  [class.orc-breadcrumb--variant-underlined]="variant() === 'underlined'"
+>
+  <ol class="orc-breadcrumb__list">
+    <!-- Modo 1: Data-Driven via array [items] -->
+    <ng-container *ngIf="items(); else projectionMode">
+      <ng-container *ngFor="let item of processedItems(); let i = index; let last = last">
+        <!-- Item Regular ou Ellipsis -->
+        <li class="orc-breadcrumb__item">
+          <!-- Botão de expansão (...) quando colapsado -->
+          <button
+            *ngIf="item.isEllipsis"
+            type="button"
+            class="orc-breadcrumb__ellipsis-btn"
+            (click)="expand()"
+            aria-label="Expandir itens ocultos do breadcrumb"
+            title="Expandir itens ocultos"
+          >
+            ...
+          </button>
+
+          <!-- Item Ativo / Último elemento da hierarquia -->
+          <span
+            *ngIf="!item.isEllipsis && item.isLast"
+            class="orc-breadcrumb__current"
+            aria-current="page"
+          >
+            <span *ngIf="item.icon" class="orc-breadcrumb__icon" aria-hidden="true">
+              <svg *ngIf="item.icon === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </span>
+            {{ item.label }}
+          </span>
+
+          <!-- Item com RouterLink do Angular -->
+          <a
+            *ngIf="!item.isEllipsis && !item.isLast && item.routerLink"
+            [routerLink]="item.routerLink"
+            class="orc-breadcrumb__link"
+            (click)="onItemClicked(item, item.originalIndex, $event)"
+          >
+            <span *ngIf="item.icon" class="orc-breadcrumb__icon" aria-hidden="true">
+              <svg *ngIf="item.icon === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </span>
+            {{ item.label }}
+          </a>
+
+          <!-- Item com link HTML externo (url) -->
+          <a
+            *ngIf="!item.isEllipsis && !item.isLast && !item.routerLink && item.url"
+            [href]="item.url"
+            class="orc-breadcrumb__link"
+            (click)="onItemClicked(item, item.originalIndex, $event)"
+          >
+            <span *ngIf="item.icon" class="orc-breadcrumb__icon" aria-hidden="true">
+              <svg *ngIf="item.icon === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </span>
+            {{ item.label }}
+          </a>
+
+          <!-- Item sem routerLink ou url (clicável com evento sem sair da página) -->
+          <span
+            *ngIf="!item.isEllipsis && !item.isLast && !item.routerLink && !item.url"
+            class="orc-breadcrumb__link"
+            role="button"
+            tabindex="0"
+            (click)="onItemClicked(item, item.originalIndex, $event)"
+            (keydown.enter)="onItemClicked(item, item.originalIndex, $any($event))"
+            (keydown.space)="onItemClicked(item, item.originalIndex, $any($event))"
+          >
+            <span *ngIf="item.icon" class="orc-breadcrumb__icon" aria-hidden="true">
+              <svg *ngIf="item.icon === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </span>
+            {{ item.label }}
+          </span>
+        </li>
+
+        <!-- Separador entre os itens -->
+        <li *ngIf="!last" class="orc-breadcrumb__separator" aria-hidden="true">
+          <!-- Chevron (Figma Padrão - Node 18:1714) -->
+          <svg *ngIf="separator() === 'chevron'" viewBox="0 0 14 14" fill="none" class="orc-breadcrumb__separator-icon">
+            <path d="M5.25 2.625L9.625 7L5.25 11.375" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <!-- Slash / -->
+          <span *ngIf="separator() === 'slash'" class="orc-breadcrumb__separator-text">/</span>
+          <!-- Arrow > -->
+          <span *ngIf="separator() === 'arrow'" class="orc-breadcrumb__separator-text">&gt;</span>
+          <!-- Custom String -->
+          <span *ngIf="separator() !== 'chevron' && separator() !== 'slash' && separator() !== 'arrow'" class="orc-breadcrumb__separator-text">
+            {{ separator() }}
+          </span>
+        </li>
+      </ng-container>
+    </ng-container>
+
+    <!-- Modo 2: Projeção Declarativa (<app-breadcrumb-item>) -->
+    <ng-template #projectionMode>
+      <ng-content></ng-content>
+    </ng-template>
+  </ol>
+</nav>

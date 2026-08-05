@@ -1,0 +1,26 @@
+<div class="otp-container" [class.otp-container--disabled]="isDisabled()">
+  <!-- Grupo 1 -->
+  <app-otp-group>
+    @for (idx of firstHalfIndices(); track idx) {
+      <app-otp-slot
+        [index]="idx"
+        [isFirst]="idx === 0"
+        [isLast]="idx === firstHalfIndices().length - 1"
+      ></app-otp-slot>
+    }
+  </app-otp-group>
+
+  <!-- Separador -->
+  <app-otp-separator></app-otp-separator>
+
+  <!-- Grupo 2 -->
+  <app-otp-group>
+    @for (idx of secondHalfIndices(); track idx) {
+      <app-otp-slot
+        [index]="idx"
+        [isFirst]="idx === secondHalfIndices()[0]"
+        [isLast]="idx === length() - 1"
+      ></app-otp-slot>
+    }
+  </app-otp-group>
+</div>

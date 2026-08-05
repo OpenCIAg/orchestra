@@ -1,0 +1,37 @@
+<div
+  class="orc-radio-group"
+  [class.orc-radio-group--horizontal]="layout() === 'horizontal'"
+  [class.orc-radio-group--vertical]="layout() === 'vertical'"
+  [class.orc-radio-group--disabled]="isDisabled()"
+  [class.orc-radio-group--error]="isError()"
+  role="radiogroup"
+  [attr.aria-labelledby]="label() ? labelId : null"
+  [attr.aria-label]="!label() && ariaLabel() ? ariaLabel() : null"
+  [attr.aria-describedby]="isError() && errorMessage() ? errorId : (hint() ? hintId : null)"
+  [attr.aria-invalid]="isError()"
+>
+  <!-- Group Label / Header -->
+  <div *ngIf="label()" class="orc-radio-group__label" [id]="labelId">
+    {{ label() }}
+  </div>
+
+  <!-- Optional Hint -->
+  <p *ngIf="hint()" class="orc-radio-group__hint" [id]="hintId">
+    {{ hint() }}
+  </p>
+
+  <!-- Options Container with Column or Row layout -->
+  <div class="orc-radio-group__options">
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Error Message -->
+  <div
+    *ngIf="isError() && errorMessage()"
+    class="orc-radio-group__error-message"
+    [id]="errorId"
+    role="alert"
+  >
+    {{ errorMessage() }}
+  </div>
+</div>

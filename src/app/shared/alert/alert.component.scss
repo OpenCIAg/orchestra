@@ -1,0 +1,226 @@
+:host {
+  display: block;
+  width: 100%;
+  transition: opacity var(--transition-base, 200ms ease),
+              max-height var(--transition-base, 200ms ease),
+              transform var(--transition-base, 200ms ease);
+
+  &.orc-alert-host--hidden {
+    opacity: 0;
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.orc-alert {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
+  min-height: 68px; // Altura padrão conforme Figma Node 382:5250
+  padding: 13px 17px; // Padding exato do Figma (px-[17px] py-[13px])
+  border-radius: var(--radius-md, 10px); // rounded-[10px]
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  gap: 12px;
+  box-sizing: border-box;
+  transition: background-color var(--transition-fast, 120ms ease),
+              border-color var(--transition-fast, 120ms ease),
+              color var(--transition-fast, 120ms ease);
+
+  // ── ÍCONE ───────────────────────────────────────────────────
+  &__icon-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px; // Alinhamento óptico com a primeira linha de texto (20px line-height)
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+
+  // ── CONTEÚDO ────────────────────────────────────────────────
+  &__content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 14px;
+    line-height: 20px;
+    word-break: break-word;
+  }
+
+  &__title {
+    font-weight: 500;
+    letter-spacing: -0.35px;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__description {
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    opacity: 0.95;
+  }
+
+  // ── AÇÕES ───────────────────────────────────────────────────
+  &__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  // ── BOTÃO DE FECHAR ─────────────────────────────────────────
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm, 6px);
+    background: transparent;
+    color: currentColor;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity var(--transition-fast, 120ms ease),
+                background-color var(--transition-fast, 120ms ease);
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+      opacity: 1;
+    }
+  }
+
+  &__close-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  // ────────────────────────────────────────────────────────────
+  // ── VARIANTE: SUBTLE / SOFT (Padrão Figma: fundos claros) ───
+  // ────────────────────────────────────────────────────────────
+  &--variant-subtle {
+    border: 1px solid transparent;
+
+    &.orc-alert--severity-info {
+      background-color: #E1EAF6;
+      color: var(--color-info, #2B7FFF);
+    }
+
+    &.orc-alert--severity-success {
+      background-color: #B8E7D7;
+      color: var(--color-success, #006F4A);
+    }
+
+    &.orc-alert--severity-warning {
+      background-color: #F6ECDD;
+      color: var(--color-warning, #FE9A00);
+    }
+
+    &.orc-alert--severity-error {
+      background-color: #F6D7D8;
+      color: var(--color-error, #FB2C36);
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────
+  // ── VARIANTE: OUTLINE (Figma: Borda sutil / fundo limpo) ────
+  // ────────────────────────────────────────────────────────────
+  &--variant-outline {
+    background-color: var(--orc-bg, #FFFFFF);
+    border: 1px solid var(--border-default, #D9D9D9);
+
+    &.orc-alert--severity-info {
+      color: var(--color-info, #2B7FFF);
+    }
+
+    &.orc-alert--severity-success {
+      color: var(--color-success, #006F4A);
+    }
+
+    &.orc-alert--severity-warning {
+      color: var(--color-warning, #FE9A00);
+    }
+
+    &.orc-alert--severity-error {
+      color: var(--color-error, #FB2C36);
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────
+  // ── VARIANTE: FILLED (Preenchido com a cor primária de status)
+  // ────────────────────────────────────────────────────────────
+  &--variant-filled {
+    border: 1px solid transparent;
+    color: #FFFFFF;
+
+    &.orc-alert--severity-info {
+      background-color: var(--color-info, #2B7FFF);
+    }
+
+    &.orc-alert--severity-success {
+      background-color: var(--color-success, #006F4A);
+    }
+
+    &.orc-alert--severity-warning {
+      background-color: var(--color-warning, #FE9A00);
+      color: #FFFFFF;
+    }
+
+    &.orc-alert--severity-error {
+      background-color: var(--color-error, #FB2C36);
+    }
+
+    .orc-alert__close:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// ── SUPORTE A DARK MODE ───────────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  .orc-alert--variant-outline {
+    background-color: var(--orc-bg, #1F1F1F);
+    border-color: var(--orc-border, #333333);
+  }
+
+  .orc-alert--variant-subtle {
+    &.orc-alert--severity-info {
+      background-color: rgba(43, 127, 255, 0.15);
+      color: #70A9FF;
+    }
+    &.orc-alert--severity-success {
+      background-color: rgba(0, 111, 74, 0.2);
+      color: #34D399;
+    }
+    &.orc-alert--severity-warning {
+      background-color: rgba(254, 154, 0, 0.15);
+      color: #FBBF24;
+    }
+    &.orc-alert--severity-error {
+      background-color: rgba(251, 44, 54, 0.15);
+      color: #F87171;
+    }
+  }
+}

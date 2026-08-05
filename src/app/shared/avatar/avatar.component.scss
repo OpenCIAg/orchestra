@@ -1,0 +1,226 @@
+:host {
+  display: inline-flex;
+}
+
+.orc-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-weight: 500;
+  box-sizing: border-box;
+  overflow: visible;
+  transition: transform var(--transition-fast, 120ms ease),
+              box-shadow var(--transition-fast, 120ms ease);
+
+  // ── SIZES (Figma Node 382:5074) ───────────────────────────
+  // XS = 24 x 24
+  &--size-xs {
+    width: 24px;
+    height: 24px;
+    font-size: 0.6875rem; // 11px
+    --status-size: 6px;
+    --status-offset: -1px;
+    --icon-size: 14px;
+    --border-radius-rounded: 6px;
+  }
+
+  // SM = 32 x 32
+  &--size-sm {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem; // 12px
+    --status-size: 8px;
+    --status-offset: -1px;
+    --icon-size: 16px;
+    --border-radius-rounded: 8px;
+  }
+
+  // MD = 40 x 40 (Default)
+  &--size-md {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9375rem; // 15px
+    --status-size: 10px;
+    --status-offset: 0px;
+    --icon-size: 20px;
+    --border-radius-rounded: 10px;
+  }
+
+  // LG = 48 x 48
+  &--size-lg {
+    width: 48px;
+    height: 48px;
+    font-size: 1.0625rem; // 17px
+    --status-size: 12px;
+    --status-offset: 1px;
+    --icon-size: 24px;
+    --border-radius-rounded: 12px;
+  }
+
+  // XL = 64 x 64
+  &--size-xl {
+    width: 64px;
+    height: 64px;
+    font-size: 1.375rem; // 22px
+    --status-size: 14px;
+    --status-offset: 2px;
+    --icon-size: 32px;
+    --border-radius-rounded: 16px;
+  }
+
+  // ── SHAPES ────────────────────────────────────────────────
+  &--shape-circular {
+    border-radius: 9999px;
+
+    .orc-avatar__img {
+      border-radius: 9999px;
+    }
+  }
+
+  &--shape-rounded {
+    border-radius: var(--border-radius-rounded, 10px);
+
+    .orc-avatar__img {
+      border-radius: var(--border-radius-rounded, 10px);
+    }
+  }
+
+  &--shape-square {
+    border-radius: 0;
+
+    .orc-avatar__img {
+      border-radius: 0;
+    }
+  }
+
+  // ── BORDERED (AVATAR GROUP SEPARATION) ────────────────────
+  &--bordered {
+    box-shadow: 0 0 0 2px var(--orc-bg, #ffffff);
+  }
+
+  // ── COLOR VARIANTS (Figma Node 382:5074) ──────────────────
+  &--variant-default {
+    background-color: #ececf0;
+    color: #0a0a0a;
+  }
+
+  &--variant-primary {
+    background-color: var(--orc-color-azul-eletrico, #1c6aed);
+    color: #ffffff;
+  }
+
+  &--variant-royal {
+    background-color: var(--orc-color-azul-royal, #0406ab);
+    color: #ffffff;
+  }
+
+  &--variant-orange {
+    background-color: var(--orc-color-laranja, #ff6a1c);
+    color: #ffffff;
+  }
+
+  &--variant-purple {
+    background-color: var(--orc-color-roxo-lavender, #6a1ced);
+    color: #ffffff;
+  }
+
+  &--variant-cyan {
+    background-color: var(--orc-color-ciano, #1cedb9);
+    color: #141414;
+  }
+
+  // ── INNER IMAGE ───────────────────────────────────────────
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  // ── INITIALS TEXT ─────────────────────────────────────────
+  &__initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+  }
+
+  // ── FALLBACK ICON ─────────────────────────────────────────
+  &__icon {
+    width: var(--icon-size, 20px);
+    height: var(--icon-size, 20px);
+    opacity: 0.75;
+  }
+
+  // ── STATUS INDICATOR BADGE ────────────────────────────────
+  &__status {
+    position: absolute;
+    width: var(--status-size, 10px);
+    height: var(--status-size, 10px);
+    border-radius: 9999px;
+    border: 2px solid var(--orc-bg, #ffffff);
+    box-sizing: content-box;
+    z-index: 2;
+
+    &--bottom-right {
+      bottom: var(--status-offset, 0px);
+      right: var(--status-offset, 0px);
+    }
+
+    &--top-right {
+      top: var(--status-offset, 0px);
+      right: var(--status-offset, 0px);
+    }
+
+    &--bottom-left {
+      bottom: var(--status-offset, 0px);
+      left: var(--status-offset, 0px);
+    }
+
+    &--top-left {
+      top: var(--status-offset, 0px);
+      left: var(--status-offset, 0px);
+    }
+
+    // Status Colors
+    &--online {
+      background-color: #22c55e; // Green
+    }
+
+    &--busy {
+      background-color: var(--color-error, #fb2c36); // Red
+    }
+
+    &--away {
+      background-color: var(--color-warning, #fe9a00); // Amber
+    }
+
+    &--offline {
+      background-color: #999999; // Gray
+    }
+  }
+
+  // ── INTERACTIVE / CLICKABLE ───────────────────────────────
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline-offset: 2px;
+    }
+  }
+}

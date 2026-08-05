@@ -1,0 +1,389 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        <a href="#" class="nav-link">GitHub</a>
+        <a href="#" class="nav-link nav-link--ghost">Figma ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a Página Inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Inputs</div>
+      <h1 class="section-title">Radio</h1>
+      <p class="section-desc">
+        Controles de seleção única e exclusiva entre opções mutuamente excludentes, com suporte nativo a Reactive Forms,
+        Signals API, estados completos e total acessibilidade por teclado (WCAG 2.1 AA).
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live Preview</div>
+            <div class="panel__body">
+              <app-radio-group [label]="groupLabel()" [hint]="groupHint()" [layout]="layout()" [disabled]="isDisabled()"
+                [error]="isError()" [errorMessage]="errorMessage()" [value]="selectedOption()"
+                (valueChange)="onPlaygroundChange($event)">
+                <app-radio-button value="opt1" label="Opção 1"
+                  description="Primeira alternativa disponível para seleção"></app-radio-button>
+                <app-radio-button value="opt2" label="Opção 2"
+                  description="Segunda alternativa configurável do grupo"></app-radio-button>
+                <app-radio-button value="opt3" label="Opção 3"
+                  description="Terceira opção com suporte a teclado"></app-radio-button>
+              </app-radio-group>
+            </div>
+            <!-- <div class="panel__footer">
+              <div class="status-box">
+                <span class="status-label">Valor Selecionado:</span>
+                <code class="status-code">{{ selectedOption() || '(nenhum)' }}</code>
+              </div>
+              <div class="status-box">
+                <span class="status-label">Layout:</span>
+                <span class="status-badge">{{ layout() }}</span>
+              </div>
+              <div class="status-box">
+                <span class="status-label">Estado de Erro:</span>
+                <span class="status-badge" [class.status-badge--error]="isError()">
+                  {{ isError() ? 'Ativado' : 'Normal' }}
+                </span>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- Configuration Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades / Controles</div>
+            <div class="panel__body">
+              <!-- Layout Control -->
+              <div class="control-group">
+                <label class="control-label">Layout do grupo (layout)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="layout() === 'vertical'"
+                    (click)="layout.set('vertical')">
+                    Vertical
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="layout() === 'horizontal'"
+                    (click)="layout.set('horizontal')">
+                    Horizontal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Value Selection Control -->
+              <div class="control-group">
+                <label class="control-label">Alterar valor (model)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="selectedOption() === 'opt1'"
+                    (click)="selectPlaygroundValue('opt1')">
+                    Opção 1
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="selectedOption() === 'opt2'"
+                    (click)="selectPlaygroundValue('opt2')">
+                    Opção 2
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="selectedOption() === 'opt3'"
+                    (click)="selectPlaygroundValue('opt3')">
+                    Opção 3
+                  </button>
+                </div>
+              </div>
+
+              <!-- Toggles -->
+              <div class="control-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" [checked]="isDisabled()"
+                    (change)="isDisabled.set($any($event.target).checked)" />
+                  Desabilitar grupo (disabled)
+                </label>
+              </div>
+
+              <div class="control-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" [checked]="isError()" (change)="isError.set($any($event.target).checked)" />
+                  Estado de erro / Validação (error)
+                </label>
+              </div>
+
+              <button type="button" class="btn btn-secondary btn-full" (click)="resetPlayground()">
+                Restaurar padrões
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── GALERIA DE ESTADOS & FIDELIDADE FIGMA ────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos </h2>
+        <div class="cards-showcase-grid">
+          <!-- Card 1: Default vs Checked -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">Padrão do Figma (Option 1 & 2)</div>
+            <div class="showcase-card-content">
+              <app-radio-group [value]="verticalDemo()" (valueChange)="verticalDemo.set($event)">
+                <app-radio-button value="opt1" label="Option 1"></app-radio-button>
+                <app-radio-button value="opt2" label="Option 2"></app-radio-button>
+              </app-radio-group>
+            </div>
+          </div>
+
+          <!-- Card 2: Com Descrição Rica -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">Com Rótulo e Descrição</div>
+            <div class="showcase-card-content">
+              <app-radio-group value="email">
+                <app-radio-button value="email" label="Notificações por E-mail"
+                  description="Receba atualizações diárias e alertas de segurança."></app-radio-button>
+                <app-radio-button value="push" label="Notificações Push"
+                  description="Receba alertas instantâneos no navegador ou aplicativo."></app-radio-button>
+              </app-radio-group>
+            </div>
+          </div>
+
+          <!-- Card 3: Estados Desabilitados -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">Desabilitado (Checked & Unchecked)</div>
+            <div class="showcase-card-content">
+              <app-radio-group value="dis1">
+                <app-radio-button value="dis1" label="Opção marcada desabilitada" [disabled]="true"></app-radio-button>
+                <app-radio-button value="dis2" label="Opção desmarcada desabilitada"
+                  [disabled]="true"></app-radio-button>
+              </app-radio-group>
+            </div>
+          </div>
+
+          <!-- Card 4: Estado de Erro -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">Estado de erro</div>
+            <div class="showcase-card-content">
+              <app-radio-group [error]="true" errorMessage="Campo obrigatório. Selecione uma opção para continuar."
+                value="err1">
+                <app-radio-button value="err1" label="Opção inválida 1"></app-radio-button>
+                <app-radio-button value="err2" label="Opção inválida 2"></app-radio-button>
+              </app-radio-group>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── REACTIVE FORMS INTEGRATION ──────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Integração com Reactive Forms (ControlValueAccessor)</h2>
+        <p class="section-desc-small">
+          O <code>RadioGroupComponent</code> implementa <code>ControlValueAccessor</code> nativamente, integrando-se
+          perfeitamente com <code>formControlName</code>, <code>[formControl]</code> e validações do Angular Forms.
+        </p>
+
+        <div class="form-demo-card">
+          <form [formGroup]="form" (ngSubmit)="onSubmitForm()" class="demo-form">
+            <app-radio-group formControlName="selectedPlan" label="Plano de assinatura"
+              hint="Escolha o plano ideal para a sua equipe"
+              [error]="!!(formSubmitted() && form.get('selectedPlan')?.invalid)"
+              errorMessage="Por favor, selecione um plano para continuar.">
+              <app-radio-button value="starter" label="Starter (Gratuito)"
+                description="Recursos básicos para até 3 usuários."></app-radio-button>
+              <app-radio-button value="pro" label="Professional (R$ 49/mês)"
+                description="Recursos avançados e suporte prioritário."></app-radio-button>
+              <app-radio-button value="enterprise" label="Enterprise (Customizado)"
+                description="Segurança corporativa, SSO e SLA garantido."></app-radio-button>
+            </app-radio-group>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Confirmar assinatura</button>
+              <button type="button" class="btn btn-secondary" (click)="resetForm()">Limpar formulário</button>
+            </div>
+          </form>
+
+          <div class="form-result-box" *ngIf="formSubmitted()">
+            <div class="form-result-title">Status do Reactive Form:</div>
+            <div class="form-result-status" [class.form-result-status--valid]="form.valid"
+              [class.form-result-status--invalid]="form.invalid">
+              {{ form.valid ? '✓ Formulário Válido' : '⚠ Erro de Validação: Campo Obrigatório' }}
+            </div>
+            <pre class="code-block" *ngIf="formResult()">{{ formResult() | json }}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ACESSIBILIDADE & WCAG ────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Acessibilidade & Teclado (WCAG 2.1 AA)</h2>
+        <div class="a11y-card">
+          <div class="a11y-grid">
+            <div class="a11y-item">
+              <span class="a11y-badge">role="radiogroup"</span>
+              <p>Agrupa semanticamente as opções e permite que leitores de tela anunciem o total de itens e o item
+                ativo.</p>
+            </div>
+            <div class="a11y-item">
+              <span class="a11y-badge">role="radio" / aria-checked</span>
+              <p>Comunicação exata do estado marcado/desmarcado e atributos <code>aria-disabled</code> e
+                <code>aria-invalid</code>.
+              </p>
+            </div>
+            <div class="a11y-item">
+              <span class="a11y-badge">Roving Tabindex</span>
+              <p>Apenas a opção selecionada (ou a primeira habilitada) recebe <code>tabindex="0"</code>, garantindo
+                navegação limpa.</p>
+            </div>
+          </div>
+
+          <table class="api-table" style="margin-top: var(--space-4);">
+            <thead>
+              <tr>
+                <th>Tecla</th>
+                <th>Comportamento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><kbd>Tab</kbd> / <kbd>Shift + Tab</kbd></td>
+                <td>Entra e sai do grupo de radio buttons, focando o item atualmente selecionado.</td>
+              </tr>
+              <tr>
+                <td><kbd>↓</kbd> / <kbd>→</kbd></td>
+                <td>Move a seleção e o foco para a próxima opção habilitada do grupo.</td>
+              </tr>
+              <tr>
+                <td><kbd>↑</kbd> / <kbd>←</kbd></td>
+                <td>Move a seleção e o foco para a opção anterior habilitada do grupo.</td>
+              </tr>
+              <tr>
+                <td><kbd>Espaço</kbd></td>
+                <td>Marca a opção em foco caso ainda não esteja selecionada.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── DOCUMENTAÇÃO DA API ──────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Documentação da API</h2>
+
+        <!-- RadioGroup API -->
+        <h3 class="api-section-title">app-radio-group</h3>
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Propriedade</th>
+              <th>Tipo</th>
+              <th>Padrão</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>value</code></td>
+              <td><code>model&lt;any&gt;</code></td>
+              <td><code>null</code></td>
+              <td>Valor bidirecionalmente vinculado ao grupo (compatível com ngModel / CVA).</td>
+            </tr>
+            <tr>
+              <td><code>layout</code></td>
+              <td><code>input&lt;'vertical' | 'horizontal'&gt;</code></td>
+              <td><code>'vertical'</code></td>
+              <td>Direção visual das opções (coluna ou linha).</td>
+            </tr>
+            <tr>
+              <td><code>label</code></td>
+              <td><code>input&lt;string&gt;</code></td>
+              <td><code>''</code></td>
+              <td>Título ou legenda acessível do grupo.</td>
+            </tr>
+            <tr>
+              <td><code>hint</code></td>
+              <td><code>input&lt;string&gt;</code></td>
+              <td><code>''</code></td>
+              <td>Texto de ajuda exibido abaixo do rótulo do grupo.</td>
+            </tr>
+            <tr>
+              <td><code>disabled</code></td>
+              <td><code>input&lt;boolean&gt;</code></td>
+              <td><code>false</code></td>
+              <td>Desabilita todas as opções do grupo simultaneamente.</td>
+            </tr>
+            <tr>
+              <td><code>error</code></td>
+              <td><code>input&lt;boolean&gt;</code></td>
+              <td><code>false</code></td>
+              <td>Ativa visual de validação de erro no grupo.</td>
+            </tr>
+            <tr>
+              <td><code>errorMessage</code></td>
+              <td><code>input&lt;string&gt;</code></td>
+              <td><code>''</code></td>
+              <td>Mensagem de erro exibida quando <code>error</code> for verdadeiro.</td>
+            </tr>
+            <tr>
+              <td><code>valueChange</code></td>
+              <td><code>output&lt;any&gt;</code></td>
+              <td><code>-</code></td>
+              <td>Evento emitido na mudança de valor selecionado.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- RadioButton API -->
+        <h3 class="api-section-title" style="margin-top: var(--space-8);">app-radio-button</h3>
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Propriedade</th>
+              <th>Tipo</th>
+              <th>Padrão</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>value</code></td>
+              <td><code>input&lt;any&gt;</code></td>
+              <td><code>undefined</code></td>
+              <td>Valor único correspondente a esta opção.</td>
+            </tr>
+            <tr>
+              <td><code>label</code></td>
+              <td><code>input&lt;string&gt;</code></td>
+              <td><code>''</code></td>
+              <td>Texto do rótulo da opção (ou via projeção de conteúdo).</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td><code>input&lt;string&gt;</code></td>
+              <td><code>''</code></td>
+              <td>Texto auxiliar exibido abaixo do rótulo.</td>
+            </tr>
+            <tr>
+              <td><code>disabled</code></td>
+              <td><code>input&lt;boolean&gt;</code></td>
+              <td><code>false</code></td>
+              <td>Desabilita individualmente este radio button.</td>
+            </tr>
+            <tr>
+              <td><code>select</code></td>
+              <td><code>output&lt;any&gt;</code></td>
+              <td><code>-</code></td>
+              <td>Evento emitido quando a opção for selecionada.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <app-footer></app-footer>
+</div>

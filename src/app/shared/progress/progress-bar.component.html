@@ -1,0 +1,66 @@
+<div
+  class="orc-progress-bar-host"
+  [class.orc-progress-bar--rounded]="rounded()"
+  [class.orc-progress-bar--sm]="size() === 'sm'"
+  [class.orc-progress-bar--md]="size() === 'md'"
+  [class.orc-progress-bar--lg]="size() === 'lg'"
+  [class.orc-progress-bar--primary]="variant() === 'primary'"
+  [class.orc-progress-bar--neutral]="variant() === 'neutral'"
+  [class.orc-progress-bar--success]="variant() === 'success'"
+  [class.orc-progress-bar--warning]="variant() === 'warning'"
+  [class.orc-progress-bar--error]="variant() === 'error' || variant() === 'danger'"
+  [class.orc-progress-bar--indeterminate]="isIndeterminate()"
+>
+  <!-- Header (Label & Valor numérico) -->
+  @if (hasHeader()) {
+    <div class="orc-progress-bar__header">
+      @if (label()) {
+        <span class="orc-progress-bar__label">{{ label() }}</span>
+      }
+      @if (showValue() && !isIndeterminate()) {
+        <span class="orc-progress-bar__value">{{ formattedValue() }}</span>
+      }
+    </div>
+  }
+
+  <!-- Segmented Bars Mode -->
+  @if (segmentArray().length > 0) {
+    <div
+      class="orc-progress-bar__segments"
+      role="progressbar"
+      [attr.aria-valuenow]="currentSegment()"
+      [attr.aria-valuemin]="1"
+      [attr.aria-valuemax]="segmentArray().length"
+      [attr.aria-label]="ariaLabel() || label() || 'Etapas do progresso'"
+      [attr.aria-valuetext]="ariaValueText() || ('Etapa ' + currentSegment() + ' de ' + segmentArray().length)"
+    >
+      @for (seg of segmentArray(); track seg) {
+        <div
+          class="orc-progress-bar__segment-item"
+          [class.orc-progress-bar__segment-item--active]="seg <= currentSegment()"
+          [style.background-color]="seg <= currentSegment() ? (customColor() || null) : (customTrackColor() || null)"
+          [style.height]="customHeight() ? (customHeight() + (customHeight().toString().endsWith('px') ? '' : 'px')) : null"
+        ></div>
+      }
+    </div>
+  } @else {
+    <!-- Continuous Progress Bar Track -->
+    <div
+      class="orc-progress-bar__track"
+      role="progressbar"
+      [attr.aria-valuenow]="isIndeterminate() ? null : normalizedValue()"
+      [attr.aria-valuemin]="isIndeterminate() ? null : 0"
+      [attr.aria-valuemax]="isIndeterminate() ? null : 100"
+      [attr.aria-label]="ariaLabel() || label() || 'Progresso'"
+      [attr.aria-valuetext]="ariaValueText() || (isIndeterminate() ? 'Carregando...' : formattedValue())"
+      [style.background-color]="customTrackColor() || null"
+      [style.height]="customHeight() ? (customHeight() + (customHeight().toString().endsWith('px') ? '' : 'px')) : null"
+    >
+      <div
+        class="orc-progress-bar__fill"
+        [style.width]="isIndeterminate() ? null : (normalizedValue() + '%')"
+        [style.background-color]="customColor() || null"
+      ></div>
+    </div>
+  }
+</div>

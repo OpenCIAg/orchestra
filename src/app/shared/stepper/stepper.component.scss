@@ -1,0 +1,292 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-stepper {
+  width: 100%;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+}
+
+.orc-stepper__list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// ── HORIZONTAL STEPPER ──────────────────────────────────────
+.orc-stepper--horizontal {
+  .orc-stepper__list {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .orc-stepper__item {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    position: relative;
+
+    &:last-child {
+      flex: 0 0 auto;
+    }
+  }
+
+  .orc-stepper__step-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: default;
+    min-width: 100px;
+    outline: none;
+    transition: transform var(--transition-fast);
+  }
+
+  .orc-stepper__item--clickable .orc-stepper__step-btn {
+    cursor: pointer;
+
+    &:hover .orc-stepper__marker {
+      transform: scale(1.05);
+    }
+  }
+
+  .orc-stepper__connector-line--horizontal {
+    flex: 1;
+    height: 3px;
+    background-color: var(--orc-border, #d9d9d9);
+    margin: 19px 8px 0;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+
+    &.orc-stepper__connector-line--completed {
+      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+    }
+  }
+
+  .orc-stepper__marker {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  // ── Estados Horizontal ─────────────────────────────────────
+  .orc-stepper__item--completed {
+    .orc-stepper__marker {
+      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+      color: #ffffff;
+    }
+    .orc-stepper__title {
+      color: var(--orc-font-main, #141414);
+      font-weight: 500;
+    }
+  }
+
+  .orc-stepper__item--active {
+    .orc-stepper__marker {
+      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 1px var(--orc-color-azul-eletrico, #1c6aed);
+    }
+    .orc-stepper__title {
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+      font-weight: 600;
+    }
+  }
+
+  .orc-stepper__item--pending {
+    .orc-stepper__marker {
+      background-color: var(--orc-border, #d9d9d9);
+      color: #ffffff;
+    }
+    .orc-stepper__title {
+      color: #929292;
+      font-weight: 400;
+    }
+  }
+
+  // Estilo Icon Horizontal
+  &.orc-stepper--icon {
+    .orc-stepper__item--active {
+      .orc-stepper__marker {
+        background-color: rgba(28, 106, 237, 0.2);
+        color: var(--orc-color-azul-eletrico, #1c6aed);
+      }
+    }
+    .orc-stepper__item--pending {
+      .orc-stepper__marker {
+        background-color: var(--orc-th, #f9f9f9);
+        color: #929292;
+        border: 1px solid var(--orc-border, #d9d9d9);
+      }
+    }
+  }
+}
+
+// ── VERTICAL STEPPER ────────────────────────────────────────
+.orc-stepper--vertical {
+  .orc-stepper__list {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .orc-stepper__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .orc-stepper__step-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: default;
+    outline: none;
+  }
+
+  .orc-stepper__item--clickable .orc-stepper__step-btn {
+    cursor: pointer;
+  }
+
+  .orc-stepper__marker {
+    width: 32px;
+    height: 32px;
+    border-radius: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+
+  .orc-stepper__connector-line--vertical {
+    width: 2px;
+    min-height: 36px;
+    background-color: var(--orc-border, #d9d9d9);
+    margin-left: 15px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    transition: background-color 0.3s ease;
+
+    &.orc-stepper__connector-line--completed {
+      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+    }
+  }
+
+  .orc-stepper__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    padding-top: 2px;
+    padding-bottom: 16px;
+  }
+
+  // ── Estados Vertical (Figma Spec) ──────────────────────────
+  .orc-stepper__item--completed {
+    .orc-stepper__marker {
+      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+      border: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      color: #ffffff;
+    }
+    .orc-stepper__title {
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+      font-weight: 500;
+    }
+  }
+
+  .orc-stepper__item--active {
+    .orc-stepper__marker {
+      background-color: #ffffff;
+      border: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+    }
+    .orc-stepper__title {
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+      font-weight: 600;
+    }
+  }
+
+  .orc-stepper__item--pending {
+    .orc-stepper__marker {
+      background-color: #ffffff;
+      border: 2px solid var(--orc-border, #d9d9d9);
+      color: var(--orc-font-secondary, #58595b);
+    }
+    .orc-stepper__title {
+      color: var(--orc-font-secondary, #58595b);
+      font-weight: 500;
+    }
+  }
+}
+
+// ── Textos & Tipografia Comum ───────────────────────────────
+.orc-stepper__content {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+}
+
+.orc-stepper__title {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.orc-stepper__subtitle {
+  font-size: 12px;
+  line-height: 16px;
+  color: #929292;
+  margin-top: 2px;
+}
+
+.orc-stepper__step-progress {
+  margin-top: 8px;
+  width: 100%;
+}
+
+// ── Ícones SVG ──────────────────────────────────────────────
+.orc-stepper__icon {
+  width: 18px;
+  height: 18px;
+
+  &--spin {
+    animation: orc-step-spin 1.5s linear infinite;
+  }
+}
+
+.orc-stepper__custom-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+@keyframes orc-step-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

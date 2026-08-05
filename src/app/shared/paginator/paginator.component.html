@@ -1,0 +1,133 @@
+<nav
+  class="orc-paginator"
+  [attr.aria-label]="ariaLabel()"
+  [class.orc-paginator--disabled]="disabled()"
+  [class.orc-paginator--sm]="size() === 'sm'"
+  [class.orc-paginator--lg]="size() === 'lg'"
+>
+  <!-- Texto Informativo de Itens (Opcional) -->
+  <div *ngIf="showTotalInfo()" class="orc-paginator__info">
+    Exibindo <strong>{{ startIndex() }}–{{ endIndex() }}</strong> de <strong>{{ totalItems() }}</strong> itens
+  </div>
+
+  <!-- Lista de Navegação e Páginas -->
+  <ul class="orc-paginator__list" role="list">
+    <!-- Botão: Primeira Página (Opcional) -->
+    <li *ngIf="showFirstLastButtons()">
+      <button
+        type="button"
+        class="orc-paginator__btn orc-paginator__btn--nav orc-paginator__btn--first"
+        [disabled]="isFirstPage() || disabled()"
+        [attr.aria-disabled]="isFirstPage() || disabled()"
+        (click)="firstPage()"
+        [attr.aria-label]="firstLabel()"
+        [title]="firstLabel()"
+      >
+        <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M11 12L7 8L11 4M7 12L3 8L7 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </li>
+
+    <!-- Botão: Anterior (Figma Node 18:1752) -->
+    <li *ngIf="showPrevNextButtons()">
+      <button
+        type="button"
+        class="orc-paginator__btn orc-paginator__btn--nav orc-paginator__btn--prev"
+        [disabled]="isFirstPage() || disabled()"
+        [attr.aria-disabled]="isFirstPage() || disabled()"
+        (click)="prevPage()"
+        [attr.aria-label]="previousLabel()"
+      >
+        <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="orc-paginator__btn-text">{{ previousLabel() }}</span>
+      </button>
+    </li>
+
+    <!-- Botões Numéricos e Reticências (Figma Nodes 18:1758 - 18:1773) -->
+    <ng-container *ngFor="let p of visiblePages()">
+      <!-- Número da Página -->
+      <li *ngIf="p !== 'ellipsis'">
+        <button
+          type="button"
+          class="orc-paginator__btn orc-paginator__btn--page"
+          [class.orc-paginator__btn--active]="p === currentPage()"
+          [attr.aria-current]="p === currentPage() ? 'page' : null"
+          [disabled]="disabled()"
+          (click)="goToPage(+p)"
+          [attr.aria-label]="'Ir para a página ' + p"
+        >
+          {{ p }}
+        </button>
+      </li>
+
+      <!-- Reticências (...) -->
+      <li *ngIf="p === 'ellipsis'" class="orc-paginator__ellipsis" aria-hidden="true">
+        <svg class="orc-paginator__icon-dots" viewBox="0 0 16 16" fill="none">
+          <circle cx="4" cy="8" r="1.25" fill="currentColor"/>
+          <circle cx="8" cy="8" r="1.25" fill="currentColor"/>
+          <circle cx="12" cy="8" r="1.25" fill="currentColor"/>
+        </svg>
+      </li>
+    </ng-container>
+
+    <!-- Botão: Próximo (Figma Node 32:18542) -->
+    <li *ngIf="showPrevNextButtons()">
+      <button
+        type="button"
+        class="orc-paginator__btn orc-paginator__btn--nav orc-paginator__btn--next"
+        [disabled]="isLastPage() || disabled()"
+        [attr.aria-disabled]="isLastPage() || disabled()"
+        (click)="nextPage()"
+        [attr.aria-label]="nextLabel()"
+      >
+        <span class="orc-paginator__btn-text">{{ nextLabel() }}</span>
+        <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </li>
+
+    <!-- Botão: Última Página (Opcional) -->
+    <li *ngIf="showFirstLastButtons()">
+      <button
+        type="button"
+        class="orc-paginator__btn orc-paginator__btn--nav orc-paginator__btn--last"
+        [disabled]="isLastPage() || disabled()"
+        [attr.aria-disabled]="isLastPage() || disabled()"
+        (click)="lastPage()"
+        [attr.aria-label]="lastLabel()"
+        [title]="lastLabel()"
+      >
+        <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M5 4L9 8L5 12M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </li>
+  </ul>
+
+  <!-- Seletor de Itens por Página (Figma Node 32:18566: "20 / Página") -->
+  <div
+    *ngIf="showPageSizeSelector() && pageSizeOptions().length > 0"
+    class="orc-paginator__page-size"
+  >
+    <select
+      class="orc-paginator__select"
+      [disabled]="disabled()"
+      [value]="pageSize()"
+      (change)="onPageSizeChange($event)"
+      [attr.aria-label]="'Quantidade de itens por página'"
+    >
+      <option *ngFor="let opt of pageSizeOptions()" [value]="opt">
+        {{ opt }} / {{ itemsPerPageLabel() }}
+      </option>
+    </select>
+    <div class="orc-paginator__select-icon" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none">
+        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+</nav>

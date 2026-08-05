@@ -1,0 +1,510 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+        <a href="https://www.figma.com/design/zIgCRAho1NaAEOB4AHkASb/Componentes?node-id=382-5074" target="_blank"
+          rel="noopener noreferrer" class="nav-link nav-link--ghost">Figma ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Data Display</div>
+      <h1 class="section-title">Avatar</h1>
+      <p class="section-desc">
+        Representação visual de usuários, equipes e entidades com suporte a fotos, fallback automático para iniciais ou ícone padrão,
+        indicador de status em tempo real, múltiplos formatos e empilhamento em grupo com contador excedente.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <app-avatar
+                  [src]="playgroundMode() === 'image' ? playgroundSrc() : ''"
+                  [name]="playgroundMode() !== 'icon' ? playgroundName() : ''"
+                  [initials]="playgroundMode() === 'initials' ? playgroundInitials() : ''"
+                  [size]="playgroundSize()"
+                  [shape]="playgroundShape()"
+                  [status]="playgroundStatus()"
+                  [colorVariant]="playgroundColorVariant()"
+                  [bordered]="playgroundBordered()"
+                ></app-avatar>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Mode Selection -->
+              <div class="control-group">
+                <label class="control-label">Modo de exibição</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundMode() === 'image'"
+                    (click)="setPlaygroundMode('image')"
+                  >
+                    Imagem
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundMode() === 'initials'"
+                    (click)="setPlaygroundMode('initials')"
+                  >
+                    Iniciais
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundMode() === 'icon'"
+                    (click)="setPlaygroundMode('icon')"
+                  >
+                    Ícone
+                  </button>
+                </div>
+              </div>
+
+              <!-- Size Selection -->
+              <div class="control-group">
+                <label class="control-label">Tamanho (size)</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'xs'"
+                    (click)="playgroundSize.set('xs')"
+                  >
+                    XS (24)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'sm'"
+                    (click)="playgroundSize.set('sm')"
+                  >
+                    SM (32)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'md'"
+                    (click)="playgroundSize.set('md')"
+                  >
+                    MD (40)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'lg'"
+                    (click)="playgroundSize.set('lg')"
+                  >
+                    LG (48)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'xl'"
+                    (click)="playgroundSize.set('xl')"
+                  >
+                    XL (64)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Shape Selection -->
+              <div class="control-group">
+                <label class="control-label">Formato (shape)</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundShape() === 'circular'"
+                    (click)="playgroundShape.set('circular')"
+                  >
+                    Circular
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundShape() === 'rounded'"
+                    (click)="playgroundShape.set('rounded')"
+                  >
+                    Arredondado
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundShape() === 'square'"
+                    (click)="playgroundShape.set('square')"
+                  >
+                    Quadrado
+                  </button>
+                </div>
+              </div>
+
+              <!-- Status Selection -->
+              <div class="control-group">
+                <label class="control-label">Status indicador</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === undefined"
+                    (click)="playgroundStatus.set(undefined)"
+                  >
+                    Nenhum
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'online'"
+                    (click)="playgroundStatus.set('online')"
+                  >
+                    Online
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'away'"
+                    (click)="playgroundStatus.set('away')"
+                  >
+                    Ausente
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'busy'"
+                    (click)="playgroundStatus.set('busy')"
+                  >
+                    Ocupado
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'offline'"
+                    (click)="playgroundStatus.set('offline')"
+                  >
+                    Offline
+                  </button>
+                </div>
+              </div>
+
+              <!-- Color Variant (when initials) -->
+              <div class="control-group" *ngIf="playgroundMode() !== 'image'">
+                <label class="control-label">Variante de cor de fundo</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundColorVariant() === 'default'"
+                    (click)="playgroundColorVariant.set('default')"
+                  >
+                    Padrão
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundColorVariant() === 'primary'"
+                    (click)="playgroundColorVariant.set('primary')"
+                  >
+                    Azul
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundColorVariant() === 'royal'"
+                    (click)="playgroundColorVariant.set('royal')"
+                  >
+                    Royal
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundColorVariant() === 'orange'"
+                    (click)="playgroundColorVariant.set('orange')"
+                  >
+                    Laranja
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundColorVariant() === 'purple'"
+                    (click)="playgroundColorVariant.set('purple')"
+                  >
+                    Roxo
+                  </button>
+                </div>
+              </div>
+
+              <!-- Name & Initials Input -->
+              <div class="control-group" *ngIf="playgroundMode() !== 'icon'">
+                <label class="control-label">Nome do usuário</label>
+                <input
+                  type="text"
+                  class="text-input"
+                  [value]="playgroundName()"
+                  (input)="playgroundName.set($any($event.target).value)"
+                  placeholder="Nome completo..."
+                />
+              </div>
+
+              <div class="control-actions">
+                <button type="button" class="btn btn--secondary" (click)="resetPlayground()">
+                  Restaurar padrões
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAMANHOS (FIGMA NODE 382:5074) ──────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Tamanhos e medidas</h2>
+        <div class="figma-showcase-card">
+          <div class="sizes-row">
+            <div class="size-sample">
+              <app-avatar size="xs" initials="XS"></app-avatar>
+              <span class="size-tag">XS</span>
+            </div>
+            <div class="size-sample">
+              <app-avatar size="sm" initials="SM"></app-avatar>
+              <span class="size-tag">SM</span>
+            </div>
+            <div class="size-sample">
+              <app-avatar size="md" initials="MD"></app-avatar>
+              <span class="size-tag">MD</span>
+            </div>
+            <div class="size-sample">
+              <app-avatar size="lg" initials="LG"></app-avatar>
+              <span class="size-tag">LG</span>
+            </div>
+            <div class="size-sample">
+              <app-avatar size="xl" initials="XL"></app-avatar>
+              <span class="size-tag">XL</span>
+            </div>
+          </div>
+
+          <div class="measures-box">
+            <div class="measures-title">Medidas (Figma)</div>
+            <div class="measures-item"><code>XS = 24 × 24 px</code></div>
+            <div class="measures-item"><code>SM = 32 × 32 px</code></div>
+            <div class="measures-item"><code>MD = 40 × 40 px</code></div>
+            <div class="measures-item"><code>LG = 48 × 48 px</code></div>
+            <div class="measures-item"><code>XL = 64 × 64 px</code></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── EXEMPLO COM IMAGEM (FIGMA NODE 382:5099) ───────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos com imagem e status</h2>
+        <div class="images-grid">
+          <div class="avatar-card">
+            <app-avatar
+              size="lg"
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+              name="Camila Duarte"
+              status="online"
+            ></app-avatar>
+            <div class="avatar-card__info">
+              <span class="avatar-card__name">Camila Duarte</span>
+              <span class="avatar-card__role">Online · Tamanho LG (48px)</span>
+            </div>
+          </div>
+
+          <div class="avatar-card">
+            <app-avatar
+              size="xl"
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
+              name="Felipe Castro"
+              status="away"
+            ></app-avatar>
+            <div class="avatar-card__info">
+              <span class="avatar-card__name">Felipe Castro</span>
+              <span class="avatar-card__role">Ausente · Tamanho XL (64px)</span>
+            </div>
+          </div>
+
+          <div class="avatar-card">
+            <app-avatar
+              size="lg"
+              shape="rounded"
+              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80"
+              name="Juliana Lima"
+              status="busy"
+            ></app-avatar>
+            <div class="avatar-card__info">
+              <span class="avatar-card__name">Juliana Lima</span>
+              <span class="avatar-card__role">Formato arredondado (rounded)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── GRUPO DE AVATARES (FIGMA NODE 382:5104) ────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Grupo de avatares (AvatarGroup)</h2>
+        <div class="group-showcase-card">
+          <div class="group-demo-item">
+            <div class="group-demo-title">Padrão do Figma (iniciais coloridas + contador excedente)</div>
+            <app-avatar-group size="md" [items]="teamMembers" [excessCount]="5"></app-avatar-group>
+          </div>
+
+          <div class="group-demo-item">
+            <div class="group-demo-title">Grupo com fotos e status via items com limite max="3"</div>
+            <app-avatar-group size="lg" [items]="sampleUsers" [max]="3"></app-avatar-group>
+          </div>
+
+          <div class="group-demo-item">
+            <div class="group-demo-title">Grupo via projeção de conteúdo com ng-content</div>
+            <app-avatar-group size="md">
+              <app-avatar initials="AS" colorVariant="primary"></app-avatar>
+              <app-avatar initials="CL" colorVariant="royal"></app-avatar>
+              <app-avatar initials="MS" colorVariant="orange"></app-avatar>
+              <app-avatar initials="+4" colorVariant="default"></app-avatar>
+            </app-avatar-group>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CÓDIGO FONTE E EXEMPLOS DE USO ──────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos de código</h2>
+        <div class="code-blocks">
+          <div class="code-card">
+            <div class="code-card__title">1. Uso individual com imagem e status</div>
+            <pre class="code-card__snippet"><code>&lt;!-- Avatar com foto e indicador de status online --&gt;
+&lt;app-avatar
+  src="https://exemplo.com/foto.jpg"
+  name="Juliana Lima"
+  status="online"
+  size="lg"
+/&gt;
+
+&lt;!-- Formato arredondado com fallback automático para iniciais --&gt;
+&lt;app-avatar
+  name="Bruno Ramos"
+  shape="rounded"
+  size="md"
+/&gt;</code></pre>
+          </div>
+
+          <div class="code-card">
+            <div class="code-card__title">2. Grupo de avatares com sobreposição e contador excedente</div>
+            <pre class="code-card__snippet"><code>&lt;!-- Grupo automático com lista e contador excedente --&gt;
+&lt;app-avatar-group
+  size="md"
+  [items]="teamMembers"
+  [max]="4"
+/&gt;
+
+&lt;!-- Grupo via projeção de conteúdo manual --&gt;
+&lt;app-avatar-group size="md"&gt;
+  &lt;app-avatar initials="AS" colorVariant="primary" /&gt;
+  &lt;app-avatar initials="CL" colorVariant="royal" /&gt;
+  &lt;app-avatar initials="MS" colorVariant="orange" /&gt;
+  &lt;app-avatar initials="+5" colorVariant="default" /&gt;
+&lt;/app-avatar-group&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE API ───────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API (inputs e outputs)</h2>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>src</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>URL da foto do usuário. Se falhar ou não for informada, faz fallback para iniciais.</td>
+              </tr>
+              <tr>
+                <td><code>name</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Nome completo usado para extrair iniciais e acessibilidade <code>aria-label</code>.</td>
+              </tr>
+              <tr>
+                <td><code>initials</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto explícito de iniciais (ex: 'AS', 'CL', '+5').</td>
+              </tr>
+              <tr>
+                <td><code>size</code> <span class="badge badge--input">input</span></td>
+                <td><code>'xs' | 'sm' | 'md' | 'lg' | 'xl'</code></td>
+                <td><code>'md'</code></td>
+                <td>Dimensões: xs (24px), sm (32px), md (40px), lg (48px), xl (64px).</td>
+              </tr>
+              <tr>
+                <td><code>shape</code> <span class="badge badge--input">input</span></td>
+                <td><code>'circular' | 'rounded' | 'square'</code></td>
+                <td><code>'circular'</code></td>
+                <td>Formato geométrico do avatar.</td>
+              </tr>
+              <tr>
+                <td><code>status</code> <span class="badge badge--input">input</span></td>
+                <td><code>'online' | 'offline' | 'busy' | 'away'</code></td>
+                <td><code>undefined</code></td>
+                <td>Indicador de status do usuário exibido no canto do avatar.</td>
+              </tr>
+              <tr>
+                <td><code>colorVariant</code> <span class="badge badge--input">input</span></td>
+                <td><code>'default' | 'primary' | 'royal' | 'orange' | 'purple' | 'auto'</code></td>
+                <td><code>'default'</code></td>
+                <td>Cor de fundo para iniciais (baseada nas cores da marca Orchestra).</td>
+              </tr>
+              <tr>
+                <td><code>bordered</code> <span class="badge badge--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Aplica borda branca de separação para sobreposições.</td>
+              </tr>
+              <tr>
+                <td><code>imageError</code> <span class="badge badge--output">output</span></td>
+                <td><code>Event</code></td>
+                <td>—</td>
+                <td>Disparado caso a URL da imagem não consiga ser carregada.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

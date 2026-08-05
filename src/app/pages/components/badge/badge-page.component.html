@@ -1,0 +1,297 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+        <a href="https://www.figma.com/design/zIgCRAho1NaAEOB4AHkASb/Componentes?node-id=382-5314" target="_blank"
+          rel="noopener noreferrer" class="nav-link nav-link--ghost">Figma ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Data Display</div>
+      <h1 class="section-title">Badge</h1>
+      <p class="section-desc">
+        Pequeno elemento visual utilizado para indicar status, contadores, categorizações e metadados contextuais com
+        alta legibilidade e conformidade de acessibilidade.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <app-badge [text]="playgroundText()" [variant]="playgroundVariant()" [status]="playgroundStatus()"
+                  [size]="playgroundSize()" [pill]="playgroundPill()" [dot]="playgroundDot()"
+                  [showDefaultIcon]="playgroundIcon()" [dismissible]="playgroundDismissible()"
+                  [count]="playgroundCount()"></app-badge>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Label Input -->
+              <div class="control-group">
+                <label class="control-label">Texto do badge</label>
+                <input type="text" class="text-input" [value]="playgroundText()"
+                  (input)="playgroundText.set($any($event.target).value)" placeholder="Digite o texto...">
+              </div>
+
+              <!-- Status Selection -->
+              <div class="control-group">
+                <label class="control-label">Status / Cor</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'primary'"
+                    (click)="playgroundStatus.set('primary')">Primary</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'success'"
+                    (click)="playgroundStatus.set('success')">Success</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'warning'"
+                    (click)="playgroundStatus.set('warning')">Warning</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'danger'"
+                    (click)="playgroundStatus.set('danger')">Danger</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundStatus() === 'info'"
+                    (click)="playgroundStatus.set('info')">Info</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundStatus() === 'secondary'"
+                    (click)="playgroundStatus.set('secondary')">Neutral</button>
+                </div>
+              </div>
+
+              <!-- Variant Selection -->
+              <div class="control-group">
+                <label class="control-label">Variante visual</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'soft'"
+                    (click)="playgroundVariant.set('soft')">Soft (Figma)</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'solid'"
+                    (click)="playgroundVariant.set('solid')">Solid</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'outline'"
+                    (click)="playgroundVariant.set('outline')">Outline</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'dot'"
+                    (click)="playgroundVariant.set('dot')">Dot</button>
+                </div>
+              </div>
+
+              <!-- Size Selection -->
+              <div class="control-group">
+                <label class="control-label">Tamanho</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'sm'"
+                    (click)="playgroundSize.set('sm')">SM (18px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'md'"
+                    (click)="playgroundSize.set('md')">MD (22px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'lg'"
+                    (click)="playgroundSize.set('lg')">LG (28px)</button>
+                </div>
+              </div>
+
+              <!-- Toggles: Icon, Pill, Dismissible -->
+              <div class="control-group">
+                <label class="control-label">Opções</label>
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundIcon()"
+                      (change)="playgroundIcon.set($any($event.target).checked)">
+                    <span>Ícone padrão</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundPill()"
+                      (change)="playgroundPill.set($any($event.target).checked)">
+                    <span>Pill (arredondado)</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundDismissible()"
+                      (change)="playgroundDismissible.set($any($event.target).checked)">
+                    <span>Removível (dismissible)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA DESIGN SYSTEM SHOWCASE (NODE 382:5314) ───── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+
+        <!-- Variantes -->
+        <div class="figma-block">
+          <div class="figma-block__label">Variantes</div>
+          <div class="figma-block__row">
+            <app-badge variant="solid" status="primary" text="Default"></app-badge>
+            <app-badge variant="solid" status="secondary" text="Secondary"></app-badge>
+            <app-badge variant="outline" status="secondary" text="Outline"></app-badge>
+            <app-badge variant="solid" status="danger" text="Destructive"></app-badge>
+          </div>
+        </div>
+
+        <!-- Status sem icon -->
+        <div class="figma-block" style="margin-top: var(--space-6)">
+          <div class="figma-block__label">Status sem icon</div>
+          <div class="figma-block__row">
+            <app-badge variant="soft" status="success" text="Sucesso"></app-badge>
+            <app-badge variant="soft" status="info" text="Informação"></app-badge>
+            <app-badge variant="soft" status="warning" text="Aviso"></app-badge>
+            <app-badge variant="soft" status="pending" text="Pendente"></app-badge>
+            <app-badge variant="soft" status="danger" text="Erro"></app-badge>
+            <app-badge variant="soft" status="completed" text="Concluído"></app-badge>
+            <app-badge variant="soft" status="new" text="Novo"></app-badge>
+            <app-badge variant="soft" status="active" text="Ativo"></app-badge>
+            <app-badge variant="soft" status="inactive" text="Inativo"></app-badge>
+          </div>
+        </div>
+
+        <!-- Status com icon -->
+        <div class="figma-block" style="margin-top: var(--space-6)">
+          <div class="figma-block__label">Status com icon</div>
+          <div class="figma-block__row">
+            <app-badge variant="soft" status="success" text="Sucesso" [showDefaultIcon]="true"></app-badge>
+            <app-badge variant="soft" status="info" text="Informação" [showDefaultIcon]="true"></app-badge>
+            <app-badge variant="soft" status="warning" text="Aviso" [showDefaultIcon]="true"></app-badge>
+            <app-badge variant="soft" status="pending" text="Pendente" [showDefaultIcon]="true"></app-badge>
+            <app-badge variant="soft" status="danger" text="Erro" [showDefaultIcon]="true"></app-badge>
+            <app-badge variant="soft" status="completed" text="Concluído" [showDefaultIcon]="true"></app-badge>
+            <app-badge variant="soft" status="new" text="Novo" [showDefaultIcon]="true"></app-badge>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── BADGES NUMÉRICOS & CONTADORES ───────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Contadores numéricos e limites (+99)</h2>
+        <div class="figma-block">
+          <div class="figma-block__row">
+            <app-badge variant="solid" status="primary" [count]="7" [pill]="true"></app-badge>
+            <app-badge variant="solid" status="danger" [count]="42" [pill]="true"></app-badge>
+            <app-badge variant="solid" status="danger" [count]="150" [maxCount]="99" [pill]="true"></app-badge>
+            <app-badge variant="soft" status="info" [count]="999" [maxCount]="99" [pill]="true"></app-badge>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAGS REMOVÍVEIS (DISMISSIBLE) ───────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Tags removíveis com evento onDismiss</h2>
+        <div class="figma-block">
+          <div class="figma-block__row">
+            <app-badge *ngFor="let tag of tags()" variant="soft" status="primary" [text]="tag" [dismissible]="true"
+              (dismiss)="removeTag(tag)"></app-badge>
+
+            <button *ngIf="tags().length < 4" type="button" class="btn btn--secondary"
+              style="padding: 2px 8px; font-size: 11px;" (click)="resetTags()">
+              Restaurar tags
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE REFERÊNCIA DE API ─────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API</h2>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'soft' | 'solid' | 'outline' | 'dot' | 'ghost'</code></td>
+                <td><code>'soft'</code></td>
+                <td>Estilo visual de preenchimento e borda do badge.</td>
+              </tr>
+              <tr>
+                <td><code>status</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>BadgeStatus</code></td>
+                <td><code>'primary'</code></td>
+                <td>Cor semântica de status ('primary', 'success', 'warning', 'danger', 'info', etc.).</td>
+              </tr>
+              <tr>
+                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'sm' | 'md' | 'lg'</code></td>
+                <td><code>'md'</code></td>
+                <td>Dimensões do badge (18px, 22px ou 28px).</td>
+              </tr>
+              <tr>
+                <td><code>text</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto do rótulo exibido dentro do badge.</td>
+              </tr>
+              <tr>
+                <td><code>count</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>number</code></td>
+                <td><code>undefined</code></td>
+                <td>Valor numérico formatado automaticamente com limite de overflow.</td>
+              </tr>
+              <tr>
+                <td><code>maxCount</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>number</code></td>
+                <td><code>99</code></td>
+                <td>Limite máximo exibido antes de aplicar formato +max (ex: +99).</td>
+              </tr>
+              <tr>
+                <td><code>showDefaultIcon</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Exibe ícone SVG contextualizado conforme o status informado.</td>
+              </tr>
+              <tr>
+                <td><code>dismissible</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Adiciona um botão 'x' para remoção/dismiss da tag.</td>
+              </tr>
+              <tr>
+                <td><code>pill</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Aplica bordas totalmente arredondadas (estilo pílula).</td>
+              </tr>
+              <tr>
+                <td><code>dismiss</code> <span class="badge-tag badge-tag--output">output</span></td>
+                <td><code>MouseEvent</code></td>
+                <td>—</td>
+                <td>Evento disparado ao clicar no botão de fechar.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

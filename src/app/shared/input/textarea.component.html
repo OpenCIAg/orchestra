@@ -1,0 +1,78 @@
+<div
+  class="orc-textarea-container"
+  [class.orc-textarea-container--disabled]="effectiveDisabled()"
+  [class.orc-textarea-container--readonly]="readonly()"
+>
+  <!-- ── Rótulo / Label ──────────────────────────────────────── -->
+  @if (label()) {
+    <label [for]="effectiveId()" class="orc-textarea__label">
+      {{ label() }}
+      @if (required()) {
+        <span class="orc-textarea__required-marker" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+
+  <!-- ── Caixa do Textarea ───────────────────────────────────── -->
+  <div
+    class="orc-textarea-box"
+    [class.orc-textarea-box--sm]="size() === 'sm'"
+    [class.orc-textarea-box--md]="size() === 'md'"
+    [class.orc-textarea-box--lg]="size() === 'lg'"
+    [class.orc-textarea-box--focused]="isFocused()"
+    [class.orc-textarea-box--disabled]="effectiveDisabled()"
+    [class.orc-textarea-box--readonly]="readonly()"
+    [class.orc-textarea-box--error]="status() === 'error'"
+    [class.orc-textarea-box--success]="status() === 'success'"
+    (click)="focusNative()"
+  >
+    <textarea
+      #nativeTextarea
+      [id]="effectiveId()"
+      [name]="name()"
+      [value]="stringValue()"
+      [placeholder]="placeholder()"
+      [disabled]="effectiveDisabled()"
+      [readOnly]="readonly()"
+      [required]="required()"
+      [rows]="rows()"
+      [maxLength]="maxLength() ?? null"
+      [minLength]="minLength() ?? null"
+      [autofocus]="autofocus()"
+      [attr.aria-label]="ariaLabel() || null"
+      [attr.aria-invalid]="status() === 'error' ? 'true' : null"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      [style.resize]="autoResize() ? 'none' : resize()"
+      (input)="onInput($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      class="orc-textarea__native"
+    ></textarea>
+  </div>
+
+  <!-- ── Mensagens de Ajuda, Erro e Contador de Caracteres ────── -->
+  @if ((status() === 'error' && errorMessage()) || helperText() || showCharCount()) {
+    <div class="orc-textarea__footer">
+      <div class="orc-textarea__message-area">
+        @if (status() === 'error' && errorMessage()) {
+          <p [id]="errorId()" class="orc-textarea__message orc-textarea__message--error" role="alert">
+            <svg class="orc-textarea__message-icon" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 10.5a.75.75 0 110-1.5.75.75 0 010 1.5zM8.75 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" />
+            </svg>
+            <span>{{ errorMessage() }}</span>
+          </p>
+        } @else if (helperText()) {
+          <p [id]="helperId()" class="orc-textarea__message orc-textarea__message--helper">
+            {{ helperText() }}
+          </p>
+        }
+      </div>
+
+      @if (showCharCount()) {
+        <span class="orc-textarea__char-count" [class.orc-textarea__char-count--limit]="maxLength() && charCount() >= maxLength()!">
+          {{ charCount() }}@if (maxLength()) { / {{ maxLength() }} }
+        </span>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,474 @@
+// ============================================================
+// Tooltip Documentation Page Styles
+// ============================================================
+
+.page {
+  min-height: 100vh;
+  background-color: var(--orc-bg, #FFFFFF);
+  color: var(--orc-font-main, #141414);
+}
+
+// ── Header ──────────────────────────────────────────────────
+.header {
+  border-bottom: 1px solid var(--orc-border, #D9D9D9);
+  background-color: var(--orc-bg, #FFFFFF);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--orc-font-main, #141414);
+  font-weight: 700;
+  font-size: 1.125rem;
+
+  &__text {
+    font-family: var(--font-sans, 'Poppins', sans-serif);
+  }
+}
+
+.nav-link {
+  font-size: 0.875rem;
+  color: var(--orc-font-secondary, #666666);
+  text-decoration: none;
+  transition: color var(--transition-fast, 120ms ease);
+
+  &:hover {
+    color: var(--orc-font-main, #141414);
+  }
+
+  &--ghost {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm, 6px);
+    background-color: var(--orc-th, #F9F9F9);
+  }
+}
+
+// ── Layout & Content ────────────────────────────────────────
+.layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.back-link-container {
+  margin-bottom: -var(--space-6);
+}
+
+.back-link {
+  font-size: 0.875rem;
+  color: var(--orc-color-azul-eletrico, #1C6AED);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.section-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--orc-color-azul-eletrico, #1C6AED);
+  margin-bottom: var(--space-2);
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3) 0;
+  color: var(--orc-font-main, #141414);
+}
+
+.section-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--orc-font-secondary, #666666);
+  max-width: 760px;
+  margin: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--orc-font-main, #141414);
+}
+
+// ── Panels & Playground ──────────────────────────────────────
+.playground-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-6);
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-lg, 14px);
+  background-color: var(--orc-bg, #FFFFFF);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: var(--space-3) var(--space-5);
+    background-color: var(--orc-th, #F9F9F9);
+    border-bottom: 1px solid var(--orc-border, #D9D9D9);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--orc-font-secondary, #666666);
+    letter-spacing: 0.02em;
+  }
+
+  &__body {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    flex: 1;
+  }
+}
+
+.preview-box {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--orc-th, #F9F9F9);
+  border-radius: var(--radius-md, 10px);
+  border: 1px dashed var(--orc-border, #D9D9D9);
+  padding: var(--space-8);
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.control-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--orc-font-main, #141414);
+}
+
+.segmented-control {
+  display: flex;
+  background-color: var(--orc-th, #F9F9F9);
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-sm, 6px);
+  padding: 2px;
+  gap: 2px;
+}
+
+.segment-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--orc-font-secondary, #666666);
+  transition: all var(--transition-fast, 120ms ease);
+
+  &--active {
+    background-color: var(--orc-bg, #FFFFFF);
+    color: var(--orc-font-main, #141414);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--orc-font-secondary, #666666);
+  cursor: pointer;
+
+  input[type='checkbox'] {
+    accent-color: var(--orc-color-azul-eletrico, #1C6AED);
+  }
+}
+
+.input-text {
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.875rem;
+  background-color: var(--orc-bg, #FFFFFF);
+  color: var(--orc-font-main, #141414);
+  outline: none;
+  transition: border-color var(--transition-fast);
+
+  &:focus {
+    border-color: var(--orc-color-azul-eletrico, #1C6AED);
+  }
+}
+
+// ── Figma Showcase Box ──────────────────────────────────────
+.figma-block {
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-lg, 14px);
+  background-color: var(--orc-bg, #FFFFFF);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  &__label {
+    font-size: 0.875rem;
+    color: var(--orc-font-secondary, #666666);
+    line-height: 1.5;
+  }
+}
+
+.figma-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+// Static Tooltip representations
+.static-tooltip-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.static-tooltip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+
+  &--dark {
+    background-color: var(--orc-font-main, #141414);
+    color: #FFFFFF;
+  }
+
+  &--light {
+    background-color: var(--orc-secondary-bg, #D9D9D9);
+    color: var(--orc-font-main, #141414);
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 14px;
+    height: 7px;
+    fill: currentColor;
+
+    &--left {
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+    }
+
+    &--bottom {
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+// Toolbar Example
+.figma-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: var(--orc-bg, #FFFFFF);
+  padding: var(--space-4);
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: 10px;
+  width: fit-content;
+
+  &__btn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--orc-font-main, #141414);
+    transition: all var(--transition-fast);
+
+    &:hover {
+      background-color: var(--orc-th, #F9F9F9);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    &--active {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &__divider {
+    width: 1px;
+    height: 24px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+// User trigger link
+.user-trigger-link {
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: #030213;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color var(--transition-fast);
+
+  &:hover {
+    background-color: var(--orc-th, #F9F9F9);
+  }
+}
+
+.demo-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--orc-font-main, #141414);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+// ── API Tables ──────────────────────────────────────────────
+.api-subheading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: var(--space-6) 0 var(--space-3) 0;
+  color: var(--orc-font-main, #141414);
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-md, 10px);
+}
+
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+
+  th,
+  td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--orc-border, #D9D9D9);
+  }
+
+  th {
+    background-color: var(--orc-th, #F9F9F9);
+    font-weight: 600;
+    color: var(--orc-font-main, #141414);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  code {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8125rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--orc-th, #F9F9F9);
+    color: var(--orc-color-azul-royal, #0406AB);
+  }
+}
+
+.badge-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: var(--space-1);
+
+  &--input {
+    background-color: #E6F0FA;
+    color: #0066CC;
+  }
+
+  &--output {
+    background-color: #FDF2E9;
+    color: #D97706;
+  }
+}

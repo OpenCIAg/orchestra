@@ -1,0 +1,85 @@
+<ng-template #spinnerContent>
+  <div
+    class="orc-spinner-container"
+    [class.orc-spinner-container--bottom]="textPosition() === 'bottom'"
+    role="status"
+    aria-busy="true"
+    aria-live="polite"
+    [attr.aria-label]="ariaLabel()"
+  >
+    <!-- Visual Spinner Element -->
+    <div
+      class="orc-spinner"
+      [class.orc-spinner--sm]="size() === 'sm'"
+      [class.orc-spinner--md]="size() === 'md'"
+      [class.orc-spinner--lg]="size() === 'lg'"
+      [class.orc-spinner--primary]="variant() === 'primary'"
+      [class.orc-spinner--secondary]="variant() === 'secondary'"
+      [class.orc-spinner--neutral]="variant() === 'neutral'"
+      [class.orc-spinner--white]="variant() === 'white'"
+      [style.width]="customSizeCss()"
+      [style.height]="customSizeCss()"
+      aria-hidden="true"
+    >
+      <!-- Ring / Rollin SVG -->
+      <svg
+        *ngIf="type() === 'ring'"
+        class="orc-spinner__ring"
+        viewBox="0 0 32 32"
+        fill="none"
+      >
+        <circle
+          class="orc-spinner__ring__track"
+          cx="16"
+          cy="16"
+          r="13"
+          stroke-width="3"
+        />
+        <circle
+          cx="16"
+          cy="16"
+          r="13"
+          stroke-width="3"
+        />
+      </svg>
+
+      <!-- Star / Radial Petals -->
+      <div *ngIf="type() === 'star'" class="orc-spinner__star">
+        <div class="orc-spinner__star__bar"></div>
+        <div class="orc-spinner__star__bar"></div>
+        <div class="orc-spinner__star__bar"></div>
+        <div class="orc-spinner__star__bar"></div>
+        <div class="orc-spinner__star__bar"></div>
+        <div class="orc-spinner__star__bar"></div>
+        <div class="orc-spinner__star__bar"></div>
+        <div class="orc-spinner__star__bar"></div>
+      </div>
+
+      <!-- Dots Spinner -->
+      <div *ngIf="type() === 'dots'" class="orc-spinner__dots">
+        <span class="orc-spinner__dots__dot"></span>
+        <span class="orc-spinner__dots__dot"></span>
+        <span class="orc-spinner__dots__dot"></span>
+      </div>
+    </div>
+
+    <!-- Text description -->
+    <span *ngIf="text()" class="orc-spinner-text">{{ text() }}</span>
+
+    <!-- Screen Reader Fallback -->
+    <span class="sr-only">{{ ariaLabel() }}</span>
+  </div>
+</ng-template>
+
+<!-- FullScreen Overlay Mode or Inline Mode -->
+<div
+  *ngIf="fullScreen(); else inlineSpinner"
+  class="orc-spinner-overlay"
+  [class.orc-spinner-overlay--backdrop]="backdrop()"
+>
+  <ng-container *ngTemplateOutlet="spinnerContent"></ng-container>
+</div>
+
+<ng-template #inlineSpinner>
+  <ng-container *ngTemplateOutlet="spinnerContent"></ng-container>
+</ng-template>

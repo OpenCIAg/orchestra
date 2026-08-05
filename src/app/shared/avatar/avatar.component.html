@@ -1,0 +1,72 @@
+<div
+  class="orc-avatar"
+  [class.orc-avatar--size-xs]="size() === 'xs'"
+  [class.orc-avatar--size-sm]="size() === 'sm'"
+  [class.orc-avatar--size-md]="size() === 'md'"
+  [class.orc-avatar--size-lg]="size() === 'lg'"
+  [class.orc-avatar--size-xl]="size() === 'xl'"
+  [class.orc-avatar--shape-circular]="shape() === 'circular'"
+  [class.orc-avatar--shape-rounded]="shape() === 'rounded'"
+  [class.orc-avatar--shape-square]="shape() === 'square'"
+  [class.orc-avatar--bordered]="bordered()"
+  [class.orc-avatar--clickable]="clickable()"
+  [class.orc-avatar--variant-default]="effectiveColorVariant() === 'default'"
+  [class.orc-avatar--variant-primary]="effectiveColorVariant() === 'primary'"
+  [class.orc-avatar--variant-royal]="effectiveColorVariant() === 'royal'"
+  [class.orc-avatar--variant-orange]="effectiveColorVariant() === 'orange'"
+  [class.orc-avatar--variant-purple]="effectiveColorVariant() === 'purple'"
+  [class.orc-avatar--variant-cyan]="effectiveColorVariant() === 'cyan'"
+  role="img"
+  [attr.aria-label]="accessibleLabel()"
+  [attr.tabindex]="clickable() ? 0 : null"
+  (click)="onClick($event)"
+  (keydown.enter)="onClick($any($event))"
+  (keydown.space)="onClick($any($event))"
+>
+  <!-- Imagem do Avatar -->
+  <img
+    *ngIf="showImage()"
+    [src]="src()"
+    [alt]="alt() || accessibleLabel()"
+    (error)="onImageError($event)"
+    class="orc-avatar__img"
+    loading="lazy"
+  />
+
+  <!-- Iniciais do Usuário -->
+  <span *ngIf="hasInitials()" class="orc-avatar__initials" aria-hidden="true">
+    {{ computedInitials() }}
+  </span>
+
+  <!-- Ícone Fallback Padrão -->
+  <svg
+    *ngIf="showIcon()"
+    class="orc-avatar__icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+
+  <!-- Indicador de Status (Online/Offline/Busy/Away) -->
+  <span
+    *ngIf="status()"
+    class="orc-avatar__status"
+    [class.orc-avatar__status--online]="status() === 'online'"
+    [class.orc-avatar__status--offline]="status() === 'offline'"
+    [class.orc-avatar__status--busy]="status() === 'busy'"
+    [class.orc-avatar__status--away]="status() === 'away'"
+    [class.orc-avatar__status--top-right]="statusPosition() === 'top-right'"
+    [class.orc-avatar__status--bottom-right]="statusPosition() === 'bottom-right'"
+    [class.orc-avatar__status--top-left]="statusPosition() === 'top-left'"
+    [class.orc-avatar__status--bottom-left]="statusPosition() === 'bottom-left'"
+    [attr.aria-label]="statusText()"
+    [title]="statusText()"
+  ></span>
+</div>

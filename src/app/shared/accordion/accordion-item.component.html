@@ -1,0 +1,57 @@
+<div
+  class="orc-accordion-item"
+  [class.orc-accordion-item--expanded]="expanded()"
+  [class.orc-accordion-item--disabled]="disabled()"
+>
+  <!-- Cabeçalho (WAI-ARIA Button) -->
+  <button
+    #headerBtn
+    type="button"
+    class="orc-accordion-item__header"
+    [attr.id]="headerId()"
+    [attr.aria-expanded]="expanded()"
+    [attr.aria-controls]="panelId()"
+    [disabled]="disabled()"
+    (click)="toggleExpanded()"
+    (keydown)="onKeyDown($event)"
+  >
+    <!-- Custom Header Projection or Default Title -->
+    <div class="orc-accordion-item__header-content">
+      <ng-content select="[accordion-header], [accordionHeader]"></ng-content>
+
+      <div class="orc-accordion-item__title-group" *ngIf="title()">
+        <span class="orc-accordion-item__title">{{ title() }}</span>
+        <span *ngIf="subtitle()" class="orc-accordion-item__subtitle">{{ subtitle() }}</span>
+      </div>
+    </div>
+
+    <!-- Chevron Indicator (Figma Node 26:16952 & 26:17019) -->
+    <span *ngIf="!hideToggle()" class="orc-accordion-item__chevron" aria-hidden="true">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </span>
+  </button>
+
+  <!-- Painel de Conteúdo com Animação Fluida (WAI-ARIA Region) -->
+  <div
+    class="orc-accordion-item__collapse"
+    [class.orc-accordion-item__collapse--expanded]="expanded()"
+    [attr.id]="panelId()"
+    role="region"
+    [attr.aria-labelledby]="headerId()"
+  >
+    <div class="orc-accordion-item__content">
+      <div class="orc-accordion-item__body">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

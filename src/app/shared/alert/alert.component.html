@@ -1,0 +1,84 @@
+@if (isVisible()) {
+  <div
+    class="orc-alert"
+    [class.orc-alert--severity-info]="activeSeverity() === 'info'"
+    [class.orc-alert--severity-success]="activeSeverity() === 'success'"
+    [class.orc-alert--severity-warning]="activeSeverity() === 'warning'"
+    [class.orc-alert--severity-error]="activeSeverity() === 'error'"
+    [class.orc-alert--variant-subtle]="activeVariant() === 'subtle'"
+    [class.orc-alert--variant-filled]="activeVariant() === 'filled'"
+    [class.orc-alert--variant-outline]="activeVariant() === 'outline'"
+    [attr.role]="computedRole()"
+    [attr.aria-live]="computedAriaLive()"
+    [attr.aria-label]="ariaLabel() || undefined"
+  >
+    <!-- Ícone à Esquerda (Customizado ou Padrão do Figma) -->
+    @if (showIcon()) {
+      <div class="orc-alert__icon-container" aria-hidden="true">
+        <ng-content select="[alert-icon], [alertIcon]">
+          <!-- Ícones SVG fiéis ao Figma com currentColor -->
+          @switch (activeSeverity()) {
+            @case ('info') {
+              <svg class="orc-alert__icon" viewBox="0 0 16 16" fill="none">
+                <path d="M8 14.667A6.667 6.667 0 1 0 8 1.333a6.667 6.667 0 0 0 0 13.334Z" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 10.667V8" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 5.333h.007" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            @case ('success') {
+              <svg class="orc-alert__icon" viewBox="0 0 16 16" fill="none">
+                <path d="M8 14.667A6.667 6.667 0 1 0 8 1.333a6.667 6.667 0 0 0 0 13.334Z" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m5.333 8 2 2 3.334-3.333" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            @case ('warning') {
+              <svg class="orc-alert__icon" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1.333 1.333 13.333h13.334L8 1.333Z" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 6v3.333" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 11.333h.007" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            @case ('error') {
+              <svg class="orc-alert__icon" viewBox="0 0 16 16" fill="none">
+                <path d="M8 14.667A6.667 6.667 0 1 0 8 1.333a6.667 6.667 0 0 0 0 13.334Z" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m10 6-4 4M6 6l4 4" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+          }
+        </ng-content>
+      </div>
+    }
+
+    <!-- Corpo do Conteúdo -->
+    <div class="orc-alert__content">
+      @if (title()) {
+        <p class="orc-alert__title">{{ title() }}</p>
+      }
+      <ng-content select="[alert-title], [alertTitle]"></ng-content>
+
+      @if (message()) {
+        <p class="orc-alert__description">{{ message() }}</p>
+      }
+      <ng-content></ng-content>
+    </div>
+
+    <!-- Ações e Botões Integrados -->
+    <div class="orc-alert__actions">
+      <ng-content select="[alert-actions], [alertActions]"></ng-content>
+    </div>
+
+    <!-- Botão de Fechar -->
+    @if (dismissible()) {
+      <button
+        type="button"
+        class="orc-alert__close"
+        [attr.aria-label]="closeAriaLabel()"
+        (click)="handleDismiss($event)"
+      >
+        <svg viewBox="0 0 16 16" fill="none" class="orc-alert__close-icon" aria-hidden="true">
+          <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    }
+  </div>
+}

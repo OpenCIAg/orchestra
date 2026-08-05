@@ -1,0 +1,45 @@
+:host {
+  display: inline-flex;
+}
+
+.otp-input {
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--orc-secondary-bg);
+  border: 1px solid transparent;
+  border-radius: 0px;
+  outline: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &--first {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  &--last {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  &:focus {
+    border-color: var(--orc-color-azul-eletrico);
+    background-color: var(--orc-fill-input);
+    box-shadow: 0 0 0 2px rgba(28, 106, 237, 0.2);
+    z-index: 2;
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

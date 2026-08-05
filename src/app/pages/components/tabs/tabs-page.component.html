@@ -1,0 +1,294 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+        <a href="https://www.figma.com/design/zIgCRAho1NaAEOB4AHkASb/Componentes?node-id=382-5349" target="_blank"
+          rel="noopener noreferrer" class="nav-link nav-link--ghost">Figma ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Navegação</div>
+      <h1 class="section-title">Tabs</h1>
+      <p class="section-desc">
+        Navegação em abas para alternar entre conteúdos dentro do mesmo contexto, com conformidade total ao padrão
+        WAI-ARIA Tabs e suporte fluido a teclado e temas.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <app-tab-group [(selectedIndex)]="playgroundIndex" [variant]="playgroundVariant()"
+                  [size]="playgroundSize()" [fullWidth]="playgroundFullWidth()">
+                  <app-tab label="Visão Geral" [icon]="playgroundHasIcons() ? 'home' : ''">
+                    <div class="tab-demo-content">
+                      <h3>Painel de Visão Geral</h3>
+                      <p>Conteúdo da primeira aba projetado nativamente via <code>ng-content</code>. Alterne entre as
+                        abas para verificar a animação e acessibilidade.</p>
+                    </div>
+                  </app-tab>
+
+                  <app-tab label="Configurações" [icon]="playgroundHasIcons() ? 'settings' : ''">
+                    <div class="tab-demo-content">
+                      <h3>Painel de Configurações</h3>
+                      <p>Personalize opções e preferências contextuais de forma isolada nesta aba.</p>
+                    </div>
+                  </app-tab>
+
+                  <app-tab label="Alertas" [icon]="playgroundHasIcons() ? 'warning' : ''"
+                    [disabled]="playgroundDisabledTab()" [badge]="3">
+                    <div class="tab-demo-content">
+                      <h3>Central de Alertas</h3>
+                      <p>Lista de notificações e avisos de sistema.</p>
+                    </div>
+                  </app-tab>
+                </app-tab-group>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Variant Selection -->
+              <div class="control-group">
+                <label class="control-label">Variante visual</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'line'"
+                    (click)="playgroundVariant.set('line')">Line (Padrão)</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'filled'"
+                    (click)="playgroundVariant.set('filled')">Filled (Alternativa)</button>
+                </div>
+              </div>
+
+              <!-- Size Selection -->
+              <div class="control-group">
+                <label class="control-label">Tamanho</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'sm'"
+                    (click)="playgroundSize.set('sm')">SM (36px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'md'"
+                    (click)="playgroundSize.set('md')">MD (44px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'lg'"
+                    (click)="playgroundSize.set('lg')">LG (52px)</button>
+                </div>
+              </div>
+
+              <!-- Toggles -->
+              <div class="control-group">
+                <label class="control-label">Opções</label>
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundHasIcons()"
+                      (change)="playgroundHasIcons.set($any($event.target).checked)">
+                    <span>Exibir ícones</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundFullWidth()"
+                      (change)="playgroundFullWidth.set($any($event.target).checked)">
+                    <span>Largura total (fullWidth)</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundDisabledTab()"
+                      (change)="playgroundDisabledTab.set($any($event.target).checked)">
+                    <span>Desabilitar aba "Alertas"</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA DESIGN SYSTEM SHOWCASE (NODE 382:5349) ───── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+
+        <!-- Default -->
+        <div class="figma-block">
+          <div class="figma-block__label">Default</div>
+          <app-tab-group [(selectedIndex)]="demoIndexDefault" variant="line">
+            <app-tab label="Default">
+              <div class="tab-demo-content">Conteúdo da primeira aba (Default).</div>
+            </app-tab>
+            <app-tab label="Default">
+              <div class="tab-demo-content">Conteúdo da segunda aba (Default).</div>
+            </app-tab>
+            <app-tab label="Default">
+              <div class="tab-demo-content">Conteúdo da terceira aba (Default).</div>
+            </app-tab>
+          </app-tab-group>
+        </div>
+
+        <!-- Com icons -->
+        <div class="figma-block" style="margin-top: var(--space-6)">
+          <div class="figma-block__label">Com icons</div>
+          <app-tab-group [(selectedIndex)]="demoIndexIcons" variant="line">
+            <app-tab label="Icon" icon="home">
+              <div class="tab-demo-content">Conteúdo da aba com ícone Home.</div>
+            </app-tab>
+            <app-tab label="Icon" icon="settings">
+              <div class="tab-demo-content">Conteúdo da aba com ícone Settings.</div>
+            </app-tab>
+            <app-tab label="Icon" icon="warning">
+              <div class="tab-demo-content">Conteúdo da aba com ícone Warning.</div>
+            </app-tab>
+          </app-tab-group>
+        </div>
+
+        <!-- Desabilitado -->
+        <div class="figma-block" style="margin-top: var(--space-6)">
+          <div class="figma-block__label">Desabilitado</div>
+          <app-tab-group [(selectedIndex)]="demoIndexDisabled" variant="line">
+            <app-tab label="Icon" icon="home">
+              <div class="tab-demo-content">Conteúdo da aba ativa.</div>
+            </app-tab>
+            <app-tab label="Icon" icon="settings" [disabled]="true">
+              <div class="tab-demo-content">Aba desabilitada.</div>
+            </app-tab>
+            <app-tab label="Icon" [disabled]="true">
+              <div class="tab-demo-content">Aba desabilitada.</div>
+            </app-tab>
+          </app-tab-group>
+        </div>
+
+        <!-- Tab alternativa (Filled) -->
+        <div class="figma-block" style="margin-top: var(--space-6)">
+          <div class="figma-block__label">Tab alternativa</div>
+          <app-tab-group [(selectedIndex)]="demoIndexFilled" variant="filled">
+            <app-tab label="Label 1">
+              <div class="tab-demo-content">Conteúdo do Label 1 no formato pílula.</div>
+            </app-tab>
+            <app-tab label="Label 2">
+              <div class="tab-demo-content">Conteúdo do Label 2 no formato pílula.</div>
+            </app-tab>
+            <app-tab label="Label 3">
+              <div class="tab-demo-content">Conteúdo do Label 3 no formato pílula.</div>
+            </app-tab>
+          </app-tab-group>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE REFERÊNCIA DE API ─────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API</h2>
+
+        <h3 class="api-subheading"><code>&lt;app-tab-group&gt;</code></h3>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>selectedIndex</code> <span class="badge-tag badge-tag--model">model</span></td>
+                <td><code>number</code></td>
+                <td><code>0</code></td>
+                <td>Índice zero-based da aba ativa (two-way binding via Signals).</td>
+              </tr>
+              <tr>
+                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'line' | 'filled'</code></td>
+                <td><code>'line'</code></td>
+                <td>Estilo visual das abas (linha inferior ou formato pílula preenchida).</td>
+              </tr>
+              <tr>
+                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'sm' | 'md' | 'lg'</code></td>
+                <td><code>'md'</code></td>
+                <td>Dimensão das abas (36px, 44px ou 52px).</td>
+              </tr>
+              <tr>
+                <td><code>fullWidth</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Se verdadeiro, estende as abas igualmente por toda a largura.</td>
+              </tr>
+              <tr>
+                <td><code>tabChange</code> <span class="badge-tag badge-tag--output">output</span></td>
+                <td><code>TabChangeEvent</code></td>
+                <td>—</td>
+                <td>Evento emitido quando o usuário troca de aba.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="api-subheading" style="margin-top: var(--space-6)"><code>&lt;app-tab&gt;</code></h3>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>label</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto do rótulo da aba.</td>
+              </tr>
+              <tr>
+                <td><code>icon</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Ícone SVG exibido junto ao rótulo ('home', 'settings', 'warning', etc.).</td>
+              </tr>
+              <tr>
+                <td><code>iconPosition</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'start' | 'end'</code></td>
+                <td><code>'start'</code></td>
+                <td>Posicionamento do ícone em relação ao texto da aba.</td>
+              </tr>
+              <tr>
+                <td><code>disabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Desabilita a interação e aplica estilo opaco à aba.</td>
+              </tr>
+              <tr>
+                <td><code>badge</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string | number</code></td>
+                <td><code>undefined</code></td>
+                <td>Contador ou tag exibida ao lado do rótulo da aba.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

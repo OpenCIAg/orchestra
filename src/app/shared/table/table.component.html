@@ -1,0 +1,170 @@
+<div
+  class="orc-table-container"
+  [class.orc-table-container--bordered]="bordered()"
+  [class.orc-table-container--striped]="striped()"
+  [class.orc-table-container--hoverable]="hoverable()"
+>
+  <div class="orc-table-wrapper" role="region" aria-label="Tabela de dados" tabindex="0">
+    <table class="orc-table">
+      <!-- ── Cabeçalho da Tabela ─────────────────────────────── -->
+      <thead class="orc-table__head">
+        <tr class="orc-table__head-row">
+          <!-- Coluna de Seleção em Massa -->
+          @if (selectable()) {
+            <th scope="col" class="orc-table__th orc-table__th--checkbox">
+              <app-checkbox
+                [checked]="isAllSelected()"
+                [indeterminate]="isSomeSelected()"
+                (change)="toggleSelectAll($event)"
+                ariaLabel="Selecionar todas as linhas"
+              />
+            </th>
+          }
+
+          <!-- Colunas Declaradas via <orc-column> -->
+          @for (col of declaredColumns(); track col.key()) {
+            <th
+              scope="col"
+              class="orc-table__th"
+              [class.orc-table__th--sortable]="col.sortable()"
+              [class.orc-table__th--sorted]="sortColumn() === col.key()"
+              [style.width]="col.width() || null"
+              [style.text-align]="col.align()"
+              [attr.aria-sort]="getAriaSort(col.key(), col.sortable())"
+              (click)="handleSort(col.key(), col.sortable())"
+              (keydown.enter)="handleSort(col.key(), col.sortable())"
+              (keydown.space)="handleSort(col.key(), col.sortable()); $event.preventDefault()"
+              [tabindex]="col.sortable() ? 0 : -1"
+            >
+              @if (col.headerTemplate(); as headerTpl) {
+                <ng-container *ngTemplateOutlet="headerTpl.templateRef; context: { column: col }"></ng-container>
+              } @else {
+                <div class="orc-table__th-content" [style.justify-content]="col.align() === 'center' ? 'center' : (col.align() === 'right' ? 'flex-end' : 'flex-start')">
+                  <span class="orc-table__th-text">{{ col.header() }}</span>
+                  @if (col.sortable()) {
+                    <span class="orc-table__sort-icon" aria-hidden="true">
+                      @if (sortColumn() === col.key()) {
+                        @if (sortDirection() === 'asc') {
+                          <!-- Seta Ascendente (SVG Figma) -->
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 12V4M4 8l4-4 4 4" />
+                          </svg>
+                        } @else if (sortDirection() === 'desc') {
+                          <!-- Seta Descendente (SVG Figma) -->
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 4v8M4 8l4 4 4-4" />
+                          </svg>
+                        }
+                      } @else {
+                        <!-- Ícone Neutro de Ordenação -->
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M5 6l3-3 3 3M5 10l3 3 3-3" opacity="0.4" />
+                        </svg>
+                      }
+                    </span>
+                  }
+                </div>
+              }
+            </th>
+          }
+        </tr>
+      </thead>
+
+      <!-- ── Corpo da Tabela ─────────────────────────────────── -->
+      <tbody class="orc-table__body">
+        <!-- Estado de Carregamento (Loading com Skeletons) -->
+        @if (loading()) {
+          @for (placeholder of getSkeletonArray(); track placeholder) {
+            <tr class="orc-table__row orc-table__row--loading">
+              @if (selectable()) {
+                <td class="orc-table__td orc-table__td--checkbox">
+                  <app-skeleton variant="rectangular" width="18px" height="18px" borderRadius="4px" />
+                </td>
+              }
+              @for (col of declaredColumns(); track col.key()) {
+                <td class="orc-table__td">
+                  <app-skeleton variant="text" height="16px" [width]="col.key() === 'id' ? '40px' : '75%'" />
+                </td>
+              }
+            </tr>
+          }
+        }
+        <!-- Estado Vazio (Empty State) -->
+        @else if (displayData().length === 0) {
+          <tr class="orc-table__empty-row">
+            <td
+              class="orc-table__empty-cell"
+              [attr.colspan]="declaredColumns().length + (selectable() ? 1 : 0)"
+            >
+              <div class="orc-table__empty-content">
+                <div class="orc-table__empty-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                  </svg>
+                </div>
+                <h4 class="orc-table__empty-title">{{ emptyTitle() }}</h4>
+                <p class="orc-table__empty-desc">{{ emptyMessage() }}</p>
+              </div>
+            </td>
+          </tr>
+        }
+        <!-- Linhas de Dados -->
+        @else {
+          @for (row of displayData(); track getRowId(row); let rowIndex = $index) {
+            @let selected = isRowSelected(row);
+            <tr
+              class="orc-table__row"
+              [class.orc-table__row--selected]="selected"
+              (click)="handleRowClick(row)"
+            >
+              <!-- Checkbox de Seleção por Linha -->
+              @if (selectable()) {
+                <td class="orc-table__td orc-table__td--checkbox" (click)="$event.stopPropagation()">
+                  <app-checkbox
+                    [checked]="selected"
+                    (change)="toggleRowSelect(row, $event)"
+                    [ariaLabel]="'Selecionar linha ' + (rowIndex + 1)"
+                  />
+                </td>
+              }
+
+              <!-- Células de Dados -->
+              @for (col of declaredColumns(); track col.key()) {
+                <td class="orc-table__td" [style.text-align]="col.align()">
+                  @if (col.cellTemplate(); as cellTpl) {
+                    <ng-container
+                      *ngTemplateOutlet="cellTpl.templateRef; context: {
+                        $implicit: row,
+                        row: row,
+                        index: rowIndex,
+                        column: col,
+                        value: getCellValue(row, col.key())
+                      }"
+                    ></ng-container>
+                  } @else {
+                    <span class="orc-table__cell-value">{{ getCellValue(row, col.key()) }}</span>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Rodapé com Paginação Integrada ───────────────────────── -->
+  @if (paginated() && effectiveTotalItems() > 0) {
+    <div class="orc-table__footer">
+      <app-paginator
+        [totalItems]="effectiveTotalItems()"
+        [(pageSize)]="pageSize"
+        [(currentPage)]="currentPage"
+        [pageSizeOptions]="pageSizeOptions()"
+        [showPageSizeSelector]="true"
+      />
+    </div>
+  }
+</div>

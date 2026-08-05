@@ -1,0 +1,155 @@
+<span
+  class="orc-badge"
+  [class.orc-badge--variant-soft]="variant() === 'soft'"
+  [class.orc-badge--variant-solid]="variant() === 'solid'"
+  [class.orc-badge--variant-outline]="variant() === 'outline'"
+  [class.orc-badge--variant-dot]="variant() === 'dot'"
+  [class.orc-badge--variant-ghost]="variant() === 'ghost'"
+  [class.orc-badge--status-primary]="status() === 'primary'"
+  [class.orc-badge--status-secondary]="status() === 'secondary'"
+  [class.orc-badge--status-success]="status() === 'success' || status() === 'completed'"
+  [class.orc-badge--status-warning]="status() === 'warning'"
+  [class.orc-badge--status-danger]="status() === 'danger'"
+  [class.orc-badge--status-info]="status() === 'info' || status() === 'new'"
+  [class.orc-badge--status-neutral]="status() === 'neutral'"
+  [class.orc-badge--status-pending]="status() === 'pending'"
+  [class.orc-badge--status-active]="status() === 'active'"
+  [class.orc-badge--status-inactive]="status() === 'inactive'"
+  [class.orc-badge--size-sm]="size() === 'sm'"
+  [class.orc-badge--size-md]="size() === 'md'"
+  [class.orc-badge--size-lg]="size() === 'lg'"
+  [class.orc-badge--pill]="pill()"
+  [class.orc-badge--dot-only]="isDotOnly()"
+  role="status"
+  [attr.aria-label]="accessibleLabel()"
+>
+  <!-- Dot Indicator (quando variant="dot" ou dot="true") -->
+  <span *ngIf="dot() || variant() === 'dot'" class="orc-badge__dot" aria-hidden="true"></span>
+
+  <!-- Ícone à Esquerda (Projetado via ng-content) -->
+  <ng-content select="[badge-icon-left], [badgeIconLeft]"></ng-content>
+
+  <!-- Ícones Padrão do Figma (quando showDefaultIcon="true") -->
+  <ng-container *ngIf="showDefaultIcon()">
+    <!-- Sucesso / Concluído -->
+    <svg
+      *ngIf="status() === 'success' || status() === 'completed'"
+      class="orc-badge__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+
+    <!-- Informação -->
+    <svg
+      *ngIf="status() === 'info'"
+      class="orc-badge__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+
+    <!-- Aviso -->
+    <svg
+      *ngIf="status() === 'warning'"
+      class="orc-badge__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+      <line x1="12" y1="9" x2="12" y2="13"></line>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+
+    <!-- Erro / Danger -->
+    <svg
+      *ngIf="status() === 'danger'"
+      class="orc-badge__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="15" y1="9" x2="9" y2="15"></line>
+      <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+
+    <!-- Pendente (Relógio) -->
+    <svg
+      *ngIf="status() === 'pending'"
+      class="orc-badge__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <polyline points="12 6 12 12 16 14"></polyline>
+    </svg>
+
+    <!-- Novo (Sparkle / Arrow) -->
+    <svg
+      *ngIf="status() === 'new'"
+      class="orc-badge__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="7" y1="17" x2="17" y2="7"></line>
+      <polyline points="7 7 17 7 17 17"></polyline>
+    </svg>
+  </ng-container>
+
+  <!-- Conteúdo de Texto ou Número -->
+  <span class="orc-badge__label" *ngIf="displayValue()">
+    {{ displayValue() }}
+  </span>
+  <ng-content></ng-content>
+
+  <!-- Ícone à Direita (Projetado via ng-content) -->
+  <ng-content select="[badge-icon-right], [badgeIconRight]"></ng-content>
+
+  <!-- Botão de Fechar / Remover (Dismissible) -->
+  <button
+    *ngIf="dismissible()"
+    type="button"
+    class="orc-badge__dismiss"
+    aria-label="Remover badge"
+    (click)="onDismissClick($event)"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+</span>

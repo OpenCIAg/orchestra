@@ -1,0 +1,237 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+
+  // ── Modificadores de Tamanho ──────────────────────────────
+  &--sm {
+    --slider-track-height: 10px;
+    --slider-thumb-size: 14px;
+    --slider-tick-size: 3px;
+  }
+
+  &--md {
+    // Especificação exata do Figma DS Orchestra (Node 382:5039)
+    --slider-track-height: 16px;
+    --slider-thumb-size: 16px;
+    --slider-tick-size: 4px;
+  }
+
+  &--lg {
+    --slider-track-height: 20px;
+    --slider-thumb-size: 20px;
+    --slider-tick-size: 5px;
+  }
+
+  // ── Estado Desativado ─────────────────────────────────────
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    .orc-slider-track-container {
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    .orc-slider-thumb {
+      cursor: not-allowed;
+      border-color: var(--orc-border, #d9d9d9);
+      box-shadow: none;
+    }
+
+    .orc-slider-fill {
+      background: var(--text-tertiary, #999999);
+    }
+  }
+}
+
+// ── Cabeçalho do Slider (Label + Valor) ──────────────────────
+.orc-slider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.5rem);
+}
+
+.orc-slider-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--orc-font-main, #141414);
+  cursor: pointer;
+}
+
+.orc-slider-value-display {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--orc-color-azul-eletrico, #1c6aed);
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Área Interativa do Track ────────────────────────────────
+.orc-slider-track-container {
+  position: relative;
+  width: 100%;
+  height: var(--slider-track-height);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  padding: 8px 0;
+  box-sizing: content-box;
+}
+
+// ── Barra de Fundo (Track) ──────────────────────────────────
+.orc-slider-track {
+  position: relative;
+  width: 100%;
+  height: var(--slider-track-height);
+  background: var(--orc-border, #d9d9d9);
+  border-radius: var(--radius-full, 200px);
+  overflow: visible;
+  transition: background 0.15s ease;
+}
+
+// ── Barra Preenchida (Active Fill / Progress) ───────────────
+.orc-slider-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--orc-color-azul-eletrico, #1c6aed);
+  border-radius: var(--radius-full, 200px);
+  transition: background 0.15s ease;
+}
+
+// ── Marcações de Escala (Ticks) ─────────────────────────────
+.orc-slider-ticks-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.orc-slider-tick {
+  position: absolute;
+  top: 50%;
+  width: var(--slider-tick-size);
+  height: var(--slider-tick-size);
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// ── Botão Deslizante (Thumb / Handle) ────────────────────────
+.orc-slider-thumb {
+  position: absolute;
+  top: 50%;
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  background: var(--fill-modal, #ffffff);
+  border: 1px solid var(--orc-color-azul-eletrico, #1c6aed);
+  border-radius: var(--radius-full, 200px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  outline: none;
+  box-sizing: border-box;
+  z-index: 2;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 0 0 4px rgba(28, 106, 237, 0.15), 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  &--focused,
+  &:focus-visible {
+    box-shadow: 0 0 0 4px rgba(28, 106, 237, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-color: var(--orc-color-azul-eletrico, #1c6aed);
+    transform: translate(-50%, -50%) scale(1.15);
+    z-index: 4;
+  }
+
+  &--active {
+    cursor: grabbing;
+    box-shadow: 0 0 0 6px rgba(28, 106, 237, 0.3), 0 2px 6px rgba(0, 0, 0, 0.25);
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 5;
+  }
+}
+
+// ── Tooltip Flutuante ───────────────────────────────────────
+.orc-slider-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--orc-font-main, #141414);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 4px 7px;
+  border-radius: var(--radius-sm, 4px);
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: orc-tooltip-fade 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  font-variant-numeric: tabular-nums;
+
+  // Triângulo indicador na base
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px 4px 0 4px;
+    border-style: solid;
+    border-color: var(--orc-font-main, #141414) transparent transparent transparent;
+  }
+}
+
+@keyframes orc-tooltip-fade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+// ── Linha de Marcações / Rótulos (Marks) ─────────────────────
+.orc-slider-marks {
+  position: relative;
+  width: 100%;
+  height: 16px;
+  margin-top: 2px;
+}
+
+.orc-slider-mark-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--text-secondary, #666666);
+  white-space: nowrap;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Texto de Ajuda (Helper Text) ────────────────────────────
+.orc-slider-helper {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #666666);
+  margin-top: 2px;
+}

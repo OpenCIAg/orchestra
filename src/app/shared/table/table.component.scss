@@ -1,0 +1,215 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--bg-app, #ffffff);
+  border-radius: 20px;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  &--bordered {
+    border: 1px solid var(--orc-border, #d9d9d9);
+  }
+
+  &--striped {
+    .orc-table__body .orc-table__row:nth-child(even):not(.orc-table__row--selected) {
+      background-color: var(--orc-th, #f9f9f9);
+    }
+  }
+
+  &--hoverable {
+    .orc-table__body .orc-table__row:hover:not(.orc-table__row--loading) {
+      background-color: rgba(28, 106, 237, 0.03);
+    }
+  }
+}
+
+.orc-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--orc-color-azul-eletrico, #1c6aed);
+  }
+}
+
+.orc-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 14px;
+}
+
+// ── Cabeçalho (Figma Spec) ──────────────────────────────────
+.orc-table__head {
+  background-color: var(--orc-th, #f9f9f9);
+}
+
+.orc-table__head-row {
+  border-bottom: 1px solid var(--orc-border, #d9d9d9);
+}
+
+.orc-table__th {
+  height: 48px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--orc-font-main, #141414);
+  border-bottom: 1px solid var(--orc-border, #d9d9d9);
+  box-sizing: border-box;
+  white-space: nowrap;
+  outline: none;
+  transition: background-color var(--transition-fast, 0.2s ease);
+
+  &--checkbox {
+    width: 48px;
+    padding-left: 20px;
+    padding-right: 8px;
+    text-align: center;
+  }
+
+  &--sortable {
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background-color: var(--orc-highlight-cinza-claro, #ededed);
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 2px var(--orc-color-azul-eletrico, #1c6aed);
+    }
+  }
+
+  &--sorted {
+    color: var(--orc-color-azul-eletrico, #1c6aed);
+  }
+}
+
+.orc-table__th-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.orc-table__th-text {
+  font-weight: 500;
+}
+
+.orc-table__sort-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// ── Corpo da Tabela ─────────────────────────────────────────
+.orc-table__body {
+  background-color: var(--bg-app, #ffffff);
+}
+
+.orc-table__row {
+  border-bottom: 1px solid var(--orc-border, #d9d9d9);
+  transition: background-color var(--transition-fast, 0.2s ease);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &--selected {
+    background-color: rgba(28, 106, 237, 0.08) !important;
+  }
+}
+
+.orc-table__td {
+  padding: 16px;
+  min-height: 56px;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--orc-font-main, #141414);
+  box-sizing: border-box;
+
+  &--checkbox {
+    width: 48px;
+    padding-left: 20px;
+    padding-right: 8px;
+    text-align: center;
+  }
+}
+
+.orc-table__cell-value {
+  display: block;
+}
+
+// ── Estado Vazio (Empty State) ───────────────────────────────
+.orc-table__empty-row {
+  &:hover {
+    background-color: transparent !important;
+  }
+}
+
+.orc-table__empty-cell {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.orc-table__empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.orc-table__empty-icon {
+  width: 44px;
+  height: 44px;
+  color: #929292;
+  margin-bottom: 4px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.orc-table__empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--orc-font-main, #141414);
+  margin: 0;
+}
+
+.orc-table__empty-desc {
+  font-size: 13px;
+  color: var(--orc-font-secondary, #58595b);
+  margin: 0;
+}
+
+// ── Rodapé / Paginação ──────────────────────────────────────
+.orc-table__footer {
+  padding: 12px 16px;
+  background-color: var(--bg-app, #ffffff);
+  border-top: 1px solid var(--orc-border, #d9d9d9);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

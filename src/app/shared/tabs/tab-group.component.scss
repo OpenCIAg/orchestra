@@ -1,0 +1,262 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-tab-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+
+  &__slot {
+    display: none;
+  }
+
+  // ── HEADER (TABLIST CONTAINER) ────────────────────────────
+  &__header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    user-select: none;
+    box-sizing: border-box;
+    overflow-x: auto;
+    scrollbar-width: none; // Hide scrollbar for clean UI
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // ── TAB BUTTON BASE ───────────────────────────────────────
+  &__tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color var(--transition-fast, 120ms ease),
+                background-color var(--transition-fast, 120ms ease),
+                border-color var(--transition-fast, 120ms ease),
+                opacity var(--transition-fast, 120ms ease);
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus-visible {
+      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline-offset: 2px;
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    &--start {
+      margin-right: 8px;
+    }
+
+    &--end {
+      margin-left: 8px;
+    }
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 9999px;
+    background: rgba(28, 106, 237, 0.12);
+    color: var(--orc-color-azul-eletrico, #1c6aed);
+    margin-left: 8px;
+  }
+
+  // ── FULL WIDTH ────────────────────────────────────────────
+  &--full-width {
+    .orc-tab-group__header {
+      width: 100%;
+    }
+    .orc-tab-group__tab {
+      flex: 1;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE 1: LINE (FIGMA DEFAULT - Node 382:5349) ──────
+  // ──────────────────────────────────────────────────────────
+  &--variant-line {
+    .orc-tab-group__header {
+      border-bottom: 2px solid var(--highlight-cinzaclaro, #ededed);
+      gap: 0;
+    }
+
+    .orc-tab-group__tab {
+      height: 44px;
+      padding: 0 20px;
+      font-size: 1rem; // 16px (Figma text-[16px])
+      font-weight: 400; // Poppins:Regular
+      color: #929292; // Figma inactive tab color
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+
+      .orc-tab-group__icon {
+        width: 20px;
+        height: 20px;
+        color: #929292;
+      }
+
+      &:hover:not(:disabled) {
+        color: var(--orc-color-azul-royal, #0406ab);
+        .orc-tab-group__icon {
+          color: var(--orc-color-azul-royal, #0406ab);
+        }
+      }
+
+      // ACTIVE STATE (Figma Node 29:17879)
+      &--active {
+        color: var(--orc-color-azul-eletrico, #1c6aed);
+        font-weight: 600; // Poppins:SemiBold
+        border-bottom-color: var(--orc-color-azul-eletrico, #1c6aed);
+
+        .orc-tab-group__icon {
+          color: var(--orc-color-azul-eletrico, #1c6aed);
+        }
+      }
+
+      // DISABLED STATE (Figma Node 30:17943)
+      &--disabled {
+        opacity: 0.25;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE 2: FILLED (FIGMA TAB ALTERNATIVA - Node 69:2188)
+  // ──────────────────────────────────────────────────────────
+  &--variant-filled {
+    .orc-tab-group__header {
+      background: var(--highlight-cinzaclaro, #ededed);
+      padding: 5px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      width: fit-content;
+    }
+
+    .orc-tab-group__tab {
+      height: 34px;
+      padding: 0 16px;
+      font-size: 0.9375rem; // 15px (Figma text-[15px])
+      font-weight: 400; // Poppins:Regular
+      color: var(--orc-font-main, #141414);
+      border-radius: 10px;
+      transition: all var(--transition-fast, 120ms ease);
+
+      .orc-tab-group__icon {
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover:not(:disabled):not(.orc-tab-group__tab--active) {
+        color: var(--orc-color-azul-royal, #0406ab);
+        background-color: rgba(255, 255, 255, 0.6);
+        .orc-tab-group__icon {
+          color: var(--orc-color-azul-royal, #0406ab);
+        }
+      }
+
+      // ACTIVE STATE (Figma Node 69:2164)
+      &--active {
+        background-color: var(--bg, #ffffff);
+        color: var(--orc-font-main, #141414);
+        font-weight: 500; // Poppins:Medium
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+
+      // DISABLED STATE
+      &--disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
+
+    .orc-tab-group__divider {
+      display: inline-block;
+      width: 1px;
+      height: 16px;
+      background-color: #d4d4d8;
+      margin: 0 2px;
+    }
+  }
+
+  // ── SIZES ─────────────────────────────────────────────────
+  &--size-sm {
+    &.orc-tab-group--variant-line .orc-tab-group__tab {
+      height: 36px;
+      padding: 0 14px;
+      font-size: 0.875rem; // 14px
+
+      .orc-tab-group__icon {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &.orc-tab-group--variant-filled .orc-tab-group__tab {
+      height: 28px;
+      padding: 0 12px;
+      font-size: 0.8125rem; // 13px
+    }
+  }
+
+  &--size-lg {
+    &.orc-tab-group--variant-line .orc-tab-group__tab {
+      height: 52px;
+      padding: 0 26px;
+      font-size: 1.125rem; // 18px
+
+      .orc-tab-group__icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    &.orc-tab-group--variant-filled .orc-tab-group__tab {
+      height: 42px;
+      padding: 0 22px;
+      font-size: 1.0625rem; // 17px
+    }
+  }
+
+  // ── TAB PANELS CONTAINER ──────────────────────────────────
+  &__panels {
+    width: 100%;
+    margin-top: var(--space-4, 1rem);
+  }
+
+  &__panel {
+    outline: none;
+    &:focus-visible {
+      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      border-radius: var(--radius-sm, 6px);
+    }
+  }
+}

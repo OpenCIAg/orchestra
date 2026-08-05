@@ -1,0 +1,17 @@
+<div
+  class="orc-skeleton"
+  [class.orc-skeleton--text]="variant() === 'text'"
+  [class.orc-skeleton--circular]="variant() === 'circular'"
+  [class.orc-skeleton--rectangular]="variant() === 'rectangular'"
+  [class.orc-skeleton--shimmer]="animation() === 'shimmer'"
+  [class.orc-skeleton--pulse]="animation() === 'pulse'"
+  [class.orc-skeleton--none]="animation() === 'none'"
+  [style.width]="computedWidth()"
+  [style.height]="computedHeight()"
+  [style.border-radius]="computedBorderRadius()"
+  role="status"
+  aria-busy="true"
+  [attr.aria-label]="ariaLabel()"
+>
+  <span class="sr-only">{{ ariaLabel() }}</span>
+</div>

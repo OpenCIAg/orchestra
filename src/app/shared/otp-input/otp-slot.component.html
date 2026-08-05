@@ -1,0 +1,19 @@
+<input
+  #slotInput
+  type="text"
+  [attr.inputmode]="inputMode()"
+  [pattern]="inputMode() === 'numeric' ? '[0-9]*' : '.*'"
+  [placeholder]="effectivePlaceholder()"
+  [value]="value()"
+  [disabled]="isDisabled()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.autocomplete]="index() === 0 ? 'one-time-code' : 'off'"
+  maxlength="1"
+  class="otp-input"
+  [class.otp-input--first]="isFirst()"
+  [class.otp-input--last]="isLast()"
+  (input)="onInput($event)"
+  (keydown)="onKeyDown($event)"
+  (paste)="onPaste($event)"
+  (focus)="onFocus()"
+/>

@@ -1,0 +1,138 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-progress-bar-host {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+
+  // ── Variantes de Cores ─────────────────────────────────────
+  &.orc-progress-bar--primary {
+    --progress-fill-color: var(--orc-color-azul-eletrico, #1c6aed);
+  }
+  &.orc-progress-bar--neutral {
+    --progress-fill-color: var(--orc-font-main, #141414);
+  }
+  &.orc-progress-bar--success {
+    --progress-fill-color: var(--color-success, #006f4a);
+  }
+  &.orc-progress-bar--warning {
+    --progress-fill-color: var(--color-warning, #fe9a00);
+  }
+  &.orc-progress-bar--error {
+    --progress-fill-color: var(--color-error, #fb2c36);
+  }
+
+  // ── Tamanhos ───────────────────────────────────────────────
+  &.orc-progress-bar--sm {
+    --progress-height: 4px;
+  }
+  &.orc-progress-bar--md {
+    --progress-height: 8px;
+  }
+  &.orc-progress-bar--lg {
+    --progress-height: 12px;
+  }
+
+  // ── Cantos Arredondados ────────────────────────────────────
+  &.orc-progress-bar--rounded {
+    .orc-progress-bar__track,
+    .orc-progress-bar__fill,
+    .orc-progress-bar__segment-item {
+      border-radius: 9999px;
+    }
+  }
+}
+
+// ── Header (Label + Valor) ──────────────────────────────────
+.orc-progress-bar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 16px;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--orc-font-secondary, #58595b);
+}
+
+.orc-progress-bar__label {
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orc-progress-bar__value {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+// ── Trilha e Preenchimento Contínuo ─────────────────────────
+.orc-progress-bar__track {
+  position: relative;
+  width: 100%;
+  height: var(--progress-height, 8px);
+  background-color: var(--orc-border, #d9d9d9);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.orc-progress-bar__fill {
+  height: 100%;
+  background-color: var(--progress-fill-color, var(--orc-color-azul-eletrico, #1c6aed));
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+// ── Modo Indeterminado ──────────────────────────────────────
+.orc-progress-bar--indeterminate {
+  .orc-progress-bar__fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: auto;
+    will-change: left, right;
+    animation: orc-indeterminate-bar 1.8s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+  }
+}
+
+@keyframes orc-indeterminate-bar {
+  0% {
+    left: -35%;
+    right: 100%;
+  }
+  60% {
+    left: 100%;
+    right: -90%;
+  }
+  100% {
+    left: 100%;
+    right: -90%;
+  }
+}
+
+// ── Modo Segmentado (Multi-step) ────────────────────────────
+.orc-progress-bar__segments {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.orc-progress-bar__segment-item {
+  flex: 1;
+  height: var(--progress-height, 6px);
+  background-color: var(--orc-border, #d9d9d9);
+  transition: background-color 0.3s ease;
+
+  &--active {
+    background-color: var(--progress-fill-color, var(--orc-color-azul-eletrico, #1c6aed));
+  }
+}

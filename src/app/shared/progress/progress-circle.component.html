@@ -1,0 +1,56 @@
+<div
+  class="orc-progress-circle-host"
+  [class.orc-progress-circle--primary]="variant() === 'primary'"
+  [class.orc-progress-circle--neutral]="variant() === 'neutral'"
+  [class.orc-progress-circle--success]="variant() === 'success'"
+  [class.orc-progress-circle--warning]="variant() === 'warning'"
+  [class.orc-progress-circle--error]="variant() === 'error' || variant() === 'danger'"
+  [class.orc-progress-circle--indeterminate]="isIndeterminate()"
+  [style.width.px]="pixelSize()"
+  [style.height.px]="pixelSize()"
+>
+  <svg
+    class="orc-progress-circle__svg"
+    [attr.viewBox]="'0 0 ' + pixelSize() + ' ' + pixelSize()"
+    [style.width.px]="pixelSize()"
+    [style.height.px]="pixelSize()"
+    role="progressbar"
+    [attr.aria-valuenow]="isIndeterminate() ? null : normalizedValue()"
+    [attr.aria-valuemin]="isIndeterminate() ? null : 0"
+    [attr.aria-valuemax]="isIndeterminate() ? null : 100"
+    [attr.aria-label]="ariaLabel() || label() || 'Progresso circular'"
+    [attr.aria-valuetext]="ariaValueText() || (isIndeterminate() ? 'Carregando...' : formattedValue())"
+  >
+    <!-- Trilha de fundo (Track) -->
+    <circle
+      class="orc-progress-circle__track"
+      [attr.cx]="center()"
+      [attr.cy]="center()"
+      [attr.r]="radius()"
+      [attr.stroke-width]="computedStrokeWidth()"
+      [style.stroke]="customTrackColor() || null"
+    />
+
+    <!-- Arco de preenchimento (Fill) -->
+    <circle
+      class="orc-progress-circle__fill"
+      [attr.cx]="center()"
+      [attr.cy]="center()"
+      [attr.r]="radius()"
+      [attr.stroke-width]="computedStrokeWidth()"
+      [attr.stroke-dasharray]="circumference()"
+      [attr.stroke-dashoffset]="strokeDashOffset()"
+      [attr.stroke-linecap]="rounded() ? 'round' : 'butt'"
+      [style.stroke]="customColor() || null"
+    />
+  </svg>
+
+  <!-- Conteúdo centralizado (Porcentagem ou custom template) -->
+  <div class="orc-progress-circle__content" [style.font-size.px]="pixelSize() <= 32 ? 9 : pixelSize() <= 48 ? 11 : pixelSize() <= 64 ? 14 : 18">
+    @if (showValue() && !isIndeterminate()) {
+      <span class="orc-progress-circle__value">{{ formattedValue() }}</span>
+    } @else {
+      <ng-content></ng-content>
+    }
+  </div>
+</div>

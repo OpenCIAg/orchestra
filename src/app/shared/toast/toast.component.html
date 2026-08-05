@@ -1,0 +1,111 @@
+<div
+  class="orc-toast"
+  [class.orc-toast--exiting]="isExiting()"
+  [class.orc-toast--type-success]="toast().type === 'success'"
+  [class.orc-toast--type-info]="toast().type === 'info'"
+  [class.orc-toast--type-warning]="toast().type === 'warning'"
+  [class.orc-toast--type-error]="toast().type === 'error'"
+  [class.orc-toast--type-loading]="toast().type === 'loading'"
+  [class.orc-toast--type-notification]="toast().type === 'notification'"
+  [attr.role]="computedRole()"
+  [attr.aria-live]="computedAriaLive()"
+  [attr.aria-atomic]="true"
+  [attr.aria-label]="toast().ariaLabel || undefined"
+  tabindex="0"
+  (keydown.escape)="handleClose()"
+>
+  <!-- Ícone Semântico (Figma Node 382:5265) -->
+  @if (toast().showIcon) {
+    <div class="orc-toast__icon-wrap" aria-hidden="true">
+      @switch (toast().type) {
+        @case ('success') {
+          <svg class="orc-toast__icon orc-toast__icon--success" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6" />
+            <path d="M6.5 10.2L8.8 12.5L13.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        }
+        @case ('info') {
+          <svg class="orc-toast__icon orc-toast__icon--info" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6" />
+            <path d="M10 13.5V10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="10" cy="6.8" r="0.9" fill="currentColor" />
+          </svg>
+        }
+        @case ('warning') {
+          <svg class="orc-toast__icon orc-toast__icon--warning" viewBox="0 0 20 20" fill="none">
+            <path d="M10 2.5L1.8 16.5H18.2L10 2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M10 8V11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="10" cy="14" r="0.8" fill="currentColor" />
+          </svg>
+        }
+        @case ('error') {
+          <svg class="orc-toast__icon orc-toast__icon--error" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6" />
+            <path d="M12.5 7.5L7.5 12.5M7.5 7.5L12.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        }
+        @case ('loading') {
+          <svg class="orc-toast__icon orc-toast__icon--loading" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7.5" stroke="var(--border-default)" stroke-width="2" />
+            <path d="M10 2.5A7.5 7.5 0 0 1 17.5 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        }
+        @case ('notification') {
+          <svg class="orc-toast__icon orc-toast__icon--notification" viewBox="0 0 20 20" fill="none">
+            <path d="M15 14H5L6.5 12.5V8.5C6.5 6.3 8.1 4.5 10 4.5C11.9 4.5 13.5 6.3 13.5 8.5V12.5L15 14Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8.5 14C8.5 14.8 9.2 15.5 10 15.5C10.8 15.5 11.5 14.8 11.5 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        }
+      }
+    </div>
+  }
+
+  <!-- Corpo do Texto -->
+  <div class="orc-toast__content">
+    @if (toast().title) {
+      <p class="orc-toast__title">{{ toast().title }}</p>
+    }
+    @if (toast().message) {
+      <p class="orc-toast__message">{{ toast().message }}</p>
+    }
+  </div>
+
+  <!-- Ação Customizada (Botão Desfazer / Saiba mais) -->
+  @if (toast().action; as action) {
+    <button
+      type="button"
+      class="orc-toast__action"
+      (click)="handleAction()"
+    >
+      @if (action.icon === 'undo' || action.label.toLowerCase() === 'desfazer') {
+        <svg class="orc-toast__action-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 14L4 9M4 9L9 4M4 9H15C17.7614 9 20 11.2386 20 14C20 16.7614 17.7614 19 15 19H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      }
+      <span>{{ action.label }}</span>
+    </button>
+  }
+
+  <!-- Botão Manual de Fechar -->
+  @if (toast().dismissible) {
+    <button
+      type="button"
+      class="orc-toast__close"
+      aria-label="Fechar notificação"
+      (click)="handleClose()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" class="orc-toast__close-icon" aria-hidden="true">
+        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+  }
+
+  <!-- Barra de Progresso de Auto-Dismiss -->
+  @if (hasProgressBar()) {
+    <div
+      class="orc-toast__progress"
+      [style.width.%]="progress()"
+      [class.orc-toast__progress--paused]="isHovered() && toast().pauseOnHover"
+    ></div>
+  }
+</div>

@@ -1,0 +1,14 @@
+<div
+  class="card"
+  [class.card--clickable]="clickable()"
+  [class.card--selected]="selected()"
+  [class.card--dashboard]="variant() === 'dashboard'"
+  [attr.role]="clickable() ? 'button' : null"
+  [attr.tabindex]="clickable() ? 0 : null"
+  [attr.aria-selected]="selected() ? true : null"
+  (click)="onClick()"
+  (keydown.enter)="onClick()"
+  (keydown.space)="onClick()"
+>
+  <ng-content></ng-content>
+</div>

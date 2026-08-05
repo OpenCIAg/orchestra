@@ -1,0 +1,637 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+        <a href="https://www.figma.com/design/zIgCRAho1NaAEOB4AHkASb/Componentes?node-id=382-4996" target="_blank"
+          rel="noopener noreferrer" class="nav-link nav-link--ghost">Figma ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Inputs</div>
+      <h1 class="section-title">Input & Textarea</h1>
+      <p class="section-desc">
+        Inputs com suporte a múltiplos tamanhos (<code>sm</code>, <code>md</code>, <code>lg</code>), tipos de entrada
+        (<code>text</code>, <code>password</code> com alternador de visibilidade, <code>search</code> com limpar,
+        <code>email</code>, <code>number</code>),
+        <strong>máscaras de entrada (CPF, CNPJ, Telefone, CEP, Data)</strong>, prefixos/sufixos customizáveis, contador
+        de caracteres e acessibilidade WCAG completa.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+
+        <div class="playground-grid">
+          <!-- Painel de Preview -->
+          <div class="panel preview-panel">
+            <div class="panel__header">
+              <span>Live preview</span>
+              <span class="type-badge">{{ inputType() | uppercase }} · {{ inputSize() | uppercase }}</span>
+            </div>
+            <div class="panel__body">
+              <div class="preview-center-box">
+                <orc-input [type]="inputType()" [size]="inputSize()" [status]="inputStatus()" [label]="inputLabel()"
+                  [placeholder]="inputPlaceholder()" [helperText]="inputHelperText()"
+                  [errorMessage]="inputErrorMessage()" [disabled]="inputDisabled()" [readonly]="inputReadonly()"
+                  [required]="inputRequired()" [clearable]="inputClearable()" [showCharCount]="inputShowCharCount()"
+                  [maxLength]="inputMaxLength()" [mask]="inputMask()" [unmaskValue]="inputUnmask()"
+                  [prefixText]="inputPrefixText()" [suffixText]="inputSuffixText()" [(value)]="inputValue" />
+              </div>
+
+              <!-- Readout do Valor em Tempo Real -->
+              <div class="value-readout-card">
+                <span class="value-readout-label">Valor atual (two-way binding / signals):</span>
+                <code class="value-readout-code">"{{ inputValue() }}"</code>
+                @if (inputMask()) {
+                <span class="value-readout-sub">Máscara ativa: <code>{{ inputMask() }}</code> | Unmask:
+                  <code>{{ inputUnmask() }}</code></span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Painel de Controles -->
+          <div class="panel controls-panel">
+            <div class="panel__header">Propriedades e configurações</div>
+            <div class="panel__body">
+              <!-- Tipo de Input -->
+              <div class="control-group">
+                <label class="control-label">Tipo de entrada (type)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputType() === 'text'"
+                    (click)="inputType.set('text')">Text</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputType() === 'password'"
+                    (click)="inputType.set('password')">Password</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputType() === 'search'"
+                    (click)="inputType.set('search')">Search</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputType() === 'email'"
+                    (click)="inputType.set('email')">Email</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputType() === 'number'"
+                    (click)="inputType.set('number')">Number</button>
+                </div>
+              </div>
+
+              <!-- Presets de Máscara -->
+              <div class="control-group">
+                <label class="control-label">Máscaras prontas (mask presets)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputMask() === ''"
+                    (click)="setPresetMask('', 'Digite algo...', 'Nome completo')">Nenhuma</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="inputMask() === '000.000.000-00'"
+                    (click)="setPresetMask('000.000.000-00', '000.000.000-00', 'CPF')">CPF</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="inputMask() === '(00) 00000-0000'"
+                    (click)="setPresetMask('(00) 00000-0000', '(00) 00000-0000', 'Celular / WhatsApp')">Telefone</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputMask() === '00000-000'"
+                    (click)="setPresetMask('00000-000', '00000-000', 'CEP')">CEP</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputMask() === '00/00/0000'"
+                    (click)="setPresetMask('00/00/0000', 'DD/MM/AAAA', 'Data de Nascimento')">Data</button>
+                </div>
+              </div>
+
+              <!-- Tamanho -->
+              <div class="control-group">
+                <label class="control-label">Tamanho (size)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputSize() === 'sm'"
+                    (click)="inputSize.set('sm')">Small (sm)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputSize() === 'md'"
+                    (click)="inputSize.set('md')">Medium (md)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputSize() === 'lg'"
+                    (click)="inputSize.set('lg')">Large (lg)</button>
+                </div>
+              </div>
+
+              <!-- Status Visual -->
+              <div class="control-group">
+                <label class="control-label">Status visual (validation state)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputStatus() === 'default'"
+                    (click)="inputStatus.set('default')">Default</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputStatus() === 'error'"
+                    (click)="inputStatus.set('error')">Error</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputStatus() === 'success'"
+                    (click)="inputStatus.set('success')">Success</button>
+                </div>
+              </div>
+
+              <!-- Textos Configuráveis -->
+              <div class="control-group">
+                <label class="control-label">Rótulo (label)</label>
+                <input type="text" class="text-control-input" [value]="inputLabel()"
+                  (input)="inputLabel.set($any($event.target).value)">
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Máscara customizada (mask)</label>
+                <input type="text" placeholder="Ex: 000.000.000-00 ou AA-0000" class="text-control-input"
+                  [value]="inputMask()" (input)="inputMask.set($any($event.target).value)">
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Texto de ajuda (helper text)</label>
+                <input type="text" class="text-control-input" [value]="inputHelperText()"
+                  (input)="inputHelperText.set($any($event.target).value)">
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Prefixo / sufixo de texto</label>
+                <div class="grid-2-cols">
+                  <input type="text" placeholder="Prefixo (ex: R$)" class="text-control-input"
+                    [value]="inputPrefixText()" (input)="inputPrefixText.set($any($event.target).value)">
+                  <input type="text" placeholder="Sufixo (ex: .com)" class="text-control-input"
+                    [value]="inputSuffixText()" (input)="inputSuffixText.set($any($event.target).value)">
+                </div>
+              </div>
+
+              <!-- Toggles Booleanos -->
+              <div class="control-group">
+                <label class="control-label">Flags e estados</label>
+                <div class="checkbox-stack">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="inputRequired()"
+                      (change)="inputRequired.set($any($event.target).checked)">
+                    <span>Obrigatório (required *)</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="inputClearable()"
+                      (change)="inputClearable.set($any($event.target).checked)">
+                    <span>Botão de limpar (clearable)</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="inputUnmask()"
+                      (change)="inputUnmask.set($any($event.target).checked)">
+                    <span>Emitir valor sem máscara (unmaskValue)</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="inputShowCharCount()"
+                      (change)="inputShowCharCount.set($any($event.target).checked)">
+                    <span>Exibir contador de caracteres</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="inputDisabled()"
+                      (change)="inputDisabled.set($any($event.target).checked)">
+                    <span>Desativado (disabled)</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="inputReadonly()"
+                      (change)="inputReadonly.set($any($event.target).checked)">
+                    <span>Apenas leitura (readonly)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ESPECIFICAÇÃO FIEL DO FIGMA (Node 382:4996) ─────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+        <p class="section-text">
+          Comparativo direto de todos os estados do componente de entrada conforme definidos no Design System do Figma:
+        </p>
+
+        <div class="figma-spec-grid">
+          <!-- 1. Default -->
+          <div class="figma-spec-card">
+            <div class="figma-spec-card__label">Default</div>
+            <div class="figma-spec-card__content">
+              <orc-input placeholder="Digite algo..." />
+            </div>
+          </div>
+
+          <!-- 2. Hover -->
+          <div class="figma-spec-card">
+            <div class="figma-spec-card__label">Hover (passe o mouse)</div>
+            <div class="figma-spec-card__content">
+              <orc-input placeholder="Digite algo..." />
+            </div>
+          </div>
+
+          <!-- 3. Focus -->
+          <div class="figma-spec-card">
+            <div class="figma-spec-card__label">Focus (com anel azul elétrico)</div>
+            <div class="figma-spec-card__content">
+              <orc-input placeholder="Digite algo..." />
+            </div>
+          </div>
+
+          <!-- 4. Desativado -->
+          <div class="figma-spec-card">
+            <div class="figma-spec-card__label">Desativado (disabled)</div>
+            <div class="figma-spec-card__content">
+              <orc-input placeholder="Input desativado" [disabled]="true" />
+            </div>
+          </div>
+
+          <!-- 5. Textarea Figma Spec -->
+          <div class="figma-spec-card figma-spec-card--full">
+            <div class="figma-spec-card__label">Textarea</div>
+            <div class="figma-spec-card__content">
+              <orc-textarea label="Textarea" placeholder="Digite algo..." [rows]="5" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── MÁSCARAS DE ENTRADA (MASKS) ──────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Máscaras de entrada (input masks)</h2>
+        <p class="section-text">
+          Formatação automática em tempo real para padrões brasileiros comuns sem necessidade de bibliotecas pesadas:
+        </p>
+
+        <div class="variants-grid">
+          <!-- Máscara de CPF -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">Máscara de CPF</h3>
+            <p class="variant-card__desc">Padrão <code>000.000.000-00</code> com autoformatação.</p>
+            <orc-input label="CPF" mask="000.000.000-00" placeholder="000.000.000-00" [(value)]="cpfDemoValue"
+              helperText="Valor formatado emitido automaticamente." />
+            <div class="value-mini-readout">Valor: <code>{{ cpfDemoValue() }}</code></div>
+          </div>
+
+          <!-- Máscara de Telefone/Celular -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">Telefone / celular</h3>
+            <p class="variant-card__desc">Padrão <code>(00) 00000-0000</code> com DDD e nono dígito.</p>
+            <orc-input label="WhatsApp / Celular" mask="(00) 00000-0000" placeholder="(00) 00000-0000"
+              [(value)]="phoneDemoValue" helperText="Formata DDD e dígitos dinamicamente." />
+            <div class="value-mini-readout">Valor: <code>{{ phoneDemoValue() }}</code></div>
+          </div>
+
+          <!-- Máscara de CEP -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">CEP</h3>
+            <p class="variant-card__desc">Padrão <code>00000-000</code> para endereços postais.</p>
+            <orc-input label="CEP" mask="00000-000" placeholder="00000-000" [(value)]="cepDemoValue"
+              helperText="8 dígitos com hífen divisor." />
+            <div class="value-mini-readout">Valor: <code>{{ cepDemoValue() }}</code></div>
+          </div>
+
+          <!-- Máscara de Data -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">Data</h3>
+            <p class="variant-card__desc">Padrão <code>00/00/0000</code> para dia/mês/ano.</p>
+            <orc-input label="Data de Nascimento" mask="00/00/0000" placeholder="DD/MM/AAAA" [(value)]="dateDemoValue"
+              helperText="Barras posicionadas automaticamente." />
+            <div class="value-mini-readout">Valor: <code>{{ dateDemoValue() }}</code></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── VARIANTES E CASOS DE USO ESPECÍFICOS ─────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Variantes e recursos avançados</h2>
+
+        <div class="variants-grid">
+          <!-- Password com Toggle de Olho -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">Senha com alternância de visibilidade</h3>
+            <p class="variant-card__desc">Botão interativo que alterna entre ocultar e exibir o texto da senha.</p>
+            <orc-input type="password" label="Senha de acesso" [(value)]="passwordDemoValue"
+              helperText="Clique no ícone de olho para visualizar." />
+          </div>
+
+          <!-- Search com Botão de Limpar -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">Busca com limpeza rápida</h3>
+            <p class="variant-card__desc">Exibe automaticamente o botão 'X' para limpar quando preenchido.</p>
+            <orc-input type="search" label="Buscar componentes..." placeholder="Digite para pesquisar..."
+              [(value)]="searchDemoValue">
+              <svg prefix viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75">
+                <circle cx="7" cy="7" r="4.5" />
+                <path d="M10.5 10.5L14 14" stroke-linecap="round" />
+              </svg>
+            </orc-input>
+          </div>
+
+          <!-- Prefixos e Sufixos de Moeda e URL -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">Prefixos e sufixos</h3>
+            <p class="variant-card__desc">Afixos de texto ou ícones antes e depois do campo.</p>
+            <div class="stack-inputs">
+              <orc-input label="Valor monetário" prefixText="R$" [(value)]="currencyDemoValue" />
+              <orc-input label="Endereço web" prefixText="https://" suffixText=".dev" [(value)]="websiteDemoValue" />
+            </div>
+          </div>
+
+          <!-- Validações de Erro e Sucesso -->
+          <div class="variant-card">
+            <h3 class="variant-card__title">Validações de status</h3>
+            <p class="variant-card__desc">Estados semânticos de erro e sucesso com ícone e mensagens descritivas.</p>
+            <div class="stack-inputs">
+              <orc-input label="E-mail corporativo" status="error" value="email-invalido@"
+                errorMessage="Formato de e-mail inválido." />
+              <orc-input label="Nome de usuário" status="success" value="orchestra_user"
+                helperText="Nome de usuário disponível para registro." />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── REACTIVE FORMS INTEGRATION ──────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Integração com formulários reativos (Reactive Forms)</h2>
+        <p class="section-text">
+          Suporte completo a <code>formControlName</code>, validações assíncronas/síncronas e métodos nativos de
+          formulários:
+        </p>
+
+        <div class="reactive-form-card">
+          <form [formGroup]="demoForm" class="reactive-form-layout">
+            <div class="form-row">
+              <orc-input formControlName="email" type="email" label="E-mail profissional"
+                placeholder="exemplo@empresa.com"
+                [status]="demoForm.get('email')?.invalid && demoForm.get('email')?.touched ? 'error' : 'default'"
+                [errorMessage]="demoForm.get('email')?.errors?.['required'] ? 'E-mail é obrigatório.' : 'E-mail inválido.'"
+                helperText="Usaremos para notificações do sistema." />
+            </div>
+
+            <div class="form-row">
+              <orc-input formControlName="cpf" label="CPF com Máscara" mask="000.000.000-00"
+                placeholder="000.000.000-00"
+                [status]="demoForm.get('cpf')?.invalid && demoForm.get('cpf')?.touched ? 'error' : 'default'"
+                errorMessage="CPF é obrigatório." helperText="Integrado via Reactive Forms formControlName." />
+            </div>
+
+            <div class="form-row">
+              <orc-input formControlName="password" type="password" label="Senha segura"
+                placeholder="Mínimo 8 caracteres"
+                [status]="demoForm.get('password')?.invalid && demoForm.get('password')?.touched ? 'error' : 'default'"
+                errorMessage="A senha deve ter no mínimo 8 caracteres." />
+            </div>
+
+            <div class="form-row">
+              <orc-textarea formControlName="bio" label="Biografia" placeholder="Conte um pouco sobre você..."
+                [maxLength]="150" [showCharCount]="true"
+                [status]="demoForm.get('bio')?.invalid && demoForm.get('bio')?.touched ? 'error' : 'default'"
+                errorMessage="Biografia é obrigatória." />
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-form-submit" [disabled]="demoForm.invalid">
+                Submeter formulário
+              </button>
+              <button type="button" class="btn-form-reset" (click)="resetForm()">
+                Limpar campos
+              </button>
+            </div>
+          </form>
+
+          <div class="form-state-debugger">
+            <div class="debugger-title">Estado do FormGroup (reativo)</div>
+            <pre class="debugger-json"><code>{{ demoForm.value | json }}</code></pre>
+            <div class="debugger-status">
+              <span>Status: <strong>{{ demoForm.status }}</strong></span>
+              <span>Touched: <strong>{{ demoForm.touched ? 'Sim' : 'Não' }}</strong></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── DOCUMENTAÇÃO DA API ──────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Documentação da API</h2>
+
+        <!-- InputComponent API -->
+        <div class="api-doc-block">
+          <h3 class="api-component-title">&lt;orc-input&gt; (InputComponent)</h3>
+          <div class="table-container">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Propriedade / input / output</th>
+                  <th>Tipo</th>
+                  <th>Padrão</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>value</code></td>
+                  <td><code>model&lt;string | number&gt;</code></td>
+                  <td><code>''</code></td>
+                  <td>Valor textual ou numérico do campo (Two-Way Binding <code>[(value)]</code>).</td>
+                </tr>
+                <tr>
+                  <td><code>mask</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Padrão de máscara para formatação (ex: <code>'000.000.000-00'</code>,
+                    <code>'(00) 00000-0000'</code>, <code>'00000-000'</code>). Tokens: <code>0</code> ou <code>9</code>
+                    para dígitos, <code>A</code> para letras, <code>*</code> para alfanumérico.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>unmaskValue</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Quando <code>true</code>, emite o valor sem os caracteres literais da máscara para o
+                    signal/formControl.</td>
+                </tr>
+                <tr>
+                  <td><code>type</code></td>
+                  <td><code>'text' | 'password' | 'email' | 'number' | 'search' | 'tel' | 'url'</code></td>
+                  <td><code>'text'</code></td>
+                  <td>Tipo do elemento HTML input nativo.</td>
+                </tr>
+                <tr>
+                  <td><code>size</code></td>
+                  <td><code>'sm' | 'md' | 'lg'</code></td>
+                  <td><code>'md'</code></td>
+                  <td>Tamanho e espaçamentos internos do campo.</td>
+                </tr>
+                <tr>
+                  <td><code>status</code></td>
+                  <td><code>'default' | 'error' | 'success'</code></td>
+                  <td><code>'default'</code></td>
+                  <td>Estado visual de validação semântica.</td>
+                </tr>
+                <tr>
+                  <td><code>label</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Texto do rótulo associado semanticamente ao campo com acessibilidade WCAG.</td>
+                </tr>
+                <tr>
+                  <td><code>placeholder</code></td>
+                  <td><code>string</code></td>
+                  <td><code>'Digite algo...'</code></td>
+                  <td>Texto de dica exibido quando o campo está vazio.</td>
+                </tr>
+                <tr>
+                  <td><code>helperText</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Mensagem de instrução exibida abaixo do campo via <code>aria-describedby</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>errorMessage</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Mensagem de erro exibida quando <code>status="error"</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>clearable</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Exibe botão para limpar o valor com um clique (ativado por padrão em <code>type="search"</code>).
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>showCharCount</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Exibe a contagem de caracteres e limite máximo no rodapé.</td>
+                </tr>
+                <tr>
+                  <td><code>maxLength</code></td>
+                  <td><code>number</code></td>
+                  <td><code>undefined</code></td>
+                  <td>Limite máximo de caracteres aceito pelo campo (definido automaticamente pela máscara se
+                    informada).</td>
+                </tr>
+                <tr>
+                  <td><code>prefixText</code> / <code>suffixText</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Textos fixos exibidos como prefixo ou sufixo dentro da caixa do input.</td>
+                </tr>
+                <tr>
+                  <td><code>disabled</code> / <code>readonly</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Desativa o campo ou define modo apenas leitura.</td>
+                </tr>
+                <tr>
+                  <td><code>inputChange</code></td>
+                  <td><code>output&lt;string | number&gt;</code></td>
+                  <td>-</td>
+                  <td>Disparado a cada caractere digitado ou alteração de valor.</td>
+                </tr>
+                <tr>
+                  <td><code>clear</code></td>
+                  <td><code>output&lt;void&gt;</code></td>
+                  <td>-</td>
+                  <td>Disparado quando o botão de limpar é acionado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TextareaComponent API -->
+        <div class="api-doc-block">
+          <h3 class="api-component-title">&lt;orc-textarea&gt; (TextareaComponent)</h3>
+          <div class="table-container">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Propriedade / input</th>
+                  <th>Tipo</th>
+                  <th>Padrão</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>value</code></td>
+                  <td><code>model&lt;string&gt;</code></td>
+                  <td><code>''</code></td>
+                  <td>Valor textual do textarea (Two-Way Binding).</td>
+                </tr>
+                <tr>
+                  <td><code>rows</code></td>
+                  <td><code>number</code></td>
+                  <td><code>4</code></td>
+                  <td>Quantidade inicial de linhas visíveis do textarea.</td>
+                </tr>
+                <tr>
+                  <td><code>resize</code></td>
+                  <td><code>'vertical' | 'none' | 'both' | 'horizontal'</code></td>
+                  <td><code>'vertical'</code></td>
+                  <td>Comportamento do redimensionador manual do navegador.</td>
+                </tr>
+                <tr>
+                  <td><code>autoResize</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Ajusta automaticamente a altura com base na quantidade de linhas digitadas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── EXEMPLOS DE CÓDIGO ────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos de código</h2>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">Exemplo de uso com Angular Standalone & Reactive Forms</div>
+          <pre class="code-block"><code>import &#123; Component &#125; from '&#64;angular/core';
+import &#123; ReactiveFormsModule, FormControl, FormGroup, Validators &#125; from '&#64;angular/forms';
+import &#123; InputComponent, TextareaComponent &#125; from '&#64;orc/ds';
+
+&#64;Component(&#123;
+  standalone: true,
+  imports: [ReactiveFormsModule, InputComponent, TextareaComponent],
+  template: `
+    &lt;form [formGroup]="userForm"&gt;
+      &lt;!-- Campo de Texto com Máscara de CPF --&gt;
+      &lt;orc-input
+        formControlName="cpf"
+        label="CPF"
+        mask="000.000.000-00"
+        placeholder="000.000.000-00"
+        [required]="true"
+      /&gt;
+
+      &lt;!-- Senha com Toggle de Visibilidade --&gt;
+      &lt;orc-input
+        formControlName="password"
+        type="password"
+        label="Senha"
+      /&gt;
+
+      &lt;!-- Textarea Multilinha --&gt;
+      &lt;orc-textarea
+        formControlName="comments"
+        label="Comentários adicionais"
+        [maxLength]="300"
+        [showCharCount]="true"
+      /&gt;
+    &lt;/form&gt;
+  `
+&#125;)
+export class MeuFormularioComponent &#123;
+  userForm = new FormGroup(&#123;
+    cpf: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+    comments: new FormControl(''),
+  &#125;);
+&#125;</code></pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer></app-footer>
+</div>

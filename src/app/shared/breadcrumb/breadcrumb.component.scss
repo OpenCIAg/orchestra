@@ -1,0 +1,163 @@
+:host {
+  display: inline-flex;
+}
+
+.orc-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+
+  &__list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 8px;
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  // ── LINKS & TEXTOS ────────────────────────────────────────
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem; // 14px (Figma text-[14px])
+    line-height: 20px;
+    font-weight: 400; // Poppins:Regular
+    color: var(--orc-font-secondary, #666666);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--transition-fast, 120ms ease);
+    outline: none;
+    border-radius: var(--radius-sm, 4px);
+
+    &:hover {
+      color: var(--orc-color-azul-royal, #0406ab);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline-offset: 2px;
+    }
+  }
+
+  &__text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    line-height: 20px;
+    font-weight: 400;
+    color: var(--orc-font-secondary, #666666);
+  }
+
+  // ── ITEM ATIVO / ATUAL (FIGMA DEFAULT - Node 18:1724) ─────
+  &__current {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem; // 14px
+    line-height: 20px;
+    font-weight: 600; // Poppins:SemiBold
+    color: var(--orc-font-main, #141414);
+    cursor: default;
+  }
+
+  // ── BOTÃO DE EXPANSÃO (...) ───────────────────────────────
+  &__ellipsis-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm, 4px);
+    color: var(--orc-font-secondary, #666666);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast, 120ms ease);
+
+    &:hover {
+      background: var(--bg-muted, #ededed);
+      color: var(--orc-color-azul-royal, #0406ab);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+    }
+  }
+
+  // ── SEPARADOR (FIGMA NODE 18:1714) ────────────────────────
+  &__separator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orc-font-secondary, #666666);
+    user-select: none;
+
+    &-icon {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    &-text {
+      font-size: 0.875rem;
+      line-height: 1;
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE 2: UNDERLINED (FIGMA NODE 35:11741) ──────────
+  // ──────────────────────────────────────────────────────────
+  &--variant-underlined {
+    .orc-breadcrumb__current {
+      font-weight: 400; // Poppins:Regular
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+      text-decoration: underline;
+    }
+
+    ::ng-deep .orc-breadcrumb-item--active .orc-breadcrumb-item__current {
+      font-weight: 400;
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+      text-decoration: underline;
+    }
+  }
+
+  // ── SEPARADOR AUTOMÁTICO PARA PROJEÇÃO DECLARATIVA ────────
+  ::ng-deep app-breadcrumb-item + app-breadcrumb-item {
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin: 0 8px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.25 2.625L9.625 7L5.25 11.375' stroke='%23666666' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+  }
+}

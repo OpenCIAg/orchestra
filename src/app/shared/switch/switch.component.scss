@@ -1,0 +1,212 @@
+:host {
+  display: inline-flex;
+}
+
+.orc-switch {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-3, 0.75rem);
+  user-select: none;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  line-height: 1.428;
+
+  // ── SIZES CONFIGURATION ───────────────────────────────────
+  // Default Size (md) - Matching Figma 382:5036 (32px width, 18px height, 16px thumb)
+  --switch-track-w: 32px;
+  --switch-track-h: 18.4px;
+  --switch-thumb-size: 14.4px;
+  --switch-thumb-offset: 2px;
+  --switch-thumb-travel: 13.6px;
+  --switch-font-size: 0.875rem;
+
+  &--size-sm {
+    --switch-track-w: 26px;
+    --switch-track-h: 15px;
+    --switch-thumb-size: 11px;
+    --switch-thumb-offset: 2px;
+    --switch-thumb-travel: 11px;
+    --switch-font-size: 0.8125rem;
+  }
+
+  &--size-md {
+    --switch-track-w: 32px;
+    --switch-track-h: 18.4px;
+    --switch-thumb-size: 14.4px;
+    --switch-thumb-offset: 2px;
+    --switch-thumb-travel: 13.6px;
+    --switch-font-size: 0.875rem;
+  }
+
+  &--size-lg {
+    --switch-track-w: 42px;
+    --switch-track-h: 24px;
+    --switch-thumb-size: 18px;
+    --switch-thumb-offset: 3px;
+    --switch-thumb-travel: 18px;
+    --switch-font-size: 1rem;
+  }
+
+  // Label Position Layouts
+  &--label-start {
+    flex-direction: row;
+  }
+
+  &--label-end {
+    flex-direction: row;
+  }
+
+  // ── INTERACTIVE BUTTON CONTROL ────────────────────────────
+  &__control {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 2px 0 0 0; // Optical alignment with line-height
+    cursor: pointer;
+    display: inline-flex;
+    outline: none;
+    border-radius: 200px;
+    flex-shrink: 0;
+
+    &:focus-visible {
+      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline-offset: 2px;
+    }
+  }
+
+  // ── SWITCH TRACK ──────────────────────────────────────────
+  &__track {
+    width: var(--switch-track-w);
+    height: var(--switch-track-h);
+    background-color: var(--orc-border, #d9d9d9);
+    border-radius: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    transition: background-color var(--transition-base, 200ms ease),
+                border-color var(--transition-base, 200ms ease),
+                box-shadow var(--transition-base, 200ms ease);
+  }
+
+  // ── SWITCH THUMB ──────────────────────────────────────────
+  &__thumb {
+    width: var(--switch-thumb-size);
+    height: var(--switch-thumb-size);
+    background-color: var(--orc-bg, #ffffff);
+    border-radius: 200px;
+    position: absolute;
+    left: var(--switch-thumb-offset);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transform: translateX(0);
+    transition: transform var(--transition-base, 200ms ease),
+                background-color var(--transition-base, 200ms ease);
+  }
+
+  // ── CONTENT (LABEL & DESCRIPTIONS) ────────────────────────
+  &__content {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  &__label {
+    font-size: var(--switch-font-size);
+    font-weight: 400;
+    color: var(--orc-font-main, #141414);
+    line-height: 1.428;
+    transition: color var(--transition-fast, 120ms ease),
+                font-weight var(--transition-fast, 120ms ease);
+  }
+
+  &__description {
+    font-size: 0.75rem;
+    color: var(--orc-font-secondary, #666666);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  &__error {
+    font-size: 0.75rem;
+    color: var(--color-error, #fb2c36);
+    line-height: 1.4;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  // ── HOVER STATE ───────────────────────────────────────────
+  &:hover:not(.orc-switch--disabled) {
+    .orc-switch__track {
+      background-color: var(--orc-secondary-bg, #bfbfbf);
+    }
+  }
+
+  // ── CHECKED STATE (Figma #1C6AED) ─────────────────────────
+  &--checked {
+    .orc-switch__track {
+      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+    }
+
+    .orc-switch__thumb {
+      transform: translateX(var(--switch-thumb-travel));
+    }
+
+    .orc-switch__label {
+      font-weight: 500;
+      color: var(--orc-font-main, #141414);
+    }
+
+    &:hover:not(.orc-switch--disabled) {
+      .orc-switch__track {
+        background-color: #175cd3; // Darkened blue on hover
+      }
+    }
+  }
+
+  // ── ERROR STATE ───────────────────────────────────────────
+  &--error {
+    .orc-switch__track {
+      background-color: var(--color-error, #fb2c36);
+    }
+
+    .orc-switch__label {
+      color: var(--color-error, #fb2c36);
+    }
+
+    .orc-switch__control:focus-visible {
+      outline-color: var(--color-error, #fb2c36);
+    }
+  }
+
+  // ── DISABLED STATE ────────────────────────────────────────
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    .orc-switch__control,
+    .orc-switch__content {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .orc-switch__track {
+      background-color: var(--orc-highlight-cinza-claro, #ededed);
+    }
+
+    &.orc-switch--checked .orc-switch__track {
+      background-color: var(--orc-font-secondary, #666666);
+    }
+
+    .orc-switch__label,
+    .orc-switch__description {
+      color: var(--orc-font-secondary, #666666);
+    }
+  }
+}
+
+// ── ACCESSIBILITY: REDUCED MOTION ───────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .orc-switch__track,
+  .orc-switch__thumb {
+    transition: none !important;
+  }
+}

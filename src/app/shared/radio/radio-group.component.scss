@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.orc-radio-group {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+
+  &__label {
+    font-size: 0.875rem; // 14px
+    font-weight: 500;
+    color: var(--orc-font-main, #141414);
+    margin-bottom: var(--space-2, 0.5rem);
+    line-height: 1.4;
+  }
+
+  &__hint {
+    font-size: 0.8125rem; // 13px
+    color: var(--orc-font-secondary, #666666);
+    margin-top: calc(-1 * var(--space-1, 0.25rem));
+    margin-bottom: var(--space-2, 0.5rem);
+    line-height: 1.4;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; // Figma node 32:18363 gap is 10px
+  }
+
+  // ── HORIZONTAL LAYOUT ─────────────────────────────────────
+  &--horizontal {
+    .orc-radio-group__options {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-6, 1.5rem);
+    }
+  }
+
+  // ── ERROR MESSAGE ─────────────────────────────────────────
+  &__error-message {
+    font-size: 0.8125rem; // 13px
+    font-weight: 500;
+    color: var(--color-error, #fb2c36);
+    margin-top: var(--space-2, 0.5rem);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1, 0.25rem);
+  }
+
+  // ── DISABLED GROUP ────────────────────────────────────────
+  &--disabled {
+    .orc-radio-group__label {
+      color: var(--orc-font-secondary, #666666);
+    }
+  }
+}

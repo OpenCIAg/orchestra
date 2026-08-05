@@ -1,0 +1,138 @@
+<div
+  class="orc-input-container"
+  [class.orc-input-container--disabled]="effectiveDisabled()"
+  [class.orc-input-container--readonly]="readonly()"
+>
+  <!-- ── Rótulo / Label ──────────────────────────────────────── -->
+  @if (label()) {
+    <label [for]="effectiveId()" class="orc-input__label">
+      {{ label() }}
+      @if (required()) {
+        <span class="orc-input__required-marker" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+
+  <!-- ── Caixa do Input com Prefixos, Sufixos e Ações ─────────── -->
+  <div
+    class="orc-input-box"
+    [class.orc-input-box--sm]="size() === 'sm'"
+    [class.orc-input-box--md]="size() === 'md'"
+    [class.orc-input-box--lg]="size() === 'lg'"
+    [class.orc-input-box--focused]="isFocused()"
+    [class.orc-input-box--disabled]="effectiveDisabled()"
+    [class.orc-input-box--readonly]="readonly()"
+    [class.orc-input-box--error]="status() === 'error'"
+    [class.orc-input-box--success]="status() === 'success'"
+    (click)="focusNative()"
+  >
+    <!-- Prefixo via ng-content -->
+    <div class="orc-input__slot orc-input__slot--prefix" (click)="$event.stopPropagation()">
+      <ng-content select="[prefix], [orcPrefix]" />
+      @if (prefixText()) {
+        <span class="orc-input__affix-text">{{ prefixText() }}</span>
+      }
+    </div>
+
+    <!-- Input Nativo -->
+    <input
+      #nativeInput
+      [id]="effectiveId()"
+      [name]="name()"
+      [type]="currentType()"
+      [value]="stringValue()"
+      [placeholder]="placeholder()"
+      [disabled]="effectiveDisabled()"
+      [readOnly]="readonly()"
+      [required]="required()"
+      [maxLength]="effectiveMaxLength() ?? null"
+      [minLength]="minLength() ?? null"
+      [min]="min() ?? null"
+      [max]="max() ?? null"
+      [step]="step() ?? null"
+      [autocomplete]="autocomplete()"
+      [autofocus]="autofocus()"
+      [attr.aria-label]="ariaLabel() || null"
+      [attr.aria-invalid]="status() === 'error' ? 'true' : null"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      (input)="onInput($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      class="orc-input__native"
+    />
+
+    <!-- Botão de Limpar (Search / Clearable) -->
+    @if (isClearVisible()) {
+      <button
+        type="button"
+        class="orc-input__action-btn orc-input__clear-btn"
+        (click)="onClear($event)"
+        aria-label="Limpar campo"
+        tabindex="-1"
+      >
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 4l8 8M12 4l-8 8" />
+        </svg>
+      </button>
+    }
+
+    <!-- Botão de Alternar Senha (Password Toggle) -->
+    @if (isPasswordToggleVisible()) {
+      <button
+        type="button"
+        class="orc-input__action-btn orc-input__password-btn"
+        (click)="togglePasswordVisibility($event)"
+        [attr.aria-label]="isPasswordVisible() ? 'Ocultar senha' : 'Exibir senha'"
+        tabindex="-1"
+      >
+        @if (isPasswordVisible()) {
+          <!-- Ícone Olho Fechado / Eye Off -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+            <line x1="1" y1="1" x2="23" y2="23" />
+          </svg>
+        } @else {
+          <!-- Ícone Olho Aberto / Eye -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        }
+      </button>
+    }
+
+    <!-- Sufixo via ng-content -->
+    <div class="orc-input__slot orc-input__slot--suffix" (click)="$event.stopPropagation()">
+      <ng-content select="[suffix], [orcSuffix]" />
+      @if (suffixText()) {
+        <span class="orc-input__affix-text">{{ suffixText() }}</span>
+      }
+    </div>
+  </div>
+
+  <!-- ── Mensagens de Ajuda, Erro e Contador de Caracteres ────── -->
+  @if ((status() === 'error' && errorMessage()) || helperText() || showCharCount()) {
+    <div class="orc-input__footer">
+      <div class="orc-input__message-area">
+        @if (status() === 'error' && errorMessage()) {
+          <p [id]="errorId()" class="orc-input__message orc-input__message--error" role="alert">
+            <svg class="orc-input__message-icon" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 10.5a.75.75 0 110-1.5.75.75 0 010 1.5zM8.75 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" />
+            </svg>
+            <span>{{ errorMessage() }}</span>
+          </p>
+        } @else if (helperText()) {
+          <p [id]="helperId()" class="orc-input__message orc-input__message--helper">
+            {{ helperText() }}
+          </p>
+        }
+      </div>
+
+      @if (showCharCount()) {
+        <span class="orc-input__char-count" [class.orc-input__char-count--limit]="maxLength() && charCount() >= maxLength()!">
+          {{ charCount() }}@if (maxLength()) { / {{ maxLength() }} }
+        </span>
+      }
+    </div>
+  }
+</div>
