@@ -1,0 +1,30 @@
+<button
+  type="button"
+  [disabled]="isDisabled()"
+  [attr.aria-disabled]="isDisabled() ? 'true' : null"
+  [attr.aria-busy]="loading() ? 'true' : null"
+  [attr.aria-label]="ariaLabel()"
+  [class]="buttonClasses()"
+  (click)="handleClick($event)"
+>
+  @if (loading()) {
+    <span class="orc-icon-button__spinner" aria-hidden="true">
+      <svg class="orc-icon-button__spinner-svg" viewBox="0 0 24 24" fill="none">
+        <circle class="orc-icon-button__spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+        <circle class="orc-icon-button__spinner-head" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="80" stroke-dashoffset="60"></circle>
+      </svg>
+    </span>
+  }
+
+  <span class="orc-icon-button__icon-container">
+    @if (icon(); as iconName) {
+      @if (iconName.startsWith('<svg')) {
+        <span class="orc-icon-button__icon-svg-wrapper" [innerHTML]="iconName"></span>
+      } @else {
+        <i [class]="iconName"></i>
+      }
+    } @else {
+      <ng-content></ng-content>
+    }
+  </span>
+</button>

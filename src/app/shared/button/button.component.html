@@ -1,0 +1,51 @@
+<button
+  [type]="type()"
+  [disabled]="isDisabled()"
+  [attr.aria-disabled]="isDisabled() ? 'true' : null"
+  [attr.aria-busy]="loading() ? 'true' : null"
+  [attr.aria-label]="ariaLabel() || null"
+  [class]="buttonClasses()"
+  (click)="handleClick($event)"
+>
+  @if (loading()) {
+    <span class="orc-button__spinner" aria-hidden="true">
+      <svg class="orc-button__spinner-svg" viewBox="0 0 24 24" fill="none">
+        <circle class="orc-button__spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+        <circle class="orc-button__spinner-head" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="80" stroke-dashoffset="60"></circle>
+      </svg>
+    </span>
+  }
+
+  <!-- Left Icon -->
+  @if (iconLeft(); as icon) {
+    <span class="orc-button__icon orc-button__icon--left" aria-hidden="true">
+      @if (icon.startsWith('<svg')) {
+        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon"></span>
+      } @else {
+        <i [class]="icon"></i>
+      }
+    </span>
+  } @else {
+    <ng-content select="[iconLeft]"></ng-content>
+  }
+
+  <!-- Content -->
+  @if (!iconOnly()) {
+    <span class="orc-button__text">
+      <ng-content></ng-content>
+    </span>
+  }
+
+  <!-- Right Icon -->
+  @if (iconRight(); as icon) {
+    <span class="orc-button__icon orc-button__icon--right" aria-hidden="true">
+      @if (icon.startsWith('<svg')) {
+        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon"></span>
+      } @else {
+        <i [class]="icon"></i>
+      }
+    </span>
+  } @else {
+    <ng-content select="[iconRight]"></ng-content>
+  }
+</button>
