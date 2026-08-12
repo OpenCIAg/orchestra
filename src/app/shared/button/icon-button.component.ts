@@ -4,8 +4,10 @@ import {
   input,
   computed,
   output,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ButtonVariant, ButtonSize } from './button.types';
 
 @Component({
@@ -25,11 +27,22 @@ export class IconButtonComponent {
   readonly icon = input<string | undefined>(undefined);
   readonly ariaLabel = input.required<string>(); // Require ariaLabel for accessibility
 
+  private readonly sanitizer = inject(DomSanitizer);
+
   // ── Outputs (Signals API) ─────────────────────────────────────────
   readonly click = output<MouseEvent>();
 
   // ── Computed Signals ──────────────────────────────────────────────
   readonly isDisabled = computed(() => this.disabled() || this.loading());
+
+  readonly safeIcon = computed(() => {
+    const icon = this.icon();
+    if (!icon) return null;
+    if (icon.trim().startsWith('<svg')) {
+      return { isSvg: true, content: this.sanitizer.bypassSecurityTrustHtml(icon) };
+    }
+    return { isSvg: false, content: icon };
+  });
 
   readonly buttonClasses = computed(() => {
     return {

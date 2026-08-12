@@ -17,12 +17,12 @@
   }
 
   <!-- Left Icon -->
-  @if (iconLeft(); as icon) {
+  @if (safeIconLeft(); as icon) {
     <span class="orc-button__icon orc-button__icon--left" aria-hidden="true">
-      @if (icon.startsWith('<svg')) {
-        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon"></span>
+      @if (icon.isSvg) {
+        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon.content"></span>
       } @else {
-        <i [class]="icon"></i>
+        <i [class]="icon.content"></i>
       }
     </span>
   } @else {
@@ -37,12 +37,12 @@
   }
 
   <!-- Right Icon -->
-  @if (iconRight(); as icon) {
+  @if (safeIconRight(); as icon) {
     <span class="orc-button__icon orc-button__icon--right" aria-hidden="true">
-      @if (icon.startsWith('<svg')) {
-        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon"></span>
+      @if (icon.isSvg) {
+        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon.content"></span>
       } @else {
-        <i [class]="icon"></i>
+        <i [class]="icon.content"></i>
       }
     </span>
   } @else {

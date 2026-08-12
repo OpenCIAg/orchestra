@@ -78,6 +78,14 @@ export const routes: Routes = [
     title: 'Badge — Orchestra',
   },
   {
+    path: 'components/button',
+    loadComponent: () =>
+      import('./pages/components/button/button-page.component').then(
+        m => m.ButtonPageComponent
+      ),
+    title: 'Button — Orchestra',
+  },
+  {
     path: 'components/tabs',
     loadComponent: () =>
       import('./pages/components/tabs/tabs-page.component').then(

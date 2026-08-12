@@ -4,8 +4,10 @@ import {
   input,
   computed,
   output,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ButtonVariant, ButtonSize } from './button.types';
 
 @Component({
@@ -29,11 +31,31 @@ export class ButtonComponent {
   readonly type = input<'button' | 'submit' | 'reset'>('button');
   readonly ariaLabel = input<string>('');
 
+  private readonly sanitizer = inject(DomSanitizer);
+
   // ── Outputs (Signals API) ─────────────────────────────────────────
   readonly click = output<MouseEvent>();
 
   // ── Computed Signals ──────────────────────────────────────────────
   readonly isDisabled = computed(() => this.disabled() || this.loading());
+
+  readonly safeIconLeft = computed(() => {
+    const icon = this.iconLeft();
+    if (!icon) return null;
+    if (icon.trim().startsWith('<svg')) {
+      return { isSvg: true, content: this.sanitizer.bypassSecurityTrustHtml(icon) };
+    }
+    return { isSvg: false, content: icon };
+  });
+
+  readonly safeIconRight = computed(() => {
+    const icon = this.iconRight();
+    if (!icon) return null;
+    if (icon.trim().startsWith('<svg')) {
+      return { isSvg: true, content: this.sanitizer.bypassSecurityTrustHtml(icon) };
+    }
+    return { isSvg: false, content: icon };
+  });
 
   readonly buttonClasses = computed(() => {
     return {

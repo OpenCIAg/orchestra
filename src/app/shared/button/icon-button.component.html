@@ -17,11 +17,11 @@
   }
 
   <span class="orc-icon-button__icon-container">
-    @if (icon(); as iconName) {
-      @if (iconName.startsWith('<svg')) {
-        <span class="orc-icon-button__icon-svg-wrapper" [innerHTML]="iconName"></span>
+    @if (safeIcon(); as iconData) {
+      @if (iconData.isSvg) {
+        <span class="orc-icon-button__icon-svg-wrapper" [innerHTML]="iconData.content"></span>
       } @else {
-        <i [class]="iconName"></i>
+        <i [class]="iconData.content"></i>
       }
     } @else {
       <ng-content></ng-content>
