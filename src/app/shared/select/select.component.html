@@ -1,0 +1,185 @@
+<div class="orc-select-wrapper" [class.is-disabled]="effectiveDisabled()" [class.is-invalid]="isInvalid()">
+  <!-- Label -->
+  @if (label()) {
+    <label [for]="effectiveId()" class="orc-select-label">
+      {{ label() }}
+      @if (required()) {
+        <span class="orc-select-required-asterisk" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+
+  <!-- Main Combobox Trigger -->
+  <div
+    #triggerEl
+    [id]="effectiveId()"
+    class="orc-select-trigger"
+    [class.is-open]="isOpen()"
+    [class.is-focused]="isFocused()"
+    [class.is-disabled]="effectiveDisabled()"
+    [class.is-readonly]="readonly()"
+    [class.is-invalid]="isInvalid()"
+    role="combobox"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-controls]="listboxId()"
+    [attr.aria-haspopup]="'listbox'"
+    [attr.aria-disabled]="effectiveDisabled()"
+    [attr.aria-invalid]="isInvalid()"
+    [attr.aria-describedby]="computedAriaDescribedBy()"
+    [attr.tabindex]="effectiveDisabled() ? -1 : 0"
+    (click)="togglePanel()"
+    (keydown)="onKeyDown($event)"
+    (focus)="onTriggerFocus($event)"
+    (blur)="onTriggerBlur($event)"
+  >
+    <div class="orc-select-trigger-content">
+      <ng-content select="[orcSelectTrigger], [selectTrigger]">
+        @if (multiple()) {
+          @if (selectedItems().length > 0) {
+            <div class="orc-select-chips">
+              @for (item of selectedItems(); track item.value) {
+                <span class="orc-select-chip">
+                  @if (item.avatarUrl) {
+                    <img [src]="item.avatarUrl" alt="" class="orc-chip-avatar" />
+                  } @else if (item.icon) {
+                    <i [class]="item.icon" class="orc-chip-icon" aria-hidden="true"></i>
+                  }
+                  <span class="orc-chip-label">{{ item.label }}</span>
+                  @if (!effectiveDisabled() && !readonly()) {
+                    <button
+                      type="button"
+                      class="orc-chip-remove"
+                      aria-label="Remover opção"
+                      (click)="removeSelectedItem(item.value, $event)"
+                    >
+                      &times;
+                    </button>
+                  }
+                </span>
+              }
+            </div>
+          } @else {
+            <span class="orc-select-placeholder">{{ placeholder() }}</span>
+          }
+        } @else {
+          @if (hasValue()) {
+            <div class="orc-select-single-value">
+              @if (selectedItems()[0].avatarUrl) {
+                <img [src]="selectedItems()[0].avatarUrl" alt="" class="orc-value-avatar" />
+              } @else if (selectedItems()[0].icon) {
+                <i [class]="selectedItems()[0].icon" class="orc-value-icon" aria-hidden="true"></i>
+              }
+              <span class="orc-value-text">{{ selectedItems()[0].label }}</span>
+            </div>
+          } @else {
+            <span class="orc-select-placeholder">{{ placeholder() }}</span>
+          }
+        }
+      </ng-content>
+    </div>
+
+    <!-- Actions (Clear & Chevron Arrow) -->
+    <div class="orc-select-actions">
+      @if (clearable() && hasValue() && !effectiveDisabled() && !readonly()) {
+        <button
+          type="button"
+          class="orc-select-clear-btn"
+          aria-label="Limpar seleção"
+          (click)="clearValue($event)"
+        >
+          &times;
+        </button>
+      }
+
+      <div class="orc-select-arrow" [class.is-expanded]="isOpen()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Helper Text or Error Message -->
+  @if (isInvalid() && errorMessage()) {
+    <p [id]="errorId()" class="orc-select-message is-error">
+      {{ errorMessage() }}
+    </p>
+  } @else if (helperText()) {
+    <p [id]="helperId()" class="orc-select-message is-helper">
+      {{ helperText() }}
+    </p>
+  }
+</div>
+
+<!-- Floating Dropdown Panel Template -->
+<ng-template #dropdownPanel>
+  <div
+    [id]="listboxId()"
+    class="orc-select-dropdown"
+    role="listbox"
+    [attr.aria-multiselectable]="multiple()"
+  >
+    <!-- Header projection -->
+    <ng-content select="[orcSelectHeader]"></ng-content>
+
+    <!-- Search Input -->
+    @if (searchable()) {
+      <div class="orc-select-search-container">
+        <input
+          #searchInput
+          type="text"
+          class="orc-select-search-input"
+          [placeholder]="searchPlaceholder()"
+          [value]="searchTerm()"
+          (input)="onSearchInput($event)"
+          (keydown)="onKeyDown($event)"
+        />
+      </div>
+    }
+
+    <!-- Options Container -->
+    <div class="orc-select-options-list">
+      @if (isDataMode()) {
+        @for (opt of filteredDataOptions(); track opt.value; let idx = $index) {
+          <div
+            class="orc-data-option"
+            [class.is-selected]="multiple() ? (value() || []).includes(opt.value) : value() === opt.value"
+            [class.is-active]="activeOptionIndex() === idx"
+            [class.is-disabled]="opt.disabled"
+            role="option"
+            [attr.aria-selected]="multiple() ? (value() || []).includes(opt.value) : value() === opt.value"
+            [attr.aria-disabled]="opt.disabled"
+            (click)="onDataOptionClick(opt)"
+          >
+            @if (opt.avatarUrl) {
+              <img [src]="opt.avatarUrl" alt="" class="orc-option-avatar" />
+            } @else if (opt.icon) {
+              <i [class]="opt.icon" class="orc-option-icon" aria-hidden="true"></i>
+            }
+            <div class="orc-option-content">
+              <span class="orc-option-label">{{ opt.label }}</span>
+              @if (opt.description) {
+                <span class="orc-option-description">{{ opt.description }}</span>
+              }
+            </div>
+            @if (multiple() ? (value() || []).includes(opt.value) : value() === opt.value) {
+              <svg class="orc-option-checkmark" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            }
+          </div>
+        } @empty {
+          <div class="orc-select-empty-state">
+            {{ searchEmptyText() }}
+          </div>
+        }
+      } @else {
+        <!-- Projected <orc-option> elements -->
+        <ng-content></ng-content>
+      }
+    </div>
+
+    <!-- Footer projection -->
+    <ng-content select="[orcSelectFooter]"></ng-content>
+  </div>
+</ng-template>

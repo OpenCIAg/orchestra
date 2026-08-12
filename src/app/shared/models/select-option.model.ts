@@ -5,6 +5,8 @@ export interface SelectOption<T = any> {
   label: string;
   /** Underlying value */
   value: T;
+  /** Optional secondary description/subtext */
+  description?: string;
   /** Optional icon class or name */
   icon?: string;
   /** Optional avatar image url */
@@ -14,3 +16,4 @@ export interface SelectOption<T = any> {
   /** Disable this option */
   disabled?: boolean;
 }
+

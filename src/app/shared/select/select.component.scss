@@ -1,0 +1,371 @@
+// src/app/shared/select/select.component.scss
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.orc-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  width: 100%;
+  box-sizing: border-box;
+
+  &.is-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+.orc-select-label {
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem; // 14px
+  font-weight: 500;
+  color: var(--orc-font-main, #141414);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 0.25rem);
+}
+
+.orc-select-required-asterisk {
+  color: var(--color-error, #FB2C36);
+}
+
+// ── Combobox Trigger ──────────────────────────────────────────
+.orc-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 41px;
+  width: 100%;
+  padding: 0.625rem; // 10px
+  background-color: var(--orc-fill-input, #FFFFFF);
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-md, 0.625rem); // 10px
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast, 120ms ease), box-shadow var(--transition-fast, 120ms ease);
+
+  &:hover:not(.is-disabled):not(.is-readonly) {
+    border-color: var(--border-strong, #D9D9D9);
+  }
+
+  &.is-focused,
+  &.is-open {
+    border-color: var(--color-accent, #141414);
+    box-shadow: 0 0 0 1px var(--color-accent, #141414);
+  }
+
+  &.is-invalid {
+    border-color: var(--color-error, #FB2C36) !important;
+
+    &.is-focused,
+    &.is-open {
+      box-shadow: 0 0 0 1px var(--color-error, #FB2C36) !important;
+    }
+  }
+
+  &.is-disabled {
+    cursor: not-allowed;
+    background-color: var(--bg-subtle, #F9F9F9);
+  }
+}
+
+.orc-select-trigger-content {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.orc-select-placeholder {
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem; // 14px
+  color: var(--orc-font-secondary, #666666);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orc-select-single-value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  color: var(--orc-font-main, #141414);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orc-value-avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--radius-full, 9999px);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.orc-value-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.orc-value-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ── Multi-select Chips ────────────────────────────────────────
+.orc-select-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem; // 6px
+  width: 100%;
+}
+
+.orc-select-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  background-color: var(--orc-highlight-cinza-claro, #EDEDED);
+  border-radius: var(--radius-sm, 0.375rem);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.75rem; // 12px
+  color: var(--orc-font-main, #141414);
+}
+
+.orc-chip-avatar {
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--radius-full, 9999px);
+}
+
+.orc-chip-icon {
+  font-size: 0.875rem;
+}
+
+.orc-chip-label {
+  white-space: nowrap;
+}
+
+.orc-chip-remove {
+  background: transparent;
+  border: none;
+  color: var(--orc-font-secondary, #666666);
+  font-size: 0.875rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  &:hover {
+    color: var(--color-error, #FB2C36);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+// ── Actions Right Container ───────────────────────────────────
+.orc-select-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+}
+
+.orc-select-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--orc-font-secondary, #666666);
+  font-size: 1.125rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  line-height: 1;
+
+  &:hover {
+    color: var(--orc-font-main, #141414);
+  }
+}
+
+.orc-select-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem; // 20px
+  height: 1.25rem;
+  color: var(--orc-font-main, #141414);
+  transition: transform var(--transition-fast, 120ms ease);
+
+  &.is-expanded {
+    transform: rotate(180deg);
+  }
+}
+
+// ── Dropdown Panel (Overlay) ──────────────────────────────────
+.orc-select-dropdown {
+  background-color: var(--orc-bg, #FFFFFF);
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-md, 0.625rem);
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0,0,0,0.08));
+  padding: 0.625rem; // 10px
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-sizing: border-box;
+  max-height: 260px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.orc-select-search-container {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--orc-border, #D9D9D9);
+  margin-bottom: 0.25rem;
+}
+
+.orc-select-search-input {
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem;
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-sm, 0.375rem);
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: var(--color-accent, #141414);
+  }
+}
+
+.orc-select-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  overflow-y: auto;
+  max-height: 200px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-strong, #D9D9D9);
+    border-radius: var(--radius-full, 9999px);
+  }
+}
+
+// ── Data Options rendering in data-mode ───────────────────────
+.orc-data-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-md, 0.625rem);
+  color: var(--orc-font-main, #141414);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--transition-fast, 120ms ease);
+
+  &:hover,
+  &.is-active,
+  &.is-selected {
+    background-color: var(--orc-highlight-cinza-claro, #EDEDED);
+  }
+
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+.orc-option-avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--radius-full, 9999px);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.orc-option-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.orc-option-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.orc-option-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orc-option-description {
+  font-size: 0.75rem;
+  color: var(--orc-font-secondary, #666666);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orc-option-checkmark {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--orc-font-main, #141414);
+}
+
+.orc-select-empty-state {
+  padding: 0.75rem;
+  text-align: center;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem;
+  color: var(--orc-font-secondary, #666666);
+}
+
+// ── Messages ──────────────────────────────────────────────────
+.orc-select-message {
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem; // 14px
+  line-height: 1.25rem;
+
+  &.is-error {
+    color: var(--color-error, #FB2C36);
+  }
+
+  &.is-helper {
+    color: var(--orc-font-secondary, #666666);
+  }
+}

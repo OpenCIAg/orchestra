@@ -74,16 +74,6 @@ const CATALOG: ComponentEntry[] = [
     route: '/components/slider',
   },
   {
-    id: 'textarea',
-    name: 'Textarea',
-    description: 'Campo de texto multilinha com auto-resize e contador de caracteres.',
-    category: 'Inputs',
-    status: 'stable',
-    tags: ['text', 'multi-line', 'form', 'mensagem', 'área'],
-    icon: '📝',
-    route: '/components/textarea',
-  },
-  {
     id: 'otp-input',
     name: 'OTP Input',
     description: 'Entrada de código de uso único (One-Time Password) acessível e reativo.',

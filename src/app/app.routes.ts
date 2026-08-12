@@ -174,6 +174,14 @@ export const routes: Routes = [
     title: 'Input & Textarea — Orchestra',
   },
   {
+    path: 'components/select',
+    loadComponent: () =>
+      import('./pages/components/select/select-page.component').then(
+        m => m.SelectPageComponent
+      ),
+    title: 'Select & Dropdown — Orchestra',
+  },
+  {
     path: 'components/textarea',
     redirectTo: 'components/input',
     pathMatch: 'full',

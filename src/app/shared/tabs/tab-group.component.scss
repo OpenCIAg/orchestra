@@ -39,6 +39,7 @@
     font-family: inherit;
     white-space: nowrap;
     text-decoration: none;
+    flex-shrink: 0;
     transition: color var(--transition-fast, 120ms ease),
                 background-color var(--transition-fast, 120ms ease),
                 border-color var(--transition-fast, 120ms ease),
@@ -48,7 +49,7 @@
 
     &:focus-visible {
       outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
-      outline-offset: 2px;
+      outline-offset: -2px;
     }
   }
 
@@ -91,7 +92,7 @@
       width: 100%;
     }
     .orc-tab-group__tab {
-      flex: 1;
+      flex: 1 0 auto;
     }
   }
 
@@ -100,7 +101,7 @@
   // ──────────────────────────────────────────────────────────
   &--variant-line {
     .orc-tab-group__header {
-      border-bottom: 2px solid var(--highlight-cinzaclaro, #ededed);
+      box-shadow: inset 0 -2px 0 var(--highlight-cinzaclaro, #ededed);
       gap: 0;
     }
 
@@ -110,8 +111,7 @@
       font-size: 1rem; // 16px (Figma text-[16px])
       font-weight: 400; // Poppins:Regular
       color: #929292; // Figma inactive tab color
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
+      box-shadow: inset 0 -2px 0 transparent;
 
       .orc-tab-group__icon {
         width: 20px;
@@ -130,7 +130,7 @@
       &--active {
         color: var(--orc-color-azul-eletrico, #1c6aed);
         font-weight: 600; // Poppins:SemiBold
-        border-bottom-color: var(--orc-color-azul-eletrico, #1c6aed);
+        box-shadow: inset 0 -2px 0 var(--orc-color-azul-eletrico, #1c6aed);
 
         .orc-tab-group__icon {
           color: var(--orc-color-azul-eletrico, #1c6aed);

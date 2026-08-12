@@ -1,0 +1,130 @@
+<!-- src/app/pages/components/select/select-page.component.html -->
+
+<div class="page-container">
+  <!-- Header / Breadcrumb -->
+  <header class="page-header">
+    <div class="breadcrumb">
+      <a routerLink="/" class="breadcrumb-item">Home</a>
+      <span class="breadcrumb-separator">/</span>
+      <a routerLink="/docs" class="breadcrumb-item">Componentes</a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-item active">Select</span>
+    </div>
+    <h1 class="page-title">Select & Dropdown</h1>
+    <p class="page-subtitle">
+      Componente versátil de seleção única e múltipla com suporte a busca, chips/tags, avatares, ícones, projeção de conteúdo e integração nativa com Reactive Forms (ControlValueAccessor).
+    </p>
+  </header>
+
+  <!-- Seção 1: Figma Showcase Demo -->
+  <section class="demo-section">
+    <h2 class="section-title">Design Figma Showcase</h2>
+    <p class="section-desc">Exemplos espelhados diretamente das variantes do Figma (Default, Icon, Múltiplas Opções e Erro/Invalido).</p>
+
+    <div class="demo-grid">
+      <!-- Default Dropdown -->
+      <div class="demo-card">
+        <h3 class="card-title">Default Dropdown</h3>
+        <orc-select [value]="singleValue()" (valueChange)="singleValue.set($event)">
+          <orc-option value="p1" label="Opção 1"></orc-option>
+          <orc-option value="p2" label="Opção 2"></orc-option>
+          <orc-option value="p3" label="Opção 3"></orc-option>
+        </orc-select>
+      </div>
+
+      <!-- Dropdown com Ícone -->
+      <div class="demo-card">
+        <h3 class="card-title">Dropdown com Ícone</h3>
+        <orc-select placeholder="Default com Ícone">
+          <orc-option value="w1" label="Projeto Principal" icon="ph ph-star"></orc-option>
+          <orc-option value="w2" label="Design System" icon="ph ph-star"></orc-option>
+          <orc-option value="w3" label="Componentes UI" icon="ph ph-folder"></orc-option>
+        </orc-select>
+      </div>
+
+      <!-- Estado Inválido / Erro -->
+      <div class="demo-card">
+        <h3 class="card-title">Estado Inválido (Error Status)</h3>
+        <orc-select
+          status="error"
+          errorMessage="Este campo é obrigatório."
+          placeholder="Default"
+        >
+          <orc-option value="err1" label="Opção 1"></orc-option>
+          <orc-option value="err2" label="Opção 2"></orc-option>
+        </orc-select>
+      </div>
+
+      <!-- Seleção Múltipla com Chips -->
+      <div class="demo-card">
+        <h3 class="card-title">Seleção Múltipla (Chips)</h3>
+        <orc-select
+          [multiple]="true"
+          [clearable]="true"
+          [(value)]="multiValue"
+          placeholder="Selecione membros..."
+        >
+          @for (opt of teamOptions; track opt.value) {
+            <orc-option
+              [value]="opt.value"
+              [label]="opt.label"
+              [avatarUrl]="opt.avatarUrl"
+              [description]="opt.description"
+            ></orc-option>
+          }
+        </orc-select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 2: Busca e Filtro Interno -->
+  <section class="demo-section">
+    <h2 class="section-title">Busca e Filtro Interno (Searchable)</h2>
+    <p class="section-desc">Ative <code>searchable="true"</code> para incluir um campo de pesquisa interno em listas extensas.</p>
+
+    <div class="demo-card full-width">
+      <orc-select
+        label="Selecione o Projeto"
+        helperText="Digite para filtrar os projetos cadastrados."
+        [searchable]="true"
+        [options]="dataOptions"
+        [clearable]="true"
+        [(value)]="searchableValue"
+      >
+      </orc-select>
+    </div>
+  </section>
+
+  <!-- Seção 3: Reactive Forms Integration -->
+  <section class="demo-section">
+    <h2 class="section-title">Integração com Reactive Forms (ControlValueAccessor)</h2>
+    <p class="section-desc">Suporte nativo a <code>formControlName</code>, <code>ngModel</code>, validações e estados desabilitados.</p>
+
+    <div class="demo-card full-width">
+      <form [formGroup]="demoForm" (ngSubmit)="onSubmitForm()" class="reactive-form">
+        <orc-select
+          formControlName="category"
+          label="Categoria Obrigatória *"
+          placeholder="Selecione uma categoria..."
+          [status]="demoForm.get('category')?.invalid && demoForm.get('category')?.touched ? 'error' : 'default'"
+          errorMessage="Por favor, selecione uma categoria válida."
+          [options]="dataOptions"
+        ></orc-select>
+
+        <orc-select
+          formControlName="tags"
+          label="Tags Selecionadas"
+          [multiple]="true"
+          [options]="dataOptions"
+        ></orc-select>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Enviar Formulário</button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">Resetar</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <app-footer></app-footer>
+</div>

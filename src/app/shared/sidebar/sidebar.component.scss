@@ -1,0 +1,85 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.orc-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 260px;
+  background: var(--bg-app, #ffffff);
+  border-right: 1px solid var(--border-default, #e5e5e5);
+  transition: width var(--transition-normal, 0.2s) ease;
+  overflow: hidden;
+  z-index: 50;
+
+  &--collapsed {
+    width: 72px;
+
+    .orc-sidebar__header {
+      padding: var(--space-4, 1rem) var(--space-2, 0.5rem);
+      justify-content: center;
+    }
+    
+    .orc-sidebar__footer {
+      padding: var(--space-4, 1rem) var(--space-2, 0.5rem);
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
+
+  &--responsive {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0,0,0,0.1));
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: var(--space-4, 1rem) var(--space-5, 1.25rem);
+    min-height: 64px;
+    border-bottom: 1px solid var(--border-default, #e5e5e5);
+  }
+
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--space-4, 1rem) var(--space-3, 0.75rem);
+    
+    // Custom scrollbar for webkit
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--border-default, #e5e5e5);
+      border-radius: 4px;
+    }
+  }
+
+  &__nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 0.25rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4, 1rem) var(--space-5, 1.25rem);
+    border-top: 1px solid var(--border-default, #e5e5e5);
+    min-height: 64px;
+    gap: var(--space-2, 0.5rem);
+  }
+}
