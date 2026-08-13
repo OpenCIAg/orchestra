@@ -174,6 +174,22 @@ export const routes: Routes = [
     title: 'Input & Textarea — Orchestra',
   },
   {
+    path: 'components/chip-input',
+    loadComponent: () =>
+      import('./pages/components/chip-input/chip-input-page.component').then(
+        m => m.ChipInputPageComponent
+      ),
+    title: 'Chip Input — Orchestra',
+  },
+  {
+    path: 'components/rating',
+    loadComponent: () =>
+      import('./pages/components/rating/rating-page.component').then(
+        m => m.RatingPageComponent
+      ),
+    title: 'Rating — Orchestra',
+  },
+  {
     path: 'components/select',
     loadComponent: () =>
       import('./pages/components/select/select-page.component').then(
@@ -193,6 +209,22 @@ export const routes: Routes = [
         m => m.SliderPageComponent
       ),
     title: 'Slider — Orchestra',
+  },
+  {
+    path: 'components/modal',
+    loadComponent: () =>
+      import('./pages/components/modal/modal-page.component').then(
+        m => m.ModalPageComponent
+      ),
+    title: 'Modal / Dialog — Orchestra',
+  },
+  {
+    path: 'components/file-uploader',
+    loadComponent: () =>
+      import('./pages/components/file-uploader/file-uploader-page.component').then(
+        m => m.FileUploaderPageComponent
+      ),
+    title: 'File Uploader — Orchestra',
   },
   {
     path: '**',

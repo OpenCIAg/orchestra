@@ -1,0 +1,343 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Overlay</div>
+      <h1 class="section-title">Modal / Dialog</h1>
+      <p class="section-desc">
+        Janelas de diálogo nativas baseadas no elemento HTML5 <code>&lt;dialog&gt;</code>,
+        provendo acessibilidade total (Focus Trap, <code>Esc</code>, Top Layer) e flexibilidade de chamadas declarativas
+        ou programáticas.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Demonstração interativa</h2>
+
+        <div class="playground-grid">
+          <div class="panel preview-panel" style="grid-column: 1 / -1;">
+            <div class="panel__header">Formas de Abertura</div>
+            <div class="panel__body" style="flex-direction: row; flex-wrap: wrap; gap: 1rem;">
+
+              <!-- Declarativo Padrão -->
+              <orc-button variant="primary" (click)="isDeclarativeOpen.set(true)">
+                Modal Declarativo (Padrão)
+              </orc-button>
+
+              <!-- Declarativo Tamanho LG -->
+              <orc-button variant="outline" (click)="isLargeOpen.set(true)">
+                Modal Largo (lg)
+              </orc-button>
+
+              <!-- Sem fechar por fora -->
+              <orc-button variant="outline" (click)="isPreventCloseOpen.set(true)">
+                Obrigatório (Sem fechar ao clicar fora)
+              </orc-button>
+
+              <!-- Via Serviço -->
+              <orc-button variant="primary"
+                iconLeft="<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='13 2 3 14 12 14 11 22 21 10 12 10 13 2'></polygon></svg>"
+                (click)="openProgrammaticModal()">
+                Abrir via ModalService
+              </orc-button>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODAL 1: Padrão -->
+      <orc-modal [(isOpen)]="isDeclarativeOpen">
+        <span modal-header>Excluir repositório?</span>
+        <div modal-body>
+          <p>Você está prestes a excluir este projeto. Essa ação é <strong>irreversível</strong>.</p>
+          <p style="margin-top: 1rem;">Para confirmar, digite o nome do projeto abaixo.</p>
+        </div>
+        <div modal-footer>
+          <orc-button variant="ghost" (click)="isDeclarativeOpen.set(false)">Cancelar</orc-button>
+          <orc-button variant="danger" (click)="isDeclarativeOpen.set(false)">Excluir permanentemente</orc-button>
+        </div>
+      </orc-modal>
+
+      <!-- MODAL 2: Largo -->
+      <orc-modal [(isOpen)]="isLargeOpen" size="lg">
+        <span modal-header>Termos de Serviço</span>
+        <div modal-body style="max-height: 400px;">
+          <h3>1. Introdução</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt, nunc quis accumsan eleifend,
+            ipsum nunc scelerisque augue.</p>
+          <h3 style="margin-top: 1rem;">2. Privacidade</h3>
+          <p>Vivamus ultricies velit mauris, egestas vestibulum nulla vulputate eget. Suspendisse pulvinar interdum
+            nisi.</p>
+          <p>Pellentesque lacinia, erat vitae pulvinar sollicitudin, arcu felis consequat nisi, vitae fringilla neque
+            tellus finibus ligula.</p>
+          <h3 style="margin-top: 1rem;">3. Aceite</h3>
+          <p>Morbi sagittis, purus eu sodales efficitur, ligula mauris faucibus sem, vel finibus nisi dolor non orci.
+          </p>
+          <h3 style="margin-top: 1rem;">4. Limitação de Responsabilidade</h3>
+          <p>Praesent scelerisque odio id turpis tincidunt pretium. Donec venenatis congue mi sit amet placerat.</p>
+          <p>Cras vel eros eu eros imperdiet suscipit. Etiam ullamcorper, leo non interdum interdum, magna leo feugiat
+            nibh, sit amet iaculis lacus nisi sed nisl.</p>
+        </div>
+        <div modal-footer>
+          <orc-button variant="primary" (click)="isLargeOpen.set(false)">Eu aceito</orc-button>
+        </div>
+      </orc-modal>
+
+      <!-- MODAL 3: Prevent backdrop close -->
+      <orc-modal [(isOpen)]="isPreventCloseOpen" [closeOnBackdropClick]="false" [showCloseButton]="false">
+        <span modal-header>Atualização Crítica</span>
+        <div modal-body>
+          <p>Você precisa salvar suas alterações antes de prosseguir com a atualização do sistema.</p>
+          <p>Clicar fora do modal ou pressionar ESC <strong>não</strong> vai fechá-lo.</p>
+        </div>
+        <div modal-footer>
+          <orc-button variant="primary" (click)="isPreventCloseOpen.set(false)">Salvar e Fechar</orc-button>
+        </div>
+      </orc-modal>
+
+      <!-- ── COMPONENTE PLANO ──────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+
+
+        <!-- Container usando example-card com o tamanho rigorosamente mantido -->
+        <div class="playground-grid" style="grid-template-columns: 1fr; gap: 2rem;">
+
+          <!-- Tipo: Inputs pequenos (500px) -->
+          <div class="example-card">
+            <div class="example-card__header">
+              Inputs pequenos (500px)
+            </div>
+            <div class="example-card__body"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+              <orc-modal [inline]="true" size="custom" style="display: block; width: 500px; max-width: 100%;">
+                <span modal-header>Título</span>
+                <div modal-body>
+                  <p>Texto informativo do modal (Inputs pequenos)</p>
+                </div>
+                <div modal-footer>
+                  <orc-button variant="ghost">Secondary</orc-button>
+                  <orc-button variant="primary">Default</orc-button>
+                </div>
+              </orc-modal>
+            </div>
+          </div>
+
+          <!-- Tipo: Informativos (500px) -->
+          <div class="example-card">
+            <div class="example-card__header">
+              Informativos (500px)
+            </div>
+            <div class="example-card__body"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+              <orc-modal [inline]="true" size="custom" style="display: block; width: 500px; max-width: 100%;">
+                <span modal-header>Título</span>
+                <div modal-body>
+                  <p>Texto informativo do modal</p>
+                </div>
+                <div modal-footer>
+                  <orc-button variant="ghost">Fechar</orc-button>
+                  <orc-button variant="primary">Continuar</orc-button>
+                </div>
+              </orc-modal>
+            </div>
+          </div>
+
+          <!-- Tipo: Exclusão (500px) -->
+          <div class="example-card">
+            <div class="example-card__header">
+              Exclusão (500px)
+            </div>
+            <div class="example-card__body"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+              <orc-modal [inline]="true" status="danger" size="custom"
+                style="display: block; width: 500px; max-width: 100%;">
+                <span modal-header>Modal destrutivo</span>
+                <div modal-body>
+                  <p style="margin-top: -10px; color: var(--text-secondary);">Esta ação não pode ser desfeita. Isso
+                    excluirá permanentemente sua conta e removerá todos os dados dos nossos servidores.</p>
+                </div>
+                <div modal-footer>
+                  <orc-button variant="ghost">Cancelar</orc-button>
+                  <orc-button variant="danger">Sim, excluir conta</orc-button>
+                </div>
+              </orc-modal>
+            </div>
+          </div>
+
+          <!-- Tipo: Formulários (500px) -->
+          <div class="example-card">
+            <div class="example-card__header">
+              Formulários (500px)
+            </div>
+            <div class="example-card__body"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+              <orc-modal [inline]="true" size="custom" style="display: block; width: 500px; max-width: 100%;">
+                <span modal-header>Título</span>
+                <div modal-body>
+                  <p>Texto informativo do modal (Formulários)</p>
+                </div>
+                <div modal-footer>
+                  <orc-button variant="ghost">Secondary</orc-button>
+                  <orc-button variant="primary">Default</orc-button>
+                </div>
+              </orc-modal>
+            </div>
+          </div>
+
+          <!-- Tipo: Erros (359px) -->
+          <div class="example-card">
+            <div class="example-card__header">
+              Erros (359px)
+            </div>
+            <div class="example-card__body"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+              <orc-modal [inline]="true" status="danger" size="custom"
+                style="display: block; width: 359px; max-width: 100%;">
+                <span modal-header>Erro crítico</span>
+                <div modal-body style="display: flex; justify-content: center;">
+                  <p style="color: var(--text-secondary); text-align: left; width: 100%;">Não foi possível processar sua
+                    solicitação. Entre em contato com o suporte.</p>
+                </div>
+              </orc-modal>
+            </div>
+          </div>
+
+          <!-- Tipo: Extenso (600px) -->
+          <div class="example-card">
+            <div class="example-card__header">
+              Extenso (600px)
+            </div>
+            <div class="example-card__body"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+              <orc-modal [inline]="true" size="custom" style="display: block; width: 600px; max-width: 100%;">
+                <span modal-header>Modais extensos (assinaturas de termo)</span>
+                <div modal-body>
+                  <div style="max-height: 400px; overflow-y: auto; padding-right: 8px;">
+                    <h4 style="margin-top: 0;">TERMO OFICIAL DE RECONHECIMENTO DA SUPREMACIA DA BATATINHA CORADA</h4>
+                    <p>Ao selecionar "Concordo", a pessoa usuária declara estar ciente, de forma livre e recreativa, das
+                      disposições estabelecidas neste Termo Fictício de Valorização Gastronômica, nos termos a seguir:
+                    </p>
+                    <br>
+                    <h5>CLÁUSULA 1 — DO OBJETO</h5>
+                    <p>1.1. O presente Termo estabelece o reconhecimento simbólico de que a batatinha corada configura o
+                      ápice das preparações à base de batata.</p>
+                  </div>
+                </div>
+                <div modal-footer>
+                  <orc-button variant="ghost">Fechar</orc-button>
+                  <orc-button variant="primary">Continuar</orc-button>
+                </div>
+              </orc-modal>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── DOCUMENTAÇÃO DA API ─────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Documentação da API</h2>
+
+        <div class="api-doc-block">
+          <h3 class="api-component-title">&lt;orc-modal&gt;</h3>
+          <div class="table-container">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Propriedade / Model</th>
+                  <th>Tipo</th>
+                  <th>Padrão</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>isOpen</code></td>
+                  <td><code>model&lt;boolean&gt;</code></td>
+                  <td><code>false</code></td>
+                  <td>Define se o modal está aberto. Suporta Two-way binding (`[(isOpen)]`).</td>
+                </tr>
+                <tr>
+                  <td><code>size</code></td>
+                  <td><code>'sm' | 'md' | 'lg' | 'xl' | 'fullScreen'</code></td>
+                  <td><code>'md'</code></td>
+                  <td>Largura máxima e porte do modal.</td>
+                </tr>
+                <tr>
+                  <td><code>closeOnBackdropClick</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Se verdadeiro, clicar no escuro do fundo fecha o modal automaticamente.</td>
+                </tr>
+                <tr>
+                  <td><code>showCloseButton</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Renderiza o botão "X" no canto superior direito do cabeçalho.</td>
+                </tr>
+                <tr>
+                  <td><code>zIndex</code></td>
+                  <td><code>number</code></td>
+                  <td><code>1000</code></td>
+                  <td>Prioridade de empilhamento caso hajam múltiplos modais. (Natível <code>&lt;dialog&gt;</code> top
+                    layer costuma anular necessidade).</td>
+                </tr>
+                <tr>
+                  <td><code>closed</code></td>
+                  <td><code>output&lt;void&gt;</code></td>
+                  <td>-</td>
+                  <td>Evento disparado sempre que o modal se fecha.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2. ModalService API -->
+        <div class="api-doc-block" style="margin-top: 2rem;">
+          <h3 class="api-component-title">ModalService</h3>
+          <div class="table-container">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Método</th>
+                  <th>Assinatura</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>open()</code></td>
+                  <td>
+                    <code>open&lt;T&gt;(component: Type&lt;T&gt;, inputs?: Record&lt;string, unknown&gt;): ModalRef&lt;T&gt;</code>
+                  </td>
+                  <td>Instancia e injeta um componente dinâmico no DOM. O componente fornecido deve conter o
+                    <code>&lt;orc-modal&gt;</code> internamente para acionar o Top Layer.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <app-footer />
+</div>

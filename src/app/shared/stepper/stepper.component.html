@@ -1,95 +1,72 @@
-<nav
-  class="orc-stepper"
-  [class.orc-stepper--horizontal]="orientation() === 'horizontal'"
-  [class.orc-stepper--vertical]="orientation() === 'vertical'"
-  [class.orc-stepper--numeric]="type() === 'numeric'"
-  [class.orc-stepper--icon]="type() === 'icon'"
-  aria-label="Etapas do processo"
->
+<nav class="orc-stepper" [class.orc-stepper--horizontal]="orientation() === 'horizontal'"
+  [class.orc-stepper--vertical]="orientation() === 'vertical'" [class.orc-stepper--numeric]="type() === 'numeric'"
+  [class.orc-stepper--icon]="type() === 'icon'" aria-label="Etapas do processo">
   <ol class="orc-stepper__list">
     @for (step of steps(); track step.id || $index; let idx = $index; let isLast = $last) {
-      @let status = getStepStatus(idx, step);
-      @let clickableState = isStepClickable(idx, step);
+    @let status = getStepStatus(idx, step);
+    @let clickableState = isStepClickable(idx, step);
 
-      <li
-        class="orc-stepper__item"
-        [class.orc-stepper__item--completed]="status === 'completed'"
-        [class.orc-stepper__item--active]="status === 'active'"
-        [class.orc-stepper__item--loading]="status === 'loading'"
-        [class.orc-stepper__item--pending]="status === 'pending'"
-        [class.orc-stepper__item--error]="status === 'error'"
-        [class.orc-stepper__item--disabled]="step.disabled"
-        [class.orc-stepper__item--clickable]="clickableState"
-      >
-        <!-- Horizontal Connector Line (Before Step, if not first) -->
-        @if (orientation() === 'horizontal' && idx > 0) {
-          <div
-            class="orc-stepper__connector-line orc-stepper__connector-line--horizontal"
-            [class.orc-stepper__connector-line--completed]="isConnectorCompleted(idx)"
-          ></div>
-        }
+    <li class="orc-stepper__item" [class.orc-stepper__item--completed]="status === 'completed'"
+      [class.orc-stepper__item--active]="status === 'active'" [class.orc-stepper__item--loading]="status === 'loading'"
+      [class.orc-stepper__item--pending]="status === 'pending'" [class.orc-stepper__item--error]="status === 'error'"
+      [class.orc-stepper__item--disabled]="step.disabled" [class.orc-stepper__item--clickable]="clickableState">
+      <!-- Horizontal Connector Line (Before Step, if not first) -->
+      @if (orientation() === 'horizontal' && idx > 0) {
+      <div class="orc-stepper__connector-line orc-stepper__connector-line--horizontal"
+        [class.orc-stepper__connector-line--completed]="isConnectorCompleted(idx)"></div>
+      }
 
-        <!-- Step Trigger Button / Container -->
-        <button
-          type="button"
-          class="orc-stepper__step-btn"
-          [disabled]="!clickableState"
-          (click)="selectStep(idx, step)"
-          [attr.aria-current]="status === 'active' ? 'step' : null"
-        >
-          <!-- Marker Circle (Number or Icon) -->
-          <div class="orc-stepper__marker">
-            @if (status === 'completed') {
-              <!-- Checkmark SVG -->
-              <svg class="orc-stepper__icon orc-stepper__icon--check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            } @else if (status === 'loading' || (status === 'active' && orientation() === 'vertical')) {
-              <!-- Spinner / Loader SVG -->
-              <svg class="orc-stepper__icon orc-stepper__icon--spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
-              </svg>
-            } @else if (type() === 'numeric') {
-              <!-- Step Number -->
-              <span class="orc-stepper__number">{{ idx + 1 }}</span>
-            } @else if (step.icon) {
-              <!-- Custom Icon or Text -->
-              <span class="orc-stepper__custom-icon">{{ step.icon }}</span>
-            } @else {
-              <!-- Fallback to Number -->
-              <span class="orc-stepper__number">{{ idx + 1 }}</span>
-            }
+      <!-- Step Trigger Button / Container -->
+      <button type="button" class="orc-stepper__step-btn" [disabled]="!clickableState" (click)="selectStep(idx, step)"
+        [attr.aria-current]="status === 'active' ? 'step' : null">
+        <!-- Marker Circle (Number or Icon) -->
+        <div class="orc-stepper__marker">
+          @if (status === 'completed') {
+          <!-- Checkmark SVG -->
+          <svg class="orc-stepper__icon orc-stepper__icon--check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          } @else if (status === 'loading' || (status === 'active' && orientation() === 'vertical')) {
+          <!-- Spinner / Loader SVG -->
+          <svg class="orc-stepper__icon orc-stepper__icon--spin" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+          </svg>
+          } @else if (type() === 'numeric') {
+          <!-- Step Number -->
+          <span class="orc-stepper__number">{{ idx + 1 }}</span>
+          } @else if (step.icon) {
+          <!-- Custom Icon or Text -->
+          <span class="orc-stepper__custom-icon">{{ step.icon }}</span>
+          } @else {
+          <!-- Fallback to Number -->
+          <span class="orc-stepper__number">{{ idx + 1 }}</span>
+          }
+        </div>
+
+        <!-- Step Label & Description -->
+        <div class="orc-stepper__content">
+          <span class="orc-stepper__title">{{ step.title }}</span>
+          @if (step.subtitle || step.description) {
+          <span class="orc-stepper__subtitle">{{ step.subtitle || step.description }}</span>
+          }
+
+          <!-- Embedded Progress Bar in Step (Figma Vertical Stepper Spec) -->
+          @if (step.progress !== undefined && (status === 'active' || orientation() === 'vertical')) {
+          <div class="orc-stepper__step-progress">
+            <orc-progress-bar [value]="step.progress" variant="primary" label="Progresso" [showValue]="true" />
           </div>
+          }
+        </div>
+      </button>
 
-          <!-- Step Label & Description -->
-          <div class="orc-stepper__content">
-            <span class="orc-stepper__title">{{ step.title }}</span>
-            @if (step.subtitle || step.description) {
-              <span class="orc-stepper__subtitle">{{ step.subtitle || step.description }}</span>
-            }
-
-            <!-- Embedded Progress Bar in Step (Figma Vertical Stepper Spec) -->
-            @if (step.progress !== undefined && (status === 'active' || orientation() === 'vertical')) {
-              <div class="orc-stepper__step-progress">
-                <orc-progress-bar
-                  [value]="step.progress"
-                  variant="primary"
-                  label="Progresso"
-                  [showValue]="true"
-                />
-              </div>
-            }
-          </div>
-        </button>
-
-        <!-- Vertical Connector Line (Below step, if not last) -->
-        @if (orientation() === 'vertical' && !isLast) {
-          <div
-            class="orc-stepper__connector-line orc-stepper__connector-line--vertical"
-            [class.orc-stepper__connector-line--completed]="isConnectorCompleted(idx + 1)"
-          ></div>
-        }
-      </li>
+      <!-- Vertical Connector Line (Below step, if not last) -->
+      @if (orientation() === 'vertical' && !isLast) {
+      <div class="orc-stepper__connector-line orc-stepper__connector-line--vertical"
+        [class.orc-stepper__connector-line--completed]="isConnectorCompleted(idx + 1)"></div>
+      }
+    </li>
     }
   </ol>
 </nav>

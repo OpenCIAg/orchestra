@@ -1,0 +1,78 @@
+
+<div
+  class="orc-rating"
+  [class.orc-rating--disabled]="effectiveDisabled()"
+  [class.orc-rating--readonly]="readonly()"
+  [id]="id()"
+  role="slider"
+  [attr.aria-valuenow]="value()"
+  [attr.aria-valuemin]="0"
+  [attr.aria-valuemax]="max()"
+  [attr.aria-valuetext]="value() + ' de ' + max()"
+  [attr.tabindex]="effectiveDisabled() ? -1 : 0"
+  (focus)="onFocus()"
+  (blur)="onBlur()"
+  (mouseleave)="onMouseLeave()"
+>
+  <div class="orc-rating__items">
+    @for (i of starsArray(); track i) {
+      <!-- 
+        i é 1-based (1, 2, 3...)
+        Para calcular o preenchimento, comparamos i com displayValue()
+      -->
+      <div
+        class="orc-rating__item"
+        [class.orc-rating__item--disabled]="effectiveDisabled()"
+        [class.orc-rating__item--readonly]="readonly()"
+        [class.orc-rating__item--numeric]="numeric()"
+        [class.is-filled]="numeric() && displayValue() >= i"
+        [orcTooltip]="getTooltip(i)"
+      >
+        @if (numeric()) {
+          <span class="orc-rating__text" (click)="onItemClick($event, i)" (mouseenter)="onItemHover(i)">
+            {{ i }}
+          </span>
+        } @else {
+          <!-- Áreas clicáveis invisíveis para capturar meia estrela ou estrela inteira -->
+          @if (allowHalf()) {
+            <div 
+              class="orc-rating__half orc-rating__half--left" 
+              (click)="onItemClick($event, i, true)"
+              (mouseenter)="onItemHover(i, true)"
+            ></div>
+            <div 
+              class="orc-rating__half orc-rating__half--right" 
+              (click)="onItemClick($event, i, false)"
+              (mouseenter)="onItemHover(i, false)"
+            ></div>
+          } @else {
+            <div 
+              class="orc-rating__half orc-rating__half--left" 
+              style="width: 100%;"
+              (click)="onItemClick($event, i)"
+              (mouseenter)="onItemHover(i)"
+            ></div>
+          }
+
+          <!-- Ícone Base (Vazio) -->
+          <div class="orc-rating__icon">
+            <ng-container *ngTemplateOutlet="customIconTemplate || defaultStar"></ng-container>
+          </div>
+
+          <!-- Ícone Preenchido (Mascarado por largura) -->
+          <div class="orc-rating__icon orc-rating__icon--filled"
+               [style.width.%]="displayValue() >= i ? 100 : (displayValue() > i - 1 ? (displayValue() - (i - 1)) * 100 : 0)">
+            <ng-container *ngTemplateOutlet="customIconTemplate || defaultStar"></ng-container>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Estrela SVG Padrão -->
+<ng-template #defaultStar>
+  <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+  </svg>
+</ng-template>

@@ -17,7 +17,7 @@
 
 .orc-alert {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   position: relative;
   width: 100%;
@@ -39,7 +39,7 @@
     flex-shrink: 0;
     width: 16px;
     height: 16px;
-    margin-top: 2px; // Alinhamento óptico com a primeira linha de texto (20px line-height)
+    margin-top: 0;
   }
 
   &__icon {

@@ -1,0 +1,129 @@
+.easter-egg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background-color: #1C6AED;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.easter-egg-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(180px, 1fr));
+  gap: 0;
+  width: 250vw;
+  height: 250vh;
+  position: absolute;
+  top: 150%;
+  left: 50%;
+  translate: -50% -50%;
+  // Flappy bird continuous upward scroll with a jump curve
+  animation: scrollUp 3.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.baton-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.baton-svg {
+  width: 138px;
+  height: 129px;
+  transform: rotate(-45deg);
+  animation: floatBaton 1s ease-in-out infinite alternate;
+}
+
+@for $i from 1 through 150 {
+  .baton-container:nth-child(#{$i}) .baton-svg {
+    animation-delay: #{$i * 0.03}s;
+  }
+}
+
+@keyframes floatBaton {
+  0% { transform: rotate(-45deg) translateY(0px) scale(0.95); }
+  100% { transform: rotate(-45deg) translateY(-40px) scale(1.05); }
+}
+
+@keyframes scrollUp {
+  0% { top: 150%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: -50%; opacity: 0; }
+}
+
+.easter-egg-final {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.final-content {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.final-baton {
+  width: 606px;
+  height: 567px;
+}
+
+.final-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.final-title {
+  font-size: 64px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.final-subtitle {
+  font-size: 64px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.1;
+  margin-bottom: 60px;
+}
+
+.final-credit {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 16px;
+
+  img {
+    height: 30px;
+  }
+}
+
+.final-spotify {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}

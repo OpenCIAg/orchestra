@@ -1,0 +1,187 @@
+<div class="page">
+  <header class="header">
+    <div class="header__inner">
+      <a routerLink="/" class="logo" aria-label="Orchestra">
+        <img src="favicon.ico" alt="Orchestra" height="24" width="24">
+        <span class="logo__text">Orchestra</span>
+      </a>
+      <nav class="header__nav" aria-label="Links rápidos">
+        <a routerLink="/docs" class="nav-link">Docs</a>
+        </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a Página Inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Inputs</div>
+      <h1 class="section-title">Chip Input</h1>
+      <p class="section-desc">
+        Campo de entrada de texto com suporte a tags (chips) e sugestões (autocomplete) integradas.
+      </p>
+
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+
+        <div class="playground-grid">
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <form [formGroup]="form" class="demo-form">
+                <app-chip-input
+                  formControlName="skills"
+                  label="Habilidades"
+                  placeholder="Digite e selecione (ex: Angular)..."
+                  helperText="Pressione 'Enter' ou ',' para adicionar uma tag"
+                  [suggestions]="availableSkills"
+                  [maxChips]="8"
+                  size="md">
+                </app-chip-input>
+              </form>
+            </div>
+          </div>
+          <div class="panel controls-panel">
+            <div class="panel__header">Estado Interno (Form)</div>
+            <div class="panel__body">
+              <pre><code>{{ formValue() | json }}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── COMPONENTE PLANO ──────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componente plano</h2>
+        <p class="section-text">
+          Variantes estáticas de exibição do componente:
+        </p>
+
+        <div class="playground-grid">
+          <!-- Standalone pre-filled -->
+          <div class="figma-block">
+            <div class="figma-block__label">Estado Padrão (com valores)</div>
+            <div class="figma-block__row">
+              <app-chip-input
+                label="Tags do artigo"
+                [ngModel]="['Design System', 'Angular', 'Acessibilidade']"
+              ></app-chip-input>
+            </div>
+          </div>
+
+          <!-- Disabled -->
+          <div class="figma-block">
+            <div class="figma-block__label">Desabilitado</div>
+            <div class="figma-block__row">
+              <app-chip-input
+                label="Categorias bloqueadas"
+                [ngModel]="['Arquivado']"
+                [disabled]="true"
+              ></app-chip-input>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── DOCUMENTAÇÃO DA API ─────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API</h2>
+        <div class="table-container" style="margin-top: var(--space-6);">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>label</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto de rótulo acima do campo.</td>
+              </tr>
+                <tr>
+                  <td><code>placeholder</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string</code></td>
+                  <td><code>'Digite e pressione Enter...'</code></td>
+                  <td>Texto de placeholder dentro do input text.</td>
+                </tr>
+                <tr>
+                  <td><code>helperText</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Texto de instrução secundária abaixo do campo.</td>
+                </tr>
+                <tr>
+                  <td><code>errorMessage</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Texto de erro de validação. Coloca o componente em estado inválido.</td>
+                </tr>
+                <tr>
+                  <td><code>disabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Desabilita o input, botões de remover e o dropdown.</td>
+                </tr>
+                <tr>
+                  <td><code>readonly</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Torna o campo apenas leitura (impede edição e digitação).</td>
+                </tr>
+                <tr>
+                  <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>'sm' | 'md' | 'lg'</code></td>
+                  <td><code>'md'</code></td>
+                  <td>Tamanho geral do campo, refletindo também no tamanho das tags internas.</td>
+                </tr>
+                <tr>
+                  <td><code>allowDuplicates</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Permite inserir strings exatas que já estão na lista de valores.</td>
+                </tr>
+                <tr>
+                  <td><code>maxChips</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>number | undefined</code></td>
+                  <td><code>undefined</code></td>
+                  <td>Limita a quantidade máxima de tags que podem ser inseridas.</td>
+                </tr>
+                <tr>
+                  <td><code>separatorKeyCodes</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string[]</code></td>
+                  <td><code>['Enter', ',', ' ']</code></td>
+                  <td>Lista de teclas (`event.key`) que confirmam a conversão do texto em um novo chip.</td>
+                </tr>
+                <tr>
+                  <td><code>suggestions</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string[]</code></td>
+                  <td><code>[]</code></td>
+                  <td>Lista para autocompletar que surge abaixo do input quando o usuário digita.</td>
+                </tr>
+                <tr>
+                  <td><code>chipsChange</code> <span class="badge-tag badge-tag--output">output</span></td>
+                  <td><code>output&lt;string[]&gt;</code></td>
+                  <td>-</td>
+                  <td>Dispara os valores sempre que a lista de chips for alterada.</td>
+                </tr>
+                <tr>
+                  <td><code>maxReached</code> <span class="badge-tag badge-tag--output">output</span></td>
+                  <td><code>output&lt;void&gt;</code></td>
+                  <td>-</td>
+                  <td>Dispara um evento quando o usuário tenta inserir além do `maxChips`.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </section>
+    </main>
+  </div>
+  <app-footer />
+</div>

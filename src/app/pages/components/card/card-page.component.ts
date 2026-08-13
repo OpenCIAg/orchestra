@@ -6,6 +6,8 @@ import { CardHeaderComponent } from '../../../shared/card/card-header.component'
 import { CardBodyComponent } from '../../../shared/card/card-body.component';
 import { CardFooterComponent } from '../../../shared/card/card-footer.component';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { AvatarComponent } from '../../../shared/avatar/avatar.component';
+import { BadgeComponent } from '../../../shared/badge/badge.component';
 
 @Component({
   selector: 'app-card-page',
@@ -17,7 +19,9 @@ import { FooterComponent } from '../../../shared/footer/footer.component';
     CardHeaderComponent,
     CardBodyComponent,
     CardFooterComponent,
-    FooterComponent
+    FooterComponent,
+    AvatarComponent,
+    BadgeComponent
   ],
   templateUrl: './card-page.component.html',
   styleUrl: './card-page.component.scss',

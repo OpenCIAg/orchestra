@@ -7,9 +7,7 @@
       </a>
       <nav class="header__nav" aria-label="Links rápidos">
         <a routerLink="/docs" class="nav-link">Docs</a>
-        <a href="#" class="nav-link">GitHub</a>
-        <a href="#" class="nav-link nav-link--ghost">Figma ↗</a>
-      </nav>
+        </nav>
     </div>
   </header>
 
@@ -132,6 +130,59 @@
             <app-card-footer>
               <button type="button" class="btn btn-secondary btn-sm" (click)="isSelected.set(!isSelected()); $event.stopPropagation()">
                 Alternar Seleção
+              </button>
+            </app-card-footer>
+          </app-card>
+        </div>
+
+        <!-- Variant 4: Card de Equipe -->
+        <div class="showcase-card-wrapper">
+          <div class="showcase-card-label">Card Equipe</div>
+          <app-card>
+            <app-card-header>
+              <div class="team-header">
+                <svg class="team-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <strong>Equipe</strong>
+              </div>
+            </app-card-header>
+            <app-card-body>
+              <div class="team-list">
+                <div class="team-item">
+                  <app-avatar initials="AS"></app-avatar>
+                  <div class="team-info">
+                    <strong class="team-name">Ana Silva</strong>
+                    <span class="team-role">Designer</span>
+                  </div>
+                  <app-badge variant="outline" status="secondary" text="Ativo"></app-badge>
+                </div>
+
+                <div class="team-item">
+                  <app-avatar initials="MS"></app-avatar>
+                  <div class="team-info">
+                    <strong class="team-name">Maria Santos</strong>
+                    <span class="team-role">Dev Backend</span>
+                  </div>
+                  <app-badge variant="outline" status="secondary" text="Inativo"></app-badge>
+                </div>
+
+                <div class="team-item">
+                  <app-avatar initials="CL"></app-avatar>
+                  <div class="team-info">
+                    <strong class="team-name">Carlos Lima</strong>
+                    <span class="team-role">Dev Frontend</span>
+                  </div>
+                  <app-badge variant="outline" status="secondary" text="Ativo"></app-badge>
+                </div>
+              </div>
+            </app-card-body>
+            <app-card-footer>
+              <button type="button" class="btn btn-ghost">
+                Ver todos
               </button>
             </app-card-footer>
           </app-card>

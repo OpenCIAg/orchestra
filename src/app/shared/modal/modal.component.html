@@ -1,0 +1,47 @@
+<dialog
+  #dialogRef
+  [class]="modalClasses()"
+  [style.z-index]="inline() ? 'auto' : zIndex()"
+  (cancel)="onCancel($event)"
+  (click)="onBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="ariaLabelledBy() || null"
+  [attr.aria-describedby]="ariaDescribedBy() || null"
+  [attr.open]="inline() ? '' : null"
+>
+  <div class="orc-modal__container" (click)="$event.stopPropagation()">
+    <!-- HEADER -->
+    <header class="orc-modal__header">
+      <div class="orc-modal__header-content">
+        <ng-content select="[modal-header]"></ng-content>
+      </div>
+      
+      @if (showCloseButton()) {
+        <orc-button
+          variant="ghost"
+          size="sm"
+          [iconOnly]="true"
+          (click)="onClose()"
+          ariaLabel="Fechar modal"
+          class="orc-modal__close-btn"
+        >
+          <svg iconLeft viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </orc-button>
+      }
+    </header>
+
+    <!-- BODY -->
+    <main class="orc-modal__body">
+      <ng-content select="[modal-body]"></ng-content>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="orc-modal__footer">
+      <ng-content select="[modal-footer]"></ng-content>
+    </footer>
+  </div>
+</dialog>

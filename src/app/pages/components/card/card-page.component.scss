@@ -295,6 +295,69 @@
   }
 }
 
+// Estilos específicos para a demo de equipe
+.team-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+}
+
+.team-header-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--orc-color-azul-eletrico); // Azul elétrico from Figma
+}
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.team-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.team-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.team-name {
+  font-size: 0.875rem; // 14px
+  color: var(--text-primary);
+  font-weight: 500; // Medium
+  line-height: 1.4;
+}
+
+.team-role {
+  font-size: 0.75rem; // 12px
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+  width: 100%;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-muted);
+  }
+}
+
 // Documentation
 .doc-section {
   margin-bottom: var(--space-8);

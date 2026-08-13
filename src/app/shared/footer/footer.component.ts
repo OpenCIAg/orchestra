@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { EasterEggService } from '../../services/easter-egg.service';
 
 @Component({
   selector: 'app-footer',
@@ -6,4 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })
-export class FooterComponent {}
+export class FooterComponent {
+  private easterEggService = inject(EasterEggService);
+
+  triggerEasterEgg() {
+    this.easterEggService.trigger();
+  }
+}
