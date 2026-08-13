@@ -13,13 +13,13 @@ import {
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FileItemComponent } from './file-item/file-item.component';
-import { ButtonComponent } from '../button/button.component';
+
 import { FileItemData, FileStatus } from './file-uploader.types';
 
 @Component({
   selector: 'app-file-uploader, orc-file-uploader',
   standalone: true,
-  imports: [CommonModule, FileItemComponent, ButtonComponent],
+  imports: [CommonModule, FileItemComponent],
   templateUrl: './file-uploader.component.html',
   styleUrl: './file-uploader.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

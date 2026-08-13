@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FileItemData } from '../file-uploader.types';
 import { ProgressBarComponent } from '../../progress/progress-bar.component';
 import { ButtonComponent } from '../../button/button.component';
-import { BadgeComponent } from '../../badge/badge.component';
+
 
 @Component({
   selector: 'app-file-item, orc-file-item',
   standalone: true,
-  imports: [CommonModule, ProgressBarComponent, ButtonComponent, BadgeComponent],
+  imports: [CommonModule, ProgressBarComponent, ButtonComponent],
   templateUrl: './file-item.component.html',
   styleUrl: './file-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
