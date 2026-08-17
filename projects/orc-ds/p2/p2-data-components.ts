@@ -98,18 +98,20 @@ export interface DataTableColumn {
   standalone: true,
   template: `
     <div class="orc-p2-data-table" [attr.aria-busy]="loading()">
+      @if (filterable()) { <input class="global-filter" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="filter.set(($any($event.target)).value)" [attr.aria-label]="'Filter ' + label()" /> }
       <table>
         <caption class="sr-only">{{ label() }}</caption>
         <thead><tr>@if (selectable()) { <th scope="col"><input type="checkbox" [checked]="allSelected()" [indeterminate]="someSelected()" aria-label="Select all" (change)="toggleAll(($any($event.target)).checked)" /></th> } @for (column of columns(); track column.key) { <th scope="col" [attr.aria-sort]="sortKey() === column.key ? sortDirection() : null" [class.sortable]="column.sortable" (click)="sortBy(column)">{{ column.header }}</th> }</tr></thead>
         <tbody>
           @if (loading()) { <tr><td class="empty" [attr.colspan]="columns().length + (selectable() ? 1 : 0)">Loading…</td></tr> }
           @else if (!rows().length) { <tr><td class="empty" [attr.colspan]="columns().length + (selectable() ? 1 : 0)">{{ emptyText() }}</td></tr> }
-          @else { @for (row of rows(); track getRowId(row)) { <tr [class.selected]="isSelected(row)" (click)="rowClick.emit(row)">@if (selectable()) { <td (click)="$event.stopPropagation()"><input type="checkbox" [checked]="isSelected(row)" [attr.aria-label]="'Select row ' + getRowId(row)" (change)="toggleRow(row, ($any($event.target)).checked)" /></td> } @for (column of columns(); track column.key) { <td>{{ getCell(row, column.key) }}</td> }</tr> } }
+          @else { @for (row of pageRows(); track getRowId(row)) { <tr [class.selected]="isSelected(row)" (click)="rowClick.emit(row)">@if (selectable()) { <td (click)="$event.stopPropagation()"><input type="checkbox" [checked]="isSelected(row)" [attr.aria-label]="'Select row ' + getRowId(row)" (change)="toggleRow(row, ($any($event.target)).checked)" /></td> } @for (column of columns(); track column.key) { <td>{{ getCell(row, column.key) }}</td> }</tr> } }
         </tbody>
       </table>
+      @if (paginator() && pageCount() > 1) { <nav class="paginator" aria-label="Table pages"><button type="button" [disabled]="page() === 0" (click)="page.set(page() - 1)">‹</button><span>{{ page() + 1 }} / {{ pageCount() }}</span><button type="button" [disabled]="page() + 1 >= pageCount()" (click)="page.set(page() + 1)">›</button></nav> }
     </div>
   `,
-  styles: [P2_SHARED_STYLES + `.orc-p2-data-table { width: 100%; overflow: auto; border: 1px solid #e2e8f0; border-radius: .75rem; background: #fff; } table { width: 100%; border-collapse: collapse; color: #0f172a; } th, td { padding: .7rem .8rem; border-bottom: 1px solid #e2e8f0; text-align: left; } th { background: #f8fafc; font-size: .8rem; } th.sortable { cursor: pointer; } tr.selected { background: #eff6ff; } .empty { padding: 2rem; text-align: center; color: #64748b; } .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-data-table { width: 100%; overflow: auto; border: 1px solid #e2e8f0; border-radius: .75rem; background: #fff; } .global-filter { width: min(20rem, 100%); margin: .6rem; padding: .5rem .7rem; border: 1px solid #cbd5e1; border-radius: .4rem; } table { width: 100%; border-collapse: collapse; color: #0f172a; } th, td { padding: .7rem .8rem; border-bottom: 1px solid #e2e8f0; text-align: left; } th { background: #f8fafc; font-size: .8rem; } th.sortable { cursor: pointer; } tr.selected { background: #eff6ff; } .empty { padding: 2rem; text-align: center; color: #64748b; } .paginator { display:flex; align-items:center; justify-content:flex-end; gap:.6rem; padding:.5rem .7rem; } .paginator button { min-width:2rem; border:1px solid #cbd5e1; border-radius:.35rem; background:#fff; } .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent {
@@ -120,6 +122,12 @@ export class DataTableComponent {
   readonly emptyText = input('No data');
   readonly loading = input(false, { transform: booleanAttribute });
   readonly selectable = input(false, { transform: booleanAttribute });
+  readonly filterable = input(false, { transform: booleanAttribute });
+  readonly filterPlaceholder = input('Filter…');
+  readonly filter = model('');
+  readonly paginator = input(false, { transform: booleanAttribute });
+  readonly pageSize = input(10);
+  readonly page = model(0);
   readonly selected = model<Record<string, unknown>[]>([]);
   readonly sortKey = signal('');
   readonly sortDirection = signal<'ascending' | 'descending'>('ascending');
@@ -138,8 +146,15 @@ export class DataTableComponent {
       return direction === 'ascending' ? compare : -compare;
     });
   });
-  readonly allSelected = computed(() => !!this.rows().length && this.rows().every(row => this.isSelected(row)));
-  readonly someSelected = computed(() => this.rows().some(row => this.isSelected(row)) && !this.allSelected());
+  readonly filteredRows = computed(() => {
+    const query = this.filter().trim().toLocaleLowerCase();
+    if (!query) return this.rows();
+    return this.rows().filter(row => Object.values(row).some(value => String(value ?? '').toLocaleLowerCase().includes(query)));
+  });
+  readonly pageCount = computed(() => Math.max(1, Math.ceil(this.filteredRows().length / Math.max(1, this.pageSize()))));
+  readonly pageRows = computed(() => this.paginator() ? this.filteredRows().slice(this.page() * this.pageSize(), (this.page() + 1) * this.pageSize()) : this.filteredRows());
+  readonly allSelected = computed(() => !!this.pageRows().length && this.pageRows().every(row => this.isSelected(row)));
+  readonly someSelected = computed(() => this.pageRows().some(row => this.isSelected(row)) && !this.allSelected());
 
   getRowId(row: Record<string, unknown>): string { return String(row[this.rowKey()] ?? JSON.stringify(row)); }
   getCell(row: Record<string, unknown>, key: string): unknown { return row[key] ?? ''; }
@@ -149,7 +164,7 @@ export class DataTableComponent {
     if (checked) next.push(row);
     this.selected.set(next); this.selectionChange.emit(next);
   }
-  toggleAll(checked: boolean): void { const next = checked ? [...this.rows()] : []; this.selected.set(next); this.selectionChange.emit(next); }
+  toggleAll(checked: boolean): void { const current = this.selected().filter(row => !this.pageRows().some(pageRow => this.getRowId(pageRow) === this.getRowId(row))); const next = checked ? [...current, ...this.pageRows()] : current; this.selected.set(next); this.selectionChange.emit(next); }
   sortBy(column: DataTableColumn): void {
     if (!column.sortable) return;
     const direction = this.sortKey() === column.key && this.sortDirection() === 'ascending' ? 'descending' : 'ascending';
@@ -197,4 +212,3 @@ export class VirtualScrollerComponent {
   onScroll(event: Event): void { const top = (event.target as HTMLElement).scrollTop; this.scrollTop.set(top); this.rangeChange.emit({ start: this.startIndex(), end: this.endIndex() }); }
   itemLabel(item: unknown): string { if (item && typeof item === 'object') return String((item as Record<string, unknown>)[this.itemLabelKey()] ?? ''); return String(item ?? ''); }
 }
-
