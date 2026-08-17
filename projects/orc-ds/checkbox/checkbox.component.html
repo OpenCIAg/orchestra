@@ -1,6 +1,6 @@
 <label
   class="orc-checkbox"
-  [class]="styleClass()"
+  [class]="'orc-checkbox ' + styleClass()"
   [class.orc-checkbox--checked]="checked() && !indeterminate()"
   [class.orc-checkbox--indeterminate]="indeterminate()"
   [class.orc-checkbox--disabled]="isDisabled()"

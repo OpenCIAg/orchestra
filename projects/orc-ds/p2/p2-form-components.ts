@@ -286,7 +286,7 @@ export class InputGroupComponent {
     <div class="orc-p2-listbox-wrap">
       @if (label()) { <label>{{ label() }}</label> }
       @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" /> }
-      <ul class="orc-p2-listbox" [id]="id()" [class]="styleClass()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
+      <ul class="orc-p2-listbox" [id]="id()" [class]="'orc-p2-listbox ' + styleClass()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
         @for (option of filteredOptions(); track getOptionValue(option)) {
           <li role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)" (dblclick)="onDblClick.emit({ originalEvent: $event, option })">
             <span>{{ getOptionLabel(option) }}</span>@if (option.description) { <small>{{ option.description }}</small> }
@@ -359,7 +359,7 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   selector: 'orc-multi-select',
   standalone: true,
   template: `
-    <div class="orc-p2-multi-select" [class]="styleClass()" [class.fluid]="fluid()">
+    <div class="orc-p2-multi-select" [class]="'orc-p2-multi-select ' + styleClass()" [class.fluid]="fluid()">
       @if (label()) { <label>{{ label() }}</label> }
       <button type="button" class="trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="inputId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" (click)="toggleOpen()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
         <span>{{ selectedLabels() || placeholder() }}</span><span aria-hidden="true">⌄</span>
