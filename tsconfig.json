@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -18,10 +17,10 @@
     "module": "ES2022",
     "paths": {
       "@ciag/orchestra": [
-        "projects/orc-ds/public-api.ts"
+        "./projects/orc-ds/public-api.ts"
       ],
       "@ciag/orchestra/*": [
-        "projects/orc-ds/*"
+        "./projects/orc-ds/*"
       ]
     }
   },
