@@ -118,6 +118,7 @@ export class DataTableComponent {
   readonly data = input<Record<string, unknown>[]>([]);
   readonly columns = input<DataTableColumn[]>([]);
   readonly rowKey = input('id');
+  readonly dataKey = input<string | undefined>(undefined); readonly first = model(0); readonly totalRecords = input<number | undefined>(undefined); readonly lazy = input(false, { transform: booleanAttribute }); readonly rowHover = input(false, { transform: booleanAttribute }); readonly stripedRows = input(false, { transform: booleanAttribute }); readonly showGridlines = input(false, { transform: booleanAttribute }); readonly size = input<'small' | 'large' | undefined>(undefined); readonly sortMode = input<'single' | 'multiple'>('single');
   readonly label = input('Data table');
   readonly emptyText = input('No data');
   readonly loading = input(false, { transform: booleanAttribute });
@@ -134,6 +135,7 @@ export class DataTableComponent {
   readonly rowClick = output<Record<string, unknown>>();
   readonly selectionChange = output<Record<string, unknown>[]>();
   readonly sortChange = output<{ key: string; direction: 'ascending' | 'descending' }>();
+  readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly rowSelect = output<Record<string, unknown>>(); readonly rowUnselect = output<Record<string, unknown>>(); readonly onRowHover = output<Record<string, unknown>>();
 
   readonly rows = computed(() => {
     const key = this.sortKey();
@@ -162,7 +164,7 @@ export class DataTableComponent {
   toggleRow(row: Record<string, unknown>, checked: boolean): void {
     const next = this.selected().filter(item => this.getRowId(item) !== this.getRowId(row));
     if (checked) next.push(row);
-    this.selected.set(next); this.selectionChange.emit(next);
+    this.selected.set(next); this.selectionChange.emit(next); (checked ? this.rowSelect : this.rowUnselect).emit(row);
   }
   toggleAll(checked: boolean): void { const current = this.selected().filter(row => !this.pageRows().some(pageRow => this.getRowId(pageRow) === this.getRowId(row))); const next = checked ? [...current, ...this.pageRows()] : current; this.selected.set(next); this.selectionChange.emit(next); }
   sortBy(column: DataTableColumn): void {
@@ -170,6 +172,7 @@ export class DataTableComponent {
     const direction = this.sortKey() === column.key && this.sortDirection() === 'ascending' ? 'descending' : 'ascending';
     this.sortKey.set(column.key); this.sortDirection.set(direction); this.sortChange.emit({ key: column.key, direction });
   }
+  goToPage(page: number): void { const size = this.pageSize(); const next = Math.max(0, Math.min(Math.max(0, this.pageCount() - 1), page)); this.page.set(next); this.first.set(next * size); this.onPage.emit({ first: this.first(), rows: size }); if (this.lazy()) this.onLazyLoad.emit({ first: this.first(), rows: size }); }
 }
 
 @Component({
