@@ -1,4 +1,4 @@
-<div class="orc-file-uploader" [class.orc-file-uploader--disabled]="isDisabled()">
+<div class="orc-file-uploader" [class.orc-file-uploader--disabled]="isDisabled()" [class]="styleClass()">
   
   <input 
     #fileInput
@@ -52,5 +52,11 @@
         </orc-file-item>
       }
     </div>
+    @if (!auto()) {
+      <div class="orc-file-uploader__actions">
+        <button type="button" (click)="upload()" [disabled]="isDisabled()">{{ uploadLabel() || 'Upload' }}</button>
+        <button type="button" (click)="clear()" [disabled]="isDisabled()">{{ cancelLabel() || 'Clear' }}</button>
+      </div>
+    }
   }
 </div>

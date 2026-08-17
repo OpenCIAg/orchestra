@@ -4,6 +4,9 @@ import {
   input,
   computed,
   signal,
+  output,
+  booleanAttribute,
+  numberAttribute,
   ViewChild,
   ElementRef,
   forwardRef,
@@ -36,24 +39,42 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
   // ── Inputs ──────────────────────────────────────────────────
   readonly accept = input<string>(''); // e.g., 'image/*,.pdf'
-  readonly multiple = input<boolean>(true);
+  readonly name = input<string | undefined>(undefined);
+  readonly url = input<string | undefined>(undefined);
+  readonly method = input<'post' | 'put'>('post');
+  readonly multiple = input<boolean>(true, { transform: booleanAttribute });
+  readonly auto = input(false, { transform: booleanAttribute });
+  readonly withCredentials = input(false, { transform: booleanAttribute });
   readonly maxFiles = input<number>(10);
-  readonly maxFileSize = input<number>(5); // In MB
-  readonly disabled = input<boolean>(false);
+  readonly maxFileSize = input<number>(5 * 1024 * 1024, { transform: numberAttribute }); // PrimeNG-compatible bytes
+  readonly disabled = input<boolean>(false, { transform: booleanAttribute });
   readonly label = input<string>('Clique ou arraste seus arquivos aqui');
   readonly subLabel = input<string>('Suporta imagens e PDFs');
+  readonly chooseLabel = input<string | undefined>(undefined);
+  readonly uploadLabel = input<string | undefined>(undefined);
+  readonly cancelLabel = input<string | undefined>(undefined);
+  readonly previewWidth = input(100, { transform: numberAttribute });
+  readonly styleClass = input<string | undefined>(undefined);
   readonly forceDragover = input<boolean>(false);
+
+  readonly onSelect = output<{ files: File[] }>();
+  readonly onRemove = output<{ file: File; files: File[] }>();
+  readonly onClear = output<void>();
+  readonly onUpload = output<{ files: File[] }>();
+  readonly onError = output<{ files: File[]; error: string }>();
+  readonly onProgress = output<{ progress: number }>();
 
   // ── Internal State (Signals) ────────────────────────────────
   readonly files = signal<FileItemData[]>([]);
   readonly isDragging = signal<boolean>(false);
+  private readonly cvaDisabled = signal(false);
   
   // ── CVA callbacks ───────────────────────────────────────────
   private onChange: (value: FileItemData[]) => void = () => {};
   private onTouched: () => void = () => {};
   
   // ── Computeds ───────────────────────────────────────────────
-  readonly isDisabled = computed(() => this.disabled());
+  readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
   readonly hasReachedMaxFiles = computed(() => {
     return this.multiple() ? this.files().length >= this.maxFiles() : this.files().length >= 1;
   });
@@ -72,7 +93,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // handled via input optionally, but mostly via form group
+    this.cvaDisabled.set(isDisabled);
   }
 
   // ── Drag & Drop Handlers ────────────────────────────────────
@@ -129,9 +150,14 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
   onRemoveFile(id: string): void {
     if (this.isDisabled()) return;
+    const removed = this.files().find(f => f.id === id);
     this.files.update(list => list.filter(f => f.id !== id));
     this.onChange(this.files());
+    if (removed) this.onRemove.emit({ file: removed.file, files: this.files().map(item => item.file) });
   }
+
+  clear(): void { if (this.isDisabled()) return; this.files.set([]); this.onChange([]); this.onClear.emit(); }
+  upload(): void { if (this.files().length) this.onUpload.emit({ files: this.files().map(item => item.file) }); }
 
   // ── Logic ───────────────────────────────────────────────────
   private handleFiles(newFiles: File[]): void {
@@ -155,10 +181,12 @@ export class FileUploaderComponent implements ControlValueAccessor {
     }
 
     this.onChange(this.files());
+    this.onSelect.emit({ files: filesToAdd });
+    if (this.auto()) this.upload();
   }
 
   private createFileItem(file: File): FileItemData {
-    const isOverSize = file.size > this.maxFileSize() * 1024 * 1024;
+    const isOverSize = file.size > this.maxFileSize();
     
     // Simplistic accept validation (for demo purposes)
     let isInvalidType = false;
@@ -181,13 +209,13 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
     if (isOverSize) {
       status = 'error';
-      errorMessage = `O arquivo excede o limite de ${this.maxFileSize()}MB`;
+      errorMessage = `O arquivo excede o limite de ${this.formatBytes(this.maxFileSize())}`;
     } else if (isInvalidType) {
       status = 'error';
       errorMessage = 'Formato de arquivo não suportado';
     }
 
-    return {
+    const item = {
       id: Math.random().toString(36).substring(2, 11),
       file,
       name: file.name,
@@ -199,6 +227,8 @@ export class FileUploaderComponent implements ControlValueAccessor {
       errorMessage,
       previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined
     };
+    if (item.status === 'error') this.onError.emit({ files: [file], error: item.errorMessage || 'Invalid file' });
+    return item;
   }
 
   private formatBytes(bytes: number, decimals = 2): string {
