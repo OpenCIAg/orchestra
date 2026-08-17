@@ -41,6 +41,11 @@ export class SwitchComponent implements ControlValueAccessor {
   readonly id = input<string>('');
   readonly name = input<string>('');
   readonly value = input<any>(undefined);
+  readonly inputId = input<string | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(undefined);
+  readonly readonly = input(false, { transform: booleanAttribute });
+  readonly trueValue = input<any>(true);
+  readonly falseValue = input<any>(false);
   readonly label = input<string>('');
   readonly description = input<string>('');
   readonly size = input<SwitchSize>('md');
@@ -51,6 +56,8 @@ export class SwitchComponent implements ControlValueAccessor {
   readonly errorMessage = input<string>('');
   readonly ariaLabel = input<string>('');
   readonly ariaLabelledby = input<string>('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly autofocus = input(false, { transform: booleanAttribute });
   readonly ariaDescribedby = input<string>('');
 
   // Two-way Model (Signals API)
@@ -58,6 +65,7 @@ export class SwitchComponent implements ControlValueAccessor {
 
   // Output (Signals API)
   readonly change = output<SwitchChangeEvent>();
+  readonly onChange = output<SwitchChangeEvent>();
 
   // Element reference do botão interativo
   readonly buttonElement = viewChild<ElementRef<HTMLButtonElement>>('switchButton');
@@ -95,7 +103,7 @@ export class SwitchComponent implements ControlValueAccessor {
   });
 
   // Callbacks do ControlValueAccessor
-  private onChange: (value: boolean) => void = () => {};
+  private onModelChange: (value: boolean) => void = () => {};
   private onTouched: () => void = () => {};
 
   // ── ControlValueAccessor Implementation ───────────────────
@@ -104,7 +112,7 @@ export class SwitchComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
-    this.onChange = fn;
+    this.onModelChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {
@@ -118,19 +126,20 @@ export class SwitchComponent implements ControlValueAccessor {
   // ── Event Handlers ────────────────────────────────────────
   onToggle(event: Event): void {
     event.preventDefault();
-    if (this.isDisabled()) {
+    if (this.isDisabled() || this.readonly()) {
       return;
     }
 
     const newChecked = !this.checked();
     this.checked.set(newChecked);
-    this.onChange(newChecked);
+    this.onModelChange(newChecked);
     this.onTouched();
 
     this.change.emit({
       checked: newChecked,
-      value: this.value(),
+      value: newChecked ? this.trueValue() : this.falseValue(),
     });
+    this.onChange.emit({ checked: newChecked, value: newChecked ? this.trueValue() : this.falseValue() });
   }
 
   onBlur(): void {
@@ -139,17 +148,18 @@ export class SwitchComponent implements ControlValueAccessor {
 
   // ── Public API Methods ────────────────────────────────────
   toggle(): void {
-    if (this.isDisabled()) return;
+    if (this.isDisabled() || this.readonly()) return;
 
     const newChecked = !this.checked();
     this.checked.set(newChecked);
-    this.onChange(newChecked);
+    this.onModelChange(newChecked);
     this.onTouched();
 
     this.change.emit({
       checked: newChecked,
-      value: this.value(),
+      value: newChecked ? this.trueValue() : this.falseValue(),
     });
+    this.onChange.emit({ checked: newChecked, value: newChecked ? this.trueValue() : this.falseValue() });
   }
 
   focus(): void {
