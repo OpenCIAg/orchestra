@@ -11,6 +11,7 @@ import { ToggleButtonComponent } from './p2/p2-form-gap-components';
 import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SwitchComponent } from './switch/switch.component';
+import { SliderComponent } from './slider/slider.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -124,6 +125,16 @@ describe('P2 expansion components', () => {
     expect(modelValue).toBe('enabled');
     component.writeValue('disabled');
     expect(component.checked()).toBeFalse();
+  });
+
+  it('supports PrimeNG slider orientation and range values', () => {
+    const fixture = TestBed.createComponent(SliderComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('range', true);
+    fixture.componentRef.setInput('orientation', 'vertical');
+    component.writeValue([20, 80]);
+    expect(component.normalizedValues()).toEqual([20, 80]);
+    expect(component.orientation()).toBe('vertical');
   });
 
   it('sorts and selects rows in the data table', () => {

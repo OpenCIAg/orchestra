@@ -52,6 +52,11 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   readonly id = input<string>('');
   readonly name = input<string>('');
   readonly range = input(false, { transform: booleanAttribute });
+  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
+  readonly animate = input(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly tabindex = input(0);
   readonly min = input<number, unknown>(0, {
     transform: (v: unknown) => numberAttribute(v, 0),
   });
@@ -80,6 +85,8 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   // ── Outputs (Signals API) ─────────────────────────────────
   readonly sliderChange = output<SliderValue>();
   readonly sliderInput = output<SliderValue>();
+  readonly onChange = output<{ originalEvent?: Event; value: SliderValue }>();
+  readonly onSlideEnd = output<{ originalEvent?: Event; value: SliderValue }>();
 
   // ── Estado Interno ────────────────────────────────────────
   protected readonly activeThumb = signal<'start' | 'end' | null>(null);
@@ -237,7 +244,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   });
 
   // ── ControlValueAccessor ──────────────────────────────────
-  private onChange: (value: SliderValue) => void = () => {};
+  private onModelChange: (value: SliderValue) => void = () => {};
   private onTouched: () => void = () => {};
 
   writeValue(value: any): void {
@@ -249,7 +256,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   }
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
+    this.onModelChange = fn;
   }
 
   registerOnTouched(fn: any): void {
@@ -268,7 +275,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     if (!track) return;
 
     const rect = track.getBoundingClientRect();
-    const clickPercent = this.clamp((event.clientX - rect.left) / rect.width, 0, 1);
+    const clickPercent = this.pointerPercent(event, rect);
     const clickedVal = this.percentToValue(clickPercent);
 
     let targetThumb: 'start' | 'end' = 'end';
@@ -313,7 +320,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     if (!track) return;
 
     const rect = track.getBoundingClientRect();
-    const percent = this.clamp((event.clientX - rect.left) / rect.width, 0, 1);
+    const percent = this.pointerPercent(event, rect);
     const currentVal = this.percentToValue(percent);
 
     const thumb = this.activeThumb();
@@ -335,6 +342,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
 
     this.onTouched();
     this.sliderChange.emit(this.value());
+    this.onSlideEnd.emit({ value: this.value() });
   };
 
   // ── Navegação por Teclado WCAG ────────────────────────────
@@ -415,12 +423,14 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
       }
       const nextRange: [number, number] = [start, end];
       this.value.set(nextRange);
-      this.onChange(nextRange);
+      this.onModelChange(nextRange);
       this.sliderInput.emit(nextRange);
+      this.onChange.emit({ value: nextRange });
     } else {
       this.value.set(steppedVal);
-      this.onChange(steppedVal);
+      this.onModelChange(steppedVal);
       this.sliderInput.emit(steppedVal);
+      this.onChange.emit({ value: steppedVal });
     }
   }
 
@@ -443,6 +453,11 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     const min = this.minVal();
     const max = this.maxVal();
     return min + percent * (max - min);
+  }
+
+  private pointerPercent(event: PointerEvent, rect: DOMRect): number {
+    if (this.orientation() === 'vertical') return this.clamp(1 - (event.clientY - rect.top) / rect.height, 0, 1);
+    return this.clamp((event.clientX - rect.left) / rect.width, 0, 1);
   }
 
   private clamp(val: number, min: number, max: number): number {
