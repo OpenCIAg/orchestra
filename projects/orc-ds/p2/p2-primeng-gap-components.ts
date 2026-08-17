@@ -1,4 +1,6 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, ElementRef, HostListener, input, model, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { booleanAttribute, ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, forwardRef, input, model, output, signal } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2_SHARED_STYLES } from './p2-shared';
 
 @Component({
@@ -58,14 +60,24 @@ export class MeterGroupComponent {
 
 @Component({
   selector: 'orc-password', standalone: true,
-  template: `<div class="orc-p2-password"><input [type]="visible() ? 'text' : 'password'" [value]="value()" [placeholder]="placeholder()" [disabled]="disabled()" (input)="onInput($event)" [attr.aria-label]="ariaLabel()" /><button type="button" [disabled]="disabled()" (click)="toggleVisible()" [attr.aria-label]="visible() ? 'Hide password' : 'Show password'">{{ visible() ? '◉' : '○' }}</button></div>`,
+  template: `<div class="orc-p2-password"><label *ngIf="label()" [attr.for]="inputId()">{{ label() }}</label><div class="control"><input [id]="inputId()" [type]="visible() ? 'text' : 'password'" [value]="value()" [placeholder]="placeholder()" [autocomplete]="autocomplete()" [disabled]="disabled() || cvaDisabled()" [readonly]="readonly()" [autofocus]="autofocus()" [attr.tabindex]="tabindex()" [class]="inputStyleClass()" (input)="onInput($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" />@if (showClear() && value()) { <button type="button" [disabled]="disabled() || cvaDisabled()" (click)="clear()" aria-label="Clear">×</button> }@if (toggleMask()) { <button type="button" [disabled]="disabled() || cvaDisabled()" (click)="toggleVisible()" [attr.aria-label]="visible() ? 'Hide password' : 'Show password'">{{ visible() ? '◉' : '○' }}</button> }</div>@if (feedback() && value()) { <div class="feedback" aria-live="polite"><span>{{ strengthLabel() }}</span><span class="meter" [class]="strength()"></span></div> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-password{display:flex;align-items:center;border:1px solid #cbd5e1;border-radius:.5rem;overflow:hidden}.orc-p2-password input{min-width:0;flex:1;border:0;padding:.55rem .7rem;outline:0}.orc-p2-password button{border:0;background:transparent;padding:.5rem}`],
+  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PasswordComponent), multi: true }],
 })
-export class PasswordComponent {
-  readonly value = model(''); readonly visible = model(false); readonly placeholder = input(''); readonly disabled = input(false, { transform: booleanAttribute }); readonly ariaLabel = input('Password');
-  onInput(event: Event): void { this.value.set((event.target as HTMLInputElement).value); }
-  toggleVisible(): void { this.visible.update(value => !value); }
+export class PasswordComponent implements ControlValueAccessor {
+  readonly value = model(''); readonly visible = model(false); readonly placeholder = input(''); readonly disabled = input(false, { transform: booleanAttribute }); readonly readonly = input(false, { transform: booleanAttribute }); readonly required = input(false, { transform: booleanAttribute }); readonly ariaLabel = input('Password'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly label = input<string | undefined>(undefined); readonly inputId = input<string | undefined>(undefined); readonly inputStyleClass = input(''); readonly autocomplete = input('off'); readonly autofocus = input(false, { transform: booleanAttribute }); readonly tabindex = input<number | undefined>(undefined); readonly feedback = input(true, { transform: booleanAttribute }); readonly toggleMask = input(true, { transform: booleanAttribute }); readonly showClear = input(false, { transform: booleanAttribute }); readonly promptLabel = input('Enter a password'); readonly weakLabel = input('Weak'); readonly mediumLabel = input('Medium'); readonly strongLabel = input('Strong'); readonly mediumRegex = input('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}$'); readonly strongRegex = input('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}$');
+  readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onClear = output<void>(); protected readonly cvaDisabled = signal(false); private onModelChange: (value: string) => void = () => {}; private onModelTouched: () => void = () => {};
+  readonly strength = computed<'weak' | 'medium' | 'strong'>(() => { const value = this.value(); if (!value) return 'weak'; try { if (new RegExp(this.strongRegex()).test(value)) return 'strong'; if (new RegExp(this.mediumRegex()).test(value)) return 'medium'; } catch { /* invalid custom expressions fall back to weak */ } return 'weak'; });
+  readonly strengthLabel = computed(() => this.strength() === 'strong' ? this.strongLabel() : this.strength() === 'medium' ? this.mediumLabel() : this.weakLabel());
+  writeValue(value: unknown): void { this.value.set(value == null ? '' : String(value)); }
+  registerOnChange(fn: (value: string) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
+  setDisabledState(value: boolean): void { this.cvaDisabled.set(value); }
+  onInput(event: Event): void { if (this.readonly() || this.disabled() || this.cvaDisabled()) return; const value = (event.target as HTMLInputElement).value; this.value.set(value); this.onModelChange(value); }
+  toggleVisible(): void { if (!this.disabled() && !this.cvaDisabled()) this.visible.update(value => !value); }
+  clear(): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set(''); this.onModelChange(''); this.onClear.emit(); }
 }
 
 @Component({
