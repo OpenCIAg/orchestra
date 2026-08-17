@@ -14,13 +14,17 @@ export interface PrimeMenuItem {
 
 @Component({
   selector: 'orc-tiered-menu', standalone: true,
-  template: `<nav class="orc-advanced-menu" role="menu" [attr.aria-label]="ariaLabel()">@for (item of items(); track $index) { @if (item.separator) { <hr /> } @else { <button type="button" role="menuitem" [disabled]="item.disabled" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.items?.length) { <span aria-hidden="true">›</span> }</button> @if (openItem() === item && item.items?.length) { <div class="submenu" role="menu">@for (child of item.items; track $index) { <button type="button" role="menuitem" [disabled]="child.disabled" (click)="activate(child)">{{ child.icon }} {{ child.label }}</button> }</div> } } }</nav>`,
+  template: `<nav class="orc-advanced-menu" [id]="id()" [class]="styleClass()" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)" (keydown)="onKeydown($event)">@for (item of items(); track $index) { @if (item.separator) { <hr /> } @else { <button type="button" role="menuitem" [disabled]="item.disabled || disabled()" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.items?.length) { <span aria-hidden="true">›</span> }</button> @if (openItem() === item && item.items?.length) { <div class="submenu" role="menu">@for (child of item.items; track $index) { <button type="button" role="menuitem" [disabled]="child.disabled || disabled()" (click)="activate(child)">{{ child.icon }} {{ child.label }}</button> }</div> } } }</nav>`,
   styles: [P2_SHARED_STYLES + `.orc-advanced-menu{position:relative;display:grid;min-width:12rem;padding:.35rem;border:1px solid #e2e8f0;border-radius:.5rem;background:#fff;box-shadow:0 10px 24px #0f172a1a}.orc-advanced-menu button{display:flex;justify-content:space-between;gap:1.5rem;border:0;border-radius:.35rem;background:transparent;padding:.55rem .7rem;text-align:left}.orc-advanced-menu button:hover:not(:disabled){background:#eff6ff}.orc-advanced-menu hr{width:100%;border:0;border-top:1px solid #e2e8f0}.submenu{position:absolute;z-index:2;left:calc(100% - .25rem);top:2rem;display:grid;min-width:12rem;padding:.35rem;border:1px solid #e2e8f0;border-radius:.5rem;background:#fff;box-shadow:0 10px 24px #0f172a1a}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TieredMenuComponent {
-  readonly items = input<PrimeMenuItem[]>([]); readonly ariaLabel = input('Menu'); readonly openItem = signal<PrimeMenuItem | null>(null); readonly itemSelect = output<PrimeMenuItem>();
-  activate(item: PrimeMenuItem): void { if (item.disabled) return; if (item.items?.length) { this.openItem.set(this.openItem() === item ? null : item); return; } item.command?.(); this.itemSelect.emit(item); }
+  readonly items = input<PrimeMenuItem[]>([]); readonly ariaLabel = input('Menu'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly id = input<string | undefined>(undefined); readonly styleClass = input(''); readonly disabled = input(false, { transform: booleanAttribute }); readonly popup = input(false, { transform: booleanAttribute }); readonly visible = model(false); readonly openItem = signal<PrimeMenuItem | null>(null); readonly itemSelect = output<PrimeMenuItem>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>();
+  activate(item: PrimeMenuItem): void { if (item.disabled || this.disabled()) return; if (item.items?.length) { this.openItem.set(this.openItem() === item ? null : item); return; } item.command?.(); this.itemSelect.emit(item); }
+  show(): void { this.visible.set(true); this.onShow.emit(); }
+  hide(): void { this.visible.set(false); this.openItem.set(null); this.onHide.emit(); }
+  toggle(): void { this.visible() ? this.hide() : this.show(); }
+  onKeydown(event: KeyboardEvent): void { if (event.key === 'Escape') { event.preventDefault(); this.hide(); } }
 }
 
 @Component({
