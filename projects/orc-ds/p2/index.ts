@@ -6,3 +6,4 @@ export * from './p2-selection-components';
 export * from './p2-shared';
 export * from './p2-primeng-gap-components';
 export * from './p2-advanced-components';
+export * from './p2-input-gap-components';
