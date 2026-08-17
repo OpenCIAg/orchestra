@@ -140,3 +140,5 @@ export * from '@ciag/orchestra/sidebar';
 export * from '@ciag/orchestra/dynamic-dialog';
 export * from '@ciag/orchestra/fieldset';
 export * from '@ciag/orchestra/input-icon';
+export * from '@ciag/orchestra/command-menu';
+export * from '@ciag/orchestra/avatar-group';

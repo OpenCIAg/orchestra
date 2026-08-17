@@ -15,3 +15,4 @@ export * from './p2-org-knob-components';
 export * from './p2-utility-directives';
 export * from './p2-input-more';
 export * from './p2-dock-scroll-components';
+export * from './p2-command-components';
