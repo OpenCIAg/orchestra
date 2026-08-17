@@ -12,6 +12,7 @@ import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SwitchComponent } from './switch/switch.component';
 import { SliderComponent } from './slider/slider.component';
+import { RatingComponent } from './rating/rating.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -135,6 +136,15 @@ describe('P2 expansion components', () => {
     component.writeValue([20, 80]);
     expect(component.normalizedValues()).toEqual([20, 80]);
     expect(component.orientation()).toBe('vertical');
+  });
+
+  it('supports PrimeNG rating stars and rate events', () => {
+    const fixture = TestBed.createComponent(RatingComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('stars', 10);
+    component.onItemClick(new MouseEvent('click'), 8);
+    expect(component.value()).toBe(8);
+    expect(component.starsArray()).toHaveSize(10);
   });
 
   it('sorts and selects rows in the data table', () => {

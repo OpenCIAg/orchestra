@@ -5,6 +5,7 @@ import {
   forwardRef,
   input,
   model,
+  output,
   computed,
   signal,
   booleanAttribute,
@@ -43,11 +44,13 @@ export class RatingComponent implements ControlValueAccessor {
   // -- Inputs ---------------------------------------------------------
   readonly id = input<string>(this.uniqueId);
   readonly max = input(5, { transform: numberAttribute });
+  readonly stars = input<number | undefined>(undefined, { transform: numberAttribute });
   readonly allowHalf = input(false, { transform: booleanAttribute });
   readonly numeric = input(false, { transform: booleanAttribute });
   readonly clearable = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly styleClass = input(''); readonly iconOnClass = input(''); readonly iconOffClass = input('');
   
   // Array de rótulos ex: ['Péssimo', 'Ruim', 'Regular', 'Bom', 'Excelente']
   readonly tooltips = input<string[]>([]);
@@ -62,11 +65,13 @@ export class RatingComponent implements ControlValueAccessor {
   readonly hoverValue = signal<number | null>(null);
   protected readonly cvaDisabled = signal<boolean>(false);
   protected readonly isFocused = signal<boolean>(false);
+  readonly onRate = output<{ originalEvent: Event; value: number }>(); readonly onCancel = output<Event>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>();
 
   // -- Computeds ----------------------------------------------------
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
   
-  readonly starsArray = computed(() => Array.from({ length: this.max() }, (_, i) => i + 1));
+  readonly effectiveStars = computed(() => this.stars() ?? this.max());
+  readonly starsArray = computed(() => Array.from({ length: this.effectiveStars() }, (_, i) => i + 1));
 
   readonly displayValue = computed(() => {
     const hover = this.hoverValue();
@@ -108,6 +113,7 @@ export class RatingComponent implements ControlValueAccessor {
 
     this.updateValue(selectedValue);
     this.onTouched();
+    this.onRate.emit({ originalEvent: event, value: selectedValue });
   }
 
   onItemHover(index: number, isHalf: boolean = false): void {
@@ -121,19 +127,21 @@ export class RatingComponent implements ControlValueAccessor {
     this.hoverValue.set(null);
   }
 
-  onFocus(): void {
+  handleFocus(event: Event): void {
     if (this.effectiveDisabled()) return;
     this.isFocused.set(true);
+    this.onFocus.emit(event);
   }
 
-  onBlur(): void {
+  handleBlur(event: Event): void {
     if (this.effectiveDisabled()) return;
     this.isFocused.set(false);
     this.onTouched();
+    this.onBlur.emit(event);
   }
 
   private updateValue(val: number): void {
-    const safeVal = Math.max(0, Math.min(val, this.max()));
+    const safeVal = Math.max(0, Math.min(val, this.effectiveStars()));
     this.value.set(safeVal);
     this.onChange(safeVal);
   }
@@ -163,7 +171,7 @@ export class RatingComponent implements ControlValueAccessor {
         break;
       case 'End':
         event.preventDefault();
-        this.updateValue(this.max());
+        this.updateValue(this.effectiveStars());
         break;
       case 'Escape':
       case '0':
