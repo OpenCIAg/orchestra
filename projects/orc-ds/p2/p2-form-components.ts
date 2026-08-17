@@ -285,10 +285,10 @@ export class InputGroupComponent {
   template: `
     <div class="orc-p2-listbox-wrap">
       @if (label()) { <label>{{ label() }}</label> }
-      @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="filterValue.set(($any($event.target)).value)" aria-label="Filter options" /> }
-      <ul class="orc-p2-listbox" [class]="styleClass()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
+      @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" /> }
+      <ul class="orc-p2-listbox" [id]="id()" [class]="styleClass()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
         @for (option of filteredOptions(); track getOptionValue(option)) {
-          <li role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)">
+          <li role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)" (dblclick)="onDblClick.emit({ originalEvent: $event, option })">
             <span>{{ getOptionLabel(option) }}</span>@if (option.description) { <small>{{ option.description }}</small> }
           </li>
         } @empty { <li class="empty">{{ emptyText() }}</li> }
@@ -308,9 +308,10 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   readonly multiple = input(false, { transform: booleanAttribute });
   readonly label = input('');
   readonly ariaLabel = input('Listbox');
+  readonly id = input<string | undefined>(undefined); readonly readonly = input(false, { transform: booleanAttribute }); readonly dataKey = input<string | undefined>(undefined); readonly selectOnFocus = input(false, { transform: booleanAttribute }); readonly focusOnHover = input(false, { transform: booleanAttribute });
   readonly emptyText = input('No options');
-  readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | undefined>(undefined); readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly disabled = input(false, { transform: booleanAttribute }); readonly tabindex = input(0); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly styleClass = input('');
-  readonly optionSelected = output<any>(); readonly onChange = output<{ originalEvent: Event; value: T | T[] | null }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>();
+  readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | ((option: any) => boolean) | undefined>(undefined); readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly ariaFilterLabel = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly tabindex = input(0); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly styleClass = input('');
+  readonly optionSelected = output<any>(); readonly onChange = output<{ originalEvent: Event; value: T | T[] | null }>(); readonly onClick = output<{ originalEvent: Event; option: any }>(); readonly onDblClick = output<{ originalEvent: Event; option: any }>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onSelectAllChange = output<{ originalEvent: Event; checked: boolean }>();
   readonly activeIndex = signal(0);
   protected readonly cvaDisabled = signal(false); private onModelChange: (value: T | T[] | null) => void = () => {}; protected onModelTouched: () => void = () => {};
   readonly filteredOptions = computed(() => { const term = this.filterValue().trim().toLowerCase(); if (!term) return this.options(); return this.options().filter(option => this.getOptionLabel(option).toLowerCase().includes(term)); });
@@ -321,7 +322,7 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   setDisabledState(value: boolean): void { this.cvaDisabled.set(value); }
   getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
   getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
-  isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return Boolean(key ? option?.[key] : option?.disabled); }
+  isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return typeof key === 'function' ? key(option) : Boolean(key ? option?.[key] : option?.disabled); }
 
   isSelected(option: any): boolean {
     const current = this.value();
@@ -329,7 +330,7 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   }
 
   select(option: any, event?: Event): void {
-    if (this.disabled() || this.cvaDisabled() || this.isOptionDisabled(option)) return;
+    if (this.disabled() || this.cvaDisabled() || this.readonly() || this.isOptionDisabled(option)) return;
     const candidate = this.getOptionValue(option); let next: T | T[] | null;
     if (this.multiple()) {
       const value = this.value();
@@ -338,7 +339,7 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
       index >= 0 ? current.splice(index, 1) : current.push(candidate);
       next = current as T[];
     } else next = candidate;
-    this.value.set(next); this.onModelChange(next); this.onModelTouched(); this.optionSelected.emit(option); if (event) this.onChange.emit({ originalEvent: event, value: next });
+    this.value.set(next); this.onModelChange(next); this.onModelTouched(); this.optionSelected.emit(option); if (event) { this.onChange.emit({ originalEvent: event, value: next }); this.onClick.emit({ originalEvent: event, option }); }
   }
 
   onKeydown(event: KeyboardEvent): void {
@@ -351,6 +352,7 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
       this.select(options[this.activeIndex()]);
     }
   }
+  onFilterInput(event: Event): void { const filter = (event.target as HTMLInputElement).value; this.filterValue.set(filter); this.onFilter.emit({ originalEvent: event, filter }); }
 }
 
 @Component({
