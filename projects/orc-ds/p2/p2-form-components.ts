@@ -366,7 +366,8 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
       </button>
       @if (showClear() && value().length) { <button type="button" class="clear" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
-        @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="filterValue.set(($any($event.target)).value)" aria-label="Filter options" /> }
+        @if (showToggleAll()) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? 'Clear all' : 'Select all' }}</button> }
+        @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" aria-label="Filter options" /> }
         <ul class="options" role="listbox" aria-multiselectable="true">
           @for (option of filteredOptions(); track getOptionValue(option)) { <li role="option" [attr.aria-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)"><span class="check">{{ isSelected(option) ? '✓' : '' }}</span>{{ getOptionLabel(option) }}</li> }
           @empty { <li class="empty">{{ emptyText() }}</li> }
@@ -417,6 +418,8 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   }
   clear(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set([]); this.onModelChange([]); this.onClear.emit(event); }
   selectAll(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; const selectable = this.options().filter(option => !this.isOptionDisabled(option)); const checked = !selectable.every(option => this.isSelected(option)); const next = checked ? selectable.map(option => this.getOptionValue(option)) : []; this.value.set(next); this.onModelChange(next); this.onSelectAllChange.emit({ originalEvent: event, checked }); }
+  allOptionsSelected(): boolean { const selectable = this.options().filter(option => !this.isOptionDisabled(option)); return selectable.length > 0 && selectable.every(option => this.isSelected(option)); }
+  onFilterInput(event: Event): void { const filter = (event.target as HTMLInputElement).value; this.filterValue.set(filter); this.onFilter.emit({ originalEvent: event, filter }); }
 }
 
 @Component({
