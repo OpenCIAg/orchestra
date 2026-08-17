@@ -2,6 +2,9 @@
   "name": "orc-ds-workspace",
   "version": "0.0.0",
   "private": true,
+  "workspaces": [
+    "projects/orc-ds"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve docs",
