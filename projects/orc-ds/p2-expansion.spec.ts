@@ -9,6 +9,7 @@ import { SegmentedControlComponent, TreeSelectComponent } from './p2/p2-selectio
 import { DataViewComponent } from './p2/p2-advanced-components';
 import { ToggleButtonComponent } from './p2/p2-form-gap-components';
 import { SelectComponent } from './select/select.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -95,6 +96,20 @@ describe('P2 expansion components', () => {
     expect(component.getOptionLabel(component.options()![1])).toBe('Portugal');
     component.onDataOptionClick(component.options()![0] as any);
     expect(component.value()).toBe('br');
+  });
+
+  it('supports Checkbox binary true/false values and lifecycle outputs', () => {
+    const fixture = TestBed.createComponent(CheckboxComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('binary', true);
+    fixture.componentRef.setInput('trueValue', 'yes');
+    fixture.componentRef.setInput('falseValue', 'no');
+    let modelValue: unknown;
+    component.registerOnChange(value => modelValue = value);
+    component.toggle();
+    expect(modelValue).toBe('yes');
+    component.writeValue('no');
+    expect(component.checked()).toBeFalse();
   });
 
   it('sorts and selects rows in the data table', () => {

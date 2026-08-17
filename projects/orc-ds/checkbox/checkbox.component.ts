@@ -46,6 +46,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   readonly ariaLabel = input<string>('');
   readonly ariaLabelledby = input<string>('');
   readonly ariaDescribedby = input<string>('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined); readonly inputId = input<string | undefined>(undefined); readonly readonly = input(false, { transform: booleanAttribute }); readonly binary = input(false, { transform: booleanAttribute }); readonly trueValue = input<any>(true); readonly falseValue = input<any>(false); readonly variant = input<'filled' | 'outlined'>('outlined'); readonly size = input<'small' | 'large' | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly styleClass = input('');
 
   // Two-way Models (Signals API)
   readonly checked = model<boolean>(false);
@@ -53,6 +54,7 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   // Outputs (Signals API)
   readonly change = output<CheckboxChangeEvent>();
+  readonly onChange = output<CheckboxChangeEvent>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>();
 
   // Element reference ao input nativo para controle de foco
   readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('nativeInput');
@@ -92,16 +94,16 @@ export class CheckboxComponent implements ControlValueAccessor {
   });
 
   // Callbacks do ControlValueAccessor
-  private onChange: (value: boolean) => void = () => {};
+  private onModelChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
   // ── ControlValueAccessor Implementation ───────────────────
   writeValue(val: any): void {
-    this.checked.set(Boolean(val));
+    this.checked.set(this.binary() ? val === this.trueValue() : Boolean(val));
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
-    this.onChange = fn;
+    this.onModelChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {
@@ -130,19 +132,30 @@ export class CheckboxComponent implements ControlValueAccessor {
     }
 
     const newChecked = this.checked();
-    this.onChange(newChecked);
+    const emittedValue = this.binary() ? (newChecked ? this.trueValue() : this.falseValue()) : newChecked;
+    this.onModelChange(emittedValue);
     this.onTouched();
 
-    this.change.emit({
-      checked: newChecked,
-      indeterminate: this.indeterminate(),
-      value: this.value(),
-    });
+    const eventValue = { checked: newChecked, indeterminate: this.indeterminate(), value: this.value() };
+    this.change.emit(eventValue);
+    this.onChange.emit(eventValue);
   }
 
-  onBlur(): void {
+  handleBlur(event?: Event): void {
     this.onTouched();
+    if (event) this.onBlur.emit(event);
   }
+
+  handleFocus(event: Event): void { this.onFocus.emit(event); }
+
+  /*
+    The output value follows PrimeNG's binary/trueValue/falseValue contract,
+    while `checked` remains the visual boolean state used by Orchestra.
+  */
+  modelValue(): any { return this.binary() ? (this.checked() ? this.trueValue() : this.falseValue()) : this.checked(); }
+
+  /* legacy method retained for callers that used the old boolean-only API */
+  onLegacyBlur(): void { this.onTouched(); }
 
   // ── Public API Methods ────────────────────────────────────
   toggle(): void {
@@ -156,14 +169,16 @@ export class CheckboxComponent implements ControlValueAccessor {
     }
 
     const newChecked = this.checked();
-    this.onChange(newChecked);
+    this.onModelChange(this.modelValue());
     this.onTouched();
 
-    this.change.emit({
+    const eventValue = {
       checked: newChecked,
       indeterminate: this.indeterminate(),
       value: this.value(),
-    });
+    };
+    this.change.emit(eventValue);
+    this.onChange.emit(eventValue);
   }
 
   focus(): void {

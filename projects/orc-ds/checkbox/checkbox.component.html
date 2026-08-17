@@ -1,28 +1,30 @@
 <label
   class="orc-checkbox"
+  [class]="styleClass()"
   [class.orc-checkbox--checked]="checked() && !indeterminate()"
   [class.orc-checkbox--indeterminate]="indeterminate()"
   [class.orc-checkbox--disabled]="isDisabled()"
   [class.orc-checkbox--error]="isError()"
-  [attr.for]="effectiveId()"
+    [attr.for]="effectiveId()"
 >
   <!-- Visually hidden native checkbox input for complete a11y, keyboard navigation (Space key) and Form bindings -->
   <input
     #nativeInput
     type="checkbox"
     class="orc-checkbox__native-input"
-    [id]="effectiveId()"
+    [id]="inputId() || effectiveId()"
     [name]="name() || null"
     [checked]="checked()"
     [disabled]="isDisabled()"
     [required]="required()"
     [attr.aria-label]="ariaLabel() || null"
-    [attr.aria-labelledby]="ariaLabelledby() || null"
+    [attr.aria-labelledby]="ariaLabelledBy() || ariaLabelledby() || null"
     [attr.aria-describedby]="computedAriaDescribedBy()"
     [attr.aria-checked]="ariaChecked()"
     [attr.aria-invalid]="isError()"
     (change)="onNativeChange($event)"
-    (blur)="onBlur()"
+    (focus)="handleFocus($event)"
+    (blur)="handleBlur($event)"
   />
 
   <!-- Visual Custom Checkbox matching Figma 382:5024 (16x16px, 4px border radius) -->
