@@ -49,10 +49,27 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
   readonly showControls = input(true, { transform: booleanAttribute });
+  readonly showButtons = input(true, { transform: booleanAttribute });
+  readonly buttonLayout = input<'stacked' | 'horizontal' | 'vertical'>('stacked');
+  readonly inputId = input<string | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(undefined);
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly ariaDescribedBy = input<string | undefined>(undefined);
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly showClear = input(false, { transform: booleanAttribute });
+  readonly allowEmpty = input(true, { transform: booleanAttribute });
+  readonly locale = input<string | undefined>(undefined);
+  readonly mode = input<'decimal' | 'currency'>('decimal');
+  readonly currency = input<string | undefined>(undefined);
+  readonly currencyDisplay = input<'symbol' | 'code' | 'name'>('symbol');
+  readonly useGrouping = input(true, { transform: booleanAttribute });
+  readonly minFractionDigits = input<number | undefined>(undefined);
+  readonly maxFractionDigits = input<number | undefined>(undefined);
   readonly ariaLabel = input('');
 
   readonly value = model<number | null>(null);
   readonly blur = output<FocusEvent>();
+  readonly onInput = output<{ originalEvent: Event; value: number | null }>(); readonly onFocus = output<Event>(); readonly onBlur = output<FocusEvent>(); readonly onKeyDown = output<KeyboardEvent>(); readonly onClear = output<void>();
   private readonly cvaDisabled = signal(false);
   readonly effectiveId = computed(() => this.id() || this.uniqueId);
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
@@ -76,27 +93,32 @@ export class NumberInputComponent implements ControlValueAccessor {
   registerOnTouched(fn: () => void): void { this.onTouched = fn; }
   setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
 
-  onInput(event: Event): void {
+  handleInput(event: Event): void {
     const raw = (event.target as HTMLInputElement).value;
     if (raw.trim() === '') {
-      this.update(null);
+      if (this.allowEmpty()) this.update(null);
       return;
     }
     const parsed = Number(raw);
     if (Number.isFinite(parsed)) this.update(this.clamp(parsed));
+    this.onInput.emit({ originalEvent: event, value: this.value() });
   }
 
-  onBlur(event: FocusEvent): void {
+  handleBlur(event: FocusEvent): void {
     const input = event.target as HTMLInputElement;
     if (this.value() !== null) input.value = this.displayValue();
     this.onTouched();
     this.blur.emit(event);
+    this.onBlur.emit(event);
   }
 
   onKeydown(event: KeyboardEvent): void {
+    this.onKeyDown.emit(event);
     if (event.key === 'ArrowUp') { event.preventDefault(); this.increment(); }
     if (event.key === 'ArrowDown') { event.preventDefault(); this.decrement(); }
   }
+
+  clear(): void { if (this.effectiveDisabled() || this.readonly()) return; this.update(null); this.onClear.emit(); }
 
   increment(): void { this.update(this.clamp((this.value() ?? this.min() ?? 0) + this.step())); }
   decrement(): void { this.update(this.clamp((this.value() ?? this.min() ?? 0) - this.step())); }
