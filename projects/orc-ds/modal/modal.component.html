@@ -1,6 +1,6 @@
 <dialog
   #dialogRef
-  [class]="modalClasses()"
+  [class]="modalClasses() + ' ' + styleClass()"
   [style.z-index]="inline() ? 'auto' : zIndex()"
   (cancel)="onCancel($event)"
   (click)="onBackdropClick($event)"
@@ -14,16 +14,17 @@
     <!-- HEADER -->
     <header class="orc-modal__header">
       <div class="orc-modal__header-content">
+        @if (header()) { <span>{{ header() }}</span> }
         <ng-content select="[modal-header]"></ng-content>
       </div>
       
-      @if (showCloseButton()) {
+      @if (showCloseButton() && closable()) {
         <orc-button
           variant="ghost"
           size="sm"
           [iconOnly]="true"
           (click)="onClose()"
-          ariaLabel="Fechar modal"
+          [ariaLabel]="closeAriaLabel()"
           class="orc-modal__close-btn"
         >
           <svg iconLeft viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -32,6 +33,7 @@
           </svg>
         </orc-button>
       }
+      @if (maximizable()) { <button type="button" class="orc-modal__maximize" (click)="toggleMaximize()" [attr.aria-label]="maximized() ? 'Restore' : 'Maximize'">{{ maximized() ? '▣' : '□' }}</button> }
     </header>
 
     <!-- BODY -->

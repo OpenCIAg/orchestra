@@ -32,6 +32,10 @@ export class ModalComponent implements OnDestroy {
 
   // ── Inputs e Models ─────────────────────────────────────────
   readonly isOpen = model<boolean>(false);
+  /** PrimeNG Dialog-compatible visibility model; isOpen remains supported for Orchestra callers. */
+  readonly visible = model<boolean>(false);
+  readonly header = input<string | undefined>(undefined);
+  readonly modal = input(true); readonly closeOnEscape = input(true); readonly dismissableMask = input(true); readonly closable = input(true); readonly draggable = input(false); readonly resizable = input(false); readonly maximizable = input(false); readonly focusOnShow = input(true); readonly focusTrap = input(true); readonly blockScroll = input(true); readonly styleClass = input(''); readonly closeIcon = input('×'); readonly closeAriaLabel = input('Close'); readonly breakpoints = input<Record<string, string> | undefined>(undefined);
   readonly size = input<ModalSize>('md');
   readonly status = input<ModalStatus>('neutral');
   readonly inline = input<boolean>(false);
@@ -43,6 +47,8 @@ export class ModalComponent implements OnDestroy {
 
   // ── Outputs ─────────────────────────────────────────────────
   readonly closed = output<void>();
+  readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onMaximize = output<{ maximized: boolean }>();
+  readonly maximized = model(false);
 
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
@@ -54,7 +60,7 @@ export class ModalComponent implements OnDestroy {
       
       if (this.inline()) return; // Inline mode doesn't use showModal()
 
-      const open = this.isOpen();
+      const open = this.isOpen() || this.visible();
       const dialog = this.dialogRef?.nativeElement;
       
       if (!dialog) return;
@@ -62,13 +68,15 @@ export class ModalComponent implements OnDestroy {
       if (open && !dialog.open) {
         this.previousActiveElement = document.activeElement as HTMLElement;
         dialog.showModal();
-        document.body.style.overflow = 'hidden'; // Scroll lock
+        if (this.blockScroll()) document.body.style.overflow = 'hidden'; // Scroll lock
+        this.onShow.emit();
       } else if (!open && dialog.open) {
         dialog.close();
         document.body.style.removeProperty('overflow');
         if (this.previousActiveElement) {
           this.previousActiveElement.focus();
         }
+        this.onHide.emit();
       }
     });
   }
@@ -86,20 +94,19 @@ export class ModalComponent implements OnDestroy {
 
   // ── Handlers ────────────────────────────────────────────────
   onClose(): void {
-    if (this.isOpen()) {
-      this.isOpen.set(false);
+    if (this.isOpen() || this.visible()) {
+      this.isOpen.set(false); this.visible.set(false);
       this.closed.emit();
     }
   }
 
   onCancel(event: Event): void {
     // Disparado nativamente ao apertar 'Escape'
-    event.preventDefault(); // Previne o fechamento nativo para centralizar o estado no isOpen
-    this.onClose();
+    if (this.closeOnEscape()) { event.preventDefault(); this.onClose(); }
   }
 
   onBackdropClick(event: MouseEvent): void {
-    if (!this.closeOnBackdropClick()) return;
+    if (!this.closeOnBackdropClick() || !this.dismissableMask() || !this.modal()) return;
 
     const dialog = this.dialogRef.nativeElement;
     // O <dialog> cobre a tela inteira com seu backdrop.
@@ -119,6 +126,10 @@ export class ModalComponent implements OnDestroy {
       this.onClose();
     }
   }
+
+  show(): void { this.visible.set(true); this.isOpen.set(true); }
+  close(): void { this.onClose(); }
+  toggleMaximize(): void { if (!this.maximizable()) return; this.maximized.update(value => !value); this.onMaximize.emit({ maximized: this.maximized() }); }
 
   ngOnDestroy(): void {
     if (this.isBrowser) {
