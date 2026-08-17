@@ -82,11 +82,11 @@ export class PasswordComponent implements ControlValueAccessor {
 
 @Component({
   selector: 'orc-split-button', standalone: true,
-  template: `<div class="orc-p2-split"><button type="button" [disabled]="disabled()" (click)="primaryClick.emit()">{{ label() }}</button><button type="button" class="arrow" [disabled]="disabled()" (click)="toggleOpen()" aria-label="More actions">⌄</button>@if (open()) { <div class="orc-p2-split__menu"><ng-content /></div> }</div>`,
+  template: `<div class="orc-p2-split" [class]="styleClass()"><button type="button" [disabled]="disabled() || loading()" (click)="primaryClick.emit($event)">@if (loading()) { … } @else { {{ icon() }} {{ label() }} }</button><button type="button" class="arrow" [disabled]="disabled() || loading()" (click)="toggleOpen($event)" aria-label="More actions">⌄</button>@if (open()) { <div class="orc-p2-split__menu"><ng-content /></div> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-split{position:relative;display:inline-flex}.orc-p2-split>button{border:1px solid #2563eb;padding:.55rem .8rem;background:#2563eb;color:#fff}.orc-p2-split>.arrow{border-left-color:#60a5fa;border-radius:0 .4rem .4rem 0}.orc-p2-split>button:first-child{border-radius:.4rem 0 0 .4rem}.orc-p2-split__menu{position:absolute;z-index:3;top:calc(100% + .25rem);right:0;min-width:10rem;padding:.35rem;border:1px solid #e2e8f0;border-radius:.4rem;background:#fff;box-shadow:0 8px 20px #0f172a1a}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SplitButtonComponent { readonly label = input('Action'); readonly disabled = input(false, { transform: booleanAttribute }); readonly open = model(false); readonly primaryClick = output<void>(); toggleOpen(): void { this.open.update(value => !value); } }
+export class SplitButtonComponent { readonly label = input('Action'); readonly icon = input(''); readonly styleClass = input(''); readonly disabled = input(false, { transform: booleanAttribute }); readonly loading = input(false, { transform: booleanAttribute }); readonly size = input<'small' | 'large' | undefined>(undefined); readonly severity = input<string | undefined>(undefined); readonly open = model(false); readonly primaryClick = output<Event>(); readonly dropdownClick = output<Event>(); toggleOpen(event?: Event): void { this.open.update(value => !value); if (event) this.dropdownClick.emit(event); } }
 
 @Component({
   selector: 'orc-scroll-top', standalone: true,
