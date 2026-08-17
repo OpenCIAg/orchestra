@@ -8,3 +8,4 @@ export * from './p2-primeng-gap-components';
 export * from './p2-advanced-components';
 export * from './p2-input-gap-components';
 export * from './p2-hierarchical-components';
+export * from './p2-chart-editor-components';

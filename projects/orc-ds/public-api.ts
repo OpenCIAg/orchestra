@@ -110,3 +110,5 @@ export * from '@ciag/orchestra/terminal';
 export * from '@ciag/orchestra/image-compare';
 export * from '@ciag/orchestra/tree';
 export * from '@ciag/orchestra/tree-table';
+export * from '@ciag/orchestra/chart';
+export * from '@ciag/orchestra/editor';
