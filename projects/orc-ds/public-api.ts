@@ -122,3 +122,7 @@ export * from '@ciag/orchestra/key-filter';
 export * from '@ciag/orchestra/input-mask';
 export * from '@ciag/orchestra/organization-chart';
 export * from '@ciag/orchestra/knob';
+export * from '@ciag/orchestra/ripple';
+export * from '@ciag/orchestra/style-class';
+export * from '@ciag/orchestra/progress-bar';
+export * from '@ciag/orchestra/progress-spinner';

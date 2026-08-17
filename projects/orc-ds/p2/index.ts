@@ -12,3 +12,4 @@ export * from './p2-chart-editor-components';
 export * from './p2-list-gallery-components';
 export * from './p2-form-gap-components';
 export * from './p2-org-knob-components';
+export * from './p2-utility-directives';
