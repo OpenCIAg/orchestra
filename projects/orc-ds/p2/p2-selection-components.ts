@@ -40,8 +40,8 @@ interface VisibleTreeSelectNode { node: TreeSelectNode; level: number; }
       <button type="button" class="trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="inputId()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" (click)="toggleOpen()">{{ selectedLabel() || placeholder() }} <span aria-hidden="true">⌄</span></button>
       @if (showClear() && value() !== null) { <button type="button" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
-        @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="filterValue.set(($any($event.target)).value)" aria-label="Filter nodes" /> }
-        <ul class="tree" role="tree">
+        @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" aria-label="Filter nodes" /> }
+        <ul class="tree" [class]="panelStyleClass() || panelClass()" role="tree" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
           @for (item of filteredVisibleNodes(); track item.node.value) {
             <li role="treeitem" [attr.aria-level]="item.level" [style.padding-left.rem]="item.level * .9" [attr.aria-selected]="value() === item.node.value" [class.selected]="value() === item.node.value" [class.disabled]="item.node.disabled">
               @if (item.node.children?.length) { <button type="button" class="expand" [attr.aria-label]="expanded().has(item.node.value) ? 'Collapse' : 'Expand'" (click)="toggle(item.node)">{{ expanded().has(item.node.value) ? '▾' : '▸' }}</button> } @else { <span class="expand-placeholder"></span> }
@@ -62,10 +62,10 @@ export class TreeSelectComponent implements ControlValueAccessor {
   readonly label = input('');
   readonly placeholder = input('Select an item');
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly inputId = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly showClear = input(false, { transform: booleanAttribute }); readonly selectionMode = input<'single' | 'multiple'>('single');
+  readonly inputId = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly fluid = input(false, { transform: booleanAttribute }); readonly variant = input<'filled' | 'outlined'>('outlined'); readonly size = input<'small' | 'large' | undefined>(undefined); readonly panelStyleClass = input(''); readonly panelClass = input(''); readonly scrollHeight = input('16rem'); readonly filter = input(false, { transform: booleanAttribute }); readonly filterBy = input('label'); readonly filterMode = input('lenient'); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly showClear = input(false, { transform: booleanAttribute }); readonly loading = input(false, { transform: booleanAttribute }); readonly selectionMode = input<'single' | 'multiple' | 'checkbox'>('single'); readonly metaKeySelection = input(true, { transform: booleanAttribute });
   readonly open = model(false);
   readonly expanded = signal<ReadonlySet<string>>(new Set());
-  readonly nodeSelect = output<TreeSelectNode>(); readonly onChange = output<{ originalEvent: Event; value: string | string[] | null }>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClear = output<Event>();
+  readonly nodeSelect = output<TreeSelectNode>(); readonly onChange = output<{ originalEvent: Event; value: string | string[] | null }>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClear = output<Event>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onNodeExpand = output<TreeSelectNode>(); readonly onNodeCollapse = output<TreeSelectNode>(); readonly nodeUnselect = output<TreeSelectNode>();
   protected readonly cvaDisabled = signal(false); private onModelChange: (value: string | string[] | null) => void = () => {}; private onModelTouched: () => void = () => {};
 
   readonly visibleNodes = computed<VisibleTreeSelectNode[]>(() => {
@@ -82,8 +82,9 @@ export class TreeSelectComponent implements ControlValueAccessor {
   setDisabledState(value: boolean): void { this.cvaDisabled.set(value); }
   selectedLabel(): string { return this.findNode(this.nodes(), this.value())?.label ?? ''; }
   toggleOpen(): void { this.open.update(value => !value); this.open() ? this.onShow.emit() : this.onHide.emit(); }
-  toggle(node: TreeSelectNode): void { if (!node.children?.length) return; this.expanded.update(current => { const next = new Set(current); next.has(node.value) ? next.delete(node.value) : next.add(node.value); return next; }); }
+  toggle(node: TreeSelectNode): void { if (!node.children?.length) return; this.expanded.update(current => { const next = new Set(current); const wasExpanded = next.has(node.value); wasExpanded ? next.delete(node.value) : next.add(node.value); wasExpanded ? this.onNodeCollapse.emit(node) : this.onNodeExpand.emit(node); return next; }); }
   select(node: TreeSelectNode, event?: Event): void { if (node.disabled || this.disabled() || this.cvaDisabled()) return; this.value.set(node.value); this.onModelChange(node.value); this.onModelTouched(); this.nodeSelect.emit(node); if (event) this.onChange.emit({ originalEvent: event, value: node.value }); this.open.set(false); }
   clear(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set(null); this.onModelChange(null); this.onClear.emit(event); }
+  onFilterInput(event: Event): void { const filter = (event.target as HTMLInputElement).value; this.filterValue.set(filter); this.onFilter.emit({ originalEvent: event, filter }); }
   private findNode(nodes: TreeSelectNode[], value: string | null): TreeSelectNode | undefined { for (const node of nodes) { if (node.value === value) return node; const nested = node.children ? this.findNode(node.children, value) : undefined; if (nested) return nested; } return undefined; }
 }
