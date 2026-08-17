@@ -1,13 +1,36 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, Directive, HostListener, computed, input, model, output, signal } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, Directive, HostListener, computed, forwardRef, input, model, output, signal } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2Option, P2_SHARED_STYLES } from './p2-shared';
 
 @Component({
   selector: 'orc-select-button', standalone: true,
-  template: `<div class="orc-select-button" role="group" [attr.aria-label]="label()">@for (option of options(); track option.value) { <button type="button" [disabled]="disabled() || option.disabled" [class.selected]="isSelected(option)" [attr.aria-pressed]="isSelected(option)" (click)="select(option)">{{ option.icon }} {{ option.label }}</button> }</div>`,
+  template: `<div class="orc-select-button" [class]="styleClass()" role="group" [attr.aria-label]="label()" [attr.aria-labelledby]="ariaLabelledBy()">@for (option of options(); track getOptionValue(option)) { <button type="button" [disabled]="disabled() || isOptionDisabled(option)" [attr.tabindex]="tabindex()" [autofocus]="autofocus() && $index === 0" [class.selected]="isSelected(option)" [attr.aria-pressed]="isSelected(option)" (click)="select(option, $event)">{{ getOptionLabel(option) }}</button> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-select-button{display:inline-flex;gap:0}.orc-select-button button{border:1px solid #cbd5e1;background:#fff;padding:.55rem .8rem}.orc-select-button button:first-child{border-radius:.4rem 0 0 .4rem}.orc-select-button button:last-child{border-radius:0 .4rem .4rem 0}.orc-select-button button.selected{border-color:#2563eb;background:#2563eb;color:#fff}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectButtonComponent), multi: true }],
 })
-export class SelectButtonComponent<T = unknown> { readonly options = input<P2Option<T>[]>([]); readonly value = model<T | T[] | null>(null); readonly multiple = input(false, { transform: booleanAttribute }); readonly disabled = input(false, { transform: booleanAttribute }); readonly label = input('Select option'); readonly valueChangeEvent = output<T | T[] | null>(); isSelected(option: P2Option<T>): boolean { const current = this.value(); return this.multiple() ? Array.isArray(current) && current.includes(option.value) : current === option.value; } select(option: P2Option<T>): void { if (this.disabled() || option.disabled) return; let next: T | T[] | null; const current = this.value(); if (this.multiple()) { const items: T[] = Array.isArray(current) ? [...current] : []; const index = items.indexOf(option.value); index >= 0 ? items.splice(index, 1) : items.push(option.value); next = items; } else next = option.value; this.value.set(next); this.valueChangeEvent.emit(next); } }
+export class SelectButtonComponent<T = unknown> implements ControlValueAccessor {
+  readonly options = input<any[]>([]); readonly value = model<T | T[] | null>(null); readonly multiple = input(false, { transform: booleanAttribute }); readonly disabled = input(false, { transform: booleanAttribute }); readonly label = input('Select option');
+  readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | undefined>(undefined); readonly unselectable = input(false, { transform: booleanAttribute }); readonly allowEmpty = input(true, { transform: booleanAttribute }); readonly tabindex = input(0); readonly styleClass = input(''); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly size = input<'small' | 'large' | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly dataKey = input<string | undefined>(undefined);
+  readonly valueChangeEvent = output<T | T[] | null>(); readonly onOptionClick = output<{ originalEvent: Event; option: any; index: number }>(); readonly onChange = output<{ originalEvent: Event; value: T | T[] | null }>();
+  private onModelChange: (value: T | T[] | null) => void = () => {}; private onModelTouched: () => void = () => {};
+  writeValue(value: T | T[] | null): void { this.value.set(value ?? null); }
+  registerOnChange(fn: (value: T | T[] | null) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
+  setDisabledState(value: boolean): void { /* external disabled input remains the source of truth */ }
+  getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
+  getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
+  isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return Boolean(key ? option?.[key] : option?.disabled); }
+  isSelected(option: any): boolean { const candidate = this.getOptionValue(option); const current = this.value(); return this.multiple() ? Array.isArray(current) && current.some(value => this.sameValue(value, candidate)) : this.sameValue(current, candidate); }
+  private sameValue(left: any, right: any): boolean { const key = this.dataKey(); return key && left && right ? left?.[key] === right?.[key] : left === right; }
+  select(option: any, event?: Event): void {
+    if (this.disabled() || this.isOptionDisabled(option)) return;
+    const candidate = this.getOptionValue(option); const current = this.value(); let next: T | T[] | null;
+    if (this.multiple()) { const items: any[] = Array.isArray(current) ? [...current] : []; const index = items.findIndex(value => this.sameValue(value, candidate)); if (index >= 0) { if (!this.unselectable() && this.allowEmpty()) items.splice(index, 1); } else items.push(candidate); next = items as T[]; }
+    else next = this.sameValue(current, candidate) && this.allowEmpty() ? null : candidate as T;
+    this.value.set(next); this.onModelChange(next); this.onModelTouched(); this.valueChangeEvent.emit(next); if (event) { this.onOptionClick.emit({ originalEvent: event, option, index: this.options().indexOf(option) }); this.onChange.emit({ originalEvent: event, value: next }); }
+  }
+}
 
 @Component({
   selector: 'orc-toggle-button', standalone: true,
