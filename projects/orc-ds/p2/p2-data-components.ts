@@ -31,18 +31,20 @@ export interface MenubarItem extends P2Option<string> {
 @Component({
   selector: 'orc-menubar',
   standalone: true,
-  template: `<nav class="orc-p2-menubar" role="menubar" [attr.aria-label]="label()" (keydown)="onKeydown($event)">@for (item of items(); track item.value) { <button type="button" role="menuitem" [disabled]="item.disabled" [class.is-active]="$index === activeIndex()" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.shortcut) { <small>{{ item.shortcut }}</small> }</button> }</nav>`,
+  template: `<nav class="orc-p2-menubar" [id]="id()" [class]="styleClass()" role="menubar" [attr.aria-label]="label()" [attr.aria-labelledby]="ariaLabelledBy()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">@for (item of items(); track item.value) { <button type="button" role="menuitem" [disabled]="item.disabled || disabled()" [class.is-active]="$index === activeIndex()" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.shortcut) { <small>{{ item.shortcut }}</small> }</button> }</nav>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-menubar { display: flex; gap: .2rem; align-items: center; padding: .25rem; border: 1px solid #e2e8f0; border-radius: .6rem; background: #fff; } .orc-p2-menubar button { display: inline-flex; gap: .5rem; align-items: center; border: 0; border-radius: .4rem; background: transparent; color: #0f172a; padding: .5rem .7rem; } .orc-p2-menubar button:hover, .orc-p2-menubar button.is-active { background: #eff6ff; color: #1d4ed8; } .orc-p2-menubar small { margin-left: .5rem; color: #64748b; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenubarComponent {
   readonly items = input<MenubarItem[]>([]);
   readonly label = input('Main menu');
+  readonly id = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly styleClass = input(''); readonly disabled = input(false, { transform: booleanAttribute }); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0);
   readonly loop = input(true, { transform: booleanAttribute });
   readonly activeIndex = signal(0);
-  readonly itemSelect = output<MenubarItem>();
-  activate(item: MenubarItem): void { if (!item.disabled) this.itemSelect.emit(item); }
+  readonly itemSelect = output<MenubarItem>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly menuKeydown = output<KeyboardEvent>();
+  activate(item: MenubarItem): void { if (!item.disabled && !this.disabled()) this.itemSelect.emit(item); }
   onKeydown(event: KeyboardEvent): void {
+    this.menuKeydown.emit(event);
     const count = this.items().length;
     if (!count) return;
     if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
