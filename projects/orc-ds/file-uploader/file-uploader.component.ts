@@ -42,12 +42,12 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly name = input<string | undefined>(undefined);
   readonly url = input<string | undefined>(undefined);
   readonly method = input<'post' | 'put'>('post');
-  readonly multiple = input<boolean>(true, { transform: booleanAttribute });
+  readonly multiple = input(true, { transform: booleanAttribute });
   readonly auto = input(false, { transform: booleanAttribute });
   readonly withCredentials = input(false, { transform: booleanAttribute });
   readonly maxFiles = input<number>(10);
-  readonly maxFileSize = input<number>(5 * 1024 * 1024, { transform: numberAttribute }); // PrimeNG-compatible bytes
-  readonly disabled = input<boolean>(false, { transform: booleanAttribute });
+  readonly maxFileSize = input(5 * 1024 * 1024, { transform: numberAttribute }); // PrimeNG-compatible bytes
+  readonly disabled = input(false, { transform: booleanAttribute });
   readonly label = input<string>('Clique ou arraste seus arquivos aqui');
   readonly subLabel = input<string>('Suporta imagens e PDFs');
   readonly chooseLabel = input<string | undefined>(undefined);
