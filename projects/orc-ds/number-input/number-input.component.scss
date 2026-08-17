@@ -1,0 +1,9 @@
+:host { display: block; width: 100%; }
+.orc-number-input { display: grid; gap: 6px; width: 100%; font-family: var(--font-sans, system-ui, sans-serif); }
+.orc-number-input__label { font-size: 13px; font-weight: 600; color: var(--orc-font-main, #141414); span { color: var(--color-error, #fb2c36); } }
+.orc-number-input__box { display: flex; align-items: center; min-height: 44px; overflow: hidden; border: 1px solid var(--orc-border, #d9d9d9); border-radius: var(--radius-md, 10px); background: var(--fill-modal, #fff); transition: border-color .2s, box-shadow .2s; &:focus-within { border-color: var(--orc-color-azul-eletrico, #1c6aed); box-shadow: 0 0 0 3px rgba(28,106,237,.14); } &--error { border-color: var(--color-error, #fb2c36); } &--success { border-color: var(--color-success, #006f4a); } }
+.orc-number-input__native { flex: 1; min-width: 0; height: 100%; padding: 0 8px; border: 0; outline: 0; background: transparent; color: var(--orc-font-main, #141414); font: inherit; text-align: center; &::-webkit-inner-spin-button, &::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; } &[type=number] { -moz-appearance: textfield; } }
+.orc-number-input__control { align-self: stretch; min-width: 38px; padding: 0 10px; border: 0; background: var(--orc-th, #f7f8fa); color: var(--orc-font-main, #141414); font-size: 20px; cursor: pointer; &:hover:not(:disabled) { background: var(--orc-border, #d9d9d9); } &:disabled { opacity: .4; cursor: not-allowed; } &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: -2px; } }
+.orc-number-input__affix { padding: 0 10px; color: var(--orc-font-secondary, #666); font-size: 13px; }
+.orc-number-input--disabled { opacity: .55; }
+.orc-number-input__message { margin: 0; color: var(--orc-font-secondary, #666); font-size: 12px; &--error { color: var(--color-error, #fb2c36); } }

@@ -1,0 +1,455 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Feedback</div>
+      <h1 class="section-title">Toast / Notifications</h1>
+      <p class="section-desc">
+        Notificações contextuais flutuantes e temporárias disparadas programaticamente via <code>ToastService</code>.
+        Suporta múltiplos tipos de status, auto-dismiss com pausa ao passar o mouse (hover), ações personalizadas e
+        posicionamento dinâmico.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Preview estático & disparo</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <orc-toast [toast]="{
+                    id: 'playground-preview',
+                    type: playgroundType(),
+                    title: playgroundTitle(),
+                    message: playgroundMessage(),
+                    duration: playgroundDuration(),
+                    showProgressBar: playgroundShowProgressBar(),
+                    dismissible: playgroundDismissible(),
+                    showIcon: playgroundShowIcon(),
+                    position: playgroundPosition(),
+                    pauseOnHover: true,
+                    createdAt: 0,
+                    action: playgroundHasAction() ? { label: playgroundActionLabel(), onClick: null! } : undefined
+                  }" />
+              </div>
+
+              <div class="preview-actions">
+                <button type="button" class="btn-primary-trigger" (click)="triggerPlaygroundToast()">
+                  Disparar toast
+                </button>
+                @if (toastService.activeCount() > 0) {
+                <button type="button" class="btn-clear" (click)="clearAll()">
+                  Limpar Todos ({{ toastService.activeCount() }})
+                </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Configurações e propriedades</div>
+            <div class="panel__body">
+              <!-- Title Input -->
+              <div class="control-group">
+                <label class="control-label">Título</label>
+                <input type="text" class="text-input" [value]="playgroundTitle()"
+                  (input)="playgroundTitle.set($any($event.target).value)" placeholder="Título do toast...">
+              </div>
+
+              <!-- Message Input -->
+              <div class="control-group">
+                <label class="control-label">Mensagem</label>
+                <input type="text" class="text-input" [value]="playgroundMessage()"
+                  (input)="playgroundMessage.set($any($event.target).value)" placeholder="Mensagem do toast...">
+              </div>
+
+              <!-- Type / Status Selection -->
+              <div class="control-group">
+                <label class="control-label">Tipo / Status</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'success'"
+                    (click)="playgroundType.set('success')">Success</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'info'"
+                    (click)="playgroundType.set('info')">Info</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'warning'"
+                    (click)="playgroundType.set('warning')">Warning</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'error'"
+                    (click)="playgroundType.set('error')">Error</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'loading'"
+                    (click)="playgroundType.set('loading')">Loading</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'notification'"
+                    (click)="playgroundType.set('notification')">Notif.</button>
+                </div>
+              </div>
+
+              <!-- Position Selection -->
+              <div class="control-group">
+                <label class="control-label">Posição na Tela</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundPosition() === 'top-right'"
+                    (click)="playgroundPosition.set('top-right')">Top Right</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundPosition() === 'top-center'"
+                    (click)="playgroundPosition.set('top-center')">Top Center</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundPosition() === 'top-left'"
+                    (click)="playgroundPosition.set('top-left')">Top Left</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundPosition() === 'bottom-right'"
+                    (click)="playgroundPosition.set('bottom-right')">Bottom Right</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundPosition() === 'bottom-center'"
+                    (click)="playgroundPosition.set('bottom-center')">Bottom Center</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="playgroundPosition() === 'bottom-left'"
+                    (click)="playgroundPosition.set('bottom-left')">Bottom Left</button>
+                </div>
+              </div>
+
+              <!-- Duration Input -->
+              <div class="control-group">
+                <label class="control-label">Duração em ms (0 = Sem auto-dismiss)</label>
+                <input type="number" class="text-input" [value]="playgroundDuration()"
+                  (input)="playgroundDuration.set($any($event.target).value)" step="500" min="0">
+              </div>
+
+              <!-- Toggles -->
+              <div class="control-group">
+                <label class="control-label">Opções</label>
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundShowIcon()"
+                      (change)="playgroundShowIcon.set($any($event.target).checked)">
+                    <span>Exibir ícone</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundShowProgressBar()"
+                      (change)="playgroundShowProgressBar.set($any($event.target).checked)">
+                    <span>Barra de progresso</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundDismissible()"
+                      (change)="playgroundDismissible.set($any($event.target).checked)">
+                    <span>Botão fechar (X)</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundHasAction()"
+                      (change)="playgroundHasAction.set($any($event.target).checked)">
+                    <span>Incluir Ação</span>
+                  </label>
+                </div>
+              </div>
+
+              @if (playgroundHasAction()) {
+              <div class="control-group">
+                <label class="control-label">Rótulo do Botão de Ação</label>
+                <input type="text" class="text-input" [value]="playgroundActionLabel()"
+                  (input)="playgroundActionLabel.set($any($event.target).value)">
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA DESIGN SYSTEM VARIANTS (Node 382:5265) ────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+        <p class="section-text">
+          Todos os 8 modelos especificados no design system. Clique no botão de teste ao lado de cada um para dispará-lo
+          diretamente no canto da tela.
+        </p>
+
+        <div class="figma-grid">
+          <!-- Coluna 1 -->
+          <div class="figma-col">
+            <!-- 1. Notificações -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Notificações</span>
+                <button type="button" class="btn-test" (click)="triggerNotification()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-notif',
+                  type: 'notification',
+                  title: 'Notificações',
+                  message: 'Sexta-feira, 28 de Fevereiro às 14:00',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: true,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0
+                }" />
+            </div>
+
+            <!-- 2. Mais informações -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Mais informações (Ação)</span>
+                <button type="button" class="btn-test" (click)="triggerLearnMore()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-learn',
+                  type: 'info',
+                  title: 'Mais informações',
+                  message: 'Eventos que user precisa saber mais',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: false,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0,
+                  action: { label: 'Saiba mais', onClick: null! }
+                }" />
+            </div>
+
+            <!-- 3. Carregando -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Carregando (Spinner)</span>
+                <button type="button" class="btn-test" (click)="triggerLoading()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-loading',
+                  type: 'loading',
+                  title: 'Carregando',
+                  message: '',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: true,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0
+                }" />
+            </div>
+
+            <!-- 4. Ações canceláveis -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Ações canceláveis (Desfazer)</span>
+                <button type="button" class="btn-test" (click)="triggerUndoAction()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-undo',
+                  type: 'info',
+                  title: 'Ações canceláveis',
+                  message: 'Usuário pode desfazer por enquanto',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: false,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0,
+                  action: { label: 'Desfazer', icon: 'undo', onClick: null! }
+                }" />
+            </div>
+          </div>
+
+          <!-- Coluna 2 -->
+          <div class="figma-col">
+            <!-- 5. Sucesso -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Sucesso</span>
+                <button type="button" class="btn-test" (click)="triggerSuccess()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-success',
+                  type: 'success',
+                  title: 'Sucesso',
+                  message: '',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: true,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0
+                }" />
+            </div>
+
+            <!-- 6. Infos -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Infos</span>
+                <button type="button" class="btn-test" (click)="triggerInfo()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-info',
+                  type: 'info',
+                  title: 'Infos',
+                  message: '',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: true,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0
+                }" />
+            </div>
+
+            <!-- 7. Erro -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Erro</span>
+                <button type="button" class="btn-test" (click)="triggerError()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-error',
+                  type: 'error',
+                  title: 'Erro',
+                  message: '',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: true,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0
+                }" />
+            </div>
+
+            <!-- 8. Atenção -->
+            <div class="figma-item">
+              <div class="figma-item__header">
+                <span class="item-label">Atenção</span>
+                <button type="button" class="btn-test" (click)="triggerWarning()">Disparar</button>
+              </div>
+              <orc-toast [toast]="{
+                  id: 'figma-warn',
+                  type: 'warning',
+                  title: 'Atenção',
+                  message: '',
+                  duration: 0,
+                  dismissible: false,
+                  showIcon: true,
+                  position: 'top-right',
+                  pauseOnHover: true,
+                  createdAt: 0
+                }" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── GUIA DE USO PROGRAMÁTICO (SERVICE) ──────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos de Código (TypeScript)</h2>
+
+        <div class="code-block">
+          <pre><code><span class="token-comment">// 1. Injetar o ToastService</span>
+<span class="token-keyword">import</span> &#123; ToastService &#125; <span class="token-keyword">from</span> <span class="token-string">'&#64;orchestra/ds'</span>;
+
+<span class="token-keyword">&#64;Component</span>(&#123; ... &#125;)
+<span class="token-keyword">export class</span> <span class="token-class">MeuComponente</span> &#123;
+  <span class="token-keyword">private readonly</span> toastService = <span class="token-function">inject</span>(ToastService);
+
+  <span class="token-function">salvarDados</span>() &#123;
+    <span class="token-comment">// Disparo simples de sucesso</span>
+    <span class="token-keyword">this</span>.toastService.<span class="token-function">success</span>(<span class="token-string">'Seus dados foram salvos com sucesso!'</span>);
+
+    <span class="token-comment">// Ou com opções avançadas e ação de desfazer</span>
+    <span class="token-keyword">this</span>.toastService.<span class="token-function">show</span>(&#123;
+      type: <span class="token-string">'info'</span>,
+      title: <span class="token-string">'Item excluído'</span>,
+      message: <span class="token-string">'Você pode desfazer esta ação dentro de 8 segundos.'</span>,
+      duration: 8000,
+      position: <span class="token-string">'bottom-right'</span>,
+      action: &#123;
+        label: <span class="token-string">'Desfazer'</span>,
+        icon: <span class="token-string">'undo'</span>,
+        onClick: (toast) => <span class="token-keyword">this</span>.<span class="token-function">restaurarItem</span>(),
+      &#125;,
+    &#125;);
+  &#125;
+&#125;</code></pre>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE API & DOCUMENTAÇÃO ────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Documentação da API</h2>
+
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade / Opção</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>'success' | 'info' | 'warning' | 'error' | 'loading' | 'notification'</code></td>
+                <td><code>'info'</code></td>
+                <td>Tipo de notificação e ícone semântico correspondente.</td>
+              </tr>
+              <tr>
+                <td><code>title</code></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Título principal do toast.</td>
+              </tr>
+              <tr>
+                <td><code>message</code></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto descritivo ou detalhes da mensagem.</td>
+              </tr>
+              <tr>
+                <td><code>position</code></td>
+                <td>
+                  <code>'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center'</code>
+                </td>
+                <td><code>'top-right'</code></td>
+                <td>Posição na viewport onde o toast será empilhado.</td>
+              </tr>
+              <tr>
+                <td><code>duration</code></td>
+                <td><code>number</code></td>
+                <td><code>5000</code></td>
+                <td>Tempo em milissegundos para auto-dismiss (0 para desativar).</td>
+              </tr>
+              <tr>
+                <td><code>showProgressBar</code></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Exibe a barra de progresso visual de tempo restante na base do toast.</td>
+              </tr>
+              <tr>
+                <td><code>pauseOnHover</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code></td>
+                <td>Pausa o contador de tempo quando o ponteiro estiver sobre o toast.</td>
+              </tr>
+              <tr>
+                <td><code>dismissible</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code></td>
+                <td>Exibe o botão 'X' de fechar.</td>
+              </tr>
+              <tr>
+                <td><code>action</code></td>
+                <td><code>&#123; label: string, icon?: string, onClick: Function &#125;</code></td>
+                <td><code>undefined</code></td>
+                <td>Botão de ação interativa incorporado no toast.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer></app-footer>
+</div>

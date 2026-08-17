@@ -1,0 +1,55 @@
+<section
+  class="orc-carousel"
+  [class.orc-carousel--vertical]="orientation() === 'vertical'"
+  [attr.aria-label]="ariaLabel()"
+  aria-roledescription="carousel"
+  tabindex="0"
+>
+  <div class="orc-carousel__viewport" aria-live="polite">
+    @if (activeItem(); as item) {
+      <article
+        class="orc-carousel__slide"
+        [id]="itemId(safeIndex())"
+        role="group"
+        aria-roledescription="slide"
+        [attr.aria-label]="(safeIndex() + 1) + ' of ' + items().length"
+      >
+        @if (item.image) {
+          <img class="orc-carousel__image" [src]="item.image" [alt]="item.alt || item.label" />
+        } @else {
+          <div class="orc-carousel__placeholder" aria-hidden="true">{{ safeIndex() + 1 }}</div>
+        }
+        <div class="orc-carousel__content">
+          <h3>{{ item.label }}</h3>
+          @if (item.description) { <p>{{ item.description }}</p> }
+        </div>
+      </article>
+    } @else {
+      <div class="orc-carousel__empty">Nenhum item disponível.</div>
+    }
+  </div>
+
+  @if (showArrows() && items().length > 1) {
+    <div class="orc-carousel__arrows">
+      <button type="button" class="orc-carousel__arrow" (click)="previous()" [disabled]="!canGoPrevious()" aria-label="Anterior">‹</button>
+      <button type="button" class="orc-carousel__arrow" (click)="next()" [disabled]="!canGoNext()" aria-label="Próximo">›</button>
+    </div>
+  }
+
+  @if (showIndicators() && items().length > 1) {
+    <div class="orc-carousel__indicators" role="tablist" aria-label="Slides">
+      @for (item of items(); track trackItem($index, item)) {
+        <button
+          type="button"
+          class="orc-carousel__indicator"
+          [class.orc-carousel__indicator--active]="safeIndex() === $index"
+          [disabled]="item.disabled"
+          role="tab"
+          [attr.aria-selected]="safeIndex() === $index"
+          [attr.aria-label]="'Exibir ' + item.label"
+          (click)="goTo($index)"
+        ></button>
+      }
+    </div>
+  }
+</section>

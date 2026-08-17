@@ -1,0 +1,172 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Gerenciador de Produtos & Recursos</h1>
+      <p class="page-subtitle">Exemplo completo de CRUD corporativo com Tabela, Filtros, Modal e Notificações</p>
+    </div>
+
+    <div class="page-actions">
+      <orc-button variant="primary" size="md" (click)="openCreateModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 6px;">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Novo Produto
+      </orc-button>
+    </div>
+  </div>
+
+  <div class="filter-card glass-panel">
+    <div class="filter-row">
+      <div class="filter-col-search">
+        <orc-input
+          placeholder="Buscar por código ou nome do produto..."
+          [(value)]="searchQuery"
+          [clearable]="true"
+        ></orc-input>
+      </div>
+
+      <div class="filter-col-select">
+        <orc-select
+          placeholder="Filtrar Categoria"
+          [(value)]="selectedCategory"
+          [options]="categoryOptions"
+        ></orc-select>
+      </div>
+
+      <div class="filter-col-switch">
+        <orc-switch
+          label="Apenas em estoque"
+          [(checked)]="onlyInStock"
+        ></orc-switch>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container glass-panel">
+    <table class="orc-custom-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+          <th>Estoque</th>
+          <th>Avaliação</th>
+          <th>Status</th>
+          <th style="text-align: right;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of paginatedProducts(); track item.id) {
+          <tr>
+            <td><code class="code-badge">{{ item.id }}</code></td>
+            <td>
+              <div class="product-name-cell">
+                <span class="product-title">{{ item.name }}</span>
+                <div class="product-tags">
+                  @for (tag of item.tags; track tag) {
+                    <span class="tag-pill">{{ tag }}</span>
+                  }
+                </div>
+              </div>
+            </td>
+            <td>{{ item.category }}</td>
+            <td><strong>R$ {{ item.price | number:'1.2-2' }}</strong></td>
+            <td>
+              <span [class.text-danger]="item.stock === 0">
+                {{ item.stock > 0 ? item.stock + ' un' : 'Esgotado' }}
+              </span>
+            </td>
+            <td>
+              <orc-rating [value]="item.rating" [readonly]="true" size="sm"></orc-rating>
+            </td>
+            <td>
+              <orc-badge [status]="item.status === 'active' ? 'success' : (item.status === 'draft' ? 'warning' : 'neutral')">
+                {{ item.status === 'active' ? 'Ativo' : (item.status === 'draft' ? 'Rascunho' : 'Arquivado') }}
+              </orc-badge>
+            </td>
+            <td style="text-align: right;">
+              <div class="row-actions">
+                <orc-button variant="ghost" size="sm" (click)="openEditModal(item)">
+                  Editar
+                </orc-button>
+                <orc-button variant="ghost" size="sm" (click)="deleteProduct(item)">
+                  <span style="color: var(--color-error)">Excluir</span>
+                </orc-button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-state-cell">
+              Nenhum produto encontrado com os filtros selecionados.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="paginator-wrapper">
+      <orc-paginator
+        [totalItems]="filteredProducts().length"
+        [(pageSize)]="pageSize"
+        [(currentPage)]="currentPage"
+        [pageSizeOptions]="[5, 10, 20]"
+      ></orc-paginator>
+    </div>
+  </div>
+
+  <orc-modal [(isOpen)]="isModalOpen" [size]="'lg'">
+    <div modal-header>
+      <h3>{{ modalMode() === 'create' ? 'Cadastrar Novo Produto' : 'Editar Produto' }}</h3>
+      <p class="modal-subheading">Preencha as informações do catálogo</p>
+    </div>
+
+    <div modal-body class="modal-form-grid">
+      <div class="form-row-2">
+        <orc-input label="Código SKU" [(value)]="formId" [disabled]="modalMode() === 'edit'"></orc-input>
+        <orc-input label="Nome do Produto" [(value)]="formName" [required]="true"></orc-input>
+      </div>
+
+      <div class="form-row-2">
+        <orc-select
+          label="Categoria"
+          [(value)]="formCategory"
+          [options]="categoryOptions"
+        ></orc-select>
+        <orc-input label="Preço Unitário (R$)" type="number" [(value)]="formPrice"></orc-input>
+      </div>
+
+      <div class="form-control-block">
+        <label class="block-label">Nível de Estoque ({{ formStock() }} unidades)</label>
+        <orc-slider [(value)]="formStock" [min]="0" [max]="100" [step]="5"></orc-slider>
+      </div>
+
+      <div class="form-control-block">
+        <label class="block-label">Classificação do Produto</label>
+        <orc-rating [(value)]="formRating"></orc-rating>
+      </div>
+
+      <div class="form-control-block">
+        <label class="block-label">Tags do Produto</label>
+        <orc-chip-input
+          [ngModel]="formTags()"
+          (ngModelChange)="onChipsUpdated($event)"
+          placeholder="Adicionar tag e pressionar Enter"
+        ></orc-chip-input>
+      </div>
+
+      <orc-textarea
+        label="Descrição Comercial"
+        [(value)]="formDescription"
+        [rows]="3"
+      ></orc-textarea>
+    </div>
+
+    <div modal-footer class="modal-footer-actions">
+      <orc-button variant="secondary" (click)="isModalOpen.set(false)">Cancelar</orc-button>
+      <orc-button variant="primary" (click)="saveProduct()">Salvar Produto</orc-button>
+    </div>
+  </orc-modal>
+</div>

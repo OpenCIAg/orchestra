@@ -1,0 +1,26 @@
+{
+  "name": "@ciag/orchestra",
+  "version": "22.0.0",
+  "description": "Enterprise Angular Component Framework and Design System",
+  "keywords": [
+    "angular",
+    "design-system",
+    "components",
+    "ui-framework",
+    "signals",
+    "accessibility"
+  ],
+  "author": "CIAG",
+  "license": "MIT",
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@angular/cdk": "^22.0.0",
+    "rxjs": "^7.8.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

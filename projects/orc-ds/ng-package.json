@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/orc-ds",
+  "lib": {
+    "entryFile": "public-api.ts",
+    "styleIncludePaths": [
+      "./styles"
+    ]
+  },
+  "assets": [
+    "./styles/**/*.scss",
+    "./styles/**/*.css",
+    "./THIRD_PARTY_NOTICES.md"
+  ]
+}

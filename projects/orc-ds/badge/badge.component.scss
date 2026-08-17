@@ -1,0 +1,283 @@
+:host {
+  display: inline-flex;
+}
+
+.orc-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-weight: 400;
+  line-height: 1.333; // 16px line-height on 12px font
+  user-select: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: background-color var(--transition-fast, 120ms ease),
+              border-color var(--transition-fast, 120ms ease),
+              color var(--transition-fast, 120ms ease);
+
+  // ── SIZES (Figma Node 382:5314) ───────────────────────────
+  // SM = 18px
+  &--size-sm {
+    height: 18px;
+    padding: 1px 6px;
+    font-size: 0.6875rem; // 11px
+    border-radius: 6px;
+    gap: 3px;
+
+    .orc-badge__icon {
+      width: 9px;
+      height: 9px;
+    }
+    .orc-badge__dot {
+      width: 5px;
+      height: 5px;
+    }
+  }
+
+  // MD = 22px (Padrão Figma: rounded-[8px] h-[22px] px-[8px] py-[2px])
+  &--size-md {
+    height: 22px;
+    padding: 2px 8px;
+    font-size: 0.75rem; // 12px
+    border-radius: 8px;
+    gap: 4px;
+
+    .orc-badge__icon {
+      width: 10px;
+      height: 10px;
+    }
+    .orc-badge__dot {
+      width: 6px;
+      height: 6px;
+    }
+  }
+
+  // LG = 28px
+  &--size-lg {
+    height: 28px;
+    padding: 4px 12px;
+    font-size: 0.8125rem; // 13px
+    border-radius: 8px;
+    gap: 6px;
+
+    .orc-badge__icon {
+      width: 13px;
+      height: 13px;
+    }
+    .orc-badge__dot {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  // ── PILL SHAPE ────────────────────────────────────────────
+  &--pill {
+    border-radius: 9999px !important;
+  }
+
+  // ── DOT ONLY ──────────────────────────────────────────────
+  &--dot-only {
+    padding: 0;
+    width: auto;
+    height: auto;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  // ── ICONS & DOTS ──────────────────────────────────────────
+  &__icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__dot {
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background-color: currentColor;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  // ── DISMISS BUTTON ────────────────────────────────────────
+  &__dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 2px;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    border-radius: 50%;
+    transition: opacity var(--transition-fast, 120ms ease),
+                background-color var(--transition-fast, 120ms ease);
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE: SOFT / SUBTLE (Figma 382:5314) ─────────────
+  // ──────────────────────────────────────────────────────────
+  &--variant-soft {
+    &.orc-badge--status-primary {
+      background-color: rgba(28, 106, 237, 0.12);
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+    }
+    &.orc-badge--status-secondary,
+    &.orc-badge--status-neutral {
+      background-color: var(--status-neutral-soft-bg, #eceef2);
+      color: var(--status-neutral-soft-fg, #141414);
+    }
+    &.orc-badge--status-success {
+      background-color: var(--status-success-soft-bg, #b8e7d7);
+      color: var(--status-success-soft-fg, #006f4a);
+    }
+    &.orc-badge--status-info {
+      background-color: var(--status-info-soft-bg, #e1eaf6);
+      color: var(--status-info-soft-fg, #2b7fff);
+    }
+    &.orc-badge--status-warning {
+      background-color: var(--status-warning-soft-bg, #f6ecdd);
+      color: var(--status-warning-soft-fg, #fe9a00);
+    }
+    &.orc-badge--status-danger {
+      background-color: var(--status-danger-soft-bg, #f6d7d8);
+      color: var(--status-danger-soft-fg, #fb2c36);
+    }
+    &.orc-badge--status-pending {
+      background-color: var(--orc-highlight-cinza-claro, #ededed);
+      color: var(--text-primary, #141414);
+    }
+    &.orc-badge--status-active {
+      background-color: var(--orc-bg, #ffffff);
+      border: 1px solid var(--border-default, #d9d9d9);
+      color: var(--text-primary, #141414);
+    }
+    &.orc-badge--status-inactive {
+      background-color: transparent;
+      color: var(--text-secondary, #666666);
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE: SOLID / FILLED (Figma 382:5318, 382:5324) ──
+  // ──────────────────────────────────────────────────────────
+  &--variant-solid {
+    &.orc-badge--status-primary {
+      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+      color: #ffffff;
+    }
+    &.orc-badge--status-secondary {
+      background-color: var(--status-neutral-soft-bg, #eceef2);
+      color: var(--status-neutral-soft-fg, #141414);
+    }
+    &.orc-badge--status-neutral {
+      background-color: var(--bg-inverse, #141414);
+      color: var(--text-inverse, #ffffff);
+    }
+    &.orc-badge--status-success {
+      background-color: #006f4a;
+      color: #ffffff;
+    }
+    &.orc-badge--status-info {
+      background-color: #2b7fff;
+      color: #ffffff;
+    }
+    &.orc-badge--status-warning {
+      background-color: #fe9a00;
+      color: #141414;
+    }
+    &.orc-badge--status-danger {
+      background-color: #d4183d; // Destructive solid from Figma
+      color: #ffffff;
+    }
+    &.orc-badge--status-pending {
+      background-color: #71717a;
+      color: #ffffff;
+    }
+    &.orc-badge--status-active {
+      background-color: #006f4a;
+      color: #ffffff;
+    }
+    &.orc-badge--status-inactive {
+      background-color: #a1a1aa;
+      color: #ffffff;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE: OUTLINE (Figma 382:5322) ───────────────────
+  // ──────────────────────────────────────────────────────────
+  &--variant-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-default, #d9d9d9);
+    color: var(--text-primary, #141414);
+
+    &.orc-badge--status-primary {
+      border-color: var(--orc-color-azul-eletrico, #1c6aed);
+      color: var(--orc-color-azul-eletrico, #1c6aed);
+    }
+    &.orc-badge--status-success {
+      border-color: #006f4a;
+      color: #006f4a;
+    }
+    &.orc-badge--status-info {
+      border-color: #2b7fff;
+      color: #2b7fff;
+    }
+    &.orc-badge--status-warning {
+      border-color: #fe9a00;
+      color: #fe9a00;
+    }
+    &.orc-badge--status-danger {
+      border-color: #fb2c36;
+      color: #fb2c36;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE: DOT ─────────────────────────────────────────
+  // ──────────────────────────────────────────────────────────
+  &--variant-dot {
+    background-color: transparent;
+    padding: 0 4px;
+
+    &.orc-badge--status-primary { color: var(--orc-color-azul-eletrico, #1c6aed); }
+    &.orc-badge--status-secondary,
+    &.orc-badge--status-neutral { color: var(--text-secondary, #71717a); }
+    &.orc-badge--status-success { color: #006f4a; }
+    &.orc-badge--status-info { color: #2b7fff; }
+    &.orc-badge--status-warning { color: #fe9a00; }
+    &.orc-badge--status-danger { color: #fb2c36; }
+    &.orc-badge--status-pending { color: #fe9a00; }
+    &.orc-badge--status-active { color: #006f4a; }
+    &.orc-badge--status-inactive { color: #999999; }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── VARIANTE: GHOST ───────────────────────────────────────
+  // ──────────────────────────────────────────────────────────
+  &--variant-ghost {
+    background-color: transparent;
+    color: var(--text-primary, #141414);
+    padding: 0 4px;
+  }
+}

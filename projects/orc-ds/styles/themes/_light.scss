@@ -1,0 +1,48 @@
+@layer orchestra.tokens {
+  :root,
+  [data-theme="light"],
+  .theme-light {
+    color-scheme: light;
+    --orc-bg: #FFFFFF;
+    --orc-font-main: #141414;
+    --orc-secondary-bg: #D9D9D9;
+    --orc-font-secondary: #666666;
+    --orc-border: #D9D9D9;
+    --orc-fill-input: #FFFFFF;
+    --orc-th: #F9F9F9;
+    --orc-fill-modal: #FFFFFF;
+    --orc-highlight-cinza-claro: #EDEDED;
+    --orc-opposite-bw: #FFFFFF;
+
+    --color-accent: #141414;
+    --color-accent-hover: #2a2a2a;
+    --color-accent-fg: #FFFFFF;
+
+    --bg-app: var(--orc-bg);
+    --bg-subtle: var(--orc-th);
+    --bg-muted: var(--orc-highlight-cinza-claro);
+    --bg-inverse: var(--orc-font-main);
+
+    --border-default: var(--orc-border);
+    --border-strong: var(--orc-secondary-bg);
+    --border-inverse: var(--orc-font-main);
+
+    --text-primary: var(--orc-font-main);
+    --text-secondary: var(--orc-font-secondary);
+    --text-muted: #999999;
+    --text-inverse: var(--orc-bg);
+
+    --status-neutral-soft-bg: #ECEEF2;
+    --status-neutral-soft-fg: #141414;
+    --status-info-soft-bg: #E1EAF6;
+    --status-info-soft-fg: #2B7FFF;
+    --status-success-soft-bg: #B8E7D7;
+    --status-success-soft-fg: #006F4A;
+    --status-warning-soft-bg: #F6ECDD;
+    --status-warning-soft-fg: #FE9A00;
+    --status-danger-soft-bg: #F6D7D8;
+    --status-danger-soft-fg: #FB2C36;
+    --skeleton-base: #F1F5F9;
+    --skeleton-highlight: #E2E8F0;
+  }
+}

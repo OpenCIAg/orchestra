@@ -1,0 +1,37 @@
+{
+  "main": {
+    "angular": "22",
+    "angularRange": "^22.0.0",
+    "primeNg": "22.0.0",
+    "packageMajor": 22,
+    "node": "22"
+  },
+  "v19": {
+    "angular": "19",
+    "angularRange": "^19.0.0",
+    "primeNg": "19.1.4",
+    "packageMajor": 19,
+    "node": "20"
+  },
+  "v20": {
+    "angular": "20",
+    "angularRange": "^20.0.0",
+    "primeNg": "20.4.0",
+    "packageMajor": 20,
+    "node": "20"
+  },
+  "v21": {
+    "angular": "21",
+    "angularRange": "^21.0.0",
+    "primeNg": "21.1.9",
+    "packageMajor": 21,
+    "node": "22"
+  },
+  "v22": {
+    "angular": "22",
+    "angularRange": "^22.0.0",
+    "primeNg": "22.0.0",
+    "packageMajor": 22,
+    "node": "22"
+  }
+}

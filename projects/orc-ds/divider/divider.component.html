@@ -1,0 +1,10 @@
+<div
+  [class]="classes()"
+  [attr.role]="decorative() ? null : 'separator'"
+  [attr.aria-orientation]="decorative() ? null : orientation()"
+  [attr.aria-label]="decorative() ? null : (ariaLabel() || label() || null)"
+  [attr.aria-hidden]="decorative() ? 'true' : null"
+>
+  <span class="orc-divider__line"></span>
+  @if (label()) { <span class="orc-divider__label">{{ label() }}</span><span class="orc-divider__line"></span> }
+</div>

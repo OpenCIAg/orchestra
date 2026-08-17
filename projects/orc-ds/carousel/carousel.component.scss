@@ -1,0 +1,29 @@
+:host { display: block; width: 100%; }
+
+.orc-carousel {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--orc-border, #d9d9d9);
+  border-radius: var(--radius-lg, 14px);
+  background: var(--fill-modal, #fff);
+  outline: none;
+  &:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--orc-color-azul-eletrico, #1c6aed) 22%, transparent); }
+  &--vertical .orc-carousel__slide { min-height: 220px; }
+}
+
+.orc-carousel__viewport { min-width: 0; overflow: hidden; }
+.orc-carousel__slide { display: flex; align-items: center; gap: 16px; min-height: 180px; padding: 12px; border-radius: var(--radius-md, 10px); background: var(--orc-th, #f7f8fa); }
+.orc-carousel__image, .orc-carousel__placeholder { width: 42%; max-height: 220px; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius-md, 10px); }
+.orc-carousel__placeholder { display: grid; place-items: center; background: var(--orc-color-azul-eletrico, #1c6aed); color: #fff; font-size: 2rem; font-weight: 700; }
+.orc-carousel__content { min-width: 0; h3 { margin: 0 0 6px; color: var(--orc-font-main, #141414); font-size: 1rem; } p { margin: 0; color: var(--orc-font-secondary, #666); line-height: 1.5; } }
+.orc-carousel__arrows { display: flex; justify-content: space-between; position: absolute; inset: 50% 16px auto; transform: translateY(-50%); pointer-events: none; }
+.orc-carousel__arrow { pointer-events: auto; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--orc-border, #d9d9d9); border-radius: 50%; background: var(--fill-modal, #fff); color: var(--orc-font-main, #141414); font-size: 1.5rem; line-height: 1; cursor: pointer; &:disabled { opacity: .4; cursor: not-allowed; } &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: 2px; } }
+.orc-carousel__indicators { display: flex; justify-content: center; gap: 6px; }
+.orc-carousel__indicator { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--orc-border, #d9d9d9); cursor: pointer; &--active { width: 22px; border-radius: 999px; background: var(--orc-color-azul-eletrico, #1c6aed); } &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: 2px; } }
+.orc-carousel__empty { padding: 32px; text-align: center; color: var(--orc-font-secondary, #666); }
+
+@media (max-width: 560px) { .orc-carousel__slide { align-items: stretch; flex-direction: column; } .orc-carousel__image, .orc-carousel__placeholder { width: 100%; } }

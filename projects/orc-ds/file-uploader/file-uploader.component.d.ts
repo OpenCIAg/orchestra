@@ -1,0 +1,37 @@
+import { ElementRef } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
+import { FileItemData } from './file-uploader.types';
+import * as i0 from "@angular/core";
+export declare class FileUploaderComponent implements ControlValueAccessor {
+    fileInputRef: ElementRef<HTMLInputElement>;
+    readonly accept: import("@angular/core").InputSignal<string>;
+    readonly multiple: import("@angular/core").InputSignal<boolean>;
+    readonly maxFiles: import("@angular/core").InputSignal<number>;
+    readonly maxFileSize: import("@angular/core").InputSignal<number>;
+    readonly disabled: import("@angular/core").InputSignal<boolean>;
+    readonly label: import("@angular/core").InputSignal<string>;
+    readonly subLabel: import("@angular/core").InputSignal<string>;
+    readonly forceDragover: import("@angular/core").InputSignal<boolean>;
+    readonly files: import("@angular/core").WritableSignal<FileItemData[]>;
+    readonly isDragging: import("@angular/core").WritableSignal<boolean>;
+    private onChange;
+    private onTouched;
+    readonly isDisabled: import("@angular/core").Signal<boolean>;
+    readonly hasReachedMaxFiles: import("@angular/core").Signal<boolean>;
+    writeValue(value: FileItemData[] | null): void;
+    registerOnChange(fn: any): void;
+    registerOnTouched(fn: any): void;
+    setDisabledState(isDisabled: boolean): void;
+    onDragOver(event: DragEvent): void;
+    onDragLeave(event: DragEvent): void;
+    onDrop(event: DragEvent): void;
+    onAreaClick(): void;
+    onAreaKeyDown(event: KeyboardEvent): void;
+    onFileSelected(event: Event): void;
+    onRemoveFile(id: string): void;
+    private handleFiles;
+    private createFileItem;
+    private formatBytes;
+    static ɵfac: i0.ɵɵFactoryDeclaration<FileUploaderComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<FileUploaderComponent, "orc-file-uploader", never, { "accept": { "alias": "accept"; "required": false; "isSignal": true; }; "multiple": { "alias": "multiple"; "required": false; "isSignal": true; }; "maxFiles": { "alias": "maxFiles"; "required": false; "isSignal": true; }; "maxFileSize": { "alias": "maxFileSize"; "required": false; "isSignal": true; }; "disabled": { "alias": "disabled"; "required": false; "isSignal": true; }; "label": { "alias": "label"; "required": false; "isSignal": true; }; "subLabel": { "alias": "subLabel"; "required": false; "isSignal": true; }; "forceDragover": { "alias": "forceDragover"; "required": false; "isSignal": true; }; }, {}, never, never, true, never>;
+}

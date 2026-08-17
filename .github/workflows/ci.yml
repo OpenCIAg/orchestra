@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, v19, v20, v21, v22]
+  pull_request:
+    branches: [main, v19, v20, v21, v22]
+
+jobs:
+  validate:
+    name: Lint, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.3
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Angular compatibility line
+        run: npm run verify:compatibility
+
+      - name: Run library tests
+        run: npm run test:lib
+
+      - name: Build library (@ciag/orchestra)
+        run: npm run build:lib
+
+      - name: Build documentation app
+        run: npm run build:docs
+
+      - name: Validate package distribution
+        run: npm pack ./dist/orc-ds --dry-run

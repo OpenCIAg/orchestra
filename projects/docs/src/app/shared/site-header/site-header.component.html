@@ -1,0 +1,15 @@
+<header class="site-header">
+  <div class="site-header__inner">
+    <a routerLink="/" class="site-header__logo" aria-label="Orchestra Design System">
+      <img src="favicon.ico" alt="" height="24" width="24">
+      <span>Orchestra</span>
+    </a>
+
+    <nav class="site-header__nav" aria-label="Navegação principal">
+      <a routerLink="/" [fragment]="'results'" routerLinkActive="site-header__link--active"
+        [routerLinkActiveOptions]="{ exact: true }" class="site-header__link">Components</a>
+      <a routerLink="/docs" routerLinkActive="site-header__link--active" class="site-header__link">Documentation</a>
+      <a href="/llms.txt" class="site-header__link site-header__link--llms">LLMs</a>
+    </nav>
+  </div>
+</header>

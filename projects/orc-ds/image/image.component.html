@@ -1,0 +1,20 @@
+<figure
+  [class]="'orc-image orc-image--' + radius()"
+  [style.width]="width() || null"
+  [style.height]="height() || null"
+>
+  @if (renderedSrc()) {
+    <img
+      [src]="renderedSrc()"
+      [alt]="alt()"
+      [loading]="loading()"
+      decoding="async"
+      [style.object-fit]="fit()"
+      [attr.aria-label]="ariaLabel() || null"
+      (load)="onLoad()"
+      (error)="onError($event)"
+    />
+  } @else {
+    <div class="orc-image__placeholder" role="img" [attr.aria-label]="ariaLabel() || alt() || placeholder()">{{ placeholder() }}</div>
+  }
+</figure>

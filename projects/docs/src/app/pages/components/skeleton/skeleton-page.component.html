@@ -1,0 +1,268 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Feedback</div>
+      <h1 class="section-title">Skeleton</h1>
+      <p class="section-desc">
+        Placeholders animados para indicar conteúdo em carregamento e reduzir a percepção de tempo de espera.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <div class="stage-container">
+                  <orc-skeleton
+                    [variant]="playgroundVariant()"
+                    [animation]="playgroundAnimation()"
+                    [width]="playgroundWidth()"
+                    [height]="playgroundHeight()"
+                    [borderRadius]="playgroundBorderRadius()"
+                  ></orc-skeleton>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Formato / Variante -->
+              <div class="control-group">
+                <label class="control-label">Formato (variant)</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'text'"
+                    (click)="setVariant('text')"
+                  >
+                    Text
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'circular'"
+                    (click)="setVariant('circular')"
+                  >
+                    Circular
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'rectangular'"
+                    (click)="setVariant('rectangular')"
+                  >
+                    Rectangular
+                  </button>
+                </div>
+              </div>
+
+              <!-- Animação -->
+              <div class="control-group">
+                <label class="control-label">Animação (animation)</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundAnimation() === 'shimmer'"
+                    (click)="playgroundAnimation.set('shimmer')"
+                  >
+                    Shimmer
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundAnimation() === 'pulse'"
+                    (click)="playgroundAnimation.set('pulse')"
+                  >
+                    Pulse
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundAnimation() === 'none'"
+                    (click)="playgroundAnimation.set('none')"
+                  >
+                    None
+                  </button>
+                </div>
+              </div>
+
+              <!-- Largura -->
+              <div class="control-group">
+                <label class="control-label" for="skeleton-width-input">Largura (width)</label>
+                <input
+                  id="skeleton-width-input"
+                  type="text"
+                  class="input-text"
+                  [value]="playgroundWidth()"
+                  (input)="playgroundWidth.set($any($event.target).value)"
+                  placeholder="Ex: 100%, 64px, 200px"
+                />
+              </div>
+
+              <!-- Altura -->
+              <div class="control-group">
+                <label class="control-label" for="skeleton-height-input">Altura (height)</label>
+                <input
+                  id="skeleton-height-input"
+                  type="text"
+                  class="input-text"
+                  [value]="playgroundHeight()"
+                  (input)="playgroundHeight.set($any($event.target).value)"
+                  placeholder="Ex: 16px, 120px, 64px"
+                />
+              </div>
+
+              <!-- Border Radius -->
+              <div class="control-group">
+                <label class="control-label" for="skeleton-radius-input">Raio de borda (borderRadius)</label>
+                <input
+                  id="skeleton-radius-input"
+                  type="text"
+                  class="input-text"
+                  [value]="playgroundBorderRadius()"
+                  (input)="playgroundBorderRadius.set($any($event.target).value)"
+                  placeholder="Ex: 8px, 50%, 12px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA SHOWCASE ──────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos do design Figma</h2>
+
+        <div class="figma-grid">
+          <!-- Card Skeleton Example -->
+          <div class="figma-card">
+            <p class="figma-card__title">Card skeleton</p>
+            <div class="card-skeleton-demo">
+              <div class="card-skeleton-demo__header">
+                <orc-skeleton variant="circular" width="40px" height="40px"></orc-skeleton>
+                <div class="card-skeleton-demo__header-texts">
+                  <orc-skeleton variant="text" width="85%" height="16px"></orc-skeleton>
+                  <orc-skeleton variant="text" width="55%" height="12px"></orc-skeleton>
+                </div>
+              </div>
+
+              <orc-skeleton variant="rectangular" height="96px" borderRadius="8px"></orc-skeleton>
+
+              <div class="card-skeleton-demo__actions">
+                <orc-skeleton variant="rectangular" width="80px" height="32px" borderRadius="8px"></orc-skeleton>
+                <orc-skeleton variant="rectangular" width="80px" height="32px" borderRadius="8px"></orc-skeleton>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista Skeleton Example -->
+          <div class="figma-card">
+            <p class="figma-card__title">Lista skeleton</p>
+            <div class="list-skeleton-demo">
+              <!-- Item 1 -->
+              <div class="list-skeleton-demo__item">
+                <orc-skeleton variant="circular" width="32px" height="32px"></orc-skeleton>
+                <div class="list-skeleton-demo__texts">
+                  <orc-skeleton variant="text" width="90%" height="14px"></orc-skeleton>
+                  <orc-skeleton variant="text" width="45%" height="12px"></orc-skeleton>
+                </div>
+                <orc-skeleton variant="rectangular" width="56px" height="24px" borderRadius="8px"></orc-skeleton>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="list-skeleton-demo__item">
+                <orc-skeleton variant="circular" width="32px" height="32px"></orc-skeleton>
+                <div class="list-skeleton-demo__texts">
+                  <orc-skeleton variant="text" width="90%" height="14px"></orc-skeleton>
+                  <orc-skeleton variant="text" width="45%" height="12px"></orc-skeleton>
+                </div>
+                <orc-skeleton variant="rectangular" width="56px" height="24px" borderRadius="8px"></orc-skeleton>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="list-skeleton-demo__item">
+                <orc-skeleton variant="circular" width="32px" height="32px"></orc-skeleton>
+                <div class="list-skeleton-demo__texts">
+                  <orc-skeleton variant="text" width="90%" height="14px"></orc-skeleton>
+                  <orc-skeleton variant="text" width="45%" height="12px"></orc-skeleton>
+                </div>
+                <orc-skeleton variant="rectangular" width="56px" height="24px" borderRadius="8px"></orc-skeleton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── REFERÊNCIA DE API ───────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API</h2>
+
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'text' | 'circular' | 'rectangular'</code></td>
+                <td><code>'text'</code></td>
+                <td>Formato geométrico do placeholder de carregamento.</td>
+              </tr>
+              <tr>
+                <td><code>animation</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'shimmer' | 'pulse' | 'none'</code></td>
+                <td><code>'shimmer'</code></td>
+                <td>Efeito visual de animação durante o carregamento.</td>
+              </tr>
+              <tr>
+                <td><code>width</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string | number</code></td>
+                <td><code>'100%' / '40px'</code></td>
+                <td>Largura customizada do componente.</td>
+              </tr>
+              <tr>
+                <td><code>height</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string | number</code></td>
+                <td><code>'14px' / '40px' / '96px'</code></td>
+                <td>Altura customizada do componente.</td>
+              </tr>
+              <tr>
+                <td><code>borderRadius</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>'8px' / '50%'</code></td>
+                <td>Raio de arredondamento das bordas.</td>
+              </tr>
+              <tr>
+                <td><code>ariaLabel</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>'Carregando conteúdo...'</code></td>
+                <td>Texto acessível fornecido a leitores de tela.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

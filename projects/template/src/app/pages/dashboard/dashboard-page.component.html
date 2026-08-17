@@ -1,0 +1,187 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Painel Executivo</h1>
+      <p class="page-subtitle">Visão geral de métricas, faturamento e performance do ecossistema</p>
+    </div>
+
+    <div class="page-actions">
+      <orc-button
+        variant="secondary"
+        size="md"
+        [loading]="isLoading()"
+        (click)="simulateRefresh()"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 6px;">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+        </svg>
+        Sincronizar
+      </orc-button>
+
+      <orc-dropdown [items]="exportMenuItems" placement="bottom-end">
+        <orc-button variant="primary" size="md">
+          Exportar Relatório
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-left: 6px;">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </orc-button>
+      </orc-dropdown>
+    </div>
+  </div>
+
+  <div class="grid-cards">
+    <orc-card>
+      <orc-card-body>
+        <div class="kpi-card">
+          <div class="kpi-card__top">
+            <span class="kpi-label">Receita Mensal</span>
+            <orc-badge status="success">+18.4%</orc-badge>
+          </div>
+          <div class="kpi-value" *ngIf="!isLoading()">R$ 284.950,00</div>
+          <orc-skeleton *ngIf="isLoading()" variant="text" width="60%" height="32px"></orc-skeleton>
+          <div class="kpi-footer">
+            <orc-progress-bar [value]="78" variant="success" [showValue]="false"></orc-progress-bar>
+            <span class="kpi-subtext">Meta mensal: R$ 350.000,00 (78%)</span>
+          </div>
+        </div>
+      </orc-card-body>
+    </orc-card>
+
+    <orc-card>
+      <orc-card-body>
+        <div class="kpi-card">
+          <div class="kpi-card__top">
+            <span class="kpi-label">Novos Usuários Ativos</span>
+            <orc-badge status="info">+1.240</orc-badge>
+          </div>
+          <div class="kpi-value" *ngIf="!isLoading()">14.892</div>
+          <orc-skeleton *ngIf="isLoading()" variant="text" width="50%" height="32px"></orc-skeleton>
+          <div class="kpi-footer">
+            <orc-progress-bar [value]="92" variant="primary" [showValue]="false"></orc-progress-bar>
+            <span class="kpi-subtext">Taxa de retenção em 92%</span>
+          </div>
+        </div>
+      </orc-card-body>
+    </orc-card>
+
+    <orc-card>
+      <orc-card-body>
+        <div class="kpi-card">
+          <div class="kpi-card__top">
+            <span class="kpi-label">SLA & Disponibilidade</span>
+            <orc-badge status="success" [dot]="true">Estável</orc-badge>
+          </div>
+          <div class="kpi-value" *ngIf="!isLoading()">99.98%</div>
+          <orc-skeleton *ngIf="isLoading()" variant="text" width="50%" height="32px"></orc-skeleton>
+          <div class="kpi-footer">
+            <span class="kpi-subtext">0 incidentes críticos nos últimos 30 dias</span>
+          </div>
+        </div>
+      </orc-card-body>
+    </orc-card>
+
+    <orc-card>
+      <orc-card-body>
+        <div class="kpi-card">
+          <div class="kpi-card__top">
+            <span class="kpi-label">Eficiência Operacional</span>
+            <orc-badge status="warning">Atenção</orc-badge>
+          </div>
+          <div class="kpi-circular-row">
+            <orc-progress-circle [value]="84" [size]="52" variant="primary"></orc-progress-circle>
+            <div>
+              <div class="kpi-value-sm">84 / 100</div>
+              <span class="kpi-subtext">Score de performance</span>
+            </div>
+          </div>
+        </div>
+      </orc-card-body>
+    </orc-card>
+  </div>
+
+  <div class="dashboard-main-grid">
+    <div class="main-chart-panel">
+      <orc-card>
+        <orc-card-header>
+          <div class="panel-header-custom">
+            <div>
+              <h2 class="panel-heading">Performance de Conversão e Vendas</h2>
+              <span class="panel-subheading">Análise comparativa entre períodos</span>
+            </div>
+            <orc-tab-group>
+              <orc-tab label="Hoje"></orc-tab>
+              <orc-tab label="7 Dias"></orc-tab>
+              <orc-tab label="30 Dias"></orc-tab>
+            </orc-tab-group>
+          </div>
+        </orc-card-header>
+
+        <orc-card-body>
+          <div class="chart-mockup-area">
+            <div class="chart-bar-group">
+              <div class="chart-bar" style="height: 45%;"><span>Seg</span></div>
+              <div class="chart-bar" style="height: 65%;"><span>Ter</span></div>
+              <div class="chart-bar" style="height: 85%;"><span>Qua</span></div>
+              <div class="chart-bar chart-bar--highlight" style="height: 95%;"><span>Qui</span></div>
+              <div class="chart-bar" style="height: 75%;"><span>Sex</span></div>
+              <div class="chart-bar" style="height: 60%;"><span>Sáb</span></div>
+              <div class="chart-bar" style="height: 50%;"><span>Dom</span></div>
+            </div>
+          </div>
+        </orc-card-body>
+
+        <orc-card-footer>
+          <div class="chart-footer-metrics">
+            <div>
+              <span class="metric-micro-label">Média diária</span>
+              <strong>R$ 40.700,00</strong>
+            </div>
+            <div>
+              <span class="metric-micro-label">Pico de conversão</span>
+              <strong>Quinta-feira (95%)</strong>
+            </div>
+            <div>
+              <span class="metric-micro-label">Equipe responsável</span>
+              <orc-avatar-group [max]="3">
+                <orc-avatar name="Alice Silva" size="sm"></orc-avatar>
+                <orc-avatar name="Bernardo Lima" size="sm"></orc-avatar>
+                <orc-avatar name="Carla Souza" size="sm"></orc-avatar>
+                <orc-avatar name="Daniel Dias" size="sm"></orc-avatar>
+              </orc-avatar-group>
+            </div>
+          </div>
+        </orc-card-footer>
+      </orc-card>
+    </div>
+
+    <div class="side-activity-panel">
+      <orc-card>
+        <orc-card-header>
+          <h2 class="panel-heading">Atividades Recentes</h2>
+        </orc-card-header>
+        <orc-card-body>
+          <div class="activity-feed">
+            @for (act of recentActivities; track act.title) {
+              <div class="activity-item">
+                <div class="activity-item__dot" [class.activity-item__dot--success]="act.status === 'success'" [class.activity-item__dot--warning]="act.status === 'warning'" [class.activity-item__dot--info]="act.status === 'info'"></div>
+                <div class="activity-item__body">
+                  <div class="activity-item__header">
+                    <span class="activity-title">{{ act.title }}</span>
+                    <orc-badge [status]="$any(act.status)" size="sm">{{ act.badge }}</orc-badge>
+                  </div>
+                  <div class="activity-item__meta">
+                    <span>{{ act.user }}</span>
+                    <span>•</span>
+                    <span>{{ act.time }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </orc-card-body>
+      </orc-card>
+    </div>
+  </div>
+</div>

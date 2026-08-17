@@ -1,0 +1,85 @@
+<div class="login-layout">
+  <div class="login-hero">
+    <div class="login-hero__content">
+      <div class="login-hero__badge">Orchestra UI Framework</div>
+      <h1 class="login-hero__title">Construa aplicações de alto impacto</h1>
+      <p class="login-hero__description">
+        Design system robusto com suporte nativo a Signals do Angular 19,
+        acessibilidade de nível empresarial e performance de carregamento ultrarrápida.
+      </p>
+
+      <div class="login-hero__metrics">
+        <div class="metric-item">
+          <span class="metric-value">30+</span>
+          <span class="metric-label">Componentes</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">100%</span>
+          <span class="metric-label">Signals & Standalone</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">AA</span>
+          <span class="metric-label">WCAG 2.1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-panel">
+    <div class="login-card">
+      <div class="login-card__header">
+        <div class="login-logo">
+          <span class="login-logo__icon"></span>
+          <span class="login-logo__title">Orchestra</span>
+        </div>
+        <h2 class="login-card__heading">Acessar sua conta</h2>
+        <p class="login-card__subheading">Entre com suas credenciais para gerenciar a plataforma</p>
+      </div>
+
+      <orc-alert *ngIf="errorMessage()" status="error" [dismissible]="true">
+        {{ errorMessage() }}
+      </orc-alert>
+
+      <form (submit)="handleLogin(); $event.preventDefault()" class="login-form">
+        <orc-input
+          label="E-mail profissional"
+          placeholder="exemplo@ciag.com"
+          type="email"
+          [(value)]="email"
+          [required]="true"
+        ></orc-input>
+
+        <orc-input
+          label="Senha de acesso"
+          placeholder="Digite sua senha"
+          type="password"
+          [(value)]="password"
+          [required]="true"
+        ></orc-input>
+
+        <div class="login-form__row">
+          <orc-checkbox
+            label="Lembrar meu dispositivo"
+            [(checked)]="rememberMe"
+          ></orc-checkbox>
+          <a routerLink="/login" class="forgot-link">Esqueceu a senha?</a>
+        </div>
+
+        <orc-button
+          type="submit"
+          variant="primary"
+          [fullWidth]="true"
+          [loading]="isLoading()"
+          size="lg"
+        >
+          Entrar no Painel
+        </orc-button>
+
+        <div class="login-form__footer">
+          <span>Ambiente de Demonstração</span>
+          <a routerLink="/dashboard" class="guest-link">Acessar como Convidado →</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,2 @@
+<span class="orc-popover__trigger" (click)="toggle()" (keydown.enter)="toggle()" (keydown.space)="toggle(); $event.preventDefault()" [attr.aria-expanded]="open()"><ng-content select="[popover-trigger]" /></span>
+@if (open()) { <section class="orc-popover" [class]="'orc-popover orc-popover--'+placement()" role="dialog" [attr.aria-label]="label()"><ng-content /></section> }

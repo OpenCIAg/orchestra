@@ -1,0 +1,719 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Feedback & Processos</div>
+      <h1 class="section-title">Progress & Stepper</h1>
+      <p class="section-desc">
+        Indicadores visuais de progresso para uploads, carregamento e navegação de etapas. Conjunto completo baseado no
+        Figma com
+        <strong>ProgressBarComponent</strong> (linear e segmentado), <strong>ProgressCircleComponent</strong> (circular)
+        e
+        <strong>StepperComponent</strong> (horizontal numérico, horizontal com ícones e vertical com progresso
+        embutido).
+      </p>
+
+      <!-- ── PLAYGROUND PRINCIPAL COM ABAS DEDICADAS ───────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+
+        <div class="playground-grid">
+          <!-- ── PREVIEW PANEL UNIFICADO ── -->
+          <div class="panel preview-panel">
+            <div class="panel__header">
+              Preview ·
+              @switch (activeTab()) {
+              @case ('bar') { ProgressBarComponent }
+              @case ('circle') { ProgressCircleComponent }
+              @case ('segmented') { Barra Segmentada (Etapas) }
+              @case ('stepper') { StepperComponent }
+              }
+            </div>
+            <div class="panel__body">
+              <!-- BAR -->
+              @if (activeTab() === 'bar') {
+              <div class="preview-box">
+                <div class="preview-bar-wrapper">
+                  <orc-progress-bar [value]="barValue()" [mode]="barMode()" [variant]="barVariant()" [size]="barSize()"
+                    [label]="barLabel()" [showValue]="barShowValue()" [rounded]="barRounded()" />
+                </div>
+              </div>
+
+              <div class="preview-actions">
+                <button type="button" class="btn-simulate" [class.btn-simulate--active]="isSimulatingBar()"
+                  (click)="toggleBarSimulation()">
+                  @if (isSimulatingBar()) { ⏹ Pausar simulação } @else { ▶ Simular upload em tempo real }
+                </button>
+
+              </div>
+              }
+
+              <!-- CIRCLE -->
+              @if (activeTab() === 'circle') {
+              <div class="preview-box">
+                <div class="preview-circle-wrapper">
+                  <orc-progress-circle [value]="circleValue()" [mode]="circleMode()" [variant]="circleVariant()"
+                    [size]="circleSize()" [strokeWidth]="circleStrokeWidth()" [showValue]="circleShowValue()"
+                    [rounded]="circleRounded()" />
+                </div>
+              </div>
+
+              <div class="preview-actions">
+                <button type="button" class="btn-simulate" [class.btn-simulate--active]="isSimulatingCircle()"
+                  (click)="toggleCircleSimulation()">
+                  @if (isSimulatingCircle()) { ⏹ Pausar simulação } @else { ▶ Simular progresso circular }
+                </button>
+              </div>
+              }
+
+              <!-- SEGMENTED -->
+              @if (activeTab() === 'segmented') {
+              <div class="preview-box">
+                <div class="preview-bar-wrapper">
+                  <orc-progress-bar [segments]="segTotal()" [currentSegment]="segCurrent()" [variant]="segVariant()"
+                    [customHeight]="segHeight() + 'px'" [label]="'Etapa ' + segCurrent() + ' de ' + segTotal()"
+                    [showValue]="false" />
+                </div>
+              </div>
+
+              <div class="preview-actions">
+                <div class="quick-value-buttons">
+                  <button type="button" class="btn-val" (click)="prevSegment()">← Etapa anterior</button>
+                  <button type="button" class="btn-val btn-val--primary" (click)="nextSegment()">Próxima etapa
+                    →</button>
+                  <button type="button" class="btn-val" (click)="segCurrent.set(0)">Reset (0)</button>
+                </div>
+              </div>
+              }
+
+              <!-- STEPPER -->
+              @if (activeTab() === 'stepper') {
+              <div class="preview-box preview-box--stepper">
+                <div class="preview-stepper-wrapper"
+                  [class.preview-stepper-wrapper--vertical]="stepperOrientation() === 'vertical'">
+                  <orc-stepper [steps]="activeStepperSteps()" [currentStep]="stepperCurrentIndex()"
+                    [orientation]="stepperOrientation()" [type]="stepperType()" [clickable]="stepperClickable()"
+                    [linear]="stepperLinear()" (stepChange)="onStepSelected($event)" />
+                </div>
+              </div>
+
+              <div class="preview-actions">
+                <div class="quick-value-buttons">
+                  <button type="button" class="btn-val" [disabled]="stepperCurrentIndex() === 0" (click)="prevStep()">←
+                    Voltar passo</button>
+                  <button type="button" class="btn-val btn-val--primary"
+                    [disabled]="stepperCurrentIndex() === activeStepperSteps().length - 1" (click)="nextStep()">Avançar
+                    passo →</button>
+                  <button type="button" class="btn-val" (click)="resetStepper()">Reiniciar (Passo 1)</button>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+
+          <!-- ── CONTROLS PANEL UNIFICADO ── -->
+          <div class="panel controls-panel">
+            <div class="panel__header">Controles</div>
+            <div class="panel__body">
+
+              <!-- ── TIPO DE PROGRESSO ── -->
+              <div class="control-group">
+                <label class="control-label">Tipo de progresso</label>
+                <div class="segmented-control segmented-control--wrap">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="activeTab() === 'bar'"
+                    (click)="activeTab.set('bar')">Barra</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="activeTab() === 'circle'"
+                    (click)="activeTab.set('circle')">Círculo</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="activeTab() === 'segmented'"
+                    (click)="activeTab.set('segmented')">Segmentado</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="activeTab() === 'stepper'"
+                    (click)="activeTab.set('stepper')">Stepper</button>
+                </div>
+              </div>
+
+              <!-- CONTROLES BAR -->
+              @if (activeTab() === 'bar') {
+              <div class="control-group">
+                <label class="control-label">Modo de operação</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barMode() === 'determinate'"
+                    (click)="barMode.set('determinate')">Determinado</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barMode() === 'indeterminate'"
+                    (click)="barMode.set('indeterminate')">Indeterminado</button>
+                </div>
+              </div>
+
+              @if (barMode() === 'determinate') {
+              <div class="control-group">
+                <label class="control-label">Valor ({{ barValue() }}%)</label>
+                <input type="range" class="range-slider" min="0" max="100" [value]="barValue()"
+                  (input)="barValue.set(+$any($event.target).value)">
+              </div>
+              }
+
+              <div class="control-group">
+                <label class="control-label">Status / Cor (Variant)</label>
+                <div class="segmented-control segmented-control--wrap">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barVariant() === 'primary'"
+                    (click)="barVariant.set('primary')">Primary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barVariant() === 'neutral'"
+                    (click)="barVariant.set('neutral')">Neutral (Preto)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barVariant() === 'success'"
+                    (click)="barVariant.set('success')">Success</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barVariant() === 'warning'"
+                    (click)="barVariant.set('warning')">Warning</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barVariant() === 'error'"
+                    (click)="barVariant.set('error')">Error</button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Espessura (Size)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barSize() === 'sm'"
+                    (click)="barSize.set('sm')">sm (4px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barSize() === 'md'"
+                    (click)="barSize.set('md')">md (8px - Figma)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="barSize() === 'lg'"
+                    (click)="barSize.set('lg')">lg (12px)</button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Rótulo (Label)</label>
+                <input type="text" class="text-input" [value]="barLabel()"
+                  (input)="barLabel.set($any($event.target).value)" placeholder="Texto superior...">
+              </div>
+
+              <div class="control-group">
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="barShowValue()"
+                      (change)="barShowValue.set($any($event.target).checked)">
+                    <span>Exibir % numérico</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="barRounded()"
+                      (change)="barRounded.set($any($event.target).checked)">
+                    <span>Cantos arredondados</span>
+                  </label>
+                </div>
+              </div>
+              }
+
+              <!-- CONTROLES CIRCLE -->
+              @if (activeTab() === 'circle') {
+              <div class="control-group">
+                <label class="control-label">Modo</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleMode() === 'determinate'"
+                    (click)="circleMode.set('determinate')">Determinado</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="circleMode() === 'indeterminate'"
+                    (click)="circleMode.set('indeterminate')">Indeterminado</button>
+                </div>
+              </div>
+
+              @if (circleMode() === 'determinate') {
+              <div class="control-group">
+                <label class="control-label">Valor ({{ circleValue() }}%)</label>
+                <input type="range" class="range-slider" min="0" max="100" [value]="circleValue()"
+                  (input)="circleValue.set(+$any($event.target).value)">
+              </div>
+              }
+
+              <div class="control-group">
+                <label class="control-label">Status / Cor</label>
+                <div class="segmented-control segmented-control--wrap">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleVariant() === 'primary'"
+                    (click)="circleVariant.set('primary')">Primary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleVariant() === 'neutral'"
+                    (click)="circleVariant.set('neutral')">Neutral</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleVariant() === 'success'"
+                    (click)="circleVariant.set('success')">Success</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleVariant() === 'warning'"
+                    (click)="circleVariant.set('warning')">Warning</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleVariant() === 'error'"
+                    (click)="circleVariant.set('error')">Error</button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Dimensão do círculo (Size)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleSize() === 'sm'"
+                    (click)="circleSize.set('sm')">sm (32px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleSize() === 'md'"
+                    (click)="circleSize.set('md')">md (48px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleSize() === 'lg'"
+                    (click)="circleSize.set('lg')">lg (64px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="circleSize() === 'xl'"
+                    (click)="circleSize.set('xl')">xl (96px)</button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="circleShowValue()"
+                      (change)="circleShowValue.set($any($event.target).checked)">
+                    <span>Exibir % central</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="circleRounded()"
+                      (change)="circleRounded.set($any($event.target).checked)">
+                    <span>Extremidades arredondadas</span>
+                  </label>
+                </div>
+              </div>
+              }
+
+              <!-- CONTROLES SEGMENTED -->
+              @if (activeTab() === 'segmented') {
+              <div class="control-group">
+                <label class="control-label">Total de etapas ({{ segTotal() }})</label>
+                <input type="range" class="range-slider" min="2" max="8" [value]="segTotal()"
+                  (input)="segTotal.set(+$any($event.target).value)">
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Etapa ativa atual ({{ segCurrent() }})</label>
+                <input type="range" class="range-slider" min="0" [max]="segTotal()" [value]="segCurrent()"
+                  (input)="segCurrent.set(+$any($event.target).value)">
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Cor / Variant</label>
+                <div class="segmented-control segmented-control--wrap">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="segVariant() === 'success'"
+                    (click)="segVariant.set('success')">Success</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="segVariant() === 'primary'"
+                    (click)="segVariant.set('primary')">Primary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="segVariant() === 'neutral'"
+                    (click)="segVariant.set('neutral')">Neutral</button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Altura das barras ({{ segHeight() }}px)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="segHeight() === 4"
+                    (click)="segHeight.set(4)">4px</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="segHeight() === 5"
+                    (click)="segHeight.set(5)">5px (Figma)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="segHeight() === 8"
+                    (click)="segHeight.set(8)">8px</button>
+                </div>
+              </div>
+              }
+
+              <!-- CONTROLES STEPPER -->
+              @if (activeTab() === 'stepper') {
+              <div class="control-group">
+                <label class="control-label">Orientação do fluxo</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="stepperOrientation() === 'horizontal'"
+                    (click)="stepperOrientation.set('horizontal')">Horizontal</button>
+                  <button type="button" class="segment-btn"
+                    [class.segment-btn--active]="stepperOrientation() === 'vertical'"
+                    (click)="stepperOrientation.set('vertical')">Vertical (Upload/Processo)</button>
+                </div>
+              </div>
+
+              @if (stepperOrientation() === 'horizontal') {
+              <div class="control-group">
+                <label class="control-label">Estilo dos marcadores</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="stepperType() === 'numeric'"
+                    (click)="stepperType.set('numeric')">Numérico (1, 2, 3)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="stepperType() === 'icon'"
+                    (click)="stepperType.set('icon')">Com ícones</button>
+                </div>
+              </div>
+              }
+
+              @if (stepperOrientation() === 'vertical') {
+              <div class="control-group">
+                <label class="control-label">Progresso do passo ativo ({{ stepperActiveProgress() }}%)</label>
+                <input type="range" class="range-slider" min="0" max="100" [value]="stepperActiveProgress()"
+                  (input)="stepperActiveProgress.set(+$any($event.target).value)">
+              </div>
+              }
+
+              <div class="control-group">
+                <label class="control-label">Opções de navegação</label>
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="stepperClickable()"
+                      (change)="stepperClickable.set($any($event.target).checked)">
+                    <span>Navegação por clique</span>
+                  </label>
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="stepperLinear()"
+                      (change)="stepperLinear.set($any($event.target).checked)">
+                    <span>Modo estritamente linear</span>
+                  </label>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA DESIGN SYSTEM VARIANTS (Node 382:5387) ────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+
+        <!-- 1. Valores diferentes (10%, 33%, 55%, 78%, 100%) -->
+        <div class="example-card">
+          <div class="example-card__header">
+            <h3 class="example-card__title">Valores diferentes (Linear Bars)</h3>
+          </div>
+          <div class="example-card__body">
+            <div class="figma-progress-stack">
+              <orc-progress-bar [value]="10" variant="neutral" label="Progresso" [showValue]="true" />
+              <orc-progress-bar [value]="33" variant="neutral" label="Progresso" [showValue]="true" />
+              <orc-progress-bar [value]="55" variant="neutral" label="Progresso" [showValue]="true" />
+              <orc-progress-bar [value]="78" variant="neutral" label="Progresso" [showValue]="true" />
+              <orc-progress-bar [value]="100" variant="neutral" label="Progresso" [showValue]="true" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Etapas diferentes (Segmentado Verde) -->
+        <div class="example-card">
+          <div class="example-card__header">
+            <h3 class="example-card__title">Etapas diferentes - Stepper simplificado</h3>
+          </div>
+          <div class="example-card__body">
+            <p class="example-desc">
+              Um stepper que indica o avanço de etapas na navegação de um app.
+            </p>
+            <div class="segmented-example-box">
+              <orc-progress-bar [segments]="3" [currentSegment]="1" variant="success" customHeight="5px" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Stepper Horizontal (compacto) -->
+        <div class="example-card">
+          <div class="example-card__header">
+            <h3 class="example-card__title">Stepper horizontal (compacto)</h3>
+          </div>
+          <div class="example-card__body">
+            <div class="figma-stepper-container">
+              <orc-stepper [steps]="numericSteps()" [currentStep]="1" orientation="horizontal" type="numeric" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Stepper Horizontal com icons -->
+        <div class="example-card">
+          <div class="example-card__header">
+            <h3 class="example-card__title">Stepper horizontal com ícones</h3>
+          </div>
+          <div class="example-card__body">
+            <div class="figma-stepper-container">
+              <orc-stepper [steps]="iconSteps()" [currentStep]="1" orientation="horizontal" type="icon" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Stepper vertical com icons & Barra de Progresso integrada -->
+        <div class="example-card">
+          <div class="example-card__header">
+            <h3 class="example-card__title">Stepper vertical com ícones & barra de progresso integrada</h3>
+          </div>
+          <div class="example-card__body">
+            <div class="figma-stepper-container figma-stepper-container--vertical">
+              <orc-stepper [steps]="verticalProcessSteps()" [currentStep]="1" orientation="vertical" type="icon" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABELAS DE API & DOCUMENTAÇÃO ────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Documentação da API</h2>
+
+        <!-- 1. ProgressBarComponent API -->
+        <div class="api-doc-block">
+          <h3 class="api-component-title">&lt;orc-progress-bar&gt; (ProgressBarComponent)</h3>
+          <div class="table-container">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Propriedade / Input</th>
+                  <th>Tipo</th>
+                  <th>Padrão</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>value</code></td>
+                  <td><code>number</code></td>
+                  <td><code>0</code></td>
+                  <td>Valor percentual de progresso exato (de 0 a 100).</td>
+                </tr>
+                <tr>
+                  <td><code>mode</code></td>
+                  <td><code>'determinate' | 'indeterminate'</code></td>
+                  <td><code>'determinate'</code></td>
+                  <td>Modo quantificável (determinado) ou contínuo de carregamento (indeterminado).</td>
+                </tr>
+                <tr>
+                  <td><code>variant</code></td>
+                  <td><code>'primary' | 'neutral' | 'success' | 'warning' | 'error' | 'danger'</code></td>
+                  <td><code>'primary'</code></td>
+                  <td>Variante de cor semântica do Design System Orchestra.</td>
+                </tr>
+                <tr>
+                  <td><code>size</code></td>
+                  <td><code>'sm' | 'md' | 'lg'</code></td>
+                  <td><code>'md'</code></td>
+                  <td>Espessura da barra (<code>sm: 4px</code>, <code>md: 8px</code>, <code>lg: 12px</code>).</td>
+                </tr>
+                <tr>
+                  <td><code>label</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Rótulo textual exibido acima da barra no canto esquerdo.</td>
+                </tr>
+                <tr>
+                  <td><code>showValue</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Exibe o valor numérico percentual no canto superior direito.</td>
+                </tr>
+                <tr>
+                  <td><code>valuePrefix</code> / <code>valueSuffix</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code> / <code>'%'</code></td>
+                  <td>Prefixo e sufixo aplicados à formatação da porcentagem textual.</td>
+                </tr>
+                <tr>
+                  <td><code>rounded</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Aplica cantos arredondados na trilha e no preenchimento.</td>
+                </tr>
+                <tr>
+                  <td><code>segments</code></td>
+                  <td><code>number</code></td>
+                  <td><code>0</code></td>
+                  <td>Número total de etapas para renderizar no formato de barra segmentada.</td>
+                </tr>
+                <tr>
+                  <td><code>currentSegment</code></td>
+                  <td><code>number</code></td>
+                  <td><code>0</code></td>
+                  <td>Índice da etapa ativa atual na barra segmentada (1 a N).</td>
+                </tr>
+                <tr>
+                  <td><code>customHeight</code></td>
+                  <td><code>string | number</code></td>
+                  <td><code>''</code></td>
+                  <td>Altura customizada para a barra (ex: <code>'5px'</code>).</td>
+                </tr>
+                <tr>
+                  <td><code>customColor</code> / <code>customTrackColor</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Cores hexadecimais ou CSS customizadas para preenchimento e trilha.</td>
+                </tr>
+                <tr>
+                  <td><code>ariaLabel</code> / <code>ariaValueText</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Atributos de acessibilidade WCAG (<code>role="progressbar"</code>).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2. ProgressCircleComponent API -->
+        <div class="api-doc-block">
+          <h3 class="api-component-title">&lt;orc-progress-circle&gt; (ProgressCircleComponent)</h3>
+          <div class="table-container">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Propriedade / Input</th>
+                  <th>Tipo</th>
+                  <th>Padrão</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>value</code></td>
+                  <td><code>number</code></td>
+                  <td><code>0</code></td>
+                  <td>Valor percentual de progresso exato (de 0 a 100).</td>
+                </tr>
+                <tr>
+                  <td><code>mode</code></td>
+                  <td><code>'determinate' | 'indeterminate'</code></td>
+                  <td><code>'determinate'</code></td>
+                  <td>Modo determinado com arco proporcional ou indeterminado com rotação contínua.</td>
+                </tr>
+                <tr>
+                  <td><code>variant</code></td>
+                  <td><code>'primary' | 'neutral' | 'success' | 'warning' | 'error' | 'danger'</code></td>
+                  <td><code>'primary'</code></td>
+                  <td>Variante de cor semântica do Design System.</td>
+                </tr>
+                <tr>
+                  <td><code>size</code></td>
+                  <td><code>'sm' | 'md' | 'lg' | 'xl' | number</code></td>
+                  <td><code>'md'</code></td>
+                  <td>Diâmetro do círculo (<code>sm: 32px</code>, <code>md: 48px</code>, <code>lg: 64px</code>,
+                    <code>xl: 96px</code> ou número em px).
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>strokeWidth</code></td>
+                  <td><code>number</code></td>
+                  <td><code>auto</code></td>
+                  <td>Espessura do traço SVG em pixels.</td>
+                </tr>
+                <tr>
+                  <td><code>showValue</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Exibe o valor numérico centralizado no círculo.</td>
+                </tr>
+                <tr>
+                  <td><code>rounded</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Extremidades do traço arredondadas (<code>stroke-linecap="round"</code>).</td>
+                </tr>
+                <tr>
+                  <td><code>customColor</code> / <code>customTrackColor</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Cores customizadas para o arco de preenchimento e para a trilha.</td>
+                </tr>
+                <tr>
+                  <td><code>ariaLabel</code> / <code>ariaValueText</code></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Atributos de acessibilidade WCAG (<code>role="progressbar"</code>).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. StepperComponent API -->
+        <div class="api-doc-block">
+          <h3 class="api-component-title">&lt;orc-stepper&gt; (StepperComponent)</h3>
+          <div class="table-container">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Propriedade / Input / Output</th>
+                  <th>Tipo</th>
+                  <th>Padrão</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>steps</code></td>
+                  <td><code>StepItem[]</code></td>
+                  <td><code>[]</code></td>
+                  <td>Array de passos contendo <code>title</code>, <code>subtitle</code>, <code>icon</code>,
+                    <code>progress</code> e <code>status</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>currentStep</code></td>
+                  <td><code>model&lt;number&gt;</code></td>
+                  <td><code>0</code></td>
+                  <td>Índice da etapa ativa atual (0-indexed) com suporte a Two-Way Binding.</td>
+                </tr>
+                <tr>
+                  <td><code>orientation</code></td>
+                  <td><code>'horizontal' | 'vertical'</code></td>
+                  <td><code>'horizontal'</code></td>
+                  <td>Orientação visual do fluxo de etapas.</td>
+                </tr>
+                <tr>
+                  <td><code>type</code></td>
+                  <td><code>'numeric' | 'icon'</code></td>
+                  <td><code>'numeric'</code></td>
+                  <td>Estilo visual dos marcadores (números ordinais ou ícones/símbolos).</td>
+                </tr>
+                <tr>
+                  <td><code>clickable</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Habilita interação e navegação ao clicar diretamente nas etapas.</td>
+                </tr>
+                <tr>
+                  <td><code>linear</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Impede pular etapas para a frente sem completar as anteriores.</td>
+                </tr>
+                <tr>
+                  <td><code>stepChange</code></td>
+                  <td><code>output&lt;&#123; step: StepItem, index: number &#125;&gt;</code></td>
+                  <td>-</td>
+                  <td>Evento emitido quando uma etapa é clicada/selecionada.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── GUIA DE CÓDIGO ANGULAR ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplo de Importação e Uso</h2>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">Exemplo Angular Standalone Completo</div>
+          <pre class="code-block"><code>import &#123; ProgressBarComponent, ProgressCircleComponent, StepperComponent &#125; from '&#64;orc/ds';
+
+&#64;Component(&#123;
+  standalone: true,
+  imports: [ProgressBarComponent, ProgressCircleComponent, StepperComponent],
+  template: `
+    &lt;!-- 1. Barra de progresso determinada --&gt;
+    &lt;orc-progress-bar [value]="78" variant="primary" label="Upload" [showValue]="true" /&gt;
+
+    &lt;!-- 2. Círculo de progresso --&gt;
+    &lt;orc-progress-circle [value]="50" variant="success" size="md" [showValue]="true" /&gt;
+
+    &lt;!-- 3. Barra segmentada --&gt;
+    &lt;orc-progress-bar [segments]="3" [currentSegment]="1" variant="success" /&gt;
+
+    &lt;!-- 4. Stepper Horizontal ou Vertical --&gt;
+    &lt;orc-stepper [steps]="minhasEtapas" [currentStep]="etapaAtiva" orientation="vertical" /&gt;
+  `
+&#125;)
+export class MeuComponente &#123;
+  etapaAtiva = 1;
+  minhasEtapas = [
+    &#123; title: 'Upload', subtitle: 'Arquivo enviado com sucesso', icon: '✓' &#125;,
+    &#123; title: 'Processando', subtitle: 'Validando dados...', progress: 78 &#125;,
+    &#123; title: 'Finalização', subtitle: 'Aguardando etapa anterior' &#125;,
+  ];
+&#125;</code></pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer></app-footer>
+</div>

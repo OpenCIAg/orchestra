@@ -1,0 +1,200 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Formulários</div>
+      <h1 class="section-title">File Uploader</h1>
+      <p class="section-desc">
+        Componente de upload com suporte a <strong>Drag and Drop</strong>, <strong>seleção múltipla</strong>, restrição
+        de formatos e exibição de progresso individual de arquivos.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Demonstração interativa</h2>
+
+        <div class="playground-grid" [formGroup]="form">
+          <!-- ── PREVIEW (Esquerda) ── -->
+          <div class="panel preview-panel">
+            <div class="panel__header">File Uploader Padrão</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <div style="width: 100%;">
+                  <orc-file-uploader formControlName="files" accept=".jpg,.png,.pdf" [maxFiles]="5" [maxFileSize]="10"
+                    label="Clique ou arraste seus arquivos aqui"
+                    subLabel="Suporta PNG, JPG e PDF (Até 10MB)"></orc-file-uploader>
+
+                  <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                    <orc-button variant="primary" [disabled]="!hasPendingFiles || isUploading()" [loading]="isUploading()"
+                      (click)="simulateUpload()">
+                      Enviar arquivos
+                    </orc-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── PROPERTIES (Direita) ── -->
+          <div class="panel controls-panel">
+            <div class="panel__header">Estado Interno (Reactive Forms)</div>
+            <div class="panel__body">
+              <pre><code>{{ formValue() | json }}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── COMPONENTES PLANOS ──────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+
+        <div class="playground-grid" style="grid-template-columns: 1fr; gap: 2rem;">
+
+          <!-- Tipo: Envio de arquivo Modal -->
+          <div class="figma-block">
+            <div class="figma-block__label">
+              Envio de arquivo (Design)
+            </div>
+            <div class="figma-block__row"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+
+              <!-- Modal Component (Inline mode para Showcase) -->
+              <orc-modal [inline]="true" [isOpen]="true" [showCloseButton]="true" size="custom" style="width: 623px; max-width: 100%;">
+                
+                <!-- HEADER -->
+                <div modal-header>
+                  <h3 style="margin: 0; font-size: 1rem; font-weight: 500;">Envio de arquivo</h3>
+                  <p style="margin: 4px 0 0; font-size: 0.875rem; color: var(--text-secondary);">Escolha um arquivo e faça o upload para prosseguir.</p>
+                </div>
+
+                <!-- BODY -->
+                <div modal-body style="display: flex; flex-direction: column; gap: var(--space-4);">
+                  <!-- Dropzone Area -->
+                  <orc-file-uploader accept=".jpg,.png,.pdf,.mp4" [multiple]="true" label="Arraste e solte seus arquivos"
+                    subLabel="Formatos JPEG, PNG, PDF e MP4, até 50MB"></orc-file-uploader>
+
+                  <div>
+                    <p style="margin: 0 0 8px; font-size: 1rem;">ou faça upload a partir da URL</p>
+                    <div
+                      style="display: flex; gap: var(--space-2); align-items: center; border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);">
+                      <div style="flex: 1; color: var(--text-secondary); font-size: 1rem;">Adicionar URL do arquivo</div>
+                      <orc-button variant="outline" size="sm">Fazer upload</orc-button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p style="margin: 0 0 8px; font-size: 0.875rem;">Lista de documentos</p>
+                    <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                      @for (file of dummyFiles; track file.id) {
+                        <orc-file-item [fileData]="file"></orc-file-item>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FOOTER -->
+                <div modal-footer style="display: flex; gap: var(--space-6); width: 100%;">
+                  <orc-button variant="outline" [fullWidth]="true">Cancelar</orc-button>
+                  <orc-button variant="primary" [fullWidth]="true">Confirmar</orc-button>
+                </div>
+              </orc-modal>
+            </div>
+          </div>
+
+          <!-- Tipo: Dropzone Dragover -->
+          <div class="figma-block">
+            <div class="figma-block__label">
+              Uploader (Estado Dragover)
+            </div>
+            <div class="figma-block__row"
+              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
+              <!-- Container simulando o dropzone com estado dragover forçado -->
+              <div style="width: 583px; max-width: 100%;">
+                <orc-file-uploader 
+                  label="Arraste e solte seus arquivos"
+                  subLabel="Formatos JPEG, PNG, PDF e MP4, até 50MB"
+                  [forceDragover]="true"
+                ></orc-file-uploader>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── API DOCS ────────────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API</h2>
+        <p class="section-text">Integração nativa com <code>ReactiveFormsModule</code> e <code>ControlValueAccessor</code>.</p>
+
+        <div class="table-container" style="margin-top: var(--space-6);">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+              <tbody>
+                <tr>
+                  <td><code>accept</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string</code></td>
+                  <td><code>''</code></td>
+                  <td>Formatos aceitos (ex: <code>image/*,.pdf</code>).</td>
+                </tr>
+                <tr>
+                  <td><code>multiple</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Permite seleção múltipla.</td>
+                </tr>
+                <tr>
+                  <td><code>maxFiles</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>number</code></td>
+                  <td><code>10</code></td>
+                  <td>Limite máximo de arquivos permitidos.</td>
+                </tr>
+                <tr>
+                  <td><code>maxFileSize</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>number</code></td>
+                  <td><code>5</code></td>
+                  <td>Tamanho máximo por arquivo (em MB).</td>
+                </tr>
+                <tr>
+                  <td><code>label</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string</code></td>
+                  <td><code>'Clique ou arraste...'</code></td>
+                  <td>Texto principal do drag and drop.</td>
+                </tr>
+                <tr>
+                  <td><code>subLabel</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>string</code></td>
+                  <td><code>'Suporta imagens e PDFs'</code></td>
+                  <td>Texto secundário (instruções extras).</td>
+                </tr>
+                <tr>
+                  <td><code>disabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Desabilita o componente inteiro.</td>
+                </tr>
+                <tr>
+                  <td><code>forceDragover</code> <span class="badge-tag badge-tag--input">input</span></td>
+                  <td><code>boolean</code></td>
+                  <td><code>false</code></td>
+                  <td>Força visualmente o estado de dragover.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </section>
+    </main>
+  </div>
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,11 @@
+<div class="orc-number-input" [class.orc-number-input--disabled]="effectiveDisabled()" [class.orc-number-input--readonly]="readonly()">
+  @if (label()) { <label class="orc-number-input__label" [for]="effectiveId()">{{ label() }} @if (required()) { <span aria-hidden="true">*</span> }</label> }
+  <div class="orc-number-input__box" [class.orc-number-input__box--error]="status() === 'error' || !!errorMessage()" [class.orc-number-input__box--success]="status() === 'success'">
+    @if (prefix()) { <span class="orc-number-input__affix">{{ prefix() }}</span> }
+    @if (showControls()) { <button type="button" class="orc-number-input__control" (click)="decrement()" [disabled]="effectiveDisabled() || readonly()" aria-label="Diminuir">−</button> }
+    <input #nativeInput class="orc-number-input__native" [id]="effectiveId()" [name]="name()" type="number" inputmode="decimal" [value]="displayValue()" [placeholder]="placeholder()" [min]="min() ?? null" [max]="max() ?? null" [step]="step()" [disabled]="effectiveDisabled()" [readOnly]="readonly()" [required]="required()" [attr.aria-label]="ariaLabel() || null" [attr.aria-invalid]="status() === 'error' || errorMessage() ? 'true' : null" [attr.aria-describedby]="describedBy()" (input)="onInput($event)" (blur)="onBlur($event)" (keydown)="onKeydown($event)" />
+    @if (suffix()) { <span class="orc-number-input__affix">{{ suffix() }}</span> }
+    @if (showControls()) { <button type="button" class="orc-number-input__control" (click)="increment()" [disabled]="effectiveDisabled() || readonly()" aria-label="Aumentar">+</button> }
+  </div>
+  @if (errorMessage() || helperText()) { <p class="orc-number-input__message" [class.orc-number-input__message--error]="!!errorMessage()" [id]="errorMessage() ? errorId() : helperId()">{{ errorMessage() || helperText() }}</p> }
+</div>

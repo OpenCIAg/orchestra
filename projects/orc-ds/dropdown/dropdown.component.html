@@ -1,0 +1,30 @@
+<ng-content></ng-content>
+
+<ng-template #dropdownPanel>
+  <div class="orc-dropdown-menu" role="menu">
+    @for (item of items(); track item.id || item.label) {
+      @if (item.divider) {
+        <div class="orc-dropdown-divider" role="separator"></div>
+      } @else {
+        <button
+          type="button"
+          class="orc-dropdown-item"
+          [class.orc-dropdown-item--danger]="item.danger"
+          [class.orc-dropdown-item--disabled]="item.disabled"
+          [disabled]="item.disabled"
+          role="menuitem"
+          (click)="onItemClick(item, $event)"
+          (keydown)="onItemKeydown($event)"
+        >
+          @if (item.icon) {
+            <span class="orc-dropdown-item__icon" [innerHTML]="item.icon"></span>
+          }
+          <span class="orc-dropdown-item__label">{{ item.label }}</span>
+          @if (item.shortcut) {
+            <span class="orc-dropdown-item__shortcut">{{ item.shortcut }}</span>
+          }
+        </button>
+      }
+    }
+  </div>
+</ng-template>

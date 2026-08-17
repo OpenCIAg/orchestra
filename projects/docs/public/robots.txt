@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://orchestra.ciag.org.br/sitemap.xml

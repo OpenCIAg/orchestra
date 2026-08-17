@@ -1,0 +1,351 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Data Display</div>
+      <h1 class="section-title">Accordion</h1>
+      <p class="section-desc">
+        Painel expansível que organiza e revela conteúdos sob demanda com animações fluidas, controle de expansão única ou múltipla,
+        suporte a projeção livre de cabeçalhos e estrita conformidade com o padrão de acessibilidade WAI-ARIA.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <orc-accordion
+                  [multiple]="playgroundMultiple()"
+                  [variant]="playgroundVariant()"
+                  (expandedChange)="logEvent('Item ' + $event.id + ($event.expanded ? ' expandido' : ' colapsado'))"
+                >
+                  <orc-accordion-item
+                    id="faq-1"
+                    title="O que é um Design System?"
+                    [(expanded)]="item1Expanded"
+                    (opened)="logEvent('Item 1 aberto')"
+                    (closed)="logEvent('Item 1 fechado')"
+                  >
+                    Um Design System é uma coleção de componentes reutilizáveis, guiados por padrões claros, que podem ser combinados para construir qualquer número de aplicações de forma consistente e eficiente.
+                  </orc-accordion-item>
+
+                  <orc-accordion-item
+                    id="faq-2"
+                    title="A importância da consistência no design."
+                    [(expanded)]="item2Expanded"
+                    (opened)="logEvent('Item 2 aberto')"
+                    (closed)="logEvent('Item 2 fechado')"
+                  >
+                    Garante que diferentes produtos e telas mantenham o mesmo tom, identidade visual e usabilidade previsível para o usuário final.
+                  </orc-accordion-item>
+
+                  <orc-accordion-item
+                    id="faq-3"
+                    title="Como implementar um Design System eficaz."
+                    [(expanded)]="item3Expanded"
+                    (opened)="logEvent('Item 3 aberto')"
+                    (closed)="logEvent('Item 3 fechado')"
+                  >
+                    Comece documentando tokens básicos (cores, tipografia, espaçamentos), construa componentes atômicos e estabeleça uma cultura colaborativa.
+                  </orc-accordion-item>
+
+                  <orc-accordion-item
+                    id="faq-4"
+                    title="Item desabilitado para demonstração."
+                    [disabled]="item4Disabled()"
+                  >
+                    Este conteúdo está bloqueado para interação.
+                  </orc-accordion-item>
+                </orc-accordion>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Multiple Toggle -->
+              <div class="control-group">
+                <label class="control-label">Modo de expansão (multiple)</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="!playgroundMultiple()"
+                    (click)="playgroundMultiple.set(false)"
+                  >
+                    Exclusivo (um por vez)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundMultiple()"
+                    (click)="playgroundMultiple.set(true)"
+                  >
+                    Múltiplo (vários simultâneos)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Variant Selection -->
+              <div class="control-group">
+                <label class="control-label">Variante visual</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'default'"
+                    (click)="playgroundVariant.set('default')"
+                  >
+                    Padrão (Figma)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'separated'"
+                    (click)="playgroundVariant.set('separated')"
+                  >
+                    Separado (gap)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'bordered'"
+                    (click)="playgroundVariant.set('bordered')"
+                  >
+                    Bordas externas
+                  </button>
+                </div>
+              </div>
+
+              <!-- Item 4 Disabled Toggle -->
+              <div class="control-group">
+                <label class="control-label">Desabilitar 4º item</label>
+                <div class="segmented-control">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="!item4Disabled()"
+                    (click)="item4Disabled.set(false)"
+                  >
+                    Habilitado
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="item4Disabled()"
+                    (click)="item4Disabled.set(true)"
+                  >
+                    Desabilitado
+                  </button>
+                </div>
+              </div>
+
+              <!-- Event Log -->
+              <div class="control-group" *ngIf="eventLogs().length > 0">
+                <label class="control-label">Registro de eventos</label>
+                <div class="event-logs">
+                  <div *ngFor="let log of eventLogs()" class="log-entry">{{ log }}</div>
+                </div>
+              </div>
+
+              <div class="control-actions">
+                <button type="button" class="btn btn--secondary" (click)="resetPlayground()">
+                  Restaurar padrões
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── DESIGN DO FIGMA (NODES 26:16952 & 26:17019) ────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Design do Figma (lista completa)</h2>
+        <div class="figma-showcase-card">
+          <orc-accordion>
+            <orc-accordion-item
+              title="O que é um Design System?"
+              [expanded]="true"
+            >
+              Um Design System é uma coleção de componentes reutilizáveis, guiados por padrões claros, que podem ser combinados para construir qualquer número de aplicações de forma consistente e eficiente.
+            </orc-accordion-item>
+
+            <orc-accordion-item title="A importância da consistência no design.">
+              Garante que diferentes produtos e telas mantenham o mesmo tom, identidade visual e usabilidade previsível para o usuário final.
+            </orc-accordion-item>
+
+            <orc-accordion-item title="Como implementar um Design System eficaz.">
+              Comece documentando tokens básicos (cores, tipografia, espaçamentos), construa componentes atômicos e estabeleça uma cultura colaborativa em equipes de design.
+            </orc-accordion-item>
+
+            <orc-accordion-item title="Componentes reutilizáveis e suas vantagens.">
+              Aceleram o tempo de entrega, reduzem retrabalho e facilitam correções e atualizações globais em escala.
+            </orc-accordion-item>
+
+            <orc-accordion-item title="Desenvolvimento colaborativo em equipes de design.">
+              Promove a integração contínua entre designers e desenvolvedores, garantindo fidelidade de layout e código padronizado.
+            </orc-accordion-item>
+          </orc-accordion>
+        </div>
+      </section>
+
+      <!-- ── CUSTOMIZAÇÃO AVANÇADA DE CABEÇALHO ──────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Customização com projeção de cabeçalho (ng-content)</h2>
+        <div class="figma-showcase-card">
+          <orc-accordion variant="bordered">
+            <orc-accordion-item>
+              <div accordion-header class="custom-header">
+                <span class="custom-header__badge">Avançado</span>
+                <span class="custom-header__title">Notificações e alertas por e-mail</span>
+              </div>
+              Você pode projetar qualquer elemento personalizado dentro do cabeçalho utilizando o seletor <code>[accordion-header]</code>, incluindo badges, ícones personalizados e switches.
+            </orc-accordion-item>
+
+            <orc-accordion-item>
+              <div accordion-header class="custom-header">
+                <span class="custom-header__badge custom-header__badge--success">Segurança</span>
+                <span class="custom-header__title">Autenticação em dois fatores (2FA)</span>
+              </div>
+              Proteja sua conta com verificação em duas etapas via aplicativo autenticador ou SMS.
+            </orc-accordion-item>
+          </orc-accordion>
+        </div>
+      </section>
+
+      <!-- ── CÓDIGO FONTE E EXEMPLOS ─────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos de código</h2>
+        <div class="code-blocks">
+          <div class="code-card">
+            <div class="code-card__title">1. Uso padrão exclusivo (um item por vez)</div>
+            <pre class="code-card__snippet"><code>&lt;app-accordion&gt;
+  &lt;app-accordion-item title="O que é um Design System?" [expanded]="true"&gt;
+    Um Design System é uma coleção de componentes reutilizáveis...
+  &lt;/app-accordion-item&gt;
+
+  &lt;app-accordion-item title="A importância da consistência no design."&gt;
+    Garante que diferentes produtos e telas mantenham o mesmo tom...
+  &lt;/app-accordion-item&gt;
+&lt;/app-accordion&gt;</code></pre>
+          </div>
+
+          <div class="code-card">
+            <div class="code-card__title">2. Modo múltiplos itens abertos simultaneamente</div>
+            <pre class="code-card__snippet"><code>&lt;app-accordion [multiple]="true" variant="separated"&gt;
+  &lt;app-accordion-item title="Primeiro item" [(expanded)]="item1Open"&gt;
+    Conteúdo 1
+  &lt;/app-accordion-item&gt;
+
+  &lt;app-accordion-item title="Segundo item" [(expanded)]="item2Open"&gt;
+    Conteúdo 2
+  &lt;/app-accordion-item&gt;
+&lt;/app-accordion&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE REFERÊNCIA DE API ─────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API</h2>
+
+        <h3 class="api-group-title">AccordionComponent (Pai)</h3>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>multiple</code> <span class="badge badge--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Permite que mais de um item permaneça expandido simultaneamente.</td>
+              </tr>
+              <tr>
+                <td><code>variant</code> <span class="badge badge--input">input</span></td>
+                <td><code>'default' | 'separated' | 'bordered'</code></td>
+                <td><code>'default'</code></td>
+                <td>Estilo visual do container do accordion.</td>
+              </tr>
+              <tr>
+                <td><code>expandedChange</code> <span class="badge badge--output">output</span></td>
+                <td><code>AccordionToggleEvent</code></td>
+                <td>—</td>
+                <td>Disparado quando qualquer item tem seu estado alterado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="api-group-title" style="margin-top: var(--space-6)">AccordionItemComponent (Filho)</h3>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>title</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Título padrão exibido no cabeçalho.</td>
+              </tr>
+              <tr>
+                <td><code>expanded</code> <span class="badge badge--model">model</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Estado de expansão com suporte a two-way binding <code>[(expanded)]</code>.</td>
+              </tr>
+              <tr>
+                <td><code>disabled</code> <span class="badge badge--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Desabilita a interação com o cabeçalho do item.</td>
+              </tr>
+              <tr>
+                <td><code>subtitle</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Subtítulo secundário opcional.</td>
+              </tr>
+              <tr>
+                <td><code>opened</code> <span class="badge badge--output">output</span></td>
+                <td><code>void</code></td>
+                <td>—</td>
+                <td>Disparado quando o item é expandido.</td>
+              </tr>
+              <tr>
+                <td><code>closed</code> <span class="badge badge--output">output</span></td>
+                <td><code>void</code></td>
+                <td>—</td>
+                <td>Disparado quando o item é colapsado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

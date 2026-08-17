@@ -1,0 +1,104 @@
+<div class="page">
+
+  <!-- ── Main ──────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero__eyebrow">Biblioteca de Componentes · v1.0 Alpha</div>
+      <h1 class="hero__title">O que você quer construir?</h1>
+      <p class="hero__subtitle">
+        Componentes Angular acessíveis, fortemente tipados e prontos para produção.
+      </p>
+    </div>
+
+    <!-- Search -->
+    <div class="search-area" role="search">
+      <div class="search-box" [class.search-box--focused]="isFocused()">
+        <input #searchInput id="component-search" class="search-box__input" type="search"
+          placeholder="Buscar componente..." aria-label="Buscar componente"
+          [value]="searchValue()" (input)="onSearch($any($event.target).value)"
+          (focus)="isFocused.set(true)" (blur)="isFocused.set(false)" />
+        @if (hasQuery()) {
+          <button class="search-box__clear" type="button" aria-label="Limpar busca" (click)="clearSearch()">×</button>
+        }
+        @if (!hasQuery()) {
+        <orc-kbd keys="/" ariaLabel="Atalho de busca" />
+        }
+      </div>
+
+      <!-- Category filters -->
+      <div class="filters" role="group" aria-label="Categoria">
+        @for (cat of categories(); track cat) {
+        <button
+          type="button"
+          class="filter-chip"
+          [class.filter-chip--active]="catalog.selectedCategory() === cat"
+          [attr.aria-pressed]="catalog.selectedCategory() === cat"
+          (click)="selectCategory(cat)">
+          {{ cat }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <!-- Results counter -->
+    <div class="results-meta" aria-live="polite" aria-atomic="true">
+      @if (hasQuery()) {
+      <span>{{ resultCount() }} resultado{{ resultCount() !== 1 ? 's' : '' }} para "<strong>{{ searchValue()
+          }}</strong>"</span>
+      } @else {
+      <span>{{ resultCount() }} componentes</span>
+      }
+    </div>
+
+    <!-- Component grid -->
+    <div id="results" aria-label="Resultados">
+      @if (resultCount() === 0) {
+      <div class="empty" role="status">
+        <p class="empty__title">Nenhum resultado</p>
+        <p class="empty__text">
+          Tente outro termo ou
+          <orc-button class="empty__reset" variant="link" size="sm" (click)="clearSearch()">limpe a busca</orc-button>.
+        </p>
+      </div>
+      } @else {
+      @for (entry of groupedEntries(); track trackByCategory($index, entry)) {
+      <section class="group" [attr.aria-label]="entry[0]">
+        <h2 class="group__label">
+          {{ entry[0] }}
+          <span class="group__count" aria-hidden="true">{{ entry[1].length }}</span>
+        </h2>
+        <div class="grid" role="list">
+          @for (comp of entry[1]; track trackById($index, comp)) {
+          <a class="card" role="listitem"
+            [routerLink]="comp.route ? comp.route.split('#')[0] : ''"
+            [fragment]="comp.route?.includes('#') ? comp.route?.split('#')?.[1] : undefined"
+            [attr.aria-label]="comp.name + ': ' + comp.description" (mouseenter)="setHovered(comp.id)"
+            (mouseleave)="setHovered(null)">
+            <div class="card__top">
+              <span class="card__icon" aria-hidden="true">{{ comp.icon }}</span>
+              <orc-badge [text]="getStatusLabel(comp.status)" [status]="getStatusBadge(comp.status)"
+                variant="soft" size="sm" />
+            </div>
+            <h3 class="card__name">{{ comp.name }}</h3>
+            <p class="card__desc">{{ comp.description }}</p>
+            <div class="card__tags" aria-label="Tags">
+              @for (tag of comp.tags.slice(0, 3); track tag) {
+              <span class="card__tag">{{ tag }}</span>
+              }
+            </div>
+          </a>
+          }
+        </div>
+      </section>
+      }
+      }
+    </div>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <app-footer />
+
+</div>

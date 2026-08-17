@@ -1,0 +1,285 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a Página Inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Inputs</div>
+      <h1 class="section-title">OTP Input</h1>
+      <p class="section-desc">
+        Campos de entrada de código de uso único (One-Time Password) modulares e acessíveis, com suporte nativo a
+        Reactive Forms, Signals API, navegação automática de foco, suporte a colagem de SMS/clipboard e arquitetura
+        composta (Compound Components).
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <orc-otp-input [length]="length()" [disabled]="isDisabled()" [inputMode]="inputMode()"
+                [placeholder]="placeholder()" [value]="otpValue()" (valueChange)="onOtpChange($event)"
+                (completed)="onOtpCompleted($event)" />
+            </div>
+
+          </div>
+
+          <!-- Configuration Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades / Inputs</div>
+            <div class="panel__body">
+              <!-- Length Control -->
+              <div class="control-group">
+                <label class="control-label">Quantidade de dígitos (length)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="length() === 4"
+                    (click)="length.set(4); resetDemo()">
+                    4
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="length() === 6"
+                    (click)="length.set(6); resetDemo()">
+                    6
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="length() === 8"
+                    (click)="length.set(8); resetDemo()">
+                    8
+                  </button>
+                </div>
+              </div>
+
+              <!-- InputMode Control -->
+              <div class="control-group">
+                <label class="control-label">Modo do teclado (inputMode)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputMode() === 'numeric'"
+                    (click)="inputMode.set('numeric'); resetDemo()">
+                    Numérico
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="inputMode() === 'text'"
+                    (click)="inputMode.set('text'); resetDemo()">
+                    Texto livre
+                  </button>
+                </div>
+              </div>
+
+              <!-- Placeholder Control -->
+              <div class="control-group">
+                <label class="control-label">Placeholder</label>
+                <input type="text" class="text-input" maxlength="1" [value]="placeholder()"
+                  (input)="placeholder.set($any($event.target).value)" placeholder="-" />
+              </div>
+
+              <!-- Disabled Control -->
+              <div class="control-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" [checked]="isDisabled()"
+                    (change)="isDisabled.set($any($event.target).checked)" />
+                  Desabilitar componente
+                </label>
+              </div>
+
+              <button type="button" class="btn btn-secondary btn-full" (click)="resetDemo()">
+                Limpar entrada
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── COMPONENTES PLANOS / GALERIA DE ESTADOS ─────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+        <div class="cards-showcase-grid">
+          <!-- Card 1: 4 Dígitos (2 - 2) -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">4 Dígitos (PIN curto)</div>
+            <div class="showcase-card-content">
+              <orc-otp-input [length]="4" value="1234" />
+            </div>
+          </div>
+
+          <!-- Card 2: 6 Dígitos Padrão (3 - 3) -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">6 Dígitos (Padrão 2FA)</div>
+            <div class="showcase-card-content">
+              <orc-otp-input [length]="6" value="593021" />
+            </div>
+          </div>
+
+          <!-- Card 4: Estado Desabilitado -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">Desabilitado (disabled)</div>
+            <div class="showcase-card-content">
+              <orc-otp-input [length]="6" value="739401" [disabled]="true" />
+            </div>
+          </div>
+
+          <!-- Card 5: Modo Texto / Alfanumérico -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">Texto / Alfanumérico (inputMode="text")</div>
+            <div class="showcase-card-content">
+              <orc-otp-input [length]="6" inputMode="text" value="AB12CD" />
+            </div>
+          </div>
+
+          <!-- Card 6: Composição Modular com Subcomponentes -->
+          <div class="showcase-card-wrapper">
+            <div class="showcase-card-label">Composição modular</div>
+            <div class="showcase-card-content">
+              <div class="otp-container">
+                <orc-otp-group>
+                  <orc-otp-slot [index]="0" [isFirst]="true"></orc-otp-slot>
+                  <orc-otp-slot [index]="1"></orc-otp-slot>
+                  <orc-otp-slot [index]="2" [isLast]="true"></orc-otp-slot>
+                </orc-otp-group>
+                <orc-otp-separator></orc-otp-separator>
+                <orc-otp-group>
+                  <orc-otp-slot [index]="3" [isFirst]="true"></orc-otp-slot>
+                  <orc-otp-slot [index]="4"></orc-otp-slot>
+                  <orc-otp-slot [index]="5" [isLast]="true"></orc-otp-slot>
+                </orc-otp-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── REACTIVE FORMS INTEGRATION ──────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Integração com Reactive Forms (ControlValueAccessor)</h2>
+        <p class="section-desc-small">
+          O <code>OtpInputComponent</code> implementa <code>ControlValueAccessor</code> nativamente, integrando-se
+          diretamente com <code>formControlName</code>, <code>[formControl]</code> e validações do Angular Forms.
+        </p>
+
+        <div class="form-demo-card">
+          <form [formGroup]="form" (ngSubmit)="onSubmitForm()" class="demo-form">
+            <div class="control-group">
+              <label class="control-label">Código de autenticação em 2 etapas (2FA)</label>
+              <p class="section-desc-small" style="margin-bottom: var(--space-3);">
+                Digite o código de 6 dígitos enviado ao seu dispositivo:
+              </p>
+
+              <orc-otp-input formControlName="twoFactorCode" [length]="6" />
+
+              <div *ngIf="formSubmitted() && form.get('twoFactorCode')?.invalid" class="form-error-msg" role="alert">
+                ⚠ Código incompleto ou obrigatório. Digite os 6 dígitos.
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn--primary">Validar código</button>
+              <button type="button" class="btn btn--secondary" (click)="resetForm()">Limpar</button>
+            </div>
+          </form>
+
+          <div class="form-result-box" *ngIf="formSubmitted()">
+            <div class="form-result-title">Status do Reactive Form:</div>
+            <div class="form-result-status" [class.form-result-status--valid]="form.valid"
+              [class.form-result-status--invalid]="form.invalid">
+              {{ form.valid ? '✓ Código Válido' : '⚠ Erro de Validação: Código Incompleto' }}
+            </div>
+            <pre class="code-block" *ngIf="formResult()">{{ formResult() | json }}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE API / PROPRIEDADES ────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência da API</h2>
+
+        <!-- Tabela: app-otp-input -->
+        <h3 class="subsection-heading"><code>app-otp-input</code> (Componente principal)</h3>
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Propriedade</th>
+              <th>Tipo</th>
+              <th>Padrão</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>length</code></td>
+              <td><code>input&lt;number&gt;</code></td>
+              <td><code>6</code></td>
+              <td>Quantidade total de dígitos/slots do OTP.</td>
+            </tr>
+            <tr>
+              <td><code>value</code></td>
+              <td><code>model&lt;string&gt;</code></td>
+              <td><code>''</code></td>
+              <td>Valor completo do código com suporte a Two-Way Binding (<code>[(value)]</code>) e Reactive Forms.</td>
+            </tr>
+            <tr>
+              <td><code>inputMode</code></td>
+              <td><code>input&lt;'numeric' | 'text'&gt;</code></td>
+              <td><code>'numeric'</code></td>
+              <td>Tipo de teclado acionado em dispositivos móveis.</td>
+            </tr>
+            <tr>
+              <td><code>placeholder</code></td>
+              <td><code>input&lt;string&gt;</code></td>
+              <td><code>''</code></td>
+              <td>Caractere indicador exibido nos slots vazios.</td>
+            </tr>
+            <tr>
+              <td><code>disabled</code></td>
+              <td><code>input&lt;boolean&gt;</code></td>
+              <td><code>false</code></td>
+              <td>Desabilita a interação com todos os campos.</td>
+            </tr>
+            <tr>
+              <td><code>ariaLabel</code></td>
+              <td><code>input&lt;string&gt;</code></td>
+              <td><code>'Código de verificação'</code></td>
+              <td>Rótulo de acessibilidade anunciado para cada slot por leitores de tela.</td>
+            </tr>
+            <tr>
+              <td><code>completed</code></td>
+              <td><code>output&lt;string&gt;</code></td>
+              <td><code>-</code></td>
+              <td>Disparado quando todos os dígitos do código são preenchidos.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabela: Subcomponentes Compostos -->
+        <h3 class="subsection-heading" style="margin-top: var(--space-8);">Subcomponentes compostos</h3>
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Seletor</th>
+              <th>Finalidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>OtpSlotComponent</code></td>
+              <td><code>app-otp-slot</code></td>
+              <td>Célula/slot individual de caractere, com controle de foco e bordas arredondadas contextuais.</td>
+            </tr>
+            <tr>
+              <td><code>OtpGroupComponent</code></td>
+              <td><code>app-otp-group</code></td>
+              <td>Container flexível com gap de 4px para agrupar slots de um mesmo bloco.</td>
+            </tr>
+            <tr>
+              <td><code>OtpSeparatorComponent</code></td>
+              <td><code>app-otp-separator</code></td>
+              <td>Separador visual com ícone de traço entre blocos de dígitos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <app-footer />
+</div>

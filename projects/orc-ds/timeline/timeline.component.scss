@@ -1,0 +1,14 @@
+:host { display: block; width: 100%; }
+.orc-timeline { display: grid; gap: 0; margin: 0; padding: 4px 0; list-style: none; }
+.orc-timeline__item { position: relative; display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; min-height: 76px; cursor: pointer; &:last-child { min-height: 0; } &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: 3px; } }
+.orc-timeline__marker { z-index: 1; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid var(--orc-border, #d9d9d9); border-radius: 50%; background: var(--fill-modal, #fff); color: var(--orc-font-secondary, #666); font-size: 11px; font-weight: 700; box-sizing: border-box; }
+.orc-timeline__connector { position: absolute; top: 28px; bottom: 0; left: 13px; border-left: 2px solid var(--orc-border, #d9d9d9); }
+.orc-timeline__content { padding-bottom: 20px; }
+.orc-timeline__date { display: block; margin-bottom: 3px; color: var(--orc-font-secondary, #666); font-size: 11px; }
+.orc-timeline__content h3 { margin: 0 0 4px; color: var(--orc-font-main, #141414); font-size: 14px; }
+.orc-timeline__content p { margin: 0; color: var(--orc-font-secondary, #666); font-size: 13px; line-height: 1.45; }
+.orc-timeline__item--completed .orc-timeline__marker { border-color: var(--color-success, #006f4a); background: var(--color-success, #006f4a); color: #fff; }
+.orc-timeline__item--current .orc-timeline__marker { border-color: var(--orc-color-azul-eletrico, #1c6aed); color: var(--orc-color-azul-eletrico, #1c6aed); box-shadow: 0 0 0 4px rgba(28,106,237,.13); }
+.orc-timeline__item--error .orc-timeline__marker { border-color: var(--color-error, #fb2c36); color: var(--color-error, #fb2c36); }
+.orc-timeline--horizontal { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); .orc-timeline__item { display: block; min-height: 120px; padding-inline: 6px; } .orc-timeline__connector { top: 13px; bottom: auto; left: 34px; width: calc(100% - 40px); border-top: 2px solid var(--orc-border, #d9d9d9); border-left: 0; } .orc-timeline__content { padding-top: 10px; padding-bottom: 0; } }
+.orc-timeline__empty { padding: 24px; color: var(--orc-font-secondary, #666); text-align: center; }

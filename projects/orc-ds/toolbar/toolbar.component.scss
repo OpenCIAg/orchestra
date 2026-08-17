@@ -1,0 +1,3 @@
+:host { display: block; }
+.orc-toolbar { display: flex; align-items: center; gap: 6px; width: fit-content; max-width: 100%; padding: 4px; border: 1px solid var(--orc-border, #d9d9d9); border-radius: var(--radius-md, 10px); background: var(--orc-th, #f7f8fa); &--vertical { flex-direction: column; align-items: stretch; } }
+.orc-toolbar ::ng-deep [orcToolbarItem] { min-height: 34px; padding: 6px 10px; border: 0; border-radius: var(--radius-sm, 6px); background: transparent; color: var(--orc-font-main, #141414); font: inherit; cursor: pointer; &:hover { background: var(--fill-modal, #fff); } &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: 1px; } }

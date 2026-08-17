@@ -1,0 +1,84 @@
+@if (!loggedIn()) {
+  <main class="login-shell">
+    <section class="login-story">
+      <div class="brand brand--light"><span class="brand-mark">O</span><span>Orchestra</span></div>
+      <div class="story-copy">
+        <orc-badge status="info" variant="soft" text="OPERATIONS CLOUD" />
+        <h1>Bring every team into perfect rhythm.</h1>
+        <p>Plan initiatives, unblock decisions, and turn momentum into measurable outcomes—all in one beautifully coordinated workspace.</p>
+        <div class="story-stats"><div><strong>38%</strong><span>faster delivery</span></div><div><strong>4.9/5</strong><span>team satisfaction</span></div><div><strong>24/7</strong><span>live visibility</span></div></div>
+      </div>
+      <p class="story-foot">Trusted by product teams that move with purpose.</p>
+    </section>
+    <section class="login-panel">
+      <div class="login-card">
+        <div class="mobile-brand"><span class="brand-mark">O</span><span>Orchestra</span></div>
+        <orc-badge status="success" variant="dot" text="All systems operational" />
+        <h2>Welcome back</h2><p class="muted">Sign in to continue to your workspace.</p>
+        <form (submit)="$event.preventDefault(); login()">
+          <orc-input label="Work email" type="email" placeholder="you@company.com" autocomplete="email" [required]="true" [clearable]="true" [(ngModel)]="loginEmail" name="loginEmail" />
+          <orc-input label="Password" type="password" placeholder="Enter your password" autocomplete="current-password" [required]="true" [(ngModel)]="loginPassword" name="loginPassword" />
+          <div class="login-options"><orc-checkbox label="Remember me" [checked]="true" /><button type="button" class="text-link">Forgot password?</button></div>
+          <orc-button type="submit" variant="primary" size="lg" [fullWidth]="true" [loading]="loading()">Sign in to workspace</orc-button>
+        </form>
+        <orc-divider label="or continue with" />
+        <div class="sso-grid"><orc-button variant="outline" [fullWidth]="true">G&nbsp;&nbsp; Google</orc-button><orc-button variant="outline" [fullWidth]="true">◈&nbsp;&nbsp; Microsoft</orc-button></div>
+        <p class="signup">New to Orchestra? <button class="text-link">Create an account</button></p>
+      </div>
+    </section>
+  </main>
+} @else {
+  <div class="app-shell" [class.nav-open]="mobileNavOpen()">
+    <aside class="sidebar">
+      <div class="sidebar-head"><div class="brand"><span class="brand-mark">O</span><span>Orchestra</span></div><button class="mobile-close" (click)="mobileNavOpen.set(false)" aria-label="Close menu">×</button></div>
+      <button class="workspace-switcher"><span class="workspace-icon">N</span><span><small>Workspace</small><strong>Northstar Labs</strong></span><span>⌄</span></button>
+      <nav aria-label="Main navigation">
+        <p class="nav-label">Workspace</p>
+        @for (item of navItems; track item.id) { <button class="nav-item" [class.active]="page() === item.id" (click)="navigate(item.id)"><span class="nav-icon">{{ item.icon }}</span><span>{{ item.label }}</span>@if (item.hint) { <span class="nav-count">{{ item.hint }}</span> }</button> }
+        <p class="nav-label">Manage</p><button class="nav-item"><span class="nav-icon">◇</span><span>Integrations</span></button><button class="nav-item"><span class="nav-icon">?</span><span>Help center</span></button>
+      </nav>
+      <div class="sidebar-card"><orc-progress-circle [value]="76" size="sm" [showValue]="true" /><div><strong>Plan usage</strong><span>76% of seats used</span></div></div>
+      <div class="profile-row"><orc-avatar initials="MC" name="Matheus Castro" size="sm" status="online" colorVariant="primary" /><div><strong>Matheus Castro</strong><span>Admin</span></div><button (click)="signOut()" aria-label="Sign out">↗</button></div>
+    </aside>
+    <button class="scrim" (click)="mobileNavOpen.set(false)" aria-label="Close navigation"></button>
+    <main class="main-content">
+      <header class="topbar"><button class="menu-button" (click)="mobileNavOpen.set(true)" aria-label="Open menu">☰</button><div class="search"><span>⌕</span><input placeholder="Search anything..." aria-label="Search" /><kbd>⌘ K</kbd></div><div class="topbar-actions"><orc-icon-button variant="ghost" icon="?" ariaLabel="Help" /><orc-icon-button variant="ghost" icon="♢" ariaLabel="Notifications" /><orc-button variant="primary" size="sm" (click)="modalOpen.set(true)">＋ New project</orc-button></div></header>
+      <section class="page-content">
+        <div class="page-heading"><div><orc-breadcrumb [items]="[{ label: 'Workspace' }, { label: pageTitle }]" /><h1>{{ pageTitle }}</h1><p>{{ page() === 'overview' ? 'Here’s what’s happening across your workspace today.' : 'Manage your ' + pageTitle.toLowerCase() + ' workspace.' }}</p></div><div class="heading-actions"><orc-button variant="outline" size="sm">↓ Export</orc-button><orc-button variant="primary" size="sm" (click)="modalOpen.set(true)">＋ Create</orc-button></div></div>
+
+        @if (page() === 'overview') {
+          @if (toastVisible()) { <orc-alert severity="info" variant="soft" title="Weekly planning is ready" message="Review capacity and confirm priorities before Friday." [dismissible]="true" (closed)="toastVisible.set(false)" /> }
+          <div class="metric-grid">
+            <orc-card variant="dashboard"><orc-card-body><div class="metric-top"><span class="metric-icon purple">◫</span><orc-badge status="success" text="+12.5%" /></div><span>Active projects</span><strong>24</strong><small>3 launching this week</small></orc-card-body></orc-card>
+            <orc-card variant="dashboard"><orc-card-body><div class="metric-top"><span class="metric-icon cyan">◎</span><orc-badge status="success" text="+4.2%" /></div><span>Team velocity</span><strong>92%</strong><small>Above quarterly target</small></orc-card-body></orc-card>
+            <orc-card variant="dashboard"><orc-card-body><div class="metric-top"><span class="metric-icon orange">⌁</span><orc-badge status="warning" text="-2.1%" /></div><span>Budget used</span><strong>$184k</strong><small>of $260k allocated</small></orc-card-body></orc-card>
+            <orc-card variant="dashboard"><orc-card-body><div class="metric-top"><span class="metric-icon green">✓</span><orc-badge status="success" text="+18" /></div><span>Tasks completed</span><strong>1,284</strong><small>in the last 30 days</small></orc-card-body></orc-card>
+          </div>
+          <div class="overview-grid">
+            <orc-card class="chart-card"><orc-card-header><div class="card-title-row"><div><h3>Delivery performance</h3><p>Completed work over the last 6 months</p></div><orc-select placeholder="Last 6 months" size="sm"><orc-option value="6">Last 6 months</orc-option><orc-option value="12">Last year</orc-option></orc-select></div></orc-card-header><orc-card-body><div class="chart-legend"><span><i class="dot primary"></i>Completed</span><span><i class="dot muted-dot"></i>Planned</span></div><div class="chart" aria-label="Delivery chart">@for (bar of [42,58,51,74,68,88]; track $index) { <div class="bar-group"><div class="bar planned" [style.height.%]="bar + 10"></div><div class="bar actual" [style.height.%]="bar"></div><span>{{ ['Mar','Apr','May','Jun','Jul','Aug'][$index] }}</span></div> }</div></orc-card-body></orc-card>
+            <orc-card><orc-card-header><div class="card-title-row"><div><h3>Portfolio health</h3><p>Across all active work</p></div><button class="more">•••</button></div></orc-card-header><orc-card-body><div class="health-ring"><orc-progress-circle [value]="84" size="xl" [showValue]="true" label="Healthy" /></div><div class="health-list"><div><span><i class="dot green-dot"></i>On track</span><strong>18</strong></div><div><span><i class="dot orange-dot"></i>At risk</span><strong>4</strong></div><div><span><i class="dot red-dot"></i>Blocked</span><strong>2</strong></div></div></orc-card-body></orc-card>
+          </div>
+          <orc-card><orc-card-header><div class="card-title-row"><div><h3>Priority projects</h3><p>Projects requiring attention this week</p></div><orc-button variant="ghost" size="sm" (click)="navigate('projects')">View all →</orc-button></div></orc-card-header><orc-card-body><div class="table-wrap"><table><thead><tr><th>Project</th><th>Owner</th><th>Status</th><th>Progress</th><th>Due date</th><th></th></tr></thead><tbody>@for (row of rows; track row.name) { <tr><td><span class="project-avatar">{{ row.name[0] }}</span><strong>{{ row.name }}</strong></td><td>{{ row.owner }}</td><td><orc-badge [status]="row.status === 'On track' ? 'success' : row.status === 'At risk' ? 'warning' : 'neutral'" [text]="row.status" /></td><td><div class="progress-cell"><orc-progress-bar [value]="row.progress" size="sm" /><span>{{ row.progress }}%</span></div></td><td>{{ row.due }}</td><td><button class="more">•••</button></td></tr> }</tbody></table></div></orc-card-body></orc-card>
+        }
+
+        @if (page() === 'projects') {
+          <orc-tab-group variant="line"><orc-tab label="All projects" badge="12"><div class="project-grid">@for (row of rows; track row.name) { <orc-card [clickable]="true"><orc-card-body><div class="project-head"><span class="project-avatar large">{{ row.name[0] }}</span><orc-badge [status]="row.status === 'At risk' ? 'warning' : 'success'" [text]="row.status" /></div><h3>{{ row.name }}</h3><p class="muted">Cross-functional initiative focused on customer impact and operational scale.</p><orc-progress-bar [value]="row.progress" label="Progress" [showValue]="true" /><orc-divider /><div class="project-foot"><orc-avatar-group [items]="team" [max]="3" size="xs" /><span>{{ row.due }}</span></div></orc-card-body></orc-card> }</div></orc-tab><orc-tab label="In progress"><div class="empty-tab"><orc-spinner type="dots" text="Syncing projects" /></div></orc-tab><orc-tab label="Completed"><div class="skeleton-stack"><orc-skeleton height="72px" /><orc-skeleton height="72px" /><orc-skeleton height="72px" /></div></orc-tab></orc-tab-group>
+        }
+
+        @if (page() === 'team') {
+          <div class="team-grid">@for (member of team; track member.name) { <orc-card><orc-card-body><div class="member-card"><orc-avatar [initials]="member.initials ?? ''" [name]="member.name ?? ''" size="xl" [status]="member.status" [colorVariant]="member.colorVariant ?? 'default'" /><h3>{{ member.name }}</h3><p>Product & Operations</p><div><orc-chip label="Strategy" variant="primary" size="sm" /><orc-chip label="Delivery" variant="neutral" size="sm" /></div><orc-rating [value]="4.5" [allowHalf]="true" [readonly]="true" /></div></orc-card-body><orc-card-footer><orc-button variant="outline" [fullWidth]="true">View profile</orc-button></orc-card-footer></orc-card> }</div>
+          <div class="two-col lower-section"><orc-card><orc-card-header><h3>Team activity</h3></orc-card-header><orc-card-body><orc-timeline [items]="timeline" /></orc-card-body></orc-card><orc-card><orc-card-header><h3>Ways of working</h3></orc-card-header><orc-card-body><orc-accordion variant="separated"><orc-accordion-item title="Weekly planning" subtitle="Mondays at 9:30" [expanded]="true">Review priorities, risks, and capacity for the week.</orc-accordion-item><orc-accordion-item title="Design critique" subtitle="Wednesdays at 14:00">Share work early and invite focused feedback.</orc-accordion-item><orc-accordion-item title="Friday demo" subtitle="Fridays at 16:00">Celebrate progress and learn together.</orc-accordion-item></orc-accordion></orc-card-body></orc-card></div>
+        }
+
+        @if (page() === 'reports') {
+          <div class="report-layout"><orc-card><orc-card-header><h3>Build a report</h3><p>Configure a quick executive snapshot.</p></orc-card-header><orc-card-body><div class="form-grid"><label class="field"><span>Report type</span><select [(ngModel)]="reportType"><option [ngValue]="null" disabled>Select report</option><option value="portfolio">Portfolio health</option><option value="capacity">Team capacity</option></select></label><orc-input label="Report name" placeholder="Q3 executive update" [(ngModel)]="reportName" /><orc-slider label="Confidence threshold" [value]="72" [showLabels]="true" /><orc-textarea label="Executive note" placeholder="Add context for stakeholders..." [rows]="4" [showCharCount]="true" [maxLength]="240" [(ngModel)]="reportNote" /></div></orc-card-body><orc-card-footer><orc-button variant="outline">Save draft</orc-button><orc-button variant="primary">Generate report</orc-button></orc-card-footer></orc-card><orc-card><orc-card-header><h3>Report preview</h3></orc-card-header><orc-card-body><div class="preview-sheet"><orc-badge status="info" text="Q3 · LIVE" /><h2>Portfolio overview</h2><p>Delivery confidence remains strong across strategic initiatives.</p><div class="preview-score"><orc-progress-circle [value]="87" size="lg" [showValue]="true" /><div><strong>87%</strong><span>delivery confidence</span></div></div><orc-progress-bar [value]="78" label="Roadmap completion" [showValue]="true" variant="success" /><orc-progress-bar [value]="64" label="Capacity allocated" [showValue]="true" variant="warning" /></div></orc-card-body></orc-card></div>
+        }
+
+        @if (page() === 'settings') {
+          <div class="settings-layout"><orc-card><orc-card-header><h3>Workspace settings</h3><p>Update preferences for Northstar Labs.</p></orc-card-header><orc-card-body><section class="settings-section"><div><h4>Appearance</h4><p>Choose how Orchestra looks for you.</p></div><orc-switch label="Dark mode" description="Use the dark interface" [checked]="darkMode()" (checkedChange)="toggleTheme($event)" /></section><orc-divider /><section class="settings-section"><div><h4>Notifications</h4><p>Control what lands in your inbox.</p></div><div class="switch-list"><orc-switch label="Project updates" [checked]="true" /><orc-switch label="Weekly summary" [checked]="true" /><orc-switch label="Mentions" [checked]="true" /></div></section><orc-divider /><section class="settings-section"><div><h4>Default capacity</h4><p>Set your weekly planning threshold.</p></div><div class="slider-setting"><orc-slider [value]="80" [showLabels]="true" /><small>80% allocation</small></div></section></orc-card-body><orc-card-footer><orc-button variant="primary">Save changes</orc-button></orc-card-footer></orc-card><orc-card><orc-card-header><h3>Quick actions</h3></orc-card-header><orc-card-body><orc-toolbar label="Workspace actions"><button orcToolbarItem>Invite member</button><button orcToolbarItem>Manage billing</button><button orcToolbarItem>Export data</button></orc-toolbar><orc-alert severity="warning" variant="outline" title="Admin access" message="Changes here affect everyone in this workspace." /></orc-card-body></orc-card></div>
+        }
+      </section>
+    </main>
+  </div>
+  <orc-modal [(isOpen)]="modalOpen" size="md"><div modal-header><h2>Create a new project</h2><p>Give your team a clear place to coordinate work.</p></div><div modal-body class="modal-form"><orc-input label="Project name" placeholder="e.g. Customer Portal" [required]="true" [(ngModel)]="projectName" /><label class="field"><span>Project owner</span><select [(ngModel)]="projectOwner"><option [ngValue]="null" disabled>Choose a teammate</option><option value="ana">Ana Martins</option><option value="joao">João Rocha</option></select></label><orc-textarea label="Description" placeholder="What outcome should this project create?" [rows]="3" [(ngModel)]="projectDescription" /></div><div modal-footer><orc-button variant="ghost" (click)="modalOpen.set(false)">Cancel</orc-button><orc-button variant="primary" (click)="modalOpen.set(false)">Create project</orc-button></div></orc-modal>
+}

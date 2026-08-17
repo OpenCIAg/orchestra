@@ -1,0 +1,15 @@
+<ol class="orc-timeline" [class.orc-timeline--horizontal]="orientation() === 'horizontal'" [attr.aria-label]="ariaLabel()">
+  @for (item of items(); track trackItem($index, item)) {
+    <li class="orc-timeline__item" [class]="'orc-timeline__item orc-timeline__item--' + (item.status || 'pending')" tabindex="0" [attr.aria-label]="item.title" (click)="selectItem(item, $index)" (keydown)="onItemKeydown($event, item, $index)">
+      <div class="orc-timeline__marker" aria-hidden="true">{{ item.icon || ($index + 1) }}</div>
+      @if ($index < items().length - 1) { <div class="orc-timeline__connector" aria-hidden="true"></div> }
+      <div class="orc-timeline__content">
+        @if (item.date) { <time class="orc-timeline__date">{{ item.date }}</time> }
+        <h3>{{ item.title }}</h3>
+        @if (item.description) { <p>{{ item.description }}</p> }
+      </div>
+    </li>
+  } @empty {
+    <li class="orc-timeline__empty">Nenhum evento registrado.</li>
+  }
+</ol>

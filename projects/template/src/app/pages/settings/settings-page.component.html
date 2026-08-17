@@ -1,0 +1,152 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Configurações da Conta & Wizard</h1>
+      <p class="page-subtitle">Exemplo com Stepper multietapas, OTP Input para 2FA, Accordion e Gerenciador de Arquivos</p>
+    </div>
+
+    <div class="page-actions">
+      <orc-button variant="primary" (click)="saveAllPreferences()">
+        Salvar Tudo
+      </orc-button>
+    </div>
+  </div>
+
+  <div class="wizard-card glass-panel">
+    <div class="stepper-header-block">
+      <orc-stepper
+        [steps]="steps"
+        [(currentStep)]="currentStep"
+      ></orc-stepper>
+    </div>
+
+    <div class="step-content-area">
+      <div *ngIf="currentStep() === 0" class="step-pane">
+        <h2 class="step-title">Dados Pessoais & Organização</h2>
+        <p class="step-subtitle">Atualize suas informações básicas de identificação</p>
+
+        <div class="profile-grid">
+          <div class="profile-uploader-col">
+            <label class="block-label">Foto de Perfil</label>
+            <orc-file-uploader
+              [maxFiles]="1"
+              accept="image/*"
+              [maxFileSize]="5"
+            ></orc-file-uploader>
+          </div>
+
+          <div class="profile-inputs-col">
+            <orc-input label="Nome Completo" [(value)]="fullName" [required]="true"></orc-input>
+            <orc-input label="Empresa / Organização" [(value)]="company"></orc-input>
+            <orc-input label="Telefone de Contato" [(value)]="phone"></orc-input>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="currentStep() === 1" class="step-pane">
+        <h2 class="step-title">Segurança & Autenticação em Duas Etapas (2FA)</h2>
+        <p class="step-subtitle">Aumente a proteção da sua conta com verificação por código</p>
+
+        <orc-alert *ngIf="is2faEnabled()" status="success">
+          Autenticação em 2 etapas está ATIVA nesta conta.
+        </orc-alert>
+
+        <div class="twofa-box">
+          <div class="qr-mockup">
+            <div class="qr-code-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 80px; height: 80px; color: var(--orc-color-azul-eletrico)">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+                <path d="M14 14h3v3h-3z"></path>
+                <path d="M20 14v3"></path>
+                <path d="M14 20h7"></path>
+              </svg>
+            </div>
+            <span class="qr-hint">Escaneie com Google Authenticator ou 1Password</span>
+          </div>
+
+          <div class="otp-verification-section">
+            <label class="block-label">Digite o código de 6 dígitos gerado:</label>
+            <orc-otp-input
+              [length]="6"
+              [(value)]="otpCode"
+            ></orc-otp-input>
+
+            <div class="otp-actions">
+              <orc-button variant="primary" (click)="verifyOtp()">
+                Validar e Ativar 2FA
+              </orc-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="currentStep() === 2" class="step-pane">
+        <h2 class="step-title">Preferências & Notificações</h2>
+        <p class="step-subtitle">Defina como você deseja ser alertado sobre eventos no sistema</p>
+
+        <div class="preferences-grid">
+          <div class="pref-block">
+            <label class="block-label">Tema da Interface</label>
+            <orc-radio-group [(value)]="selectedThemeMode">
+              <orc-radio-button value="light" label="Tema Claro (Light)"></orc-radio-button>
+              <orc-radio-button value="dark" label="Tema Escuro (Dark)"></orc-radio-button>
+              <orc-radio-button value="auto" label="Automático (Segue o Sistema)"></orc-radio-button>
+            </orc-radio-group>
+          </div>
+
+          <div class="pref-block">
+            <label class="block-label">Canais de Notificação</label>
+            <div class="switch-list">
+              <orc-switch label="Notificações por E-mail" [(checked)]="emailNotifications"></orc-switch>
+              <orc-switch label="Notificações Push no Navegador" [(checked)]="pushNotifications"></orc-switch>
+              <orc-switch label="Alertas Críticos por SMS" [(checked)]="smsAlerts"></orc-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wizard-footer-actions">
+      <orc-button
+        variant="secondary"
+        [disabled]="currentStep() === 0"
+        (click)="prevStep()"
+      >
+        Anterior
+      </orc-button>
+
+      <orc-button
+        *ngIf="currentStep() < steps.length - 1"
+        variant="primary"
+        (click)="nextStep()"
+      >
+        Próximo Passo
+      </orc-button>
+
+      <orc-button
+        *ngIf="currentStep() === steps.length - 1"
+        variant="primary"
+        (click)="saveAllPreferences()"
+      >
+        Concluir Configuração
+      </orc-button>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2 class="section-heading">Perguntas Frequentes & Diretrizes de Segurança</h2>
+    <orc-accordion>
+      <orc-accordion-item title="Como funciona a criptografia dos dados?">
+        Todos os dados sensíveis e credenciais são criptografados em repouso com algoritmo AES-256 e transmitidos exclusivamente sob túnel TLS 1.3 ponta a ponta.
+      </orc-accordion-item>
+      <orc-accordion-item title="O que acontece se eu perder meu dispositivo 2FA?">
+        Você pode solicitar chaves de contingência criptografadas via suporte autorizado ou utilizar o e-mail verificado de recuperação.
+      </orc-accordion-item>
+      <orc-accordion-item title="Como customizar os tokens de design do Orchestra?">
+        Você pode sobrescrever as variáveis CSS no seu arquivo styles.scss ou criar temas customizados estendendo o layer orchestra.tokens.
+      </orc-accordion-item>
+    </orc-accordion>
+  </div>
+</div>

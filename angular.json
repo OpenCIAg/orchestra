@@ -4,36 +4,71 @@
   "newProjectRoot": "projects",
   "projects": {
     "orc-ds": {
+      "projectType": "library",
+      "root": "projects/orc-ds",
+      "sourceRoot": "projects/orc-ds",
+      "prefix": "orc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/orc-ds/ng-package.json",
+            "tsConfig": "projects/orc-ds/tsconfig.lib.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/orc-ds/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/orc-ds/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/orc-ds/tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "docs": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/docs",
+      "sourceRoot": "projects/docs/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/orc-ds",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
+            "outputPath": "dist/docs",
+            "index": "projects/docs/src/index.html",
+            "browser": "projects/docs/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "projects/docs/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public",
+                "input": "projects/docs/public",
                 "output": "/"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "projects/docs/src/styles.scss"
             ],
             "scripts": []
           },
@@ -47,8 +82,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "16kB",
-                  "maximumError": "32kB"
+                  "maximumWarning": "24kB",
+                  "maximumError": "48kB"
                 }
               ],
               "outputHashing": "all"
@@ -65,10 +100,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "orc-ds:build:production"
+              "buildTarget": "docs:build:production"
             },
             "development": {
-              "buildTarget": "orc-ds:build:development"
+              "buildTarget": "docs:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,24 +114,100 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "karmaConfig": "karma.conf.js",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "tsconfig.spec.json",
+            "tsConfig": "projects/docs/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public",
+                "input": "projects/docs/public",
                 "output": "/"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "projects/docs/src/styles.scss"
             ],
             "scripts": []
           }
+        }
+      }
+    },
+    "template": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/template",
+      "sourceRoot": "projects/template/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/template",
+            "index": "projects/template/src/index.html",
+            "browser": "projects/template/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/template/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/template/public",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "projects/template/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "24kB",
+                  "maximumError": "48kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 4300
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "template:build:production"
+            },
+            "development": {
+              "buildTarget": "template:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
         }
       }
     }
@@ -105,4 +216,3 @@
     "analytics": false
   }
 }
- 

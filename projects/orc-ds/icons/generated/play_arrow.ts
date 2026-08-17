@@ -1,0 +1,8 @@
+import type { OrcIconDefinition } from '@ciag/orchestra/icon';
+
+export const orcPlayArrowIcon: OrcIconDefinition = {
+  name: "play_arrow",
+  viewBox: "0 -960 960 960",
+  paths: [{"d":"M320-258v-450q0-14 9-22t21-8q4 0 8 1t8 3l354 226q7 5 10.5 11t3.5 14q0 8-3.5 14T720-458L366-232q-4 2-8 3t-8 1q-12 0-21-8t-9-22Zm60-225Zm0 171 269-171-269-171v342Z"}],
+  filledPaths: [{"d":"M320-258v-450q0-14 9-22t21-8q4 0 8 1t8 3l354 226q7 5 10.5 11t3.5 14q0 8-3.5 14T720-458L366-232q-4 2-8 3t-8 1q-12 0-21-8t-9-22Z"}],
+};

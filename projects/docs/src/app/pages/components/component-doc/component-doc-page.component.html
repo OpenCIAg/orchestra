@@ -1,0 +1,924 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para componentes</a>
+      </div>
+
+      <section class="hero">
+        <div class="hero__meta">
+          <div class="section-eyebrow">{{ doc.category }} · API reference</div>
+          <span class="status" [class]="'status status--' + doc.status">{{ getStatusLabel(doc.status) }}</span>
+        </div>
+        <h1 class="section-title">{{ doc.name }}</h1>
+        <p class="section-desc">{{ doc.description }}</p>
+        <div class="tag-row">
+          <span class="tag">Standalone</span>
+          <span class="tag">WCAG-ready</span>
+          <span class="tag">{{ doc.packagePath }}</span>
+        </div>
+      </section>
+
+      <section class="section" id="preview">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Demonstração interativa</h2>
+            <p class="section-text">Explore os estados que fazem parte do contrato visual de {{ doc.name }}.</p>
+          </div>
+          <span class="section-index">01 / 03</span>
+        </div>
+
+        <div class="playground-grid">
+          <div class="panel panel--preview">
+            <div class="panel__header">
+              <span>Preview</span>
+              <span class="panel__hint">Estado real do componente</span>
+            </div>
+            <div class="panel__body preview-surface">
+              @switch (componentId) {
+                @case ('date-picker') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Default · controlado</span>
+                      <orc-date-picker label="Data de entrega" [(value)]="dateValue" />
+                      <code>value = {{ dateValue() }}</code>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Required + helper</span>
+                      <orc-date-picker label="Data de publicação" helperText="Escolha uma data útil para a equipe." [required]="true" />
+                    </div>
+                    <div class="example-grid example-grid--two">
+                      <div class="example">
+                        <span class="example__label">Error</span>
+                        <orc-date-picker label="Data inválida" error="Informe uma data futura." value="2026-01-01" />
+                      </div>
+                      <div class="example">
+                        <span class="example__label">Disabled</span>
+                        <orc-date-picker label="Data bloqueada" value="2026-08-17" [disabled]="true" />
+                      </div>
+                    </div>
+                  </div>
+                }
+                @case ('form-field') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Default</span>
+                      <orc-form-field label="Nome do projeto">
+                        <input class="native-control" type="text" placeholder="Orchestra" />
+                      </orc-form-field>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Required + helper</span>
+                      <orc-form-field label="Identificador" helperText="Use letras minúsculas." [required]="true">
+                        <input class="native-control" type="text" placeholder="design-system" />
+                      </orc-form-field>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Error</span>
+                      <orc-form-field label="Domínio" error="Informe um domínio válido." [required]="true">
+                        <input class="native-control native-control--error" type="text" value="orchestra" />
+                      </orc-form-field>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Projected control</span>
+                      <orc-form-field label="Comentário">
+                        <textarea class="native-control native-control--textarea" rows="3" placeholder="Escreva uma nota"></textarea>
+                      </orc-form-field>
+                    </div>
+                  </div>
+                }
+                @case ('menu') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Default menu</span>
+                      <orc-dropdown #menuDefault [items]="menuItems" placement="bottom-start">
+                        <button class="doc-button" type="button" (click)="menuDefault.toggle()">Ações <span aria-hidden="true">⌄</span></button>
+                      </orc-dropdown>
+                    </div>
+                    <div class="example-grid example-grid--two">
+                      <div class="example example--muted">
+                        <span class="example__label">Disabled item</span>
+                        <p>Itens com <code>disabled</code> permanecem visíveis e não recebem foco.</p>
+                      </div>
+                      <div class="example example--muted">
+                        <span class="example__label">Danger item</span>
+                        <p>Ações destrutivas usam <code>danger</code> para o tratamento visual.</p>
+                      </div>
+                    </div>
+                  </div>
+                }
+                @case ('drawer') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Right drawer</span>
+                      <button class="doc-button" type="button" (click)="drawerOpen.set(true)">Abrir painel</button>
+                      <orc-drawer [(open)]="drawerOpen" placement="right" label="Detalhes do projeto">
+                        <div drawer-title>
+                          <strong>Detalhes do projeto</strong>
+                          <p class="drawer-copy">Backdrop, Escape e ação de fechamento fazem parte do comportamento padrão.</p>
+                        </div>
+                        <div drawer-actions>
+                          <button class="doc-button doc-button--secondary" type="button" (click)="drawerOpen.set(false)">Concluir</button>
+                        </div>
+                      </orc-drawer>
+                    </div>
+                    <div class="example-grid example-grid--three">
+                      <div class="state-note"><strong>placement</strong><span>left · top · bottom</span></div>
+                      <div class="state-note"><strong>closeOnBackdrop</strong><span>true por padrão</span></div>
+                      <div class="state-note"><strong>dismissible</strong><span>Escape habilitado</span></div>
+                    </div>
+                  </div>
+                }
+                @case ('popover') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Placement</span>
+                      <div class="popover-row">
+                        <orc-popover placement="bottom" label="Detalhes abaixo">
+                          <button popover-trigger class="doc-button" type="button">Bottom</button>
+                          <p class="popover-copy">Conteúdo contextual alinhado ao gatilho.</p>
+                        </orc-popover>
+                        <orc-popover placement="top" label="Detalhes acima">
+                          <button popover-trigger class="doc-button doc-button--secondary" type="button">Top</button>
+                          <p class="popover-copy">Escape ou clique fora fecha.</p>
+                        </orc-popover>
+                        <orc-popover placement="right" label="Detalhes à direita">
+                          <button popover-trigger class="doc-button doc-button--secondary" type="button">Right</button>
+                          <p class="popover-copy">A posição é escolhida pelo consumidor.</p>
+                        </orc-popover>
+                      </div>
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Controlled state</span><p>Use <code>[(open)]</code> quando o fluxo precisar abrir ou fechar o popover por código.</p></div>
+                  </div>
+                }
+                @case ('list') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Single selection</span>
+                      <orc-list [items]="listItems()" selection="single" label="Projetos" (itemSelect)="selectListItem($event)" />
+                      <code>selected = {{ selectedListItem() || 'none' }}</code>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Empty state</span>
+                      <orc-list [items]="emptyList" selection="multiple" label="Sem resultados" />
+                      <p class="example__caption">O componente renderiza “Nenhum item” sem markup adicional.</p>
+                    </div>
+                  </div>
+                }
+                @case ('tree-view') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Expandable hierarchy</span>
+                      <orc-tree-view [nodes]="treeNodes" label="Arquivos" (nodeSelect)="selectTreeNode($event)" />
+                      <code>selected = {{ selectedTreeNode() || 'none' }}</code>
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Keyboard</span><p>Foque um nó e use <code>←</code>, <code>→</code>, Enter ou Space para explorar a árvore.</p></div>
+                  </div>
+                }
+                @case ('autocomplete') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Default</span>
+                      <orc-autocomplete label="Cidade" placeholder="Digite uma cidade" [options]="cities" [(value)]="selectedCity" helperText="Use ↑ ↓ e Enter para selecionar." />
+                      <code>value = {{ selectedCity() || 'null' }}</code>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">minChars + clearable</span>
+                      <orc-autocomplete label="Buscar projeto" [options]="cities" [minChars]="2" [clearable]="true" />
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Error</span>
+                      <orc-autocomplete label="Responsável" [options]="cities" errorMessage="Selecione uma pessoa." [required]="true" />
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Disabled</span>
+                      <orc-autocomplete label="Campo bloqueado" [options]="cities" value="sp" [disabled]="true" />
+                    </div>
+                  </div>
+                }
+                @case ('number-input') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Default · bounded</span>
+                      <orc-number-input label="Itens por página" [(value)]="quantity" [min]="1" [max]="10" suffix="itens" />
+                      <code>value = {{ quantity() }}</code>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Success + prefix</span>
+                      <orc-number-input label="Orçamento" [value]="1250" prefix="R$" status="success" [precision]="2" />
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Error</span>
+                      <orc-number-input label="Quantidade inválida" [value]="0" status="error" errorMessage="Escolha pelo menos 1 item." [min]="1" />
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Readonly + no controls</span>
+                      <orc-number-input label="Somente leitura" [value]="42" [readonly]="true" [showControls]="false" />
+                    </div>
+                  </div>
+                }
+                @case ('color-picker') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Default + presets</span>
+                      <orc-color-picker label="Cor de destaque" [(value)]="accent" [presets]="colorPresets" />
+                      <div class="color-value" [style.background]="accent()">{{ accent() }}</div>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">No text input</span>
+                      <orc-color-picker label="Apenas swatch" value="#FF6A1C" [showInput]="false" />
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Clearable</span>
+                      <orc-color-picker label="Cor opcional" value="#1CEDB9" [clearable]="true" />
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Disabled</span>
+                      <orc-color-picker label="Token protegido" value="#0406AB" [disabled]="true" />
+                    </div>
+                  </div>
+                }
+                @case ('chip') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Variants</span>
+                      <div class="chip-row">
+                        <orc-chip label="Neutral" />
+                        <orc-chip label="Primary" variant="primary" />
+                        <orc-chip label="Success" variant="success" />
+                        <orc-chip label="Warning" variant="warning" />
+                        <orc-chip label="Danger" variant="danger" />
+                      </div>
+                    </div>
+                    <div class="example-grid example-grid--three">
+                      <div class="example">
+                        <span class="example__label">Selectable</span>
+                        <orc-chip label="Filtro ativo" variant="primary" [selectable]="true" [(selected)]="chipSelected" />
+                        <code>selected = {{ chipSelected() }}</code>
+                      </div>
+                      <div class="example">
+                        <span class="example__label">Removable</span>
+                        <orc-chip label="Angular" value="angular" [removable]="true" (removed)="removeChip($event)" />
+                        @if (removedChip()) { <code>removed = {{ removedChip() }}</code> }
+                      </div>
+                      <div class="example">
+                        <span class="example__label">Disabled</span>
+                        <orc-chip label="Indisponível" variant="neutral" [selectable]="true" [removable]="true" [disabled]="true" />
+                      </div>
+                    </div>
+                  </div>
+                }
+                @case ('collapsible') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Open + controlled</span>
+                      <orc-collapsible title="Detalhes de implementação" summary="aria-expanded" [(open)]="collapsibleOpen">
+                        <p class="collapsible-copy">O conteúdo pode ser controlado pelo consumidor e recebe uma região nomeada.</p>
+                      </orc-collapsible>
+                      <code>open = {{ collapsibleOpen() }}</code>
+                    </div>
+                    <div class="example-grid example-grid--two">
+                      <div class="example"><span class="example__label">Lazy</span><orc-collapsible title="Conteúdo lazy" [lazy]="true"><p class="collapsible-copy">Só permanece renderizado enquanto aberto.</p></orc-collapsible></div>
+                      <div class="example"><span class="example__label">Disabled</span><orc-collapsible title="Bloqueado" [disabled]="true"><p class="collapsible-copy">Este conteúdo não pode ser alternado.</p></orc-collapsible></div>
+                    </div>
+                  </div>
+                }
+                @case ('carousel') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Default · loop + indicators</span>
+                      <orc-carousel [items]="slides" [(activeIndex)]="carouselIndex" ariaLabel="Variações de carousel" />
+                      <code>activeIndex = {{ carouselIndex() }}</code>
+                    </div>
+                    <div class="example-grid example-grid--two">
+                      <div class="example example--muted"><span class="example__label">No loop</span><p>Use <code>[loop]="false"</code> para manter os limites de navegação.</p></div>
+                      <div class="example example--muted"><span class="example__label">Autoplay</span><p>Use <code>[autoplay]="true"</code> com um intervalo adequado.</p></div>
+                    </div>
+                  </div>
+                }
+                @case ('divider') {
+                  <div class="example-stack divider-demo">
+                    <div class="example"><span class="example__label">Solid + label</span><orc-divider label="Ou" [decorative]="false" /></div>
+                    <div class="example-grid example-grid--two">
+                      <div class="example"><span class="example__label">Dashed</span><orc-divider variant="dashed" /></div>
+                      <div class="example"><span class="example__label">Dotted + inset</span><orc-divider variant="dotted" [inset]="true" /></div>
+                    </div>
+                    <div class="example divider-vertical-example"><span class="example__label">Vertical</span><div class="divider-vertical-wrap"><span>Antes</span><orc-divider orientation="vertical" variant="dashed" [decorative]="false" /><span>Depois</span></div></div>
+                  </div>
+                }
+                @case ('image') {
+                  <div class="example-grid example-grid--two image-demo">
+                    <div class="example"><span class="example__label">Cover</span><orc-image [src]="imageSrc" alt="Composição abstrata azul do Orchestra" width="100%" height="140px" fit="cover" radius="lg" (loaded)="onImageLoad()" /></div>
+                    <div class="example"><span class="example__label">Contain</span><orc-image [src]="imageSrc" alt="Composição abstrata azul do Orchestra" width="100%" height="140px" fit="contain" radius="lg" /></div>
+                    <div class="example"><span class="example__label">Fallback</span><orc-image src="/assets/missing-preview.png" [fallbackSrc]="imageSrc" alt="Preview com fallback" width="100%" height="100px" radius="md" (error)="onImageError()" /></div>
+                    <div class="example"><span class="example__label">Placeholder</span><orc-image alt="" placeholder="Imagem indisponível" width="100%" height="100px" radius="md" /></div>
+                  </div>
+                }
+                @case ('timeline') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">All item statuses</span>
+                      <orc-timeline [items]="timelineItems" ariaLabel="Etapas do componente" (itemSelect)="selectTimelineItem($event)" />
+                      <code>selected = {{ selectedTimelineItem() || 'none' }}</code>
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Horizontal</span><p>Use <code>orientation="horizontal"</code> para sequências curtas.</p></div>
+                  </div>
+                }
+                @case ('toolbar') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Horizontal + loop</span>
+                      <orc-toolbar label="Ações de edição">
+                        <button type="button" class="toolbar-action" orcToolbarItem aria-label="Desfazer">↶</button>
+                        <button type="button" class="toolbar-action" orcToolbarItem aria-label="Refazer">↷</button>
+                        <button type="button" class="toolbar-action" orcToolbarItem aria-label="Adicionar">＋</button>
+                      </orc-toolbar>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Disabled item</span>
+                      <orc-toolbar label="Ações com item desabilitado">
+                        <button type="button" class="toolbar-action" orcToolbarItem aria-label="Anterior">←</button>
+                        <button type="button" class="toolbar-action" orcToolbarItem [disabled]="true" aria-label="Bloqueado">⊘</button>
+                        <button type="button" class="toolbar-action" orcToolbarItem aria-label="Próximo">→</button>
+                      </orc-toolbar>
+                    </div>
+                  </div>
+                }
+                @case ('icon') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Sizes</span>
+                      <div class="icon-row">
+                        <span><orc-icon [icon]="iconCatalog['circle']" size="xs" ariaLabel="Extra pequeno" /><small>xs</small></span>
+                        <span><orc-icon [icon]="iconCatalog['circle']" size="sm" ariaLabel="Pequeno" /><small>sm</small></span>
+                        <span><orc-icon [icon]="iconCatalog['circle']" size="md" ariaLabel="Médio" /><small>md</small></span>
+                        <span><orc-icon [icon]="iconCatalog['circle']" size="lg" ariaLabel="Grande" /><small>lg</small></span>
+                        <span><orc-icon [icon]="iconCatalog['circle']" size="xl" ariaLabel="Extra grande" /><small>xl</small></span>
+                      </div>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Names + semantics</span>
+                      <div class="icon-row icon-row--named">
+                        <span><orc-icon [icon]="iconCatalog['check_circle']" ariaLabel="Concluído" /><small>check_circle</small></span>
+                        <span><orc-icon [icon]="iconCatalog['info']" ariaLabel="Informação" /><small>info</small></span>
+                        <span><orc-icon [icon]="iconCatalog['warning']" ariaLabel="Atenção" /><small>warning</small></span>
+                        <span><orc-icon [icon]="iconCatalog['star']" title="Favorito" /><small>star · decorative</small></span>
+                      </div>
+                    </div>
+                    <div class="example icon-search-demo">
+                      <span class="example__label">Buscar no catálogo de 500 ícones</span>
+                      <div class="icon-search-controls">
+                        <label class="icon-search-input">
+                          <span class="sr-only">Buscar ícone</span>
+                          <input class="native-control" type="search" placeholder="Ex.: calendar, arrow, cloud" [value]="iconQuery()" (input)="iconQuery.set($any($event.target).value)" />
+                        </label>
+                        <label class="icon-search-select">
+                          <span>Variante</span>
+                          <select class="native-control" [value]="iconFill()" (change)="iconFill.set($any($event.target).value)">
+                            <option value="outline">Rounded outline</option>
+                            <option value="filled">Rounded filled</option>
+                          </select>
+                        </label>
+                      </div>
+                      <p class="example__caption">{{ filteredIconMetadata().length }} resultados exibidos · ordenados por popularidade.</p>
+                      <div class="icon-catalog-grid">
+                        @for (entry of filteredIconMetadata(); track entry.name) {
+                          <button class="icon-catalog-item" type="button" [title]="'Copiar ' + iconDeclaration(entry.name)" [attr.aria-label]="'Copiar declaração de ' + entry.name" (click)="copyIconDeclaration(entry.name)">
+                            <orc-icon [icon]="iconCatalog[entry.name]" [fill]="iconFill()" [ariaLabel]="entry.name" />
+                            <span>{{ entry.name }}</span>
+                          </button>
+                        }
+                        @if (!filteredIconMetadata().length) {
+                          <p class="example__caption">Nenhum ícone encontrado.</p>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                }
+                @case ('scroll-area') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Vertical viewport</span>
+                      <orc-scroll-area maxHeight="150px" label="Notas roláveis" (scrolled)="onScroll($event)">
+                        <p>O viewport recebe o conteúdo por projection e cria sombras quando existe conteúdo acima ou abaixo.</p>
+                        <p>Use PageUp e PageDown quando o viewport estiver focado para avançar por páginas.</p>
+                        <p>O evento scrolled informa top e left para sincronizações externas.</p>
+                      </orc-scroll-area>
+                      <code>{{ scrollMessage() }}</code>
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Horizontal / both</span><p>Combine <code>orientation="horizontal"</code> ou <code>"both"</code> com maxWidth e maxHeight.</p></div>
+                  </div>
+                }
+                @case ('form') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Stacked + native validation</span>
+                      <orc-form ariaLabel="Cadastro de projeto" (formSubmit)="onFormSubmit($event)" (formReset)="onFormReset()">
+                        <label class="native-label" for="project-name">Nome do projeto</label>
+                        <input id="project-name" class="native-control" name="project" required placeholder="Orchestra" />
+                        <label class="native-label" for="project-owner">Responsável</label>
+                        <input id="project-owner" class="native-control" name="owner" placeholder="Equipe de produto" />
+                        <div class="form-actions"><button class="doc-button" type="submit">Validar</button><button class="doc-button doc-button--secondary" type="reset">Resetar</button></div>
+                      </orc-form>
+                      @if (formMessage()) { <p class="feedback-line">{{ formMessage() }}</p> }
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Inline</span><p>Use <code>layout="inline"</code> para filtros curtos e ações na mesma linha.</p></div>
+                  </div>
+                }
+                @case ('button-group') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Attached actions</span>
+                      <orc-button-group label="Ações do projeto" [attached]="true">
+                        <button class="doc-button" type="button" (click)="onP2Action('Projeto salvo')">Salvar</button>
+                        <button class="doc-button doc-button--secondary" type="button" (click)="onP2Action('Projeto duplicado')">Duplicar</button>
+                        <button class="doc-button doc-button--secondary" type="button" (click)="onP2Action('Mais ações abertas')">Mais</button>
+                      </orc-button-group>
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Orientation</span><p>Use <code>orientation="vertical"</code> para grupos em toolbars estreitas.</p></div>
+                  </div>
+                }
+                @case ('calendar') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Controlled selection</span>
+                      <orc-calendar ariaLabel="Calendário de entrega" [(value)]="p2CalendarValue" (dateSelected)="onP2Action('Data: ' + $event)" />
+                      <code>value = {{ p2CalendarValue() }}</code>
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Boundaries</span><p>Datas fora do intervalo <code>2026-01-01</code> a <code>2026-12-31</code> ficam desabilitadas.</p></div>
+                  </div>
+                }
+                @case ('code') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">TypeScript + copy</span>
+                      <orc-code [code]="p2CodeExample" language="typescript" (copiedEvent)="onCodeCopied($event)" />
+                    </div>
+                    <p class="example__caption">O botão copia o conteúdo completo e emite <code>copiedEvent</code>.</p>
+                  </div>
+                }
+                @case ('combobox') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Search + keyboard</span>
+                      <orc-combobox label="Framework" placeholder="Busque um framework" [options]="p2Options" [(value)]="p2ComboboxValue" helperText="Digite, use ↑ ↓ e confirme com Enter." />
+                      <code>value = {{ p2ComboboxValue() || 'null' }}</code>
+                    </div>
+                    <div class="example">
+                      <span class="example__label">Empty state</span>
+                      <orc-combobox label="Sem resultados" placeholder="Digite xyz" [options]="p2Options" emptyText="Nenhum framework encontrado." />
+                    </div>
+                  </div>
+                }
+                @case ('dropdown') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Positioned actions</span>
+                      <orc-dropdown #p2Dropdown [items]="menuItems" placement="bottom-start">
+                        <button class="doc-button" type="button" (click)="p2Dropdown.toggle()">Ações <span aria-hidden="true">⌄</span></button>
+                      </orc-dropdown>
+                    </div>
+                    <p class="example__caption">O gatilho permanece um botão nativo; o menu gerencia foco, Escape e posicionamento.</p>
+                  </div>
+                }
+                @case ('file-upload') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Drag and drop</span>
+                      <orc-file-uploader accept="image/*,.pdf" [multiple]="true" [maxFiles]="3" label="Clique ou arraste arquivos aqui" subLabel="PNG, JPG ou PDF · até 3 arquivos" />
+                    </div>
+                    <p class="example__caption">O alias P2 usa o componente de upload existente, incluindo seleção por teclado e remoção de arquivos.</p>
+                  </div>
+                }
+                @case ('file-uploader') {
+                  <div class="example">
+                    <span class="example__label">Drag and drop</span>
+                    <orc-file-uploader accept="image/*,.pdf" [multiple]="true" [maxFiles]="3" label="Clique ou arraste arquivos aqui" subLabel="PNG, JPG ou PDF · até 3 arquivos" />
+                  </div>
+                }
+                @case ('grid') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Responsive columns</span>
+                      <orc-grid [columns]="3" gap=".75rem" label="Cards de métricas">
+                        <div class="state-note"><strong>Coverage</strong><span>92%</span></div>
+                        <div class="state-note"><strong>Components</strong><span>42 P2</span></div>
+                        <div class="state-note"><strong>Tests</strong><span>Passing</span></div>
+                      </orc-grid>
+                    </div>
+                    <p class="example__caption">Remova <code>columns</code> e use <code>minColumnWidth</code> para uma grade auto-fit.</p>
+                  </div>
+                }
+                @case ('kbd') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Keyboard hint</span>
+                      <div class="chip-row"><orc-kbd [keys]="['⌘', 'K']" ariaLabel="Command K" /><orc-kbd keys="Esc" ariaLabel="Escape" /><orc-kbd [keys]="['↑', '↓']" ariaLabel="Setas para cima e para baixo" /></div>
+                    </div>
+                    <p class="example__caption">Passe uma string com <code>+</code> ou uma lista de teclas para controlar a leitura e o visual.</p>
+                  </div>
+                }
+                @case ('link') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Semantic links</span>
+                      <div class="popover-row">
+                        <orc-link href="#preview" [underline]="true" (activated)="$event.preventDefault(); onP2Action('Link ativado')">Abrir detalhes</orc-link>
+                        <orc-link href="#preview" target="_blank">Abrir em nova aba</orc-link>
+                        <orc-link href="#preview" [disabled]="true">Link desabilitado</orc-link>
+                      </div>
+                    </div>
+                    @if (p2ActionMessage()) { <code>{{ p2ActionMessage() }}</code> }
+                  </div>
+                }
+                @case ('menubar') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Arrow-key navigation</span>
+                      <orc-menubar [items]="p2MenubarItems" label="Navegação do projeto" (itemSelect)="onMenubarItem($event)" />
+                    </div>
+                    <p class="example__caption">Foque a barra e use <code>←</code>, <code>→</code>, <code>Home</code>, <code>End</code> e <code>Enter</code>.</p>
+                  </div>
+                }
+                @case ('otp-input') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Verification code</span>
+                      <orc-otp-input [(value)]="p2OtpValue" [length]="6" ariaLabel="Código de verificação" (completed)="onOtpCompleted($event)" />
+                      <code>value = {{ p2OtpValue() || 'empty' }}</code>
+                    </div>
+                    <p class="example__caption">O componente move o foco entre slots, trata colagem e emite <code>completed</code> ao completar o código.</p>
+                  </div>
+                }
+                @case ('progress') {
+                  <div class="example-stack">
+                    <div class="example-grid example-grid--two">
+                      <div class="example"><span class="example__label">Progress bar</span><orc-progress-bar [value]="p2ProgressValue()" label="Upload" [showValue]="true" variant="success" /></div>
+                      <div class="example example--centered"><span class="example__label">Progress circle</span><orc-progress-circle [value]="p2ProgressValue()" [showValue]="true" label="Upload" variant="success" /></div>
+                    </div>
+                    <div class="example example--centered"><button class="doc-button" type="button" (click)="advanceProgress()">Avançar progresso</button><code>value = {{ p2ProgressValue() }}%</code></div>
+                  </div>
+                }
+                @case ('splitter') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Panel sizes</span>
+                      <orc-splitter [panels]="p2SplitterPanels" [(sizes)]="p2SplitterSizes" label="Editor dividido" />
+                    </div>
+                    <div class="popover-row"><button class="doc-button doc-button--secondary" type="button" (click)="resizeSplitter(-10)">− Navegação</button><button class="doc-button doc-button--secondary" type="button" (click)="resizeSplitter(10)">+ Navegação</button><code>sizes = {{ p2SplitterSizes().join(' / ') }}%</code></div>
+                  </div>
+                }
+                @case ('tag') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Variants</span>
+                      <div class="chip-row"><orc-tag label="Neutral" /><orc-tag label="Primary" variant="primary" /><orc-tag label="Success" variant="success" /><orc-tag label="Warning" variant="warning" /><orc-tag label="Danger" variant="danger" /></div>
+                    </div>
+                    <div class="example example--centered"><orc-tag label="Filtro ativo" variant="primary" [removable]="true" (removed)="onTagRemoved($event)" />@if (p2ActionMessage()) { <code>{{ p2ActionMessage() }}</code> }</div>
+                  </div>
+                }
+                @case ('typography') {
+                  <div class="example-stack">
+                    <div class="example-stack example">
+                      <span class="example__label">Type scale</span>
+                      <orc-typography as="h2" size="xl" weight="700" color="var(--orc-color-azul-eletrico)">Heading XL</orc-typography>
+                      <orc-typography as="p" size="md">Body text with a predictable line-height and weight.</orc-typography>
+                      <orc-typography as="span" size="sm" color="var(--text-secondary)">Supporting text</orc-typography>
+                    </div>
+                    <p class="example__caption">Combine <code>size</code>, <code>weight</code>, <code>color</code> and <code>truncate</code> with semantic content.</p>
+                  </div>
+                }
+                @case ('aspect-ratio') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example"><span class="example__label">16 / 9</span><orc-aspect-ratio ratio="16 / 9"><div style="display:grid;place-items:center;height:100%;background:#dbeafe;color:#1d4ed8;font-weight:700">16:9</div></orc-aspect-ratio></div>
+                    <div class="example"><span class="example__label">1 / 1</span><orc-aspect-ratio ratio="1 / 1"><div style="display:grid;place-items:center;height:100%;background:#dcfce7;color:#166534;font-weight:700">1:1</div></orc-aspect-ratio></div>
+                  </div>
+                }
+                @case ('container') {
+                  <div class="example">
+                    <span class="example__label">Constrained content</span>
+                    <orc-container maxWidth="28rem" padding="0">
+                      <div class="state-note"><strong>maxWidth = 28rem</strong><span>Conteúdo centralizado com padding configurável.</span></div>
+                    </orc-container>
+                  </div>
+                }
+                @case ('floating-action-button') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Primary action</span>
+                      <orc-floating-action-button [extended]="true" label="Novo componente" icon="＋" ariaLabel="Criar componente" (clicked)="onP2Action('FAB acionado')" />
+                      @if (p2ActionMessage()) { <code>{{ p2ActionMessage() }}</code> }
+                    </div>
+                    <p class="example__caption">Use a versão estendida quando o contexto exigir uma ação textual persistente.</p>
+                  </div>
+                }
+                @case ('hover-card') {
+                  <div class="example example--centered">
+                    <span class="example__label">Hover or focus</span>
+                    <orc-hover-card label="Detalhes do componente">
+                      <button hover-card-trigger class="doc-button" type="button">Passe o mouse ou foque</button>
+                      <p class="popover-copy">Conteúdo contextual permanece associado ao gatilho e abre também com foco.</p>
+                    </orc-hover-card>
+                  </div>
+                }
+                @case ('portal') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Projected content</span>
+                      <orc-portal><div class="state-note"><strong>Portal surface</strong><span>O consumidor controla o destino e o ciclo de vida do conteúdo.</span></div></orc-portal>
+                    </div>
+                    <p class="example__caption">Esta implementação mantém a projeção explícita e aceita um <code>target</code> para integrações futuras.</p>
+                  </div>
+                }
+                @case ('radio') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example">
+                      <span class="example__label">Horizontal group</span>
+                      <orc-radio-group [(value)]="p2RadioValue" label="Área responsável" hint="Escolha uma área" layout="horizontal">
+                        <orc-radio-button value="design" label="Design" description="Tokens e padrões" />
+                        <orc-radio-button value="engineering" label="Engenharia" description="Implementação" />
+                        <orc-radio-button value="product" label="Produto" description="Prioridades" />
+                      </orc-radio-group>
+                      <code>value = {{ p2RadioValue() }}</code>
+                    </div>
+                    <div class="example example--muted"><span class="example__label">Keyboard</span><p>Use as setas para navegar e preserve o foco roving entre as opções.</p></div>
+                  </div>
+                }
+                @case ('segmented-control') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">View filter</span>
+                      <orc-segmented-control [options]="p2SegmentedOptions" label="Filtro de visualização" [(value)]="p2SegmentedValue" />
+                      <code>value = {{ p2SegmentedValue() }}</code>
+                    </div>
+                    <p class="example__caption">As setas alteram o item ativo; Enter ou Space confirmam a escolha.</p>
+                  </div>
+                }
+                @case ('separator') {
+                  <div class="example-stack divider-demo">
+                    <div class="example"><span class="example__label">Horizontal</span><p>Conteúdo acima</p><orc-separator label="Seção" /><p>Conteúdo abaixo</p></div>
+                    <div class="example divider-vertical-example"><span class="example__label">Vertical</span><div class="divider-vertical-wrap"><span>Antes</span><orc-separator orientation="vertical" label="Separador vertical" /><span>Depois</span></div></div>
+                  </div>
+                }
+                @case ('stack') {
+                  <div class="example">
+                    <span class="example__label">Vertical rhythm</span>
+                    <orc-stack gap=".75rem">
+                      <div class="state-note"><strong>Step 1</strong><span>Define tokens</span></div>
+                      <div class="state-note"><strong>Step 2</strong><span>Compose components</span></div>
+                      <div class="state-note"><strong>Step 3</strong><span>Verify behavior</span></div>
+                    </orc-stack>
+                  </div>
+                }
+                @case ('visually-hidden') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Assistive text</span>
+                      <button class="doc-button" type="button" aria-describedby="p2-hidden-help" (click)="onP2Action('Ação acessível acionada')">Ação visível</button>
+                      <orc-visually-hidden><span id="p2-hidden-help">Esta ação cria um novo componente no projeto.</span></orc-visually-hidden>
+                    </div>
+                    <p class="example__caption">O texto não ocupa espaço visual, mas permanece disponível para tecnologias assistivas.</p>
+                  </div>
+                }
+                @case ('box') {
+                  <div class="example">
+                    <span class="example__label">Surface primitive</span>
+                    <orc-box padding="1rem" background="#eff6ff" radius=".75rem">
+                      <orc-text size="lg">Box com padding, fundo e raio controlados.</orc-text>
+                    </orc-box>
+                  </div>
+                }
+                @case ('close-button') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Dismiss action</span>
+                      <div class="state-note"><strong>Mensagem</strong><span>Feche este aviso com o botão acessível.</span><orc-close-button ariaLabel="Fechar mensagem" size="lg" (close)="onP2Action('Close button acionado')" /></div>
+                      @if (p2ActionMessage()) { <code>{{ p2ActionMessage() }}</code> }
+                    </div>
+                  </div>
+                }
+                @case ('context-menu') {
+                  <div class="example-stack">
+                    <div class="example example--centered">
+                      <span class="example__label">Context actions</span>
+                      <orc-context-menu [items]="p2ContextMenuItems" (itemSelect)="onContextMenuItem($event)"><span>Botão direito aqui</span></orc-context-menu>
+                      <p class="example__caption">Clique com o botão direito nesta área.</p>
+                    </div>
+                  </div>
+                }
+                @case ('data-table') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Sortable + selectable</span>
+                      <orc-data-table [data]="p2TableRows" [columns]="p2TableColumns" rowKey="id" label="Componentes P2" [selectable]="true" [(selected)]="p2SelectedRows" (rowClick)="onDataTableRow($event)" />
+                      <code>selected = {{ p2SelectedRows().length }}</code>
+                    </div>
+                    <p class="example__caption">Clique nos cabeçalhos para ordenar; marque as linhas para controlar a seleção.</p>
+                  </div>
+                }
+                @case ('date-input') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example"><span class="example__label">Native date</span><orc-date-input label="Data de entrega" [(value)]="p2DateInputValue" required helperText="Use o formato de data do navegador." /><code>value = {{ p2DateInputValue() }}</code></div>
+                    <div class="example"><span class="example__label">Error state</span><orc-date-input label="Data inválida" value="2026-01-01" error="Escolha uma data futura." /></div>
+                  </div>
+                }
+                @case ('empty-state') {
+                  <div class="example">
+                    <span class="example__label">No content</span>
+                    <orc-empty-state title="Nenhum componente salvo" description="Crie seu primeiro componente para começar a montar a biblioteca." icon="∅" actionLabel="Criar componente" (action)="onEmptyStateAction()" />
+                  </div>
+                }
+                @case ('flex') {
+                  <div class="example">
+                    <span class="example__label">Space between</span>
+                    <orc-flex justify="space-between" align="center" gap=".75rem">
+                      <div class="state-note"><strong>Left</strong><span>Start</span></div>
+                      <div class="state-note"><strong>Center</strong><span>Middle</span></div>
+                      <div class="state-note"><strong>Right</strong><span>End</span></div>
+                    </orc-flex>
+                  </div>
+                }
+                @case ('input-group') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example"><span class="example__label">Prefix</span><orc-input-group prefix="https://"><input class="native-control" aria-label="URL" placeholder="orchestra.design" /></orc-input-group></div>
+                    <div class="example"><span class="example__label">Suffix</span><orc-input-group suffix=".com"><input class="native-control" aria-label="Domain" placeholder="example" /></orc-input-group></div>
+                  </div>
+                }
+                @case ('listbox') {
+                  <div class="example-grid example-grid--two">
+                    <div class="example"><span class="example__label">Single selection</span><orc-listbox label="Projetos" ariaLabel="Projetos disponíveis" [options]="p2Options" [(value)]="p2ListboxValue" /><code>value = {{ p2ListboxValue() || 'null' }}</code></div>
+                    <div class="example"><span class="example__label">Empty state</span><orc-listbox label="Sem resultados" [options]="[]" emptyText="Nenhum projeto encontrado." /></div>
+                  </div>
+                }
+                @case ('multi-select') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Multiple selection</span>
+                      <orc-multi-select label="Tecnologias" placeholder="Selecione tecnologias" [options]="p2Options" [(value)]="p2MultiSelectValue" />
+                      <code>values = {{ p2MultiSelectValue().join(', ') || 'none' }}</code>
+                    </div>
+                  </div>
+                }
+                @case ('space') {
+                  <div class="example">
+                    <span class="example__label">Consistent gap</span>
+                    <orc-space size="1rem" wrap="true">
+                      <button class="doc-button" type="button">Primary</button>
+                      <button class="doc-button doc-button--secondary" type="button">Secondary</button>
+                      <button class="doc-button doc-button--secondary" type="button">Tertiary</button>
+                    </orc-space>
+                  </div>
+                }
+                @case ('speed-dial') {
+                  <div class="example example--centered">
+                    <span class="example__label">Secondary actions</span>
+                    <orc-speed-dial [actions]="p2SpeedDialActions" openLabel="Abrir ações" closeLabel="Fechar ações" (actionSelect)="onSpeedDialAction($event)" />
+                    @if (p2ActionMessage()) { <code>{{ p2ActionMessage() }}</code> }
+                  </div>
+                }
+                @case ('tags-input') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Tags + suggestions</span>
+                      <orc-tags-input label="Tecnologias" [(value)]="p2TagsValue" [suggestions]="['Angular', 'React', 'Vue', 'A11y', 'Tokens']" placeholder="Adicione uma tag" helperText="Pressione Enter ou vírgula para confirmar." (tagAdded)="onP2Action('Tag adicionada: ' + $event)" (tagRemoved)="onP2Action('Tag removida: ' + $event)" />
+                      <code>tags = {{ p2TagsValue().join(', ') }}</code>
+                    </div>
+                  </div>
+                }
+                @case ('text') {
+                  <div class="example-stack">
+                    <div class="example-stack example">
+                      <span class="example__label">Text tones</span>
+                      <orc-text size="lg">Texto principal</orc-text>
+                      <orc-text size="md" [muted]="true">Texto secundário</orc-text>
+                      <orc-text size="sm" [muted]="true">Metadados e apoio</orc-text>
+                    </div>
+                    <p class="example__caption">Use <code>muted</code> para reduzir a ênfase sem remover informação.</p>
+                  </div>
+                }
+                @case ('tree-select') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Hierarchical selection</span>
+                      <orc-tree-select label="Destino" placeholder="Selecione uma área" [nodes]="p2TreeSelectNodes" [(value)]="p2TreeSelectValue" />
+                      <code>value = {{ p2TreeSelectValue() || 'null' }}</code>
+                    </div>
+                    <p class="example__caption">Expanda os nós com <code>▸</code> e selecione um item folha.</p>
+                  </div>
+                }
+                @case ('virtual-scroller') {
+                  <div class="example-stack">
+                    <div class="example">
+                      <span class="example__label">Large list + overscan</span>
+                      <orc-virtual-scroller [items]="p2VirtualItems" itemLabelKey="label" [itemHeight]="40" viewportHeight="220px" label="Componentes virtuais" (rangeChange)="onVirtualRange($event)" />
+                      <code>range = {{ p2VirtualRange().start }}–{{ p2VirtualRange().end }} / {{ p2VirtualItems.length }}</code>
+                    </div>
+                  </div>
+                }
+                @default {
+                  <div class="empty-preview"><span class="empty-preview__icon">✦</span><p>Preview não disponível.</p></div>
+                }
+              }
+            </div>
+          </div>
+
+          <aside class="panel panel--inspector" aria-label="Estado atual">
+            <div class="panel__header">
+              <span>Live state</span>
+              <span class="panel__hint">Somente leitura</span>
+            </div>
+            <div class="panel__body inspector-body">
+              <p class="inspector-copy">Valores emitidos pelo preview atual.</p>
+              <pre><code>{{ liveState() | json }}</code></pre>
+              <div class="inspector-list">
+                <div><span>Package</span><code>{{ doc.packagePath }}</code></div>
+                <div><span>Change detection</span><code>OnPush</code></div>
+                <div><span>Import</span><code>standalone</code></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="states">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Estados cobertos</h2>
+            <p class="section-text">Variações essenciais para revisão visual, QA e implementação.</p>
+          </div>
+          <span class="section-index">02 / 03</span>
+        </div>
+        <div class="variation-grid">
+          @for (variation of doc.variations; track variation.label) {
+            <article class="variation-card">
+              <span class="variation-card__dot" aria-hidden="true"></span>
+              <div><h3>{{ variation.label }}</h3><p>{{ variation.description }}</p></div>
+            </article>
+          }
+        </div>
+        <div class="guidance"><span class="guidance__mark">i</span><p>{{ doc.guidance }}</p></div>
+      </section>
+
+      <section class="section" id="api">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Referência de API</h2>
+            <p class="section-text">Inputs, models, outputs e diretivas expostos pelo componente.</p>
+          </div>
+          <span class="section-index">03 / 03</span>
+        </div>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr><th>Nome</th><th>Tipo</th><th>Padrão</th><th>Descrição</th></tr>
+            </thead>
+            <tbody>
+              @for (entry of doc.api; track entry.name) {
+                <tr>
+                  <td><code>{{ entry.name }}</code> <span class="badge-tag" [class]="'badge-tag badge-tag--' + entry.kind">{{ getApiKindLabel(entry.kind) }}</span></td>
+                  <td><code>{{ entry.type }}</code></td>
+                  <td><code>{{ entry.defaultValue }}</code></td>
+                  <td>{{ entry.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="usage-block" id="usage">
+        <div>
+          <span class="section-eyebrow">Quick start</span>
+          <h2 class="section-subtitle">Uso</h2>
+          <p class="section-text">Importe o standalone component e conecte o estado ao seu formulário ou fluxo de interação.</p>
+        </div>
+        <div class="code-card">
+          <div class="code-card__header"><span>{{ doc.packagePath }}</span><span>Angular</span></div>
+          <pre><code>{{ doc.usage }}</code></pre>
+        </div>
+      </section>
+
+      @if (componentId === 'icon') {
+        <section class="usage-block" id="installation">
+          <div>
+            <span class="section-eyebrow">Installation</span>
+            <h2 class="section-subtitle">Publicação e instalação</h2>
+            <p class="section-text">O pacote principal e o catálogo de ícones são publicados juntos, como entry points independentes.</p>
+          </div>
+          <div class="code-card">
+            <div class="code-card__header"><span>npm</span><span>Release channel</span></div>
+            <pre><code>npm install &#64;ciag/orchestra
+
+import &#123; IconComponent &#125; from '&#64;ciag/orchestra/icon';
+import &#123; orcSearchIcon &#125; from '&#64;ciag/orchestra/icons';
+
+// O build inclui somente as definições importadas.</code></pre>
+          </div>
+          <div class="guidance"><span class="guidance__mark">i</span><p>O plano de release usa Changesets, build de todas as entry points, verificação de bundle e publicação npm com provenance. A instalação não depende de Google Fonts nem de requests em runtime.</p></div>
+        </section>
+      }
+    </main>
+  </div>
+
+  <app-footer />
+</div>

@@ -1,0 +1,11 @@
+@if (open()) {
+  <div class="orc-drawer__backdrop" (click)="onBackdrop()" aria-hidden="true"></div>
+  <aside class="orc-drawer" [class]="'orc-drawer orc-drawer--' + placement()" role="dialog" aria-modal="true" [attr.aria-label]="label()">
+    <div class="orc-drawer__header">
+      <ng-content select="[drawer-title]" />
+      @if (dismissible()) { <button type="button" class="orc-drawer__close" (click)="close()" aria-label="Fechar painel">×</button> }
+    </div>
+    <div class="orc-drawer__body"><ng-content /></div>
+    <div class="orc-drawer__footer"><ng-content select="[drawer-actions]" /></div>
+  </aside>
+}

@@ -1,0 +1,42 @@
+<div
+  class="orc-avatar-group"
+  [class.orc-avatar-group--size-xs]="size() === 'xs'"
+  [class.orc-avatar-group--size-sm]="size() === 'sm'"
+  [class.orc-avatar-group--size-md]="size() === 'md'"
+  [class.orc-avatar-group--size-lg]="size() === 'lg'"
+  [class.orc-avatar-group--size-xl]="size() === 'xl'"
+  role="group"
+  aria-label="Grupo de avatares"
+>
+  <!-- Modo com lista de items informada via input -->
+  <ng-container *ngIf="items().length > 0">
+    <orc-avatar
+      *ngFor="let item of visibleItems()"
+      [src]="item.src || ''"
+      [name]="item.name || ''"
+      [initials]="item.initials || ''"
+      [alt]="item.alt || ''"
+      [size]="size()"
+      [shape]="shape()"
+      [status]="item.status"
+      [colorVariant]="item.colorVariant || 'default'"
+      [bordered]="bordered()"
+      class="orc-avatar-group__item"
+    ></orc-avatar>
+  </ng-container>
+
+  <!-- Projeção de conteúdo quando items não for informado -->
+  <ng-content></ng-content>
+
+  <!-- Contador Excedente (+N) -->
+  <orc-avatar
+    *ngIf="calculatedExcess() > 0"
+    [initials]="excessText()"
+    [size]="size()"
+    [shape]="shape()"
+    [colorVariant]="excessColorVariant()"
+    [bordered]="bordered()"
+    [alt]="'Mais ' + calculatedExcess() + ' membros'"
+    class="orc-avatar-group__item orc-avatar-group__excess"
+  ></orc-avatar>
+</div>

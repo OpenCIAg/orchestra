@@ -1,0 +1,15 @@
+:host { display: block; width: 100%; }
+.orc-color-picker { position: relative; display: grid; gap: 6px; width: 100%; font-family: var(--font-sans, system-ui, sans-serif); }
+.orc-color-picker__label { font-size: 13px; font-weight: 600; color: var(--orc-font-main, #141414); }
+.orc-color-picker__control { display: flex; align-items: center; min-height: 44px; border: 1px solid var(--orc-border, #d9d9d9); border-radius: var(--radius-md, 10px); background: var(--fill-modal, #fff); }
+.orc-color-picker__trigger { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; height: 42px; padding: 0 10px; border: 0; border-radius: inherit; background: transparent; color: var(--orc-font-main, #141414); font: inherit; text-align: left; cursor: pointer; &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: -2px; } }
+.orc-color-picker__swatch { width: 22px; height: 22px; flex: 0 0 auto; border: 1px solid rgba(0,0,0,.16); border-radius: 50%; background-image: linear-gradient(45deg,#ddd 25%,transparent 25%),linear-gradient(-45deg,#ddd 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ddd 75%),linear-gradient(-45deg,transparent 75%,#ddd 75%); background-size: 8px 8px; background-position: 0 0,0 4px,4px -4px,-4px 0; }
+.orc-color-picker__value { min-width: 0; overflow: hidden; color: var(--orc-font-secondary, #666); font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.orc-color-picker__chevron { margin-left: auto; }
+.orc-color-picker__clear { width: 30px; height: 30px; margin-right: 6px; border: 0; border-radius: 50%; background: transparent; color: var(--orc-font-secondary, #666); font-size: 20px; cursor: pointer; }
+.orc-color-picker__panel { position: absolute; z-index: var(--z-dropdown, 1000); top: calc(100% + 4px); left: 0; display: grid; gap: 12px; width: min(260px, 100%); padding: 12px; border: 1px solid var(--orc-border, #d9d9d9); border-radius: var(--radius-md, 10px); background: var(--fill-modal, #fff); box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,.12)); }
+.orc-color-picker__native { width: 100%; height: 42px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.orc-color-picker__text { width: 100%; min-height: 36px; padding: 0 8px; box-sizing: border-box; border: 1px solid var(--orc-border, #d9d9d9); border-radius: var(--radius-sm, 6px); background: var(--fill-modal, #fff); color: var(--orc-font-main, #141414); }
+.orc-color-picker__presets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.orc-color-picker__preset { width: 30px; height: 30px; padding: 0; border: 1px solid rgba(0,0,0,.16); border-radius: 50%; cursor: pointer; &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: 2px; } &--active { box-shadow: 0 0 0 2px var(--fill-modal, #fff), 0 0 0 4px var(--orc-color-azul-eletrico, #1c6aed); } }
+.orc-color-picker--disabled { opacity: .55; }

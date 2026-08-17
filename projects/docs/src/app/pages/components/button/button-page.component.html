@@ -1,0 +1,422 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Inputs</div>
+      <h1 class="section-title">Button &amp; Icon Button</h1>
+      <p class="section-desc">
+        Elementos de ação interativos que disparam gatilhos ou navegações. Desenvolvidos com suporte completo a variantes, tamanhos, estados internos reativos, projeção de ícones e total conformidade de acessibilidade WCAG.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO (BUTTON) ────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo: Button</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <orc-button
+                  [variant]="playgroundVariant()"
+                  [size]="playgroundSize()"
+                  [disabled]="playgroundDisabled()"
+                  [loading]="playgroundLoading()"
+                  [fullWidth]="playgroundFullWidth()"
+                  [iconOnly]="playgroundIconOnly()"
+                  [iconLeft]="playgroundIconLeft() ? playgroundIconLeft() : undefined"
+                  [iconRight]="playgroundIconRight() ? playgroundIconRight() : undefined"
+                  (click)="onButtonClick()"
+                >
+                  {{ playgroundText() }}
+                </orc-button>
+              </div>
+
+              <div class="clicks-badge" style="margin-top: 1rem; justify-content: center;">
+                <span>Cliques disparados: <strong>{{ clickCount() }}</strong></span>
+                <button type="button" (click)="resetClicks()" style="padding: 2px 8px; font-size: 11px; cursor: pointer; border: 1px solid var(--border-default); border-radius: var(--radius-sm); background: var(--bg-muted); color: var(--text-primary);">Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Label Input -->
+              <div class="control-group">
+                <label class="control-label">Texto do botão</label>
+                <input type="text" class="text-input" [value]="playgroundText()"
+                  (input)="playgroundText.set($any($event.target).value)" placeholder="Digite o texto...">
+              </div>
+
+              <!-- Variant Selection -->
+              <div class="control-group">
+                <label class="control-label">Variante visual</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'primary'"
+                    (click)="playgroundVariant.set('primary')">Primary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'secondary'"
+                    (click)="playgroundVariant.set('secondary')">Secondary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'outline'"
+                    (click)="playgroundVariant.set('outline')">Outline</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'ghost'"
+                    (click)="playgroundVariant.set('ghost')">Ghost</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'link'"
+                    (click)="playgroundVariant.set('link')">Link</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'danger'"
+                    (click)="playgroundVariant.set('danger')">Danger</button>
+                </div>
+              </div>
+
+              <!-- Size Selection -->
+              <div class="control-group">
+                <label class="control-label">Tamanho</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'sm'"
+                    (click)="playgroundSize.set('sm')">SM (32px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'md'"
+                    (click)="playgroundSize.set('md')">MD (40px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'lg'"
+                    (click)="playgroundSize.set('lg')">LG (48px)</button>
+                </div>
+              </div>
+
+              <!-- Icons Selection -->
+              <div class="control-group">
+                <label class="control-label">Ícones</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundIconLeft() === '' && playgroundIconRight() === ''"
+                    (click)="playgroundIconLeft.set(''); playgroundIconRight.set('')">Sem ícones</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundIconLeft() !== ''"
+                    (click)="playgroundIconLeft.set(checkIconSvg); playgroundIconRight.set('')">Ícone à Esquerda</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundIconRight() !== ''"
+                    (click)="playgroundIconLeft.set(''); playgroundIconRight.set(arrowIconSvg)">Ícone à Direita</button>
+                </div>
+              </div>
+
+              <!-- Toggles: Disabled, Loading, FullWidth, IconOnly -->
+              <div class="control-group" style="margin-top: 1rem;">
+                <label class="control-label">Opções de Estado</label>
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundDisabled()"
+                      (change)="playgroundDisabled.set($any($event.target).checked)">
+                    <span>Desabilitado</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundLoading()"
+                      (change)="playgroundLoading.set($any($event.target).checked)">
+                    <span>Carregando (loading)</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundFullWidth()"
+                      (change)="playgroundFullWidth.set($any($event.target).checked)">
+                    <span>Largura Total</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="playgroundIconOnly()"
+                      (change)="playgroundIconOnly.set($any($event.target).checked)">
+                    <span>Modo Ícone (iconOnly)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PLAYGROUND INTERATIVO (ICON BUTTON) ───────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo: Icon Button</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <orc-icon-button
+                  [variant]="iconPlaygroundVariant()"
+                  [size]="iconPlaygroundSize()"
+                  [disabled]="iconPlaygroundDisabled()"
+                  [loading]="iconPlaygroundLoading()"
+                  [icon]="searchIconSvg"
+                  ariaLabel="Buscar conteúdo no site"
+                  (click)="onButtonClick()"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Config Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Variant Selection -->
+              <div class="control-group">
+                <label class="control-label">Variante visual</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundVariant() === 'primary'"
+                    (click)="iconPlaygroundVariant.set('primary')">Primary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundVariant() === 'secondary'"
+                    (click)="iconPlaygroundVariant.set('secondary')">Secondary</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundVariant() === 'outline'"
+                    (click)="iconPlaygroundVariant.set('outline')">Outline</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundVariant() === 'ghost'"
+                    (click)="iconPlaygroundVariant.set('ghost')">Ghost</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundVariant() === 'link'"
+                    (click)="iconPlaygroundVariant.set('link')">Link</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundVariant() === 'danger'"
+                    (click)="iconPlaygroundVariant.set('danger')">Danger</button>
+                </div>
+              </div>
+
+              <!-- Size Selection -->
+              <div class="control-group">
+                <label class="control-label">Tamanho</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundSize() === 'sm'"
+                    (click)="iconPlaygroundSize.set('sm')">SM (32px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundSize() === 'md'"
+                    (click)="iconPlaygroundSize.set('md')">MD (40px)</button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="iconPlaygroundSize() === 'lg'"
+                    (click)="iconPlaygroundSize.set('lg')">LG (48px)</button>
+                </div>
+              </div>
+
+              <!-- Toggles: Disabled, Loading -->
+              <div class="control-group" style="margin-top: 1rem;">
+                <label class="control-label">Opções de Estado</label>
+                <div class="checkbox-row">
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="iconPlaygroundDisabled()"
+                      (change)="iconPlaygroundDisabled.set($any($event.target).checked)">
+                    <span>Desabilitado</span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <input type="checkbox" [checked]="iconPlaygroundLoading()"
+                      (change)="iconPlaygroundLoading.set($any($event.target).checked)">
+                    <span>Carregando (loading)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA DESIGN SYSTEM VARIATIONS ────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos e estados estáticos (Figma)</h2>
+
+        <!-- Variantes do Botão -->
+        <div class="figma-block">
+          <div class="figma-block__label">Variantes de botão (Medium)</div>
+          <div class="figma-block__row">
+            <orc-button variant="primary">Primary</orc-button>
+            <orc-button variant="secondary">Secondary</orc-button>
+            <orc-button variant="outline">Outline</orc-button>
+            <orc-button variant="ghost">Ghost</orc-button>
+            <orc-button variant="link">Link Style</orc-button>
+            <orc-button variant="danger">Danger</orc-button>
+          </div>
+        </div>
+
+        <!-- Tamanhos -->
+        <div class="figma-block">
+          <div class="figma-block__label">Tamanhos de botão (Primary)</div>
+          <div class="figma-block__row">
+            <orc-button size="sm">Small (sm - 32px)</orc-button>
+            <orc-button size="md">Medium (md - 40px)</orc-button>
+            <orc-button size="lg">Large (lg - 48px)</orc-button>
+          </div>
+        </div>
+
+        <!-- Estados Visuais -->
+        <div class="figma-block">
+          <div class="figma-block__label">Estados especiais</div>
+          <div class="figma-block__row">
+            <orc-button [disabled]="true">Desabilitado</orc-button>
+            <orc-button [loading]="true">Carregando (fundo preservado)</orc-button>
+            <orc-button variant="danger" [loading]="true">Carregando Danger</orc-button>
+          </div>
+        </div>
+
+        <!-- Com Ícones Customizados projetados (ng-content) -->
+        <div class="figma-block">
+          <div class="figma-block__label">Com projeção de ícones (ng-content select)</div>
+          <div class="figma-block__row">
+            <orc-button variant="outline">
+              <span iconLeft [innerHTML]="checkIconSvg"></span>
+              Ícone Projetado à Esquerda
+            </orc-button>
+            <orc-button variant="primary">
+              Ícone Projetado à Direita
+              <span iconRight [innerHTML]="arrowIconSvg"></span>
+            </orc-button>
+          </div>
+        </div>
+
+        <!-- Icon Buttons -->
+        <div class="figma-block">
+          <div class="figma-block__label">Icon buttons (Square) - tamanhos e variantes</div>
+          <div class="figma-block__row">
+            <orc-icon-button variant="primary" size="sm" [icon]="searchIconSvg" ariaLabel="Buscar" />
+            <orc-icon-button variant="secondary" size="md" [icon]="searchIconSvg" ariaLabel="Buscar" />
+            <orc-icon-button variant="outline" size="lg" [icon]="searchIconSvg" ariaLabel="Buscar" />
+            <orc-icon-button variant="danger" size="md" [icon]="trashIconSvg" ariaLabel="Deletar registro" />
+            <orc-icon-button variant="ghost" size="md" [icon]="searchIconSvg" ariaLabel="Buscar" />
+            <orc-icon-button variant="link" size="md" [icon]="searchIconSvg" ariaLabel="Buscar" />
+            <orc-icon-button variant="primary" size="md" [loading]="true" [icon]="searchIconSvg" ariaLabel="Buscando..." />
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE REFERÊNCIA DE API ─────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API: Button</h2>
+        <div class="table-container" style="margin-bottom: 2rem;">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'danger'</code></td>
+                <td><code>'primary'</code></td>
+                <td>Estilo visual de preenchimento e borda do botão.</td>
+              </tr>
+              <tr>
+                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'sm' | 'md' | 'lg'</code></td>
+                <td><code>'md'</code></td>
+                <td>Dimensões do botão (Small 32px, Medium 40px, Large 48px).</td>
+              </tr>
+              <tr>
+                <td><code>disabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Define o estado desabilitado de clique e interações visuais.</td>
+              </tr>
+              <tr>
+                <td><code>loading</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Exibe spinner centralizado, desabilita cliques e preserva a largura.</td>
+              </tr>
+              <tr>
+                <td><code>fullWidth</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Se verdadeiro, o botão ocupa 100% da largura do contêiner pai.</td>
+              </tr>
+              <tr>
+                <td><code>iconLeft</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string | undefined</code></td>
+                <td><code>undefined</code></td>
+                <td>Nome de classe ou string contendo SVG para ícone esquerdo.</td>
+              </tr>
+              <tr>
+                <td><code>iconRight</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string | undefined</code></td>
+                <td><code>undefined</code></td>
+                <td>Nome de classe ou string contendo SVG para ícone direito.</td>
+              </tr>
+              <tr>
+                <td><code>iconOnly</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Se verdadeiro, oculta qualquer texto e mantém apenas os ícones.</td>
+              </tr>
+              <tr>
+                <td><code>type</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'button' | 'submit' | 'reset'</code></td>
+                <td><code>'button'</code></td>
+                <td>Atributo HTML nativo do botão.</td>
+              </tr>
+              <tr>
+                <td><code>click</code> <span class="badge-tag badge-tag--output">output</span></td>
+                <td><code>MouseEvent</code></td>
+                <td>—</td>
+                <td>Evento disparado ao clicar no botão ativo.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="section-subtitle">Referência de API: Icon Button</h2>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'danger'</code></td>
+                <td><code>'primary'</code></td>
+                <td>Estilo visual de preenchimento e borda do botão.</td>
+              </tr>
+              <tr>
+                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>'sm' | 'md' | 'lg'</code></td>
+                <td><code>'md'</code></td>
+                <td>Dimensões quadradas do botão.</td>
+              </tr>
+              <tr>
+                <td><code>disabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Desabilita cliques e aplica opacidade.</td>
+              </tr>
+              <tr>
+                <td><code>loading</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Desabilita cliques e exibe spinner de carregamento centralizado.</td>
+              </tr>
+              <tr>
+                <td><code>icon</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td><code>string | undefined</code></td>
+                <td><code>undefined</code></td>
+                <td>Nome de classe ou string SVG contendo o ícone centralizado.</td>
+              </tr>
+              <tr>
+                <td><code>ariaLabel</code> <span class="badge-tag badge-tag--input">input.required</span></td>
+                <td><code>string</code></td>
+                <td>—</td>
+                <td>Rótulo de acessibilidade WCAG obrigatório para leitores de tela.</td>
+              </tr>
+              <tr>
+                <td><code>click</code> <span class="badge-tag badge-tag--output">output</span></td>
+                <td><code>MouseEvent</code></td>
+                <td>—</td>
+                <td>Evento disparado ao clicar no botão ativo.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

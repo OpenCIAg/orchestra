@@ -1,0 +1,344 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Inputs</div>
+      <h1 class="section-title">Checkbox</h1>
+      <p class="section-desc">
+        Controle de seleção binária ou intermediária (tri-state/indeterminate) com suporte nativo a formulários reativos,
+        Signals API (`model()`, `input()`, `output()`), estados visuais completos e total acessibilidade WCAG 2.1 AA.
+      </p>
+
+      <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Playground interativo</h2>
+        <div class="playground-grid">
+          <!-- Preview Panel -->
+          <div class="panel preview-panel">
+            <div class="panel__header">Live preview</div>
+            <div class="panel__body">
+              <div class="preview-box">
+                <orc-checkbox [(checked)]="playgroundChecked" [(indeterminate)]="playgroundIndeterminate"
+                  [label]="playgroundLabel()" [description]="playgroundDescription()" [disabled]="playgroundDisabled()"
+                  [error]="playgroundError()"
+                  [errorMessage]="playgroundError() ? playgroundErrorMessage() : ''"></orc-checkbox>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuration Panel -->
+          <div class="panel config-panel">
+            <div class="panel__header">Propriedades e controles</div>
+            <div class="panel__body">
+              <!-- Checked Toggle -->
+              <div class="control-group">
+                <label class="control-label">Estado marcado (model)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundChecked()"
+                    (click)="playgroundChecked.set(true)">
+                    Marcado (true)
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="!playgroundChecked()"
+                    (click)="playgroundChecked.set(false)">
+                    Desmarcado (false)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Indeterminate Toggle -->
+              <div class="control-group">
+                <label class="control-label">Estado indeterminado (model)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="!playgroundIndeterminate()"
+                    (click)="playgroundIndeterminate.set(false)">
+                    Normal (false)
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundIndeterminate()"
+                    (click)="playgroundIndeterminate.set(true)">
+                    Indeterminado (true)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Disabled Toggle -->
+              <div class="control-group">
+                <label class="control-label">Desabilitado (disabled)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="!playgroundDisabled()"
+                    (click)="playgroundDisabled.set(false)">
+                    Habilitado
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundDisabled()"
+                    (click)="playgroundDisabled.set(true)">
+                    Desabilitado
+                  </button>
+                </div>
+              </div>
+
+              <!-- Error Toggle -->
+              <div class="control-group">
+                <label class="control-label">Estado de erro (error)</label>
+                <div class="segmented-control">
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="!playgroundError()"
+                    (click)="playgroundError.set(false)">
+                    Válido
+                  </button>
+                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundError()"
+                    (click)="playgroundError.set(true)">
+                    Com erro
+                  </button>
+                </div>
+              </div>
+
+              <!-- Label Input -->
+              <div class="control-group">
+                <label class="control-label">Texto do rótulo (label)</label>
+                <input type="text" class="text-input" [value]="playgroundLabel()"
+                  (input)="playgroundLabel.set($any($event.target).value)" placeholder="Informe o rótulo..." />
+              </div>
+
+              <!-- Description Input -->
+              <div class="control-group">
+                <label class="control-label">Texto de apoio (description)</label>
+                <input type="text" class="text-input" [value]="playgroundDescription()"
+                  (input)="playgroundDescription.set($any($event.target).value)" placeholder="Texto informativo..." />
+              </div>
+
+              <div class="control-actions">
+                <button type="button" class="btn btn--secondary" (click)="resetPlayground()">
+                  Restaurar padrões
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FIGMA SPECIFICATION OVERVIEW ────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Componentes planos</h2>
+        <div class="states-grid">
+          <div class="state-card">
+            <div class="state-card__preview">
+              <orc-checkbox [checked]="true" label="Option 1"></orc-checkbox>
+            </div>
+            <div class="state-card__info">
+              <span class="state-card__name">Marcado (Option 1)</span>
+              <span class="state-card__desc">Fundo #1C6AED, ícone check branco, fonte Poppins Medium 14px</span>
+            </div>
+          </div>
+
+          <div class="state-card">
+            <div class="state-card__preview">
+              <orc-checkbox [checked]="false" label="Option 2"></orc-checkbox>
+            </div>
+            <div class="state-card__info">
+              <span class="state-card__name">Desmarcado (Option 2)</span>
+              <span class="state-card__desc">Borda #D9D9D9, fundo #FFFFFF, fonte Poppins Regular 14px</span>
+            </div>
+          </div>
+
+          <div class="state-card">
+            <div class="state-card__preview">
+              <orc-checkbox [indeterminate]="true" label="Opção intermediária"></orc-checkbox>
+            </div>
+            <div class="state-card__info">
+              <span class="state-card__name">Indeterminado (misto)</span>
+              <span class="state-card__desc">Fundo #1C6AED, traço centralizado, aria-checked="mixed"</span>
+            </div>
+          </div>
+
+          <div class="state-card">
+            <div class="state-card__preview">
+              <orc-checkbox [checked]="true" [disabled]="true" label="Opção desabilitada"></orc-checkbox>
+            </div>
+            <div class="state-card__info">
+              <span class="state-card__name">Desabilitado e marcado</span>
+              <span class="state-card__desc">Opacidade 0.5, cursor not-allowed, cores atenuadas</span>
+            </div>
+          </div>
+
+          <div class="state-card">
+            <div class="state-card__preview">
+              <orc-checkbox [checked]="false" [disabled]="true" label="Opção desabilitada"></orc-checkbox>
+            </div>
+            <div class="state-card__info">
+              <span class="state-card__name">Desabilitado e desmarcado</span>
+              <span class="state-card__desc">Fundo #EDEDED cinza claro, borda #D9D9D9</span>
+            </div>
+          </div>
+
+          <div class="state-card">
+            <div class="state-card__preview">
+              <orc-checkbox [error]="true" errorMessage="Campo obrigatório" label="Opção com erro"></orc-checkbox>
+            </div>
+            <div class="state-card__info">
+              <span class="state-card__name">Validação de erro</span>
+              <span class="state-card__desc">Borda #FB2C36 com mensagem de erro associada por aria-describedby</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── REACTIVE FORMS DEMO ─────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Integração com formulários reativos (ControlValueAccessor)</h2>
+        <div class="demo-card">
+          <div class="demo-card__header">
+            Formulário de cadastro com validação
+          </div>
+          <div class="demo-card__body">
+            <form [formGroup]="form" (ngSubmit)="onSubmitForm()" class="reactive-form">
+              <div class="form-item">
+                <orc-checkbox formControlName="acceptTerms"
+                  label="Li e concordo com os Termos de Serviço e a Política de Privacidade"
+                  [error]="formSubmitted() && form.get('acceptTerms')?.invalid"
+                  [errorMessage]="(formSubmitted() && form.get('acceptTerms')?.invalid) ? 'Você precisa aceitar os termos para continuar' : ''"></orc-checkbox>
+              </div>
+
+              <div class="form-item">
+                <orc-checkbox formControlName="newsletter"
+                  label="Desejo receber novidades, atualizações de produto e artigos técnicos"
+                  description="Enviaremos e-mails no máximo quinzenalmente"></orc-checkbox>
+              </div>
+
+              <div class="form-item">
+                <orc-checkbox formControlName="marketingCookies" label="Permitir cookies de análise e personalização"
+                  description="Ajuda a melhorar sua experiência no portal"></orc-checkbox>
+              </div>
+
+              <div class="form-buttons">
+                <button type="submit" class="btn btn--primary">Enviar formulário</button>
+                <button type="button" class="btn btn--secondary" (click)="resetForm()">Resetar</button>
+              </div>
+
+              <div class="form-output" *ngIf="formSubmitted()">
+                <div class="output-header" [class.output-header--error]="form.invalid">
+                  {{ form.valid ? '✓ Formulário válido e submetido' : '✕ Erro de validação nos campos obrigatórios' }}
+                </div>
+                <pre class="output-code" *ngIf="formResult()">{{ formResult() | json }}</pre>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CÓDIGO FONTE E EXEMPLOS DE USO ──────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos de código</h2>
+        <div class="code-blocks">
+          <div class="code-card">
+            <div class="code-card__title">1. Uso básico com two-way model signal</div>
+            <pre class="code-card__snippet"><code>&lt;!-- Two-way binding com Signals --&gt;
+&lt;app-checkbox [(checked)]="lembrarMe" label="Lembrar meu acesso" /&gt;
+
+&lt;!-- Com helper text / descrição --&gt;
+&lt;app-checkbox
+  [(checked)]="notificacoes"
+  label="Ativar notificações push"
+  description="Você receberá alertas instantâneos de novas mensagens"
+/&gt;</code></pre>
+          </div>
+
+          <div class="code-card">
+            <div class="code-card__title">2. Formulários reativos com ControlValueAccessor</div>
+            <pre class="code-card__snippet"><code>&lt;app-checkbox
+  formControlName="termos"
+  label="Aceito os termos e condições"
+  [error]="form.get('termos')?.invalid && form.get('termos')?.touched"
+  errorMessage="O aceite dos termos é obrigatório"
+/&gt;</code></pre>
+          </div>
+
+          <div class="code-card">
+            <div class="code-card__title">3. Estado indeterminado (tri-state / misto)</div>
+            <pre class="code-card__snippet"><code>&lt;app-checkbox
+  [checked]="allSelected()"
+  [indeterminate]="someSelected()"
+  label="Selecionar todos"
+  (change)="toggleAll()"
+/&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABELA DE API ───────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Referência de API (inputs, models e outputs)</h2>
+        <div class="table-container">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Propriedade</th>
+                <th>Tipo</th>
+                <th>Padrão</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>checked</code> <span class="badge badge--model">model</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Estado de marcação do checkbox. Suporta two-way binding <code>[(checked)]</code>.</td>
+              </tr>
+              <tr>
+                <td><code>indeterminate</code> <span class="badge badge--model">model</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Estado intermediário/misto. Aplica ícone de traço e <code>aria-checked="mixed"</code>.</td>
+              </tr>
+              <tr>
+                <td><code>label</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto do rótulo associado ao checkbox com clique integrado.</td>
+              </tr>
+              <tr>
+                <td><code>description</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Texto de apoio ou orientação exibido abaixo do rótulo.</td>
+              </tr>
+              <tr>
+                <td><code>disabled</code> <span class="badge badge--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Desabilita a interação com o checkbox e aplica estilos atenuados.</td>
+              </tr>
+              <tr>
+                <td><code>error</code> <span class="badge badge--input">input</span></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Ativa o estado visual de erro e <code>aria-invalid="true"</code>.</td>
+              </tr>
+              <tr>
+                <td><code>errorMessage</code> <span class="badge badge--input">input</span></td>
+                <td><code>string</code></td>
+                <td><code>''</code></td>
+                <td>Mensagem de validação de erro exibida abaixo do rótulo.</td>
+              </tr>
+              <tr>
+                <td><code>value</code> <span class="badge badge--input">input</span></td>
+                <td><code>any</code></td>
+                <td><code>undefined</code></td>
+                <td>Valor/payload associado ao item emitido no evento <code>change</code>.</td>
+              </tr>
+              <tr>
+                <td><code>change</code> <span class="badge badge--output">output</span></td>
+                <td><code>CheckboxChangeEvent</code></td>
+                <td>—</td>
+                <td>Evento disparado na alteração emitindo <code>&#123; checked, indeterminate, value &#125;</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
+</div>

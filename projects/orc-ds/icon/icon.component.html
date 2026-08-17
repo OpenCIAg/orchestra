@@ -1,0 +1,6 @@
+<svg class="orc-icon" [style.width]="sizeValue()" [style.height]="sizeValue()" [attr.viewBox]="definition().viewBox" fill="currentColor" [attr.role]="ariaLabel() ? 'img' : null" [attr.aria-label]="ariaLabel() || null" [attr.aria-hidden]="ariaLabel() ? null : 'true'">
+  @if (title()) { <title>{{ title() }}</title> }
+  @for (path of paths(); track path.d) {
+    <path [attr.d]="path.d" [attr.fill-rule]="path.fillRule" [attr.clip-rule]="path.clipRule" />
+  }
+</svg>

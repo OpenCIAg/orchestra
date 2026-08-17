@@ -1,0 +1,20 @@
+# Orchestra Design System
+
+> Orchestra is an Angular 19+ component framework and design system with standalone components, native Signals, strict TypeScript APIs, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA behavior.
+
+Use the links below as the canonical reading order for coding agents. Prefer the component API reference over inventing a replacement control.
+
+## Reference
+
+- [Complete coding-agent reference](./llms.md): installation, imports, composition rules, accessibility behavior, all secondary entry points, components, properties, models, outputs, variants, and examples.
+- [Interactive component catalog](./): live playgrounds and searchable component inventory.
+- [Design documentation](./docs): brand principles, tokens, typography, spacing, assets, and usage guidance.
+- [Source package entry points](https://github.com/OpenCIAg/orchestra): Angular library source and tests.
+
+## Agent instructions
+
+- Use standalone Angular imports from the narrowest `@ciag/orchestra/<entry-point>` package.
+- Render Orchestra components with their `orc-*` selectors; do not replace them with generic buttons, inputs, cards, alerts, tabs, or layout primitives when an Orchestra component exists.
+- Treat `input()` as a one-way input, `model()` as a two-way signal (`[value]`/`(valueChange)` or `[(value)]`), and `output()` as an event (`(eventName)`).
+- Preserve labels, helper/error text, keyboard behavior, focus rings, and ARIA properties when composing controls.
+- Load the token stylesheet before application styles: `@use '@ciag/orchestra/styles/index';`.

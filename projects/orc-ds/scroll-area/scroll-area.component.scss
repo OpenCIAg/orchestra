@@ -1,0 +1,7 @@
+:host { display: block; min-width: 0; }
+.orc-scroll-area { position: relative; min-width: 0; }
+.orc-scroll-area__viewport { overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: var(--orc-border, #d9d9d9) transparent; outline: none; &:focus-visible { box-shadow: inset 0 0 0 2px var(--orc-color-azul-eletrico, #1c6aed); } &::-webkit-scrollbar { width: 8px; height: 8px; } &::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--orc-border, #d9d9d9); } }
+.orc-scroll-area--horizontal .orc-scroll-area__viewport { overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
+.orc-scroll-area--both .orc-scroll-area__viewport { overflow: auto; }
+.orc-scroll-area--always .orc-scroll-area__viewport { scrollbar-gutter: stable; }
+.orc-scroll-area__shadow { position: absolute; z-index: 1; right: 8px; left: 0; height: 18px; pointer-events: none; opacity: 0; transition: opacity .2s; &--top { top: 0; background: linear-gradient(var(--fill-modal, #fff), transparent); } &--bottom { bottom: 0; background: linear-gradient(transparent, var(--fill-modal, #fff)); } &--visible { opacity: 1; } }

@@ -1,0 +1,370 @@
+// ============================================================
+// Skeleton Documentation Page Styles
+// ============================================================
+
+.page {
+  min-height: 100vh;
+  background-color: var(--orc-bg, #FFFFFF);
+  color: var(--orc-font-main, #141414);
+}
+
+// ── Header ──────────────────────────────────────────────────
+.header {
+  border-bottom: 1px solid var(--orc-border, #D9D9D9);
+  background-color: var(--orc-bg, #FFFFFF);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--orc-font-main, #141414);
+  font-weight: 700;
+  font-size: 1.125rem;
+
+  &__text {
+    font-family: var(--font-sans, 'Poppins', sans-serif);
+  }
+}
+
+.nav-link {
+  font-size: 0.875rem;
+  color: var(--orc-font-secondary, #666666);
+  text-decoration: none;
+  transition: color var(--transition-fast, 120ms ease);
+
+  &:hover {
+    color: var(--orc-font-main, #141414);
+  }
+
+  &--ghost {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm, 6px);
+    background-color: var(--orc-th, #F9F9F9);
+  }
+}
+
+// ── Layout & Content ────────────────────────────────────────
+.layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.back-link-container {
+  margin-bottom: -var(--space-6);
+}
+
+.back-link {
+  font-size: 0.875rem;
+  color: var(--orc-color-azul-eletrico, #1C6AED);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.section-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--orc-color-azul-eletrico, #1C6AED);
+  margin-bottom: var(--space-2);
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3) 0;
+  color: var(--orc-font-main, #141414);
+}
+
+.section-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--orc-font-secondary, #666666);
+  max-width: 760px;
+  margin: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--orc-font-main, #141414);
+}
+
+// ── Panels & Playground ──────────────────────────────────────
+.playground-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-6);
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-lg, 14px);
+  background-color: var(--orc-bg, #FFFFFF);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: var(--space-3) var(--space-5);
+    background-color: var(--orc-th, #F9F9F9);
+    border-bottom: 1px solid var(--orc-border, #D9D9D9);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--orc-font-secondary, #666666);
+    letter-spacing: 0.02em;
+  }
+
+  &__body {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    flex: 1;
+  }
+}
+
+.preview-box {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--orc-th, #F9F9F9);
+  border-radius: var(--radius-md, 10px);
+  border: 1px dashed var(--orc-border, #D9D9D9);
+  padding: var(--space-8);
+  gap: var(--space-6);
+}
+
+.stage-container {
+  width: 100%;
+  max-width: 440px;
+  min-height: 140px;
+  background-color: var(--bg-app, #FFFFFF);
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-md, 10px);
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.control-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--orc-font-main, #141414);
+}
+
+.segmented-control {
+  display: flex;
+  background-color: var(--orc-th, #F9F9F9);
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-sm, 6px);
+  padding: 2px;
+  gap: 2px;
+}
+
+.segment-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--orc-font-secondary, #666666);
+  transition: all var(--transition-fast, 120ms ease);
+
+  &--active {
+    background-color: var(--orc-bg, #FFFFFF);
+    color: var(--orc-font-main, #141414);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.input-text {
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.875rem;
+  background-color: var(--orc-bg, #FFFFFF);
+  color: var(--orc-font-main, #141414);
+  outline: none;
+  transition: border-color var(--transition-fast);
+
+  &:focus {
+    border-color: var(--orc-color-azul-eletrico, #1C6AED);
+  }
+}
+
+// ── Figma Showcase (Cards & Lists) ──────────────────────────
+.figma-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: var(--space-6);
+}
+
+.figma-card {
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-md, 10px);
+  background-color: var(--orc-bg, #FFFFFF);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__title {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--orc-font-secondary, #666666);
+    margin: 0;
+  }
+}
+
+.card-skeleton-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__header-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.list-skeleton-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__texts {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+}
+
+// ── API Tables ──────────────────────────────────────────────
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--orc-border, #D9D9D9);
+  border-radius: var(--radius-md, 10px);
+}
+
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+
+  th,
+  td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--orc-border, #D9D9D9);
+  }
+
+  th {
+    background-color: var(--orc-th, #F9F9F9);
+    font-weight: 600;
+    color: var(--orc-font-main, #141414);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  code {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8125rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--orc-th, #F9F9F9);
+    color: var(--orc-color-azul-royal, #0406AB);
+  }
+}
+
+.badge-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: var(--space-1);
+
+  &--input {
+    background-color: #E6F0FA;
+    color: #0066CC;
+  }
+}
