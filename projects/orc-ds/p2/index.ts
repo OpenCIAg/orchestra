@@ -17,3 +17,4 @@ export * from './p2-input-more';
 export * from './p2-dock-scroll-components';
 export * from './p2-command-components';
 export * from './p2-utility-more';
+export * from './p2-confirm-popup';

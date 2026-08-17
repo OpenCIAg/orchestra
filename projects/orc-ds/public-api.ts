@@ -149,3 +149,7 @@ export * from '@ciag/orchestra/scroller';
 export * from '@ciag/orchestra/gallery';
 export * from '@ciag/orchestra/message';
 export * from '@ciag/orchestra/label';
+export * from '@ciag/orchestra/confirm-popup';
+export * from '@ciag/orchestra/steps';
+export * from '@ciag/orchestra/datepicker';
+export * from '@ciag/orchestra/compare';
