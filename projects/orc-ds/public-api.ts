@@ -112,3 +112,6 @@ export * from '@ciag/orchestra/tree';
 export * from '@ciag/orchestra/tree-table';
 export * from '@ciag/orchestra/chart';
 export * from '@ciag/orchestra/editor';
+export * from '@ciag/orchestra/order-list';
+export * from '@ciag/orchestra/pick-list';
+export * from '@ciag/orchestra/galleria';

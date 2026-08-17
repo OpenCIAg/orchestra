@@ -1,0 +1,39 @@
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
+import { P2Option, P2_SHARED_STYLES } from './p2-shared';
+
+@Component({
+  selector: 'orc-order-list', standalone: true,
+  template: `<section class="orc-order-list" [attr.aria-label]="label()"><header>{{ header() }}<span><button type="button" [disabled]="!canMove(-1)" (click)="move(-1)" aria-label="Move up">↑</button><button type="button" [disabled]="!canMove(1)" (click)="move(1)" aria-label="Move down">↓</button></span></header><ol role="listbox" [attr.aria-multiselectable]="false">@for (item of value(); track $index) { <li role="option" [attr.aria-selected]="$index === selectedIndex()" [class.selected]="$index === selectedIndex()" (click)="selectedIndex.set($index)">{{ itemLabel(item) }}</li> } @empty { <li class="empty">{{ emptyText() }}</li> }</ol></section>`,
+  styles: [P2_SHARED_STYLES + `.orc-order-list{border:1px solid #e2e8f0;border-radius:.5rem;overflow:hidden;background:#fff}.orc-order-list header{display:flex;justify-content:space-between;padding:.65rem .8rem;background:#f8fafc;font-weight:700}.orc-order-list header button{margin-left:.2rem;border:1px solid #cbd5e1;border-radius:.3rem;background:#fff}.orc-order-list ol{min-height:8rem;margin:0;padding:.35rem;list-style:none}.orc-order-list li{padding:.55rem .65rem;border-radius:.35rem;cursor:pointer}.orc-order-list li.selected{background:#eff6ff;color:#1d4ed8}.orc-order-list .empty{color:#64748b}`],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class OrderListComponent<T = unknown> {
+  readonly value = model<T[]>([]); readonly label = input('Order list'); readonly header = input('Items'); readonly emptyText = input('No items'); readonly selectedIndex = model(-1); readonly valueChangeEvent = output<T[]>();
+  itemLabel(item: T): string { return item && typeof item === 'object' ? String((item as Record<string, unknown>)['label'] ?? '') : String(item ?? ''); }
+  canMove(delta: number): boolean { const index = this.selectedIndex(); return index >= 0 && index < this.value().length && index + delta >= 0 && index + delta < this.value().length; }
+  move(delta: number): void { if (!this.canMove(delta)) return; const next = [...this.value()]; const index = this.selectedIndex(); [next[index], next[index + delta]] = [next[index + delta], next[index]]; this.value.set(next); this.selectedIndex.set(index + delta); this.valueChangeEvent.emit(next); }
+}
+
+@Component({
+  selector: 'orc-pick-list', standalone: true,
+  template: `<section class="orc-pick-list" [attr.aria-label]="label()"><div class="list-pane"><header>{{ sourceHeader() }}</header><ul role="listbox">@for (item of source(); track item.value) { <li role="option" [class.selected]="sourceSelected().has(item.value)" (click)="toggleSource(item)">{{ item.label }}</li> } @empty { <li class="empty">{{ emptyText() }}</li> }</ul></div><div class="actions"><button type="button" (click)="transferSelected()" [disabled]="!sourceSelected().size">→</button><button type="button" (click)="transferBack()" [disabled]="!targetSelected().size">←</button></div><div class="list-pane"><header>{{ targetHeader() }}</header><ul role="listbox">@for (item of target(); track item.value) { <li role="option" [class.selected]="targetSelected().has(item.value)" (click)="toggleTarget(item)">{{ item.label }}</li> } @empty { <li class="empty">{{ emptyText() }}</li> }</ul></div></section>`,
+  styles: [P2_SHARED_STYLES + `.orc-pick-list{display:grid;grid-template-columns:1fr auto 1fr;gap:.7rem;align-items:center}.list-pane{min-width:0;border:1px solid #e2e8f0;border-radius:.5rem;overflow:hidden;background:#fff}.list-pane header{padding:.6rem .75rem;background:#f8fafc;font-weight:700}.list-pane ul{min-height:10rem;max-height:16rem;overflow:auto;margin:0;padding:.35rem;list-style:none}.list-pane li{padding:.5rem .6rem;border-radius:.35rem;cursor:pointer}.list-pane li.selected{background:#eff6ff;color:#1d4ed8}.actions{display:grid;gap:.4rem}.actions button{border:1px solid #cbd5e1;border-radius:.35rem;background:#fff;padding:.45rem}.empty{color:#64748b}`],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class PickListComponent<T extends P2Option = P2Option> {
+  readonly source = model<T[]>([]); readonly target = model<T[]>([]); readonly label = input('Pick list'); readonly sourceHeader = input('Available'); readonly targetHeader = input('Selected'); readonly emptyText = input('No items'); readonly sourceSelected = model<ReadonlySet<T['value']>>(new Set()); readonly targetSelected = model<ReadonlySet<T['value']>>(new Set()); readonly transfer = output<{ source: T[]; target: T[] }>();
+  toggleSource(item: T): void { this.sourceSelected.update(current => { const next = new Set(current); next.has(item.value) ? next.delete(item.value) : next.add(item.value); return next; }); }
+  toggleTarget(item: T): void { this.targetSelected.update(current => { const next = new Set(current); next.has(item.value) ? next.delete(item.value) : next.add(item.value); return next; }); }
+  transferSelected(): void { const selected = this.sourceSelected(); const moved = this.source().filter(item => selected.has(item.value)); this.source.set(this.source().filter(item => !selected.has(item.value))); this.target.update(items => [...items, ...moved]); this.sourceSelected.set(new Set()); this.emitTransfer(); }
+  transferBack(): void { const selected = this.targetSelected(); const moved = this.target().filter(item => selected.has(item.value)); this.target.set(this.target().filter(item => !selected.has(item.value))); this.source.update(items => [...items, ...moved]); this.targetSelected.set(new Set()); this.emitTransfer(); }
+  private emitTransfer(): void { this.transfer.emit({ source: this.source(), target: this.target() }); }
+}
+
+export interface GalleryImage { src: string; alt?: string; thumbnail?: string; title?: string; }
+@Component({
+  selector: 'orc-galleria', standalone: true,
+  template: `<section class="orc-galleria" [attr.aria-label]="label()">@if (images()[activeIndex()]; as image) { <figure><img [src]="image.src" [alt]="image.alt || image.title || ''" /><figcaption>{{ image.title }}</figcaption></figure> }<div class="thumbs">@for (image of images(); track $index) { <button type="button" [class.active]="$index === activeIndex()" (click)="activeIndex.set($index)"><img [src]="image.thumbnail || image.src" [alt]="image.alt || ''" /></button> }</div><nav><button type="button" (click)="previous()" aria-label="Previous image">‹</button><span>{{ images().length ? activeIndex() + 1 : 0 }} / {{ images().length }}</span><button type="button" (click)="next()" aria-label="Next image">›</button></nav></section>`,
+  styles: [P2_SHARED_STYLES + `.orc-galleria{display:grid;gap:.5rem;width:100%;max-width:48rem}.orc-galleria figure{position:relative;margin:0;aspect-ratio:16/9;overflow:hidden;border-radius:.5rem;background:#f1f5f9}.orc-galleria figure img{width:100%;height:100%;object-fit:contain}.orc-galleria figcaption{position:absolute;right:0;bottom:0;left:0;padding:.45rem .7rem;background:#0f172a99;color:#fff}.thumbs{display:flex;gap:.35rem;overflow:auto}.thumbs button{width:4rem;height:3rem;padding:0;border:2px solid transparent;border-radius:.3rem;overflow:hidden}.thumbs button.active{border-color:#2563eb}.thumbs img{width:100%;height:100%;object-fit:cover}.orc-galleria nav{display:flex;justify-content:center;gap:1rem;align-items:center}.orc-galleria nav button{border:1px solid #cbd5e1;border-radius:.3rem;background:#fff}`],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class GalleriaComponent { readonly images = input<GalleryImage[]>([]); readonly label = input('Gallery'); readonly activeIndex = model(0); previous(): void { this.activeIndex.update(index => Math.max(0, index - 1)); } next(): void { this.activeIndex.update(index => Math.min(Math.max(0, this.images().length - 1), index + 1)); } }
