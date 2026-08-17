@@ -59,6 +59,8 @@ export class SwitchComponent implements ControlValueAccessor {
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly ariaDescribedby = input<string>('');
+  readonly styleClass = input('');
+  readonly variant = input<'filled' | 'outlined'>('outlined');
 
   // Two-way Model (Signals API)
   readonly checked = model<boolean>(false);
@@ -66,6 +68,8 @@ export class SwitchComponent implements ControlValueAccessor {
   // Output (Signals API)
   readonly change = output<SwitchChangeEvent>();
   readonly onChange = output<SwitchChangeEvent>();
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
 
   // Element reference do botão interativo
   readonly buttonElement = viewChild<ElementRef<HTMLButtonElement>>('switchButton');
@@ -108,7 +112,7 @@ export class SwitchComponent implements ControlValueAccessor {
 
   // ── ControlValueAccessor Implementation ───────────────────
   writeValue(val: any): void {
-    this.checked.set(Boolean(val));
+    this.checked.set(val === this.trueValue());
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
@@ -132,7 +136,7 @@ export class SwitchComponent implements ControlValueAccessor {
 
     const newChecked = !this.checked();
     this.checked.set(newChecked);
-    this.onModelChange(newChecked);
+    this.onModelChange(newChecked ? this.trueValue() : this.falseValue());
     this.onTouched();
 
     this.change.emit({
@@ -142,8 +146,9 @@ export class SwitchComponent implements ControlValueAccessor {
     this.onChange.emit({ checked: newChecked, value: newChecked ? this.trueValue() : this.falseValue() });
   }
 
-  onBlur(): void {
+  handleBlur(event?: Event): void {
     this.onTouched();
+    if (event) this.onBlur.emit(event);
   }
 
   // ── Public API Methods ────────────────────────────────────
@@ -152,7 +157,7 @@ export class SwitchComponent implements ControlValueAccessor {
 
     const newChecked = !this.checked();
     this.checked.set(newChecked);
-    this.onModelChange(newChecked);
+    this.onModelChange(newChecked ? this.trueValue() : this.falseValue());
     this.onTouched();
 
     this.change.emit({

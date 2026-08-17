@@ -10,6 +10,7 @@ import { DataViewComponent } from './p2/p2-advanced-components';
 import { ToggleButtonComponent } from './p2/p2-form-gap-components';
 import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
+import { SwitchComponent } from './switch/switch.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -109,6 +110,19 @@ describe('P2 expansion components', () => {
     component.toggle();
     expect(modelValue).toBe('yes');
     component.writeValue('no');
+    expect(component.checked()).toBeFalse();
+  });
+
+  it('propagates ToggleSwitch trueValue/falseValue through ControlValueAccessor', () => {
+    const fixture = TestBed.createComponent(SwitchComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('trueValue', 'enabled');
+    fixture.componentRef.setInput('falseValue', 'disabled');
+    let modelValue: unknown;
+    component.registerOnChange(value => modelValue = value);
+    component.toggle();
+    expect(modelValue).toBe('enabled');
+    component.writeValue('disabled');
     expect(component.checked()).toBeFalse();
   });
 

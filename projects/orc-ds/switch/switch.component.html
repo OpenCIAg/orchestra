@@ -1,5 +1,6 @@
 <div
   class="orc-switch"
+  [class]="'orc-switch ' + styleClass()"
   [class.orc-switch--checked]="checked()"
   [class.orc-switch--disabled]="isDisabled()"
   [class.orc-switch--error]="isError()"
@@ -41,7 +42,8 @@
     [attr.aria-describedby]="computedAriaDescribedBy()"
     [attr.aria-invalid]="isError()"
     (click)="onToggle($event)"
-    (blur)="onBlur()"
+    (focus)="onFocus.emit($event)"
+    (blur)="handleBlur($event)"
   >
     <span class="orc-switch__track" aria-hidden="true">
       <span class="orc-switch__thumb"></span>
