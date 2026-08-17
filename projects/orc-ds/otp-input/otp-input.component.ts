@@ -47,6 +47,14 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
   readonly length = input<number>(6);
   readonly placeholder = input<string>('');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly readonly = input(false, { transform: booleanAttribute });
+  readonly tabindex = input<number | null>(0);
+  readonly styleClass = input<string | undefined>(undefined);
+  readonly mask = input(false, { transform: booleanAttribute });
+  readonly integerOnly = input(false, { transform: booleanAttribute });
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
+  readonly size = input<'small' | 'large' | undefined>(undefined);
   readonly inputMode = input<'numeric' | 'text'>('numeric');
   readonly ariaLabel = input<string>('Código de verificação');
 
@@ -65,6 +73,9 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
   // Model & Outputs
   readonly value = model<string>('');
   readonly completed = output<string>();
+  readonly onChange = output<{ value: string }>();
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
 
   // Internal state
   readonly inputValues = signal<string[]>([]);
@@ -76,7 +87,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
   private readonly slots = viewChildren(OtpSlotComponent);
 
   // Callbacks for ControlValueAccessor
-  private onChange: (value: string) => void = () => {};
+  private onModelChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
 
   constructor() {
@@ -111,7 +122,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
   }
 
   registerOnChange(fn: (value: string) => void): void {
-    this.onChange = fn;
+    this.onModelChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {
@@ -127,7 +138,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
     const target = event.target as HTMLInputElement;
     let val = target.value;
 
-    if (this.inputMode() === 'numeric') {
+    if (this.inputMode() === 'numeric' || this.integerOnly()) {
       val = val.replace(/\D/g, '');
     }
 
@@ -191,7 +202,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
     if (!clipboardData) return;
 
     let pastedText = clipboardData.getData('text') || '';
-    if (this.inputMode() === 'numeric') {
+    if (this.inputMode() === 'numeric' || this.integerOnly()) {
       pastedText = pastedText.replace(/\D/g, '');
     }
 
@@ -220,7 +231,8 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
     this.inputValues.set(newValues);
     const combinedValue = newValues.join('');
     this.value.set(combinedValue);
-    this.onChange(combinedValue);
+    this.onModelChange(combinedValue);
+    this.onChange.emit({ value: combinedValue });
 
     if (combinedValue.length === this.length()) {
       this.completed.emit(combinedValue);
@@ -234,4 +246,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
       slot.focus();
     }
   }
+
+  onSlotFocusEvent(event: Event): void { this.onFocus.emit(event); }
+  onSlotBlur(event: Event): void { this.onBlur.emit(event); this.onTouched(); }
 }

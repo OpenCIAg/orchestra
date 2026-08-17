@@ -1,4 +1,4 @@
-<div class="otp-container" [class.otp-container--disabled]="isDisabled()">
+<div class="otp-container" [class.otp-container--disabled]="isDisabled()" [class]="styleClass()" [class.otp-container--filled]="variant() === 'filled'" [class.otp-container--small]="size() === 'small'" [class.otp-container--large]="size() === 'large'">
   <!-- Grupo 1 -->
   <orc-otp-group>
     @for (idx of firstHalfIndices(); track idx) {

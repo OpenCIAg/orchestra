@@ -47,6 +47,11 @@ export class OtpSlotComponent {
     return this.disabled() || (this.parentContext ? this.parentContext.isDisabled() : false);
   });
 
+  readonly isReadonly = computed(() => this.parentContext?.readonly() ?? false);
+  readonly isMasked = computed(() => this.parentContext?.mask() ?? false);
+  readonly slotTabIndex = computed(() => this.parentContext?.tabindex() ?? 0);
+  readonly isAutofocus = computed(() => this.parentContext?.autofocus() && this.index() === 0);
+
   readonly ariaLabel = computed(() => {
     if (!this.parentContext) return `Dígito ${this.index() + 1}`;
     return `${this.parentContext.ariaLabel()} - dígito ${this.index() + 1} de ${this.parentContext.length()}`;
@@ -66,6 +71,15 @@ export class OtpSlotComponent {
 
   onFocus(): void {
     this.parentContext?.onSlotFocus(this.index());
+  }
+
+  onFocusEvent(event: Event): void {
+    this.onFocus();
+    this.parentContext?.onSlotFocusEvent(event);
+  }
+
+  onBlur(event: Event): void {
+    this.parentContext?.onSlotBlur(event);
   }
 
   focus(): void {

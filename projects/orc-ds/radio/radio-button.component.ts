@@ -34,10 +34,20 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
   readonly error = input(false, { transform: booleanAttribute });
   readonly name = input<string>('');
   readonly id = input<string>('');
+  readonly inputId = input<string | undefined>(undefined);
   readonly ariaLabel = input<string>('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(undefined);
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly binary = input(false, { transform: booleanAttribute });
+  readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
+  readonly size = input<'small' | 'large' | undefined>(undefined);
 
   // Outputs (Signals API)
   readonly select = output<any>();
+  readonly onClick = output<{ originalEvent?: Event; value: any }>();
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
 
   // Element reference ao input nativo para foco acessível
   readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('nativeInput');
@@ -49,7 +59,7 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
   readonly radioGroup = inject(ORC_RADIO_GROUP, { optional: true });
 
   // Identificadores e estados derivados (Signals)
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
 
   readonly effectiveName = computed(() => {
     if (this.name()) return this.name();
@@ -71,8 +81,10 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
     if (this.radioGroup) {
       return this.radioGroup.value() === this.value();
     }
-    return this.standaloneChecked();
+    return this.checked() ?? this.standaloneChecked();
   });
+
+  readonly checked = signal<boolean | null>(null);
 
   // Roving tabindex para acessibilidade WCAG
   readonly tabIndex = computed(() => {
@@ -107,9 +119,11 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
       this.radioGroup.select(this.value());
     } else {
       this.standaloneChecked.set(true);
+      this.checked.set(true);
     }
 
     this.select.emit(this.value());
+    this.onClick.emit({ originalEvent: event, value: this.binary() ? true : this.value() });
   }
 
   onKeyDown(event: KeyboardEvent): void {
@@ -121,4 +135,7 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
   focus(): void {
     this.inputElement()?.nativeElement.focus();
   }
+
+  onFocusEvent(event: Event): void { this.onFocus.emit(event); }
+  onBlurEvent(event: Event): void { this.onBlur.emit(event); }
 }

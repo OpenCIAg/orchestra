@@ -1,11 +1,14 @@
 <input
   #slotInput
-  type="text"
+  [type]="isMasked() ? 'password' : 'text'"
   [attr.inputmode]="inputMode()"
   [pattern]="inputMode() === 'numeric' ? '[0-9]*' : '.*'"
   [placeholder]="effectivePlaceholder()"
   [value]="value()"
   [disabled]="isDisabled()"
+  [readonly]="isReadonly()"
+  [tabindex]="slotTabIndex()"
+  [autofocus]="isAutofocus()"
   [attr.aria-label]="ariaLabel()"
   [attr.autocomplete]="index() === 0 ? 'one-time-code' : 'off'"
   maxlength="1"
@@ -15,5 +18,6 @@
   (input)="onInput($event)"
   (keydown)="onKeyDown($event)"
   (paste)="onPaste($event)"
-  (focus)="onFocus()"
+  (focus)="onFocusEvent($event)"
+  (blur)="onBlur($event)"
 />
