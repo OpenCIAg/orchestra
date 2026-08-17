@@ -120,3 +120,5 @@ export * from '@ciag/orchestra/toggle-button';
 export * from '@ciag/orchestra/cascade-select';
 export * from '@ciag/orchestra/key-filter';
 export * from '@ciag/orchestra/input-mask';
+export * from '@ciag/orchestra/organization-chart';
+export * from '@ciag/orchestra/knob';
