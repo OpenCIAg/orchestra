@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { booleanAttribute, ChangeDetectionStrategy, Component, Injectable, input, output, signal } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, Injectable, computed, input, model, output, signal } from '@angular/core';
 import { P2_SHARED_STYLES } from './p2-shared';
 
 export interface PrimeMenuItem {
@@ -74,9 +74,20 @@ export class ConfirmDialogComponent {
 
 @Component({
   selector: 'orc-data-view', standalone: true,
-  template: `<section class="orc-data-view" [attr.aria-label]="ariaLabel()">@if (header()) { <header>{{ header() }}</header> }<div class="content" [class.list]="layout() === 'list'">@for (item of value(); track $index) { <article>@if (itemTemplate()) { <ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item }" /> } @else { {{ itemLabel(item) }} }</article> } @empty { <p>{{ emptyMessage() }}</p> }</div></section>`,
+  template: `<section class="orc-data-view" [attr.aria-label]="ariaLabel()">@if (header()) { <header>{{ header() }}</header> }<div class="content" [class.list]="layout() === 'list'" [class]="layout() === 'list' ? listStyleClass() : gridStyleClass()">@for (item of pageItems(); track getItemKey(item, $index)) { <article>@if (itemTemplate()) { <ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item }" /> } @else { {{ itemLabel(item) }} }</article> } @empty { <p>{{ emptyMessage() }}</p> }</div>@if (paginator() && pageCount() > 1) { <nav class="paginator" aria-label="Data view pages"><button type="button" [disabled]="first() === 0" (click)="goToPage(first() - rows())">‹</button><span>{{ (first() / rows()) + 1 }} / {{ pageCount() }}</span><button type="button" [disabled]="first() + rows() >= effectiveTotalRecords()" (click)="goToPage(first() + rows())">›</button></nav> }</section>`,
   imports: [CommonModule],
   styles: [P2_SHARED_STYLES + `.orc-data-view{display:block}.orc-data-view header{padding:.7rem;border-bottom:1px solid #e2e8f0;font-weight:700}.content{display:grid;grid-template-columns:repeat(auto-fill,minmax(12rem,1fr));gap:1rem}.content.list{display:grid;grid-template-columns:1fr}.content article{padding:.8rem;border:1px solid #e2e8f0;border-radius:.5rem}.content>p{color:#64748b}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataViewComponent<T = unknown> { readonly value = input<T[]>([]); readonly layout = input<'list' | 'grid'>('grid'); readonly header = input(''); readonly emptyMessage = input('No items'); readonly ariaLabel = input('Data view'); readonly itemTemplate = input<any>(null); itemLabel(item: T): string { return typeof item === 'object' ? JSON.stringify(item) : String(item ?? ''); } }
+export class DataViewComponent<T = Record<string, unknown>> {
+  readonly value = input<T[]>([]); readonly layout = model<'list' | 'grid'>('grid'); readonly header = input(''); readonly emptyMessage = input('No items'); readonly ariaLabel = input('Data view'); readonly itemTemplate = input<any>(null);
+  readonly paginator = input(false, { transform: booleanAttribute }); readonly rows = input(10); readonly first = model(0); readonly totalRecords = input<number | undefined>(undefined); readonly dataKey = input<string | undefined>(undefined); readonly sortField = input<string | undefined>(undefined); readonly sortOrder = model<1 | -1>(1); readonly gridStyleClass = input(''); readonly listStyleClass = input('');
+  readonly onPage = output<{ first: number; rows: number }>(); readonly onSort = output<{ sortField: string; sortOrder: 1 | -1 }>(); readonly onLayoutChange = output<'list' | 'grid'>();
+  readonly sortedItems = computed(() => { const field = this.sortField(); const items = [...this.value()]; if (!field) return items; const direction = this.sortOrder(); return items.sort((a, b) => { const left = (a as any)?.[field]; const right = (b as any)?.[field]; return String(left ?? '').localeCompare(String(right ?? ''), undefined, { numeric: true, sensitivity: 'base' }) * direction; }); });
+  readonly pageCount = computed(() => Math.max(1, Math.ceil((this.totalRecords() ?? this.sortedItems().length) / Math.max(1, this.rows()))));
+  readonly pageItems = computed(() => this.paginator() ? this.sortedItems().slice(this.first(), this.first() + this.rows()) : this.sortedItems());
+  effectiveTotalRecords(): number { return this.totalRecords() ?? this.sortedItems().length; }
+  getItemKey(item: T, index: number): unknown { const key = this.dataKey(); return key ? (item as any)?.[key] ?? index : index; }
+  itemLabel(item: T): string { return typeof item === 'object' ? JSON.stringify(item) : String(item ?? ''); }
+  goToPage(first: number): void { const next = Math.max(0, Math.min(Math.max(0, (this.pageCount() - 1) * this.rows()), first)); this.first.set(next); this.onPage.emit({ first: next, rows: this.rows() }); }
+}
