@@ -108,3 +108,5 @@ export * from '@ciag/orchestra/ifta-label';
 export * from '@ciag/orchestra/inplace';
 export * from '@ciag/orchestra/terminal';
 export * from '@ciag/orchestra/image-compare';
+export * from '@ciag/orchestra/tree';
+export * from '@ciag/orchestra/tree-table';
