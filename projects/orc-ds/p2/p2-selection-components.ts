@@ -37,7 +37,8 @@ interface VisibleTreeSelectNode { node: TreeSelectNode; level: number; }
   template: `
     <div class="orc-p2-tree-select">
       @if (label()) { <label>{{ label() }}</label> }
-      <button type="button" class="trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="inputId()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" (click)="open.set(!open())">{{ selectedLabel() || placeholder() }} <span aria-hidden="true">⌄</span></button>
+      <button type="button" class="trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="inputId()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" (click)="toggleOpen()">{{ selectedLabel() || placeholder() }} <span aria-hidden="true">⌄</span></button>
+      @if (showClear() && value() !== null) { <button type="button" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
         @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="filterValue.set(($any($event.target)).value)" aria-label="Filter nodes" /> }
         <ul class="tree" role="tree">
@@ -80,6 +81,7 @@ export class TreeSelectComponent implements ControlValueAccessor {
   registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
   setDisabledState(value: boolean): void { this.cvaDisabled.set(value); }
   selectedLabel(): string { return this.findNode(this.nodes(), this.value())?.label ?? ''; }
+  toggleOpen(): void { this.open.update(value => !value); this.open() ? this.onShow.emit() : this.onHide.emit(); }
   toggle(node: TreeSelectNode): void { if (!node.children?.length) return; this.expanded.update(current => { const next = new Set(current); next.has(node.value) ? next.delete(node.value) : next.add(node.value); return next; }); }
   select(node: TreeSelectNode, event?: Event): void { if (node.disabled || this.disabled() || this.cvaDisabled()) return; this.value.set(node.value); this.onModelChange(node.value); this.onModelTouched(); this.nodeSelect.emit(node); if (event) this.onChange.emit({ originalEvent: event, value: node.value }); this.open.set(false); }
   clear(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set(null); this.onModelChange(null); this.onClear.emit(event); }
