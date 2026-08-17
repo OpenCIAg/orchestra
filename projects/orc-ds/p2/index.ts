@@ -4,3 +4,4 @@ export * from './p2-data-components';
 export * from './p2-overlay-components';
 export * from './p2-selection-components';
 export * from './p2-shared';
+export * from './p2-primeng-gap-components';
