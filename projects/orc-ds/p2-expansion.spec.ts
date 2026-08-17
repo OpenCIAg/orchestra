@@ -8,6 +8,7 @@ import { VirtualScrollerComponent } from './p2/p2-data-components';
 import { SegmentedControlComponent, TreeSelectComponent } from './p2/p2-selection-components';
 import { DataViewComponent } from './p2/p2-advanced-components';
 import { ToggleButtonComponent } from './p2/p2-form-gap-components';
+import { SelectComponent } from './select/select.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -82,6 +83,18 @@ describe('P2 expansion components', () => {
     expect(modelValue).toBeTrue();
     component.writeValue(false);
     expect(component.checked()).toBeFalse();
+  });
+
+  it('maps PrimeNG-style Select option fields and emits filter state', () => {
+    const fixture = TestBed.createComponent(SelectComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('options', [{ code: 'br', title: 'Brazil' }, { code: 'pt', title: 'Portugal' }]);
+    fixture.componentRef.setInput('optionValue', 'code');
+    fixture.componentRef.setInput('optionLabel', 'title');
+    expect(component.getOptionValue(component.options()![0])).toBe('br');
+    expect(component.getOptionLabel(component.options()![1])).toBe('Portugal');
+    component.onDataOptionClick(component.options()![0] as any);
+    expect(component.value()).toBe('br');
   });
 
   it('sorts and selects rows in the data table', () => {

@@ -80,7 +80,7 @@
 
     <!-- Actions (Clear & Chevron Arrow) -->
     <div class="orc-select-actions">
-      @if (clearable() && hasValue() && !effectiveDisabled() && !readonly()) {
+      @if ((clearable() || showClear()) && hasValue() && !effectiveDisabled() && !readonly()) {
         <button
           type="button"
           class="orc-select-clear-btn"
@@ -123,13 +123,13 @@
     <ng-content select="[orcSelectHeader]"></ng-content>
 
     <!-- Search Input -->
-    @if (searchable()) {
+    @if (filterEnabled()) {
       <div class="orc-select-search-container">
         <input
           #searchInput
           type="text"
           class="orc-select-search-input"
-          [placeholder]="searchPlaceholder()"
+          [placeholder]="filterPlaceholder() || searchPlaceholder()"
           [value]="searchTerm()"
           (input)="onSearchInput($event)"
           (keydown)="onKeyDown($event)"

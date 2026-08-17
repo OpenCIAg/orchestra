@@ -81,6 +81,22 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly required = input(false, { transform: booleanAttribute });
   readonly clearable = input(false, { transform: booleanAttribute });
   readonly options = input<SelectOption[] | undefined>(undefined);
+  // PrimeNG Select public inputs (the Orchestra names remain supported).
+  readonly optionLabel = input<string | undefined>(undefined);
+  readonly optionValue = input<string | undefined>(undefined);
+  readonly optionDisabled = input<string | undefined>(undefined);
+  readonly filter = input<boolean | undefined>(undefined, { transform: booleanAttribute });
+  readonly filterPlaceholder = input('');
+  readonly filterBy = input<string | undefined>(undefined);
+  readonly showClear = input(false, { transform: booleanAttribute });
+  readonly inputId = input<string | undefined>(undefined);
+  readonly variant = input<'filled' | 'outlined'>('outlined');
+  readonly size = input<'small' | 'large' | undefined>(undefined);
+  readonly fluid = input(false, { transform: booleanAttribute });
+  readonly loading = input(false, { transform: booleanAttribute });
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly editable = input(false, { transform: booleanAttribute });
+  readonly scrollHeight = input('200px');
 
   // Acessibilidade WCAG
   readonly ariaLabel = input<string>('');
@@ -96,6 +112,12 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly closed = output<void>();
   readonly blur = output<FocusEvent>();
   readonly focus = output<FocusEvent>();
+  readonly onChange = output<{ originalEvent: Event; value: any }>();
+  readonly onFilter = output<{ originalEvent: Event; filter: string }>();
+  readonly onShow = output<void>();
+  readonly onHide = output<void>();
+  readonly onClear = output<Event>();
+  readonly onClick = output<MouseEvent>();
 
   // ── Internal State Signals ─────────────────────────────────
   readonly isOpen = signal<boolean>(false);
@@ -105,7 +127,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly activeOptionIndex = signal<number>(-1);
 
   // ── Computeds ──────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.id() || this.inputId() || this.uniqueId);
+  readonly filterEnabled = computed(() => this.filter() ?? this.searchable());
   readonly listboxId = computed(() => `${this.effectiveId()}-listbox`);
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
@@ -142,11 +165,12 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     const list = this.dataOptions();
     const term = this.searchTerm().trim().toLowerCase();
     if (!term) return list;
-    return list.filter((opt) =>
-      opt.label.toLowerCase().includes(term) ||
-      (opt.description && opt.description.toLowerCase().includes(term))
-    );
+    return list.filter((opt) => this.getOptionLabel(opt).toLowerCase().includes(term) || (opt.description && opt.description.toLowerCase().includes(term)));
   });
+
+  getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
+  getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
+  isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return Boolean(key ? option?.[key] : option?.disabled); }
 
   // Selected Option Items for display
   readonly selectedItems = computed<{ label: string; value: any; icon?: string; avatarUrl?: string }[]>(() => {
@@ -186,7 +210,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly hasValue = computed(() => this.selectedItems().length > 0);
 
   // ── ControlValueAccessor Implementation ───────────────────
-  private onChange: (value: any) => void = () => {};
+  private onModelChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
   constructor() {
@@ -238,7 +262,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
+    this.onModelChange = fn;
   }
 
   registerOnTouched(fn: any): void {
@@ -282,8 +306,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     this.overlayRef.attach(this.portal);
     this.isOpen.set(true);
     this.opened.emit();
+    this.onShow.emit();
 
-    if (this.searchable()) {
+    if (this.filterEnabled()) {
       setTimeout(() => this.searchInputRef()?.nativeElement?.focus(), 50);
     }
   }
@@ -297,6 +322,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     this.activeOptionIndex.set(-1);
     this.onTouched();
     this.closed.emit();
+    this.onHide.emit();
   }
 
   private createPositionStrategy(origin: HTMLElement): PositionStrategy {
@@ -317,8 +343,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   onDataOptionClick(option: SelectOption): void {
-    if (option.disabled) return;
-    this.selectValue(option.value);
+    if (this.isOptionDisabled(option)) return;
+    this.selectValue(this.getOptionValue(option));
   }
 
   private selectValue(val: any): void {
@@ -331,12 +357,14 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
         current.push(val);
       }
       this.value.set(current);
-      this.onChange(current);
+      this.onModelChange(current);
       this.selectionChange.emit(current);
+      this.onChange.emit({ originalEvent: new Event('change'), value: current });
     } else {
       this.value.set(val);
-      this.onChange(val);
+      this.onModelChange(val);
       this.selectionChange.emit(val);
+      this.onChange.emit({ originalEvent: new Event('change'), value: val });
       this.closePanel();
     }
   }
@@ -350,7 +378,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
       const updated = current.filter((v) => v !== itemValue);
       this.value.set(updated);
-      this.onChange(updated);
+      this.onModelChange(updated);
       this.selectionChange.emit(updated);
     } else {
       this.clearValue(event);
@@ -364,8 +392,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
 
     const clearedVal = this.multiple() ? [] : undefined;
     this.value.set(clearedVal);
-    this.onChange(clearedVal);
+    this.onModelChange(clearedVal);
     this.selectionChange.emit(clearedVal);
+    this.onClear.emit(event);
   }
 
   setActiveOption(optionComponent: OptionComponent): void {
@@ -393,6 +422,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     const val = target.value;
     this.searchTerm.set(val);
     this.searchChange.emit(val);
+    this.onFilter.emit({ originalEvent: event, filter: val });
   }
 
   // ── Keyboard Navigation (WAI-ARIA Select) ────────────────
