@@ -357,11 +357,12 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   selector: 'orc-multi-select',
   standalone: true,
   template: `
-    <div class="orc-p2-multi-select">
+    <div class="orc-p2-multi-select" [class]="styleClass()" [class.fluid]="fluid()">
       @if (label()) { <label>{{ label() }}</label> }
-      <button type="button" class="trigger" [disabled]="disabled()" [attr.aria-expanded]="open()" (click)="open.set(!open())">
+      <button type="button" class="trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="inputId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" (click)="toggleOpen()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
         <span>{{ selectedLabels() || placeholder() }}</span><span aria-hidden="true">⌄</span>
       </button>
+      @if (showClear() && value().length) { <button type="button" class="clear" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
         @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="filterValue.set(($any($event.target)).value)" aria-label="Filter options" /> }
         <ul class="options" role="listbox" aria-multiselectable="true">
@@ -385,12 +386,13 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   readonly label = input('');
   readonly placeholder = input('Select options');
   readonly emptyText = input('No options');
-  readonly disabled = input(false, { transform: booleanAttribute });
-  readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | undefined>(undefined);
-  readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly showClear = input(false, { transform: booleanAttribute }); readonly maxSelectedLabels = input<number | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly styleClass = input('');
+  readonly disabled = input(false, { transform: booleanAttribute }); readonly readonly = input(false, { transform: booleanAttribute }); readonly fluid = input(false, { transform: booleanAttribute });
+  readonly inputId = input<string | undefined>(undefined); readonly ariaLabel = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly tabindex = input<number | undefined>(undefined); readonly name = input<string | undefined>(undefined); readonly variant = input<'filled' | 'outlined'>('outlined'); readonly styleClass = input(''); readonly panelStyleClass = input('');
+  readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | undefined>(undefined); readonly dataKey = input<string | undefined>(undefined);
+  readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly filterBy = input<string | undefined>(undefined); readonly showClear = input(false, { transform: booleanAttribute }); readonly showToggleAll = input(true, { transform: booleanAttribute }); readonly maxSelectedLabels = input<number | undefined>(undefined); readonly selectedItemsLabel = input('{0} items selected'); readonly selectionLimit = input<number | undefined>(undefined); readonly emptyFilterMessage = input('No results found'); readonly emptyMessage = input('No options'); readonly loading = input(false, { transform: booleanAttribute }); readonly display = input<'comma' | 'chip'>('comma');
   readonly open = model(false);
-  readonly optionSelected = output<P2Option<T>>(); readonly onChange = output<{ originalEvent: Event; value: T[] }>(); readonly onSelectAllChange = output<{ originalEvent: Event; checked: boolean }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onClear = output<Event>();
-  private cvaDisabled = signal(false); private onModelChange: (value: T[]) => void = () => {}; private onModelTouched: () => void = () => {};
+  readonly optionSelected = output<P2Option<T>>(); readonly onChange = output<{ originalEvent: Event; value: T[] }>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onSelectAllChange = output<{ originalEvent: Event; checked: boolean }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onClear = output<Event>(); readonly onPanelShow = output<void>(); readonly onPanelHide = output<void>(); readonly onRemove = output<{ value: T; originalEvent: Event }>();
+  protected cvaDisabled = signal(false); private onModelChange: (value: T[]) => void = () => {}; private onModelTouched: () => void = () => {};
   readonly filteredOptions = computed(() => { const term = this.filterValue().trim().toLowerCase(); return term ? this.options().filter(option => this.getOptionLabel(option).toLowerCase().includes(term)) : this.options(); });
 
   writeValue(value: T[] | null): void { this.value.set(Array.isArray(value) ? [...value] : []); }
@@ -402,15 +404,17 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return Boolean(key ? option?.[key] : option?.disabled); }
 
   isSelected(option: P2Option<T>): boolean { return this.value().includes(this.getOptionValue(option)); }
-  selectedLabels(): string { const labels = this.options().filter(option => this.isSelected(option)).map(option => this.getOptionLabel(option)); const max = this.maxSelectedLabels(); return max !== undefined && labels.length > max ? `${max} items selected` : labels.join(', '); }
+  selectedLabels(): string { const labels = this.options().filter(option => this.isSelected(option)).map(option => this.getOptionLabel(option)); const max = this.maxSelectedLabels(); return max !== undefined && labels.length > max ? this.selectedItemsLabel().replace('{0}', String(labels.length)) : labels.join(', '); }
+  toggleOpen(): void { if (this.disabled() || this.cvaDisabled() || this.readonly()) return; this.open.update(value => !value); this.open() ? this.onPanelShow.emit() : this.onPanelHide.emit(); }
   select(option: P2Option<T>, event?: Event): void {
     if (this.isOptionDisabled(option) || this.disabled() || this.cvaDisabled()) return;
     const current = [...this.value()];
     const candidate = this.getOptionValue(option); const index = current.indexOf(candidate);
-    index >= 0 ? current.splice(index, 1) : current.push(candidate);
+    if (index >= 0) current.splice(index, 1); else if (this.selectionLimit() === undefined || current.length < this.selectionLimit()!) current.push(candidate);
     this.value.set(current); this.onModelChange(current); this.onModelTouched(); this.optionSelected.emit(option); if (event) this.onChange.emit({ originalEvent: event, value: current });
   }
   clear(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set([]); this.onModelChange([]); this.onClear.emit(event); }
+  selectAll(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; const selectable = this.options().filter(option => !this.isOptionDisabled(option)); const checked = !selectable.every(option => this.isSelected(option)); const next = checked ? selectable.map(option => this.getOptionValue(option)) : []; this.value.set(next); this.onModelChange(next); this.onSelectAllChange.emit({ originalEvent: event, checked }); }
 }
 
 @Component({
