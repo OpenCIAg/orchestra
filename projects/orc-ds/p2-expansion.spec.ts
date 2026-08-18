@@ -865,6 +865,23 @@ describe('P2 expansion components', () => {
     expect(editor.getQuill()).not.toBeNull();
   });
 
+  it('emits PrimeNG-style Editor text and selection lifecycle payloads', () => {
+    const fixture = TestBed.createComponent(EditorComponent);
+    fixture.detectChanges();
+    const editor = fixture.componentInstance;
+    let textEvent: any;
+    let selectionEvent: any;
+    editor.onTextChange.subscribe(event => textEvent = event);
+    editor.onSelectionChange.subscribe(event => selectionEvent = event);
+    const surface = fixture.nativeElement.querySelector('.surface') as HTMLElement;
+    surface.innerHTML = '<b>Hello</b>';
+    editor.onInput({ target: surface } as unknown as Event);
+    editor.emitSelectionChange(new Event('selectionchange'));
+    expect(textEvent.source).toBe('user');
+    expect(textEvent.html).toContain('Hello');
+    expect(selectionEvent).toEqual(jasmine.objectContaining({ source: 'user' }));
+  });
+
   it('supports Galleria circular navigation and image change events', () => {
     const fixture = TestBed.createComponent(GalleriaComponent);
     const component = fixture.componentInstance;
