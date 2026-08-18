@@ -332,6 +332,20 @@ describe('P2 expansion components', () => {
     expect(component.checked()).toBeFalse();
   });
 
+  it('supports non-binary checkbox array membership', () => {
+    const fixture = TestBed.createComponent(CheckboxComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('value', 'email');
+    component.writeValue(['sms', 'email']);
+    expect(component.checked()).toBeTrue();
+    let modelValue: unknown;
+    component.registerOnChange(value => modelValue = value);
+    component.toggle();
+    expect(modelValue).toEqual(['sms']);
+    component.toggle();
+    expect(modelValue).toEqual(['sms', 'email']);
+  });
+
   it('propagates ToggleSwitch trueValue/falseValue through ControlValueAccessor', () => {
     const fixture = TestBed.createComponent(SwitchComponent);
     const component = fixture.componentInstance;

@@ -64,6 +64,7 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   // Estado interno para ControlValueAccessor
   private readonly cvaDisabled = signal<boolean>(false);
+  private readonly cvaValue = signal<any>(false);
 
   // Identificadores e estados derivados (Signals)
   readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
@@ -99,7 +100,8 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   // ── ControlValueAccessor Implementation ───────────────────
   writeValue(val: any): void {
-    this.checked.set(this.binary() ? val === this.trueValue() : Boolean(val));
+    this.cvaValue.set(val);
+    this.checked.set(this.binary() ? val === this.trueValue() : Array.isArray(val) ? val.some(item => item === this.value()) : Boolean(val));
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
@@ -132,7 +134,8 @@ export class CheckboxComponent implements ControlValueAccessor {
     }
 
     const newChecked = this.checked();
-    const emittedValue = this.binary() ? (newChecked ? this.trueValue() : this.falseValue()) : newChecked;
+    const emittedValue = this.nextModelValue(newChecked);
+    this.cvaValue.set(emittedValue);
     this.onModelChange(emittedValue);
     this.onTouched();
 
@@ -152,7 +155,7 @@ export class CheckboxComponent implements ControlValueAccessor {
     The output value follows PrimeNG's binary/trueValue/falseValue contract,
     while `checked` remains the visual boolean state used by Orchestra.
   */
-  modelValue(): any { return this.binary() ? (this.checked() ? this.trueValue() : this.falseValue()) : this.checked(); }
+  modelValue(): any { return this.nextModelValue(this.checked()); }
 
   /* legacy method retained for callers that used the old boolean-only API */
   onLegacyBlur(): void { this.onTouched(); }
@@ -169,7 +172,9 @@ export class CheckboxComponent implements ControlValueAccessor {
     }
 
     const newChecked = this.checked();
-    this.onModelChange(this.modelValue());
+    const emittedValue = this.nextModelValue(this.checked());
+    this.cvaValue.set(emittedValue);
+    this.onModelChange(emittedValue);
     this.onTouched();
 
     const eventValue = {
@@ -183,5 +188,14 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   focus(): void {
     this.inputElement()?.nativeElement.focus();
+  }
+
+  private nextModelValue(checked: boolean): any {
+    if (this.binary()) return checked ? this.trueValue() : this.falseValue();
+    const current = this.cvaValue();
+    if (!Array.isArray(current) || this.value() === undefined) return checked;
+    return checked
+      ? current.some(item => item === this.value()) ? current : [...current, this.value()]
+      : current.filter(item => item !== this.value());
   }
 }
