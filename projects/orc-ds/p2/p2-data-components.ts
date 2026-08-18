@@ -174,7 +174,7 @@ export class DataTableComponent implements OnInit {
   readonly allSelected = computed(() => !!this.pageRows().length && this.pageRows().every(row => this.isSelected(row)));
   readonly someSelected = computed(() => this.pageRows().some(row => this.isSelected(row)) && !this.allSelected());
 
-  getRowId(row: Record<string, unknown>): string { return String(row[this.rowKey()] ?? JSON.stringify(row)); }
+  getRowId(row: Record<string, unknown>): string { const key = this.dataKey() || this.rowKey(); return String(row[key] ?? JSON.stringify(row)); }
   getCell(row: Record<string, unknown>, key: string): unknown { return row[key] ?? ''; }
   isSelected(row: Record<string, unknown>): boolean { return this.selected().some(item => this.getRowId(item) === this.getRowId(row)); }
   setFilter(value: string): void { this.filter.set(value); this.page.set(0); this.first.set(0); this.onFilter.emit({ value }); }

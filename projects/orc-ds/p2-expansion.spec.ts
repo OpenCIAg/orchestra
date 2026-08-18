@@ -604,6 +604,15 @@ describe('P2 expansion components', () => {
     expect(lazy).toHaveBeenCalledWith({ first: 0, rows: 25 });
   });
 
+  it('uses DataTable dataKey for controlled row selection identity', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    const row = { code: 'A', label: 'Alpha' };
+    fixture.componentRef.setInput('data', [row]);
+    fixture.componentRef.setInput('dataKey', 'code');
+    fixture.componentRef.setInput('selection', [{ code: 'A', label: 'External copy' }]);
+    expect(fixture.componentInstance.isSelected(row)).toBeTrue();
+  });
+
   it('honors single-row selection and emits filter changes', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;
