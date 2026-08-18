@@ -26,6 +26,14 @@ describe('P1 core components', () => {
     expect(fixture.componentInstance.displayValue()).toContain('$12.50');
   });
 
+  it('parses localized decimal input and defaults the input tabindex', () => {
+    const fixture = TestBed.createComponent(NumberInputComponent);
+    const component = fixture.componentInstance;
+    component.handleInput({ target: { value: '1,5' } } as unknown as Event);
+    expect(component.value()).toBe(1.5);
+    expect(component.tabindex()).toBe(0);
+  });
+
   it('selects an autocomplete option and emits its value', () => {
     const fixture = TestBed.createComponent(AutocompleteComponent);
     const option = { value: 'sp', label: 'São Paulo' };

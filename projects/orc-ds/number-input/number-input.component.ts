@@ -56,7 +56,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly inputStyle = input<Record<string, string | number> | undefined>(undefined); readonly inputStyleClass = input('');
   readonly incrementButtonClass = input(''); readonly decrementButtonClass = input(''); readonly incrementButtonIcon = input('+'); readonly decrementButtonIcon = input('−');
   readonly inputId = input<string | undefined>(undefined);
-  readonly tabindex = input<number | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(0);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly ariaDescribedBy = input<string | undefined>(undefined);
   readonly autofocus = input(false, { transform: booleanAttribute });
@@ -106,9 +106,14 @@ export class NumberInputComponent implements ControlValueAccessor {
     const raw = (event.target as HTMLInputElement).value;
     if (raw.trim() === '') {
       if (this.allowEmpty()) this.update(null);
+      this.onInput.emit({ originalEvent: event, value: this.value() });
       return;
     }
-    const parsed = Number(raw.replace(/[^0-9+\-.]/g, ''));
+    const numericText = raw.replace(/[^0-9+,\-.]/g, '');
+    const normalized = numericText.includes(',') && !numericText.includes('.')
+      ? numericText.replace(',', '.')
+      : numericText.replace(/,/g, '');
+    const parsed = Number(normalized);
     if (Number.isFinite(parsed)) this.update(this.clamp(parsed));
     this.onInput.emit({ originalEvent: event, value: this.value() });
   }
