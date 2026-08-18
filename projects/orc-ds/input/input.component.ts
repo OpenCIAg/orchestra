@@ -43,6 +43,7 @@ export class InputComponent implements ControlValueAccessor {
 
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly id = input<string>('');
+  readonly inputId = input<string | undefined>(undefined);
   readonly name = input<string>('');
   readonly type = input<InputType>('text');
   readonly size = input<InputSize>('md');
@@ -71,9 +72,14 @@ export class InputComponent implements ControlValueAccessor {
   readonly suffixText = input<string>('');
   readonly autocomplete = input<string>('off');
   readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly variant = input<'filled' | 'outlined' | undefined>(undefined);
+  readonly fluid = input(false, { transform: booleanAttribute });
 
   // Acessibilidade WCAG
   readonly ariaLabel = input<string>('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly ariaDescribedby = input<string>('');
 
   // ── Two-Way Model ─────────────────────────────────────────
@@ -98,7 +104,7 @@ export class InputComponent implements ControlValueAccessor {
   protected readonly viewValue = linkedSignal<string | number>(() => this.value());
 
   // ── Computeds ─────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
 

@@ -1,7 +1,13 @@
 <div
-  class="orc-input-container"
+  class="p-inputtext p-component orc-input-container"
+  [class]="'p-inputtext p-component orc-input-container ' + styleClass()"
+  [style]="style()"
   [class.orc-input-container--disabled]="effectiveDisabled()"
   [class.orc-input-container--readonly]="readonly()"
+  [class.p-input-filled]="variant() === 'filled'"
+  [class.p-input-outlined]="variant() === 'outlined'"
+  [class.p-input-fluid]="fluid()"
+  [attr.data-pc-name]="'inputtext'"
 >
   <!-- ── Rótulo / Label ──────────────────────────────────────── -->
   @if (label()) {
@@ -53,12 +59,13 @@
       [autocomplete]="autocomplete()"
       [autofocus]="autofocus()"
       [attr.aria-label]="ariaLabel() || null"
+      [attr.aria-labelledby]="ariaLabelledBy() || null"
       [attr.aria-invalid]="status() === 'error' ? 'true' : null"
       [attr.aria-describedby]="computedAriaDescribedBy()"
       (input)="onInput($event)"
       (focus)="onFocus($event)"
       (blur)="onBlur($event)"
-      class="orc-input__native"
+      class="p-inputtext p-component orc-input__native"
     />
 
     <!-- Botão de Limpar (Search / Clearable) -->
