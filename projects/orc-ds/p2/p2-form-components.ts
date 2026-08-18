@@ -289,12 +289,12 @@ export class InputGroupComponent {
   selector: 'orc-listbox',
   standalone: true,
   template: `
-    <div class="orc-p2-listbox-wrap" [style]="style()">
+    <div class="p-listbox p-component orc-p2-listbox-wrap" [class]="'p-listbox p-component orc-p2-listbox-wrap ' + styleClass()" [style]="style()" [attr.data-pc-name]="'listbox'">
       @if (label()) { <label>{{ label() }}</label> }
       @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" /> }
-      <ul class="orc-p2-listbox" [id]="id()" [class]="'orc-p2-listbox ' + styleClass() + ' ' + listStyleClass()" [style]="listStyle()" [style.max-height]="scrollHeight()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
+      <ul class="p-listbox-list orc-p2-listbox" [id]="id()" [class]="'p-listbox-list orc-p2-listbox ' + listStyleClass()" [style]="listStyle()" [style.max-height]="scrollHeight()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
         @for (option of filteredOptions(); track getOptionValue(option)) {
-          <li role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)" (dblclick)="onDblClick.emit({ originalEvent: $event, option })">
+          <li class="p-listbox-option" role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)" (dblclick)="onDblClick.emit({ originalEvent: $event, option })">
             <span>{{ getOptionLabel(option) }}</span>@if (option.description) { <small>{{ option.description }}</small> }
           </li>
         } @empty { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyText() }}</li> }
