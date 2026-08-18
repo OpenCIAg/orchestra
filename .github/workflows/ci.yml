@@ -38,7 +38,15 @@ jobs:
         run: npm run verify:compatibility
 
       - name: Run library tests
-        run: npm run test:lib:ci
+        run: set -o pipefail; npm run test:lib:ci 2>&1 | tee test-output.log
+        shell: bash
+
+      - name: Upload test diagnostics
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: v19-test-output
+          path: test-output.log
 
       - name: Build library (@ciag/orchestra)
         run: npm run build:lib
