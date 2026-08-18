@@ -416,7 +416,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   private selectValue(val: any, originalEvent?: Event): void {
     if (this.multiple()) {
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      const index = current.indexOf(val);
+      const index = current.findIndex(item => this.sameOptionValue(item, val));
       if (index > -1) {
         current.splice(index, 1);
       } else {
