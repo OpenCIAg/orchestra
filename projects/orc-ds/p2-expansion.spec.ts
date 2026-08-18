@@ -127,6 +127,7 @@ describe('P2 expansion components', () => {
     component.selectCalendarDate('2025-01-06');
     component.selectCalendarDate('2025-01-07');
     expect(component.value()).toEqual(['2025-01-06', '2025-01-07']);
+    expect(component.calendarValues()).toEqual(['2025-01-06', '2025-01-07']);
 
     fixture.componentRef.setInput('selectionMode', 'range');
     component.clear();
