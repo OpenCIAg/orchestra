@@ -904,6 +904,18 @@ describe('P2 expansion components', () => {
     expect(component.value()).toBe('');
   });
 
+  it('parses and emits ColorPicker RGB and HSV formats', () => {
+    const fixture = TestBed.createComponent(ColorPickerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('format', 'rgb');
+    component.onTextInput({ target: { value: '#ff0000' } } as unknown as Event);
+    expect(component.value()).toBe('rgb(255, 0, 0)');
+    fixture.componentRef.setInput('format', 'hsv');
+    component.onTextInput({ target: { value: 'rgb(0, 255, 0)' } } as unknown as Event);
+    expect(component.value()).toBe('hsv(120, 100%, 100%)');
+    expect(component.nativeValue()).toBe('#00ff00');
+  });
+
   it('supports PrimeNG badge value and severity aliases', () => {
     const fixture = TestBed.createComponent(BadgeComponent);
     const component = fixture.componentInstance;
