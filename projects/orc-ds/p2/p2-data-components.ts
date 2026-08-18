@@ -141,7 +141,7 @@ export class DataTableComponent implements OnInit {
   readonly paginator = input(false, { transform: booleanAttribute });
   readonly pageSize = input(10);
   readonly page = model(0);
-  readonly selected = model<Record<string, unknown>[]>([], { alias: 'selection' });
+  readonly selected = model<Record<string, unknown>[]>([]);
   readonly sortKey = signal('');
   readonly sortDirection = signal<'ascending' | 'descending'>('ascending');
   readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());

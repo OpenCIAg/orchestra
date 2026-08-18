@@ -64,7 +64,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly cancelLabel = input<string | undefined>(undefined);
   readonly previewWidth = input(100, { transform: numberAttribute });
   readonly styleClass = input<string | undefined>(undefined);
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<string | Record<string, string | number> | undefined>(undefined);
   readonly chooseIcon = input<string | undefined>(undefined);
   readonly uploadIcon = input<string | undefined>(undefined);
   readonly cancelIcon = input<string | undefined>(undefined);
