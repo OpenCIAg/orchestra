@@ -65,6 +65,12 @@ const fromMonthKey = (value: string): Date => {
           </button> }
         }
       </div>
+      @if (showButtonBar()) {
+        <footer class="p-datepicker-buttonbar orc-p2-calendar__buttonbar">
+          <button type="button" (click)="today()">Today</button>
+          <button type="button" (click)="clear()">Clear</button>
+        </footer>
+      }
     </section>
   `,
   styles: [P2_SHARED_STYLES + `
