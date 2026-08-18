@@ -2,6 +2,8 @@ import { booleanAttribute, ChangeDetectionStrategy, Component, computed, forward
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2Option, P2_SHARED_STYLES } from './p2-shared';
 
+let nextTreeSelectId = 0;
+
 @Component({
   selector: 'orc-segmented-control',
   standalone: true,
@@ -35,13 +37,13 @@ interface VisibleTreeSelectNode { node: TreeSelectNode; level: number; }
   selector: 'orc-tree-select',
   standalone: true,
   template: `
-    <div class="orc-p2-tree-select">
-      @if (label()) { <label>{{ label() }}</label> }
-      <button type="button" class="trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="inputId()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" (click)="toggleOpen()">{{ selectedLabel() || placeholder() }} <span aria-hidden="true">⌄</span></button>
+    <div class="p-treeselect p-component orc-p2-tree-select" [class]="'p-treeselect p-component orc-p2-tree-select ' + styleClass()" [style]="style()" [class.p-treeselect-fluid]="fluid()" [attr.data-pc-name]="'treeselect'">
+      @if (label()) { <label [for]="effectiveId()">{{ label() }}</label> }
+      <button type="button" class="p-treeselect-label p-treeselect-trigger trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="effectiveId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" [attr.aria-controls]="effectiveId() + '-panel'" (click)="toggleOpen()">{{ selectedLabel() || placeholder() }} <span aria-hidden="true">⌄</span></button>
       @if (showClear() && value() !== null) { <button type="button" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
         @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" aria-label="Filter nodes" /> }
-        <ul class="tree" [class]="panelStyleClass() || panelClass()" role="tree" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
+        <ul class="p-treeselect-panel p-component tree" [class]="'p-treeselect-panel p-component tree ' + (panelStyleClass() || panelClass())" [style]="panelStyle()" [style.max-height]="scrollHeight()" [id]="effectiveId() + '-panel'" role="tree" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
           @for (item of filteredVisibleNodes(); track item.node.value) {
             <li role="treeitem" [attr.aria-level]="item.level" [style.padding-left.rem]="item.level * .9" [attr.aria-selected]="isNodeSelected(item.node)" [class.selected]="isNodeSelected(item.node)" [class.disabled]="item.node.disabled">
               @if (item.node.children?.length) { <button type="button" class="expand" [attr.aria-label]="expanded().has(item.node.value) ? 'Collapse' : 'Expand'" (click)="toggle(item.node)">{{ expanded().has(item.node.value) ? '▾' : '▸' }}</button> } @else { <span class="expand-placeholder"></span> }
@@ -57,6 +59,8 @@ interface VisibleTreeSelectNode { node: TreeSelectNode; level: number; }
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TreeSelectComponent), multi: true }],
 })
 export class TreeSelectComponent implements ControlValueAccessor {
+  private readonly uniqueId = `orc-treeselect-${++nextTreeSelectId}`;
+  readonly styleClass = input('');
   readonly nodes = input<TreeSelectNode[]>([]);
   readonly value = model<string | string[] | null>(null);
   readonly label = input('');
@@ -67,6 +71,7 @@ export class TreeSelectComponent implements ControlValueAccessor {
   readonly expanded = signal<ReadonlySet<string>>(new Set());
   readonly nodeSelect = output<TreeSelectNode>(); readonly onChange = output<{ originalEvent: Event; value: string | string[] | null }>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClear = output<Event>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onNodeExpand = output<TreeSelectNode>(); readonly onNodeCollapse = output<TreeSelectNode>(); readonly nodeUnselect = output<TreeSelectNode>();
   protected readonly cvaDisabled = signal(false); private onModelChange: (value: string | string[] | null) => void = () => {}; private onModelTouched: () => void = () => {};
+  readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
 
   readonly visibleNodes = computed<VisibleTreeSelectNode[]>(() => {
     const result: VisibleTreeSelectNode[] = [];
