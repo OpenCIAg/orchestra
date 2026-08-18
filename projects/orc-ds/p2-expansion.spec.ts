@@ -24,6 +24,7 @@ import { PanelComponent } from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
+import { MessagesComponent } from './p2/p2-message-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -348,5 +349,15 @@ describe('P2 expansion components', () => {
     pick.transferSelected();
     expect(pick.source()).toEqual([]);
     expect(pick.target()[0].value).toBe('a');
+  });
+
+  it('supports Messages removal and clear lifecycle', () => {
+    const fixture = TestBed.createComponent(MessagesComponent);
+    const component = fixture.componentInstance;
+    component.messages.set([{ id: 1, severity: 'success', detail: 'Saved' }, { id: 2, severity: 'error', detail: 'Failed' }]);
+    component.remove(0);
+    expect(component.messages()).toHaveSize(1);
+    component.clearMessages();
+    expect(component.messages()).toEqual([]);
   });
 });

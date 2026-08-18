@@ -2,6 +2,7 @@ export * from './p2-form-components';
 export * from './p2-layout-components';
 export * from './p2-data-components';
 export * from './p2-overlay-components';
+export * from './p2-message-components';
 export * from './p2-selection-components';
 export * from './p2-shared';
 export * from './p2-primeng-gap-components';
