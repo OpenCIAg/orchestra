@@ -5,6 +5,7 @@ import {
   output,
   model,
   computed,
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '@ciag/orchestra/progress';
@@ -60,6 +61,13 @@ export class StepperComponent {
   readonly onChange = output<{ index: number; step: StepItem }>();
   readonly completed = output<void>();
 
+  constructor() {
+    effect(() => {
+      const active = this.activeIndex();
+      if (active !== this.currentStep()) this.currentStep.set(active);
+    });
+  }
+
   // ── Helpers & Métodos ─────────────────────────────────────
   getStepStatus(index: number, step: StepItem): StepStatus {
     if (step.status) return step.status;
@@ -79,6 +87,7 @@ export class StepperComponent {
     if (!step) return;
     if (!this.isStepClickable(index, step)) return;
     this.currentStep.set(index);
+    this.activeIndex.set(index);
     this.stepChange.emit({ step, index });
     this.onChange.emit({ index, step });
     if (index === this.steps().length - 1) this.completed.emit();
@@ -86,7 +95,7 @@ export class StepperComponent {
 
   next(): void { this.selectStep(this.currentStep() + 1, this.steps()[this.currentStep() + 1]); }
   previous(): void { this.selectStep(this.currentStep() - 1, this.steps()[this.currentStep() - 1]); }
-  reset(): void { this.currentStep.set(0); }
+  reset(): void { this.currentStep.set(0); this.activeIndex.set(0); }
 
   isConnectorCompleted(index: number): boolean {
     return index < this.currentStep();

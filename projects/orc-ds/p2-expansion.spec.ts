@@ -476,6 +476,17 @@ describe('P2 expansion components', () => {
     expect(component.currentStep()).toBe(0);
   });
 
+  it('keeps Steps activeIndex and Stepper currentStep synchronized', () => {
+    const fixture = TestBed.createComponent(StepperComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('steps', [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }]);
+    fixture.componentRef.setInput('activeIndex', 1);
+    fixture.detectChanges();
+    expect(component.currentStep()).toBe(1);
+    component.reset();
+    expect(component.activeIndex()).toBe(0);
+  });
+
   it('supports PrimeNG-style table filtering, row events, and lazy paging', () => {
     const fixture = TestBed.createComponent(TableComponent<{ id: number; name: string }>);
     const component = fixture.componentInstance;
