@@ -175,6 +175,11 @@ export class TableComponent<T = any> {
   readonly metaKeySelection = input(true, { transform: booleanAttribute });
   readonly selectionPageOnly = input(false, { transform: booleanAttribute });
   readonly dataKey = input<string | undefined>(undefined);
+  readonly rowSelectable = input<((row: { data: T; index: number }) => boolean) | undefined>(undefined);
+  readonly paginatorDropdownAppendTo = input<unknown>(undefined);
+  readonly paginatorDropdownScrollHeight = input('400px');
+  readonly virtualScrollDelay = input(0);
+  readonly contextMenu = input<unknown>(undefined);
   readonly defaultSortOrder = input(1);
   readonly sortMode = input<'single' | 'multiple'>('single');
   readonly resetPageOnSort = input(true, { transform: booleanAttribute });
@@ -196,6 +201,7 @@ export class TableComponent<T = any> {
   readonly onHeaderCheckboxToggle = output<unknown>();
   readonly onStateSave = output<unknown>();
   readonly onStateRestore = output<unknown>();
+  readonly sortFunction = output<unknown>();
 
   // ── Evento de Clique na Linha ─────────────────────────────
   readonly rowClick = output<T>();
@@ -286,17 +292,26 @@ export class TableComponent<T = any> {
   }
 
   isRowSelected(row: any, selected = this.selectedRows()): boolean {
-    const id = this.getRowId(row);
-    return selected.some(item => this.getRowId(item) === id);
+    return selected.some(item => this.sameRow(item, row));
+  }
+
+  private sameRow(left: T, right: T): boolean {
+    if (this.compareSelectionBy() === 'deepEquals') {
+      try { return JSON.stringify(left) === JSON.stringify(right); } catch { return left === right; }
+    }
+    const leftId = this.getRowId(left); const rightId = this.getRowId(right);
+    return leftId === rightId;
   }
 
   toggleRowSelect(row: any, event: CheckboxChangeEvent | boolean): void {
     const checked = typeof event === 'boolean' ? event : event.checked;
+    const rowIndex = this.displayData().indexOf(row);
+    if (this.rowSelectable() && !this.rowSelectable()!({ data: row, index: rowIndex })) return;
     const current = [...this.selectedRows()];
-    const id = this.getRowId(row);
-    const index = current.findIndex(item => this.getRowId(item) === id);
+    const index = current.findIndex(item => this.sameRow(item, row));
 
     if (checked && index === -1) {
+      if (this.selectionMode() === 'single') current.splice(0, current.length);
       current.push(row);
     } else if (!checked && index !== -1) {
       current.splice(index, 1);
@@ -314,19 +329,21 @@ export class TableComponent<T = any> {
     let currentSelected = [...this.selectedRows()];
 
     if (checked) {
-      currentDisplay.forEach(row => {
+      currentDisplay.forEach((row, index) => {
+        if (this.rowSelectable() && !this.rowSelectable()!({ data: row, index })) return;
         if (!this.isRowSelected(row, currentSelected)) {
+          if (this.selectionMode() === 'single') currentSelected.splice(0, currentSelected.length);
           currentSelected.push(row);
         }
       });
     } else {
-      const displayIds = new Set(currentDisplay.map(r => this.getRowId(r)));
-      currentSelected = currentSelected.filter(item => !displayIds.has(this.getRowId(item)));
+      currentSelected = currentSelected.filter(item => !currentDisplay.some(row => this.sameRow(item, row)));
     }
 
     this.selectedRows.set(currentSelected);
     this.selectionChange.emit(currentSelected);
     this.selectAllChange.emit({ checked, data: currentSelected });
+    this.onHeaderCheckboxToggle.emit({ checked, data: currentSelected });
   }
 
   handleSort(columnKey: string, isSortable?: boolean): void {
@@ -344,8 +361,11 @@ export class TableComponent<T = any> {
     this.sortDirection.set(newDirection);
     this.sortField.set(newDirection === 'none' ? '' : columnKey);
     this.sortOrder.set(newDirection === 'asc' ? 1 : newDirection === 'desc' ? -1 : 0);
-    this.sortChange.emit({ column: columnKey, direction: newDirection });
-    this.onSort.emit({ column: columnKey, direction: newDirection });
+    const event = { column: columnKey, direction: newDirection };
+    this.sortChange.emit(event);
+    this.onSort.emit(event);
+    this.sortFunction.emit(event);
+    if (this.resetPageOnSort()) { this.currentPage.set(1); this.first.set(0); }
   }
 
   applyFilter(value: string): void { this.filter.set(value); this.onFilter.emit({ value }); }
@@ -370,5 +390,24 @@ export class TableComponent<T = any> {
 
   getSkeletonArray(): number[] {
     return Array.from({ length: this.loadingRowsCount() }, (_, i) => i);
+  }
+
+  reset(): void {
+    this.filter.set(''); this.sortColumn.set(''); this.sortField.set(''); this.sortDirection.set('none'); this.sortOrder.set(0);
+    this.currentPage.set(1); this.first.set(0); this.selectedRows.set([]); this.selectionChange.emit([]);
+  }
+
+  exportCSV(options?: { selectionOnly?: boolean }): void {
+    if (typeof document === 'undefined') return;
+    const rows = options?.selectionOnly ? this.selectedRows() : this.effectiveData();
+    const columns = this.declaredColumns().map(column => ({ key: column.key(), header: column.header() }));
+    const header = this.exportHeader() ?? columns.map(column => column.header).join(this.csvSeparator());
+    const escape = (value: unknown): string => {
+      const text = String(value ?? '');
+      return /["\n\r,;]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+    };
+    const body = rows.map(row => columns.map(column => escape(this.getCellValue(row, column.key))).join(this.csvSeparator())).join('\n');
+    const blob = new Blob([`${header}${body ? `\n${body}` : ''}`], { type: 'text/csv;charset=utf-8' });
+    const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `${this.exportFilename()}.csv`; link.click(); URL.revokeObjectURL(link.href);
   }
 }

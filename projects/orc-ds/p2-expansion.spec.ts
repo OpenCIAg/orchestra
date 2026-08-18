@@ -388,6 +388,23 @@ describe('P2 expansion components', () => {
     expect(component.currentPage()).toBe(2);
   });
 
+  it('supports Table single selection, row guards, reset, and deep selection comparison', () => {
+    const fixture = TestBed.createComponent(TableComponent<{ id: number; name: string }>);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('data', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('selectionMode', 'single');
+    component.toggleRowSelect(component.data()[0], true);
+    component.toggleRowSelect(component.data()[1], true);
+    expect(component.selectedRows()).toEqual([{ id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('rowSelectable', ({ data }: { data: { id: number; name: string }; index: number }) => data.id === 1);
+    component.toggleRowSelect(component.data()[1], true);
+    expect(component.selectedRows()).toEqual([{ id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('compareSelectionBy', 'deepEquals');
+    component.reset();
+    expect(component.selectedRows()).toEqual([]);
+    expect(component.sortDirection()).toBe('none');
+  });
+
   it('supports Panel toggle lifecycle and header detection', () => {
     const fixture = TestBed.createComponent(PanelComponent);
     const component = fixture.componentInstance;
