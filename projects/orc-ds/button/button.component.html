@@ -4,8 +4,11 @@
   [attr.aria-disabled]="isDisabled() ? 'true' : null"
   [attr.aria-busy]="loading() ? 'true' : null"
   [attr.aria-label]="ariaLabel() || null"
-  [class]="buttonClasses()"
+  [class]="buttonClassString()"
+  [style]="style()"
   (click)="handleClick($event)"
+  (focus)="onFocus.emit($event)"
+  (blur)="onBlur.emit($event)"
 >
   @if (loading()) {
     <span class="orc-button__spinner" aria-hidden="true">
@@ -35,6 +38,7 @@
       <ng-content></ng-content>
     </span>
   }
+  @if (badge() !== undefined) { <span class="orc-button__badge {{ badgeClass() }}">{{ badge() }}</span> }
 
   <!-- Right Icon -->
   @if (safeIconRight(); as icon) {

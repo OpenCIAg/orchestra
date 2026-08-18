@@ -5,6 +5,7 @@ import {
   computed,
   output,
   inject,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -21,10 +22,20 @@ import { ButtonVariant, ButtonSize } from './button.types';
 export class ButtonComponent {
   // ── Inputs (Signals API) ──────────────────────────────────────────
   readonly variant = input<ButtonVariant>('primary');
+  readonly severity = input<ButtonVariant | undefined>(undefined);
   readonly size = input<ButtonSize>('md');
-  readonly disabled = input<boolean>(false);
-  readonly loading = input<boolean>(false);
-  readonly fullWidth = input<boolean>(false);
+  readonly disabled = input<boolean>(false, { transform: booleanAttribute });
+  readonly loading = input<boolean>(false, { transform: booleanAttribute });
+  readonly fullWidth = input<boolean>(false, { transform: booleanAttribute });
+  readonly text = input(false, { transform: booleanAttribute });
+  readonly outlined = input(false, { transform: booleanAttribute });
+  readonly raised = input(false, { transform: booleanAttribute });
+  readonly rounded = input(false, { transform: booleanAttribute });
+  readonly plain = input(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly badge = input<string | number | undefined>(undefined);
+  readonly badgeClass = input('');
   readonly iconLeft = input<string | undefined>(undefined);
   readonly iconRight = input<string | undefined>(undefined);
   readonly iconOnly = input<boolean>(false);
@@ -35,6 +46,8 @@ export class ButtonComponent {
 
   // ── Outputs (Signals API) ─────────────────────────────────────────
   readonly click = output<MouseEvent>();
+  readonly onFocus = output<FocusEvent>();
+  readonly onBlur = output<FocusEvent>();
 
   // ── Computed Signals ──────────────────────────────────────────────
   readonly isDisabled = computed(() => this.disabled() || this.loading());
@@ -60,14 +73,20 @@ export class ButtonComponent {
   readonly buttonClasses = computed(() => {
     return {
       'orc-button': true,
-      [`orc-button--variant-${this.variant()}`]: true,
+      [`orc-button--variant-${this.severity() || this.variant()}`]: true,
       [`orc-button--size-${this.size()}`]: true,
       'orc-button--disabled': this.isDisabled(),
       'orc-button--loading': this.loading(),
       'orc-button--full-width': this.fullWidth(),
       'orc-button--icon-only': this.iconOnly(),
+      'orc-button--text': this.text(),
+      'orc-button--outlined': this.outlined(),
+      'orc-button--raised': this.raised(),
+      'orc-button--rounded': this.rounded(),
+      'orc-button--plain': this.plain(),
     };
   });
+  readonly buttonClassString = computed(() => `${Object.entries(this.buttonClasses()).filter(([, enabled]) => enabled).map(([name]) => name).join(' ')} ${this.styleClass()}`.trim());
 
   // ── Event Handlers ────────────────────────────────────────────────
   handleClick(event: MouseEvent): void {

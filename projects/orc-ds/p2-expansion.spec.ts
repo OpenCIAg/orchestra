@@ -16,6 +16,7 @@ import { RatingComponent } from './rating/rating.component';
 import { KnobComponent } from './p2/p2-org-knob-components';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
+import { ButtonComponent } from './button/button.component';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
@@ -600,5 +601,15 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('strokeWidth', '6');
     expect(component.computedStrokeWidth()).toBe(6);
     expect(component.isIndeterminate()).toBeTrue();
+  });
+
+  it('supports PrimeNG Button severity, visual flags, badge, and focus lifecycle', () => {
+    const fixture = TestBed.createComponent(ButtonComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('severity', 'success');
+    fixture.componentRef.setInput('outlined', true);
+    fixture.componentRef.setInput('badge', 3);
+    expect(component.buttonClassString()).toContain('orc-button--variant-success');
+    expect(component.buttonClassString()).toContain('orc-button--outlined');
   });
 });
