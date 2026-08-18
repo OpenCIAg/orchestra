@@ -26,6 +26,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
 import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
+import { SplitterComponent } from './p2/p2-overlay-components';
 import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
@@ -431,5 +432,14 @@ describe('P2 expansion components', () => {
     expect(component.value()).toBe('a');
     component.clear();
     expect(component.value()).toBeNull();
+  });
+
+  it('supports Splitter gutter resizing and size events', () => {
+    const fixture = TestBed.createComponent(SplitterComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('panels', [{ id: 'a' }, { id: 'b' }]);
+    expect(component.normalizedSizes()).toEqual([50, 50]);
+    component.resize(0, 10);
+    expect(component.normalizedSizes()[0]).toBeGreaterThan(50);
   });
 });

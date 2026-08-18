@@ -142,8 +142,8 @@ export interface SplitterPanel {
 @Component({
   selector: 'orc-splitter',
   standalone: true,
-  template: `<div class="orc-p2-splitter" [class.vertical]="orientation() === 'vertical'" role="group" [attr.aria-label]="label()">@if (panels().length) { @for (panel of panels(); track panel.id) { <section class="panel" [style.flex-basis.%]="panelSize($index)"><header>{{ panel.label || panel.id }}</header><div class="panel-body"></div></section> } } @else { <ng-content /> }</div>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-splitter { display: flex; min-height: 8rem; width: 100%; gap: 1px; background: #cbd5e1; } .orc-p2-splitter.vertical { flex-direction: column; } .panel { min-width: 0; min-height: 0; flex: 1 1 0; background: #fff; color: #0f172a; } .panel header { padding: .45rem .65rem; border-bottom: 1px solid #e2e8f0; font-size: .8rem; font-weight: 700; } .panel-body { min-height: 4rem; padding: .5rem; }`],
+  template: `<div class="orc-p2-splitter" [class.vertical]="orientation() === 'vertical'" role="group" [attr.aria-label]="label()">@if (panels().length) { @for (panel of panels(); track panel.id; let index = $index) { <section class="panel" [style.flex-basis.%]="panelSize(index)"><header>{{ panel.label || panel.id }}</header><div class="panel-body"></div></section>@if (index < panels().length - 1) { <button type="button" class="gutter" [attr.aria-label]="'Resize ' + (panel.label || panel.id)" (click)="resize(index, 5)" (keydown.shift.arrowleft)="resize(index, -5)" (keydown.shift.arrowright)="resize(index, 5)" (keydown.shift.arrowup)="resize(index, -5)" (keydown.shift.arrowdown)="resize(index, 5)" (keyup)="onResizeEnd.emit($event)"></button> } } } @else { <ng-content /> }</div>`,
+  styles: [P2_SHARED_STYLES + `.orc-p2-splitter { display: flex; min-height: 8rem; width: 100%; gap: 1px; background: #cbd5e1; } .orc-p2-splitter.vertical { flex-direction: column; } .panel { min-width: 0; min-height: 0; flex: 1 1 0; background: #fff; color: #0f172a; } .panel header { padding: .45rem .65rem; border-bottom: 1px solid #e2e8f0; font-size: .8rem; font-weight: 700; } .panel-body { min-height: 4rem; padding: .5rem; } .gutter{flex:0 0 .45rem;border:0;background:#e2e8f0;cursor:col-resize}.vertical .gutter{cursor:row-resize}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitterComponent {
@@ -151,6 +151,7 @@ export class SplitterComponent {
   readonly orientation = input<P2Orientation>('horizontal');
   readonly label = input('Resizable panels');
   readonly sizes = model<number[]>([]);
+  readonly onResizeStart = output<{ index: number }>(); readonly onResizeEnd = output<KeyboardEvent>(); readonly onResize = output<{ index: number; sizes: number[] }>();
   readonly normalizedSizes = computed(() => {
     const count = this.panels().length;
     if (!count) return [];
@@ -165,7 +166,7 @@ export class SplitterComponent {
     if (index < 0 || index >= next.length - 1) return;
     next[index] = Math.max(10, Math.min(90, next[index] + delta));
     next[index + 1] = Math.max(10, next[index + 1] - delta);
-    this.setSizes(next);
+    this.onResizeStart.emit({ index }); this.setSizes(next); this.onResize.emit({ index, sizes: next });
   }
   private normalize(sizes: number[]): number[] { const total = sizes.reduce((sum, size) => sum + Math.max(0, size), 0) || 1; return sizes.map(size => Math.max(0, size) / total * 100); }
 }
