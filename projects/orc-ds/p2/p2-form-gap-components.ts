@@ -64,7 +64,29 @@ export class CascadeSelectComponent { readonly options = input<CascadeOption[]>(
 }
 
 @Directive({ selector: '[orcKeyFilter],[pKeyFilter]', standalone: true })
-export class KeyFilterDirective { readonly pattern = input<string | RegExp>('[0-9]'); readonly validateOnly = input(false, { transform: booleanAttribute, alias: 'pValidateOnly' }); readonly ngModelChange = output<string | number>(); @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent): void { if (this.validateOnly() || event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return; const regex = this.pattern() instanceof RegExp ? this.pattern() as RegExp : new RegExp(this.pattern()); if (!regex.test(event.key)) event.preventDefault(); } @HostListener('input', ['$event']) onInput(event: Event): void { if (!this.validateOnly()) return; const value = (event.target as HTMLInputElement | null)?.value ?? ''; this.ngModelChange.emit(value); } }
+export class KeyFilterDirective {
+  readonly pattern = input<string | RegExp>('[0-9]');
+  readonly validateOnly = input(false, { transform: booleanAttribute, alias: 'pValidateOnly' });
+  readonly ngModelChange = output<string | number>();
+  private matches(value: string): boolean {
+    const regex = this.pattern() instanceof RegExp ? this.pattern() as RegExp : new RegExp(this.pattern());
+    return [...value].every(character => { regex.lastIndex = 0; return regex.test(character); });
+  }
+  @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent): void {
+    if (this.validateOnly() || event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return;
+    if (!this.matches(event.key)) event.preventDefault();
+  }
+  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent): void {
+    if (this.validateOnly()) return;
+    const value = event.clipboardData?.getData('text') ?? '';
+    if (!this.matches(value)) event.preventDefault();
+  }
+  @HostListener('input', ['$event']) onInput(event: Event): void {
+    if (!this.validateOnly()) return;
+    const value = (event.target as HTMLInputElement | null)?.value ?? '';
+    this.ngModelChange.emit(value);
+  }
+}
 
 @Directive({ selector: '[orcInputMask],[pInputMask]', standalone: true, providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputMaskDirective), multi: true }] })
 export class InputMaskDirective implements ControlValueAccessor {
