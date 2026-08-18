@@ -1,5 +1,7 @@
 <div
   class="orc-progress-bar-host"
+  [class]="'orc-progress-bar-host ' + styleClass()"
+  [style]="style()"
   [class.orc-progress-bar--rounded]="rounded()"
   [class.orc-progress-bar--sm]="size() === 'sm'"
   [class.orc-progress-bar--md]="size() === 'md'"
@@ -18,7 +20,7 @@
         <span class="orc-progress-bar__label">{{ label() }}</span>
       }
       @if (showValue() && !isIndeterminate()) {
-        <span class="orc-progress-bar__value">{{ formattedValue() }}</span>
+        <span class="orc-progress-bar__value" [class]="'orc-progress-bar__value ' + valueStyleClass()">{{ formattedValue() }}</span>
       }
     </div>
   }
@@ -38,7 +40,7 @@
         <div
           class="orc-progress-bar__segment-item"
           [class.orc-progress-bar__segment-item--active]="seg <= currentSegment()"
-          [style.background-color]="seg <= currentSegment() ? (customColor() || null) : (customTrackColor() || null)"
+          [style.background-color]="seg <= currentSegment() ? (effectiveColor() || null) : (customTrackColor() || null)"
           [style.height]="customHeight() ? (customHeight() + (customHeight().toString().endsWith('px') ? '' : 'px')) : null"
         ></div>
       }
@@ -59,7 +61,7 @@
       <div
         class="orc-progress-bar__fill"
         [style.width]="isIndeterminate() ? null : (normalizedValue() + '%')"
-        [style.background-color]="customColor() || null"
+        [style.background-color]="effectiveColor() || null"
       ></div>
     </div>
   }

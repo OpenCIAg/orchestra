@@ -14,6 +14,8 @@ import { SwitchComponent } from './switch/switch.component';
 import { SliderComponent } from './slider/slider.component';
 import { RatingComponent } from './rating/rating.component';
 import { KnobComponent } from './p2/p2-org-knob-components';
+import { ProgressBarComponent } from './progress/progress-bar.component';
+import { ProgressCircleComponent } from './progress/progress-circle.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -158,6 +160,20 @@ describe('P2 expansion components', () => {
     expect(component.dashOffset()).toBeGreaterThan(0);
     component.onInput({ target: { value: '55' } } as unknown as Event);
     expect(modelValue).toBe(55);
+  });
+
+  it('normalizes progress values and exposes PrimeNG display configuration', () => {
+    const bar = TestBed.createComponent(ProgressBarComponent);
+    bar.componentRef.setInput('value', 140);
+    bar.componentRef.setInput('unit', ' units');
+    expect(bar.componentInstance.normalizedValue()).toBe(100);
+    expect(bar.componentInstance.formattedValue()).toBe('100 units');
+
+    const circle = TestBed.createComponent(ProgressCircleComponent);
+    circle.componentRef.setInput('value', 25);
+    circle.componentRef.setInput('animationDuration', '1s');
+    expect(circle.componentInstance.normalizedValue()).toBe(25);
+    expect(circle.componentInstance.strokeDashOffset()).toBeGreaterThan(0);
   });
 
   it('sorts and selects rows in the data table', () => {

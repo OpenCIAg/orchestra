@@ -34,6 +34,7 @@ export class ProgressCircleComponent {
 
   /** Exibe o valor numérico centralizado dentro do círculo */
   readonly showValue = input<boolean>(false);
+  readonly styleClass = input(''); readonly style = input<Record<string, any> | undefined>(undefined); readonly animationDuration = input('2s'); readonly fill = input('none');
 
   /** Cantos arredondados na ponta do arco (stroke-linecap: round) */
   readonly rounded = input<boolean>(true);
@@ -110,4 +111,5 @@ export class ProgressCircleComponent {
   readonly formattedValue = computed<string>(() => {
     return `${this.valuePrefix()}${Math.round(this.normalizedValue())}${this.valueSuffix()}`;
   });
+  readonly effectiveColor = computed(() => this.customColor() || '');
 }

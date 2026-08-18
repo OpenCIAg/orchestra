@@ -1,5 +1,7 @@
 <div
   class="orc-progress-circle-host"
+  [class]="'orc-progress-circle-host ' + styleClass()"
+  [style]="style()"
   [class.orc-progress-circle--primary]="variant() === 'primary'"
   [class.orc-progress-circle--neutral]="variant() === 'neutral'"
   [class.orc-progress-circle--success]="variant() === 'success'"
@@ -41,7 +43,9 @@
       [attr.stroke-dasharray]="circumference()"
       [attr.stroke-dashoffset]="strokeDashOffset()"
       [attr.stroke-linecap]="rounded() ? 'round' : 'butt'"
-      [style.stroke]="customColor() || null"
+      [style.stroke]="effectiveColor() || null"
+      [style.animation-duration]="animationDuration()"
+      [attr.fill]="fill()"
     />
   </svg>
 

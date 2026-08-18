@@ -34,6 +34,11 @@ export class ProgressBarComponent {
 
   /** Exibe a porcentagem numérica no topo à direita */
   readonly showValue = input<boolean>(false);
+  readonly unit = input('%');
+  readonly color = input<string | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly valueStyleClass = input('');
+  readonly style = input<Record<string, any> | undefined>(undefined);
 
   /** Prefixo opcional para exibição de valor (ex: '$') */
   readonly valuePrefix = input<string>('');
@@ -75,8 +80,10 @@ export class ProgressBarComponent {
   });
 
   readonly formattedValue = computed<string>(() => {
-    return `${this.valuePrefix()}${Math.round(this.normalizedValue())}${this.valueSuffix()}`;
+    const suffix = this.valueSuffix() === '%' && this.unit() !== '%' ? this.unit() : this.valueSuffix();
+    return `${this.valuePrefix()}${Math.round(this.normalizedValue())}${suffix}`;
   });
+  readonly effectiveColor = computed(() => this.customColor() || this.color() || '');
 
   readonly hasHeader = computed<boolean>(() => {
     return Boolean(this.label() || this.showValue());
