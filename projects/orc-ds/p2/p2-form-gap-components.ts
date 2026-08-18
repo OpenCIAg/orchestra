@@ -62,8 +62,15 @@ export class CascadeSelectComponent { readonly options = input<CascadeOption[]>(
   clear(): void { if (this.disabled()) return; this.value.set(null); this.selected.set([]); this.onClear.emit(); this.onChange.emit({ value: null }); }
 }
 
-@Directive({ selector: '[orcKeyFilter]', standalone: true })
-export class KeyFilterDirective { readonly pattern = input<string | RegExp>('[0-9]'); @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent): void { if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return; const regex = this.pattern() instanceof RegExp ? this.pattern() as RegExp : new RegExp(this.pattern()); if (!regex.test(event.key)) event.preventDefault(); } }
+@Directive({ selector: '[orcKeyFilter],[pKeyFilter]', standalone: true })
+export class KeyFilterDirective { readonly pattern = input<string | RegExp>('[0-9]'); readonly validateOnly = input(false, { transform: booleanAttribute }); readonly ngModelChange = output<string | number>(); @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent): void { if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return; const regex = this.pattern() instanceof RegExp ? this.pattern() as RegExp : new RegExp(this.pattern()); if (!regex.test(event.key)) event.preventDefault(); } }
 
-@Directive({ selector: '[orcInputMask]', standalone: true })
-export class InputMaskDirective { readonly mask = input(''); @HostListener('input', ['$event']) onInput(event: Event): void { const input = event.target as HTMLInputElement; const raw = input.value.replace(/[^a-zA-Z0-9]/g, ''); let index = 0; input.value = this.mask().split('').map(token => token === '9' || token === 'a' || token === '*' ? (raw[index++] || '') : token).join(''); } }
+@Directive({ selector: '[orcInputMask],[pInputMask]', standalone: true })
+export class InputMaskDirective {
+  readonly mask = input(''); readonly type = input(''); readonly slotChar = input('_'); readonly autoClear = input(true, { transform: booleanAttribute }); readonly showClear = input(false, { transform: booleanAttribute }); readonly unmask = input(false, { transform: booleanAttribute }); readonly characterPattern = input('[A-Za-z0-9]'); readonly onComplete = output<string>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onInput = output<Event>(); readonly onKeydown = output<Event>(); readonly onClear = output<void>();
+  @HostListener('input', ['$event']) handleInput(event: Event): void { const element = event.target as HTMLInputElement; const raw = element.value.replace(/[^a-zA-Z0-9]/g, ''); let index = 0; const formatted = this.mask().split('').map(token => token === '9' || token === 'a' || token === '*' ? (raw[index++] || (this.autoClear() ? '' : this.slotChar())) : token).join(''); element.value = formatted; this.onInput.emit(event); if (index >= raw.length && raw.length > 0) this.onComplete.emit(this.unmask() ? raw : formatted); }
+  @HostListener('focus', ['$event']) handleFocus(event: Event): void { this.onFocus.emit(event); }
+  @HostListener('blur', ['$event']) handleBlur(event: Event): void { this.onBlur.emit(event); }
+  @HostListener('keydown', ['$event']) handleKeydown(event: Event): void { this.onKeydown.emit(event); }
+  clear(): void { this.onClear.emit(); }
+}
