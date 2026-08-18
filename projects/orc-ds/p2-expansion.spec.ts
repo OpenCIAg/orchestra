@@ -31,6 +31,7 @@ import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { BadgeComponent } from './badge/badge.component';
+import { ToastService } from './toast/toast.service';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
@@ -463,5 +464,18 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('severity', 'success');
     expect(component.displayValue()).toBe('120');
     expect(component.normalizedStatus()).toBe('success');
+  });
+
+  it('supports PrimeNG toast add/addAll/remove aliases and message fields', () => {
+    const service = TestBed.inject(ToastService);
+    service.clear();
+    const first = service.add({ severity: 'success', summary: 'Saved', detail: 'Done', life: 0 });
+    const ids = service.addAll([{ severity: 'error', summary: 'Failed', detail: 'Nope', sticky: true }]);
+    expect(service.toasts().map(toast => toast.id)).toContain(first);
+    expect(ids).toHaveSize(1);
+    expect(service.toasts()[0].message).toBe('Done');
+    service.remove(first);
+    expect(service.toasts().map(toast => toast.id)).not.toContain(first);
+    service.clear();
   });
 });

@@ -24,6 +24,13 @@ export interface ToastAction {
 }
 
 export interface ToastOptions {
+  /** PrimeNG message aliases. */
+  key?: string;
+  severity?: 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast';
+  summary?: string;
+  detail?: string;
+  life?: number;
+  sticky?: boolean;
   /** Identificador único opcional (se omitido, será gerado automaticamente) */
   id?: string;
   /** Tipo / severidade da notificação */

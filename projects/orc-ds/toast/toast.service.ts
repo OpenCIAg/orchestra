@@ -80,10 +80,10 @@ export class ToastService {
         : optionsOrMessage;
 
     const id = options.id || `orc-toast-${++this.idCounter}-${Date.now()}`;
-    const type: ToastStatus = options.type || 'info';
+    const type: ToastStatus = options.type || (options.severity === 'warn' ? 'warning' : options.severity === 'error' ? 'error' : options.severity === 'success' ? 'success' : 'info');
 
     // Determina título padrão caso não informado
-    let title = options.title || '';
+    let title = options.title || options.summary || '';
     if (!title && !options.message) {
       switch (type) {
         case 'success': title = 'Sucesso'; break;
@@ -100,8 +100,8 @@ export class ToastService {
       id,
       type,
       title,
-      message: options.message || '',
-      duration: options.duration !== undefined ? options.duration : this.defaultDuration,
+      message: options.message || options.detail || '',
+      duration: options.sticky ? 0 : options.duration !== undefined ? options.duration : options.life !== undefined ? options.life : this.defaultDuration,
       showProgressBar: Boolean(options.showProgressBar),
       dismissible: options.dismissible !== undefined ? options.dismissible : true,
       showIcon: options.showIcon !== undefined ? options.showIcon : true,
@@ -113,6 +113,10 @@ export class ToastService {
     this.toasts.update(current => [...current, toastItem]);
     return id;
   }
+
+  add(message: ToastOptions): string { return this.show(message); }
+  addAll(messages: ToastOptions[]): string[] { return messages.map(message => this.show(message)); }
+  remove(id: string): void { this.dismiss(id); }
 
   // ── Atalhos Semânticos ────────────────────────────────────
   success(message: string, options?: Partial<ToastOptions>): string {
@@ -175,7 +179,8 @@ export class ToastService {
     this.toasts.update(current => current.filter(t => t.id !== id));
   }
 
-  clear(): void {
-    this.toasts.set([]);
+  clear(key?: string): void {
+    if (key) this.toasts.update(current => current.filter(toast => toast.key !== key));
+    else this.toasts.set([]);
   }
 }
