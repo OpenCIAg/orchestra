@@ -21,6 +21,7 @@ import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-compone
 import { StepperComponent } from './stepper/stepper.component';
 import { TableComponent } from './table/table.component';
 import { PanelComponent } from './p2/p2-primeng-gap-components';
+import { DrawerComponent } from './drawer/drawer.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -296,5 +297,17 @@ describe('P2 expansion components', () => {
     expect(component.collapsed()).toBeTrue();
     component.toggle();
     expect(component.collapsed()).toBeFalse();
+  });
+
+  it('supports Drawer visible alias and PrimeNG lifecycle controls', () => {
+    const fixture = TestBed.createComponent(DrawerComponent);
+    const component = fixture.componentInstance;
+    component.show();
+    expect(component.visible()).toBeTrue();
+    fixture.componentRef.setInput('closeOnEscape', false);
+    component.onEscape();
+    expect(component.open()).toBeTrue();
+    component.close();
+    expect(component.visible()).toBeFalse();
   });
 });

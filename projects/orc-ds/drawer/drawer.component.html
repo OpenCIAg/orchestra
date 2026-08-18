@@ -1,6 +1,6 @@
 @if (open()) {
-  <div class="orc-drawer__backdrop" (click)="onBackdrop()" aria-hidden="true"></div>
-  <aside class="orc-drawer" [class]="'orc-drawer orc-drawer--' + placement()" role="dialog" aria-modal="true" [attr.aria-label]="label()">
+  @if (modal()) { <div class="orc-drawer__backdrop" (click)="onBackdrop()" aria-hidden="true"></div> }
+  <aside class="orc-drawer" [class]="'orc-drawer orc-drawer--' + placement() + ' ' + styleClass()" role="dialog" [attr.aria-modal]="modal()" [attr.aria-label]="label()" [style.z-index]="baseZIndex()">
     <div class="orc-drawer__header">
       <ng-content select="[drawer-title]" />
       @if (dismissible()) { <button type="button" class="orc-drawer__close" (click)="close()" aria-label="Fechar painel">×</button> }
