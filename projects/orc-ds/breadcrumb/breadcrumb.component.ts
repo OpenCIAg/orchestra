@@ -52,13 +52,18 @@ export class BreadcrumbComponent {
 
   // Itens filhos registrados via projeção de conteúdo
   readonly breadcrumbItems = contentChildren(BreadcrumbItemComponent);
+  readonly effectiveItems = computed(() => {
+    const items = this.model() ?? this.items();
+    if (!items) return undefined;
+    return this.home() ? [this.home()!, ...items] : items;
+  });
 
   // Estado de expansão do colapso (...)
   readonly isExpanded = signal<boolean>(false);
 
   // Cálculo de itens visíveis quando usamos o modo data-driven com colapso
   readonly processedItems = computed<ProcessedBreadcrumbItem[]>(() => {
-    const rawItems = this.items();
+    const rawItems = this.effectiveItems();
     if (!rawItems) return [];
 
     const max = this.maxItems();

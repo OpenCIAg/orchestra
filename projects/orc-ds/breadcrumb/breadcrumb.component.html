@@ -1,12 +1,14 @@
 <nav
   [attr.aria-label]="ariaLabel()"
   class="orc-breadcrumb"
+  [class]="styleClass()"
+  [ngStyle]="style()"
   [class.orc-breadcrumb--variant-default]="variant() === 'default'"
   [class.orc-breadcrumb--variant-underlined]="variant() === 'underlined'"
 >
   <ol class="orc-breadcrumb__list">
     <!-- Modo 1: Data-Driven via array [items] -->
-    <ng-container *ngIf="items(); else projectionMode">
+    <ng-container *ngIf="effectiveItems(); else projectionMode">
       <ng-container *ngFor="let item of processedItems(); let i = index; let last = last">
         <!-- Item Regular ou Ellipsis -->
         <li class="orc-breadcrumb__item">

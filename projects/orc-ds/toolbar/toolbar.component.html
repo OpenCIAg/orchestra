@@ -1,1 +1,1 @@
-<div class="orc-toolbar" [class.orc-toolbar--vertical]="orientation() === 'vertical'" role="toolbar" [attr.aria-label]="label()" [attr.aria-orientation]="orientation()"><ng-content /></div>
+<div class="orc-toolbar" [class]="styleClass()" [class.orc-toolbar--vertical]="orientation() === 'vertical'" role="toolbar" [attr.aria-label]="label()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-orientation]="orientation()"><ng-content /></div>
