@@ -431,7 +431,7 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
 }
 
 @Component({
-  selector: 'orc-tags-input',
+  selector: 'orc-tags-input, orc-chips, orc-input-chips',
   standalone: true,
   template: `
     <div class="orc-p2-tags-input {{ styleClass() }}" [style]="style()">

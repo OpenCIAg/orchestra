@@ -17,7 +17,7 @@ import {
 } from './paginator.types';
 
 @Component({
-  selector: 'orc-paginator',
+  selector: 'orc-paginator, orc-pagination',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './paginator.component.html',

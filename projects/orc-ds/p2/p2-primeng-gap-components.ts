@@ -76,7 +76,7 @@ export class MeterGroupComponent {
 }
 
 @Component({
-  selector: 'orc-password', standalone: true,
+  selector: 'orc-password, orc-input-password', standalone: true,
   template: `<div class="orc-p2-password" [class]="styleClass()" [style]="style()" [class.fluid]="fluid()"><label *ngIf="label()" [attr.for]="inputId()">{{ label() }}</label><div class="control"><input [id]="inputId()" [type]="visible() ? 'text' : 'password'" [value]="value()" [placeholder]="placeholder()" [autocomplete]="autocomplete()" [attr.maxlength]="maxLength()" [disabled]="disabled() || cvaDisabled()" [readonly]="readonly()" [autofocus]="autofocus()" [attr.tabindex]="tabindex()" [class]="inputStyleClass()" [style]="inputStyle()" (input)="onInput($event)" (focus)="handleFocus($event)" (blur)="handleBlur($event)" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" />@if (showClear() && value()) { <button type="button" [disabled]="disabled() || cvaDisabled()" (click)="clear()" aria-label="Clear">×</button> }@if (toggleMask()) { <button type="button" [disabled]="disabled() || cvaDisabled()" (click)="toggleVisible()" [attr.aria-label]="visible() ? 'Hide password' : 'Show password'">{{ visible() ? '◉' : '○' }}</button> }</div>@if (feedback() && (value() || focused())) { <div class="feedback" aria-live="polite"><span>{{ value() ? strengthLabel() : promptLabel() }}</span><span class="meter" [class]="strength()"></span></div> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-password{display:flex;align-items:center;border:1px solid #cbd5e1;border-radius:.5rem;overflow:hidden}.orc-p2-password input{min-width:0;flex:1;border:0;padding:.55rem .7rem;outline:0}.orc-p2-password button{border:0;background:transparent;padding:.5rem}`],
   imports: [CommonModule],

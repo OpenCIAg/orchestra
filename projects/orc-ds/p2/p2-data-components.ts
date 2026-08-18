@@ -203,7 +203,7 @@ export class EmptyStateComponent {
 }
 
 @Component({
-  selector: 'orc-virtual-scroller',
+  selector: 'orc-virtual-scroller, orc-scroller',
   standalone: true,
   template: `<div class="orc-p2-virtual-scroller" role="list" [attr.aria-label]="label()" [attr.aria-busy]="loading()" [style.height]="viewportHeight()" (scroll)="onScroll($event)"><div [style.height.px]="topSpacer()"></div>@if (loading()) { <div class="item">Loading…</div> } @for (item of visibleItems(); track $index) { <div role="listitem" class="item" [style.height.px]="itemHeight()">{{ itemLabel(item) }}</div> }<div [style.height.px]="bottomSpacer()"></div></div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-virtual-scroller { overflow: auto; border: 1px solid #cbd5e1; border-radius: .6rem; background: #fff; color: #0f172a; } .item { display: flex; align-items: center; padding: 0 .75rem; border-bottom: 1px solid #f1f5f9; }`],
