@@ -138,12 +138,11 @@ export class DataTableComponent {
   readonly paginator = input(false, { transform: booleanAttribute });
   readonly pageSize = input(10);
   readonly page = model(0);
-  readonly selected = model<Record<string, unknown>[]>([]);
+  readonly selected = model<Record<string, unknown>[]>([], { alias: 'selection' });
   readonly sortKey = signal('');
   readonly sortDirection = signal<'ascending' | 'descending'>('ascending');
   readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());
   readonly rowClick = output<Record<string, unknown>>();
-  readonly selectionChange = output<Record<string, unknown>[]>();
   readonly sortChange = output<{ key: string; direction: 'ascending' | 'descending' }>();
   readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly rowSelect = output<Record<string, unknown>>(); readonly rowUnselect = output<Record<string, unknown>>(); readonly onRowHover = output<Record<string, unknown>>(); readonly onFilter = output<{ value: string }>();
   readonly onHeaderCheckboxToggle = output<{ checked: boolean }>();
@@ -177,9 +176,9 @@ export class DataTableComponent {
   toggleRow(row: Record<string, unknown>, checked: boolean): void {
     const next = this.selectionMode() === 'single' ? [] : this.selected().filter(item => this.getRowId(item) !== this.getRowId(row));
     if (checked) next.push(row);
-    this.selected.set(next); this.selectionChange.emit(next); (checked ? this.rowSelect : this.rowUnselect).emit(row);
+    this.selected.set(next); (checked ? this.rowSelect : this.rowUnselect).emit(row);
   }
-  toggleAll(checked: boolean): void { const current = this.selected().filter(row => !this.pageRows().some(pageRow => this.getRowId(pageRow) === this.getRowId(row))); const next = checked ? [...current, ...this.pageRows()] : current; this.selected.set(next); this.selectionChange.emit(next); this.onHeaderCheckboxToggle.emit({ checked }); }
+  toggleAll(checked: boolean): void { const current = this.selected().filter(row => !this.pageRows().some(pageRow => this.getRowId(pageRow) === this.getRowId(row))); const next = checked ? [...current, ...this.pageRows()] : current; this.selected.set(next); this.onHeaderCheckboxToggle.emit({ checked }); }
   sortBy(column: DataTableColumn): void {
     if (!column.sortable) return;
     const direction = this.sortKey() === column.key && this.sortDirection() === 'ascending' ? 'descending' : 'ascending';

@@ -321,6 +321,8 @@ describe('P2 expansion components', () => {
     component.setFilter('beta');
     expect(component.filteredRows()).toEqual([second]);
     expect(component.page()).toBe(0);
+    fixture.componentRef.setInput('selection', [first]);
+    expect(component.selected()).toEqual([first]);
   });
 
   it('calculates a virtualized range and expands a tree select', () => {
