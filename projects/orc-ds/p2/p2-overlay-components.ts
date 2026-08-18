@@ -90,6 +90,33 @@ export class OverlayPanelComponent {
 }
 
 @Component({
+  selector: 'orc-overlay',
+  standalone: true,
+  template: `<section class="orc-p2-overlay" [class]="styleClass()" [style]="style()" [hidden]="!visible()" role="presentation" (keydown.escape)="onEscape()"><ng-content /></section>`,
+  styles: [P2_SHARED_STYLES + `.orc-p2-overlay{position:absolute;z-index:1000}.orc-p2-overlay[hidden]{display:none}`],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class OverlayComponent {
+  readonly visible = model(false);
+  readonly mode = input<string>('overlay');
+  readonly style = input<Record<string, string> | null>(null);
+  readonly styleClass = input('');
+  readonly contentStyle = input<Record<string, string> | null>(null);
+  readonly contentStyleClass = input('');
+  readonly target = input<string | HTMLElement | null>(null);
+  readonly appendTo = input<'body' | HTMLElement | undefined>(undefined);
+  readonly autoZIndex = input(false, { transform: booleanAttribute });
+  readonly baseZIndex = input(0);
+  readonly showTransitionOptions = input('');
+  readonly hideTransitionOptions = input('');
+  readonly onShow = output<void>(); readonly onHide = output<void>();
+  show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); } }
+  hide(): void { if (this.visible()) { this.visible.set(false); this.onHide.emit(); } }
+  toggle(): void { this.visible() ? this.hide() : this.show(); }
+  onEscape(): void { this.hide(); }
+}
+
+@Component({
   selector: 'orc-popover',
   standalone: true,
   template: `<aside class="orc-p2-popover" [class]="styleClass()" [hidden]="!visible()" role="dialog" [attr.aria-label]="ariaLabel()" (keydown.escape)="onEscape()">@if (header()) { <header>{{ header() }}@if (closable()) { <button type="button" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }</header> }<ng-content /></aside>`,
