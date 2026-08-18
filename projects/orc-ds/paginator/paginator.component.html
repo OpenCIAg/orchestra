@@ -1,9 +1,11 @@
 <nav
-  class="orc-paginator"
+  class="p-paginator p-component orc-paginator"
   [class.orc-paginator--always-visible]="alwaysShow()"
   [class.orc-paginator--no-links]="!showPageLinks()"
-  [class]="styleClass() || ''"
+  [class]="'p-paginator p-component orc-paginator ' + (styleClass() || '')"
   [ngStyle]="style()"
+  [hidden]="!shouldRender()"
+  [attr.data-pc-name]="'paginator'"
   [attr.aria-label]="ariaLabel()"
   [class.orc-paginator--disabled]="disabled()"
   [class.orc-paginator--sm]="size() === 'sm'"

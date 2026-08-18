@@ -119,6 +119,7 @@ export class PaginatorComponent {
     const size = this.effectivePageSize();
     return Math.max(1, Math.ceil(total / size));
   });
+  readonly shouldRender = computed(() => this.alwaysShow() || this.totalPages() > 1);
 
   /** Índice inicial do intervalo visível (1-indexed) */
   readonly startIndex = computed(() => {
