@@ -188,7 +188,8 @@ export class FileUploaderComponent implements ControlValueAccessor {
   upload(): void {
     if (this.isDisabled() || !this.files().length) return;
     this.onBeforeUpload.emit();
-    const files = this.files().map(item => item.file);
+    const files = this.files().filter(item => item.status !== 'error').map(item => item.file);
+    if (!files.length) return;
     this.onSend.emit({ files });
     if (this.customUpload() || !this.url() || !this.http) { this.customUpload() ? this.uploadHandler.emit({ files }) : this.onUpload.emit({ files }); return; }
     const form = new FormData();

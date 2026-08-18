@@ -1070,6 +1070,17 @@ describe('P2 expansion components', () => {
     expect(component.showUploadButton()).toBeFalse();
   });
 
+  it('does not submit rejected FileUpload items', () => {
+    const fixture = TestBed.createComponent(FileUploaderComponent);
+    const component = fixture.componentInstance;
+    const uploaded = jasmine.createSpy('uploaded');
+    component.onUpload.subscribe(uploaded);
+    const bad = new File(['bad'], 'bad.txt', { type: 'text/plain' });
+    component.files.set([{ id: 'bad', file: bad, name: bad.name, size: bad.size, formattedSize: '3 Bytes', type: bad.type, progress: 0, status: 'error', errorMessage: 'Invalid' }]);
+    component.upload();
+    expect(uploaded).not.toHaveBeenCalled();
+  });
+
   it('supports PrimeNG TabMenu model, active item, command, and keyboard aliases', () => {
     const fixture = TestBed.createComponent(TabMenuComponent);
     const component = fixture.componentInstance;
