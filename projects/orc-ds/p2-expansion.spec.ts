@@ -116,6 +116,8 @@ describe('P2 expansion components', () => {
     component.update({ target: { value: '2025-01-06' } } as unknown as Event);
     expect(component.value()).toEqual(new Date('2025-01-06T00:00:00'));
     fixture.componentRef.setInput('selectionMode', 'multiple');
+    fixture.componentRef.setInput('numberOfMonths', 2);
+    expect(component.monthOffsets()).toEqual([0, 1]);
     component.update({ target: { value: '2025-01-06, 2025-01-07' } } as unknown as Event);
     expect(component.value()).toHaveSize(2);
   });
