@@ -662,6 +662,18 @@ describe('P2 expansion components', () => {
     expect(changed).toBeNull();
   });
 
+  it('honors ToggleButton allowEmpty when already active', () => {
+    const fixture = TestBed.createComponent(ToggleButtonComponent);
+    const component = fixture.componentInstance;
+    component.toggle();
+    expect(component.checked()).toBeTrue();
+    component.toggle();
+    expect(component.checked()).toBeTrue();
+    fixture.componentRef.setInput('allowEmpty', true);
+    component.toggle();
+    expect(component.checked()).toBeFalse();
+  });
+
   it('supports Tree filtering, multiple selection, and expand/collapse events', () => {
     const fixture = TestBed.createComponent(TreeComponent<{ kind: string }>);
     const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child', data: { kind: 'leaf' } }] };
