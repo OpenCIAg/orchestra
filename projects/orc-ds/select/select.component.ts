@@ -245,12 +245,12 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     if (this.isDataMode()) {
       const allData = this.dataOptions();
       return valArray.map((v) => {
-        const found = allData.find((opt) => opt.value === v);
+        const found = allData.find((opt) => this.getOptionValue(opt) === v);
         return {
-          label: found ? found.label : String(v),
+          label: found ? this.getOptionLabel(found) : String(v),
           value: v,
-          icon: found?.icon,
-          avatarUrl: found?.avatarUrl,
+          icon: (found as any)?.icon,
+          avatarUrl: (found as any)?.avatarUrl,
         };
       });
     }

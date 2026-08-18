@@ -186,6 +186,7 @@ describe('P2 expansion components', () => {
     expect(component.getOptionLabel(component.options()![1])).toBe('Portugal');
     component.onDataOptionClick(component.options()![0] as any);
     expect(component.value()).toBe('br');
+    expect(component.selectedItems()[0].label).toBe('Brazil');
   });
 
   it('supports Checkbox binary true/false values and lifecycle outputs', () => {
