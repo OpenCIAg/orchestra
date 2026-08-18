@@ -38,7 +38,13 @@ jobs:
         run: npm run verify:compatibility
 
       - name: Run library tests
-        run: set -o pipefail; npm run test:lib:ci 2>&1 | tee test-output.log
+        run: |
+          set -o pipefail
+          if ! npm run test:lib:ci 2>&1 | tee test-output.log; then
+            details=$(tail -n 25 test-output.log | tr '\n' ' ')
+            echo "::error title=Library tests::${details:0:6000}"
+            exit 1
+          fi
         shell: bash
 
       - name: Upload test diagnostics
