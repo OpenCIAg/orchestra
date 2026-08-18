@@ -46,6 +46,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly auto = input(false, { transform: booleanAttribute });
   readonly withCredentials = input(false, { transform: booleanAttribute });
   readonly maxFiles = input<number>(10);
+  readonly fileLimit = input<number | undefined>(undefined, { transform: numberAttribute });
   readonly maxFileSize = input(5 * 1024 * 1024, { transform: numberAttribute }); // PrimeNG-compatible bytes
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly label = input<string>('Clique ou arraste seus arquivos aqui');
@@ -55,6 +56,18 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly cancelLabel = input<string | undefined>(undefined);
   readonly previewWidth = input(100, { transform: numberAttribute });
   readonly styleClass = input<string | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly chooseIcon = input<string | undefined>(undefined);
+  readonly uploadIcon = input<string | undefined>(undefined);
+  readonly cancelIcon = input<string | undefined>(undefined);
+  readonly showUploadButton = input(true, { transform: booleanAttribute });
+  readonly showCancelButton = input(true, { transform: booleanAttribute });
+  readonly mode = input<'advanced' | 'basic'>('advanced');
+  readonly customUpload = input(false, { transform: booleanAttribute });
+  readonly uploadStyleClass = input('');
+  readonly cancelStyleClass = input('');
+  readonly chooseStyleClass = input('');
+  readonly removeStyleClass = input('');
   readonly forceDragover = input<boolean>(false);
 
   readonly onSelect = output<{ files: File[] }>();
@@ -63,6 +76,8 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly onUpload = output<{ files: File[] }>();
   readonly onError = output<{ files: File[]; error: string }>();
   readonly onProgress = output<{ progress: number }>();
+  readonly onBeforeUpload = output<void>();
+  readonly uploadHandler = output<{ files: File[] }>();
 
   // ── Internal State (Signals) ────────────────────────────────
   readonly files = signal<FileItemData[]>([]);
@@ -76,7 +91,8 @@ export class FileUploaderComponent implements ControlValueAccessor {
   // ── Computeds ───────────────────────────────────────────────
   readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
   readonly hasReachedMaxFiles = computed(() => {
-    return this.multiple() ? this.files().length >= this.maxFiles() : this.files().length >= 1;
+    const limit = this.fileLimit() ?? this.maxFiles();
+    return this.multiple() ? this.files().length >= limit : this.files().length >= 1;
   });
 
   // ── CVA Methods ─────────────────────────────────────────────
@@ -157,7 +173,9 @@ export class FileUploaderComponent implements ControlValueAccessor {
   }
 
   clear(): void { if (this.isDisabled()) return; this.files.set([]); this.onChange([]); this.onClear.emit(); }
-  upload(): void { if (this.files().length) this.onUpload.emit({ files: this.files().map(item => item.file) }); }
+  upload(): void { if (!this.files().length) return; this.onBeforeUpload.emit(); const files = this.files().map(item => item.file); if (this.customUpload()) this.uploadHandler.emit({ files }); else this.onUpload.emit({ files }); }
+  choose(): void { this.onAreaClick(); }
+  uploader(): void { this.upload(); }
 
   // ── Logic ───────────────────────────────────────────────────
   private handleFiles(newFiles: File[]): void {
@@ -167,7 +185,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
     if (!this.multiple()) {
       filesToAdd = [newFiles[0]];
     } else {
-      const remainingSlots = this.maxFiles() - currentFiles.length;
+      const remainingSlots = (this.fileLimit() ?? this.maxFiles()) - currentFiles.length;
       if (remainingSlots <= 0) return;
       filesToAdd = newFiles.slice(0, remainingSlots);
     }

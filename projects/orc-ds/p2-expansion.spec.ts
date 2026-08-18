@@ -19,6 +19,7 @@ import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { ButtonComponent } from './button/button.component';
 import { AlertComponent } from './alert/alert.component';
 import { CardComponent } from './card/card.component';
+import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
@@ -649,5 +650,16 @@ describe('P2 expansion components', () => {
     component.onClick();
     expect(component.header()).toBe('Summary');
     expect(clicked).toBeFalse();
+  });
+
+  it('supports PrimeNG FileUpload fileLimit, customUpload, and lifecycle aliases', () => {
+    const fixture = TestBed.createComponent(FileUploaderComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('fileLimit', 1);
+    fixture.componentRef.setInput('customUpload', true);
+    fixture.componentRef.setInput('showUploadButton', false);
+    expect(component.fileLimit()).toBe(1);
+    expect(component.customUpload()).toBeTrue();
+    expect(component.showUploadButton()).toBeFalse();
   });
 });
