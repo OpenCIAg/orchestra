@@ -1,7 +1,9 @@
 <nav
+  [id]="id() || null"
   [attr.aria-label]="ariaLabel()"
-  class="orc-breadcrumb"
-  [class]="styleClass()"
+  class="p-breadcrumb p-component orc-breadcrumb"
+  [class]="'p-breadcrumb p-component orc-breadcrumb ' + styleClass()"
+  [attr.data-pc-name]="'breadcrumb'"
   [ngStyle]="style()"
   [class.orc-breadcrumb--variant-default]="variant() === 'default'"
   [class.orc-breadcrumb--variant-underlined]="variant() === 'underlined'"

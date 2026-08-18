@@ -45,6 +45,7 @@ export class BreadcrumbComponent {
   readonly itemsBeforeCollapse = input<number>(1);
   readonly itemsAfterCollapse = input<number>(1);
   readonly ariaLabel = input<string>('Breadcrumb');
+  readonly id = input<string | undefined>(undefined);
 
   // Outputs (Signals API)
   readonly itemClick = output<{ item: BreadcrumbItemData; index: number }>();
