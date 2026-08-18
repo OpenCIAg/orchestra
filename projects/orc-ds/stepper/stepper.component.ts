@@ -6,6 +6,7 @@ import {
   model,
   computed,
   effect,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '@ciag/orchestra/progress';
@@ -33,8 +34,9 @@ export class StepperComponent {
   readonly currentStep = model<number>(0);
   readonly activeIndex = model<number>(0, { alias: 'activeIndex' });
   readonly model = input<StepItem[] | undefined>(undefined);
-  readonly readonly = input(false);
-  readonly exact = input(false);
+  readonly readonly = input(false, { transform: booleanAttribute });
+  readonly exact = input(false, { transform: booleanAttribute });
+  readonly id = input<string | undefined>(undefined);
   readonly style = input<Record<string, string> | null>(null);
   readonly styleClass = input('');
 
@@ -45,16 +47,16 @@ export class StepperComponent {
   readonly type = input<StepperType>('numeric');
 
   /** Permite que o usuário clique nos passos para navegar */
-  readonly clickable = input<boolean>(true);
+  readonly clickable = input<boolean>(true, { transform: booleanAttribute });
 
   /** Automatically activate a step when it receives keyboard focus. */
-  readonly selectOnFocus = input<boolean>(false);
+  readonly selectOnFocus = input<boolean>(false, { transform: booleanAttribute });
 
   /** Accessible label for the stepper navigation. */
   readonly ariaLabel = input<string>('Steps');
 
   /** Modo linear: impede pular etapas à frente */
-  readonly linear = input<boolean>(false);
+  readonly linear = input<boolean>(false, { transform: booleanAttribute });
 
   /** Evento emitido quando o usuário clica em uma etapa */
   readonly stepChange = output<{ step: StepItem; index: number }>();
@@ -93,6 +95,8 @@ export class StepperComponent {
     this.onChange.emit({ index, step });
     if (index === this.effectiveSteps().length - 1) this.completed.emit();
   }
+
+  onKeydown(event: KeyboardEvent, index: number): void { const steps = this.effectiveSteps(); let target = -1; if (event.key === 'ArrowRight' || event.key === 'ArrowDown') target = Math.min(steps.length - 1, index + 1); else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') target = Math.max(0, index - 1); else if (event.key === 'Home') target = 0; else if (event.key === 'End') target = steps.length - 1; else if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.selectStep(index, steps[index]); return; } if (target >= 0 && target !== index) { event.preventDefault(); if (this.selectOnFocus()) this.selectStep(target, steps[target]); } }
 
   next(): void { this.selectStep(this.currentStep() + 1, this.effectiveSteps()[this.currentStep() + 1]); }
   previous(): void { this.selectStep(this.currentStep() - 1, this.effectiveSteps()[this.currentStep() - 1]); }

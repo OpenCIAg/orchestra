@@ -1,4 +1,4 @@
-<nav class="orc-stepper" [class.orc-stepper--horizontal]="orientation() === 'horizontal'"
+<nav [id]="id() || null" class="p-steps p-component orc-stepper" [class]="'p-steps p-component orc-stepper ' + styleClass()" [attr.data-pc-name]="'steps'" [class.orc-stepper--horizontal]="orientation() === 'horizontal'"
   [class.orc-stepper--vertical]="orientation() === 'vertical'" [class.orc-stepper--numeric]="type() === 'numeric'"
   [class.orc-stepper--icon]="type() === 'icon'" [attr.aria-label]="ariaLabel()">
   <ol class="orc-stepper__list">
@@ -17,7 +17,7 @@
       }
 
       <!-- Step Trigger Button / Container -->
-      <button type="button" class="orc-stepper__step-btn" [disabled]="!clickableState" (click)="selectStep(idx, step)"
+      <button type="button" class="p-steps-item-link orc-stepper__step-btn" [disabled]="!clickableState" [attr.tabindex]="status === 'active' ? 0 : -1" [attr.aria-posinset]="idx + 1" [attr.aria-setsize]="effectiveSteps().length" (click)="selectStep(idx, step)" (keydown)="onKeydown($event, idx)"
         [attr.aria-current]="status === 'active' ? 'step' : null">
         <!-- Marker Circle (Number or Icon) -->
         <div class="orc-stepper__marker">
