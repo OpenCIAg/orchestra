@@ -7,6 +7,8 @@ import {
   computed,
   effect,
   booleanAttribute,
+  ElementRef,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '@ciag/orchestra/progress';
@@ -26,6 +28,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepperComponent {
+  private readonly host = inject(ElementRef<HTMLElement>);
   // ── Inputs & Models ───────────────────────────────────────
   /** Lista de etapas a serem exibidas */
   readonly steps = input<StepItem[]>([]);
@@ -96,7 +99,7 @@ export class StepperComponent {
     if (index === this.effectiveSteps().length - 1) this.completed.emit();
   }
 
-  onKeydown(event: KeyboardEvent, index: number): void { const steps = this.effectiveSteps(); let target = -1; if (event.key === 'ArrowRight' || event.key === 'ArrowDown') target = Math.min(steps.length - 1, index + 1); else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') target = Math.max(0, index - 1); else if (event.key === 'Home') target = 0; else if (event.key === 'End') target = steps.length - 1; else if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.selectStep(index, steps[index]); return; } if (target >= 0 && target !== index) { event.preventDefault(); if (this.selectOnFocus()) this.selectStep(target, steps[target]); } }
+  onKeydown(event: KeyboardEvent, index: number): void { const steps = this.effectiveSteps(); let target = -1; if (event.key === 'ArrowRight' || event.key === 'ArrowDown') target = Math.min(steps.length - 1, index + 1); else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') target = Math.max(0, index - 1); else if (event.key === 'Home') target = 0; else if (event.key === 'End') target = steps.length - 1; else if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.selectStep(index, steps[index]); return; } if (target >= 0 && target !== index) { event.preventDefault(); const buttons = this.host.nativeElement.querySelectorAll('button[role="tab"], .orc-stepper__step-btn'); (buttons[target] as HTMLElement | undefined)?.focus(); if (this.selectOnFocus()) this.selectStep(target, steps[target]); } }
 
   next(): void { this.selectStep(this.currentStep() + 1, this.effectiveSteps()[this.currentStep() + 1]); }
   previous(): void { this.selectStep(this.currentStep() - 1, this.effectiveSteps()[this.currentStep() - 1]); }
