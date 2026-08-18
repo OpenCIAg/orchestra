@@ -157,6 +157,18 @@ describe('P2 expansion components', () => {
     expect(component.overlayVisible()).toBeTrue();
   });
 
+  it('includes seconds in DatePicker time values when showSeconds is enabled', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('dataType', 'date');
+    fixture.componentRef.setInput('showTime', true);
+    fixture.componentRef.setInput('showSeconds', true);
+    component.writeValue(new Date(2025, 0, 1, 13, 4, 9));
+    expect(component.inputValue()).toContain('13:04:09');
+    fixture.componentRef.setInput('timeOnly', true);
+    expect(component.inputValue()).toBe('13:04:09');
+  });
+
   it('supports DatePicker keyboard show and Escape close behavior', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     const component = fixture.componentInstance;
