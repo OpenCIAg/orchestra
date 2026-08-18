@@ -30,6 +30,7 @@ import { SplitterComponent } from './p2/p2-overlay-components';
 import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { BadgeComponent } from './badge/badge.component';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
@@ -453,5 +454,14 @@ describe('P2 expansion components', () => {
     expect(component.value()).toBe('#ffffff');
     component.clear();
     expect(component.value()).toBe('');
+  });
+
+  it('supports PrimeNG badge value and severity aliases', () => {
+    const fixture = TestBed.createComponent(BadgeComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('value', 120);
+    fixture.componentRef.setInput('severity', 'success');
+    expect(component.displayValue()).toBe('120');
+    expect(component.normalizedStatus()).toBe('success');
   });
 });

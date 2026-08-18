@@ -20,8 +20,10 @@ export class BadgeComponent {
   // Inputs (Signals API)
   readonly variant = input<BadgeVariant>('soft');
   readonly status = input<BadgeStatus>('primary');
+  readonly severity = input<BadgeStatus | undefined>(undefined);
   readonly size = input<BadgeSize>('md');
   readonly text = input<string>('');
+  readonly value = input<string | number | undefined>(undefined);
   readonly count = input<number | undefined>(undefined);
   readonly maxCount = input<number>(99);
   readonly dot = input<boolean>(false);
@@ -29,12 +31,15 @@ export class BadgeComponent {
   readonly dismissible = input<boolean>(false);
   readonly pill = input<boolean>(false);
   readonly ariaLabel = input<string>('');
+  readonly styleClass = input('');
 
   // Outputs (Signals API)
   readonly dismiss = output<MouseEvent>();
 
   // ── Sinais Computados ──────────────────────────────────────
   readonly displayValue = computed(() => {
+    const direct = this.value();
+    if (direct !== undefined) return String(direct);
     const val = this.count();
     if (val !== undefined && val !== null) {
       const max = this.maxCount();
@@ -44,7 +49,7 @@ export class BadgeComponent {
   });
 
   readonly normalizedStatus = computed<string>(() => {
-    const s = this.status();
+    const s = this.severity() || this.status();
     switch (s) {
       case 'danger':
         return 'error';
