@@ -50,16 +50,16 @@ export class StepperComponent {
   readonly type = input<StepperType>('numeric');
 
   /** Permite que o usuário clique nos passos para navegar */
-  readonly clickable = input<boolean>(true, { transform: booleanAttribute });
+  readonly clickable = input<boolean, unknown>(true, { transform: booleanAttribute });
 
   /** Automatically activate a step when it receives keyboard focus. */
-  readonly selectOnFocus = input<boolean>(false, { transform: booleanAttribute });
+  readonly selectOnFocus = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   /** Accessible label for the stepper navigation. */
   readonly ariaLabel = input<string>('Steps');
 
   /** Modo linear: impede pular etapas à frente */
-  readonly linear = input<boolean>(false, { transform: booleanAttribute });
+  readonly linear = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   /** Evento emitido quando o usuário clica em uma etapa */
   readonly stepChange = output<{ step: StepItem; index: number }>();

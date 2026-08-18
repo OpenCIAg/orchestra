@@ -48,7 +48,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly auto = input(false, { transform: booleanAttribute });
   readonly withCredentials = input(false, { transform: booleanAttribute });
   readonly maxFiles = input<number>(10);
-  readonly fileLimit = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly fileLimit = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly maxFileSize = input(5 * 1024 * 1024, { transform: numberAttribute }); // PrimeNG-compatible bytes
   readonly invalidFileSizeMessageSummary = input('File too large');
   readonly invalidFileSizeMessageDetail = input('Maximum allowed size is {0}.');

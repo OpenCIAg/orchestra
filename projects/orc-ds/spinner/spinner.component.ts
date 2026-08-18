@@ -30,8 +30,8 @@ export class LoadingSpinnerComponent {
   readonly type = input<SpinnerType>('ring');
   readonly text = input<string>('');
   readonly textPosition = input<SpinnerTextPosition>('right');
-  readonly fullScreen = input<boolean>(false, { transform: booleanAttribute });
-  readonly backdrop = input<boolean>(true, { transform: booleanAttribute });
+  readonly fullScreen = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly backdrop = input<boolean, unknown>(true, { transform: booleanAttribute });
   readonly strokeWidth = input(3);
   readonly fill = input('none');
   readonly animation = input<'spin' | 'none'>('spin');

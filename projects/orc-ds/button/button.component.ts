@@ -24,9 +24,9 @@ export class ButtonComponent {
   readonly variant = input<ButtonVariant>('primary');
   readonly severity = input<ButtonVariant | undefined>(undefined);
   readonly size = input<ButtonSize>('md');
-  readonly disabled = input<boolean>(false, { transform: booleanAttribute });
-  readonly loading = input<boolean>(false, { transform: booleanAttribute });
-  readonly fullWidth = input<boolean>(false, { transform: booleanAttribute });
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly loading = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly fullWidth = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly text = input(false, { transform: booleanAttribute });
   readonly outlined = input(false, { transform: booleanAttribute });
   readonly raised = input(false, { transform: booleanAttribute });

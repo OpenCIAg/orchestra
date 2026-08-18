@@ -40,9 +40,9 @@ export class AutocompleteComponent implements ControlValueAccessor {
   readonly options = input<AutocompleteOption[]>([]);
   readonly suggestions = input<AutocompleteOption[]>([], { alias: 'suggestions' });
   readonly minChars = input(0, { transform: numberAttribute });
-  readonly minLength = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly minLength = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly clearable = input(true, { transform: booleanAttribute });
-  readonly showClear = input<boolean | undefined>(undefined, { transform: booleanAttribute });
+  readonly showClear = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly dropdown = input(false, { transform: booleanAttribute });
   readonly emptyMessage = input('No results found');

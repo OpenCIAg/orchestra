@@ -35,14 +35,14 @@ export class TooltipDirective implements OnDestroy {
   readonly tooltipTheme = input<TooltipTheme>('dark');
   readonly tooltipShowDelay = input<number>(150);
   readonly tooltipHideDelay = input<number>(100);
-  readonly showDelay = input<number | undefined>(undefined, { transform: numberAttribute });
-  readonly hideDelay = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly showDelay = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
+  readonly hideDelay = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly tooltipEvent = input<'hover' | 'focus' | 'both'>('both');
   readonly positionStyle = input<string | undefined>(undefined);
   readonly tooltipStyleClass = input<string | undefined>(undefined);
   readonly tooltipZIndex = input<string | undefined>(undefined);
   readonly escape = input(true, { transform: booleanAttribute });
-  readonly life = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly life = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly fitContent = input(true, { transform: booleanAttribute });
   readonly content = input<string | undefined>(undefined);
   readonly tooltipOptions = input<Record<string, unknown> | undefined>(undefined);

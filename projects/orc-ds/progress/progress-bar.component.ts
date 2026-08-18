@@ -40,7 +40,7 @@ export class ProgressBarComponent {
   readonly label = input<string>('');
 
   /** Exibe a porcentagem numérica no topo à direita */
-  readonly showValue = input<boolean>(false, { transform: booleanAttribute });
+  readonly showValue = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly unit = input('%');
   readonly color = input<string | undefined>(undefined);
   readonly styleClass = input('');
@@ -54,7 +54,7 @@ export class ProgressBarComponent {
   readonly valueSuffix = input<string>('%');
 
   /** Cantos arredondados tipo pílula (padrão Figma: true) */
-  readonly rounded = input<boolean>(true, { transform: booleanAttribute });
+  readonly rounded = input<boolean, unknown>(true, { transform: booleanAttribute });
 
   /** Suporte a etapas segmentadas (ex: 3 barras discretas) */
   readonly segments = input<number>(0);

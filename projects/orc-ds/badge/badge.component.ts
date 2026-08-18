@@ -27,10 +27,10 @@ export class BadgeComponent {
   readonly value = input<string | number | undefined>(undefined);
   readonly count = input<number | undefined>(undefined);
   readonly maxCount = input<number>(99);
-  readonly dot = input<boolean>(false, { transform: booleanAttribute });
-  readonly showDefaultIcon = input<boolean>(false, { transform: booleanAttribute });
-  readonly dismissible = input<boolean>(false, { transform: booleanAttribute });
-  readonly pill = input<boolean>(false, { transform: booleanAttribute });
+  readonly dot = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly showDefaultIcon = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly dismissible = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly pill = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string>('');
   readonly styleClass = input('');

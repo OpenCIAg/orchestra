@@ -45,9 +45,9 @@ export class AlertComponent {
   readonly showIcon = input<boolean>(true);
 
   /** Define se o alerta pode ser dispensado pelo usuário exibindo o botão 'X' */
-  readonly dismissible = input<boolean>(false, { transform: booleanAttribute });
-  readonly closable = input<boolean | undefined>(undefined, { transform: booleanAttribute });
-  readonly life = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly dismissible = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly closable = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
+  readonly life = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly icon = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);

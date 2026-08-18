@@ -44,7 +44,7 @@ export class RatingComponent implements ControlValueAccessor {
   // -- Inputs ---------------------------------------------------------
   readonly id = input<string>(this.uniqueId);
   readonly max = input(5, { transform: numberAttribute });
-  readonly stars = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly stars = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly allowHalf = input(false, { transform: booleanAttribute });
   readonly numeric = input(false, { transform: booleanAttribute });
   readonly clearable = input(false, { transform: booleanAttribute });

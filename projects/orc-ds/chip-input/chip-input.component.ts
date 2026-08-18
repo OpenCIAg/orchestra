@@ -43,7 +43,7 @@ export class ChipInputComponent implements ControlValueAccessor {
   
   // Chip specific config
   readonly allowDuplicates = input(false, { transform: booleanAttribute });
-  readonly allowDuplicate = input<boolean | undefined>(undefined, { transform: booleanAttribute });
+  readonly allowDuplicate = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
   readonly maxChips = input<number | undefined, unknown>(undefined, {
     transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
   });

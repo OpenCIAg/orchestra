@@ -85,7 +85,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly optionLabel = input<string | undefined>(undefined);
   readonly optionValue = input<string | undefined>(undefined);
   readonly optionDisabled = input<string | undefined>(undefined);
-  readonly filter = input<boolean | undefined>(undefined, { transform: booleanAttribute });
+  readonly filter = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
   readonly filterPlaceholder = input('');
   readonly filterLocale = input<string | undefined>(undefined);
   readonly filterBy = input<string | undefined>(undefined);

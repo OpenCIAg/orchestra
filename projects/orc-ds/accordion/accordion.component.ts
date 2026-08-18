@@ -21,7 +21,7 @@ import type { AccordionItemComponent } from './accordion-item.component';
 })
 export class AccordionComponent {
   // Inputs (Signals API)
-  readonly multiple = input<boolean>(false, { transform: booleanAttribute });
+  readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly value = model<string | number | string[] | number[]>(0);
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly variant = input<AccordionVariant>('default');

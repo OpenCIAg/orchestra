@@ -38,13 +38,13 @@ export class CarouselComponent implements OnDestroy {
   readonly responsiveOptions = input<unknown[] | undefined>(undefined);
   readonly orientation = input<CarouselOrientation>('horizontal');
   readonly loop = input(true, { transform: booleanAttribute });
-  readonly circular = input<boolean | undefined>(undefined, { transform: booleanAttribute });
+  readonly circular = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
   readonly autoplay = input(false, { transform: booleanAttribute });
-  readonly autoplayInterval = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly autoplayInterval = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly pauseOnHover = input(true, { transform: booleanAttribute });
   readonly interval = input(5000, { transform: numberAttribute });
   readonly showArrows = input(true, { transform: booleanAttribute });
-  readonly showNavigators = input<boolean | undefined>(undefined, { transform: booleanAttribute });
+  readonly showNavigators = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
   readonly showIndicators = input(true, { transform: booleanAttribute });
   readonly ariaLabel = input('Carousel');
 
