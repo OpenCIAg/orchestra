@@ -75,7 +75,7 @@ const fromMonthKey = (value: string): Date => {
     .orc-p2-calendar__day--today { box-shadow: inset 0 0 0 1px #2563eb; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ListboxComponent), multi: true }],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => CalendarComponent), multi: true }],
 })
 export class CalendarComponent {
   readonly value = model('');
