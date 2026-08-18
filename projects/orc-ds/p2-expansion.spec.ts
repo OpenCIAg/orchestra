@@ -195,6 +195,18 @@ describe('P2 expansion components', () => {
     expect(fixture.nativeElement.querySelectorAll('.week-number').length).toBe(6);
   });
 
+  it('renders DatePicker month and year views', () => {
+    const fixture = TestBed.createComponent(DatePickerCalendarComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('currentMonth', '2025-01');
+    fixture.componentRef.setInput('view', 'month');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('.month-grid button').length).toBe(12);
+    fixture.componentRef.setInput('view', 'year');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('.year-grid button').length).toBe(12);
+  });
+
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
     const listbox = TestBed.createComponent(ListboxComponent<any>);
     listbox.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
