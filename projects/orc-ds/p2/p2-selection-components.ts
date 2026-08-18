@@ -7,7 +7,7 @@ let nextTreeSelectId = 0;
 @Component({
   selector: 'orc-segmented-control',
   standalone: true,
-  template: `<div class="orc-p2-segmented" role="group" [attr.aria-label]="label()" (keydown)="onKeydown($event)">@for (option of options(); track option.value) { <button type="button" [disabled]="option.disabled || disabled()" [class.selected]="isSelected(option)" [attr.aria-pressed]="isSelected(option)" (click)="select(option)">{{ option.icon }} {{ option.label }}</button> }</div>`,
+  template: `<div class="p-selectbutton p-buttonset p-component orc-p2-segmented" [class]="'p-selectbutton p-buttonset p-component orc-p2-segmented ' + styleClass()" [style]="style()" [attr.id]="inputId() || null" role="group" [attr.aria-label]="label()" [attr.data-pc-name]="'selectbutton'" (keydown)="onKeydown($event)">@for (option of options(); track option.value) { <button type="button" class="p-button p-component" [disabled]="option.disabled || disabled()" [attr.tabindex]="tabindex()" [class.selected]="isSelected(option)" [attr.aria-pressed]="isSelected(option)" (click)="select(option)">{{ option.icon }} {{ option.label }}</button> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-segmented { display: inline-flex; gap: .2rem; padding: .2rem; border-radius: .6rem; background: #f1f5f9; } .orc-p2-segmented button { border: 0; border-radius: .4rem; background: transparent; color: #475569; padding: .5rem .75rem; } .orc-p2-segmented button.selected { background: #fff; color: #1d4ed8; box-shadow: 0 1px 3px #0f172a1a; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -16,6 +16,10 @@ export class SegmentedControlComponent<T = unknown> {
   readonly value = model<T | null>(null);
   readonly label = input('Options');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly inputId = input<string | undefined>(undefined);
+  readonly tabindex = input(0);
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly valueChangeEvent = output<T>();
   readonly activeIndex = signal(0);
   isSelected(option: P2Option<T>): boolean { return this.value() === option.value; }
