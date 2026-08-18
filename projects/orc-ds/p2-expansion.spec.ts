@@ -429,6 +429,18 @@ describe('P2 expansion components', () => {
     expect(component.pageCount()).toBe(3);
   });
 
+  it('emits DataTable initial lazy load when configured', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('lazy', true);
+    fixture.componentRef.setInput('lazyLoadOnInit', true);
+    fixture.componentRef.setInput('rows', 25);
+    const lazy = jasmine.createSpy('lazy');
+    component.onLazyLoad.subscribe(lazy);
+    fixture.detectChanges();
+    expect(lazy).toHaveBeenCalledWith({ first: 0, rows: 25 });
+  });
+
   it('honors single-row selection and emits filter changes', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;

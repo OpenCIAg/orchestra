@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, computed, input, model, output, signal } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, computed, input, model, OnInit, output, signal } from '@angular/core';
 import { P2Option, P2_SHARED_STYLES, P2Orientation } from './p2-shared';
 
 @Component({
@@ -122,7 +122,7 @@ export interface DataTableColumn {
   styles: [P2_SHARED_STYLES + `.orc-p2-data-table { width: 100%; overflow: auto; border: 1px solid #e2e8f0; border-radius: .75rem; background: #fff; } .global-filter { width: min(20rem, 100%); margin: .6rem; padding: .5rem .7rem; border: 1px solid #cbd5e1; border-radius: .4rem; } table { width: 100%; border-collapse: collapse; color: #0f172a; } th, td { padding: .7rem .8rem; border-bottom: 1px solid #e2e8f0; text-align: left; } th { background: #f8fafc; font-size: .8rem; } th.sortable { cursor: pointer; } tr.selected { background: #eff6ff; } .empty { padding: 2rem; text-align: center; color: #64748b; } .paginator { display:flex; align-items:center; justify-content:flex-end; gap:.6rem; padding:.5rem .7rem; } .paginator button { min-width:2rem; border:1px solid #cbd5e1; border-radius:.35rem; background:#fff; } .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent {
+export class DataTableComponent implements OnInit {
   readonly data = input<Record<string, unknown>[]>([]);
   readonly value = input<Record<string, unknown>[] | undefined>(undefined);
   readonly columns = input<DataTableColumn[]>([]);
@@ -146,6 +146,8 @@ export class DataTableComponent {
   readonly sortChange = output<{ key: string; direction: 'ascending' | 'descending' }>();
   readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly rowSelect = output<Record<string, unknown>>(); readonly rowUnselect = output<Record<string, unknown>>(); readonly onRowHover = output<Record<string, unknown>>(); readonly onFilter = output<{ value: string }>();
   readonly onHeaderCheckboxToggle = output<{ checked: boolean }>();
+
+  ngOnInit(): void { if (this.lazy() && this.lazyLoadOnInit()) this.onLazyLoad.emit({ first: this.first(), rows: this.effectivePageSize() }); }
 
   readonly rows = computed(() => {
     const key = this.sortField() || this.sortKey();
