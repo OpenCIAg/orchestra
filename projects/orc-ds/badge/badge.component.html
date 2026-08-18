@@ -1,6 +1,9 @@
 <span
-  class="orc-badge"
-  [class]="styleClass()"
+  [id]="id() || null"
+  class="p-badge p-component orc-badge"
+  [class]="'p-badge p-component orc-badge ' + styleClass()"
+  [attr.data-pc-name]="'badge'"
+  [attr.data-pc-severity]="normalizedStatus()"
   [class.orc-badge--variant-soft]="variant() === 'soft'"
   [class.orc-badge--variant-solid]="variant() === 'solid'"
   [class.orc-badge--variant-outline]="variant() === 'outline'"

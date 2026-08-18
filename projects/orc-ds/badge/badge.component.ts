@@ -4,6 +4,7 @@ import {
   input,
   output,
   computed,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BadgeSize, BadgeStatus, BadgeVariant } from './badge.types';
@@ -26,10 +27,11 @@ export class BadgeComponent {
   readonly value = input<string | number | undefined>(undefined);
   readonly count = input<number | undefined>(undefined);
   readonly maxCount = input<number>(99);
-  readonly dot = input<boolean>(false);
-  readonly showDefaultIcon = input<boolean>(false);
-  readonly dismissible = input<boolean>(false);
-  readonly pill = input<boolean>(false);
+  readonly dot = input<boolean>(false, { transform: booleanAttribute });
+  readonly showDefaultIcon = input<boolean>(false, { transform: booleanAttribute });
+  readonly dismissible = input<boolean>(false, { transform: booleanAttribute });
+  readonly pill = input<boolean>(false, { transform: booleanAttribute });
+  readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string>('');
   readonly styleClass = input('');
 
