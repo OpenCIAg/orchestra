@@ -151,6 +151,16 @@ describe('P2 expansion components', () => {
     expect(component.overlayVisible()).toBeFalse();
   });
 
+  it('closes a dismissable overlay panel only when clicking outside its host', () => {
+    const fixture = TestBed.createComponent(OverlayPanelComponent);
+    const component = fixture.componentInstance;
+    component.show();
+    component.onDocumentClick({ target: fixture.nativeElement } as unknown as MouseEvent);
+    expect(component.visible()).toBeTrue();
+    component.onDocumentClick({ target: document.body } as unknown as MouseEvent);
+    expect(component.visible()).toBeFalse();
+  });
+
   it('honors DatePickerCalendar firstDayOfWeek grid configuration', () => {
     const fixture = TestBed.createComponent(DatePickerCalendarComponent);
     const component = fixture.componentInstance;

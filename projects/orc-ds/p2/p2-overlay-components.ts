@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, computed, HostListener, input, model, output, signal } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, computed, ElementRef, HostListener, input, model, output, signal, inject } from '@angular/core';
 import { P2Option, P2_SHARED_STYLES, P2Orientation } from './p2-shared';
 
 @Component({
@@ -73,6 +73,7 @@ export class ContextMenuComponent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverlayPanelComponent {
+  private readonly host = inject(ElementRef<HTMLElement>);
   readonly visible = model(false);
   readonly modal = input(false, { transform: booleanAttribute });
   readonly dismissable = input(true, { transform: booleanAttribute });
@@ -86,7 +87,7 @@ export class OverlayPanelComponent {
   hide(): void { if (this.visible()) { this.visible.set(false); this.onHide.emit(); } }
   toggle(): void { this.visible() ? this.hide() : this.show(); }
   onEscape(): void { if (this.closeOnEscape()) this.hide(); }
-  @HostListener('document:mousedown', ['$event']) onDocumentClick(event: MouseEvent): void { if (!this.dismissable() || !this.visible()) return; const target = event.target as Node | null; if (target && !((event.currentTarget as Document).contains(target))) this.hide(); }
+  @HostListener('document:mousedown', ['$event']) onDocumentClick(event: MouseEvent): void { if (!this.dismissable() || !this.visible()) return; const target = event.target as Node | null; if (target && !this.host.nativeElement.contains(target)) this.hide(); }
 }
 
 @Component({
