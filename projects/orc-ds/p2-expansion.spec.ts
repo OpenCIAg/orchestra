@@ -642,6 +642,19 @@ describe('P2 expansion components', () => {
     expect(component.request()).toBeNull();
   });
 
+  it('supports ConfirmDialog configurable accept/reject visibility and callbacks', () => {
+    const service = TestBed.inject(ConfirmationService);
+    const fixture = TestBed.createComponent(ConfirmDialogComponent);
+    const component = fixture.componentInstance;
+    let rejected = false;
+    service.confirm({ message: 'Delete?', acceptVisible: false, rejectLabel: 'Keep', reject: () => rejected = true });
+    expect(component.request()?.acceptVisible).toBeFalse();
+    expect(component.request()?.rejectLabel).toBe('Keep');
+    component.reject();
+    expect(rejected).toBeTrue();
+    expect(component.request()).toBeNull();
+  });
+
   it('supports Menubar nested submenu activation', () => {
     const fixture = TestBed.createComponent(MenubarComponent);
     const component = fixture.componentInstance;
