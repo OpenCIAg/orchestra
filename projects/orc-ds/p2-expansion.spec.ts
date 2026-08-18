@@ -797,6 +797,17 @@ describe('P2 expansion components', () => {
     expect(pickComponent.sourceSelected().has('a')).toBeTrue();
   });
 
+  it('supports OrderList ControlValueAccessor reorder propagation', () => {
+    const fixture = TestBed.createComponent(OrderListComponent<string>);
+    const component = fixture.componentInstance;
+    component.writeValue(['A', 'B']);
+    component.selectedIndex.set(0);
+    let changed: string[] = [];
+    component.registerOnChange(value => changed = value);
+    component.move(1);
+    expect(changed).toEqual(['B', 'A']);
+  });
+
   it('supports Galleria PrimeNG navigation configuration and keyboard navigation', () => {
     const fixture = TestBed.createComponent(GalleriaComponent);
     const component = fixture.componentInstance;
