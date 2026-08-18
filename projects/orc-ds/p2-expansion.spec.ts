@@ -6,6 +6,7 @@ import { TagsInputComponent } from './p2/p2-form-components';
 import { DataTableComponent } from './p2/p2-data-components';
 import { VirtualScrollerComponent } from './p2/p2-data-components';
 import { SegmentedControlComponent, TreeSelectComponent } from './p2/p2-selection-components';
+import { CascadeSelectComponent } from './p2/p2-form-gap-components';
 import { DataViewComponent } from './p2/p2-advanced-components';
 import { ToggleButtonComponent } from './p2/p2-form-gap-components';
 import { SelectComponent } from './select/select.component';
@@ -628,6 +629,19 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('options', [{ value: 'grid', label: 'Grid' }, { value: 'list', label: 'List' }]);
     fixture.componentInstance.select(fixture.componentInstance.options()[1]);
     expect(fixture.componentInstance.value()).toBe('list');
+  });
+
+  it('supports CascadeSelect ControlValueAccessor synchronization', () => {
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('options', [{ value: 'br', label: 'Brazil', children: [{ value: 'sp', label: 'São Paulo' }] }]);
+    component.writeValue('sp');
+    expect(component.value()).toBe('sp');
+    expect(component.selectedLabel()).toContain('São Paulo');
+    let changed: string | null = 'sp';
+    component.registerOnChange(value => changed = value);
+    component.clear();
+    expect(changed).toBeNull();
   });
 
   it('supports Tree filtering, multiple selection, and expand/collapse events', () => {
