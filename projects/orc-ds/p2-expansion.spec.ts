@@ -589,6 +589,18 @@ describe('P2 expansion components', () => {
     expect(component.selected().size).toBe(0);
   });
 
+  it('emits TreeTable initial lazy-load payload with configured rows', () => {
+    const fixture = TestBed.createComponent(TreeTableComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('lazy', true);
+    fixture.componentRef.setInput('lazyLoadOnInit', true);
+    fixture.componentRef.setInput('rows', 25);
+    let request: { first: number; rows: number } | undefined;
+    component.onLazyLoad.subscribe(event => request = event);
+    component.ngOnInit();
+    expect(request).toEqual({ first: 0, rows: 25 });
+  });
+
   it('emits DataView layout and initial lazy-load lifecycle events', () => {
     const fixture = TestBed.createComponent(DataViewComponent);
     const component = fixture.componentInstance as DataViewComponent<{ id: number }>;
