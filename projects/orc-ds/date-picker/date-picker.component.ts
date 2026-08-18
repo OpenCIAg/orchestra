@@ -62,5 +62,5 @@ export class DatePickerComponent implements ControlValueAccessor {
   private calendarIso(value: unknown): string { return value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? ''); }
   private dateConstraint(date: Date | null | undefined, fallback: string): string { return date instanceof Date && !Number.isNaN(date.valueOf()) ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : fallback; }
   clear():void{this.value.set('');this.onChange('');this.onClear.emit();this.onClearClick.emit();}
-  today():void{const value=new Date(); if (!this.isDateSelectable(value)) return; const next=this.dataType()==='date'?value:value.toISOString().slice(0,10); this.value.set(next);this.onChange(next);this.onTodayClick.emit(value);this.onSelect.emit(next);}
+  today():void{const value=new Date(); if (!this.isDateSelectable(value)) return; const next=this.dataType()==='date'?value:value.toISOString().slice(0,10); this.value.set(next);this.onChange(next);this.onInput.emit(next);this.onTodayClick.emit(value);this.onSelect.emit(next);if(this.hideOnDateTimeSelect()&&!this.inline())this.hide();}
 }

@@ -169,6 +169,17 @@ describe('P2 expansion components', () => {
     expect(component.inputValue()).toBe('13:04:09');
   });
 
+  it('emits DatePicker input lifecycle and closes on Today when configured', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const component = fixture.componentInstance;
+    const input = jasmine.createSpy('input');
+    component.onInput.subscribe(input);
+    component.show();
+    component.today();
+    expect(input).toHaveBeenCalled();
+    expect(component.overlayVisible()).toBeFalse();
+  });
+
   it('supports DatePicker keyboard show and Escape close behavior', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     const component = fixture.componentInstance;
