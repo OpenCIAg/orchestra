@@ -285,6 +285,21 @@ describe('P2 expansion components', () => {
     expect(component.sortField()).toBe('');
   });
 
+  it('honors single-row selection and emits filter changes', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    const component = fixture.componentInstance;
+    const first = { id: 1, name: 'Alpha' };
+    const second = { id: 2, name: 'Beta' };
+    fixture.componentRef.setInput('data', [first, second]);
+    fixture.componentRef.setInput('selectionMode', 'single');
+    component.toggleRow(first, true);
+    component.toggleRow(second, true);
+    expect(component.selected()).toEqual([second]);
+    component.setFilter('beta');
+    expect(component.filteredRows()).toEqual([second]);
+    expect(component.page()).toBe(0);
+  });
+
   it('calculates a virtualized range and expands a tree select', () => {
     const scroller = TestBed.createComponent(VirtualScrollerComponent);
     scroller.componentRef.setInput('items', Array.from({ length: 100 }, (_, index) => `Item ${index}`));

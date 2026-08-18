@@ -106,7 +106,7 @@ export interface DataTableColumn {
   standalone: true,
   template: `
     <div class="orc-p2-data-table {{ styleClass() }}" [attr.aria-busy]="loading()">
-      @if (filterable()) { <input class="global-filter" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="filter.set(($any($event.target)).value)" [attr.aria-label]="'Filter ' + label()" /> }
+      @if (filterable()) { <input class="global-filter" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="setFilter(($any($event.target)).value)" [attr.aria-label]="'Filter ' + label()" /> }
       <table class="{{ tableStyleClass() }}">
         <caption class="sr-only">{{ label() }}</caption>
         <thead><tr>@if (selectionEnabled()) { <th scope="col"><input type="checkbox" [checked]="allSelected()" [indeterminate]="someSelected()" aria-label="Select all" (change)="toggleAll(($any($event.target)).checked)" /></th> } @for (column of columns(); track column.key) { <th scope="col" [attr.aria-sort]="(sortField() || sortKey()) === column.key ? sortDirection() : null" [class.sortable]="column.sortable" (click)="sortBy(column)">{{ column.header }}</th> }</tr></thead>
@@ -145,7 +145,7 @@ export class DataTableComponent {
   readonly rowClick = output<Record<string, unknown>>();
   readonly selectionChange = output<Record<string, unknown>[]>();
   readonly sortChange = output<{ key: string; direction: 'ascending' | 'descending' }>();
-  readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly rowSelect = output<Record<string, unknown>>(); readonly rowUnselect = output<Record<string, unknown>>(); readonly onRowHover = output<Record<string, unknown>>();
+  readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly rowSelect = output<Record<string, unknown>>(); readonly rowUnselect = output<Record<string, unknown>>(); readonly onRowHover = output<Record<string, unknown>>(); readonly onFilter = output<{ value: string }>();
   readonly onHeaderCheckboxToggle = output<{ checked: boolean }>();
 
   readonly rows = computed(() => {
@@ -173,8 +173,9 @@ export class DataTableComponent {
   getRowId(row: Record<string, unknown>): string { return String(row[this.rowKey()] ?? JSON.stringify(row)); }
   getCell(row: Record<string, unknown>, key: string): unknown { return row[key] ?? ''; }
   isSelected(row: Record<string, unknown>): boolean { return this.selected().some(item => this.getRowId(item) === this.getRowId(row)); }
+  setFilter(value: string): void { this.filter.set(value); this.page.set(0); this.first.set(0); this.onFilter.emit({ value }); }
   toggleRow(row: Record<string, unknown>, checked: boolean): void {
-    const next = this.selected().filter(item => this.getRowId(item) !== this.getRowId(row));
+    const next = this.selectionMode() === 'single' ? [] : this.selected().filter(item => this.getRowId(item) !== this.getRowId(row));
     if (checked) next.push(row);
     this.selected.set(next); this.selectionChange.emit(next); (checked ? this.rowSelect : this.rowUnselect).emit(row);
   }
@@ -182,7 +183,7 @@ export class DataTableComponent {
   sortBy(column: DataTableColumn): void {
     if (!column.sortable) return;
     const direction = this.sortKey() === column.key && this.sortDirection() === 'ascending' ? 'descending' : 'ascending';
-    this.sortKey.set(column.key); this.sortField.set(column.key); this.sortOrder.set(direction === 'ascending' ? 1 : -1); this.sortDirection.set(direction); this.sortChange.emit({ key: column.key, direction });
+    this.sortKey.set(column.key); this.sortField.set(column.key); this.sortOrder.set(direction === 'ascending' ? 1 : -1); this.sortDirection.set(direction); if (this.paginator()) { this.page.set(0); this.first.set(0); } this.sortChange.emit({ key: column.key, direction });
   }
   goToPage(page: number): void { const size = this.effectivePageSize(); const next = Math.max(0, Math.min(Math.max(0, this.pageCount() - 1), page)); this.page.set(next); this.first.set(next * size); this.onPage.emit({ first: this.first(), rows: size }); if (this.lazy()) this.onLazyLoad.emit({ first: this.first(), rows: size }); }
 }
