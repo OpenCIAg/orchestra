@@ -281,7 +281,7 @@ describe('P2 expansion components', () => {
     expect(component.displayData()).toHaveSize(1);
     component.toggleRowSelect(component.displayData()[0], true);
     expect(component.selectedRows()).toHaveSize(1);
-    component.handlePageChange({ first: 5, rows: 5 });
+    component.handlePageChange({ page: 2, pageSize: 5, totalPages: 2, startIndex: 6, endIndex: 10, totalItems: 10 });
     expect(component.currentPage()).toBe(2);
   });
 });

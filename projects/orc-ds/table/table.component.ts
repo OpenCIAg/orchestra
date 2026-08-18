@@ -18,6 +18,7 @@ import {
   TableSortEvent,
   TableColumnConfig,
 } from './table.types';
+import { PageChangeEvent } from '../paginator/paginator.types';
 
 @Component({
   selector: 'orc-table',
@@ -256,7 +257,7 @@ export class TableComponent<T = any> {
   }
 
   applyFilter(value: string): void { this.filter.set(value); this.onFilter.emit({ value }); }
-  handlePageChange(event: { first: number; rows: number }): void { this.currentPage.set(Math.floor(event.first / Math.max(1, event.rows)) + 1); this.pageSize.set(event.rows); this.onPage.emit(event); if (this.lazy()) this.onLazyLoad.emit(event); }
+  handlePageChange(event: PageChangeEvent): void { const first = Math.max(0, event.startIndex - 1); const rows = event.pageSize; const page = event.page; this.currentPage.set(page); this.pageSize.set(rows); const payload = { first, rows }; this.onPage.emit(payload); if (this.lazy()) this.onLazyLoad.emit(payload); }
 
   handleRowClick(row: any): void {
     this.rowClick.emit(row);
