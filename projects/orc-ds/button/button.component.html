@@ -1,9 +1,13 @@
 <button
+  [id]="id() || null"
   [type]="type()"
   [disabled]="isDisabled()"
   [attr.aria-disabled]="isDisabled() ? 'true' : null"
   [attr.aria-busy]="loading() ? 'true' : null"
   [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-labelledby]="ariaLabelledBy() || null"
+  [attr.tabindex]="tabindex()"
+  [attr.data-pc-name]="'button'"
   [class]="buttonClassString()"
   [style]="style()"
   (click)="handleClick($event)"

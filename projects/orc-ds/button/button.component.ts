@@ -32,6 +32,14 @@ export class ButtonComponent {
   readonly raised = input(false, { transform: booleanAttribute });
   readonly rounded = input(false, { transform: booleanAttribute });
   readonly plain = input(false, { transform: booleanAttribute });
+  readonly fluid = input(false, { transform: booleanAttribute });
+  readonly link = input(false, { transform: booleanAttribute });
+  readonly icon = input<string | undefined>(undefined);
+  readonly iconPos = input<'left' | 'right' | 'top' | 'bottom'>('left');
+  readonly loadingIcon = input<string | undefined>(undefined);
+  readonly id = input<string | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(undefined);
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly badge = input<string | number | undefined>(undefined);
@@ -51,9 +59,11 @@ export class ButtonComponent {
 
   // ── Computed Signals ──────────────────────────────────────────────
   readonly isDisabled = computed(() => this.disabled() || this.loading());
+  readonly effectiveIconLeft = computed(() => this.iconLeft() || (this.iconPos() === 'left' ? this.icon() : undefined));
+  readonly effectiveIconRight = computed(() => this.iconRight() || (this.iconPos() === 'right' ? this.icon() : undefined));
 
   readonly safeIconLeft = computed(() => {
-    const icon = this.iconLeft();
+    const icon = this.effectiveIconLeft();
     if (!icon) return null;
     if (icon.trim().startsWith('<svg')) {
       return { isSvg: true, content: this.sanitizer.bypassSecurityTrustHtml(icon) };
@@ -62,7 +72,7 @@ export class ButtonComponent {
   });
 
   readonly safeIconRight = computed(() => {
-    const icon = this.iconRight();
+    const icon = this.effectiveIconRight();
     if (!icon) return null;
     if (icon.trim().startsWith('<svg')) {
       return { isSvg: true, content: this.sanitizer.bypassSecurityTrustHtml(icon) };
@@ -84,6 +94,9 @@ export class ButtonComponent {
       'orc-button--raised': this.raised(),
       'orc-button--rounded': this.rounded(),
       'orc-button--plain': this.plain(),
+      'orc-button--fluid': this.fluid(),
+      'p-button': true,
+      'p-component': true,
     };
   });
   readonly buttonClassString = computed(() => `${Object.entries(this.buttonClasses()).filter(([, enabled]) => enabled).map(([name]) => name).join(' ')} ${this.styleClass()}`.trim());
