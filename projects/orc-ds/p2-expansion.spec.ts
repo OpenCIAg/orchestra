@@ -1252,6 +1252,22 @@ describe('P2 expansion components', () => {
     expect(component.isOptionDisabled(component.options()![1])).toBeTrue();
   });
 
+  it('does not open a disabled dropdown and navigates mapped options', () => {
+    const fixture = TestBed.createComponent(DropdownComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('optionLabel', 'name');
+    fixture.componentRef.setInput('optionValue', 'id');
+    fixture.componentRef.setInput('disabled', true);
+    fixture.detectChanges();
+    component.open();
+    expect(component.isOpen()).toBeFalse();
+    fixture.componentRef.setInput('disabled', false);
+    component.open();
+    expect(component.isOpen()).toBeTrue();
+    component.close();
+  });
+
   it('supports PrimeNG Skeleton shape, size, style, and animation aliases', () => {
     const fixture = TestBed.createComponent(SkeletonComponent);
     const component = fixture.componentInstance;

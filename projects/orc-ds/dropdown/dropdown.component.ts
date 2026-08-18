@@ -106,7 +106,7 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
   }
 
   open(): void {
-    if (this.isOpen()) return;
+    if (this.isOpen() || this.disabled() || this.cvaDisabled()) return;
     const positionStrategy = this.createPositionStrategy();
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
@@ -200,8 +200,8 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
 
   onItemKeydown(event: KeyboardEvent): void {
     const current = event.currentTarget as HTMLButtonElement;
-    const menu = current.closest<HTMLElement>('[role="menu"]');
-    const buttons = Array.from(menu?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]:not([disabled])') ?? []);
+    const menu = current.closest<HTMLElement>('[role="menu"], [role="listbox"]');
+    const buttons = Array.from(menu?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]:not([disabled]), [role="option"]:not([disabled])') ?? []);
     const index = buttons.indexOf(current);
     if (!buttons.length || index < 0) return;
     const target = event.key === 'ArrowDown' ? buttons[(index + 1) % buttons.length]

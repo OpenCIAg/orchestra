@@ -32,7 +32,7 @@
         }
         @if (loading()) { <div role="status">Loading</div> }
         @for (option of filteredOptions(); track optionValueOf(option)) {
-          <button type="button" role="option" class="orc-dropdown-item" [disabled]="isOptionDisabled(option)" [attr.aria-selected]="optionValueOf(option) === value()" (click)="selectOption(option, $event)">{{ optionText(option) }}</button>
+          <button type="button" role="option" class="orc-dropdown-item" [disabled]="isOptionDisabled(option)" [attr.aria-selected]="optionValueOf(option) === value()" (click)="selectOption(option, $event)" (keydown)="onItemKeydown($event)">{{ optionText(option) }}</button>
         } @empty { @if (!loading()) { <div role="status">{{ emptyMessage() }}</div> } }
       </div>
     } @else { @for (item of items(); track item.id || item.label) {
