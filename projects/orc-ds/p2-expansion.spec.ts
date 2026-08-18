@@ -291,6 +291,13 @@ describe('P2 expansion components', () => {
     expect(touched).toBeTrue();
   });
 
+  it('skips disabled Listbox options during keyboard navigation', () => {
+    const fixture = TestBed.createComponent(ListboxComponent<string>);
+    fixture.componentRef.setInput('options', [{ value: 'blocked', label: 'Blocked', disabled: true }, { value: 'open', label: 'Open' }]);
+    fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    expect(fixture.componentInstance.activeIndex()).toBe(1);
+  });
+
   it('paginates and sorts data view items', () => {
     const fixture = TestBed.createComponent(DataViewComponent<{ name: string }>);
     fixture.componentRef.setInput('value', [{ name: 'Beta' }, { name: 'Alpha' }]);

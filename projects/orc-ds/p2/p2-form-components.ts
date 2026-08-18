@@ -412,13 +412,17 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   }
 
   onKeydown(event: KeyboardEvent): void {
-    const options = this.filteredOptions().filter(option => !this.isOptionDisabled(option));
+    const options = this.filteredOptions();
+    const enabledIndexes = options.map((option, index) => this.isOptionDisabled(option) ? -1 : index).filter(index => index >= 0);
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       const delta = event.key === 'ArrowDown' ? 1 : -1;
-      this.activeIndex.update(index => options.length ? (index + delta + options.length) % options.length : 0);
-    } else if (event.key === 'Enter' && options[this.activeIndex()]) {
-      this.select(options[this.activeIndex()]);
+      if (enabledIndexes.length) {
+        const currentPosition = Math.max(0, enabledIndexes.indexOf(this.activeIndex()));
+        this.activeIndex.set(enabledIndexes[(currentPosition + delta + enabledIndexes.length) % enabledIndexes.length]);
+      }
+    } else if (event.key === 'Enter' && options[this.activeIndex()] && !this.isOptionDisabled(options[this.activeIndex()])) {
+      this.select(options[this.activeIndex()], event);
     }
   }
   onFilterInput(event: Event): void { const filter = (event.target as HTMLInputElement).value; this.filterValue.set(filter); this.onFilter.emit({ originalEvent: event, filter }); }
