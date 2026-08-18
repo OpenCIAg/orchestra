@@ -22,7 +22,7 @@ import {
 let nextSwitchUniqueId = 0;
 
 @Component({
-  selector: 'orc-switch, orc-toggle-switch',
+  selector: 'orc-switch, orc-toggle-switch, orc-toggle',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './switch.component.html',
