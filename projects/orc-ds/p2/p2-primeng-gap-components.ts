@@ -81,6 +81,7 @@ export class MeterGroupComponent {
   styles: [P2_SHARED_STYLES + `.orc-p2-password{display:flex;align-items:center;border:1px solid #cbd5e1;border-radius:.5rem;overflow:hidden}.orc-p2-password input{min-width:0;flex:1;border:0;padding:.55rem .7rem;outline:0}.orc-p2-password button{border:0;background:transparent;padding:.5rem}`],
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { 'class': 'p-password p-component', '[attr.data-pc-name]': "'password'" },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PasswordComponent), multi: true }],
 })
 export class PasswordComponent implements ControlValueAccessor {
