@@ -4,6 +4,7 @@ import {
   input,
   model,
   output,
+  computed,
   contentChildren,
   ElementRef,
   viewChildren,
@@ -23,11 +24,16 @@ import { TabChangeEvent, TabSize, TabVariant } from './tabs.types';
 export class TabGroupComponent {
   // Inputs & Model (Signals API)
   readonly selectedIndex = model<number>(0);
+  readonly value = model<string | number>(0, { alias: 'value' });
   readonly variant = input<TabVariant>('line');
   readonly size = input<TabSize>('md');
   readonly fullWidth = input<boolean>(false);
   readonly scrollable = input<boolean>(false);
   readonly selectOnFocus = input<boolean>(false);
+  readonly lazy = input(false);
+  readonly showNavigators = input(true);
+  readonly tabindex = input(0);
+  readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string>('Abas de navegação');
 
   // Outputs (Signals API)
@@ -40,6 +46,7 @@ export class TabGroupComponent {
 
   // Referências dos botões de abas para navegação por teclado e foco programático
   readonly tabButtons = viewChildren<ElementRef<HTMLButtonElement>>('tabBtn');
+  readonly activeIndex = computed(() => typeof this.value() === 'number' ? this.value() as number : this.selectedIndex());
 
   // ── Seleção de Aba ────────────────────────────────────────
   selectTab(index: number): void {
@@ -50,6 +57,7 @@ export class TabGroupComponent {
     if (targetTab.disabled()) return;
 
     this.selectedIndex.set(index);
+    this.value.set(index);
     const event = { index, tab: targetTab };
     this.tabChange.emit(event);
     this.onChange.emit(event);

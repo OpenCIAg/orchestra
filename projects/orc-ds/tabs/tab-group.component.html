@@ -12,17 +12,19 @@
   [class.orc-tab-group--size-lg]="size() === 'lg'"
   [class.orc-tab-group--full-width]="fullWidth()"
   [class.orc-tab-group--scrollable]="scrollable()"
+  [attr.id]="id()"
 >
   <!-- Barra de Abas (WAI-ARIA Tablist) -->
   <div
     class="orc-tab-group__header"
     role="tablist"
     [attr.aria-label]="ariaLabel()"
+    [attr.tabindex]="tabindex()"
   >
     <ng-container *ngFor="let tab of tabs(); let i = index">
       <!-- Divisor sutil entre abas inativas na variante Filled (Figma Node 69:2171) -->
       <span
-        *ngIf="variant() === 'filled' && i > 0 && selectedIndex() !== i && selectedIndex() !== i - 1"
+        *ngIf="variant() === 'filled' && i > 0 && activeIndex() !== i && activeIndex() !== i - 1"
         class="orc-tab-group__divider"
         aria-hidden="true"
       ></span>
@@ -33,12 +35,12 @@
         type="button"
         role="tab"
         class="orc-tab-group__tab"
-        [class.orc-tab-group__tab--active]="selectedIndex() === i"
+        [class.orc-tab-group__tab--active]="activeIndex() === i"
         [class.orc-tab-group__tab--disabled]="tab.disabled()"
         [id]="tab.tabId()"
-        [attr.aria-selected]="selectedIndex() === i"
+        [attr.aria-selected]="activeIndex() === i"
         [attr.aria-controls]="tab.panelId()"
-        [tabindex]="selectedIndex() === i ? 0 : -1"
+        [tabindex]="activeIndex() === i ? 0 : -1"
         [disabled]="tab.disabled()"
         (click)="selectTab(i)"
         (focus)="onFocus(i)"
@@ -101,13 +103,13 @@
       *ngFor="let tab of tabs(); let i = index"
       role="tabpanel"
       class="orc-tab-group__panel"
-      [class.orc-tab-group__panel--active]="selectedIndex() === i"
+      [class.orc-tab-group__panel--active]="activeIndex() === i"
       [id]="tab.panelId()"
       [attr.aria-labelledby]="tab.tabId()"
-      [hidden]="selectedIndex() !== i"
+      [hidden]="activeIndex() !== i"
       tabindex="0"
     >
-      <ng-container *ngIf="selectedIndex() === i">
+      <ng-container *ngIf="activeIndex() === i">
         <ng-container *ngTemplateOutlet="tab.contentTemplate() || null"></ng-container>
       </ng-container>
     </div>
