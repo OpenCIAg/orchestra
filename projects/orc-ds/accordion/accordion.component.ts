@@ -30,10 +30,11 @@ export class AccordionComponent {
   readonly collapseIcon = input<string | undefined>(undefined);
   readonly selectOnFocus = input(false);
   readonly transitionOptions = input('');
+  readonly headerAriaLevel = input(2);
+  readonly activeIndex = model<number | number[] | null>(0);
 
   // Outputs (Signals API)
   readonly expandedChange = output<AccordionToggleEvent>();
-  readonly activeIndexChange = output<number | number[]>();
   readonly onOpen = output<AccordionToggleEvent>();
   readonly onClose = output<AccordionToggleEvent>();
 
@@ -49,7 +50,7 @@ export class AccordionComponent {
     this.items.update(list => list.filter(i => i !== item));
   }
 
-  onItemToggle(targetItem: AccordionItemComponent, isExpanded: boolean): void {
+  onItemToggle(targetItem: AccordionItemComponent, isExpanded: boolean, originalEvent: Event = new Event('toggle')): void {
     if (!this.multiple() && isExpanded) {
       // Fecha todos os outros itens quando multiple for false
       for (const item of this.items()) {
@@ -61,12 +62,19 @@ export class AccordionComponent {
       }
     }
 
+    const visibleItems = this.items();
+    const activeIndexes = visibleItems.filter(item => item.expanded()).map(item => visibleItems.indexOf(item));
+    const activeValue = this.multiple() ? activeIndexes : (activeIndexes[0] ?? null);
+    this.activeIndex.set(activeValue);
     this.expandedChange.emit({
       id: targetItem.itemId(),
       expanded: isExpanded,
+      originalEvent,
+      index: visibleItems.indexOf(targetItem),
     });
-    this.value.set(isExpanded ? targetItem.itemId() : '');
-    const event = { id: targetItem.itemId(), expanded: isExpanded };
+    const activeIds = visibleItems.filter(item => item.expanded()).map(item => item.itemId());
+    this.value.set(this.multiple() ? activeIds : (activeIds[0] ?? ''));
+    const event = { id: targetItem.itemId(), expanded: isExpanded, originalEvent, index: visibleItems.indexOf(targetItem) };
     (isExpanded ? this.onOpen : this.onClose).emit(event);
   }
 

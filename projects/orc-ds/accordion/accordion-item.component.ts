@@ -40,6 +40,8 @@ export class AccordionItemComponent implements OnInit, OnDestroy {
   readonly icon = input<string>('');
   readonly disabled = input<boolean>(false);
   readonly hideToggle = input<boolean>(false);
+  readonly iconPos = input<'start' | 'end'>('end');
+  readonly headerAriaLevel = input<number | undefined>(undefined);
 
   // Model (Two-way binding Signals API)
   readonly expanded = model<boolean>(false);
@@ -73,7 +75,7 @@ export class AccordionItemComponent implements OnInit, OnDestroy {
   }
 
   // ── Métodos de Controle ───────────────────────────────────
-  toggleExpanded(): void {
+  toggleExpanded(originalEvent: Event = new Event('toggle')): void {
     if (this.disabled()) return;
 
     const nextState = !this.expanded();
@@ -87,7 +89,7 @@ export class AccordionItemComponent implements OnInit, OnDestroy {
     this.toggle.emit(nextState);
 
     if (this.accordion) {
-      this.accordion.onItemToggle(this, nextState);
+      this.accordion.onItemToggle(this, nextState, originalEvent);
     }
   }
 

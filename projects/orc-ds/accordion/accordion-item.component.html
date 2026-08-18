@@ -11,8 +11,9 @@
     [attr.id]="headerId()"
     [attr.aria-expanded]="expanded()"
     [attr.aria-controls]="panelId()"
+    [attr.aria-level]="headerAriaLevel()"
     [disabled]="disabled()"
-    (click)="toggleExpanded()"
+    (click)="toggleExpanded($event)"
     (keydown)="onKeyDown($event)"
   >
     <!-- Custom Header Projection or Default Title -->
