@@ -21,6 +21,8 @@ export class AccordionComponent {
   // Inputs (Signals API)
   readonly multiple = input<boolean>(false);
   readonly variant = input<AccordionVariant>('default');
+  readonly styleClass = input('');
+  readonly ariaLabel = input('Accordion');
 
   // Outputs (Signals API)
   readonly expandedChange = output<AccordionToggleEvent>();

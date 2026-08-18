@@ -5,7 +5,7 @@ import { P2_SHARED_STYLES } from './p2-shared';
 
 @Component({
   selector: 'orc-panel', standalone: true,
-  template: `<section class="orc-p2-panel" [class.collapsed]="collapsed()" [attr.aria-label]="ariaLabel() || null">
+  template: `<section class="orc-p2-panel" [class]="styleClass()" [class.collapsed]="collapsed()" [attr.aria-label]="ariaLabel() || null">
     <header class="orc-p2-panel__header" (click)="toggle()">
       <span class="orc-p2-panel__title"><ng-content select="[orcPanelHeader]" /> @if (!hasHeader()) { {{ header() }} }</span>
       @if (toggleable()) { <button type="button" class="orc-p2-panel__toggle" [attr.aria-expanded]="!collapsed()" (click)="$event.stopPropagation(); toggle()" [attr.aria-label]="collapsed() ? 'Expand panel' : 'Collapse panel'">{{ collapsed() ? '＋' : '−' }}</button> }
@@ -16,10 +16,10 @@ import { P2_SHARED_STYLES } from './p2-shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelComponent {
-  readonly header = input(''); readonly toggleable = input(false, { transform: booleanAttribute });
-  readonly collapsed = model(false); readonly ariaLabel = input('');
-  hasHeader(): boolean { return false; }
-  toggle(): void { if (!this.toggleable()) return; this.collapsed.update(value => !value); }
+  readonly header = input(''); readonly toggleable = input(false, { transform: booleanAttribute }); readonly styleClass = input('');
+  readonly collapsed = model(false); readonly ariaLabel = input(''); readonly onBeforeToggle = output<{ collapsed: boolean }>(); readonly onAfterToggle = output<{ collapsed: boolean }>();
+  hasHeader(): boolean { return !!this.header(); }
+  toggle(): void { if (!this.toggleable()) return; const next = !this.collapsed(); this.onBeforeToggle.emit({ collapsed: next }); this.collapsed.set(next); this.onAfterToggle.emit({ collapsed: next }); }
 }
 
 @Component({

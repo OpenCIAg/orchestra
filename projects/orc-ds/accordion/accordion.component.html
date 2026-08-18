@@ -1,8 +1,10 @@
 <div
   class="orc-accordion"
+  [class]="styleClass()"
   [class.orc-accordion--separated]="variant() === 'separated'"
   [class.orc-accordion--bordered]="variant() === 'bordered'"
   role="presentation"
+  [attr.aria-label]="ariaLabel()"
 >
   <ng-content></ng-content>
 </div>

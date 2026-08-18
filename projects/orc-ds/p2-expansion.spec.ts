@@ -20,6 +20,7 @@ import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-componen
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
 import { TableComponent } from './table/table.component';
+import { PanelComponent } from './p2/p2-primeng-gap-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -281,7 +282,19 @@ describe('P2 expansion components', () => {
     expect(component.displayData()).toHaveSize(1);
     component.toggleRowSelect(component.displayData()[0], true);
     expect(component.selectedRows()).toHaveSize(1);
-    component.handlePageChange({ page: 2, pageSize: 5, totalPages: 2, startIndex: 6, endIndex: 10, totalItems: 10 });
+    component.handlePageChange({ page: 2, pageSize: 5, startIndex: 6 });
     expect(component.currentPage()).toBe(2);
+  });
+
+  it('supports Panel toggle lifecycle and header detection', () => {
+    const fixture = TestBed.createComponent(PanelComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('toggleable', true);
+    fixture.componentRef.setInput('header', 'Details');
+    expect(component.hasHeader()).toBeTrue();
+    component.toggle();
+    expect(component.collapsed()).toBeTrue();
+    component.toggle();
+    expect(component.collapsed()).toBeFalse();
   });
 });
