@@ -65,6 +65,11 @@ export class PaginatorComponent {
   readonly showJumpToPageDropdown = input(false, { transform: booleanAttribute });
   readonly showJumpToPageInput = input(false, { transform: booleanAttribute });
   readonly locale = input<string | undefined>(undefined);
+  readonly dropdownAppendTo = input<HTMLElement | string | null | undefined>(undefined);
+  readonly appendTo = input<HTMLElement | string | null | undefined>(undefined);
+  readonly dropdownScrollHeight = input('200px');
+  readonly templateLeft = input<unknown>(undefined);
+  readonly templateRight = input<unknown>(undefined);
   readonly style = input<Record<string, string> | null>(null);
   readonly styleClass = input<string | undefined>(undefined);
 
