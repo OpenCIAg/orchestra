@@ -1,6 +1,7 @@
 <div
   class="orc-slider-wrapper"
   [class]="'orc-slider-wrapper ' + styleClass()"
+  [style]="style()"
   [class.orc-slider-wrapper--vertical]="orientation() === 'vertical'"
   [class.orc-slider-wrapper--disabled]="effectiveDisabled()"
   [class.orc-slider-wrapper--sm]="size() === 'sm'"
@@ -61,6 +62,7 @@
         [style.left.%]="startPercent()"
         role="slider"
         [attr.tabindex]="effectiveDisabled() ? -1 : tabindex()"
+        [attr.autofocus]="autofocus() ? '' : null"
         [attr.aria-valuenow]="currentStartValue()"
         [attr.aria-valuemin]="minVal()"
         [attr.aria-valuemax]="currentEndValue()"
@@ -93,6 +95,7 @@
       [style.left.%]="endPercent()"
       role="slider"
       [attr.tabindex]="effectiveDisabled() ? -1 : tabindex()"
+      [attr.autofocus]="autofocus() ? '' : null"
       [attr.aria-valuenow]="currentEndValue()"
       [attr.aria-valuemin]="range() ? currentStartValue() : minVal()"
       [attr.aria-valuemax]="maxVal()"

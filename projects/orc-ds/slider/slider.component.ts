@@ -55,6 +55,8 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly animate = input(false, { transform: booleanAttribute });
   readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly autofocus = input(false, { transform: booleanAttribute });
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly tabindex = input(0);
   readonly min = input<number, unknown>(0, {
