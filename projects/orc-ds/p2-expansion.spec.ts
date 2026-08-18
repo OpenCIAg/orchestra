@@ -111,6 +111,10 @@ describe('P2 expansion components', () => {
     const component = fixture.componentInstance;
     fixture.componentRef.setInput('dataType', 'date');
     fixture.componentRef.setInput('disabledDays', [0]);
+    fixture.componentRef.setInput('minDate', new Date(2025, 0, 6));
+    fixture.componentRef.setInput('maxDate', new Date(2025, 0, 31));
+    expect(component.calendarMin()).toBe('2025-01-06');
+    expect(component.calendarMax()).toBe('2025-01-31');
     component.update({ target: { value: '2025-01-05' } } as unknown as Event);
     expect(component.value()).toBe('');
     component.update({ target: { value: '2025-01-06' } } as unknown as Event);

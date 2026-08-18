@@ -22,6 +22,8 @@ export class DatePickerComponent implements ControlValueAccessor {
   private onChange:(value:any)=>void=()=>{}; private onTouched:()=>void=()=>{};
   readonly calendarValue = computed(() => { const value = this.value(); const first = Array.isArray(value) ? value[0] : value; return first instanceof Date ? first.toISOString().slice(0, 10) : String(first ?? ''); });
   readonly calendarValues = computed(() => { const value = this.value(); const values = Array.isArray(value) ? value : [value]; return values.map(item => item instanceof Date ? item.toISOString().slice(0, 10) : String(item ?? '')).filter(Boolean); });
+  readonly calendarMin = computed(() => this.dateConstraint(this.minDate(), this.min()));
+  readonly calendarMax = computed(() => this.dateConstraint(this.maxDate(), this.max()));
   readonly monthOffsets = computed(() => Array.from({ length: Math.max(1, this.numberOfMonths()) }, (_, index) => index));
   writeValue(value:any):void{this.value.set(value??'');} registerOnChange(fn:(value:any)=>void):void{this.onChange=fn;} registerOnTouched(fn:()=>void):void{this.onTouched=fn;} setDisabledState(value:boolean):void{this.cvaDisabled.set(value);}
   inputValue(): string { const value=this.value(); const format = (item: unknown) => item instanceof Date ? this.formatInputDate(item) : String(item ?? ''); if (Array.isArray(value)) { const separator = this.selectionMode() === 'range' ? this.rangeSeparator() : this.multipleSeparator(); return value.map(format).join(separator); } return value === undefined || value === null ? '' : format(value); }
@@ -53,6 +55,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (mode === 'single' || (mode === 'range' && Array.isArray(next) && next.length === 2)) this.hide();
   }
   private calendarIso(value: unknown): string { return value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? ''); }
+  private dateConstraint(date: Date | null | undefined, fallback: string): string { return date instanceof Date && !Number.isNaN(date.valueOf()) ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : fallback; }
   clear():void{this.value.set('');this.onChange('');this.onClear.emit();this.onClearClick.emit();}
   today():void{const value=new Date(); if (!this.isDateSelectable(value)) return; const next=this.dataType()==='date'?value:value.toISOString().slice(0,10); this.value.set(next);this.onChange(next);this.onTodayClick.emit(value);this.onSelect.emit(next);}
 }
