@@ -3,17 +3,19 @@
   [class.orc-table-container--bordered]="bordered()"
   [class.orc-table-container--striped]="striped()"
   [class.orc-table-container--hoverable]="hoverable()"
+  [class]="styleClass()"
+  [style]="style()"
 >
   <div class="orc-table-wrapper" role="region" aria-label="Tabela de dados" tabindex="0">
     @if (filterable()) {
       <input class="orc-table__filter" type="search" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="applyFilter(($any($event.target)).value)" aria-label="Filter table" />
     }
-    <table class="orc-table">
+    <table class="orc-table {{ tableStyleClass() }}">
       <!-- ── Cabeçalho da Tabela ─────────────────────────────── -->
       <thead class="orc-table__head">
         <tr class="orc-table__head-row">
           <!-- Coluna de Seleção em Massa -->
-          @if (selectable()) {
+          @if (selectionEnabled()) {
             <th scope="col" class="orc-table__th orc-table__th--checkbox">
               <orc-checkbox
                 [checked]="isAllSelected()"
@@ -79,7 +81,7 @@
         @if (loading()) {
           @for (placeholder of getSkeletonArray(); track placeholder) {
             <tr class="orc-table__row orc-table__row--loading">
-              @if (selectable()) {
+              @if (selectionEnabled()) {
                 <td class="orc-table__td orc-table__td--checkbox">
                   <orc-skeleton variant="rectangular" width="18px" height="18px" borderRadius="4px" />
                 </td>
@@ -97,7 +99,7 @@
           <tr class="orc-table__empty-row">
             <td
               class="orc-table__empty-cell"
-              [attr.colspan]="declaredColumns().length + (selectable() ? 1 : 0)"
+              [attr.colspan]="declaredColumns().length + (selectionEnabled() ? 1 : 0)"
             >
               <div class="orc-table__empty-content">
                 <div class="orc-table__empty-icon" aria-hidden="true">
@@ -123,7 +125,7 @@
               (click)="handleRowClick(row)"
             >
               <!-- Checkbox de Seleção por Linha -->
-              @if (selectable()) {
+              @if (selectionEnabled()) {
                 <td class="orc-table__td orc-table__td--checkbox" (click)="$event.stopPropagation()">
                   <orc-checkbox
                     [checked]="selected"
@@ -159,7 +161,7 @@
   </div>
 
   <!-- ── Rodapé com Paginação Integrada ───────────────────────── -->
-  @if (paginated() && effectiveTotalItems() > 0) {
+  @if (effectivePaginated() && effectiveTotalItems() > 0) {
     <div class="orc-table__footer">
       <orc-paginator
         [totalItems]="effectiveTotalItems()"

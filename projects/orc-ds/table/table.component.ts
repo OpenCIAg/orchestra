@@ -38,6 +38,7 @@ export class TableComponent<T = any> {
   // ── Inputs de Dados e Configuração ────────────────────────
   /** Dados a serem exibidos na tabela */
   readonly data = input<T[]>([]);
+  readonly value = input<T[] | undefined>(undefined);
 
   /** Configuração direta de colunas (alternativa ao uso de <orc-column>) */
   readonly columnsConfig = input<TableColumnConfig[] | undefined>(undefined);
@@ -48,6 +49,7 @@ export class TableComponent<T = any> {
   // ── Seleção de Linhas ─────────────────────────────────────
   /** Habilita seleção de linhas com checkbox na primeira coluna */
   readonly selectable = input(false, { transform: booleanAttribute });
+  readonly selectionMode = input<'single' | 'multiple' | undefined>(undefined);
 
   /** Linhas selecionadas (Two-Way Binding) */
   readonly selectedRows = model<T[]>([]);
@@ -63,6 +65,8 @@ export class TableComponent<T = any> {
 
   /** Direção da ordenação atual: 'asc' | 'desc' | 'none' */
   readonly sortDirection = model<SortDirection>('none');
+  readonly sortField = model<string>('', { alias: 'sortField' });
+  readonly sortOrder = model<number>(0, { alias: 'sortOrder' });
 
   /** Evento emitido quando o usuário clica para ordenar uma coluna */
   readonly sortChange = output<TableSortEvent>();
@@ -77,6 +81,9 @@ export class TableComponent<T = any> {
 
   /** Realce visual no hover sobre as linhas */
   readonly hoverable = input(true, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly tableStyleClass = input('');
   readonly filterable = input(false, { transform: booleanAttribute });
   readonly filterPlaceholder = input('Filter');
   readonly filter = model('');
@@ -99,15 +106,19 @@ export class TableComponent<T = any> {
   // ── Paginação Integrada ────────────────────────────────────
   /** Habilita rodapé com PaginatorComponent integrado */
   readonly paginated = input(false, { transform: booleanAttribute });
+  readonly paginator = input(false, { alias: 'paginator', transform: booleanAttribute });
 
   /** Quantidade de itens por página (Two-Way Binding) */
   readonly pageSize = model<number>(5);
+  readonly rowsInput = input<number | undefined>(undefined, { alias: 'rows' });
+  readonly first = model(0, { alias: 'first' });
 
   /** Página atual (1-indexed, Two-Way Binding) */
   readonly currentPage = model<number>(1);
 
   /** Total de itens para paginação do lado do servidor (se omitido, usa data().length) */
   readonly totalItems = input<number | undefined>(undefined);
+  readonly totalRecords = input<number | undefined>(undefined, { alias: 'totalRecords' });
 
   /** Opções de tamanho de página */
   readonly pageSizeOptions = input<number[]>([5, 10, 20, 50]);
@@ -120,25 +131,29 @@ export class TableComponent<T = any> {
 
   // ── Diretivas Filhas (<orc-column>) ───────────────────────
   readonly declaredColumns = contentChildren(ColumnDirective);
+  readonly effectiveData = computed(() => this.value() ?? this.data());
+  readonly effectivePageSize = computed(() => this.rowsInput() ?? this.pageSize());
+  readonly effectivePaginated = computed(() => this.paginated() || this.paginator());
+  readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());
 
   // ── Computeds ─────────────────────────────────────────────
   readonly effectiveTotalItems = computed(() => {
-    const custom = this.totalItems();
-    return custom !== undefined ? custom : this.data().length;
+    const custom = this.totalRecords() ?? this.totalItems();
+    return custom !== undefined ? custom : this.effectiveData().length;
   });
 
   /** Dados ordenados localmente */
   readonly filteredData = computed(() => {
     const query = this.filter().trim().toLocaleLowerCase();
-    if (!query) return this.data();
+    if (!query) return this.effectiveData();
     const fields = this.globalFilterFields();
-    return this.data().filter(row => (fields.length ? fields : Object.keys((row as any) || {})).some(key => String((row as any)?.[key] ?? '').toLocaleLowerCase().includes(query)));
+    return this.effectiveData().filter(row => (fields.length ? fields : Object.keys((row as any) || {})).some(key => String((row as any)?.[key] ?? '').toLocaleLowerCase().includes(query)));
   });
 
   readonly sortedData = computed(() => {
     const raw = [...this.filteredData()];
-    const col = this.sortColumn();
-    const dir = this.sortDirection();
+    const col = this.sortField() || this.sortColumn();
+    const dir = this.sortOrder() < 0 ? 'desc' : this.sortDirection();
 
     if (!col || dir === 'none') {
       return raw;
@@ -166,12 +181,12 @@ export class TableComponent<T = any> {
   /** Dados exibidos na página atual */
   readonly displayData = computed(() => {
     const sorted = this.sortedData();
-    if (!this.paginated()) {
+    if (!this.effectivePaginated()) {
       return sorted;
     }
     const page = Math.max(1, this.currentPage());
-    const size = Math.max(1, this.pageSize());
-    const start = (page - 1) * size;
+    const size = Math.max(1, this.effectivePageSize());
+    const start = this.first() || (page - 1) * size;
     return sorted.slice(start, start + size);
   });
 
@@ -253,12 +268,14 @@ export class TableComponent<T = any> {
 
     this.sortColumn.set(newDirection === 'none' ? '' : columnKey);
     this.sortDirection.set(newDirection);
+    this.sortField.set(newDirection === 'none' ? '' : columnKey);
+    this.sortOrder.set(newDirection === 'asc' ? 1 : newDirection === 'desc' ? -1 : 0);
     this.sortChange.emit({ column: columnKey, direction: newDirection });
     this.onSort.emit({ column: columnKey, direction: newDirection });
   }
 
   applyFilter(value: string): void { this.filter.set(value); this.onFilter.emit({ value }); }
-  handlePageChange(event: TablePageChangeEvent): void { const first = Math.max(0, event.startIndex - 1); const rows = event.pageSize; const page = event.page; this.currentPage.set(page); this.pageSize.set(rows); const payload = { first, rows }; this.onPage.emit(payload); if (this.lazy()) this.onLazyLoad.emit(payload); }
+  handlePageChange(event: TablePageChangeEvent): void { const first = Math.max(0, event.startIndex - 1); const rows = event.pageSize; const page = event.page; this.currentPage.set(page); this.pageSize.set(rows); this.first.set(first); const payload = { first, rows }; this.onPage.emit(payload); if (this.lazy()) this.onLazyLoad.emit(payload); }
 
   handleRowClick(row: any): void {
     this.rowClick.emit(row);
