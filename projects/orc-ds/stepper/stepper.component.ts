@@ -40,11 +40,19 @@ export class StepperComponent {
   /** Permite que o usuário clique nos passos para navegar */
   readonly clickable = input<boolean>(true);
 
+  /** Automatically activate a step when it receives keyboard focus. */
+  readonly selectOnFocus = input<boolean>(false);
+
+  /** Accessible label for the stepper navigation. */
+  readonly ariaLabel = input<string>('Steps');
+
   /** Modo linear: impede pular etapas à frente */
   readonly linear = input<boolean>(false);
 
   /** Evento emitido quando o usuário clica em uma etapa */
   readonly stepChange = output<{ step: StepItem; index: number }>();
+  readonly onChange = output<{ index: number; step: StepItem }>();
+  readonly completed = output<void>();
 
   // ── Helpers & Métodos ─────────────────────────────────────
   getStepStatus(index: number, step: StepItem): StepStatus {
@@ -62,10 +70,17 @@ export class StepperComponent {
   }
 
   selectStep(index: number, step: StepItem): void {
+    if (!step) return;
     if (!this.isStepClickable(index, step)) return;
     this.currentStep.set(index);
     this.stepChange.emit({ step, index });
+    this.onChange.emit({ index, step });
+    if (index === this.steps().length - 1) this.completed.emit();
   }
+
+  next(): void { this.selectStep(this.currentStep() + 1, this.steps()[this.currentStep() + 1]); }
+  previous(): void { this.selectStep(this.currentStep() - 1, this.steps()[this.currentStep() - 1]); }
+  reset(): void { this.currentStep.set(0); }
 
   isConnectorCompleted(index: number): boolean {
     return index < this.currentStep();

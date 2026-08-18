@@ -1,6 +1,6 @@
 <nav class="orc-stepper" [class.orc-stepper--horizontal]="orientation() === 'horizontal'"
   [class.orc-stepper--vertical]="orientation() === 'vertical'" [class.orc-stepper--numeric]="type() === 'numeric'"
-  [class.orc-stepper--icon]="type() === 'icon'" aria-label="Etapas do processo">
+  [class.orc-stepper--icon]="type() === 'icon'" [attr.aria-label]="ariaLabel()">
   <ol class="orc-stepper__list">
     @for (step of steps(); track step.id || $index; let idx = $index; let isLast = $last) {
     @let status = getStepStatus(idx, step);

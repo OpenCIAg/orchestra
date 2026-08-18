@@ -18,6 +18,7 @@ import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
+import { StepperComponent } from './stepper/stepper.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -254,5 +255,18 @@ describe('P2 expansion components', () => {
     expect(popover.visible()).toBeTrue();
     popover.onEscape();
     expect(popover.visible()).toBeFalse();
+  });
+
+  it('supports stepper next/previous/reset and completion lifecycle', () => {
+    const fixture = TestBed.createComponent(StepperComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('steps', [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }]);
+    component.next();
+    expect(component.currentStep()).toBe(1);
+    component.previous();
+    expect(component.currentStep()).toBe(0);
+    component.next();
+    component.reset();
+    expect(component.currentStep()).toBe(0);
   });
 });

@@ -26,10 +26,14 @@ export class TabGroupComponent {
   readonly variant = input<TabVariant>('line');
   readonly size = input<TabSize>('md');
   readonly fullWidth = input<boolean>(false);
+  readonly scrollable = input<boolean>(false);
+  readonly selectOnFocus = input<boolean>(false);
   readonly ariaLabel = input<string>('Abas de navegação');
 
   // Outputs (Signals API)
   readonly tabChange = output<TabChangeEvent>();
+  readonly onChange = output<TabChangeEvent>();
+  readonly tabFocus = output<{ index: number; tab: TabComponent }>();
 
   // Abas filhas registradas via contentChildren
   readonly tabs = contentChildren(TabComponent);
@@ -46,7 +50,9 @@ export class TabGroupComponent {
     if (targetTab.disabled()) return;
 
     this.selectedIndex.set(index);
-    this.tabChange.emit({ index, tab: targetTab });
+    const event = { index, tab: targetTab };
+    this.tabChange.emit(event);
+    this.onChange.emit(event);
   }
 
   // ── Navegação Acessível por Teclado (WAI-ARIA Tabs) ───────
@@ -99,6 +105,13 @@ export class TabGroupComponent {
       this.selectTab(targetIndex);
       this.focusTab(targetIndex);
     }
+  }
+
+  onFocus(index: number): void {
+    const tab = this.tabs()[index];
+    if (!tab || tab.disabled()) return;
+    this.tabFocus.emit({ index, tab });
+    if (this.selectOnFocus()) this.selectTab(index);
   }
 
   private focusTab(index: number): void {

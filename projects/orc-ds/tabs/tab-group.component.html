@@ -11,6 +11,7 @@
   [class.orc-tab-group--size-md]="size() === 'md'"
   [class.orc-tab-group--size-lg]="size() === 'lg'"
   [class.orc-tab-group--full-width]="fullWidth()"
+  [class.orc-tab-group--scrollable]="scrollable()"
 >
   <!-- Barra de Abas (WAI-ARIA Tablist) -->
   <div
@@ -40,6 +41,7 @@
         [tabindex]="selectedIndex() === i ? 0 : -1"
         [disabled]="tab.disabled()"
         (click)="selectTab(i)"
+        (focus)="onFocus(i)"
         (keydown)="onKeydown($event, i)"
       >
         <!-- Ícone à Esquerda (start) -->
