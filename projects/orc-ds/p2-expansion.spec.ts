@@ -206,6 +206,9 @@ describe('P2 expansion components', () => {
     scroller.componentInstance.onScroll({ target: { scrollTop: 400 } } as unknown as Event);
     expect(scroller.componentInstance.startIndex()).toBeGreaterThan(0);
     expect(scroller.componentInstance.visibleItems().length).toBeGreaterThan(0);
+    scroller.componentRef.setInput('lazy', true);
+    scroller.componentInstance.onScroll({ target: { scrollTop: 800 } } as unknown as Event);
+    expect(scroller.componentInstance.startIndex()).toBeGreaterThan(0);
 
     const tree = TestBed.createComponent(TreeSelectComponent);
     const root = { value: 'root', label: 'Root', children: [{ value: 'child', label: 'Child' }] };

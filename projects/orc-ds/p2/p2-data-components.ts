@@ -195,25 +195,29 @@ export class EmptyStateComponent {
 @Component({
   selector: 'orc-virtual-scroller',
   standalone: true,
-  template: `<div class="orc-p2-virtual-scroller" role="list" [attr.aria-label]="label()" [style.height]="viewportHeight()" (scroll)="onScroll($event)"><div [style.height.px]="topSpacer()"></div>@for (item of visibleItems(); track $index) { <div role="listitem" class="item" [style.height.px]="itemHeight()">{{ itemLabel(item) }}</div> }<div [style.height.px]="bottomSpacer()"></div></div>`,
+  template: `<div class="orc-p2-virtual-scroller" role="list" [attr.aria-label]="label()" [attr.aria-busy]="loading()" [style.height]="viewportHeight()" (scroll)="onScroll($event)"><div [style.height.px]="topSpacer()"></div>@if (loading()) { <div class="item">Loading…</div> } @for (item of visibleItems(); track $index) { <div role="listitem" class="item" [style.height.px]="itemHeight()">{{ itemLabel(item) }}</div> }<div [style.height.px]="bottomSpacer()"></div></div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-virtual-scroller { overflow: auto; border: 1px solid #cbd5e1; border-radius: .6rem; background: #fff; color: #0f172a; } .item { display: flex; align-items: center; padding: 0 .75rem; border-bottom: 1px solid #f1f5f9; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VirtualScrollerComponent {
   readonly items = input<unknown[]>([]);
   readonly itemHeight = input(40);
+  readonly itemSize = this.itemHeight;
   readonly viewportHeight = input('240px');
   readonly overscan = input(4);
   readonly label = input('Scrollable list');
   readonly itemLabelKey = input('label');
+  readonly lazy = input(false, { transform: booleanAttribute });
+  readonly loading = input(false, { transform: booleanAttribute });
   readonly scrollTop = signal(0);
   readonly rangeChange = output<{ start: number; end: number }>();
+  readonly onLazyLoad = output<{ first: number; last: number }>();
   readonly startIndex = computed(() => Math.max(0, Math.floor(this.scrollTop() / Math.max(1, this.itemHeight())) - this.overscan()));
   readonly endIndex = computed(() => Math.min(this.items().length, Math.ceil((this.scrollTop() + this.viewportPixels()) / Math.max(1, this.itemHeight())) + this.overscan()));
   readonly viewportPixels = computed(() => Number.parseInt(this.viewportHeight(), 10) || 240);
   readonly visibleItems = computed(() => this.items().slice(this.startIndex(), this.endIndex()));
   readonly topSpacer = computed(() => this.startIndex() * this.itemHeight());
   readonly bottomSpacer = computed(() => Math.max(0, (this.items().length - this.endIndex()) * this.itemHeight()));
-  onScroll(event: Event): void { const top = (event.target as HTMLElement).scrollTop; this.scrollTop.set(top); this.rangeChange.emit({ start: this.startIndex(), end: this.endIndex() }); }
+  onScroll(event: Event): void { const top = (event.target as HTMLElement).scrollTop; this.scrollTop.set(top); const range = { start: this.startIndex(), end: this.endIndex() }; this.rangeChange.emit(range); if (this.lazy()) this.onLazyLoad.emit({ first: range.start, last: Math.max(range.start, range.end - 1) }); }
   itemLabel(item: unknown): string { if (item && typeof item === 'object') return String((item as Record<string, unknown>)[this.itemLabelKey()] ?? ''); return String(item ?? ''); }
 }
