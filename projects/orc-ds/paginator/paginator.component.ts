@@ -6,6 +6,7 @@ import {
   output,
   computed,
   booleanAttribute,
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -109,8 +110,10 @@ export class PaginatorComponent {
   readonly effectiveTotalRecords = computed(() => this.totalRecords() ?? this.totalItems());
   readonly effectivePageSize = computed(() => Math.max(1, (this.rowsInput() ?? this.pageSize()) || 1));
   readonly effectivePageSizeOptions = computed(() => this.rowsPerPageOptions() ?? this.pageSizeOptions());
-  readonly effectivePageLinkSize = computed(() => Math.max(5, this.pageLinkSizeInput() ?? this.maxVisiblePages()));
+  readonly effectivePageLinkSize = computed(() => Math.max(1, this.pageLinkSizeInput() ?? this.maxVisiblePages()));
   readonly effectiveShowFirstLast = computed(() => this.showFirstLastButtons() || this.showFirstLastIcon());
+
+  constructor() { effect(() => { const rows = this.effectivePageSize(); const first = Math.max(0, this.first()); const page = Math.floor(first / rows) + 1; if (page !== this.currentPage()) this.currentPage.set(page); }, { allowSignalWrites: true }); }
 
   // ── Computeds (Reatividade Inteligente) ────────────────────
   /** Total de páginas calculado dinamicamente */
