@@ -50,7 +50,11 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly required = input(false, { transform: booleanAttribute });
   readonly showControls = input(true, { transform: booleanAttribute });
   readonly showButtons = input(true, { transform: booleanAttribute });
+  readonly format = input(true, { transform: booleanAttribute });
   readonly buttonLayout = input<'stacked' | 'horizontal' | 'vertical'>('stacked');
+  readonly styleClass = input(''); readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly inputStyle = input<Record<string, string | number> | undefined>(undefined); readonly inputStyleClass = input('');
+  readonly incrementButtonClass = input(''); readonly decrementButtonClass = input(''); readonly incrementButtonIcon = input('+'); readonly decrementButtonIcon = input('−');
   readonly inputId = input<string | undefined>(undefined);
   readonly tabindex = input<number | undefined>(undefined);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
@@ -66,6 +70,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly minFractionDigits = input<number | undefined>(undefined);
   readonly maxFractionDigits = input<number | undefined>(undefined);
   readonly ariaLabel = input('');
+  readonly ariaRequired = input<boolean | undefined>(undefined); readonly title = input<string | undefined>(undefined); readonly maxlength = input<number | undefined>(undefined); readonly autocomplete = input<string | undefined>(undefined); readonly localeMatcher = input<'lookup' | 'best fit'>('best fit'); readonly variant = input<'filled' | 'outlined' | undefined>(undefined); readonly fluid = input(false, { transform: booleanAttribute });
 
   readonly value = model<number | null>(null);
   readonly blur = output<FocusEvent>();
@@ -76,7 +81,9 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly displayValue = computed(() => {
     const value = this.value();
     if (value === null || value === undefined) return '';
-    return this.precision() === undefined ? String(value) : value.toFixed(this.precision()!);
+    if (!this.format()) return this.precision() === undefined ? String(value) : value.toFixed(this.precision()!);
+    try { return new Intl.NumberFormat(this.locale(), { style: this.mode() === 'currency' ? 'currency' : 'decimal', currency: this.currency(), currencyDisplay: this.currencyDisplay(), useGrouping: this.useGrouping(), minimumFractionDigits: this.minFractionDigits() ?? this.precision(), maximumFractionDigits: this.maxFractionDigits() ?? this.precision(), localeMatcher: this.localeMatcher() }).format(value); }
+    catch { return this.precision() === undefined ? String(value) : value.toFixed(this.precision()!); }
   });
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
@@ -99,7 +106,7 @@ export class NumberInputComponent implements ControlValueAccessor {
       if (this.allowEmpty()) this.update(null);
       return;
     }
-    const parsed = Number(raw);
+    const parsed = Number(raw.replace(/[^0-9+\-.]/g, ''));
     if (Number.isFinite(parsed)) this.update(this.clamp(parsed));
     this.onInput.emit({ originalEvent: event, value: this.value() });
   }
