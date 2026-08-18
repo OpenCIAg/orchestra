@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { CalendarComponent } from './p2/p2-form-components';
+import { CalendarComponent, DateInputComponent } from './p2/p2-form-components';
 import { ComboboxComponent } from './p2/p2-form-components';
 import { ListboxComponent, MultiSelectComponent } from './p2/p2-form-components';
 import { TagsInputComponent } from './p2/p2-form-components';
@@ -296,6 +296,17 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('options', [{ value: 'blocked', label: 'Blocked', disabled: true }, { value: 'open', label: 'Open' }]);
     fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
     expect(fixture.componentInstance.activeIndex()).toBe(1);
+  });
+
+  it('defaults DateInput tabindex while retaining native min/max constraints', () => {
+    const fixture = TestBed.createComponent(DateInputComponent);
+    fixture.componentRef.setInput('min', '2025-01-01');
+    fixture.componentRef.setInput('max', '2025-12-31');
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    expect(input.tabIndex).toBe(0);
+    expect(input.min).toBe('2025-01-01');
+    expect(input.max).toBe('2025-12-31');
   });
 
   it('paginates and sorts data view items', () => {

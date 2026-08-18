@@ -318,7 +318,7 @@ export class DateInputComponent implements ControlValueAccessor {
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly fluid = input(false, { transform: booleanAttribute });
   readonly autofocus = input(false, { transform: booleanAttribute });
-  readonly tabindex = input<number | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(0);
   readonly cvaDisabled = signal(false);
   private onChange: (value: string) => void = () => undefined;
   private onTouchedCallback: () => void = () => undefined;
