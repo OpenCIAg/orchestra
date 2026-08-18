@@ -51,6 +51,7 @@ import { FloatLabelComponent, MeterGroupComponent } from './p2/p2-primeng-gap-co
 import { ImageCompareComponent, InplaceComponent, TerminalComponent } from './p2/p2-input-gap-components';
 import { BlockUiComponent } from './p2/p2-advanced-components';
 import { SpeedDialComponent } from './p2/p2-overlay-components';
+import { ChartComponent, EditorComponent } from './p2/p2-chart-editor-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -409,6 +410,18 @@ describe('P2 expansion components', () => {
     terminal.submit(new Event('submit'));
     expect(terminal.history()[0].command).toBe('help');
     expect(TestBed.createComponent(FloatLabelComponent).componentInstance.variant()).toBe('over');
+  });
+
+  it('supports PrimeNG chart and editor lifecycle aliases', () => {
+    const chart = TestBed.createComponent(ChartComponent).componentInstance;
+    chart.refresh();
+    chart.reinit();
+    chart.selectPoint(0);
+    expect(chart.generateLegend()).toBe('');
+    const editor = TestBed.createComponent(EditorComponent).componentInstance;
+    editor.exec('bold');
+    editor.onInput({ target: document.createElement('div') } as unknown as Event);
+    expect(editor.getQuill()).toBeNull();
   });
 
   it('supports Galleria circular navigation and image change events', () => {
