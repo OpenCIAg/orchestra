@@ -822,6 +822,18 @@ describe('P2 expansion components', () => {
     expect(command).toHaveBeenCalled();
   });
 
+  it('supports Menu keyboard navigation and activation', () => {
+    const fixture = TestBed.createComponent(MenuComponent);
+    const component = fixture.componentInstance;
+    const command = jasmine.createSpy('keyboardCommand');
+    const items = [{ label: 'First' }, { label: 'Second', command }];
+    fixture.componentRef.setInput('model', items);
+    component.onKeydown({ key: 'ArrowDown', preventDefault() {} } as KeyboardEvent);
+    expect(component.activeIndex()).toBe(1);
+    component.onKeydown({ key: 'Enter', preventDefault() {} } as KeyboardEvent);
+    expect(command).toHaveBeenCalled();
+  });
+
   it('supports OrganizationChart expansion and multiple selection', () => {
     const fixture = TestBed.createComponent(OrganizationChartComponent);
     const component = fixture.componentInstance;

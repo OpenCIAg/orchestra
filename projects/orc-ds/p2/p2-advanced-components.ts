@@ -23,13 +23,13 @@ export class MenuComponent {
   readonly model = input<PrimeMenuItem[]>([]);
   readonly items = this.model;
   readonly popup = input(false, { transform: booleanAttribute }); readonly visible = model(false); readonly id = input<string | undefined>(undefined); readonly styleClass = input(''); readonly ariaLabel = input('Menu'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0);
-  readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = this.itemSelect; readonly onShow = output<void>(); readonly onHide = output<void>();
+  readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = this.itemSelect; readonly onShow = output<void>(); readonly onHide = output<void>(); readonly activeIndex = signal(0);
   effectiveModel(): PrimeMenuItem[] { return this.model(); }
   activate(item: PrimeMenuItem): void { if (this.disabled() || item.disabled || item.separator) return; item.command?.(); this.itemSelect.emit(item); if (this.popup()) this.hide(); }
   show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); } }
   hide(): void { if (this.visible()) { this.visible.set(false); this.onHide.emit(); } }
   toggle(): void { this.visible() ? this.hide() : this.show(); }
-  onKeydown(event: KeyboardEvent): void { if (event.key === 'Escape') { event.preventDefault(); this.hide(); } }
+  onKeydown(event: KeyboardEvent): void { const items = this.effectiveModel().filter(item => !item.separator && !item.disabled); if (event.key === 'Escape') { event.preventDefault(); this.hide(); return; } if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); const delta = event.key === 'ArrowDown' ? 1 : -1; this.activeIndex.update(index => items.length ? (index + delta + items.length) % items.length : 0); return; } if (event.key === 'Home') { event.preventDefault(); this.activeIndex.set(0); return; } if (event.key === 'End') { event.preventDefault(); this.activeIndex.set(Math.max(0, items.length - 1)); return; } if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); const item = items[this.activeIndex()]; if (item) this.activate(item); } }
 }
 
 @Component({
