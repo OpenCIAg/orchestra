@@ -219,6 +219,19 @@ describe('P2 expansion components', () => {
     expect(component.selected()).toHaveSize(1);
   });
 
+  it('supports PrimeNG DataTable value/rows/sort aliases and header selection event', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('value', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('rows', 1);
+    fixture.componentRef.setInput('paginator', true);
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    component.toggleAll(true);
+    expect(component.pageRows()).toHaveSize(1);
+    expect(component.selected()).toHaveSize(1);
+    expect(component.sortField()).toBe('');
+  });
+
   it('calculates a virtualized range and expands a tree select', () => {
     const scroller = TestBed.createComponent(VirtualScrollerComponent);
     scroller.componentRef.setInput('items', Array.from({ length: 100 }, (_, index) => `Item ${index}`));

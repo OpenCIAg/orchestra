@@ -105,15 +105,15 @@ export interface DataTableColumn {
   selector: 'orc-data-table',
   standalone: true,
   template: `
-    <div class="orc-p2-data-table" [attr.aria-busy]="loading()">
+    <div class="orc-p2-data-table {{ styleClass() }}" [attr.aria-busy]="loading()">
       @if (filterable()) { <input class="global-filter" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="filter.set(($any($event.target)).value)" [attr.aria-label]="'Filter ' + label()" /> }
-      <table>
+      <table class="{{ tableStyleClass() }}">
         <caption class="sr-only">{{ label() }}</caption>
-        <thead><tr>@if (selectable()) { <th scope="col"><input type="checkbox" [checked]="allSelected()" [indeterminate]="someSelected()" aria-label="Select all" (change)="toggleAll(($any($event.target)).checked)" /></th> } @for (column of columns(); track column.key) { <th scope="col" [attr.aria-sort]="sortKey() === column.key ? sortDirection() : null" [class.sortable]="column.sortable" (click)="sortBy(column)">{{ column.header }}</th> }</tr></thead>
+        <thead><tr>@if (selectionEnabled()) { <th scope="col"><input type="checkbox" [checked]="allSelected()" [indeterminate]="someSelected()" aria-label="Select all" (change)="toggleAll(($any($event.target)).checked)" /></th> } @for (column of columns(); track column.key) { <th scope="col" [attr.aria-sort]="(sortField() || sortKey()) === column.key ? sortDirection() : null" [class.sortable]="column.sortable" (click)="sortBy(column)">{{ column.header }}</th> }</tr></thead>
         <tbody>
-          @if (loading()) { <tr><td class="empty" [attr.colspan]="columns().length + (selectable() ? 1 : 0)">Loading…</td></tr> }
-          @else if (!rows().length) { <tr><td class="empty" [attr.colspan]="columns().length + (selectable() ? 1 : 0)">{{ emptyText() }}</td></tr> }
-          @else { @for (row of pageRows(); track getRowId(row)) { <tr [class.selected]="isSelected(row)" (click)="rowClick.emit(row)">@if (selectable()) { <td (click)="$event.stopPropagation()"><input type="checkbox" [checked]="isSelected(row)" [attr.aria-label]="'Select row ' + getRowId(row)" (change)="toggleRow(row, ($any($event.target)).checked)" /></td> } @for (column of columns(); track column.key) { <td>{{ getCell(row, column.key) }}</td> }</tr> } }
+          @if (loading()) { <tr><td class="empty" [attr.colspan]="columns().length + (selectionEnabled() ? 1 : 0)">Loading…</td></tr> }
+          @else if (!rows().length) { <tr><td class="empty" [attr.colspan]="columns().length + (selectionEnabled() ? 1 : 0)">{{ emptyText() }}</td></tr> }
+          @else { @for (row of pageRows(); track getRowId(row)) { <tr [class.selected]="isSelected(row)" (click)="rowClick.emit(row)">@if (selectionEnabled()) { <td (click)="$event.stopPropagation()"><input type="checkbox" [checked]="isSelected(row)" [attr.aria-label]="'Select row ' + getRowId(row)" (change)="toggleRow(row, ($any($event.target)).checked)" /></td> } @for (column of columns(); track column.key) { <td>{{ getCell(row, column.key) }}</td> }</tr> } }
         </tbody>
       </table>
       @if (paginator() && pageCount() > 1) { <nav class="paginator" aria-label="Table pages"><button type="button" [disabled]="page() === 0" (click)="page.set(page() - 1)">‹</button><span>{{ page() + 1 }} / {{ pageCount() }}</span><button type="button" [disabled]="page() + 1 >= pageCount()" (click)="page.set(page() + 1)">›</button></nav> }
@@ -124,9 +124,10 @@ export interface DataTableColumn {
 })
 export class DataTableComponent {
   readonly data = input<Record<string, unknown>[]>([]);
+  readonly value = input<Record<string, unknown>[] | undefined>(undefined);
   readonly columns = input<DataTableColumn[]>([]);
   readonly rowKey = input('id');
-  readonly dataKey = input<string | undefined>(undefined); readonly first = model(0); readonly totalRecords = input<number | undefined>(undefined); readonly lazy = input(false, { transform: booleanAttribute }); readonly rowHover = input(false, { transform: booleanAttribute }); readonly stripedRows = input(false, { transform: booleanAttribute }); readonly showGridlines = input(false, { transform: booleanAttribute }); readonly size = input<'small' | 'large' | undefined>(undefined); readonly sortMode = input<'single' | 'multiple'>('single');
+  readonly dataKey = input<string | undefined>(undefined); readonly first = model(0); readonly rowsInput = input<number | undefined>(undefined, { alias: 'rows' }); readonly totalRecords = input<number | undefined>(undefined); readonly lazy = input(false, { transform: booleanAttribute }); readonly lazyLoadOnInit = input(false, { transform: booleanAttribute }); readonly rowHover = input(false, { transform: booleanAttribute }); readonly stripedRows = input(false, { transform: booleanAttribute }); readonly showGridlines = input(false, { transform: booleanAttribute }); readonly size = input<'small' | 'large' | undefined>(undefined); readonly sortMode = input<'single' | 'multiple'>('single'); readonly selectionMode = input<'single' | 'multiple' | undefined>(undefined); readonly metaKeySelection = input(false, { transform: booleanAttribute }); readonly sortField = model<string>(''); readonly sortOrder = model<number>(0); readonly styleClass = input(''); readonly tableStyleClass = input('');
   readonly label = input('Data table');
   readonly emptyText = input('No data');
   readonly loading = input(false, { transform: booleanAttribute });
@@ -140,15 +141,17 @@ export class DataTableComponent {
   readonly selected = model<Record<string, unknown>[]>([]);
   readonly sortKey = signal('');
   readonly sortDirection = signal<'ascending' | 'descending'>('ascending');
+  readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());
   readonly rowClick = output<Record<string, unknown>>();
   readonly selectionChange = output<Record<string, unknown>[]>();
   readonly sortChange = output<{ key: string; direction: 'ascending' | 'descending' }>();
   readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly rowSelect = output<Record<string, unknown>>(); readonly rowUnselect = output<Record<string, unknown>>(); readonly onRowHover = output<Record<string, unknown>>();
+  readonly onHeaderCheckboxToggle = output<{ checked: boolean }>();
 
   readonly rows = computed(() => {
-    const key = this.sortKey();
-    const direction = this.sortDirection();
-    const result = [...this.data()];
+    const key = this.sortField() || this.sortKey();
+    const direction = this.sortOrder() < 0 ? 'descending' : this.sortDirection();
+    const result = [...(this.value() ?? this.data())];
     if (!key) return result;
     return result.sort((a, b) => {
       const left = a[key]; const right = b[key];
@@ -161,8 +164,9 @@ export class DataTableComponent {
     if (!query) return this.rows();
     return this.rows().filter(row => Object.values(row).some(value => String(value ?? '').toLocaleLowerCase().includes(query)));
   });
-  readonly pageCount = computed(() => Math.max(1, Math.ceil(this.filteredRows().length / Math.max(1, this.pageSize()))));
-  readonly pageRows = computed(() => this.paginator() ? this.filteredRows().slice(this.page() * this.pageSize(), (this.page() + 1) * this.pageSize()) : this.filteredRows());
+  readonly effectivePageSize = computed(() => this.rowsInput() ?? this.pageSize());
+  readonly pageCount = computed(() => Math.max(1, Math.ceil(this.filteredRows().length / Math.max(1, this.effectivePageSize()))));
+  readonly pageRows = computed(() => this.paginator() ? this.filteredRows().slice(this.page() * this.effectivePageSize(), (this.page() + 1) * this.effectivePageSize()) : this.filteredRows());
   readonly allSelected = computed(() => !!this.pageRows().length && this.pageRows().every(row => this.isSelected(row)));
   readonly someSelected = computed(() => this.pageRows().some(row => this.isSelected(row)) && !this.allSelected());
 
@@ -174,13 +178,13 @@ export class DataTableComponent {
     if (checked) next.push(row);
     this.selected.set(next); this.selectionChange.emit(next); (checked ? this.rowSelect : this.rowUnselect).emit(row);
   }
-  toggleAll(checked: boolean): void { const current = this.selected().filter(row => !this.pageRows().some(pageRow => this.getRowId(pageRow) === this.getRowId(row))); const next = checked ? [...current, ...this.pageRows()] : current; this.selected.set(next); this.selectionChange.emit(next); }
+  toggleAll(checked: boolean): void { const current = this.selected().filter(row => !this.pageRows().some(pageRow => this.getRowId(pageRow) === this.getRowId(row))); const next = checked ? [...current, ...this.pageRows()] : current; this.selected.set(next); this.selectionChange.emit(next); this.onHeaderCheckboxToggle.emit({ checked }); }
   sortBy(column: DataTableColumn): void {
     if (!column.sortable) return;
     const direction = this.sortKey() === column.key && this.sortDirection() === 'ascending' ? 'descending' : 'ascending';
-    this.sortKey.set(column.key); this.sortDirection.set(direction); this.sortChange.emit({ key: column.key, direction });
+    this.sortKey.set(column.key); this.sortField.set(column.key); this.sortOrder.set(direction === 'ascending' ? 1 : -1); this.sortDirection.set(direction); this.sortChange.emit({ key: column.key, direction });
   }
-  goToPage(page: number): void { const size = this.pageSize(); const next = Math.max(0, Math.min(Math.max(0, this.pageCount() - 1), page)); this.page.set(next); this.first.set(next * size); this.onPage.emit({ first: this.first(), rows: size }); if (this.lazy()) this.onLazyLoad.emit({ first: this.first(), rows: size }); }
+  goToPage(page: number): void { const size = this.effectivePageSize(); const next = Math.max(0, Math.min(Math.max(0, this.pageCount() - 1), page)); this.page.set(next); this.first.set(next * size); this.onPage.emit({ first: this.first(), rows: size }); if (this.lazy()) this.onLazyLoad.emit({ first: this.first(), rows: size }); }
 }
 
 @Component({
