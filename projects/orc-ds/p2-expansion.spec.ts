@@ -44,6 +44,7 @@ import { BadgeComponent } from './badge/badge.component';
 import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
+import { ToastComponent } from './toast/toast.component';
 import { ConfirmDialogComponent, ConfirmationService, MenuComponent, PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
@@ -896,6 +897,21 @@ describe('P2 expansion components', () => {
     expect(component.rotation()).toBe(90);
     component.closePreview();
     expect(component.previewVisible()).toBeFalse();
+  });
+
+  it('emits Toast onClick and onClose lifecycle payloads', () => {
+    const fixture = TestBed.createComponent(ToastComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('toast', { id: 't1', type: 'info', title: 'Info', message: 'Hello', duration: 0, dismissible: true, showIcon: true, position: 'top-right', pauseOnHover: true });
+    let clicked: any;
+    let closed: any;
+    component.onClick.subscribe(event => clicked = event);
+    component.onClose.subscribe(event => closed = event);
+    const click = new MouseEvent('click');
+    component.handleToastClick(click);
+    component.handleClose(click);
+    expect(clicked.originalEvent).toBe(click);
+    expect(closed.message.id).toBe('t1');
   });
 
   it('supports Galleria circular navigation and image change events', () => {

@@ -34,6 +34,8 @@ export class ToastComponent {
   // ── Outputs (Signals API) ─────────────────────────────────
   readonly dismiss = output<string>();
   readonly actionClick = output<ToastItem>();
+  readonly onClose = output<{ originalEvent: Event; message: ToastItem }>();
+  readonly onClick = output<{ originalEvent: MouseEvent; message: ToastItem }>();
 
   // ── Estados Internos Reativos ─────────────────────────────
   readonly isHovered = signal<boolean>(false);
@@ -126,16 +128,19 @@ export class ToastComponent {
     this.lastTick = Date.now();
   }
 
-  handleClose(): void {
+  handleClose(originalEvent: Event = new Event('close')): void {
     if (this.isExiting()) return;
     this.isExiting.set(true);
     this.clearTimer();
+    this.onClose.emit({ originalEvent, message: this.toast() });
 
     // Permite animação de saída antes da remoção final
     setTimeout(() => {
       this.dismiss.emit(this.toast().id);
     }, 200);
   }
+
+  handleToastClick(event: MouseEvent): void { this.onClick.emit({ originalEvent: event, message: this.toast() }); }
 
   handleAction(): void {
     if (this.toast().action) {
