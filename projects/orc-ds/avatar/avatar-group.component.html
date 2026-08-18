@@ -1,12 +1,13 @@
 <div
   class="orc-avatar-group"
+  [class]="styleClass()"
   [class.orc-avatar-group--size-xs]="size() === 'xs'"
   [class.orc-avatar-group--size-sm]="size() === 'sm'"
   [class.orc-avatar-group--size-md]="size() === 'md'"
   [class.orc-avatar-group--size-lg]="size() === 'lg'"
   [class.orc-avatar-group--size-xl]="size() === 'xl'"
   role="group"
-  aria-label="Grupo de avatares"
+  [attr.aria-label]="label()"
 >
   <!-- Modo com lista de items informada via input -->
   <ng-container *ngIf="items().length > 0">

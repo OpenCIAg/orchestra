@@ -1,5 +1,6 @@
 <div
   class="orc-avatar"
+  [class]="styleClass()"
   [class.orc-avatar--size-xs]="size() === 'xs'"
   [class.orc-avatar--size-sm]="size() === 'sm'"
   [class.orc-avatar--size-md]="size() === 'md'"
@@ -38,9 +39,10 @@
     {{ computedInitials() }}
   </span>
 
+  @if (icon()) { <span class="orc-avatar__icon" aria-hidden="true">{{ icon() }}</span> }
   <!-- Ícone Fallback Padrão -->
   <svg
-    *ngIf="showIcon()"
+    *ngIf="showIcon() && !icon()"
     class="orc-avatar__icon"
     viewBox="0 0 24 24"
     fill="none"

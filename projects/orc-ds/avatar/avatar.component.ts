@@ -28,6 +28,8 @@ export class AvatarComponent {
   // Inputs (Signals API)
   readonly src = input<string>('');
   readonly name = input<string>('');
+  readonly label = input<string | undefined>(undefined);
+  readonly icon = input<string | undefined>(undefined);
   readonly initials = input<string>('');
   readonly alt = input<string>('');
   readonly size = input<AvatarSize>('md');
@@ -37,6 +39,7 @@ export class AvatarComponent {
   readonly colorVariant = input<AvatarColorVariant>('default');
   readonly bordered = input<boolean>(false);
   readonly clickable = input<boolean>(false);
+  readonly styleClass = input('');
 
   // Outputs (Signals API)
   readonly imageError = output<Event>();
@@ -65,7 +68,7 @@ export class AvatarComponent {
     if (this.initials()) {
       return this.initials().trim().toUpperCase().slice(0, 3);
     }
-    const fullName = this.name()?.trim();
+    const fullName = (this.name() || this.label() || '').trim();
     if (!fullName) return '';
 
     const parts = fullName.split(/\s+/).filter(Boolean);
@@ -103,7 +106,7 @@ export class AvatarComponent {
 
   readonly accessibleLabel = computed(() => {
     if (this.alt()) return this.alt();
-    if (this.name()) return `Avatar de ${this.name()}`;
+    if (this.name() || this.label()) return `Avatar de ${this.name() || this.label()}`;
     if (this.computedInitials()) return `Avatar ${this.computedInitials()}`;
     return 'Avatar do usuário';
   });

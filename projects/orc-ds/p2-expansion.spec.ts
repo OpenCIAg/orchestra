@@ -30,6 +30,8 @@ import { SplitterComponent } from './p2/p2-overlay-components';
 import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { AvatarComponent } from './avatar/avatar.component';
+import { AvatarGroupComponent } from './avatar/avatar-group.component';
 import { BadgeComponent } from './badge/badge.component';
 import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
@@ -479,6 +481,18 @@ describe('P2 expansion components', () => {
     service.remove(first);
     expect(service.toasts().map(toast => toast.id)).not.toContain(first);
     service.clear();
+  });
+
+  it('supports Avatar label/icon aliases and AvatarGroup overflow', () => {
+    const avatar = TestBed.createComponent(AvatarComponent);
+    avatar.componentRef.setInput('label', 'Ada Lovelace');
+    avatar.componentRef.setInput('icon', '★');
+    expect(avatar.componentInstance.computedInitials()).toBe('AL');
+    const group = TestBed.createComponent(AvatarGroupComponent);
+    group.componentRef.setInput('items', [{ name: 'A' }, { name: 'B' }, { name: 'C' }]);
+    group.componentRef.setInput('max', 2);
+    expect(group.componentInstance.visibleItems()).toHaveSize(2);
+    expect(group.componentInstance.calculatedExcess()).toBe(1);
   });
 
   it('supports Menubar nested submenu activation', () => {
