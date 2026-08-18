@@ -120,12 +120,21 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly virtualScroll = input(false, { transform: booleanAttribute });
   readonly virtualScrollItemSize = input<number | undefined>(undefined);
   readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined);
+  readonly itemSize = input<number | undefined>(undefined);
+  readonly dataKey = input<string | undefined>(undefined);
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  readonly baseZIndex = input(0);
   readonly focusOnHover = input(true, { transform: booleanAttribute });
   readonly selectOnFocus = input(false, { transform: booleanAttribute });
   readonly autoOptionFocus = input(false, { transform: booleanAttribute });
   readonly maxlength = input<number | undefined>(undefined);
   readonly showTransitionOptions = input<string | undefined>(undefined);
   readonly hideTransitionOptions = input<string | undefined>(undefined);
+  readonly resetFilterOnHide = input(true, { transform: booleanAttribute });
+  readonly tooltip = input('');
+  readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>('right');
+  readonly tooltipPositionStyle = input('absolute');
+  readonly tooltipStyleClass = input<string | undefined>(undefined);
   readonly scrollHeight = input('200px');
 
   // Acessibilidade WCAG
@@ -370,7 +379,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     this.overlayRef?.dispose();
     this.overlayRef = null;
     this.isOpen.set(false);
-    this.searchTerm.set('');
+    if (this.resetFilterOnHide()) this.searchTerm.set('');
     this.activeOptionIndex.set(-1);
     this.onTouched();
     this.closed.emit();
