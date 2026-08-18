@@ -142,6 +142,21 @@ describe('P2 expansion components', () => {
     expect(component.value()).toEqual(['2025-01-05', '2025-01-10']);
   });
 
+  it('enforces DatePicker maxDateCount and hideOnDateTimeSelect', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    fixture.componentRef.setInput('maxDateCount', 1);
+    component.selectCalendarDate('2025-01-01');
+    component.selectCalendarDate('2025-01-02');
+    expect(component.value()).toEqual(['2025-01-01']);
+    fixture.componentRef.setInput('selectionMode', 'single');
+    fixture.componentRef.setInput('hideOnDateTimeSelect', false);
+    component.show();
+    component.selectCalendarDate('2025-01-03');
+    expect(component.overlayVisible()).toBeTrue();
+  });
+
   it('supports DatePicker keyboard show and Escape close behavior', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     const component = fixture.componentInstance;
