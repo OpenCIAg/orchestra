@@ -28,7 +28,7 @@ jobs:
         run: npm run verify:compatibility
 
       - name: Run library tests
-        run: npm run test:lib
+        run: npm run test:lib:ci
 
       - name: Build library (@ciag/orchestra)
         run: npm run build:lib

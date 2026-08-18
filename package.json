@@ -16,6 +16,7 @@
     "watch:lib": "ng build orc-ds --watch --configuration development",
     "test": "npm run test:lib",
     "test:lib": "ng test orc-ds --watch=false --browsers=ChromeHeadless",
+    "test:lib:ci": "ng test orc-ds --watch=false --browsers=ChromeHeadlessCI",
     "test:docs": "ng test docs --watch=false --browsers=ChromeHeadless",
     "pack:lib": "npm pack ./dist/orc-ds",
     "verify:compatibility": "node tools/release/verify-compatibility.mjs",

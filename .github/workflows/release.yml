@@ -43,7 +43,7 @@ jobs:
         run: npm run verify:compatibility
 
       - name: Run tests
-        run: npm run test:lib
+        run: npm run test:lib:ci
 
       - name: Build library
         run: npm run build:lib
