@@ -37,7 +37,7 @@ import { BadgeComponent } from './badge/badge.component';
 import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
-import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
+import { ConfirmDialogComponent, ConfirmationService, PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -506,6 +506,18 @@ describe('P2 expansion components', () => {
     ref.close({ saved: true });
     expect(destroyed).toBeTrue();
     expect(ref.afterClosed()).toEqual({ saved: true });
+  });
+
+  it('supports ConfirmDialog escape and accept lifecycle', () => {
+    const service = TestBed.inject(ConfirmationService);
+    const fixture = TestBed.createComponent(ConfirmDialogComponent);
+    const component = fixture.componentInstance;
+    let accepted = false;
+    service.confirm({ message: 'Continue?', accept: () => accepted = true });
+    expect(component.request()).toBeTruthy();
+    component.accept();
+    expect(accepted).toBeTrue();
+    expect(component.request()).toBeNull();
   });
 
   it('supports Menubar nested submenu activation', () => {

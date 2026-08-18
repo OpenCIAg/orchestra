@@ -65,15 +65,17 @@ export interface ConfirmationRequest { message: string; header?: string; acceptL
 
 @Component({
   selector: 'orc-confirm-dialog', standalone: true,
-  template: `@if (request()) { <div class="orc-confirm-backdrop" (click)="reject()"><section class="orc-confirm" role="alertdialog" aria-modal="true" (click)="$event.stopPropagation()"><h2>{{ request()?.header || 'Confirmation' }}</h2><p>{{ request()?.message }}</p><footer><button type="button" (click)="reject()">{{ request()?.rejectLabel || 'Cancel' }}</button><button type="button" class="accept" (click)="accept()">{{ request()?.acceptLabel || 'Confirm' }}</button></footer></section></div> }`,
+  template: `@if (request()) { <div class="orc-confirm-backdrop" (click)="reject()"><section class="orc-confirm" role="alertdialog" aria-modal="true" [attr.aria-label]="request()?.header || 'Confirmation'" (click)="$event.stopPropagation()" (keydown.escape)="onEscape()"><h2>{{ request()?.header || 'Confirmation' }}</h2><p>{{ request()?.message }}</p><footer>@if (closable()) { <button type="button" class="close" (click)="reject()" aria-label="Close">×</button> }<button type="button" (click)="reject()">{{ request()?.rejectLabel || 'Cancel' }}</button><button type="button" class="accept" (click)="accept()">{{ request()?.acceptLabel || 'Confirm' }}</button></footer></section></div> }`,
   styles: [P2_SHARED_STYLES + `.orc-confirm-backdrop{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#0f172a66}.orc-confirm{width:min(28rem,calc(100% - 2rem));padding:1.25rem;border-radius:.75rem;background:#fff;box-shadow:0 20px 40px #0f172a33}.orc-confirm h2{margin:0 0 .5rem}.orc-confirm p{color:#475569}.orc-confirm footer{display:flex;justify-content:flex-end;gap:.5rem}.orc-confirm button{border:1px solid #cbd5e1;border-radius:.4rem;background:#fff;padding:.5rem .8rem}.orc-confirm .accept{border-color:#2563eb;background:#2563eb;color:#fff}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent {
   readonly request: ConfirmationService['request'];
+  readonly closable = input(true, { transform: booleanAttribute }); readonly closeOnEscape = input(true, { transform: booleanAttribute }); readonly onHide = output<void>(); readonly onAccept = output<void>(); readonly onReject = output<void>();
   constructor(private readonly service: ConfirmationService) { this.request = service.request; }
-  accept(): void { this.request()?.accept?.(); this.service.close(); }
-  reject(): void { this.request()?.reject?.(); this.service.close(); }
+  accept(): void { this.request()?.accept?.(); this.onAccept.emit(); this.service.close(); this.onHide.emit(); }
+  reject(): void { this.request()?.reject?.(); this.onReject.emit(); this.service.close(); this.onHide.emit(); }
+  onEscape(): void { if (this.closeOnEscape()) this.reject(); }
 }
 
 @Component({
