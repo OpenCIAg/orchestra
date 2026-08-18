@@ -42,7 +42,7 @@ export class SwitchComponent implements ControlValueAccessor {
   readonly name = input<string>('');
   readonly value = input<any>(undefined);
   readonly inputId = input<string | undefined>(undefined);
-  readonly tabindex = input<number | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(0);
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly trueValue = input<any>(true);
   readonly falseValue = input<any>(false);
@@ -140,10 +140,11 @@ export class SwitchComponent implements ControlValueAccessor {
     this.onTouched();
 
     this.change.emit({
+      originalEvent: event,
       checked: newChecked,
       value: newChecked ? this.trueValue() : this.falseValue(),
     });
-    this.onChange.emit({ checked: newChecked, value: newChecked ? this.trueValue() : this.falseValue() });
+    this.onChange.emit({ originalEvent: event, checked: newChecked, value: newChecked ? this.trueValue() : this.falseValue() });
   }
 
   handleBlur(event?: Event): void {

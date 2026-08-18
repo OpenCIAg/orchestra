@@ -359,6 +359,17 @@ describe('P2 expansion components', () => {
     expect(component.checked()).toBeFalse();
   });
 
+  it('preserves the native event in ToggleSwitch changes and defaults tabindex', () => {
+    const fixture = TestBed.createComponent(SwitchComponent);
+    const component = fixture.componentInstance;
+    const changed = jasmine.createSpy('changed');
+    component.onChange.subscribe(changed);
+    const event = new MouseEvent('click');
+    component.onToggle(event);
+    expect(component.tabindex()).toBe(0);
+    expect(changed).toHaveBeenCalledWith(jasmine.objectContaining({ originalEvent: event, checked: true }));
+  });
+
   it('supports PrimeNG slider orientation and range values', () => {
     const fixture = TestBed.createComponent(SliderComponent);
     const component = fixture.componentInstance;
