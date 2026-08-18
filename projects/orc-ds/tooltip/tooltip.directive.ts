@@ -92,7 +92,7 @@ export class TooltipDirective implements OnDestroy {
 
   @HostListener('keydown.escape')
   onEscape(): void {
-    if (!this.hideOnEscape()) return;
+    if (!this.escape() || !this.hideOnEscape()) return;
     this.hideImmediately();
   }
 
