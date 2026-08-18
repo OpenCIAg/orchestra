@@ -298,6 +298,14 @@ describe('P2 expansion components', () => {
     expect(fixture.componentInstance.activeIndex()).toBe(1);
   });
 
+  it('uses Listbox dataKey for object-valued selection identity', () => {
+    const fixture = TestBed.createComponent(ListboxComponent<any>);
+    fixture.componentRef.setInput('options', [{ id: 1, label: 'Alpha' }]);
+    fixture.componentRef.setInput('dataKey', 'id');
+    fixture.componentRef.setInput('value', { id: 1 });
+    expect(fixture.componentInstance.isSelected(fixture.componentInstance.options()[0])).toBeTrue();
+  });
+
   it('defaults DateInput tabindex while retaining native min/max constraints', () => {
     const fixture = TestBed.createComponent(DateInputComponent);
     fixture.componentRef.setInput('min', '2025-01-01');

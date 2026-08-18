@@ -395,8 +395,10 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
 
   isSelected(option: any): boolean {
     const current = this.value();
-    const candidate = this.getOptionValue(option); return this.multiple() ? (Array.isArray(current) && current.includes(candidate)) : current === candidate;
+    const candidate = this.getOptionValue(option); return this.multiple() ? (Array.isArray(current) && current.some(item => this.sameValue(item, candidate))) : this.sameValue(current, candidate);
   }
+
+  private sameValue(left: any, right: any): boolean { const key = this.dataKey(); return key && left && right ? left?.[key] === right?.[key] : left === right; }
 
   select(option: any, event?: Event): void {
     if (this.disabled() || this.cvaDisabled() || this.readonly() || this.isOptionDisabled(option)) return;
