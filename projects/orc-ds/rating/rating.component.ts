@@ -50,7 +50,7 @@ export class RatingComponent implements ControlValueAccessor {
   readonly clearable = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly styleClass = input(''); readonly iconOnClass = input(''); readonly iconOffClass = input('');
+  readonly styleClass = input(''); readonly style = input<Record<string, string | number> | undefined>(undefined); readonly ariaLabel = input('Rating'); readonly iconOnClass = input(''); readonly iconOffClass = input('');
   readonly iconOnStyle = input<Record<string, string | number> | undefined>(undefined); readonly iconOffStyle = input<Record<string, string | number> | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly cancel = input(true, { transform: booleanAttribute }); readonly cancelIcon = input('×');
   
   // Array de rótulos ex: ['Péssimo', 'Ruim', 'Regular', 'Bom', 'Excelente']

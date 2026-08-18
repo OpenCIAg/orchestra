@@ -1,10 +1,13 @@
 
 <div
-  class="orc-rating"
+  class="p-rating p-component orc-rating"
   [class.orc-rating--disabled]="effectiveDisabled()"
   [class.orc-rating--readonly]="readonly()"
-  [class]="'orc-rating ' + styleClass()"
+  [class]="'p-rating p-component orc-rating ' + styleClass()"
+  [style]="style()"
   [id]="id()"
+  [attr.data-pc-name]="'rating'"
+  [attr.aria-label]="ariaLabel()"
   role="slider"
   [attr.aria-valuenow]="value()"
   [attr.aria-valuemin]="0"
@@ -24,7 +27,7 @@
         Para calcular o preenchimento, comparamos i com displayValue()
       -->
       <div
-        class="orc-rating__item"
+        class="p-rating-item orc-rating__item"
         [class.orc-rating__item--disabled]="effectiveDisabled()"
         [class.orc-rating__item--readonly]="readonly()"
         [class.orc-rating__item--numeric]="numeric()"
