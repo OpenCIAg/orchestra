@@ -475,10 +475,12 @@ describe('P2 expansion components', () => {
     chart.reinit();
     chart.selectPoint(0);
     expect(chart.generateLegend()).toBe('');
-    const editor = TestBed.createComponent(EditorComponent).componentInstance;
+    const editorFixture = TestBed.createComponent(EditorComponent);
+    editorFixture.detectChanges();
+    const editor = editorFixture.componentInstance;
     editor.exec('bold');
     editor.onInput({ target: document.createElement('div') } as unknown as Event);
-    expect(editor.getQuill()).toBeNull();
+    expect(editor.getQuill()).not.toBeNull();
   });
 
   it('supports Galleria circular navigation and image change events', () => {
