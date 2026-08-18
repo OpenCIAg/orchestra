@@ -4,6 +4,8 @@
   [attr.aria-label]="ariaLabel()"
   aria-roledescription="carousel"
   tabindex="0"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
 >
   <div class="orc-carousel__viewport" aria-live="polite">
     @if (activeItem(); as item) {

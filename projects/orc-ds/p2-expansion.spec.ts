@@ -32,6 +32,7 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { BadgeComponent } from './badge/badge.component';
 import { MenubarComponent } from './p2/p2-data-components';
+import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
@@ -488,5 +489,17 @@ describe('P2 expansion components', () => {
     component.activate(item);
     expect(component.openItem()).toBe(item);
     component.activate(item.children[0]);
+  });
+
+  it('supports Carousel hover pause and page lifecycle events', () => {
+    const fixture = TestBed.createComponent(CarouselComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('items', [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }]);
+    component.next();
+    expect(component.activeIndex()).toBe(1);
+    component.onMouseEnter();
+    expect(component.hovered()).toBeTrue();
+    component.onMouseLeave();
+    expect(component.hovered()).toBeFalse();
   });
 });

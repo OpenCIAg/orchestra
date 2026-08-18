@@ -34,12 +34,15 @@ export class CarouselComponent implements OnDestroy {
   readonly orientation = input<CarouselOrientation>('horizontal');
   readonly loop = input(true, { transform: booleanAttribute });
   readonly autoplay = input(false, { transform: booleanAttribute });
+  readonly pauseOnHover = input(true, { transform: booleanAttribute });
   readonly interval = input(5000, { transform: numberAttribute });
   readonly showArrows = input(true, { transform: booleanAttribute });
   readonly showIndicators = input(true, { transform: booleanAttribute });
   readonly ariaLabel = input('Carousel');
 
   readonly slideChange = output<{ index: number; item: CarouselItem }>();
+  readonly onPage = output<{ page: number; pageCount: number }>(); readonly onPlay = output<void>(); readonly onPause = output<void>();
+  readonly hovered = signal(false);
   readonly activeItem = computed(() => this.items()[this.safeIndex()] ?? null);
   readonly safeIndex = computed(() => {
     const count = this.items().length;
@@ -57,7 +60,7 @@ export class CarouselComponent implements OnDestroy {
       this.interval();
       this.stopAutoplay();
       if (this.autoplay() && this.items().length > 1) {
-        this.autoplayTimer = setInterval(() => this.next(), Math.max(1000, this.interval()));
+        this.autoplayTimer = setInterval(() => { if (!(this.pauseOnHover() && this.hovered())) this.next(); }, Math.max(1000, this.interval()));
       }
     });
   }
@@ -81,7 +84,11 @@ export class CarouselComponent implements OnDestroy {
     if (!item || item.disabled) return;
     this.activeIndex.set(index);
     this.slideChange.emit({ index, item });
+    this.onPage.emit({ page: index, pageCount: this.items().length });
   }
+
+  onMouseEnter(): void { this.hovered.set(true); this.onPause.emit(); }
+  onMouseLeave(): void { this.hovered.set(false); if (this.autoplay()) this.onPlay.emit(); }
 
   trackItem(index: number, item: CarouselItem): string | number {
     return item.id ?? index;
