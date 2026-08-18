@@ -449,13 +449,17 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
   isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return Boolean(key ? option?.[key] : option?.disabled); }
 
-  isSelected(option: P2Option<T>): boolean { return this.value().includes(this.getOptionValue(option)); }
+  private sameValue(left: any, right: any): boolean {
+    const key = this.dataKey();
+    return key && left && right ? left?.[key] === right?.[key] : left === right;
+  }
+  isSelected(option: P2Option<T>): boolean { return this.value().some(item => this.sameValue(item, this.getOptionValue(option))); }
   selectedLabels(): string { const labels = this.options().filter(option => this.isSelected(option)).map(option => this.getOptionLabel(option)); const max = this.maxSelectedLabels(); return max !== undefined && labels.length > max ? this.selectedItemsLabel().replace('{0}', String(labels.length)) : labels.join(', '); }
   toggleOpen(): void { if (this.disabled() || this.cvaDisabled() || this.readonly()) return; this.open.update(value => !value); if (!this.open() && this.resetFilterOnHide()) this.filterValue.set(''); this.open() ? this.onPanelShow.emit() : this.onPanelHide.emit(); }
   select(option: P2Option<T>, event?: Event): void {
     if (this.isOptionDisabled(option) || this.disabled() || this.cvaDisabled()) return;
     const current = [...this.value()];
-    const candidate = this.getOptionValue(option); const index = current.indexOf(candidate);
+    const candidate = this.getOptionValue(option); const index = current.findIndex(item => this.sameValue(item, candidate));
     if (index >= 0) current.splice(index, 1); else if (this.selectionLimit() === undefined || current.length < this.selectionLimit()!) current.push(candidate);
     this.value.set(current); this.onModelChange(current); this.onModelTouched(); this.optionSelected.emit(option); if (event) { this.onChange.emit({ originalEvent: event, value: current }); if (index >= 0) this.onRemove.emit({ value: candidate, originalEvent: event }); }
   }
