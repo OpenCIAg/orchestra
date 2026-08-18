@@ -12,6 +12,8 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2Option, P2_SHARED_STYLES, P2Size } from './p2-shared';
 
+let nextMultiSelectId = 0;
+
 export interface CalendarDay {
   iso: string;
   day: number;
@@ -365,16 +367,16 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   selector: 'orc-multi-select',
   standalone: true,
   template: `
-    <div class="orc-p2-multi-select" [class]="'orc-p2-multi-select ' + styleClass()" [style]="style()" [class.fluid]="fluid()">
-      @if (label()) { <label>{{ label() }}</label> }
-      <button type="button" class="trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="inputId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" (click)="toggleOpen()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
+    <div class="p-multiselect p-component orc-p2-multi-select" [class]="'p-multiselect p-component orc-p2-multi-select ' + styleClass()" [style]="style()" [class.fluid]="fluid()" [attr.data-pc-name]="'multiselect'">
+      @if (label()) { <label [for]="effectiveId()">{{ label() }}</label> }
+      <button type="button" class="p-multiselect-label p-multiselect-trigger trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="effectiveId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" [attr.aria-controls]="effectiveId() + '-panel'" (click)="toggleOpen()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
         <span>{{ selectedLabels() || placeholder() }}</span><span aria-hidden="true">⌄</span>
       </button>
       @if (showClear() && value().length) { <button type="button" class="clear" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
         @if (showToggleAll()) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? 'Clear all' : 'Select all' }}</button> }
         @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" [autofocus]="autofocusFilter()" /> }
-        <ul class="options" role="listbox" aria-multiselectable="true" [class]="panelStyleClass()" [style]="panelStyle()">
+        <ul class="p-multiselect-panel p-component options" [class]="'p-multiselect-panel p-component options ' + panelStyleClass()" [style]="panelStyle()" [id]="effectiveId() + '-panel'" role="listbox" aria-multiselectable="true">
           @if (loading()) { <li class="empty" aria-live="polite">{{ loadingIcon() || 'Loading…' }}</li> } @else {
           @for (option of filteredOptions(); track getOptionValue(option)) { <li role="option" [attr.aria-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)"><span class="check">{{ isSelected(option) ? '✓' : '' }}</span>{{ getOptionLabel(option) }}</li> }
           @empty { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyMessage() }}</li> }
@@ -392,6 +394,7 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
+  private readonly uniqueId = `orc-multiselect-${++nextMultiSelectId}`;
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T[]>([]);
   readonly label = input('');
@@ -404,6 +407,7 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   readonly open = model(false);
   readonly optionSelected = output<P2Option<T>>(); readonly onChange = output<{ originalEvent: Event; value: T[] }>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onSelectAllChange = output<{ originalEvent: Event; checked: boolean }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onClear = output<Event>(); readonly onPanelShow = output<void>(); readonly onPanelHide = output<void>(); readonly onRemove = output<{ value: T; originalEvent: Event }>();
   protected cvaDisabled = signal(false); private onModelChange: (value: T[]) => void = () => {}; private onModelTouched: () => void = () => {};
+  readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
   readonly filteredOptions = computed(() => { const term = this.filterValue().trim(); if (!term) return this.options(); const fields = this.filterFields() ?? (this.filterBy() ? this.filterBy()!.split(',').map(field => field.trim()).filter(Boolean) : undefined); return this.options().filter(option => { const values = (fields?.length ? fields.map(field => String((option as any)?.[field] ?? '')) : [this.getOptionLabel(option)]); const locale = this.filterLocale() || undefined; const query = term.toLocaleLowerCase(locale); return values.some(value => { const normalized = value.toLocaleLowerCase(locale); switch (this.filterMatchMode()) { case 'startsWith': return normalized.startsWith(query); case 'endsWith': return normalized.endsWith(query); case 'equals': return normalized === query; case 'notEquals': return normalized !== query; default: return normalized.includes(query); } }); }); });
 
   writeValue(value: T[] | null): void { this.value.set(Array.isArray(value) ? [...value] : []); }
