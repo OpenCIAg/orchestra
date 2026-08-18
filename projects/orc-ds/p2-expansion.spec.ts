@@ -633,6 +633,17 @@ describe('P2 expansion components', () => {
     }
   });
 
+  it('supports Galleria fullscreen visibility and Escape dismissal', () => {
+    const fixture = TestBed.createComponent(GalleriaComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('fullScreen', true);
+    component.hide();
+    expect(component.visible()).toBeFalse();
+    component.show();
+    component.onKeydown({ key: 'Escape', preventDefault() {} } as KeyboardEvent);
+    expect(component.visible()).toBeFalse();
+  });
+
   it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
     const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
     panel.show();
