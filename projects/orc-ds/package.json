@@ -12,6 +12,10 @@
   ],
   "author": "CIAG",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenCIAg/orchestra"
+  },
   "sideEffects": false,
   "peerDependencies": {
     "@angular/common": "^19.0.0",
