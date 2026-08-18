@@ -170,6 +170,22 @@ describe('P2 expansion components', () => {
     expect(component.inputValue()).toBe('13:04:09');
   });
 
+  it('supports DatePicker time stepping and 12-hour meridiem controls', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('dataType', 'date');
+    fixture.componentRef.setInput('showTime', true);
+    fixture.componentRef.setInput('hourFormat', '12');
+    fixture.componentRef.setInput('stepMinute', 5);
+    component.writeValue(new Date(2025, 0, 1, 13, 10, 0));
+    expect(component.displayHour()).toBe(1);
+    expect(component.meridiem()).toBe('PM');
+    component.adjustTime('minute', 1);
+    expect(component.inputValue()).toContain('13:15');
+    component.toggleMeridiem();
+    expect(component.meridiem()).toBe('AM');
+  });
+
   it('emits DatePicker input lifecycle and closes on Today when configured', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     const component = fixture.componentInstance;
