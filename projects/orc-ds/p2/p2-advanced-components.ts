@@ -49,11 +49,11 @@ export class MegaMenuComponent { readonly items = input<PrimeMenuItem[]>([]); re
 
 @Component({
   selector: 'orc-block-ui', standalone: true,
-  template: `@if (blocked()) { <div class="orc-block-ui" role="alert" [attr.aria-label]="message()"><span>{{ message() }}</span></div> }<ng-content />`,
+  template: `@if (blocked()) { <div class="orc-block-ui" [class]="styleClass()" role="alert" [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null" [attr.aria-label]="message()"><span>{{ message() }}</span></div> }<ng-content />`,
   styles: [P2_SHARED_STYLES + `.orc-block-ui{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#fff9;backdrop-filter:blur(1px);color:#0f172a}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlockUiComponent { readonly blocked = input(false, { transform: booleanAttribute }); readonly target = input<HTMLElement | null>(null); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly styleClass = input(''); readonly message = input('Please wait…'); readonly block = output<void>(); readonly unblock = output<void>(); }
+export class BlockUiComponent { readonly blocked = model(false); readonly target = input<HTMLElement | null>(null); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly styleClass = input(''); readonly message = input('Please wait…'); readonly onBlock = output<void>(); readonly onUnblock = output<void>(); block(): void { this.blocked.set(true); this.onBlock.emit(); } unblock(): void { this.blocked.set(false); this.onUnblock.emit(); } }
 
 @Injectable({ providedIn: 'root' })
 export class ConfirmationService {

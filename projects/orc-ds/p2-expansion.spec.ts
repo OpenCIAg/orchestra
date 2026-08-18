@@ -390,6 +390,10 @@ describe('P2 expansion components', () => {
   it('supports remaining PrimeNG structural and utility aliases', () => {
     const block = TestBed.createComponent(BlockUiComponent).componentInstance;
     expect(block.blocked()).toBeFalse();
+    block.block();
+    expect(block.blocked()).toBeTrue();
+    block.unblock();
+    expect(block.blocked()).toBeFalse();
     const meter = TestBed.createComponent(MeterGroupComponent);
     meter.componentRef.setInput('value', [{ value: 25, label: 'CPU' }]);
     expect(meter.componentInstance.total()).toBe(25);

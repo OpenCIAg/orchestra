@@ -51,7 +51,7 @@ export class OverlayBadgeComponent { readonly value = input<string | number>('')
 export interface MeterItem { value: number; label?: string; color?: string; }
 @Component({
   selector: 'orc-meter-group', standalone: true,
-  template: `<div class="orc-p2-meter" [attr.aria-label]="ariaLabel()"><div class="orc-p2-meter__track" role="meter" [attr.aria-valuemin]="0" [attr.aria-valuemax]="max()" [attr.aria-valuenow]="total()">@for (item of values(); track $index) { <span [style.width.%]="item.value / max() * 100" [style.background]="item.color || color()" [attr.title]="item.label || null"></span> }</div>@if (label()) { <small>{{ label() }} {{ total() }}/{{ max() }}</small> }</div>`,
+  template: `<div class="orc-p2-meter" [class]="styleClass()" [attr.aria-label]="ariaLabel()"><div class="orc-p2-meter__track" role="meter" [attr.aria-valuemin]="min()" [attr.aria-valuemax]="max()" [attr.aria-valuenow]="total()">@for (item of effectiveValues(); track $index) { <span [style.width.%]="percent(item)" [style.background]="item.color || color()" [attr.title]="item.label || null"></span> }</div>@if (label()) { <small>{{ label() }} {{ total() }}/{{ max() }}</small> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-meter{display:grid;gap:.35rem;width:100%}.orc-p2-meter__track{display:flex;height:.65rem;overflow:hidden;border-radius:999px;background:#e2e8f0}.orc-p2-meter__track span{min-width:0}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
