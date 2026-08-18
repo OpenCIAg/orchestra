@@ -398,6 +398,21 @@ describe('P2 expansion components', () => {
     expect(layout).toHaveBeenCalledWith('list');
   });
 
+  it('supports OrderList multiple selection and PickList selection events', () => {
+    const order = TestBed.createComponent(OrderListComponent<string>);
+    const orderComponent = order.componentInstance;
+    order.componentRef.setInput('value', ['A', 'B']);
+    order.componentRef.setInput('selectionMode', 'multiple');
+    orderComponent.select(0);
+    orderComponent.select(1);
+    expect(orderComponent.selection()).toEqual(['A', 'B']);
+    const pick = TestBed.createComponent(PickListComponent);
+    const pickComponent = pick.componentInstance;
+    pick.componentRef.setInput('source', [{ value: 'a', label: 'A' }]);
+    pickComponent.toggleSource({ value: 'a', label: 'A' });
+    expect(pickComponent.sourceSelected().has('a')).toBeTrue();
+  });
+
   it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
     const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
     panel.show();
