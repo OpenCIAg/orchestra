@@ -26,6 +26,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
 import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
+import { TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -371,6 +372,16 @@ describe('P2 expansion components', () => {
     expect(component.visible()).toBeFalse();
     component.openAt(new MouseEvent('contextmenu', { clientX: 20, clientY: 30 }));
     expect(component.position()).toEqual({ x: 20, y: 30 });
+    component.hide();
+    expect(component.visible()).toBeFalse();
+  });
+
+  it('supports TieredMenu popup visibility and item lifecycle', () => {
+    const fixture = TestBed.createComponent(TieredMenuComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('popup', true);
+    component.show();
+    expect(component.visible()).toBeTrue();
     component.hide();
     expect(component.visible()).toBeFalse();
   });
