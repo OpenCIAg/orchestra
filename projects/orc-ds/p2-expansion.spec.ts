@@ -23,6 +23,7 @@ import { TableComponent } from './table/table.component';
 import { PanelComponent } from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { GalleriaComponent } from './p2/p2-list-gallery-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -321,5 +322,16 @@ describe('P2 expansion components', () => {
     expect(component.totalRecords()).toBe(100);
     expect(component.first()).toBe(20);
     expect(component.rows()).toBe(10);
+  });
+
+  it('supports Galleria circular navigation and image change events', () => {
+    const fixture = TestBed.createComponent(GalleriaComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('images', [{ src: 'one' }, { src: 'two' }]);
+    fixture.componentRef.setInput('circular', true);
+    component.previous();
+    expect(component.activeIndex()).toBe(1);
+    component.next();
+    expect(component.activeIndex()).toBe(0);
   });
 });
