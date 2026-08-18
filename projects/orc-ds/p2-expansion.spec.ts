@@ -43,7 +43,7 @@ import { BadgeComponent } from './badge/badge.component';
 import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
-import { ConfirmDialogComponent, ConfirmationService, PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
+import { ConfirmDialogComponent, ConfirmationService, MenuComponent, PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
 import { ChipComponent } from './chip/chip.component';
@@ -685,6 +685,22 @@ describe('P2 expansion components', () => {
     expect(component.open().has(first)).toBeTrue();
     expect(component.open().has(second)).toBeTrue();
     expect(expanded).toHaveBeenCalledWith(first);
+  });
+
+  it('provides a real Menu contract instead of the old Dropdown alias', () => {
+    const fixture = TestBed.createComponent(MenuComponent);
+    const component = fixture.componentInstance;
+    const command = jasmine.createSpy('command');
+    const item = { label: 'Open', command };
+    fixture.componentRef.setInput('model', [item]);
+    fixture.componentRef.setInput('popup', true);
+    const selected = jasmine.createSpy('selected');
+    component.itemSelect.subscribe(selected);
+    component.show();
+    component.activate(item);
+    expect(command).toHaveBeenCalled();
+    expect(selected).toHaveBeenCalledWith(item);
+    expect(component.visible()).toBeFalse();
   });
 
   it('supports OrganizationChart expansion and multiple selection', () => {
