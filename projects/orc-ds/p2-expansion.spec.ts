@@ -401,6 +401,16 @@ describe('P2 expansion components', () => {
     expect(component.selected()).toHaveSize(1);
   });
 
+  it('emits DataTable onSort alongside sortChange', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('columns', [{ key: 'name', header: 'Name', sortable: true }]);
+    const sort = jasmine.createSpy('sort');
+    component.onSort.subscribe(sort);
+    component.sortBy(component.columns()[0]);
+    expect(sort).toHaveBeenCalledWith({ key: 'name', direction: 'ascending' });
+  });
+
   it('supports PrimeNG DataTable value/rows/sort aliases and header selection event', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;

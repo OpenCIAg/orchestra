@@ -143,7 +143,7 @@ export class DataTableComponent implements OnInit {
   readonly sortDirection = signal<'ascending' | 'descending'>('ascending');
   readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());
   readonly rowClick = output<Record<string, unknown>>();
-  readonly sortChange = output<{ key: string; direction: 'ascending' | 'descending' }>();
+  readonly sortChange = output<{ key: string; direction: 'ascending' | 'descending' }>(); readonly onSort = output<{ key: string; direction: 'ascending' | 'descending' }>();
   readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly rowSelect = output<Record<string, unknown>>(); readonly rowUnselect = output<Record<string, unknown>>(); readonly onRowHover = output<Record<string, unknown>>(); readonly onFilter = output<{ value: string }>();
   readonly onHeaderCheckboxToggle = output<{ checked: boolean }>();
 
@@ -184,7 +184,7 @@ export class DataTableComponent implements OnInit {
   sortBy(column: DataTableColumn): void {
     if (!column.sortable) return;
     const direction = this.sortKey() === column.key && this.sortDirection() === 'ascending' ? 'descending' : 'ascending';
-    this.sortKey.set(column.key); this.sortField.set(column.key); this.sortOrder.set(direction === 'ascending' ? 1 : -1); this.sortDirection.set(direction); if (this.paginator()) { this.page.set(0); this.first.set(0); } this.sortChange.emit({ key: column.key, direction });
+    this.sortKey.set(column.key); this.sortField.set(column.key); this.sortOrder.set(direction === 'ascending' ? 1 : -1); this.sortDirection.set(direction); if (this.paginator()) { this.page.set(0); this.first.set(0); } const event: { key: string; direction: 'ascending' | 'descending' } = { key: column.key, direction }; this.sortChange.emit(event); this.onSort.emit(event);
   }
   goToPage(page: number): void { const size = this.effectivePageSize(); const next = Math.max(0, Math.min(Math.max(0, this.pageCount() - 1), page)); this.page.set(next); this.first.set(next * size); this.onPage.emit({ first: this.first(), rows: size }); if (this.lazy()) this.onLazyLoad.emit({ first: this.first(), rows: size }); }
 }
