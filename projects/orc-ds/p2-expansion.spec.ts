@@ -369,6 +369,20 @@ describe('P2 expansion components', () => {
     expect(component.selected().size).toBe(0);
   });
 
+  it('supports TreeTable selection modes and descendant propagation', () => {
+    const fixture = TestBed.createComponent(TreeTableComponent);
+    const component = fixture.componentInstance;
+    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child' }] };
+    fixture.componentRef.setInput('value', [root]);
+    fixture.componentRef.setInput('selectionMode', 'checkbox');
+    fixture.componentRef.setInput('propagateSelectionDown', true);
+    fixture.componentRef.setInput('propagateSelectionUp', true);
+    component.select({ node: root, level: 1 }, true);
+    expect([...component.selected()]).toEqual(['root', 'child']);
+    component.select({ node: root, level: 1 }, false);
+    expect(component.selected().size).toBe(0);
+  });
+
   it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
     const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
     panel.show();
