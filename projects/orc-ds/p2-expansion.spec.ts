@@ -331,6 +331,13 @@ describe('P2 expansion components', () => {
     expect(component.selected()).toEqual(['child']);
     component.select(root.children[0]);
     expect(component.selected()).toEqual([]);
+    fixture.componentRef.setInput('selectionMode', 'checkbox');
+    fixture.componentRef.setInput('propagateSelectionDown', true);
+    fixture.componentRef.setInput('propagateSelectionUp', true);
+    component.select(root);
+    expect(component.selected()).toEqual(['root', 'child']);
+    component.select(root);
+    expect(component.selected()).toEqual([]);
   });
 
   it('supports TreeTable selection and expansion lifecycle outputs', () => {
