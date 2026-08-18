@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, computed, input, model, OnInit, output, signal } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, computed, input, Input, model, OnInit, output, signal } from '@angular/core';
 import { P2Option, P2_SHARED_STYLES, P2Orientation } from './p2-shared';
 
 @Component({
@@ -142,6 +142,7 @@ export class DataTableComponent implements OnInit {
   readonly pageSize = input(10);
   readonly page = model(0);
   readonly selected = model<Record<string, unknown>[]>([]);
+  @Input('selection') set selectionAlias(value: Record<string, unknown>[]) { this.selected.set(value ?? []); }
   readonly sortKey = signal('');
   readonly sortDirection = signal<'ascending' | 'descending'>('ascending');
   readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());
