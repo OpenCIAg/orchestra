@@ -30,7 +30,7 @@ import { TableComponent } from './table/table.component';
 import { FieldsetComponent, PanelComponent } from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
-import { DatePickerComponent } from './date-picker/date-picker.component';
+import { DatePickerCalendarComponent, DatePickerComponent } from './date-picker/date-picker.component';
 import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
@@ -143,6 +143,14 @@ describe('P2 expansion components', () => {
     expect(component.overlayVisible()).toBeTrue();
     component.onInputKeydown({ key: 'Escape', preventDefault() {} } as KeyboardEvent);
     expect(component.overlayVisible()).toBeFalse();
+  });
+
+  it('honors DatePickerCalendar firstDayOfWeek grid configuration', () => {
+    const fixture = TestBed.createComponent(DatePickerCalendarComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('currentMonth', '2025-01');
+    fixture.componentRef.setInput('firstDayOfWeek', 1);
+    expect(component.days()[0].iso).toBe('2024-12-30');
   });
 
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
