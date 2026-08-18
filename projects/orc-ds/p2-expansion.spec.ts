@@ -23,7 +23,7 @@ import { TableComponent } from './table/table.component';
 import { PanelComponent } from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
-import { GalleriaComponent } from './p2/p2-list-gallery-components';
+import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -333,5 +333,20 @@ describe('P2 expansion components', () => {
     expect(component.activeIndex()).toBe(1);
     component.next();
     expect(component.activeIndex()).toBe(0);
+  });
+
+  it('supports OrderList reorder and PickList transfer events', () => {
+    const order = TestBed.createComponent(OrderListComponent<string>).componentInstance;
+    order.value.set(['a', 'b']);
+    order.select(1);
+    order.move(-1);
+    expect(order.value()).toEqual(['b', 'a']);
+
+    const pick = TestBed.createComponent(PickListComponent<{ value: string; label: string }>).componentInstance;
+    pick.source.set([{ value: 'a', label: 'A' }]);
+    pick.toggleSource(pick.source()[0]);
+    pick.transferSelected();
+    expect(pick.source()).toEqual([]);
+    expect(pick.target()[0].value).toBe('a');
   });
 });
