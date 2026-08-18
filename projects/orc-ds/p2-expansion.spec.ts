@@ -284,6 +284,10 @@ describe('P2 expansion components', () => {
     multi.componentInstance.onRemove.subscribe(removed);
     multi.componentInstance.select(multi.componentInstance.options()[0], new Event('click'));
     expect(removed).toHaveBeenCalledWith({ value: 1, originalEvent: jasmine.any(Event) });
+    let touched = false;
+    multi.componentInstance.registerOnTouched(() => touched = true);
+    multi.componentInstance.clear(new Event('click'));
+    expect(touched).toBeTrue();
   });
 
   it('paginates and sorts data view items', () => {
