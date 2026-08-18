@@ -82,6 +82,18 @@ export class InputMaskDirective implements ControlValueAccessor {
   @HostListener('input', ['$event']) handleInput(event: Event): void { if (this.cvaDisabled || this.disabled() || this.readonly()) return; const element = event.target as HTMLInputElement; const raw = element.value.split('').filter(character => /[A-Za-z0-9]/.test(character)).join(''); const formatted = this.format(raw); element.value = formatted; this.onModelChange(this.unmask() ? raw : formatted); this.onInput.emit(event); if (raw.length > 0 && raw.length >= this.mask().split('').filter(token => ['9', 'a', '*'].includes(token)).length) this.onComplete.emit(this.unmask() ? raw : formatted); }
   @HostListener('focus', ['$event']) handleFocus(event: Event): void { this.onFocus.emit(event); }
   @HostListener('blur', ['$event']) handleBlur(event: Event): void { const raw = this.host.nativeElement.value.split('').filter(character => /[A-Za-z0-9]/.test(character)).join(''); const required = this.mask().split('').filter(token => ['9', 'a', '*'].includes(token)).length; if (this.autoClear() && raw.length > 0 && raw.length < required) { this.host.nativeElement.value = ''; this.onModelChange(''); this.onClear.emit(); } this.onModelTouched(); this.onBlur.emit(event); }
-  @HostListener('keydown', ['$event']) handleKeydown(event: Event): void { this.onKeydown.emit(event); }
+  @HostListener('keydown', ['$event']) handleKeydown(event: KeyboardEvent): void {
+    this.onKeydown.emit(event);
+    if (this.cvaDisabled || this.disabled() || this.readonly() || event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return;
+    const input = this.host.nativeElement;
+    const caret = input.selectionStart ?? input.value.length;
+    let position = Math.min(caret, this.mask().length);
+    while (position < this.mask().length && !['9', 'a', '*'].includes(this.mask()[position])) {
+      if (event.key === this.mask()[position]) return;
+      position += 1;
+    }
+    const token = this.mask()[position];
+    if (token && !this.accepts(token, event.key)) event.preventDefault();
+  }
   clear(): void { if (this.cvaDisabled) return; this.host.nativeElement.value = ''; this.onModelChange(''); this.onClear.emit(); }
 }
