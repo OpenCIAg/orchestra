@@ -31,7 +31,7 @@ import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { BadgeComponent } from './badge/badge.component';
-import { MenubarComponent } from './p2/p2-data-components';
+import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
@@ -501,5 +501,14 @@ describe('P2 expansion components', () => {
     expect(component.hovered()).toBeTrue();
     component.onMouseLeave();
     expect(component.hovered()).toBeFalse();
+  });
+
+  it('supports PrimeNG Tag value, severity, icon, and remove events', () => {
+    const fixture = TestBed.createComponent(TagComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('value', 'New');
+    fixture.componentRef.setInput('severity', 'info');
+    expect(component.effectiveLabel()).toBe('New');
+    expect(component.effectiveVariant()).toBe('info');
   });
 });

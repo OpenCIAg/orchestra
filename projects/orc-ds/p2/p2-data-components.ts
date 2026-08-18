@@ -57,22 +57,28 @@ export class MenubarComponent {
   }
 }
 
-export type TagVariant = 'neutral' | 'primary' | 'success' | 'warning' | 'danger';
+export type TagVariant = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'secondary' | 'contrast';
 
 @Component({
   selector: 'orc-tag',
   standalone: true,
-  template: `<span class="orc-p2-tag" [class]="'orc-p2-tag orc-p2-tag--' + variant()" [class.disabled]="disabled()" [attr.aria-disabled]="disabled()"><span>{{ label() }}</span>@if (removable()) { <button type="button" [disabled]="disabled()" [attr.aria-label]="'Remove ' + label()" (click)="remove($event)">×</button> }</span>`,
+  template: `<span class="orc-p2-tag" [class]="'orc-p2-tag orc-p2-tag--' + effectiveVariant() + ' ' + styleClass()" [class.rounded]="rounded()" [class.disabled]="disabled()" [attr.aria-disabled]="disabled()"><span aria-hidden="true">{{ icon() }}</span><span>{{ effectiveLabel() }}</span>@if (removable()) { <button type="button" [disabled]="disabled()" [attr.aria-label]="'Remove ' + effectiveLabel()" (click)="remove($event)">×</button> }</span>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-tag { display: inline-flex; gap: .3rem; align-items: center; min-height: 1.6rem; padding: .2rem .55rem; border-radius: .35rem; font-size: .8rem; font-weight: 600; } .orc-p2-tag--neutral { background: #f1f5f9; color: #334155; } .orc-p2-tag--primary { background: #dbeafe; color: #1d4ed8; } .orc-p2-tag--success { background: #dcfce7; color: #166534; } .orc-p2-tag--warning { background: #fef3c7; color: #92400e; } .orc-p2-tag--danger { background: #fee2e2; color: #991b1b; } .orc-p2-tag button { border: 0; padding: 0; background: transparent; color: inherit; font-size: 1rem; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagComponent {
   readonly label = input('Tag');
+  readonly value = input<string | undefined>(undefined);
   readonly variant = input<TagVariant>('neutral');
+  readonly severity = input<TagVariant | undefined>(undefined);
+  readonly icon = input(''); readonly rounded = input(false, { transform: booleanAttribute }); readonly styleClass = input('');
   readonly removable = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly removed = output<string>();
-  remove(event: Event): void { event.stopPropagation(); if (!this.disabled()) this.removed.emit(this.label()); }
+  readonly onRemove = output<{ value: string }>();
+  effectiveLabel(): string { return this.value() ?? this.label(); }
+  effectiveVariant(): TagVariant { return this.severity() ?? this.variant(); }
+  remove(event: Event): void { event.stopPropagation(); if (!this.disabled()) { const value = this.effectiveLabel(); this.removed.emit(value); this.onRemove.emit({ value }); } }
 }
 
 @Component({
