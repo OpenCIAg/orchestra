@@ -50,6 +50,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
 
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly id = input<string>('');
+  readonly inputId = input<string | undefined>(undefined);
   readonly name = input<string>('');
   readonly range = input(false, { transform: booleanAttribute });
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
@@ -74,6 +75,8 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   readonly showLabels = input(false, { transform: booleanAttribute });
   readonly marks = input<Record<number, string> | SliderMark[] | number[] | undefined>(undefined);
   readonly showTooltip = input<SliderTooltipMode>('auto');
+  readonly tooltip = input<string | undefined>(undefined);
+  readonly tooltipPosition = input<'top' | 'bottom' | 'left' | 'right'>('top');
   readonly valueFormatter = input<((val: number) => string) | undefined>(undefined);
   readonly label = input<string>('');
   readonly helperText = input<string>('');
@@ -100,7 +103,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   private activePointerId: number | null = null;
 
   // ── Computeds ─────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
 
   readonly effectiveDisabled = computed(

@@ -1,12 +1,13 @@
 <div
-  class="orc-slider-wrapper"
-  [class]="'orc-slider-wrapper ' + styleClass()"
+  class="p-slider p-component orc-slider-wrapper"
+  [class]="'p-slider p-component orc-slider-wrapper ' + styleClass()"
   [style]="style()"
   [class.orc-slider-wrapper--vertical]="orientation() === 'vertical'"
   [class.orc-slider-wrapper--disabled]="effectiveDisabled()"
   [class.orc-slider-wrapper--sm]="size() === 'sm'"
   [class.orc-slider-wrapper--md]="size() === 'md'"
   [class.orc-slider-wrapper--lg]="size() === 'lg'"
+  [attr.data-pc-name]="'slider'"
 >
   <!-- Rótulo Superior (Label) -->
   @if (label()) {
@@ -27,14 +28,15 @@
   <!-- Área Interativa do Slider (Track + Thumbs) -->
   <div
     #trackElement
-    class="orc-slider-track-container"
+    class="p-slider-track orc-slider-track-container"
+    [class.p-slider-vertical]="orientation() === 'vertical'"
     (pointerdown)="onTrackPointerDown($event)"
   >
     <!-- Barra de Fundo (Track Inativo) -->
     <div class="orc-slider-track">
       <!-- Barra Preenchida Ativa (Progress Fill) -->
       <div
-        class="orc-slider-fill"
+        class="p-slider-range orc-slider-fill"
         [style.left.%]="fillLeftPercent()"
         [style.width.%]="fillWidthPercent()"
       ></div>
@@ -56,7 +58,7 @@
     @if (range()) {
       <div
         #startThumb
-        class="orc-slider-thumb orc-slider-thumb--start"
+        class="p-slider-handle orc-slider-thumb orc-slider-thumb--start"
         [class.orc-slider-thumb--active]="activeThumb() === 'start' && isDragging()"
         [class.orc-slider-thumb--focused]="focusedThumb() === 'start'"
         [style.left.%]="startPercent()"
@@ -66,6 +68,7 @@
         [attr.aria-valuenow]="currentStartValue()"
         [attr.aria-valuemin]="minVal()"
         [attr.aria-valuemax]="currentEndValue()"
+        [attr.aria-valuetext]="formattedStartValue()"
         [attr.aria-label]="ariaLabelMin()"
         [attr.aria-orientation]="orientation()"
         [attr.aria-labelledby]="ariaLabelledBy()"
@@ -89,7 +92,7 @@
     <div
       #endThumb
       [id]="effectiveId()"
-      class="orc-slider-thumb orc-slider-thumb--end"
+      class="p-slider-handle orc-slider-thumb orc-slider-thumb--end"
       [class.orc-slider-thumb--active]="activeThumb() === 'end' && isDragging()"
       [class.orc-slider-thumb--focused]="focusedThumb() === 'end'"
       [style.left.%]="endPercent()"
@@ -99,6 +102,7 @@
       [attr.aria-valuenow]="currentEndValue()"
       [attr.aria-valuemin]="range() ? currentStartValue() : minVal()"
       [attr.aria-valuemax]="maxVal()"
+      [attr.aria-valuetext]="formattedEndValue()"
       [attr.aria-label]="range() ? ariaLabelMax() : (ariaLabel() || label() || 'Slider')"
       [attr.aria-orientation]="orientation()"
       [attr.aria-labelledby]="ariaLabelledBy()"
