@@ -5,6 +5,7 @@ import {
   computed,
   input,
   output,
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastService } from './toast.service';
@@ -28,6 +29,20 @@ export class ToastContainerComponent {
   // ── Inputs e Outputs para suporte declarativo e via serviço ──
   readonly toasts = input<ToastItem[]>();
   readonly dismiss = output<string>();
+  readonly styleClass = input('');
+  readonly preventOpenDuplicates = input(false);
+  readonly preventDuplicates = input(false);
+  readonly showTransformOptions = input('300ms ease-out');
+  readonly hideTransformOptions = input('250ms ease-in');
+  readonly showTransitionOptions = input('300ms ease-out');
+  readonly hideTransitionOptions = input('250ms ease-in');
+
+  constructor() {
+    effect(() => {
+      this.toastService.setPreventDuplicates(this.preventDuplicates());
+      this.toastService.setPreventOpenDuplicates(this.preventOpenDuplicates());
+    });
+  }
 
   readonly positions: ToastPosition[] = [
     'top-right',

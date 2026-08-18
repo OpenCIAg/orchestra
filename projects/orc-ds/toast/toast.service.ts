@@ -31,6 +31,8 @@ export class ToastService {
   // ── Configurações Padrão ──────────────────────────────────
   private defaultPosition: ToastPosition = 'top-right';
   private defaultDuration = 5000;
+  private preventDuplicates = false;
+  private preventOpenDuplicates = false;
   private containerRef: ComponentRef<unknown> | null = null;
   private isCreatingContainer = false;
   private idCounter = 0;
@@ -69,6 +71,9 @@ export class ToastService {
   setDefaultDuration(duration: number): void {
     this.defaultDuration = duration;
   }
+
+  setPreventDuplicates(value: boolean): void { this.preventDuplicates = value; }
+  setPreventOpenDuplicates(value: boolean): void { this.preventOpenDuplicates = value; }
 
   // ── Disparo Principal de Toasts ───────────────────────────
   show(optionsOrMessage: ToastOptions | string): string {
@@ -109,6 +114,10 @@ export class ToastService {
       pauseOnHover: options.pauseOnHover !== undefined ? options.pauseOnHover : true,
       createdAt: Date.now(),
     };
+
+    const existing = this.toasts();
+    if (this.preventDuplicates && existing.some(item => item.message === toastItem.message && item.type === toastItem.type)) return id;
+    if (this.preventOpenDuplicates && existing.some(item => item.key === toastItem.key && item.message === toastItem.message)) return id;
 
     this.toasts.update(current => [...current, toastItem]);
     return id;
