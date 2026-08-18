@@ -66,7 +66,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   private readonly cvaDisabled = signal<boolean>(false);
 
   // Identificadores e estados derivados (Signals)
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
   readonly labelId = computed(() => `${this.effectiveId()}-label`);
   readonly descriptionId = computed(() => `${this.effectiveId()}-desc`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);

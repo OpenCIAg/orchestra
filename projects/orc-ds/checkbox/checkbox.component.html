@@ -1,17 +1,20 @@
 <label
-  class="orc-checkbox"
-  [class]="'orc-checkbox ' + styleClass()"
+  class="p-checkbox p-component orc-checkbox"
+  [class]="'p-checkbox p-component orc-checkbox ' + styleClass()"
   [class.orc-checkbox--checked]="checked() && !indeterminate()"
   [class.orc-checkbox--indeterminate]="indeterminate()"
   [class.orc-checkbox--disabled]="isDisabled()"
   [class.orc-checkbox--error]="isError()"
+  [class.p-checkbox-checked]="checked() && !indeterminate()"
+  [class.p-checkbox-disabled]="isDisabled()"
+  [attr.data-pc-name]="'checkbox'"
     [attr.for]="effectiveId()"
 >
   <!-- Visually hidden native checkbox input for complete a11y, keyboard navigation (Space key) and Form bindings -->
   <input
     #nativeInput
     type="checkbox"
-    class="orc-checkbox__native-input"
+    class="p-checkbox-input orc-checkbox__native-input"
     [id]="inputId() || effectiveId()"
     [name]="name() || null"
     [checked]="checked()"
@@ -28,7 +31,7 @@
   />
 
   <!-- Visual Custom Checkbox matching Figma 382:5024 (16x16px, 4px border radius) -->
-  <span class="orc-checkbox__box" aria-hidden="true">
+  <span class="p-checkbox-box orc-checkbox__box" aria-hidden="true">
     <!-- Checked Checkmark Icon -->
     <svg
       *ngIf="checked() && !indeterminate()"
