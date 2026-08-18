@@ -456,6 +456,16 @@ describe('P2 expansion components', () => {
     expect(tree.componentInstance.value()).toEqual(['root', 'child']);
     tree.componentInstance.select(root, new Event('click'));
     expect(tree.componentInstance.value()).toEqual([]);
+
+    const upward = TestBed.createComponent(TreeSelectComponent);
+    upward.componentRef.setInput('nodes', [root]);
+    upward.componentRef.setInput('selectionMode', 'checkbox');
+    upward.componentInstance.select(root.children[0], new Event('click'));
+    expect(upward.componentInstance.value()).toEqual(['child']);
+    upward.componentInstance.select(root, new Event('click'));
+    expect(upward.componentInstance.value()).toEqual(['child', 'root']);
+    upward.componentInstance.select(root.children[0], new Event('click'));
+    expect(upward.componentInstance.value()).toEqual([]);
   });
 
   it('updates a segmented control value', () => {
