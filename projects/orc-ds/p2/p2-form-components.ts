@@ -95,6 +95,7 @@ export class CalendarComponent {
   readonly min = input('');
   readonly max = input('');
   readonly disabled = input(false, { transform: booleanAttribute });
+  private readonly cvaDisabled = signal(false);
   readonly inputId = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
@@ -104,6 +105,7 @@ export class CalendarComponent {
   readonly onSelect = output<{ value: string }>(); readonly onClear = output<void>(); readonly onTodayClick = output<string>();
   readonly weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
+  readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
 
   readonly monthLabel = computed(() => fromMonthKey(this.currentMonth()).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }));
   isSelected(iso: string): boolean { const value = this.value(); return Array.isArray(value) ? value.includes(iso) : value === iso; }
@@ -119,7 +121,7 @@ export class CalendarComponent {
         day: date.getDate(),
         inCurrentMonth: date.getMonth() === month.getMonth(),
         today: iso === today,
-        disabled: this.disabled() || (!!this.min() && iso < this.min()) || (!!this.max() && iso > this.max()) || this.disabledDays().includes(date.getDay()) || this.disabledDates().some(disabled => disabled.toDateString() === date.toDateString()) || (!this.selectOtherMonths() && date.getMonth() !== month.getMonth()),
+        disabled: this.isDisabled() || (!!this.min() && iso < this.min()) || (!!this.max() && iso > this.max()) || this.disabledDays().includes(date.getDay()) || this.disabledDates().some(disabled => disabled.toDateString() === date.toDateString()) || (!this.selectOtherMonths() && date.getMonth() !== month.getMonth()),
       };
     });
   });
@@ -140,12 +142,21 @@ export class CalendarComponent {
       next = values.length !== 1 ? [day.iso] : (values[0] <= day.iso ? [values[0], day.iso] : [day.iso, values[0]]);
     }
     this.value.set(next);
+    this.onModelChange(next);
+    this.onModelTouched();
     this.dateSelected.emit(day.iso);
     this.onSelect.emit({ value: next as any });
   }
 
-  clear(): void { if (this.disabled()) return; this.value.set(''); this.onClear.emit(); }
+  clear(): void { if (this.isDisabled()) return; this.value.set(''); this.onModelChange(''); this.onModelTouched(); this.onClear.emit(); }
   today(): void { const iso = toIso(new Date()); const day = this.days().find(item => item.iso === iso); if (!day || day.disabled) return; this.selectDay(day); this.onTodayClick.emit(iso); }
+
+  private onModelChange: (value: string | string[]) => void = () => {};
+  private onModelTouched: () => void = () => {};
+  writeValue(value: unknown): void { this.value.set(Array.isArray(value) ? value.map(String) : value == null ? '' : String(value)); }
+  registerOnChange(fn: (value: string | string[]) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
+  setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
 
   private shiftMonth(delta: number): void {
     const current = fromMonthKey(this.currentMonth());

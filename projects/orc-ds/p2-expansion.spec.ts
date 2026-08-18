@@ -72,6 +72,20 @@ describe('P2 expansion components', () => {
     expect(component.value()).toBe('');
   });
 
+  it('supports Calendar ControlValueAccessor synchronization', () => {
+    const fixture = TestBed.createComponent(CalendarComponent);
+    const component = fixture.componentInstance;
+    component.writeValue('2025-01-10');
+    expect(component.value()).toBe('2025-01-10');
+    let changed: string | string[] = '';
+    component.registerOnChange(value => changed = value);
+    component.clear();
+    expect(changed).toBe('');
+    component.setDisabledState(true);
+    component.today();
+    expect(component.value()).toBe('');
+  });
+
   it('filters a combobox and emits the selected option', () => {
     const fixture = TestBed.createComponent(ComboboxComponent<string>);
     const component = fixture.componentInstance;
