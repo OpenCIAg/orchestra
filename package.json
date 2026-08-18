@@ -19,6 +19,7 @@
     "test:docs": "ng test docs --watch=false --browsers=ChromeHeadless",
     "pack:lib": "npm pack ./dist/orc-ds",
     "verify:compatibility": "node tools/release/verify-compatibility.mjs",
+    "score:compatibility": "node tools/release/score-compatibility.mjs",
     "changeset": "changeset"
   },
   "dependencies": {
