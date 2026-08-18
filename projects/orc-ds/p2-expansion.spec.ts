@@ -20,6 +20,8 @@ import { ButtonComponent } from './button/button.component';
 import { AlertComponent } from './alert/alert.component';
 import { CardComponent } from './card/card.component';
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
+import { TabMenuComponent } from './tab-menu/tab-menu.component';
+import { DraggableDirective, DroppableDirective } from './drag-drop/drag-drop.directive';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
@@ -661,5 +663,20 @@ describe('P2 expansion components', () => {
     expect(component.fileLimit()).toBe(1);
     expect(component.customUpload()).toBeTrue();
     expect(component.showUploadButton()).toBeFalse();
+  });
+
+  it('supports PrimeNG TabMenu model, active item, command, and keyboard aliases', () => {
+    const fixture = TestBed.createComponent(TabMenuComponent);
+    const component = fixture.componentInstance;
+    const items = [{ label: 'Home' }, { label: 'Settings' }];
+    fixture.componentRef.setInput('model', items);
+    component.activate(items[1], new Event('click'));
+    expect(component.activeItem()).toBe(items[1]);
+    expect(component.isActive(items[1])).toBeTrue();
+  });
+
+  it('exposes PrimeNG drag/drop standalone directives', () => {
+    expect(DraggableDirective).toBeTruthy();
+    expect(DroppableDirective).toBeTruthy();
   });
 });

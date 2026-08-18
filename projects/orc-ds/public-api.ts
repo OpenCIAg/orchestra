@@ -155,3 +155,6 @@ export * from '@ciag/orchestra/datepicker';
 export * from '@ciag/orchestra/compare';
 export * from '@ciag/orchestra/input-otp';
 export * from '@ciag/orchestra/radio-button';
+export * from '@ciag/orchestra/defer';
+export * from '@ciag/orchestra/drag-drop';
+export * from '@ciag/orchestra/tab-menu';
