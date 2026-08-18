@@ -12,7 +12,7 @@
   <!-- Texto Informativo de Itens (Opcional) -->
   <div *ngIf="showTotalInfo() || showCurrentPageReport()" class="orc-paginator__info">
     <ng-container *ngIf="currentPageReportTemplate(); else defaultReport">
-      {{ currentPageReportTemplate() }}
+      {{ pageReport() }}
     </ng-container>
     <ng-template #defaultReport>
       Exibindo <strong>{{ startIndex() }}–{{ endIndex() }}</strong> de <strong>{{ effectiveTotalRecords() }}</strong> itens

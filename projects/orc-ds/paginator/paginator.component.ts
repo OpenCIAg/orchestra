@@ -130,6 +130,15 @@ export class PaginatorComponent {
   readonly endIndex = computed(() => {
     return Math.min(this.currentPage() * this.effectivePageSize(), this.effectiveTotalRecords());
   });
+  readonly pageReport = computed(() => {
+    const template = this.currentPageReportTemplate() || 'Showing {first} to {last} of {totalRecords} entries';
+    return template
+      .replaceAll('{first}', String(this.startIndex()))
+      .replaceAll('{last}', String(this.endIndex()))
+      .replaceAll('{totalRecords}', String(this.effectiveTotalRecords()))
+      .replaceAll('{currentPage}', String(this.currentPage()))
+      .replaceAll('{totalPages}', String(this.totalPages()));
+  });
 
   /** Se está na primeira página */
   readonly isFirstPage = computed(() => this.currentPage() <= 1);

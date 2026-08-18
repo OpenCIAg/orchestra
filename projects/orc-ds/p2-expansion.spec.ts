@@ -942,6 +942,16 @@ describe('P2 expansion components', () => {
     expect(component.currentPage()).toBe(1);
   });
 
+  it('interpolates PrimeNG paginator current page report tokens', () => {
+    const fixture = TestBed.createComponent(PaginatorComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('totalRecords', 42);
+    fixture.componentRef.setInput('rows', 10);
+    fixture.componentRef.setInput('currentPageReportTemplate', '{first}-{last} / {totalRecords} ({currentPage}/{totalPages})');
+    component.goToPage(2);
+    expect(component.pageReport()).toBe('11-20 / 42 (2/5)');
+  });
+
   it('supports PanelMenu controlled expansion and multiple mode', () => {
     const fixture = TestBed.createComponent(PanelMenuComponent);
     const component = fixture.componentInstance;
