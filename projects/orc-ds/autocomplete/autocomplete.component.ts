@@ -31,20 +31,32 @@ export class AutocompleteComponent implements ControlValueAccessor {
   private readonly uniqueId = `orc-autocomplete-${++nextAutocompleteId}`;
 
   readonly id = input('');
+  readonly inputId = input<string | undefined>(undefined);
   readonly name = input('');
   readonly label = input('');
   readonly placeholder = input('Comece a digitar...');
   readonly helperText = input('');
   readonly errorMessage = input('');
   readonly options = input<AutocompleteOption[]>([]);
+  readonly suggestions = input<AutocompleteOption[]>([], { alias: 'suggestions' });
   readonly minChars = input(0, { transform: numberAttribute });
+  readonly minLength = input<number | undefined>(undefined, { transform: numberAttribute });
   readonly clearable = input(true, { transform: booleanAttribute });
+  readonly showClear = input<boolean | undefined>(undefined, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly dropdown = input(false, { transform: booleanAttribute });
   readonly emptyMessage = input('No results found');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input('');
+  readonly style = input<Record<string, any> | null | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly panelStyle = input<Record<string, any> | null | undefined>(undefined);
+  readonly panelStyleClass = input('');
+  readonly appendTo = input<unknown>(undefined);
+  readonly delay = input(300, { transform: numberAttribute });
+  readonly forceSelection = input(false, { transform: booleanAttribute });
+  readonly autoHighlight = input(false, { transform: booleanAttribute });
 
   readonly value = model<string | null>(null);
   readonly query = signal('');
@@ -55,15 +67,18 @@ export class AutocompleteComponent implements ControlValueAccessor {
   readonly onClear = output<void>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onFocusEvent = output<Event>(); readonly onBlurEvent = output<Event>();
   private readonly cvaDisabled = signal(false);
 
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
   readonly listId = computed(() => `${this.effectiveId()}-list`);
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
-  readonly selectedLabel = computed(() => this.options().find(option => option.value === this.value())?.label ?? '');
+  readonly effectiveOptions = computed(() => this.suggestions().length ? this.suggestions() : this.options());
+  readonly effectiveMinLength = computed(() => this.minLength() ?? this.minChars());
+  readonly effectiveShowClear = computed(() => this.showClear() ?? this.clearable());
+  readonly selectedLabel = computed(() => this.effectiveOptions().find(option => option.value === this.value())?.label ?? '');
   readonly displayText = computed(() => this.query() || this.selectedLabel());
   readonly filteredOptions = computed(() => {
     const query = this.query().trim().toLocaleLowerCase();
-    if (query.length < this.minChars()) return [];
-    return this.options().filter(option => option.label.toLocaleLowerCase().includes(query) || option.value.toLocaleLowerCase().includes(query));
+    if (query.length < this.effectiveMinLength()) return [];
+    return this.effectiveOptions().filter(option => option.label.toLocaleLowerCase().includes(query) || option.value.toLocaleLowerCase().includes(query));
   });
   readonly describedBy = computed(() => this.errorMessage() ? `${this.effectiveId()}-error` : this.helperText() ? `${this.effectiveId()}-helper` : null);
 
@@ -80,13 +95,20 @@ export class AutocompleteComponent implements ControlValueAccessor {
   onInput(event: Event): void {
     const text = (event.target as HTMLInputElement).value;
     this.query.set(text);
-    this.isOpen.set(text.length >= this.minChars());
+    this.isOpen.set(text.length >= this.effectiveMinLength());
     this.activeIndex.set(this.firstEnabledIndex());
   }
 
   onFocus(event?: Event): void {
-    if (!this.effectiveDisabled() && (this.dropdown() || this.query().length >= this.minChars())) { this.isOpen.set(true); this.onShow.emit(); }
+    if (!this.effectiveDisabled() && (this.dropdown() || this.query().length >= this.effectiveMinLength())) { this.isOpen.set(true); this.onShow.emit(); }
     if (event) this.onFocusEvent.emit(event);
+  }
+
+  toggleDropdown(event?: Event): void {
+    event?.preventDefault();
+    if (this.effectiveDisabled()) return;
+    if (this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); return; }
+    this.isOpen.set(true); this.activeIndex.set(this.firstEnabledIndex()); this.onShow.emit();
   }
 
   onBlur(event?: Event): void {

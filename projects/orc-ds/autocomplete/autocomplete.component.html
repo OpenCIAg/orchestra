@@ -1,4 +1,4 @@
-<div class="orc-autocomplete" [class.orc-autocomplete--disabled]="effectiveDisabled()">
+<div class="p-autocomplete p-component orc-autocomplete" [class]="'p-autocomplete p-component orc-autocomplete ' + styleClass()" [style]="style()" [class.orc-autocomplete--disabled]="effectiveDisabled()" [attr.data-pc-name]="'autocomplete'">
   @if (label()) { <label class="orc-autocomplete__label" [for]="effectiveId()">{{ label() }} @if (required()) { <span aria-hidden="true">*</span> }</label> }
   <div class="orc-autocomplete__control">
     <input
@@ -23,10 +23,11 @@
       (blur)="onBlur($event)"
       (keydown)="onKeydown($event)"
     />
-    @if (clearable() && (query() || value())) { <button type="button" class="orc-autocomplete__clear" (mousedown)="$event.preventDefault()" (click)="clear($event)" aria-label="Limpar seleção">×</button> }
+    @if (effectiveShowClear() && (query() || value())) { <button type="button" class="orc-autocomplete__clear" (mousedown)="$event.preventDefault()" (click)="clear($event)" aria-label="Limpar seleção">×</button> }
+    @if (dropdown()) { <button type="button" class="p-autocomplete-dropdown" (mousedown)="$event.preventDefault()" (click)="toggleDropdown($event)" [disabled]="effectiveDisabled()" aria-label="Mostrar opções">⌄</button> }
   </div>
   @if (isOpen() && (filteredOptions().length || loading())) {
-    <ul class="orc-autocomplete__list" [id]="listId()" role="listbox">
+    <ul class="p-autocomplete-panel p-component orc-autocomplete__list" [class]="'p-autocomplete-panel p-component orc-autocomplete__list ' + panelStyleClass()" [style]="panelStyle()" [id]="listId()" role="listbox">
       @if (loading()) { <li class="orc-autocomplete__option">{{ emptyMessage() }}</li> }
       @for (option of filteredOptions(); track option.value) {
         <li
