@@ -1,6 +1,6 @@
 <div
-  class="orc-switch"
-  [class]="'orc-switch ' + styleClass()"
+  class="p-toggleswitch p-component orc-switch"
+  [class]="'p-toggleswitch p-component orc-switch ' + styleClass()"
   [class.orc-switch--checked]="checked()"
   [class.orc-switch--disabled]="isDisabled()"
   [class.orc-switch--error]="isError()"
@@ -9,6 +9,9 @@
   [class.orc-switch--size-lg]="size() === 'lg'"
   [class.orc-switch--label-start]="labelPosition() === 'start'"
   [class.orc-switch--label-end]="labelPosition() === 'end'"
+  [class.p-toggleswitch-checked]="checked()"
+  [class.p-toggleswitch-disabled]="isDisabled()"
+  [attr.data-pc-name]="'toggleswitch'"
 >
   <!-- Content before switch (when labelPosition === 'start') -->
   <div
@@ -31,7 +34,7 @@
     #switchButton
     type="button"
     role="switch"
-    class="orc-switch__control"
+    class="p-toggleswitch-input orc-switch__control"
     [id]="inputId() || effectiveId()"
     [attr.aria-checked]="checked()"
     [disabled]="isDisabled() || readonly()"
@@ -41,12 +44,13 @@
     [attr.aria-labelledby]="ariaLabelledBy() || computedAriaLabelledBy()"
     [attr.aria-describedby]="computedAriaDescribedBy()"
     [attr.aria-invalid]="isError()"
+    [attr.aria-readonly]="readonly() ? 'true' : null"
     (click)="onToggle($event)"
     (focus)="onFocus.emit($event)"
     (blur)="handleBlur($event)"
   >
-    <span class="orc-switch__track" aria-hidden="true">
-      <span class="orc-switch__thumb"></span>
+    <span class="p-toggleswitch-slider orc-switch__track" aria-hidden="true">
+      <span class="p-toggleswitch-handle orc-switch__thumb"></span>
     </span>
   </button>
 
