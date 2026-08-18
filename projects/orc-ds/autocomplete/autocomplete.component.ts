@@ -57,6 +57,8 @@ export class AutocompleteComponent implements ControlValueAccessor {
   readonly delay = input(300, { transform: numberAttribute });
   readonly forceSelection = input(false, { transform: booleanAttribute });
   readonly autoHighlight = input(false, { transform: booleanAttribute });
+  readonly showEmptyMessage = input(true, { transform: booleanAttribute });
+  readonly closeOnEscape = input(true, { transform: booleanAttribute });
 
   readonly value = model<string | null>(null);
   readonly query = signal('');
@@ -96,7 +98,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
     const text = (event.target as HTMLInputElement).value;
     this.query.set(text);
     this.isOpen.set(text.length >= this.effectiveMinLength());
-    this.activeIndex.set(this.firstEnabledIndex());
+    this.activeIndex.set(this.autoHighlight() ? this.firstEnabledIndex() : -1);
   }
 
   onFocus(event?: Event): void {
@@ -113,6 +115,10 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   onBlur(event?: Event): void {
     this.onTouched();
+    if (this.forceSelection()) {
+      const selected = this.effectiveOptions().find(option => option.label === this.query());
+      if (!selected) this.clear();
+    }
     setTimeout(() => { if (this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); } }, 120);
     if (event) this.onBlurEvent.emit(event);
   }
@@ -139,12 +145,12 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (!this.host.nativeElement.contains(event.target as Node)) this.isOpen.set(false);
+    if (!this.host.nativeElement.contains(event.target as Node) && this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); }
   }
 
   onKeydown(event: KeyboardEvent): void {
     const options = this.filteredOptions();
-    if (event.key === 'Escape') { this.isOpen.set(false); return; }
+    if (event.key === 'Escape' && this.closeOnEscape()) { event.preventDefault(); if (this.isOpen()) this.onHide.emit(); this.isOpen.set(false); return; }
     if (event.key === 'ArrowDown') { event.preventDefault(); this.moveActive(1); return; }
     if (event.key === 'ArrowUp') { event.preventDefault(); this.moveActive(-1); return; }
     if (event.key === 'Enter' && this.isOpen() && this.activeIndex() >= 0) {

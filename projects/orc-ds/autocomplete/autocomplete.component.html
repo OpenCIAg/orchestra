@@ -45,7 +45,7 @@
           @if (option.description) { <small>{{ option.description }}</small> }
         </li>
       }
-      @if (!loading() && !filteredOptions().length) { <li class="orc-autocomplete__option">{{ emptyMessage() }}</li> }
+      @if (!loading() && !filteredOptions().length && showEmptyMessage()) { <li class="orc-autocomplete__option" role="status">{{ emptyMessage() }}</li> }
     </ul>
   }
   @if (errorMessage() || helperText()) { <p class="orc-autocomplete__message" [class.orc-autocomplete__message--error]="!!errorMessage()" [id]="describedBy()">{{ errorMessage() || helperText() }}</p> }

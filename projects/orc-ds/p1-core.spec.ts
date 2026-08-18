@@ -37,6 +37,21 @@ describe('P1 core components', () => {
     expect(selected).toBe('sp');
   });
 
+  it('enforces forceSelection and closeOnEscape contracts', () => {
+    const fixture = TestBed.createComponent(AutocompleteComponent);
+    const option = { value: 'sp', label: 'São Paulo' };
+    fixture.componentRef.setInput('options', [option]);
+    fixture.componentRef.setInput('forceSelection', true);
+    fixture.componentInstance.onInput({ target: { value: 'unknown' } } as unknown as Event);
+    fixture.componentInstance.onBlur();
+    expect(fixture.componentInstance.value()).toBeNull();
+
+    fixture.componentInstance.isOpen.set(true);
+    fixture.componentRef.setInput('closeOnEscape', false);
+    fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'Escape' }));
+    expect(fixture.componentInstance.isOpen()).toBeTrue();
+  });
+
   it('moves a carousel to the next enabled item', () => {
     const fixture = TestBed.createComponent(CarouselComponent);
     fixture.componentRef.setInput('items', [{ label: 'A' }, { label: 'B' }, { label: 'C', disabled: true }]);
