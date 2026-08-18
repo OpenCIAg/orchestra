@@ -41,19 +41,27 @@ export interface ContextMenuItem extends P2Option<string> {
 @Component({
   selector: 'orc-context-menu',
   standalone: true,
-  template: `<div class="orc-p2-context-menu-host" (contextmenu)="openAt($event)"><ng-content />@if (open()) { <div class="orc-p2-context-menu" role="menu" [style.left.px]="position().x" [style.top.px]="position().y" (keydown)="onKeydown($event)">@for (item of items(); track item.value) { <button type="button" role="menuitem" [disabled]="item.disabled" [class.danger]="item.danger" (click)="activate(item)">{{ item.label }} @if (item.shortcut) { <small>{{ item.shortcut }}</small> }</button> }</div> }</div>`,
+  template: `<div class="orc-p2-context-menu-host" (contextmenu)="openAt($event)"><ng-content />@if (open()) { <div class="orc-p2-context-menu" [class]="styleClass()" role="menu" [attr.aria-label]="ariaLabel()" [style.left.px]="position().x" [style.top.px]="position().y" (keydown)="onKeydown($event)">@for (item of items(); track item.value) { <button type="button" role="menuitem" [disabled]="item.disabled" [class.danger]="item.danger" (click)="activate(item)">{{ item.label }} @if (item.shortcut) { <small>{{ item.shortcut }}</small> }</button> }</div> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-context-menu-host { position: relative; min-height: 2rem; } .orc-p2-context-menu { position: fixed; z-index: 10; display: grid; min-width: 12rem; padding: .25rem; border: 1px solid #cbd5e1; border-radius: .55rem; background: #fff; box-shadow: 0 12px 28px #0f172a26; } .orc-p2-context-menu button { display: flex; justify-content: space-between; border: 0; border-radius: .35rem; background: transparent; padding: .55rem .7rem; text-align: left; } .orc-p2-context-menu button:hover { background: #eff6ff; } .orc-p2-context-menu button.danger { color: #b91c1c; } small { color: #64748b; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContextMenuComponent {
   readonly items = input<ContextMenuItem[]>([]);
   readonly open = model(false);
+  readonly visible = this.open;
+  readonly popup = input(true, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly ariaLabel = input('Context menu');
   readonly position = signal({ x: 0, y: 0 });
   readonly itemSelect = output<ContextMenuItem>();
   readonly opened = output<{ x: number; y: number }>();
-  openAt(event: MouseEvent): void { event.preventDefault(); this.position.set({ x: event.clientX, y: event.clientY }); this.open.set(true); this.opened.emit(this.position()); }
-  activate(item: ContextMenuItem): void { if (item.disabled) return; this.itemSelect.emit(item); this.open.set(false); }
-  onKeydown(event: KeyboardEvent): void { if (event.key === 'Escape') { event.preventDefault(); this.open.set(false); } }
+  readonly onShow = output<void>(); readonly onHide = output<void>();
+  openAt(event: MouseEvent): void { event.preventDefault(); this.position.set({ x: event.clientX, y: event.clientY }); this.open.set(true); this.opened.emit(this.position()); this.onShow.emit(); }
+  show(): void { if (!this.open()) { this.open.set(true); this.onShow.emit(); } }
+  hide(): void { if (this.open()) { this.open.set(false); this.onHide.emit(); } }
+  toggle(): void { this.open() ? this.hide() : this.show(); }
+  activate(item: ContextMenuItem): void { if (item.disabled) return; this.itemSelect.emit(item); this.hide(); }
+  onKeydown(event: KeyboardEvent): void { if (event.key === 'Escape') { event.preventDefault(); this.hide(); } }
 }
 
 /** PrimeNG OverlayPanel/Popover-compatible controlled overlay surface. */
