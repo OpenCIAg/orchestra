@@ -1195,6 +1195,27 @@ describe('P2 expansion components', () => {
     expect(uploaded).not.toHaveBeenCalled();
   });
 
+  it('matches PrimeNG FileUpload event payloads for selection and custom upload', () => {
+    const fixture = TestBed.createComponent(FileUploaderComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('customUpload', true);
+    const file = new File(['ok'], 'ok.txt', { type: 'text/plain' });
+    const selectEvent = new Event('change');
+    let selected: { originalEvent: Event; files: File[]; currentFiles: File[] } | undefined;
+    let before: FormData | undefined;
+    let handled: File[] | undefined;
+    component.onSelect.subscribe(event => selected = event);
+    component.onBeforeUpload.subscribe(event => before = event.formData);
+    component.uploadHandler.subscribe(event => handled = event.files);
+    (component as any).handleFiles([file], selectEvent);
+    expect(selected?.originalEvent).toBe(selectEvent);
+    expect(selected?.files).toEqual([file]);
+    expect(selected?.currentFiles).toEqual([file]);
+    component.upload();
+    expect(before?.get('files')).toBeTruthy();
+    expect(handled).toEqual([file]);
+  });
+
   it('supports PrimeNG TabMenu model, active item, command, and keyboard aliases', () => {
     const fixture = TestBed.createComponent(TabMenuComponent);
     const component = fixture.componentInstance;

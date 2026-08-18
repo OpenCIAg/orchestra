@@ -78,15 +78,15 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly removeStyleClass = input('');
   readonly forceDragover = input<boolean>(false);
 
-  readonly onSelect = output<{ files: File[] }>();
-  readonly onRemove = output<{ file: File; files: File[] }>();
-  readonly onClear = output<void>();
-  readonly onUpload = output<{ files: File[] }>();
-  readonly onError = output<{ files: File[]; error: string }>();
-  readonly onProgress = output<{ progress: number }>();
-  readonly onBeforeUpload = output<void>();
+  readonly onSelect = output<{ originalEvent: Event; files: File[]; currentFiles: File[] }>();
+  readonly onRemove = output<{ originalEvent: Event; file: File }>();
+  readonly onClear = output<Event>();
+  readonly onUpload = output<{ originalEvent: unknown; files: File[] }>();
+  readonly onError = output<{ files: File[]; error?: ErrorEvent }>();
+  readonly onProgress = output<{ originalEvent: unknown; progress: number }>();
+  readonly onBeforeUpload = output<{ formData: FormData }>();
   readonly uploadHandler = output<{ files: File[] }>();
-  readonly onSend = output<{ files: File[] }>();
+  readonly onSend = output<{ originalEvent: unknown; formData: FormData }>();
   readonly onImageError = output<{ file: File; originalEvent: Event }>();
   readonly onRemoveUploadedFile = output<{ file: File; originalEvent: Event }>();
 
@@ -150,7 +150,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
     
     const droppedFiles = event.dataTransfer?.files;
     if (droppedFiles && droppedFiles.length > 0) {
-      this.handleFiles(Array.from(droppedFiles));
+      this.handleFiles(Array.from(droppedFiles), event);
     }
   }
 
@@ -171,43 +171,47 @@ export class FileUploaderComponent implements ControlValueAccessor {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.handleFiles(Array.from(input.files));
+      this.handleFiles(Array.from(input.files), event);
       input.value = ''; // Reset input to allow re-selecting same file
     }
   }
 
-  onRemoveFile(id: string): void {
+  onRemoveFile(id: string, originalEvent: Event = new Event('remove')): void {
     if (this.isDisabled()) return;
     const removed = this.files().find(f => f.id === id);
     this.files.update(list => list.filter(f => f.id !== id));
     this.onChange(this.files());
-    if (removed) this.onRemove.emit({ file: removed.file, files: this.files().map(item => item.file) });
+    if (removed) this.onRemove.emit({ originalEvent, file: removed.file });
   }
 
-  clear(): void { if (this.isDisabled()) return; this.files.set([]); this.onChange([]); this.onClear.emit(); }
+  clear(originalEvent: Event = new Event('clear')): void { if (this.isDisabled()) return; this.files.set([]); this.onChange([]); this.onClear.emit(originalEvent); }
   upload(): void {
     if (this.isDisabled() || !this.files().length) return;
-    this.onBeforeUpload.emit();
     const files = this.files().filter(item => item.status !== 'error').map(item => item.file);
     if (!files.length) return;
-    this.onSend.emit({ files });
-    if (this.customUpload() || !this.url() || !this.http) { this.customUpload() ? this.uploadHandler.emit({ files }) : this.onUpload.emit({ files }); return; }
     const form = new FormData();
     files.forEach(file => form.append(this.name() || 'files', file, file.name));
+    this.onBeforeUpload.emit({ formData: form });
+    if (this.customUpload() || !this.url() || !this.http) {
+      if (this.customUpload()) this.uploadHandler.emit({ files });
+      else this.onUpload.emit({ originalEvent: new Event('upload'), files });
+      return;
+    }
     const request = this.http.request(this.method(), this.url()!, { body: form, headers: this.headers(), withCredentials: this.withCredentials(), reportProgress: true, observe: 'events' });
     request.subscribe({
       next: event => {
-        if (event.type === HttpEventType.UploadProgress && event.total) this.onProgress.emit({ progress: Math.round((event.loaded / event.total) * 100) });
-        if (event.type === HttpEventType.Response) { this.onProgress.emit({ progress: 100 }); this.onUpload.emit({ files }); }
+        if (event.type === HttpEventType.Sent) this.onSend.emit({ originalEvent: event, formData: form });
+        if (event.type === HttpEventType.UploadProgress && event.total) this.onProgress.emit({ originalEvent: event, progress: Math.round((event.loaded / event.total) * 100) });
+        if (event.type === HttpEventType.Response) { this.onProgress.emit({ originalEvent: event, progress: 100 }); this.onUpload.emit({ originalEvent: event, files }); }
       },
-      error: error => this.onError.emit({ files, error: String(error?.message || error?.statusText || 'Upload failed') })
+      error: error => this.onError.emit({ files, error: error as ErrorEvent })
     });
   }
   choose(): void { this.onAreaClick(); }
   uploader(): void { this.upload(); }
 
   // ── Logic ───────────────────────────────────────────────────
-  private handleFiles(newFiles: File[]): void {
+  private handleFiles(newFiles: File[], originalEvent: Event = new Event('select')): void {
     const currentFiles = this.files();
     let filesToAdd = newFiles;
 
@@ -216,7 +220,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
     } else {
       const remainingSlots = (this.fileLimit() ?? this.maxFiles()) - currentFiles.length;
       if (remainingSlots <= 0) {
-        this.onError.emit({ files: [], error: this.invalidFileLimitMessageDetail().replace('{0}', String(this.fileLimit() ?? this.maxFiles())) });
+        this.onError.emit({ files: [] });
         return;
       }
       filesToAdd = newFiles.slice(0, remainingSlots);
@@ -231,7 +235,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
     }
 
     this.onChange(this.files());
-    this.onSelect.emit({ files: filesToAdd });
+    this.onSelect.emit({ originalEvent, files: filesToAdd, currentFiles: this.files().map(item => item.file) });
     if (this.auto()) this.upload();
   }
 
@@ -277,7 +281,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
       errorMessage,
       previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined
     };
-    if (item.status === 'error') this.onError.emit({ files: [file], error: item.errorMessage || 'Invalid file' });
+    if (item.status === 'error') this.onError.emit({ files: [file] });
     return item;
   }
 
