@@ -47,9 +47,9 @@ interface VisibleTreeSelectNode { node: TreeSelectNode; level: number; }
       @if (showClear() && value() !== null) { <button type="button" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
         @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" aria-label="Filter nodes" /> }
-        <ul class="p-treeselect-panel p-component tree" [class]="'p-treeselect-panel p-component tree ' + (panelStyleClass() || panelClass())" [style]="panelStyle()" [style.max-height]="scrollHeight()" [id]="effectiveId() + '-panel'" role="tree" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
+        <ul class="p-treeselect-panel p-component tree" [class]="'p-treeselect-panel p-component tree ' + (panelStyleClass() || panelClass())" [style]="panelStyle()" [style.max-height]="scrollHeight()" [id]="effectiveId() + '-panel'" role="tree" [attr.tabindex]="0" [attr.aria-activedescendant]="activeTreeOptionId()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
           @for (item of filteredVisibleNodes(); track item.node.value) {
-            <li role="treeitem" [attr.aria-level]="item.level" [style.padding-left.rem]="item.level * .9" [attr.aria-selected]="isNodeSelected(item.node)" [class.selected]="isNodeSelected(item.node)" [class.disabled]="item.node.disabled">
+            <li role="treeitem" [id]="treeOptionId($index)" [attr.aria-level]="item.level" [style.padding-left.rem]="item.level * .9" [attr.aria-selected]="isNodeSelected(item.node)" [class.selected]="isNodeSelected(item.node)" [class.active]="activeTreeIndex() === $index" [class.disabled]="item.node.disabled">
               @if (item.node.children?.length) { <button type="button" class="expand" [attr.aria-label]="expanded().has(item.node.value) ? 'Collapse' : 'Expand'" (click)="toggle(item.node)">{{ expanded().has(item.node.value) ? '▾' : '▸' }}</button> } @else { <span class="expand-placeholder"></span> }
               <button type="button" class="item" [disabled]="item.node.disabled" (click)="select(item.node, $event)">@if (selectionMode() === 'checkbox') { <span aria-hidden="true">{{ isNodeSelected(item.node) ? '☑' : '☐' }}</span> }{{ item.node.label }}</button>
             </li>
@@ -76,6 +76,8 @@ export class TreeSelectComponent implements ControlValueAccessor {
   readonly nodeSelect = output<TreeSelectNode>(); readonly onChange = output<{ originalEvent: Event; value: string | string[] | null }>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClear = output<Event>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onNodeExpand = output<TreeSelectNode>(); readonly onNodeCollapse = output<TreeSelectNode>(); readonly nodeUnselect = output<TreeSelectNode>();
   protected readonly cvaDisabled = signal(false); private onModelChange: (value: string | string[] | null) => void = () => {}; private onModelTouched: () => void = () => {};
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
+  readonly activeTreeIndex = signal(0);
+  readonly activeTreeOptionId = computed(() => { const length = this.filteredVisibleNodes().length; return length ? this.treeOptionId(Math.min(this.activeTreeIndex(), length - 1)) : null; });
 
   readonly visibleNodes = computed<VisibleTreeSelectNode[]>(() => {
     const result: VisibleTreeSelectNode[] = [];
@@ -98,5 +100,17 @@ export class TreeSelectComponent implements ControlValueAccessor {
   private ancestorValues(target: TreeSelectNode, nodes = this.nodes(), path: string[] = []): string[] { for (const node of nodes) { if (node.children?.some(child => child.value === target.value)) return [node.value, ...path]; if (node.children) { const nested = this.ancestorValues(target, node.children, [node.value, ...path]); if (nested.length) return nested; } } return []; }
   clear(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set(null); this.onModelChange(null); this.onClear.emit(event); }
   onFilterInput(event: Event): void { const filter = (event.target as HTMLInputElement).value; this.filterValue.set(filter); this.onFilter.emit({ originalEvent: event, filter }); }
+  treeOptionId(index: number): string { return `${this.effectiveId()}-tree-option-${index}`; }
+  onKeydown(event: KeyboardEvent): void {
+    const nodes = this.filteredVisibleNodes();
+    if (!nodes.length) return;
+    if (event.key === 'Escape') { event.preventDefault(); this.open.set(false); this.onHide.emit(); return; }
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Home' || event.key === 'End') {
+      event.preventDefault();
+      this.activeTreeIndex.set(event.key === 'Home' ? 0 : event.key === 'End' ? nodes.length - 1 : (this.activeTreeIndex() + (event.key === 'ArrowDown' ? 1 : -1) + nodes.length) % nodes.length);
+      return;
+    }
+    if ((event.key === 'Enter' || event.key === ' ') && nodes[this.activeTreeIndex()]) { event.preventDefault(); this.select(nodes[this.activeTreeIndex()].node, event); }
+  }
   private findNode(nodes: TreeSelectNode[], value: string | null): TreeSelectNode | undefined { for (const node of nodes) { if (node.value === value) return node; const nested = node.children ? this.findNode(node.children, value) : undefined; if (nested) return nested; } return undefined; }
 }
