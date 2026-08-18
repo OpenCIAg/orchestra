@@ -645,7 +645,11 @@ describe('P2 expansion components', () => {
   });
 
   it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
-    const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
+    const panelFixture = TestBed.createComponent(OverlayPanelComponent);
+    const panel = panelFixture.componentInstance;
+    panelFixture.componentRef.setInput('baseZIndex', 20);
+    panelFixture.componentRef.setInput('autoZIndex', true);
+    expect(panel.computedZIndex()).toBe(21);
     panel.show();
     expect(panel.visible()).toBeTrue();
     panel.toggle();

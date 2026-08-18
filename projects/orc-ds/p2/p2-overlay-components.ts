@@ -68,7 +68,7 @@ export class ContextMenuComponent {
 @Component({
   selector: 'orc-overlay-panel',
   standalone: true,
-  template: `<section class="orc-p2-overlay-panel" [class]="styleClass()" [hidden]="!visible()" role="dialog" [attr.aria-label]="ariaLabel()" [attr.aria-modal]="modal()" (keydown.escape)="onEscape()">@if (closable()) { <button type="button" class="close" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }<ng-content /></section>`,
+  template: `<section class="orc-p2-overlay-panel" [class]="styleClass()" [style]="style()" [style.z-index]="computedZIndex()" [hidden]="!visible()" role="dialog" tabindex="-1" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-modal]="modal()" (keydown.escape)="onEscape()">@if (closable() || showCloseIcon()) { <button type="button" class="close" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }<ng-content /></section>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-overlay-panel{position:absolute;z-index:1000;min-width:12rem;padding:1rem;border:1px solid #cbd5e1;border-radius:.6rem;background:#fff;box-shadow:0 12px 30px #0f172a26;color:#0f172a}.orc-p2-overlay-panel[hidden]{display:none}.close{position:absolute;top:.35rem;right:.35rem;border:0;background:transparent;color:#64748b;font-size:1.1rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -78,12 +78,23 @@ export class OverlayPanelComponent {
   readonly modal = input(false, { transform: booleanAttribute });
   readonly dismissable = input(true, { transform: booleanAttribute });
   readonly closable = input(false, { transform: booleanAttribute });
+  readonly showCloseIcon = input(false, { transform: booleanAttribute });
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
   readonly ariaLabel = input('Overlay panel');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly closeLabel = input('Close');
+  readonly ariaCloseLabel = this.closeLabel;
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly styleClass = input('');
+  readonly appendTo = input<unknown>(undefined);
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  readonly baseZIndex = input(0);
+  readonly focusOnShow = input(true, { transform: booleanAttribute });
+  readonly showTransitionOptions = input('150ms cubic-bezier(0, 0, 0.2, 1)');
+  readonly hideTransitionOptions = input('100ms linear');
   readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClick = output<MouseEvent>();
-  show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); } }
+  readonly computedZIndex = computed(() => this.autoZIndex() ? this.baseZIndex() + 1 : this.baseZIndex());
+  show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); if (this.focusOnShow()) queueMicrotask(() => (this.host.nativeElement.querySelector('section') as HTMLElement | null)?.focus()); } }
   hide(): void { if (this.visible()) { this.visible.set(false); this.onHide.emit(); } }
   toggle(): void { this.visible() ? this.hide() : this.show(); }
   onEscape(): void { if (this.closeOnEscape()) this.hide(); }
@@ -120,7 +131,7 @@ export class OverlayComponent {
 @Component({
   selector: 'orc-popover',
   standalone: true,
-  template: `<aside class="orc-p2-popover" [class]="styleClass()" [hidden]="!visible()" role="dialog" [attr.aria-label]="ariaLabel()" (keydown.escape)="onEscape()">@if (header()) { <header>{{ header() }}@if (closable()) { <button type="button" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }</header> }<ng-content /></aside>`,
+  template: `<aside class="orc-p2-popover" [class]="styleClass()" [style]="style()" [style.z-index]="computedZIndex()" [hidden]="!visible()" role="dialog" tabindex="-1" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" (keydown.escape)="onEscape()">@if (header()) { <header>{{ header() }}@if (closable()) { <button type="button" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }</header> }<ng-content /></aside>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-popover{position:absolute;z-index:1000;min-width:12rem;padding:1rem;border:1px solid #cbd5e1;border-radius:.6rem;background:#fff;box-shadow:0 12px 30px #0f172a26;color:#0f172a}.orc-p2-popover[hidden]{display:none}.orc-p2-popover header{display:flex;justify-content:space-between;margin:-.25rem 0 .5rem;font-weight:700}.orc-p2-popover header button{border:0;background:transparent}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
