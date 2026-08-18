@@ -679,9 +679,12 @@ describe('P2 expansion components', () => {
     component.toggle(second);
     expect(component.open().has(first)).toBeFalse();
     fixture.componentRef.setInput('multiple', true);
+    const expanded = jasmine.createSpy('expanded');
+    component.onNodeExpand.subscribe(expanded);
     component.toggle(first);
     expect(component.open().has(first)).toBeTrue();
     expect(component.open().has(second)).toBeTrue();
+    expect(expanded).toHaveBeenCalledWith(first);
   });
 
   it('supports OrganizationChart expansion and multiple selection', () => {

@@ -34,7 +34,7 @@ export class TieredMenuComponent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelMenuComponent {
-  readonly items = input<PrimeMenuItem[]>([]); readonly ariaLabel = input('Panel menu'); readonly disabled = input(false, { transform: booleanAttribute }); readonly multiple = input(false, { transform: booleanAttribute }); readonly open = model<ReadonlySet<PrimeMenuItem>>(new Set()); readonly itemSelect = output<PrimeMenuItem>(); readonly onItemExpand = output<PrimeMenuItem>(); readonly onItemCollapse = output<PrimeMenuItem>();
+  readonly items = input<PrimeMenuItem[]>([]); readonly ariaLabel = input('Panel menu'); readonly disabled = input(false, { transform: booleanAttribute }); readonly multiple = input(false, { transform: booleanAttribute }); readonly open = model<ReadonlySet<PrimeMenuItem>>(new Set()); readonly itemSelect = output<PrimeMenuItem>(); readonly onItemExpand = output<PrimeMenuItem>(); readonly onItemCollapse = output<PrimeMenuItem>(); readonly onNodeSelect = this.itemSelect; readonly onNodeExpand = this.onItemExpand; readonly onNodeCollapse = this.onItemCollapse;
   toggle(item: PrimeMenuItem): void { if (item.disabled || this.disabled()) return; if (!item.items?.length) return this.select(item); const next = new Set(this.open()); const expanded = next.has(item); if (expanded) { next.delete(item); this.onItemCollapse.emit(item); } else { if (!this.multiple()) next.clear(); next.add(item); this.onItemExpand.emit(item); } this.open.set(next); }
   select(item: PrimeMenuItem): void { if (!item.disabled && !this.disabled()) { item.command?.(); this.itemSelect.emit(item); } }
 }
