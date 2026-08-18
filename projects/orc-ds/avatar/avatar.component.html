@@ -1,6 +1,8 @@
 <div
-  class="orc-avatar"
-  [class]="styleClass()"
+  [id]="id() || null"
+  class="p-avatar p-component orc-avatar"
+  [class]="'p-avatar p-component orc-avatar ' + styleClass()"
+  [attr.data-pc-name]="'avatar'"
   [class.orc-avatar--size-xs]="size() === 'xs'"
   [class.orc-avatar--size-sm]="size() === 'sm'"
   [class.orc-avatar--size-md]="size() === 'md'"

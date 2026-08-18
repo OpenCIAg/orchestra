@@ -6,6 +6,7 @@ import {
   computed,
   signal,
   effect,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -37,8 +38,9 @@ export class AvatarComponent {
   readonly status = input<AvatarStatus | undefined>(undefined);
   readonly statusPosition = input<AvatarStatusPosition>('bottom-right');
   readonly colorVariant = input<AvatarColorVariant>('default');
-  readonly bordered = input<boolean>(false);
-  readonly clickable = input<boolean>(false);
+  readonly bordered = input<boolean>(false, { transform: booleanAttribute });
+  readonly clickable = input<boolean>(false, { transform: booleanAttribute });
+  readonly id = input<string | undefined>(undefined);
   readonly styleClass = input('');
 
   // Outputs (Signals API)
