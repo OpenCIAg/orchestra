@@ -10,7 +10,8 @@ import {
   computed,
   PLATFORM_ID,
   inject,
-  OnDestroy
+  OnDestroy,
+  HostListener
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ButtonComponent } from '@ciag/orchestra/button';
@@ -131,6 +132,18 @@ export class ModalComponent implements OnDestroy {
   show(): void { this.visible.set(true); this.isOpen.set(true); }
   close(): void { this.onClose(); }
   toggleMaximize(): void { if (!this.maximizable()) return; this.maximized.update(value => !value); this.onMaximize.emit({ maximized: this.maximized() }); }
+
+  @HostListener('document:keydown', ['$event'])
+  trapFocus(event: KeyboardEvent): void {
+    if (!this.focusTrap() || !(this.isOpen() || this.visible()) || event.key !== 'Tab') return;
+    const dialog = this.dialogRef?.nativeElement;
+    if (!dialog) return;
+    const focusable = Array.from(dialog.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+    if (!focusable.length) return;
+    const first = focusable[0]; const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
 
   ngOnDestroy(): void {
     if (this.isBrowser) {
