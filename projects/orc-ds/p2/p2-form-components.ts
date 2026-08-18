@@ -139,7 +139,7 @@ export class CalendarComponent {
   }
 
   clear(): void { if (this.disabled()) return; this.value.set(''); this.onClear.emit(); }
-  today(): void { const iso = toIso(new Date()); this.value.set(iso); this.onTodayClick.emit(iso); this.onSelect.emit({ value: iso }); }
+  today(): void { const iso = toIso(new Date()); const day = this.days().find(item => item.iso === iso); if (!day || day.disabled) return; this.selectDay(day); this.onTodayClick.emit(iso); }
 
   private shiftMonth(delta: number): void {
     const current = fromMonthKey(this.currentMonth());
