@@ -5,6 +5,8 @@ import {
   output,
   computed,
   signal,
+  booleanAttribute,
+  numberAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlertSeverity, AlertVariant } from './alert.types';
@@ -37,12 +39,18 @@ export class AlertComponent {
 
   /** Texto descritivo (opcional se fornecido via ng-content) */
   readonly message = input<string>('');
+  readonly text = input<string | undefined>(undefined);
 
   /** Controla se o ícone do alerta deve ser exibido */
   readonly showIcon = input<boolean>(true);
 
   /** Define se o alerta pode ser dispensado pelo usuário exibindo o botão 'X' */
-  readonly dismissible = input<boolean>(false);
+  readonly dismissible = input<boolean>(false, { transform: booleanAttribute });
+  readonly closable = input<boolean | undefined>(undefined, { transform: booleanAttribute });
+  readonly life = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly icon = input<string | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
 
   /** Sobrescreve o atributo role WCAG (padrão: 'alert' para error/warning e 'status' para info/success) */
   readonly role = input<string | undefined>(undefined);
@@ -68,6 +76,8 @@ export class AlertComponent {
   readonly activeSeverity = computed<AlertSeverity>(() => {
     return this.status() || this.severity();
   });
+  readonly activeMessage = computed(() => this.text() ?? this.message());
+  readonly isClosable = computed(() => this.closable() ?? this.dismissible());
 
   /** Normaliza a variante */
   readonly activeVariant = computed<'subtle' | 'filled' | 'outline'>(() => {

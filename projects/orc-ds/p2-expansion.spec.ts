@@ -17,6 +17,7 @@ import { KnobComponent } from './p2/p2-org-knob-components';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { ButtonComponent } from './button/button.component';
+import { AlertComponent } from './alert/alert.component';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
@@ -611,5 +612,15 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('badge', 3);
     expect(component.buttonClassString()).toContain('orc-button--variant-success');
     expect(component.buttonClassString()).toContain('orc-button--outlined');
+  });
+
+  it('supports PrimeNG Message text, severity, closable, and style aliases', () => {
+    const fixture = TestBed.createComponent(AlertComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('text', 'Saved');
+    fixture.componentRef.setInput('severity', 'success');
+    fixture.componentRef.setInput('closable', true);
+    expect(component.activeMessage()).toBe('Saved');
+    expect(component.isClosable()).toBeTrue();
   });
 });

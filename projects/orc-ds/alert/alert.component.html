@@ -1,9 +1,10 @@
 @if (isVisible()) {
   <div
-    class="orc-alert"
+    class="orc-alert {{ styleClass() }}"
+    [style]="style()"
     [class.orc-alert--severity-info]="activeSeverity() === 'info'"
     [class.orc-alert--severity-success]="activeSeverity() === 'success'"
-    [class.orc-alert--severity-warning]="activeSeverity() === 'warning'"
+    [class.orc-alert--severity-warning]="activeSeverity() === 'warning' || activeSeverity() === 'warn'"
     [class.orc-alert--severity-error]="activeSeverity() === 'error'"
     [class.orc-alert--variant-subtle]="activeVariant() === 'subtle'"
     [class.orc-alert--variant-filled]="activeVariant() === 'filled'"
@@ -13,7 +14,7 @@
     [attr.aria-label]="ariaLabel() || undefined"
   >
     <!-- Ícone à Esquerda (Customizado ou Padrão do Figma) -->
-    @if (showIcon()) {
+      @if (showIcon()) {
       <div class="orc-alert__icon-container" aria-hidden="true">
         <ng-content select="[alert-icon], [alertIcon]">
           <!-- Ícones SVG fiéis ao Figma com currentColor -->
@@ -56,8 +57,8 @@
       }
       <ng-content select="[alert-title], [alertTitle]"></ng-content>
 
-      @if (message()) {
-        <p class="orc-alert__description">{{ message() }}</p>
+      @if (activeMessage()) {
+        <p class="orc-alert__description">{{ activeMessage() }}</p>
       }
       <ng-content></ng-content>
     </div>
@@ -68,7 +69,7 @@
     </div>
 
     <!-- Botão de Fechar -->
-    @if (dismissible()) {
+    @if (isClosable()) {
       <button
         type="button"
         class="orc-alert__close"
