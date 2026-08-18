@@ -38,6 +38,14 @@ export class TooltipDirective implements OnDestroy {
   readonly showDelay = input<number | undefined>(undefined, { transform: numberAttribute });
   readonly hideDelay = input<number | undefined>(undefined, { transform: numberAttribute });
   readonly tooltipEvent = input<'hover' | 'focus' | 'both'>('both');
+  readonly positionStyle = input<string | undefined>(undefined);
+  readonly tooltipStyleClass = input<string | undefined>(undefined);
+  readonly tooltipZIndex = input<string | undefined>(undefined);
+  readonly escape = input(true, { transform: booleanAttribute });
+  readonly life = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly fitContent = input(true, { transform: booleanAttribute });
+  readonly content = input<string | undefined>(undefined);
+  readonly tooltipOptions = input<Record<string, unknown> | undefined>(undefined);
   readonly position = input<TooltipPosition | undefined>(undefined);
   readonly autoHide = input(true, { transform: booleanAttribute });
   readonly hideOnEscape = input(true, { transform: booleanAttribute });
@@ -47,7 +55,7 @@ export class TooltipDirective implements OnDestroy {
 
   // Texto efetivo do tooltip
   readonly tooltipText = computed(() => {
-    return this.appTooltip() || this.uiTooltip() || this.orcTooltip() || '';
+    return this.content() || this.appTooltip() || this.uiTooltip() || this.orcTooltip() || '';
   });
   readonly effectiveShowDelay = computed(() => this.showDelay() ?? this.tooltipShowDelay());
   readonly effectiveHideDelay = computed(() => this.hideDelay() ?? this.tooltipHideDelay());
@@ -125,7 +133,7 @@ export class TooltipDirective implements OnDestroy {
     instance.theme.set(this.tooltipTheme());
     instance.position.set(this.effectivePosition());
     instance.id.set(this.tooltipId);
-    instance.styleClass.set(this.styleClass());
+    instance.styleClass.set([this.styleClass(), this.tooltipStyleClass() || ''].filter(Boolean).join(' '));
 
     const domElement = this.componentRef.location.nativeElement as HTMLElement;
     this.renderer.appendChild(this.appendTo() === 'self' ? this.elementRef.nativeElement : document.body, domElement);
@@ -145,11 +153,15 @@ export class TooltipDirective implements OnDestroy {
 
     // Posicionamento inteligente com verificação de colisão
     this.updatePosition();
+    if (this.tooltipZIndex()) this.renderer.setStyle(domElement, 'z-index', this.tooltipZIndex());
+    if (this.positionStyle()) this.renderer.setStyle(domElement, 'position', this.positionStyle());
 
     // Fade-in animado no próximo frame
     requestAnimationFrame(() => {
       if (this.componentRef) {
         this.componentRef.instance.visible.set(true);
+        const lifetime = this.life();
+        if (lifetime && lifetime > 0) this.hideTimeoutId = setTimeout(() => this.hideImmediately(), lifetime);
       }
     });
   }
