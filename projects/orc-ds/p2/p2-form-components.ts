@@ -156,6 +156,7 @@ export class CalendarComponent {
 @Component({
   selector: 'orc-combobox',
   standalone: true,
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ComboboxComponent), multi: true }],
   template: `
     <div class="p-autocomplete p-component orc-p2-field" [class]="'p-autocomplete p-component orc-p2-field ' + styleClass()" [style]="style()" [attr.data-pc-name]="'autocomplete'">
       @if (label()) { <label [for]="inputId">{{ label() }}</label> }
@@ -165,7 +166,7 @@ export class CalendarComponent {
           role="combobox"
           [value]="query()"
           [placeholder]="placeholder()"
-          [disabled]="disabled()"
+          [disabled]="disabled() || cvaDisabled()"
           [attr.aria-expanded]="open()"
           [attr.aria-controls]="listId"
           [attr.aria-activedescendant]="activeIndex() >= 0 ? optionId(activeIndex()) : null"
@@ -202,7 +203,7 @@ export class CalendarComponent {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ComboboxComponent<T = unknown> {
+export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
   private static nextId = 0;
   readonly inputId = `orc-combobox-${++ComboboxComponent.nextId}`;
   readonly listId = `${this.inputId}-listbox`;
@@ -215,6 +216,9 @@ export class ComboboxComponent<T = unknown> {
   readonly helperText = input('');
   readonly emptyText = input('No results');
   readonly disabled = input(false, { transform: booleanAttribute });
+  protected readonly cvaDisabled = signal(false);
+  private onModelChange: (value: T | null) => void = () => {};
+  private onModelTouched: () => void = () => {};
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly optionSelected = output<P2Option<T>>();
@@ -227,6 +231,11 @@ export class ComboboxComponent<T = unknown> {
 
   optionId(index: number): string { return `${this.listId}-option-${index}`; }
 
+  writeValue(value: T | null): void { this.value.set(value); }
+  registerOnChange(fn: (value: T | null) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
+  setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
+
   onInput(event: Event): void {
     this.query.set((event.target as HTMLInputElement).value);
     this.open.set(true);
@@ -234,14 +243,16 @@ export class ComboboxComponent<T = unknown> {
   }
 
   select(option: P2Option<T>): void {
-    if (option.disabled || this.disabled()) return;
+    if (option.disabled || this.disabled() || this.cvaDisabled()) return;
     this.value.set(option.value);
     this.query.set(option.label);
     this.open.set(false);
+    this.onModelChange(option.value);
+    this.onModelTouched();
     this.optionSelected.emit(option);
   }
 
-  clear(): void { this.value.set(null); this.query.set(''); this.open.set(false); }
+  clear(): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set(null); this.query.set(''); this.open.set(false); this.onModelChange(null); this.onModelTouched(); }
 
   onKeydown(event: KeyboardEvent): void {
     const options = this.filteredOptions();
