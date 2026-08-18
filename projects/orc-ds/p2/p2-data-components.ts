@@ -164,7 +164,7 @@ export class DataTableComponent {
     return this.rows().filter(row => Object.values(row).some(value => String(value ?? '').toLocaleLowerCase().includes(query)));
   });
   readonly effectivePageSize = computed(() => this.rowsInput() ?? this.pageSize());
-  readonly pageCount = computed(() => Math.max(1, Math.ceil(this.filteredRows().length / Math.max(1, this.effectivePageSize()))));
+  readonly pageCount = computed(() => Math.max(1, Math.ceil((this.totalRecords() ?? this.filteredRows().length) / Math.max(1, this.effectivePageSize()))));
   readonly pageRows = computed(() => this.paginator() ? this.filteredRows().slice(this.page() * this.effectivePageSize(), (this.page() + 1) * this.effectivePageSize()) : this.filteredRows());
   readonly allSelected = computed(() => !!this.pageRows().length && this.pageRows().every(row => this.isSelected(row)));
   readonly someSelected = computed(() => this.pageRows().some(row => this.isSelected(row)) && !this.allSelected());

@@ -417,6 +417,18 @@ describe('P2 expansion components', () => {
     expect(page).toHaveBeenCalledWith({ first: 1, rows: 1 });
   });
 
+  it('uses DataTable totalRecords for lazy page count', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('data', [{ id: 1 }]);
+    fixture.componentRef.setInput('columns', [{ key: 'id', header: 'ID' }]);
+    fixture.componentRef.setInput('rows', 1);
+    fixture.componentRef.setInput('totalRecords', 3);
+    fixture.componentRef.setInput('lazy', true);
+    fixture.componentRef.setInput('paginator', true);
+    expect(component.pageCount()).toBe(3);
+  });
+
   it('honors single-row selection and emits filter changes', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;
