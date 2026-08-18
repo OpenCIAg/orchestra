@@ -1,8 +1,39 @@
-<ng-content></ng-content>
+@if (formMode()) {
+  <div class="orc-dropdown-field" [class.is-disabled]="disabled() || cvaDisabled()">
+    @if (label()) { <label class="orc-dropdown-label">{{ label() }}</label> }
+    <button
+      type="button"
+      class="orc-dropdown-trigger"
+      [disabled]="disabled() || cvaDisabled()"
+      [attr.aria-expanded]="isOpen()"
+      aria-haspopup="listbox"
+      (click)="toggle()"
+      (focus)="onFocus.emit($event)"
+      (blur)="onTouched(); onBlur.emit($event)"
+    >
+      <span>{{ selectedLabel() || placeholder() }}</span>
+      @if (showClear() && value() !== null && value() !== undefined) {
+        <span class="orc-dropdown-clear" role="button" tabindex="0" aria-label="Clear" (click)="clearValue($event); $event.stopPropagation()">×</span>
+      } @else { <span aria-hidden="true">⌄</span> }
+    </button>
+  </div>
+} @else {
+  <ng-content></ng-content>
+}
 
 <ng-template #dropdownPanel>
   <div class="orc-dropdown-menu" role="menu">
-    @for (item of items(); track item.id || item.label) {
+    @if (formMode()) {
+      <div role="listbox" aria-label="Options">
+        @if (filter()) {
+          <input type="search" [placeholder]="filterPlaceholder()" [value]="filterValue()" (input)="onFilterInput($event)" aria-label="Filter options" />
+        }
+        @if (loading()) { <div role="status">Loading</div> }
+        @for (option of filteredOptions(); track optionValueOf(option)) {
+          <button type="button" role="option" class="orc-dropdown-item" [disabled]="isOptionDisabled(option)" [attr.aria-selected]="optionValueOf(option) === value()" (click)="selectOption(option, $event)">{{ optionText(option) }}</button>
+        } @empty { @if (!loading()) { <div role="status">No results found</div> } }
+      </div>
+    } @else { @for (item of items(); track item.id || item.label) {
       @if (item.divider) {
         <div class="orc-dropdown-divider" role="separator"></div>
       } @else {
@@ -25,6 +56,6 @@
           }
         </button>
       }
-    }
+    } } 
   </div>
 </ng-template>

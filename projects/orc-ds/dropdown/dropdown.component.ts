@@ -8,10 +8,16 @@ import {
   ViewContainerRef,
   inject,
   input,
+  model,
   output,
   signal,
+  computed,
+  booleanAttribute,
+  effect,
+  forwardRef,
   viewChild,
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Overlay, OverlayConfig, OverlayRef, PositionStrategy, ConnectedPosition } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DropdownItem } from './dropdown.types';
@@ -23,12 +29,33 @@ import { DropdownItem } from './dropdown.types';
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DropdownComponent), multi: true }],
 })
-export class DropdownComponent implements AfterViewInit {
+export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
   readonly items = input<DropdownItem[]>([]);
   readonly placement = input<string>('bottom-start');
+  /** PrimeNG Dropdown/Select-compatible form mode. Menu mode remains the default. */
+  readonly options = input<unknown[] | undefined>(undefined);
+  readonly optionLabel = input<string | undefined>(undefined);
+  readonly optionValue = input<string | undefined>(undefined);
+  readonly optionDisabled = input<string | ((option: unknown) => boolean) | undefined>(undefined);
+  readonly placeholder = input('Select an option');
+  readonly loading = input(false, { transform: booleanAttribute });
+  readonly showClear = input(false, { transform: booleanAttribute });
+  readonly disabled = input(false, { transform: booleanAttribute });
+  readonly filter = input(false, { transform: booleanAttribute });
+  readonly filterPlaceholder = input('Search');
+  readonly label = input('');
+  readonly value = model<unknown>(null);
 
   readonly itemSelect = output<DropdownItem>();
+  readonly onChange = output<{ originalEvent: Event; value: unknown }>();
+  readonly onShow = output<void>();
+  readonly onHide = output<void>();
+  readonly onClear = output<Event>();
+  readonly onFocus = output<FocusEvent>();
+  readonly onBlur = output<FocusEvent>();
+  readonly filterChange = output<string>();
 
   private overlayRef: OverlayRef | null = null;
   private portal!: TemplatePortal<unknown>;
@@ -38,6 +65,30 @@ export class DropdownComponent implements AfterViewInit {
 
   readonly dropdownPanel = viewChild.required<TemplateRef<unknown>>('dropdownPanel');
   readonly isOpen = signal(false);
+  readonly visible = model(false);
+  readonly filterValue = signal('');
+  readonly cvaDisabled = signal(false);
+  private onModelChange: (value: unknown) => void = () => {};
+  onTouched: () => void = () => {};
+  readonly formMode = computed(() => this.options() !== undefined);
+  readonly filteredOptions = computed(() => {
+    const term = this.filterValue().trim().toLowerCase();
+    const options = this.options() ?? [];
+    if (!term) return options;
+    return options.filter(option => this.optionText(option).toLowerCase().includes(term));
+  });
+  readonly selectedLabel = computed(() => {
+    const selected = (this.options() ?? []).find(option => this.optionValueOf(option) === this.value());
+    return selected === undefined ? '' : this.optionText(selected);
+  });
+
+  constructor() {
+    effect(() => {
+      const requested = this.visible();
+      if (requested && !this.isOpen() && this.formMode()) this.open();
+      if (!requested && this.isOpen() && this.formMode()) this.close();
+    });
+  }
 
   ngAfterViewInit(): void {
     this.portal = new TemplatePortal(this.dropdownPanel(), this.viewContainerRef);
@@ -62,6 +113,8 @@ export class DropdownComponent implements AfterViewInit {
     });
     this.overlayRef.attach(this.portal);
     this.isOpen.set(true);
+    this.visible.set(true);
+    if (this.formMode()) this.onShow.emit();
     setTimeout(() => this.overlayRef?.overlayElement.querySelector<HTMLElement>('[role="menuitem"]:not([disabled])')?.focus());
   }
 
@@ -70,6 +123,8 @@ export class DropdownComponent implements AfterViewInit {
     this.overlayRef?.dispose();
     this.overlayRef = null;
     this.isOpen.set(false);
+    this.visible.set(false);
+    if (this.formMode()) this.onHide.emit();
   }
 
   toggle(): void {
@@ -88,6 +143,48 @@ export class DropdownComponent implements AfterViewInit {
     item.action?.();
     this.close();
   }
+
+  optionText(option: unknown): string {
+    const key = this.optionLabel();
+    return String(key ? (option as Record<string, unknown>)?.[key] ?? '' : (option as any)?.label ?? option ?? '');
+  }
+
+  optionValueOf(option: unknown): unknown {
+    const key = this.optionValue();
+    return key ? (option as Record<string, unknown>)?.[key] : (option as any)?.value ?? option;
+  }
+
+  isOptionDisabled(option: unknown): boolean {
+    const rule = this.optionDisabled();
+    return typeof rule === 'function' ? rule(option) : Boolean(rule ? (option as Record<string, unknown>)?.[rule] : (option as any)?.disabled);
+  }
+
+  selectOption(option: unknown, event: Event): void {
+    if (this.isOptionDisabled(option)) return;
+    const value = this.optionValueOf(option);
+    this.value.set(value);
+    this.onModelChange(value);
+    this.onChange.emit({ originalEvent: event, value });
+    this.close();
+  }
+
+  clearValue(event: Event): void {
+    this.value.set(null);
+    this.onModelChange(null);
+    this.onChange.emit({ originalEvent: event, value: null });
+    this.onClear.emit(event);
+  }
+
+  onFilterInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.filterValue.set(value);
+    this.filterChange.emit(value);
+  }
+
+  writeValue(value: unknown): void { this.value.set(value); }
+  registerOnChange(fn: (value: unknown) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
+  setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
 
   onItemKeydown(event: KeyboardEvent): void {
     const current = event.currentTarget as HTMLButtonElement;

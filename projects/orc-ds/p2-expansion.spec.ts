@@ -38,6 +38,7 @@ import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
 import { ConfirmDialogComponent, ConfirmationService, PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
+import { DropdownComponent } from './dropdown/dropdown.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -549,5 +550,21 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('severity', 'info');
     expect(component.effectiveLabel()).toBe('New');
     expect(component.effectiveVariant()).toBe('info');
+  });
+
+  it('supports PrimeNG Dropdown form mode with option mapping and CVA events', () => {
+    const fixture = TestBed.createComponent(DropdownComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta', blocked: true }]);
+    fixture.componentRef.setInput('optionLabel', 'name');
+    fixture.componentRef.setInput('optionValue', 'id');
+    fixture.componentRef.setInput('optionDisabled', 'blocked');
+    let changed: unknown;
+    component.registerOnChange(value => changed = value);
+    component.selectOption(component.options()![0], new Event('click'));
+    expect(component.value()).toBe(1);
+    expect(changed).toBe(1);
+    expect(component.selectedLabel()).toBe('Alpha');
+    expect(component.isOptionDisabled(component.options()![1])).toBeTrue();
   });
 });
