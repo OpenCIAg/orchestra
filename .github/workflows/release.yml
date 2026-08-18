@@ -9,7 +9,8 @@ on:
       - v21
       - v22
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+# Do not let a stale release run block a validated release indefinitely.
+concurrency: ${{ github.workflow }}-${{ github.ref }}-${{ github.run_id }}
 
 jobs:
   release:
