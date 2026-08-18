@@ -65,6 +65,7 @@ export class TooltipDirective implements OnDestroy {
   private showTimeoutId: ReturnType<typeof setTimeout> | null = null;
   private hideTimeoutId: ReturnType<typeof setTimeout> | null = null;
   private readonly tooltipId = `orc-tooltip-${++nextUniqueId}`;
+  private previousDescribedBy: string | null = null;
 
   @HostListener('mouseenter')
   onMouseEnter(): void {
@@ -145,10 +146,11 @@ export class TooltipDirective implements OnDestroy {
     this.componentRef.changeDetectorRef.detectChanges();
 
     // WCAG A11y
+    this.previousDescribedBy = this.elementRef.nativeElement.getAttribute('aria-describedby');
     this.renderer.setAttribute(
       this.elementRef.nativeElement,
       'aria-describedby',
-      this.tooltipId
+      [this.previousDescribedBy, this.tooltipId].filter(Boolean).join(' ')
     );
 
     // Posicionamento inteligente com verificação de colisão
@@ -174,10 +176,7 @@ export class TooltipDirective implements OnDestroy {
     this.componentRef = null;
 
     // Remove aria-describedby
-    this.renderer.removeAttribute(
-      this.elementRef.nativeElement,
-      'aria-describedby'
-    );
+    this.restoreDescribedBy();
 
     // Remove do DOM após a transição de fade-out
     setTimeout(() => {
@@ -189,13 +188,19 @@ export class TooltipDirective implements OnDestroy {
     this.clearShowTimeout();
     this.clearHideTimeout();
     if (this.componentRef) {
-      this.renderer.removeAttribute(
-        this.elementRef.nativeElement,
-        'aria-describedby'
-      );
+      this.restoreDescribedBy();
       this.componentRef.destroy();
       this.componentRef = null;
     }
+  }
+
+  private restoreDescribedBy(): void {
+    if (this.previousDescribedBy) {
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'aria-describedby', this.previousDescribedBy);
+    } else {
+      this.renderer.removeAttribute(this.elementRef.nativeElement, 'aria-describedby');
+    }
+    this.previousDescribedBy = null;
   }
 
   private updatePosition(): void {
