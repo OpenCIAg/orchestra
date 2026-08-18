@@ -30,6 +30,12 @@ export class StepperComponent {
 
   /** Índice da etapa ativa atual (0-indexed) */
   readonly currentStep = model<number>(0);
+  readonly activeIndex = model<number>(0, { alias: 'activeIndex' });
+  readonly model = input<StepItem[] | undefined>(undefined);
+  readonly readonly = input(false);
+  readonly exact = input(false);
+  readonly style = input<Record<string, string> | null>(null);
+  readonly styleClass = input('');
 
   /** Orientação do layout: 'horizontal' ou 'vertical' */
   readonly orientation = input<StepperOrientation>('horizontal');

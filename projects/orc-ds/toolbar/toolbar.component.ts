@@ -26,6 +26,8 @@ export class ToolbarComponent {
   @ContentChildren(ToolbarItemDirective, { descendants: true }) readonly items!: QueryList<ToolbarItemDirective>;
   readonly orientation = input<ToolbarOrientation>('horizontal');
   readonly label = input('Toolbar');
+  readonly styleClass = input('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly loop = input(true, { transform: booleanAttribute });
 
   onKeydown(event: KeyboardEvent): void {

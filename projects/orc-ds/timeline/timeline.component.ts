@@ -10,9 +10,15 @@ import { TimelineItem, TimelineOrientation } from './timeline.types';
 })
 export class TimelineComponent {
   readonly items = input<TimelineItem[]>([]);
+  readonly value = input<TimelineItem[] | undefined>(undefined);
+  readonly align = input('alternate');
+  readonly layout = input<TimelineOrientation>('vertical');
+  readonly style = input<Record<string, string> | null>(null);
+  readonly styleClass = input('');
   readonly orientation = input<TimelineOrientation>('vertical');
   readonly ariaLabel = input('Timeline');
   readonly itemSelect = output<{ item: TimelineItem; index: number }>();
+  readonly onItemClick = this.itemSelect;
 
   trackItem(index: number, item: TimelineItem): string | number { return item.id ?? index; }
   selectItem(item: TimelineItem, index: number): void { this.itemSelect.emit({ item, index }); }

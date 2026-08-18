@@ -34,6 +34,11 @@ export interface ProcessedBreadcrumbItem extends Partial<BreadcrumbItemData> {
 export class BreadcrumbComponent {
   // Inputs (Signals API)
   readonly items = input<BreadcrumbItemData[] | undefined>(undefined);
+  readonly model = input<BreadcrumbItemData[] | undefined>(undefined);
+  readonly home = input<BreadcrumbItemData | undefined>(undefined);
+  readonly homeAriaLabel = input<string | undefined>(undefined);
+  readonly style = input<Record<string, string> | null>(null);
+  readonly styleClass = input('');
   readonly separator = input<BreadcrumbSeparator | string>('chevron');
   readonly variant = input<BreadcrumbVariant>('default');
   readonly maxItems = input<number | undefined>(undefined);
@@ -43,6 +48,7 @@ export class BreadcrumbComponent {
 
   // Outputs (Signals API)
   readonly itemClick = output<{ item: BreadcrumbItemData; index: number }>();
+  readonly onItemClick = this.itemClick;
 
   // Itens filhos registrados via projeção de conteúdo
   readonly breadcrumbItems = contentChildren(BreadcrumbItemComponent);
