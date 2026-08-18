@@ -5,6 +5,9 @@
   [class.orc-table-container--hoverable]="hoverable()"
 >
   <div class="orc-table-wrapper" role="region" aria-label="Tabela de dados" tabindex="0">
+    @if (filterable()) {
+      <input class="orc-table__filter" type="search" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="applyFilter(($any($event.target)).value)" aria-label="Filter table" />
+    }
     <table class="orc-table">
       <!-- ── Cabeçalho da Tabela ─────────────────────────────── -->
       <thead class="orc-table__head">
@@ -164,6 +167,7 @@
         [(currentPage)]="currentPage"
         [pageSizeOptions]="pageSizeOptions()"
         [showPageSizeSelector]="true"
+        (pageChange)="handlePageChange($event)"
       />
     </div>
   }

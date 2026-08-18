@@ -52,6 +52,8 @@ export class TableComponent<T = any> {
 
   /** Evento emitido quando a seleção muda */
   readonly selectionChange = output<T[]>();
+  readonly rowSelect = output<{ data: T }>();
+  readonly rowUnselect = output<{ data: T }>();
 
   // ── Ordenação ─────────────────────────────────────────────
   /** Chave da coluna ordenada atualmente */
@@ -62,6 +64,7 @@ export class TableComponent<T = any> {
 
   /** Evento emitido quando o usuário clica para ordenar uma coluna */
   readonly sortChange = output<TableSortEvent>();
+  readonly onSort = output<TableSortEvent>();
 
   // ── Estilos e Variantes Visuais (Figma Spec) ───────────────
   /** Linhas zebradas alternadas */
@@ -72,6 +75,11 @@ export class TableComponent<T = any> {
 
   /** Realce visual no hover sobre as linhas */
   readonly hoverable = input(true, { transform: booleanAttribute });
+  readonly filterable = input(false, { transform: booleanAttribute });
+  readonly filterPlaceholder = input('Filter');
+  readonly filter = model('');
+  readonly globalFilterFields = input<string[]>([]);
+  readonly onFilter = output<{ value: string }>();
 
   // ── Estados de Carregamento e Vazio ───────────────────────
   /** Exibe estado de carregamento com Skeletons */
@@ -101,6 +109,9 @@ export class TableComponent<T = any> {
 
   /** Opções de tamanho de página */
   readonly pageSizeOptions = input<number[]>([5, 10, 20, 50]);
+  readonly lazy = input(false, { transform: booleanAttribute });
+  readonly onPage = output<{ first: number; rows: number }>();
+  readonly onLazyLoad = output<{ first: number; rows: number }>();
 
   // ── Evento de Clique na Linha ─────────────────────────────
   readonly rowClick = output<T>();
@@ -115,8 +126,15 @@ export class TableComponent<T = any> {
   });
 
   /** Dados ordenados localmente */
+  readonly filteredData = computed(() => {
+    const query = this.filter().trim().toLocaleLowerCase();
+    if (!query) return this.data();
+    const fields = this.globalFilterFields();
+    return this.data().filter(row => (fields.length ? fields : Object.keys((row as any) || {})).some(key => String((row as any)?.[key] ?? '').toLocaleLowerCase().includes(query)));
+  });
+
   readonly sortedData = computed(() => {
-    const raw = [...this.data()];
+    const raw = [...this.filteredData()];
     const col = this.sortColumn();
     const dir = this.sortDirection();
 
@@ -197,6 +215,7 @@ export class TableComponent<T = any> {
 
     this.selectedRows.set(current);
     this.selectionChange.emit(current);
+    (checked ? this.rowSelect : this.rowUnselect).emit({ data: row });
   }
 
   toggleSelectAll(event: CheckboxChangeEvent | boolean): void {
@@ -233,7 +252,11 @@ export class TableComponent<T = any> {
     this.sortColumn.set(newDirection === 'none' ? '' : columnKey);
     this.sortDirection.set(newDirection);
     this.sortChange.emit({ column: columnKey, direction: newDirection });
+    this.onSort.emit({ column: columnKey, direction: newDirection });
   }
+
+  applyFilter(value: string): void { this.filter.set(value); this.onFilter.emit({ value }); }
+  handlePageChange(event: { first: number; rows: number }): void { this.currentPage.set(Math.floor(event.first / Math.max(1, event.rows)) + 1); this.pageSize.set(event.rows); this.onPage.emit(event); if (this.lazy()) this.onLazyLoad.emit(event); }
 
   handleRowClick(row: any): void {
     this.rowClick.emit(row);

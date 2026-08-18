@@ -19,6 +19,7 @@ import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
+import { TableComponent } from './table/table.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -268,5 +269,19 @@ describe('P2 expansion components', () => {
     component.next();
     component.reset();
     expect(component.currentStep()).toBe(0);
+  });
+
+  it('supports PrimeNG-style table filtering, row events, and lazy paging', () => {
+    const fixture = TestBed.createComponent(TableComponent<{ id: number; name: string }>);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('data', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('filterable', true);
+    fixture.componentRef.setInput('globalFilterFields', ['name']);
+    component.applyFilter('alpha');
+    expect(component.displayData()).toHaveSize(1);
+    component.toggleRowSelect(component.displayData()[0], true);
+    expect(component.selectedRows()).toHaveSize(1);
+    component.handlePageChange({ first: 5, rows: 5 });
+    expect(component.currentPage()).toBe(2);
   });
 });
