@@ -22,6 +22,8 @@ import { Overlay, OverlayConfig, OverlayRef, PositionStrategy, ConnectedPosition
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DropdownItem } from './dropdown.types';
 
+let nextDropdownId = 0;
+
 @Component({
   selector: 'orc-dropdown',
   standalone: true,
@@ -33,6 +35,9 @@ import { DropdownItem } from './dropdown.types';
 })
 export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
   readonly items = input<DropdownItem[]>([]);
+  readonly inputId = input<string | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly placement = input<string>('bottom-start');
   /** PrimeNG Dropdown/Select-compatible form mode. Menu mode remains the default. */
   readonly options = input<unknown[] | undefined>(undefined);
@@ -45,6 +50,10 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly filter = input(false, { transform: booleanAttribute });
   readonly filterPlaceholder = input('Search');
+  readonly emptyMessage = input('No results found');
+  readonly filterBy = input<string | undefined>(undefined);
+  readonly scrollHeight = input('200px');
+  readonly resetFilterOnHide = input(true, { transform: booleanAttribute });
   readonly label = input('');
   readonly value = model<unknown>(null);
 
@@ -68,6 +77,8 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
   readonly visible = model(false);
   readonly filterValue = signal('');
   readonly cvaDisabled = signal(false);
+  private readonly uniqueId = `orc-dropdown-${++nextDropdownId}`;
+  readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
   private onModelChange: (value: unknown) => void = () => {};
   onTouched: () => void = () => {};
   readonly formMode = computed(() => this.options() !== undefined);
@@ -124,6 +135,7 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
     this.overlayRef = null;
     this.isOpen.set(false);
     this.visible.set(false);
+    if (this.resetFilterOnHide()) this.filterValue.set('');
     if (this.formMode()) this.onHide.emit();
   }
 
