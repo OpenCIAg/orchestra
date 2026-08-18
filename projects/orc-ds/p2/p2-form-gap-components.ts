@@ -64,7 +64,7 @@ export class CascadeSelectComponent { readonly options = input<CascadeOption[]>(
 }
 
 @Directive({ selector: '[orcKeyFilter],[pKeyFilter]', standalone: true })
-export class KeyFilterDirective { readonly pattern = input<string | RegExp>('[0-9]'); readonly validateOnly = input(false, { transform: booleanAttribute }); readonly ngModelChange = output<string | number>(); @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent): void { if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return; const regex = this.pattern() instanceof RegExp ? this.pattern() as RegExp : new RegExp(this.pattern()); if (!regex.test(event.key)) event.preventDefault(); } }
+export class KeyFilterDirective { readonly pattern = input<string | RegExp>('[0-9]'); readonly validateOnly = input(false, { transform: booleanAttribute, alias: 'pValidateOnly' }); readonly ngModelChange = output<string | number>(); @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent): void { if (this.validateOnly() || event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return; const regex = this.pattern() instanceof RegExp ? this.pattern() as RegExp : new RegExp(this.pattern()); if (!regex.test(event.key)) event.preventDefault(); } @HostListener('input', ['$event']) onInput(event: Event): void { if (!this.validateOnly()) return; const value = (event.target as HTMLInputElement | null)?.value ?? ''; this.ngModelChange.emit(value); } }
 
 @Directive({ selector: '[orcInputMask],[pInputMask]', standalone: true, providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputMaskDirective), multi: true }] })
 export class InputMaskDirective implements ControlValueAccessor {
