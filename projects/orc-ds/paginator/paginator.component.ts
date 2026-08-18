@@ -5,6 +5,7 @@ import {
   model,
   output,
   computed,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -33,6 +34,7 @@ export class PaginatorComponent {
   /** Quantidade de itens por página (Two-Way Data Binding) */
   readonly pageSize = model<number>(10);
   /** PrimeNG naming alias for pageSize. */
+  readonly rowsInput = input<number | undefined>(undefined, { alias: 'rows' });
   readonly rows = this.pageSize;
   /** PrimeNG zero-based first-row model. */
   readonly first = model<number>(0);
@@ -42,18 +44,29 @@ export class PaginatorComponent {
 
   /** Opções de quantidade de itens por página */
   readonly pageSizeOptions = input<number[]>([10, 20, 50]);
+  readonly rowsPerPageOptions = input<number[] | undefined>(undefined, { alias: 'rowsPerPageOptions' });
 
   /** Se deve exibir o seletor de quantidade de itens por página */
   readonly showPageSizeSelector = input<boolean>(true);
 
   /** Se deve exibir os botões de Primeira e Última página */
   readonly showFirstLastButtons = input<boolean>(false);
+  readonly showFirstLastIcon = input(false, { transform: booleanAttribute });
 
   /** Se deve exibir os botões Anterior e Próximo */
   readonly showPrevNextButtons = input<boolean>(true);
 
   /** Se deve exibir o texto informativo de total (ex: 1-20 de 100 itens) */
   readonly showTotalInfo = input<boolean>(false);
+  readonly showCurrentPageReport = input(false, { transform: booleanAttribute });
+  readonly currentPageReportTemplate = input<string | undefined>(undefined);
+  readonly alwaysShow = input(false, { transform: booleanAttribute });
+  readonly showPageLinks = input(true, { transform: booleanAttribute });
+  readonly showJumpToPageDropdown = input(false, { transform: booleanAttribute });
+  readonly showJumpToPageInput = input(false, { transform: booleanAttribute });
+  readonly locale = input<string | undefined>(undefined);
+  readonly style = input<Record<string, string> | null>(null);
+  readonly styleClass = input<string | undefined>(undefined);
 
   /** Se o componente está desabilitado */
   readonly disabled = input<boolean>(false);
@@ -63,7 +76,7 @@ export class PaginatorComponent {
 
   /** Quantidade máxima de botões numéricos visíveis antes de colapsar */
   readonly maxVisiblePages = input<number>(7);
-  readonly pageLinkSize = this.maxVisiblePages;
+  readonly pageLinkSizeInput = input<number | undefined>(undefined, { alias: 'pageLinkSize' });
 
   /** Rótulo do botão Anterior */
   readonly previousLabel = input<string>('Anterior');
@@ -86,25 +99,30 @@ export class PaginatorComponent {
   // ── Outputs (Event Emitting) ──────────────────────────────
   /** Disparado sempre que a página ou o pageSize é alterado */
   readonly pageChange = output<PageChangeEvent>();
+  readonly onPageChange = output<PageChangeEvent>();
   readonly effectiveTotalRecords = computed(() => this.totalRecords() ?? this.totalItems());
+  readonly effectivePageSize = computed(() => Math.max(1, (this.rowsInput() ?? this.pageSize()) || 1));
+  readonly effectivePageSizeOptions = computed(() => this.rowsPerPageOptions() ?? this.pageSizeOptions());
+  readonly effectivePageLinkSize = computed(() => Math.max(5, this.pageLinkSizeInput() ?? this.maxVisiblePages()));
+  readonly effectiveShowFirstLast = computed(() => this.showFirstLastButtons() || this.showFirstLastIcon());
 
   // ── Computeds (Reatividade Inteligente) ────────────────────
   /** Total de páginas calculado dinamicamente */
   readonly totalPages = computed(() => {
     const total = this.effectiveTotalRecords();
-    const size = Math.max(1, this.pageSize() || 1);
+    const size = this.effectivePageSize();
     return Math.max(1, Math.ceil(total / size));
   });
 
   /** Índice inicial do intervalo visível (1-indexed) */
   readonly startIndex = computed(() => {
     if (this.effectiveTotalRecords() === 0) return 0;
-    return (this.currentPage() - 1) * this.pageSize() + 1;
+    return (this.currentPage() - 1) * this.effectivePageSize() + 1;
   });
 
   /** Índice final do intervalo visível (1-indexed) */
   readonly endIndex = computed(() => {
-    return Math.min(this.currentPage() * this.pageSize(), this.effectiveTotalRecords());
+    return Math.min(this.currentPage() * this.effectivePageSize(), this.effectiveTotalRecords());
   });
 
   /** Se está na primeira página */
@@ -117,7 +135,7 @@ export class PaginatorComponent {
   readonly visiblePages = computed<PageItem[]>(() => {
     const total = this.totalPages();
     const current = this.currentPage();
-    const max = Math.max(5, this.maxVisiblePages());
+    const max = this.effectivePageLinkSize();
 
     if (total <= max) {
       return Array.from({ length: total }, (_, i) => i + 1);
@@ -167,7 +185,7 @@ export class PaginatorComponent {
     const target = Math.max(1, Math.min(page, this.totalPages()));
     if (target !== this.currentPage()) {
       this.currentPage.set(target);
-      this.first.set((target - 1) * this.pageSize());
+      this.first.set((target - 1) * this.effectivePageSize());
       this.emitPageChangeEvent();
     }
   }
@@ -224,13 +242,18 @@ export class PaginatorComponent {
   private emitPageChangeEvent(): void {
     this.pageChange.emit({
       first: this.first(),
-      rows: this.pageSize(),
+      rows: this.effectivePageSize(),
       page: this.currentPage(),
-      pageSize: this.pageSize(),
+      pageSize: this.effectivePageSize(),
       totalPages: this.totalPages(),
       startIndex: this.startIndex(),
       endIndex: this.endIndex(),
       totalItems: this.effectiveTotalRecords(),
+    });
+    this.onPageChange.emit({
+      first: this.first(), rows: this.effectivePageSize(), page: this.currentPage(),
+      pageSize: this.effectivePageSize(), totalPages: this.totalPages(), startIndex: this.startIndex(),
+      endIndex: this.endIndex(), totalItems: this.effectiveTotalRecords(),
     });
   }
 }

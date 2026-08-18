@@ -1,19 +1,28 @@
 <nav
   class="orc-paginator"
+  [class.orc-paginator--always-visible]="alwaysShow()"
+  [class.orc-paginator--no-links]="!showPageLinks()"
+  [class]="styleClass() || ''"
+  [ngStyle]="style()"
   [attr.aria-label]="ariaLabel()"
   [class.orc-paginator--disabled]="disabled()"
   [class.orc-paginator--sm]="size() === 'sm'"
   [class.orc-paginator--lg]="size() === 'lg'"
 >
   <!-- Texto Informativo de Itens (Opcional) -->
-  <div *ngIf="showTotalInfo()" class="orc-paginator__info">
-    Exibindo <strong>{{ startIndex() }}–{{ endIndex() }}</strong> de <strong>{{ totalItems() }}</strong> itens
+  <div *ngIf="showTotalInfo() || showCurrentPageReport()" class="orc-paginator__info">
+    <ng-container *ngIf="currentPageReportTemplate(); else defaultReport">
+      {{ currentPageReportTemplate() }}
+    </ng-container>
+    <ng-template #defaultReport>
+      Exibindo <strong>{{ startIndex() }}–{{ endIndex() }}</strong> de <strong>{{ effectiveTotalRecords() }}</strong> itens
+    </ng-template>
   </div>
 
   <!-- Lista de Navegação e Páginas -->
   <ul class="orc-paginator__list" role="list">
     <!-- Botão: Primeira Página (Opcional) -->
-    <li *ngIf="showFirstLastButtons()">
+    <li *ngIf="effectiveShowFirstLast()">
       <button
         type="button"
         class="orc-paginator__btn orc-paginator__btn--nav orc-paginator__btn--first"
@@ -47,6 +56,7 @@
     </li>
 
     <!-- Botões Numéricos e Reticências (Figma Nodes 18:1758 - 18:1773) -->
+    <ng-container *ngIf="showPageLinks()">
     <ng-container *ngFor="let p of visiblePages()">
       <!-- Número da Página -->
       <li *ngIf="p !== 'ellipsis'">
@@ -72,6 +82,7 @@
         </svg>
       </li>
     </ng-container>
+    </ng-container>
 
     <!-- Botão: Próximo (Figma Node 32:18542) -->
     <li *ngIf="showPrevNextButtons()">
@@ -91,7 +102,7 @@
     </li>
 
     <!-- Botão: Última Página (Opcional) -->
-    <li *ngIf="showFirstLastButtons()">
+    <li *ngIf="effectiveShowFirstLast()">
       <button
         type="button"
         class="orc-paginator__btn orc-paginator__btn--nav orc-paginator__btn--last"
@@ -110,17 +121,17 @@
 
   <!-- Seletor de Itens por Página (Figma Node 32:18566: "20 / Página") -->
   <div
-    *ngIf="showPageSizeSelector() && pageSizeOptions().length > 0"
+    *ngIf="showPageSizeSelector() && effectivePageSizeOptions().length > 0"
     class="orc-paginator__page-size"
   >
     <select
       class="orc-paginator__select"
       [disabled]="disabled()"
-      [value]="pageSize()"
+      [value]="effectivePageSize()"
       (change)="onPageSizeChange($event)"
       [attr.aria-label]="'Quantidade de itens por página'"
     >
-      <option *ngFor="let opt of pageSizeOptions()" [value]="opt">
+      <option *ngFor="let opt of effectivePageSizeOptions()" [value]="opt">
         {{ opt }} / {{ itemsPerPageLabel() }}
       </option>
     </select>
