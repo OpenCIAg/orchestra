@@ -45,7 +45,7 @@ const fromMonthKey = (value: string): Date => {
       </div>
       <div class="orc-p2-calendar__grid" role="grid" [attr.aria-label]="monthLabel()">
         @for (day of days(); track day.iso) {
-          <button
+          @if (showOtherMonths() || day.inCurrentMonth) { <button
             type="button"
             role="gridcell"
             class="orc-p2-calendar__day"
@@ -57,7 +57,7 @@ const fromMonthKey = (value: string): Date => {
             [attr.aria-label]="day.iso"
             (click)="selectDay(day)">
             {{ day.day }}
-          </button>
+          </button> }
         }
       </div>
     </section>
