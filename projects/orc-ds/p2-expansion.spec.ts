@@ -550,6 +550,8 @@ describe('P2 expansion components', () => {
     orderComponent.select(0);
     orderComponent.select(1);
     expect(orderComponent.selection()).toEqual(['A', 'B']);
+    orderComponent.select(0);
+    expect(orderComponent.selection()).toEqual(['B']);
     const pick = TestBed.createComponent(PickListComponent);
     const pickComponent = pick.componentInstance;
     pick.componentRef.setInput('source', [{ value: 'a', label: 'A' }]);
