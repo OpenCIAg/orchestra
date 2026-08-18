@@ -120,6 +120,21 @@ describe('P2 expansion components', () => {
     expect(component.value()).toHaveSize(2);
   });
 
+  it('supports DatePicker calendar multiple and range selection', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    component.selectCalendarDate('2025-01-06');
+    component.selectCalendarDate('2025-01-07');
+    expect(component.value()).toEqual(['2025-01-06', '2025-01-07']);
+
+    fixture.componentRef.setInput('selectionMode', 'range');
+    component.clear();
+    component.selectCalendarDate('2025-01-10');
+    component.selectCalendarDate('2025-01-05');
+    expect(component.value()).toEqual(['2025-01-05', '2025-01-10']);
+  });
+
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
     const listbox = TestBed.createComponent(ListboxComponent<any>);
     listbox.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);

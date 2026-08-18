@@ -28,7 +28,25 @@ export class DatePickerComponent implements ControlValueAccessor {
   show(): void { if (!this.disabled() && !this.cvaDisabled()) { this.overlayVisible.set(true); this.onShow.emit(); } }
   hide(): void { if (this.overlayVisible()) { this.overlayVisible.set(false); this.onClose.emit(); } }
   toggle(): void { this.overlayVisible() ? this.hide() : this.show(); }
-  selectCalendarDate(iso: string): void { const value = this.dataType() === 'date' ? new Date(`${iso}T00:00:00`) : iso; this.value.set(value); this.onChange(value); this.onInput.emit(value); this.onSelect.emit(value); if (this.selectionMode() === 'single') this.hide(); }
+  selectCalendarDate(iso: string): void {
+    const selected = this.dataType() === 'date' ? new Date(`${iso}T00:00:00`) : iso;
+    if (this.dataType() === 'date' && !this.isDateSelectable(selected as Date)) return;
+    const mode = this.selectionMode();
+    let next: any = selected;
+    if (mode === 'multiple') {
+      const current = Array.isArray(this.value()) ? [...this.value()] : [];
+      const index = current.findIndex(item => this.calendarIso(item) === iso);
+      index >= 0 ? current.splice(index, 1) : current.push(selected);
+      next = current;
+    } else if (mode === 'range') {
+      const current = Array.isArray(this.value()) ? [...this.value()] : [];
+      if (current.length !== 1 || this.calendarIso(current[0]) === iso) next = [selected];
+      else next = this.calendarIso(current[0]) < iso ? [current[0], selected] : [selected, current[0]];
+    }
+    this.value.set(next); this.onChange(next); this.onInput.emit(next); this.onSelect.emit(next);
+    if (mode === 'single' || (mode === 'range' && Array.isArray(next) && next.length === 2)) this.hide();
+  }
+  private calendarIso(value: unknown): string { return value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? ''); }
   clear():void{this.value.set('');this.onChange('');this.onClear.emit();this.onClearClick.emit();}
   today():void{const value=new Date(); if (!this.isDateSelectable(value)) return; const next=this.dataType()==='date'?value:value.toISOString().slice(0,10); this.value.set(next);this.onChange(next);this.onTodayClick.emit(value);this.onSelect.emit(next);}
 }
