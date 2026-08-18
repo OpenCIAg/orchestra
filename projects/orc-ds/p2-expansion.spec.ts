@@ -264,6 +264,10 @@ describe('P2 expansion components', () => {
     multi.componentRef.setInput('optionLabel', 'name');
     multi.componentInstance.select(multi.componentInstance.options()[0]);
     expect(multi.componentInstance.value()).toEqual([1]);
+    const removed = jasmine.createSpy('removed');
+    multi.componentInstance.onRemove.subscribe(removed);
+    multi.componentInstance.select(multi.componentInstance.options()[0], new Event('click'));
+    expect(removed).toHaveBeenCalledWith({ value: 1, originalEvent: jasmine.any(Event) });
   });
 
   it('paginates and sorts data view items', () => {
