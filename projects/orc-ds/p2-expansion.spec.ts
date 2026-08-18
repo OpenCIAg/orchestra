@@ -302,6 +302,11 @@ describe('P2 expansion components', () => {
     expect(tree.componentInstance.visibleNodes()).toHaveSize(2);
     tree.componentInstance.select(root.children[0]);
     expect(tree.componentInstance.value()).toBe('child');
+    tree.componentRef.setInput('selectionMode', 'checkbox');
+    tree.componentInstance.select(root, new Event('click'));
+    expect(tree.componentInstance.value()).toEqual(['root', 'child']);
+    tree.componentInstance.select(root, new Event('click'));
+    expect(tree.componentInstance.value()).toEqual([]);
   });
 
   it('updates a segmented control value', () => {
