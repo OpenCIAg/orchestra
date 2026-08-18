@@ -38,6 +38,8 @@ export class ModalComponent implements OnDestroy {
   readonly header = input<string | undefined>(undefined);
   readonly modal = input(true); readonly closeOnEscape = input(true); readonly dismissableMask = input(true); readonly closable = input(true); readonly draggable = input(false); readonly resizable = input(false); readonly maximizable = input(false); readonly focusOnShow = input(true); readonly focusTrap = input(true); readonly blockScroll = input(true); readonly autoZIndex = input(true); readonly baseZIndex = input(1000); readonly position = input<'center' | 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright'>('center'); readonly style = input<Record<string, string | number> | undefined>(undefined); readonly styleClass = input(''); readonly maskStyle = input<Record<string, string | number> | undefined>(undefined); readonly maskStyleClass = input(''); readonly contentStyle = input<Record<string, string | number> | undefined>(undefined); readonly contentStyleClass = input(''); readonly appendTo = input<unknown>(undefined); readonly role = input('dialog'); readonly showHeader = input(true); readonly closeIcon = input('×'); readonly closeAriaLabel = input('Close'); readonly minimizeIcon = input('−'); readonly maximizeIcon = input('+'); readonly closeTabindex = input('0'); readonly breakpoints = input<Record<string, string> | undefined>(undefined);
   readonly size = input<ModalSize>('md');
+  readonly id = input<string | undefined>(undefined);
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly status = input<ModalStatus>('neutral');
   readonly inline = input<boolean>(false);
   readonly closeOnBackdropClick = input<boolean>(true);

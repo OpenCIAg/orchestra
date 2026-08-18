@@ -1,6 +1,7 @@
 <dialog
   #dialogRef
-  [class]="modalClasses() + ' ' + styleClass() + ' ' + maskStyleClass()"
+  [id]="id() || null"
+  [class]="'p-dialog p-component ' + modalClasses() + ' ' + styleClass()"
   [style]="style()"
   [style.z-index]="inline() ? 'auto' : effectiveZIndex()"
   (cancel)="onCancel($event)"
@@ -8,6 +9,7 @@
   [attr.role]="role()"
   aria-modal="true"
   [attr.aria-labelledby]="ariaLabelledBy() || null"
+  [attr.aria-label]="ariaLabel() || null"
   [attr.aria-describedby]="ariaDescribedBy() || null"
   [attr.open]="inline() ? '' : null"
 >
