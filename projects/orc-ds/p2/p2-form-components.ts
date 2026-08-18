@@ -14,6 +14,7 @@ import { P2Option, P2_SHARED_STYLES, P2Size } from './p2-shared';
 
 let nextMultiSelectId = 0;
 let nextTagsInputId = 0;
+let nextCalendarId = 0;
 
 export interface CalendarDay {
   iso: string;
@@ -37,7 +38,7 @@ const fromMonthKey = (value: string): Date => {
   selector: 'orc-calendar',
   standalone: true,
   template: `
-    <section class="orc-p2-calendar" [attr.aria-label]="ariaLabel()">
+    <section class="p-datepicker p-component orc-p2-calendar" [class]="'p-datepicker p-component orc-p2-calendar ' + styleClass()" [style]="style()" [attr.data-pc-name]="'calendar'" [attr.data-pc-section]="'root'" [attr.aria-label]="ariaLabel()">
       <header class="orc-p2-calendar__header">
         <button type="button" aria-label="Mês anterior" (click)="previousMonth()">‹</button>
         <strong>{{ monthLabel() }}</strong>
@@ -46,12 +47,12 @@ const fromMonthKey = (value: string): Date => {
       <div class="orc-p2-calendar__weekdays" aria-hidden="true">
         @for (weekday of weekdays; track weekday) { <span>{{ weekday }}</span> }
       </div>
-      <div class="orc-p2-calendar__grid" role="grid" [attr.aria-label]="monthLabel()">
+      <div class="p-datepicker-calendar orc-p2-calendar__grid" [id]="effectiveId() + '-grid'" role="grid" [attr.aria-label]="monthLabel()">
         @for (day of days(); track day.iso) {
           @if (showOtherMonths() || day.inCurrentMonth) { <button
             type="button"
             role="gridcell"
-            class="orc-p2-calendar__day"
+            class="p-datepicker-day p-datepicker-calendar-container orc-p2-calendar__day"
             [class.orc-p2-calendar__day--outside]="!day.inCurrentMonth"
             [class.orc-p2-calendar__day--today]="day.today"
             [class.orc-p2-calendar__day--selected]="value() === day.iso"
@@ -81,16 +82,21 @@ const fromMonthKey = (value: string): Date => {
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => CalendarComponent), multi: true }],
 })
 export class CalendarComponent {
+  private readonly uniqueId = `orc-calendar-${++nextCalendarId}`;
   readonly value = model('');
   readonly currentMonth = model(toMonthKey(new Date()));
   readonly min = input('');
   readonly max = input('');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly inputId = input<string | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly ariaLabel = input('Calendar');
   readonly inline = input(true, { transform: booleanAttribute }); readonly showTime = input(false, { transform: booleanAttribute }); readonly dateFormat = input('yy-mm-dd'); readonly showButtonBar = input(false, { transform: booleanAttribute }); readonly selectionMode = input<'single' | 'multiple' | 'range'>('single'); readonly disabledDates = input<Date[]>([]); readonly disabledDays = input<number[]>([]); readonly showOtherMonths = input(true, { transform: booleanAttribute }); readonly selectOtherMonths = input(false, { transform: booleanAttribute });
   readonly dateSelected = output<string>();
   readonly onSelect = output<{ value: string }>(); readonly onClear = output<void>(); readonly onTodayClick = output<string>();
   readonly weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
 
   readonly monthLabel = computed(() => fromMonthKey(this.currentMonth()).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }));
   readonly days = computed<CalendarDay[]>(() => {
