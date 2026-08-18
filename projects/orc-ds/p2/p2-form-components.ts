@@ -139,9 +139,9 @@ export class CalendarComponent {
   selector: 'orc-combobox',
   standalone: true,
   template: `
-    <div class="orc-p2-field">
+    <div class="p-autocomplete p-component orc-p2-field" [class]="'p-autocomplete p-component orc-p2-field ' + styleClass()" [style]="style()" [attr.data-pc-name]="'autocomplete'">
       @if (label()) { <label [for]="inputId">{{ label() }}</label> }
-      <div class="orc-p2-combobox">
+      <div class="p-autocomplete-input-wrapper orc-p2-combobox">
         <input
           [id]="inputId"
           role="combobox"
@@ -157,9 +157,9 @@ export class CalendarComponent {
         @if (query()) { <button type="button" class="orc-p2-clear" aria-label="Limpar" [disabled]="disabled()" (click)="clear()">×</button> }
       </div>
       @if (open()) {
-        <ul class="orc-p2-options" [id]="listId" role="listbox">
+          <ul class="p-autocomplete-panel p-component orc-p2-options" [id]="listId" role="listbox">
           @for (option of filteredOptions(); track option.value) {
-            <li [id]="optionId($index)" role="option" [attr.aria-selected]="value() === option.value" [class.is-active]="$index === activeIndex()" [class.is-disabled]="option.disabled" (mousedown)="$event.preventDefault()" (click)="select(option)">
+            <li class="p-autocomplete-option" [id]="optionId($index)" role="option" [attr.aria-selected]="value() === option.value" [class.is-active]="$index === activeIndex()" [class.is-disabled]="option.disabled" (mousedown)="$event.preventDefault()" (click)="select(option)">
               <strong>{{ option.label }}</strong>
               @if (option.description) { <small>{{ option.description }}</small> }
             </li>
@@ -197,6 +197,8 @@ export class ComboboxComponent<T = unknown> {
   readonly helperText = input('');
   readonly emptyText = input('No results');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly optionSelected = output<P2Option<T>>();
   readonly activeIndex = signal(-1);
 
