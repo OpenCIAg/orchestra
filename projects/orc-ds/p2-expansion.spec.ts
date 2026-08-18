@@ -1211,6 +1211,18 @@ describe('P2 expansion components', () => {
     expect(component.hovered()).toBeFalse();
   });
 
+  it('supports PrimeNG Carousel value/page aliases and page event bounds', () => {
+    const fixture = TestBed.createComponent(CarouselComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('value', [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }, { id: 'c', label: 'C' }]);
+    fixture.componentRef.setInput('numVisible', 2);
+    let page: any;
+    component.onPage.subscribe(event => page = event);
+    component.goTo(1);
+    expect(component.activeItem()?.label).toBe('B');
+    expect(page).toEqual(jasmine.objectContaining({ first: 1, last: 2, pageCount: 2 }));
+  });
+
   it('supports PrimeNG Tag value, severity, icon, and remove events', () => {
     const fixture = TestBed.createComponent(TagComponent);
     const component = fixture.componentInstance;

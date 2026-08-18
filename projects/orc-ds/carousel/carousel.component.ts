@@ -30,37 +30,49 @@ export class CarouselComponent implements OnDestroy {
   private autoplayTimer: ReturnType<typeof setInterval> | null = null;
 
   readonly items = input<CarouselItem[]>([]);
+  readonly value = input<CarouselItem[] | undefined>(undefined, { alias: 'value' });
   readonly activeIndex = model(0);
+  readonly page = model(0, { alias: 'page' });
+  readonly numVisible = input(1, { transform: numberAttribute });
+  readonly numScroll = input(1, { transform: numberAttribute });
+  readonly responsiveOptions = input<unknown[] | undefined>(undefined);
   readonly orientation = input<CarouselOrientation>('horizontal');
   readonly loop = input(true, { transform: booleanAttribute });
+  readonly circular = input<boolean | undefined>(undefined, { transform: booleanAttribute });
   readonly autoplay = input(false, { transform: booleanAttribute });
+  readonly autoplayInterval = input<number | undefined>(undefined, { transform: numberAttribute });
   readonly pauseOnHover = input(true, { transform: booleanAttribute });
   readonly interval = input(5000, { transform: numberAttribute });
   readonly showArrows = input(true, { transform: booleanAttribute });
+  readonly showNavigators = input<boolean | undefined>(undefined, { transform: booleanAttribute });
   readonly showIndicators = input(true, { transform: booleanAttribute });
   readonly ariaLabel = input('Carousel');
 
   readonly slideChange = output<{ index: number; item: CarouselItem }>();
-  readonly onPage = output<{ page: number; pageCount: number }>(); readonly onPlay = output<void>(); readonly onPause = output<void>();
+  readonly onPage = output<{ first: number; last: number; page: number; pageCount: number }>(); readonly onPlay = output<void>(); readonly onPause = output<void>();
   readonly hovered = signal(false);
-  readonly activeItem = computed(() => this.items()[this.safeIndex()] ?? null);
+  readonly effectiveItems = computed(() => this.value() ?? this.items());
+  readonly effectiveCircular = computed(() => this.circular() ?? this.loop());
+  readonly effectiveInterval = computed(() => this.autoplayInterval() ?? this.interval());
+  readonly effectiveShowNavigators = computed(() => this.showNavigators() ?? this.showArrows());
+  readonly activeItem = computed(() => this.effectiveItems()[this.safeIndex()] ?? null);
   readonly safeIndex = computed(() => {
-    const count = this.items().length;
+    const count = this.effectiveItems().length;
     if (!count) return 0;
-    return Math.min(Math.max(this.activeIndex(), 0), count - 1);
+    return Math.min(Math.max(this.page(), this.activeIndex(), 0), count - 1);
   });
-  readonly canGoPrevious = computed(() => this.loop() || this.findIndex(-1) !== null);
-  readonly canGoNext = computed(() => this.loop() || this.findIndex(1) !== null);
+  readonly canGoPrevious = computed(() => this.effectiveCircular() || this.findIndex(-1) !== null);
+  readonly canGoNext = computed(() => this.effectiveCircular() || this.findIndex(1) !== null);
   readonly itemId = (index: number): string => `${this.carouselId}-item-${index}`;
 
   constructor() {
     effect(() => {
-      this.items();
+      this.effectiveItems();
       this.autoplay();
       this.interval();
       this.stopAutoplay();
-      if (this.autoplay() && this.items().length > 1) {
-        this.autoplayTimer = setInterval(() => { if (!(this.pauseOnHover() && this.hovered())) this.next(); }, Math.max(1000, this.interval()));
+      if (this.autoplay() && this.effectiveItems().length > 1) {
+        this.autoplayTimer = setInterval(() => { if (!(this.pauseOnHover() && this.hovered())) this.next(); }, Math.max(1000, this.effectiveInterval()));
       }
     });
   }
@@ -80,11 +92,13 @@ export class CarouselComponent implements OnDestroy {
   }
 
   goTo(index: number): void {
-    const item = this.items()[index];
+    const item = this.effectiveItems()[index];
     if (!item || item.disabled) return;
     this.activeIndex.set(index);
+    this.page.set(index);
     this.slideChange.emit({ index, item });
-    this.onPage.emit({ page: index, pageCount: this.items().length });
+    const pageCount = Math.max(1, Math.ceil(this.effectiveItems().length / Math.max(1, this.numVisible())));
+    this.onPage.emit({ first: index, last: Math.min(this.effectiveItems().length - 1, index + this.numVisible() - 1), page: Math.floor(index / Math.max(1, this.numScroll())), pageCount });
   }
 
   onMouseEnter(): void { this.hovered.set(true); this.onPause.emit(); }
@@ -117,12 +131,12 @@ export class CarouselComponent implements OnDestroy {
   }
 
   private findIndex(direction: -1 | 1): number | null {
-    const items = this.items();
+    const items = this.effectiveItems();
     if (!items.length) return null;
     const start = this.safeIndex();
     for (let offset = 1; offset <= items.length; offset += 1) {
       let candidate = start + direction * offset;
-      if (this.loop()) {
+      if (this.effectiveCircular()) {
         candidate = (candidate + items.length) % items.length;
       } else if (candidate < 0 || candidate >= items.length) {
         continue;

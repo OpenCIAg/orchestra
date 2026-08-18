@@ -14,7 +14,7 @@
         [id]="itemId(safeIndex())"
         role="group"
         aria-roledescription="slide"
-        [attr.aria-label]="(safeIndex() + 1) + ' of ' + items().length"
+        [attr.aria-label]="(safeIndex() + 1) + ' of ' + effectiveItems().length"
       >
         @if (item.image) {
           <img class="orc-carousel__image" [src]="item.image" [alt]="item.alt || item.label" />
@@ -31,16 +31,16 @@
     }
   </div>
 
-  @if (showArrows() && items().length > 1) {
+  @if (effectiveShowNavigators() && effectiveItems().length > 1) {
     <div class="orc-carousel__arrows">
       <button type="button" class="orc-carousel__arrow" (click)="previous()" [disabled]="!canGoPrevious()" aria-label="Anterior">‹</button>
       <button type="button" class="orc-carousel__arrow" (click)="next()" [disabled]="!canGoNext()" aria-label="Próximo">›</button>
     </div>
   }
 
-  @if (showIndicators() && items().length > 1) {
+  @if (showIndicators() && effectiveItems().length > 1) {
     <div class="orc-carousel__indicators" role="tablist" aria-label="Slides">
-      @for (item of items(); track trackItem($index, item)) {
+      @for (item of effectiveItems(); track trackItem($index, item)) {
         <button
           type="button"
           class="orc-carousel__indicator"
