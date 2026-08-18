@@ -1,10 +1,11 @@
 <dialog
   #dialogRef
-  [class]="modalClasses() + ' ' + styleClass()"
+  [class]="modalClasses() + ' ' + styleClass() + ' ' + maskStyleClass()"
+  [style]="style()"
   [style.z-index]="inline() ? 'auto' : zIndex()"
   (cancel)="onCancel($event)"
   (click)="onBackdropClick($event)"
-  role="dialog"
+  [attr.role]="role()"
   aria-modal="true"
   [attr.aria-labelledby]="ariaLabelledBy() || null"
   [attr.aria-describedby]="ariaDescribedBy() || null"
@@ -12,7 +13,7 @@
 >
   <div class="orc-modal__container" (click)="$event.stopPropagation()">
     <!-- HEADER -->
-    <header class="orc-modal__header">
+    <header class="orc-modal__header" [class.orc-modal__header--hidden]="!showHeader()">
       <div class="orc-modal__header-content">
         @if (header()) { <span>{{ header() }}</span> }
         <ng-content select="[modal-header]"></ng-content>
@@ -37,7 +38,7 @@
     </header>
 
     <!-- BODY -->
-    <main class="orc-modal__body">
+    <main class="orc-modal__body" [class]="contentStyleClass()" [style]="contentStyle()">
       <ng-content select="[modal-body]"></ng-content>
     </main>
 
