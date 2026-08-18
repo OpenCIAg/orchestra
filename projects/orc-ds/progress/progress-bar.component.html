@@ -72,7 +72,7 @@
           @if (contentTemplate) {
             <ng-container *ngTemplateOutlet="contentTemplate; context: { $implicit: value() }"></ng-container>
           } @else if (showValue() && normalizedValue() !== 0) {
-            {{ value() }}{{ unit() }}
+            {{ normalizedValue() }}{{ unit() }}
           }
         </div>
       </div>

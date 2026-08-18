@@ -5,6 +5,7 @@ import {
   input,
   computed,
   TemplateRef,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressMode, ProgressVariant, ProgressSize } from './progress.types';
@@ -39,7 +40,7 @@ export class ProgressBarComponent {
   readonly label = input<string>('');
 
   /** Exibe a porcentagem numérica no topo à direita */
-  readonly showValue = input<boolean>(false);
+  readonly showValue = input<boolean>(false, { transform: booleanAttribute });
   readonly unit = input('%');
   readonly color = input<string | undefined>(undefined);
   readonly styleClass = input('');
@@ -53,7 +54,7 @@ export class ProgressBarComponent {
   readonly valueSuffix = input<string>('%');
 
   /** Cantos arredondados tipo pílula (padrão Figma: true) */
-  readonly rounded = input<boolean>(true);
+  readonly rounded = input<boolean>(true, { transform: booleanAttribute });
 
   /** Suporte a etapas segmentadas (ex: 3 barras discretas) */
   readonly segments = input<number>(0);
