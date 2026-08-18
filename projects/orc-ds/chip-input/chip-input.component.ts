@@ -32,6 +32,7 @@ import { BadgeComponent } from '@ciag/orchestra/badge';
 export class ChipInputComponent implements ControlValueAccessor {
   // ── Inputs ──────────────────────────────────────────────────
   readonly id = input<string>('');
+  readonly inputId = input<string | undefined>(undefined);
   readonly label = input<string>('');
   readonly placeholder = input<string>('Digite e pressione Enter...');
   readonly helperText = input<string>('');
@@ -42,9 +43,18 @@ export class ChipInputComponent implements ControlValueAccessor {
   
   // Chip specific config
   readonly allowDuplicates = input(false, { transform: booleanAttribute });
+  readonly allowDuplicate = input<boolean | undefined>(undefined, { transform: booleanAttribute });
   readonly maxChips = input<number | undefined, unknown>(undefined, {
     transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
   });
+  readonly max = input<number | undefined, unknown>(undefined, {
+    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+  });
+  readonly separator = input<string | undefined>(undefined);
+  readonly addOnBlur = input(true, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly ariaLabel = input('');
   readonly separatorKeyCodes = input<string[]>(['Enter', ',', ' ']);
   readonly suggestions = input<string[]>([]);
 
@@ -60,6 +70,7 @@ export class ChipInputComponent implements ControlValueAccessor {
   
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
   readonly status = computed(() => this.errorMessage() ? 'error' : 'default');
+  readonly effectiveSeparators = computed(() => this.separator() ? [...this.separator()!] : this.separatorKeyCodes());
 
   readonly filteredSuggestions = computed(() => {
     const term = this.inputValue().toLowerCase().trim();
@@ -109,7 +120,7 @@ export class ChipInputComponent implements ControlValueAccessor {
     const currentInput = this.inputValue().trim();
 
     // Adicionar Chip
-    if (this.separatorKeyCodes().includes(event.key)) {
+    if (this.effectiveSeparators().includes(event.key)) {
       event.preventDefault();
       if (currentInput) {
         this.addChip(currentInput);
@@ -141,7 +152,7 @@ export class ChipInputComponent implements ControlValueAccessor {
   onBlur(): void {
     this.onTouched();
     const currentInput = this.inputValue().trim();
-    if (currentInput) {
+    if (currentInput && this.addOnBlur()) {
       this.addChip(currentInput);
     }
   }
@@ -152,7 +163,7 @@ export class ChipInputComponent implements ControlValueAccessor {
   }
 
   private addChip(item: string, skipEmit = false): void {
-    const max = this.maxChips();
+    const max = this.max() ?? this.maxChips();
     const current = this.value();
 
     if (max !== undefined && current.length >= max) {
@@ -160,7 +171,7 @@ export class ChipInputComponent implements ControlValueAccessor {
       return;
     }
 
-    if (!this.allowDuplicates() && current.includes(item)) {
+    if (!(this.allowDuplicate() ?? this.allowDuplicates()) && current.includes(item)) {
       return; // Previne duplicatas
     }
 

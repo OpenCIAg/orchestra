@@ -1,8 +1,8 @@
-<div class="orc-chip-input">
+<div class="p-chips p-component orc-chip-input" [class]="'p-chips p-component orc-chip-input ' + styleClass()" [style]="style()" [attr.data-pc-name]="'chips'">
   <!-- Utilizamos o InputComponent estritamente como container -->
   <orc-input
     #orcInput
-    [id]="id()"
+    [id]="inputId() || id()"
     [label]="label()"
     [helperText]="helperText()"
     [errorMessage]="errorMessage()"
@@ -12,6 +12,7 @@
     [placeholder]="value().length > 0 ? '' : placeholder()"
     [status]="status()"
     [value]="inputValue()"
+    [ariaLabel]="ariaLabel()"
     (inputChange)="onInputChange($event)"
     (keydown)="onKeydown($event)"
     (paste)="onPaste($event)"
