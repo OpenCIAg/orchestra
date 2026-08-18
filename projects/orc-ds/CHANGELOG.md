@@ -1,5 +1,11 @@
 # @ciag/orchestra
 
+## 19.2.1
+
+### Patch Changes
+
+- 00a9474: Expose PrimeNG-compatible InputOtp and RadioButton package entry points.
+
 ## 19.2.0
 
 ### Minor Changes
