@@ -1,9 +1,11 @@
 <div
-  class="orc-radio-group"
+  class="p-radiogroup p-component orc-radio-group"
   [class.orc-radio-group--horizontal]="layout() === 'horizontal'"
   [class.orc-radio-group--vertical]="layout() === 'vertical'"
   [class.orc-radio-group--disabled]="isDisabled()"
   [class.orc-radio-group--error]="isError()"
+  [class.p-radiogroup-disabled]="isDisabled()"
+  [attr.data-pc-name]="'radiogroup'"
   role="radiogroup"
   [attr.aria-labelledby]="label() ? labelId : null"
   [attr.aria-label]="!label() && ariaLabel() ? ariaLabel() : null"

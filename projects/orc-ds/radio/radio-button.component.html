@@ -1,18 +1,21 @@
 <label
-  class="orc-radio"
+  class="p-radiobutton p-component orc-radio"
   [class.orc-radio--checked]="isChecked()"
   [class.orc-radio--disabled]="isDisabled()"
   [class.orc-radio--error]="isError()"
   [class.orc-radio--filled]="variant() === 'filled'"
   [class.orc-radio--small]="size() === 'small'"
   [class.orc-radio--large]="size() === 'large'"
+  [class.p-radiobutton-checked]="isChecked()"
+  [class.p-radiobutton-disabled]="isDisabled()"
+  [attr.data-pc-name]="'radiobutton'"
   [attr.for]="effectiveId()"
 >
   <!-- Visually hidden native radio input for complete a11y and form integration -->
   <input
     #nativeInput
     type="radio"
-    class="orc-radio__native-input"
+    class="p-radiobutton-input orc-radio__native-input"
     [id]="effectiveId()"
   [name]="effectiveName()"
   [value]="value()"
@@ -32,7 +35,7 @@
   />
 
   <!-- Visual Custom Radio matching Figma 32:18402 -->
-  <span class="orc-radio__box" aria-hidden="true">
+  <span class="p-radiobutton-box orc-radio__box" aria-hidden="true">
     <span class="orc-radio__circle">
       <span class="orc-radio__dot"></span>
     </span>
