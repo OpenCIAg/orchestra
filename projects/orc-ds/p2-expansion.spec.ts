@@ -392,6 +392,21 @@ describe('P2 expansion components', () => {
     expect(rated).toHaveBeenCalledWith(jasmine.objectContaining({ value: 9 }));
   });
 
+  it('does not emit a rate event when clearable rating is cancelled', () => {
+    const fixture = TestBed.createComponent(RatingComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('clearable', true);
+    component.writeValue(3);
+    const rated = jasmine.createSpy('rated');
+    const cancelled = jasmine.createSpy('cancelled');
+    component.onRate.subscribe(rated);
+    component.onCancel.subscribe(cancelled);
+    component.onItemClick(new MouseEvent('click'), 3);
+    expect(component.value()).toBe(0);
+    expect(cancelled).toHaveBeenCalled();
+    expect(rated).not.toHaveBeenCalled();
+  });
+
   it('supports Knob ControlValueAccessor and styled value configuration', () => {
     const fixture = TestBed.createComponent(KnobComponent);
     const component = fixture.componentInstance;
