@@ -16,6 +16,7 @@ import { RatingComponent } from './rating/rating.component';
 import { KnobComponent } from './p2/p2-org-knob-components';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
+import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -208,5 +209,36 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('options', [{ value: 'grid', label: 'Grid' }, { value: 'list', label: 'List' }]);
     fixture.componentInstance.select(fixture.componentInstance.options()[1]);
     expect(fixture.componentInstance.value()).toBe('list');
+  });
+
+  it('supports Tree filtering, multiple selection, and expand/collapse events', () => {
+    const fixture = TestBed.createComponent(TreeComponent<{ kind: string }>);
+    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child', data: { kind: 'leaf' } }] };
+    fixture.componentRef.setInput('nodes', [root]);
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    fixture.componentRef.setInput('filter', true);
+    const component = fixture.componentInstance;
+    component.toggle(root);
+    expect(component.visibleNodes()).toHaveSize(2);
+    component.filterValue.set('child');
+    expect(component.filteredVisibleNodes().map(item => item.node.key)).toEqual(['child']);
+    component.select(root.children[0]);
+    expect(component.selected()).toEqual(['child']);
+    component.select(root.children[0]);
+    expect(component.selected()).toEqual([]);
+  });
+
+  it('supports TreeTable selection and expansion lifecycle outputs', () => {
+    const fixture = TestBed.createComponent(TreeTableComponent<{ amount: number }>);
+    const root = { key: 'root', label: 'Root', data: { amount: 1 }, children: [{ key: 'child', label: 'Child', data: { amount: 2 } }] };
+    fixture.componentRef.setInput('value', [root]);
+    fixture.componentRef.setInput('columns', [{ key: 'amount', header: 'Amount' }]);
+    const component = fixture.componentInstance;
+    component.toggle(component.visibleNodes()[0]);
+    expect(component.visibleNodes()).toHaveSize(2);
+    component.select(component.visibleNodes()[1], true);
+    expect(component.selected().has('child')).toBeTrue();
+    component.select(component.visibleNodes()[1], false);
+    expect(component.selected().size).toBe(0);
   });
 });
