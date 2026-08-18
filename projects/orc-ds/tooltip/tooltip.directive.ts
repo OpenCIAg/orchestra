@@ -49,7 +49,7 @@ export class TooltipDirective implements OnDestroy {
   readonly position = input<TooltipPosition | undefined>(undefined);
   readonly autoHide = input(true, { transform: booleanAttribute });
   readonly hideOnEscape = input(true, { transform: booleanAttribute });
-  readonly tooltipDisabled = input<boolean>(false, { transform: booleanAttribute });
+  readonly tooltipDisabled = input(false, { transform: booleanAttribute });
   readonly styleClass = input('');
   readonly appendTo = input<'body' | 'self'>('body');
 
