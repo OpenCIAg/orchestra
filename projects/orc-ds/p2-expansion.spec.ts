@@ -601,6 +601,11 @@ describe('P2 expansion components', () => {
     expect(tree.componentInstance.visibleNodes()).toHaveSize(2);
     tree.componentInstance.select(root.children[0]);
     expect(tree.componentInstance.value()).toBe('child');
+    let hidden = false;
+    tree.componentInstance.onHide.subscribe(() => hidden = true);
+    tree.componentInstance.open.set(true);
+    tree.componentInstance.select(root.children[0], new Event('click'));
+    expect(hidden).toBeTrue();
     tree.componentRef.setInput('selectionMode', 'checkbox');
     tree.componentInstance.select(root, new Event('click'));
     expect(tree.componentInstance.value()).toEqual(['root', 'child']);
