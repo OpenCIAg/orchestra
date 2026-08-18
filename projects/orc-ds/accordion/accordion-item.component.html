@@ -19,8 +19,8 @@
     <div class="orc-accordion-item__header-content">
       <ng-content select="[accordion-header], [accordionHeader]"></ng-content>
 
-      <div class="orc-accordion-item__title-group" *ngIf="title()">
-        <span class="orc-accordion-item__title">{{ title() }}</span>
+      <div class="orc-accordion-item__title-group" *ngIf="effectiveTitle()">
+        <span class="orc-accordion-item__title">{{ effectiveTitle() }}</span>
         <span *ngIf="subtitle()" class="orc-accordion-item__subtitle">{{ subtitle() }}</span>
       </div>
     </div>

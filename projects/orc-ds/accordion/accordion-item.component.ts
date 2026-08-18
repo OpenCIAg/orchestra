@@ -30,6 +30,12 @@ export class AccordionItemComponent implements OnInit, OnDestroy {
   // Inputs (Signals API)
   readonly id = input<string>('');
   readonly title = input<string>('');
+  readonly header = input<string | undefined>(undefined);
+  readonly value = input<string | number | undefined>(undefined);
+  readonly headerStyleClass = input('');
+  readonly contentStyleClass = input('');
+  readonly closable = input(false);
+  readonly cache = input(true);
   readonly subtitle = input<string>('');
   readonly icon = input<string>('');
   readonly disabled = input<boolean>(false);
@@ -50,6 +56,7 @@ export class AccordionItemComponent implements OnInit, OnDestroy {
   private readonly fallbackId = `orc-accordion-item-${++uniqueIdCounter}`;
 
   readonly itemId = computed(() => this.id() || this.fallbackId);
+  readonly effectiveTitle = computed(() => this.header() ?? this.title());
   readonly headerId = computed(() => `orc-accordion-header-${this.itemId()}`);
   readonly panelId = computed(() => `orc-accordion-panel-${this.itemId()}`);
 

@@ -2,6 +2,7 @@ import {
   Component,
   ChangeDetectionStrategy,
   input,
+  model,
   output,
   signal,
 } from '@angular/core';
@@ -20,12 +21,21 @@ import type { AccordionItemComponent } from './accordion-item.component';
 export class AccordionComponent {
   // Inputs (Signals API)
   readonly multiple = input<boolean>(false);
+  readonly value = model<string | number | string[] | number[]>(0);
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly variant = input<AccordionVariant>('default');
   readonly styleClass = input('');
   readonly ariaLabel = input('Accordion');
+  readonly expandIcon = input<string | undefined>(undefined);
+  readonly collapseIcon = input<string | undefined>(undefined);
+  readonly selectOnFocus = input(false);
+  readonly transitionOptions = input('');
 
   // Outputs (Signals API)
   readonly expandedChange = output<AccordionToggleEvent>();
+  readonly activeIndexChange = output<number | number[]>();
+  readonly onOpen = output<AccordionToggleEvent>();
+  readonly onClose = output<AccordionToggleEvent>();
 
   // Lista de itens registrados no accordion
   private readonly items = signal<AccordionItemComponent[]>([]);
@@ -55,6 +65,9 @@ export class AccordionComponent {
       id: targetItem.itemId(),
       expanded: isExpanded,
     });
+    this.value.set(isExpanded ? targetItem.itemId() : '');
+    const event = { id: targetItem.itemId(), expanded: isExpanded };
+    (isExpanded ? this.onOpen : this.onClose).emit(event);
   }
 
   // ── Navegação por Teclado (WAI-ARIA Accordion Pattern) ─────
