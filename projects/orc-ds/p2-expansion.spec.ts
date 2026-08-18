@@ -47,6 +47,10 @@ describe('P2 expansion components', () => {
     const currentMonth = component.currentMonth();
     component.nextMonth();
     expect(component.currentMonth()).not.toBe(currentMonth);
+    component.today();
+    expect(component.value()).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    component.clear();
+    expect(component.value()).toBe('');
   });
 
   it('filters a combobox and emits the selected option', () => {

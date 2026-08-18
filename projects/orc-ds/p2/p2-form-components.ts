@@ -84,7 +84,9 @@ export class CalendarComponent {
   readonly max = input('');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input('Calendar');
+  readonly inline = input(true, { transform: booleanAttribute }); readonly showTime = input(false, { transform: booleanAttribute }); readonly dateFormat = input('yy-mm-dd'); readonly showButtonBar = input(false, { transform: booleanAttribute });
   readonly dateSelected = output<string>();
+  readonly onSelect = output<{ value: string }>(); readonly onClear = output<void>(); readonly onTodayClick = output<string>();
   readonly weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
   readonly monthLabel = computed(() => fromMonthKey(this.currentMonth()).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }));
@@ -112,7 +114,11 @@ export class CalendarComponent {
     if (day.disabled) return;
     this.value.set(day.iso);
     this.dateSelected.emit(day.iso);
+    this.onSelect.emit({ value: day.iso });
   }
+
+  clear(): void { if (this.disabled()) return; this.value.set(''); this.onClear.emit(); }
+  today(): void { const iso = toIso(new Date()); this.value.set(iso); this.onTodayClick.emit(iso); this.onSelect.emit({ value: iso }); }
 
   private shiftMonth(delta: number): void {
     const current = fromMonthKey(this.currentMonth());
