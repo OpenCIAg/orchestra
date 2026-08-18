@@ -325,9 +325,9 @@ export class InputGroupComponent {
     <div class="p-listbox p-component orc-p2-listbox-wrap" [class]="'p-listbox p-component orc-p2-listbox-wrap ' + styleClass()" [style]="style()" [attr.data-pc-name]="'listbox'">
       @if (label()) { <label>{{ label() }}</label> }
       @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" /> }
-      <ul class="p-listbox-list orc-p2-listbox" [id]="id()" [class]="'p-listbox-list orc-p2-listbox ' + listStyleClass()" [style]="listStyle()" [style.max-height]="scrollHeight()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
+      <ul class="p-listbox-list orc-p2-listbox" [id]="id()" [class]="'p-listbox-list orc-p2-listbox ' + listStyleClass()" [style]="listStyle()" [style.max-height]="scrollHeight()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-activedescendant]="activeOptionId()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
         @for (option of filteredOptions(); track getOptionValue(option)) {
-          <li class="p-listbox-option" role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)" (dblclick)="onDblClick.emit({ originalEvent: $event, option })">
+          <li class="p-listbox-option" [id]="optionId($index)" role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-active]="activeIndex() === $index" [class.is-disabled]="isOptionDisabled(option)" (mouseenter)="focusOnHover() && activeIndex.set($index)" (click)="select(option, $event)" (dblclick)="onDblClick.emit({ originalEvent: $event, option })">
             <span>{{ getOptionLabel(option) }}</span>@if (option.description) { <small>{{ option.description }}</small> }
           </li>
         } @empty { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyText() }}</li> }
@@ -354,12 +354,14 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   readonly activeIndex = signal(0);
   protected readonly cvaDisabled = signal(false); private onModelChange: (value: T | T[] | null) => void = () => {}; protected onModelTouched: () => void = () => {};
   readonly filteredOptions = computed(() => { const term = this.filterValue().trim(); if (!term) return this.options(); const fields = this.filterFields() ?? (this.filterBy() ? this.filterBy()!.split(',').map(field => field.trim()).filter(Boolean) : undefined); const locale = this.filterLocale() || undefined; const query = term.toLocaleLowerCase(locale); return this.options().filter(option => (fields?.length ? fields.map(field => String((option as any)?.[field] ?? '')) : [this.getOptionLabel(option)]).some(value => { const normalized = value.toLocaleLowerCase(locale); switch (this.filterMatchMode()) { case 'startsWith': return normalized.startsWith(query); case 'endsWith': return normalized.endsWith(query); case 'equals': return normalized === query; case 'notEquals': return normalized !== query; default: return normalized.includes(query); } })); });
+  readonly activeOptionId = computed(() => this.activeIndex() >= 0 ? this.optionId(this.activeIndex()) : null);
 
   writeValue(value: T | T[] | null): void { this.value.set(value ?? null); }
   registerOnChange(fn: (value: T | T[] | null) => void): void { this.onModelChange = fn; }
   registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
   setDisabledState(value: boolean): void { this.cvaDisabled.set(value); }
   getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
+  optionId(index: number): string { return `${this.id() || 'orc-listbox'}-option-${index}`; }
   getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
   isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return typeof key === 'function' ? key(option) : Boolean(key ? option?.[key] : option?.disabled); }
 
