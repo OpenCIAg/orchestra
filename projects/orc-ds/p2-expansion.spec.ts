@@ -702,6 +702,17 @@ describe('P2 expansion components', () => {
     expect(component.activeIndex()).toBe(0);
   });
 
+  it('uses the PrimeNG Steps model input and honors readonly navigation', () => {
+    const fixture = TestBed.createComponent(StepperComponent);
+    const component = fixture.componentInstance;
+    const model = [{ id: 'a', title: 'A' }, { id: 'b', title: 'B' }];
+    fixture.componentRef.setInput('model', model);
+    fixture.componentRef.setInput('readonly', true);
+    expect(component.effectiveSteps()).toEqual(model);
+    component.next();
+    expect(component.currentStep()).toBe(0);
+  });
+
   it('supports PrimeNG-style table filtering, row events, and lazy paging', () => {
     const fixture = TestBed.createComponent(TableComponent<{ id: number; name: string }>);
     const component = fixture.componentInstance;

@@ -60,6 +60,7 @@ export class StepperComponent {
   readonly stepChange = output<{ step: StepItem; index: number }>();
   readonly onChange = output<{ index: number; step: StepItem }>();
   readonly completed = output<void>();
+  readonly effectiveSteps = computed(() => this.model() ?? this.steps());
 
   constructor() {
     effect(() => {
@@ -78,7 +79,7 @@ export class StepperComponent {
   }
 
   isStepClickable(index: number, step: StepItem): boolean {
-    if (step.disabled || !this.clickable()) return false;
+    if (step.disabled || this.readonly() || !this.clickable()) return false;
     if (this.linear() && index > this.currentStep() + 1) return false;
     return true;
   }
@@ -90,11 +91,11 @@ export class StepperComponent {
     this.activeIndex.set(index);
     this.stepChange.emit({ step, index });
     this.onChange.emit({ index, step });
-    if (index === this.steps().length - 1) this.completed.emit();
+    if (index === this.effectiveSteps().length - 1) this.completed.emit();
   }
 
-  next(): void { this.selectStep(this.currentStep() + 1, this.steps()[this.currentStep() + 1]); }
-  previous(): void { this.selectStep(this.currentStep() - 1, this.steps()[this.currentStep() - 1]); }
+  next(): void { this.selectStep(this.currentStep() + 1, this.effectiveSteps()[this.currentStep() + 1]); }
+  previous(): void { this.selectStep(this.currentStep() - 1, this.effectiveSteps()[this.currentStep() - 1]); }
   reset(): void { this.currentStep.set(0); this.activeIndex.set(0); }
 
   isConnectorCompleted(index: number): boolean {

@@ -2,7 +2,7 @@
   [class.orc-stepper--vertical]="orientation() === 'vertical'" [class.orc-stepper--numeric]="type() === 'numeric'"
   [class.orc-stepper--icon]="type() === 'icon'" [attr.aria-label]="ariaLabel()">
   <ol class="orc-stepper__list">
-    @for (step of steps(); track step.id || $index; let idx = $index; let isLast = $last) {
+    @for (step of effectiveSteps(); track step.id || $index; let idx = $index; let isLast = $last) {
     @let status = getStepStatus(idx, step);
     @let clickableState = isStepClickable(idx, step);
 
