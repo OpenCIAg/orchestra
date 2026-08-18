@@ -1,5 +1,5 @@
 <div
-  class="orc-skeleton"
+  class="p-skeleton p-component orc-skeleton"
   [class.orc-skeleton--text]="effectiveVariant() === 'text'"
   [class.orc-skeleton--circular]="effectiveVariant() === 'circular'"
   [class.orc-skeleton--rectangular]="effectiveVariant() === 'rectangular'"
@@ -9,8 +9,9 @@
   [style.width]="computedWidth()"
   [style.height]="computedHeight()"
   [style.border-radius]="computedBorderRadius()"
-  [class]="styleClass()"
+  [class]="'p-skeleton p-component orc-skeleton ' + styleClass()"
   [style]="style()"
+  [attr.data-pc-name]="'skeleton'"
   role="status"
   aria-busy="true"
   [attr.aria-label]="ariaLabel()"
