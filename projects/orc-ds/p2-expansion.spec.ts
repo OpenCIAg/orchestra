@@ -354,6 +354,20 @@ describe('P2 expansion components', () => {
     expect(component.sortField()).toBe('');
   });
 
+  it('emits DataTable paginator events when navigating rendered controls', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('data', [{ id: 1 }, { id: 2 }]);
+    fixture.componentRef.setInput('columns', [{ key: 'id', header: 'ID' }]);
+    fixture.componentRef.setInput('rows', 1);
+    fixture.componentRef.setInput('paginator', true);
+    const page = jasmine.createSpy('page');
+    component.onPage.subscribe(page);
+    fixture.detectChanges();
+    (fixture.nativeElement.querySelector('.paginator button:last-child') as HTMLButtonElement).click();
+    expect(page).toHaveBeenCalledWith({ first: 1, rows: 1 });
+  });
+
   it('honors single-row selection and emits filter changes', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;
