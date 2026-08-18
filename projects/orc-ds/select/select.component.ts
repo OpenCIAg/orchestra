@@ -232,6 +232,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
+  sameOptionValue(left: any, right: any): boolean { const key = this.dataKey(); return key && left && right ? left?.[key] === right?.[key] : left === right; }
+  isDataOptionSelected(option: SelectOption): boolean { const candidate = this.getOptionValue(option); const current = this.value(); return this.multiple() ? Array.isArray(current) && current.some(item => this.sameOptionValue(item, candidate)) : this.sameOptionValue(current, candidate); }
   getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
   isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return Boolean(key ? option?.[key] : option?.disabled); }
 
@@ -247,7 +249,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     if (this.isDataMode()) {
       const allData = this.dataOptions();
       return valArray.map((v) => {
-        const found = allData.find((opt) => this.getOptionValue(opt) === v);
+        const found = allData.find((opt) => this.sameOptionValue(this.getOptionValue(opt), v));
         return {
           label: found ? this.getOptionLabel(found) : String(v),
           value: v,

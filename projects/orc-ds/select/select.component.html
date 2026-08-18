@@ -155,11 +155,11 @@
         @for (opt of filteredDataOptions(); track getOptionValue(opt); let idx = $index) {
           <div
             class="orc-data-option"
-            [class.is-selected]="multiple() ? (value() || []).includes(getOptionValue(opt)) : value() === getOptionValue(opt)"
+            [class.is-selected]="isDataOptionSelected(opt)"
             [class.is-active]="activeOptionIndex() === idx"
             [class.is-disabled]="opt.disabled"
             role="option"
-            [attr.aria-selected]="multiple() ? (value() || []).includes(getOptionValue(opt)) : value() === getOptionValue(opt)"
+            [attr.aria-selected]="isDataOptionSelected(opt)"
             [attr.aria-disabled]="opt.disabled"
             (click)="onDataOptionClick(opt, $event)"
           >
@@ -174,7 +174,7 @@
                 <span class="orc-option-description">{{ opt.description }}</span>
               }
             </div>
-            @if (multiple() ? (value() || []).includes(getOptionValue(opt)) : value() === getOptionValue(opt)) {
+            @if (isDataOptionSelected(opt)) {
               <svg class="orc-option-checkmark" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
               </svg>
