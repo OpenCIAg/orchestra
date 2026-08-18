@@ -13,7 +13,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SwitchComponent } from './switch/switch.component';
 import { SliderComponent } from './slider/slider.component';
 import { RatingComponent } from './rating/rating.component';
-import { KnobComponent } from './p2/p2-org-knob-components';
+import { KnobComponent, OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { ButtonComponent } from './button/button.component';
@@ -34,7 +34,6 @@ import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
 import { SplitterComponent } from './p2/p2-overlay-components';
-import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { AvatarComponent } from './avatar/avatar.component';
@@ -257,6 +256,18 @@ describe('P2 expansion components', () => {
     expect(component.value()).toBe(20);
     component.onInput({ target: { value: '13' } } as unknown as Event);
     expect(component.value()).toBe(14);
+  });
+
+  it('exposes OrganizationChart selectionChange and collapsible behavior', () => {
+    const fixture = TestBed.createComponent(OrganizationChartComponent);
+    const component = fixture.componentInstance;
+    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child' }] };
+    fixture.componentRef.setInput('value', [root]);
+    fixture.componentRef.setInput('collapsible', false);
+    component.toggle(root);
+    expect(component.expanded().size).toBe(0);
+    component.select(root);
+    expect(component.selected()).toBe('root');
   });
 
   it('normalizes progress values and exposes PrimeNG display configuration', () => {
