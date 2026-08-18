@@ -134,7 +134,7 @@ export interface SpeedDialAction extends P2Option<string> {
 @Component({
   selector: 'orc-speed-dial',
   standalone: true,
-  template: `<div class="orc-p2-speed-dial"><div class="actions" [class.open]="open()">@if (open()) { @for (action of actions(); track action.value) { <button type="button" [disabled]="action.disabled" [attr.aria-label]="action.label" (click)="activate(action)">{{ action.icon || '•' }}</button> } }</div><button type="button" class="trigger" [attr.aria-expanded]="open()" [attr.aria-label]="open() ? closeLabel() : openLabel()" (click)="open.set(!open())">{{ open() ? '×' : icon() }}</button></div>`,
+  template: `<div class="orc-p2-speed-dial" [class]="styleClass()"><div class="actions" [class.open]="open()">@if (open()) { @for (action of effectiveActions(); track action.value) { <button type="button" [disabled]="disabled() || action.disabled" [attr.aria-label]="action.label" (click)="activate(action)">{{ action.icon || '•' }}</button> } }</div><button type="button" class="trigger" [disabled]="disabled()" [attr.aria-expanded]="open()" [attr.aria-label]="open() ? closeLabel() : openLabel()" (click)="toggleButton($event)">{{ open() ? '×' : icon() }}</button></div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-speed-dial { display: inline-flex; flex-direction: column; align-items: center; gap: .5rem; } .actions { display: flex; flex-direction: column-reverse; gap: .45rem; } .actions button, .trigger { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border: 0; border-radius: 999px; background: #e2e8f0; color: #0f172a; } .trigger { background: #2563eb; color: #fff; font-size: 1.3rem; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -145,6 +145,8 @@ export class SpeedDialComponent {
   readonly openLabel = input('Open actions');
   readonly closeLabel = input('Close actions');
   readonly actionSelect = output<SpeedDialAction>(); readonly visibleChange = output<boolean>(); readonly onVisibleChange = this.visibleChange; readonly onShow = output<Event>(); readonly onHide = output<Event>(); readonly onClick = output<MouseEvent>();
+  effectiveActions(): SpeedDialAction[] { return this.model() ?? this.actions(); }
+  toggleButton(event: MouseEvent): void { this.onClick.emit(event); this.open() ? this.hide(event) : this.show(event); }
   show(event?: Event): void { if (this.disabled()) return; this.open.set(true); this.visibleChange.emit(true); if (event) this.onShow.emit(event); }
   hide(event?: Event): void { this.open.set(false); this.visibleChange.emit(false); if (event) this.onHide.emit(event); }
   activate(action: SpeedDialAction): void { if (!this.disabled() && !action.disabled) { this.actionSelect.emit(action); this.hide(); } }
