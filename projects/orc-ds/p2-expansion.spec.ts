@@ -914,6 +914,9 @@ describe('P2 expansion components', () => {
     component.onTextInput({ target: { value: 'rgb(0, 255, 0)' } } as unknown as Event);
     expect(component.value()).toBe('hsv(120, 100%, 100%)');
     expect(component.nativeValue()).toBe('#00ff00');
+    fixture.componentRef.setInput('format', 'hsb');
+    component.onTextInput({ target: { value: '#0000ff' } } as unknown as Event);
+    expect(component.value()).toBe('hsb(240, 100%, 100%)');
   });
 
   it('supports PrimeNG badge value and severity aliases', () => {
