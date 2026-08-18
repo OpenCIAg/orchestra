@@ -26,7 +26,7 @@ import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-componen
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
 import { TableComponent } from './table/table.component';
-import { PanelComponent } from './p2/p2-primeng-gap-components';
+import { FieldsetComponent, PanelComponent } from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
@@ -522,6 +522,17 @@ describe('P2 expansion components', () => {
     component.toggle();
     expect(component.collapsed()).toBeTrue();
     component.toggle();
+    expect(component.collapsed()).toBeFalse();
+  });
+
+  it('provides a dedicated Fieldset component contract', () => {
+    const fixture = TestBed.createComponent(FieldsetComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('legend', 'Details');
+    fixture.componentRef.setInput('toggleable', true);
+    component.collapse();
+    expect(component.collapsed()).toBeTrue();
+    component.expand();
     expect(component.collapsed()).toBeFalse();
   });
 

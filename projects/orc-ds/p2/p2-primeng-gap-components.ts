@@ -25,6 +25,19 @@ export class PanelComponent {
 }
 
 @Component({
+  selector: 'orc-fieldset', standalone: true,
+  template: `<fieldset class="orc-p2-fieldset" [class.collapsed]="collapsed()" [class]="styleClass()" [attr.aria-label]="ariaLabel() || legend()"><legend>{{ legend() }}@if (toggleable()) { <button type="button" [attr.aria-expanded]="!collapsed()" (click)="toggle()" [attr.aria-label]="collapsed() ? 'Expand' : 'Collapse'">{{ collapsed() ? '＋' : '−' }}</button> }</legend>@if (!collapsed()) { <div class="content"><ng-content /></div> }</fieldset>`,
+  styles: [P2_SHARED_STYLES + `.orc-p2-fieldset{min-width:0;border:1px solid #e2e8f0;border-radius:.625rem;background:#fff;color:#0f172a}.orc-p2-fieldset legend{padding:0 .45rem;font-weight:600}.orc-p2-fieldset legend button{margin-left:.5rem;border:0;background:transparent}.orc-p2-fieldset .content{padding:.85rem}`],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FieldsetComponent {
+  readonly legend = input(''); readonly toggleable = input(false, { transform: booleanAttribute }); readonly collapsed = model(false); readonly styleClass = input(''); readonly style = input<Record<string, string> | null>(null); readonly ariaLabel = input(''); readonly onBeforeToggle = output<{ collapsed: boolean }>(); readonly onAfterToggle = output<{ collapsed: boolean }>();
+  toggle(): void { if (!this.toggleable()) return; const next = !this.collapsed(); this.onBeforeToggle.emit({ collapsed: next }); this.collapsed.set(next); this.onAfterToggle.emit({ collapsed: next }); }
+  expand(): void { if (this.collapsed()) this.toggle(); }
+  collapse(): void { if (!this.collapsed()) this.toggle(); }
+}
+
+@Component({
   selector: 'orc-float-label', standalone: true,
   template: `<span class="orc-p2-float-label"><ng-content /></span>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-float-label{position:relative;display:block}.orc-p2-float-label>label{position:absolute;z-index:1;top:50%;left:.75rem;transform:translateY(-50%);padding:0 .2rem;color:#64748b;background:#fff;pointer-events:none;transition:.15s}.orc-p2-float-label:focus-within>label,.orc-p2-float-label>.filled+label{top:0;font-size:.75rem;color:#2563eb}`],
