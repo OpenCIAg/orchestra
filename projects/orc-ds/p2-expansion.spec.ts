@@ -17,6 +17,7 @@ import { KnobComponent } from './p2/p2-org-knob-components';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
+import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -240,5 +241,18 @@ describe('P2 expansion components', () => {
     expect(component.selected().has('child')).toBeTrue();
     component.select(component.visibleNodes()[1], false);
     expect(component.selected().size).toBe(0);
+  });
+
+  it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
+    const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
+    panel.show();
+    expect(panel.visible()).toBeTrue();
+    panel.toggle();
+    expect(panel.visible()).toBeFalse();
+    const popover = TestBed.createComponent(PopoverComponent).componentInstance;
+    popover.show();
+    expect(popover.visible()).toBeTrue();
+    popover.onEscape();
+    expect(popover.visible()).toBeFalse();
   });
 });

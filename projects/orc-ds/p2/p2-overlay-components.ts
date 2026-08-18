@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, computed, input, model, output, signal } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, computed, HostListener, input, model, output, signal } from '@angular/core';
 import { P2Option, P2_SHARED_STYLES, P2Orientation } from './p2-shared';
 
 @Component({
@@ -54,6 +54,42 @@ export class ContextMenuComponent {
   openAt(event: MouseEvent): void { event.preventDefault(); this.position.set({ x: event.clientX, y: event.clientY }); this.open.set(true); this.opened.emit(this.position()); }
   activate(item: ContextMenuItem): void { if (item.disabled) return; this.itemSelect.emit(item); this.open.set(false); }
   onKeydown(event: KeyboardEvent): void { if (event.key === 'Escape') { event.preventDefault(); this.open.set(false); } }
+}
+
+/** PrimeNG OverlayPanel/Popover-compatible controlled overlay surface. */
+@Component({
+  selector: 'orc-overlay-panel',
+  standalone: true,
+  template: `<section class="orc-p2-overlay-panel" [class]="styleClass()" [hidden]="!visible()" role="dialog" [attr.aria-label]="ariaLabel()" [attr.aria-modal]="modal()" (keydown.escape)="onEscape()">@if (closable()) { <button type="button" class="close" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }<ng-content /></section>`,
+  styles: [P2_SHARED_STYLES + `.orc-p2-overlay-panel{position:absolute;z-index:1000;min-width:12rem;padding:1rem;border:1px solid #cbd5e1;border-radius:.6rem;background:#fff;box-shadow:0 12px 30px #0f172a26;color:#0f172a}.orc-p2-overlay-panel[hidden]{display:none}.close{position:absolute;top:.35rem;right:.35rem;border:0;background:transparent;color:#64748b;font-size:1.1rem}`],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class OverlayPanelComponent {
+  readonly visible = model(false);
+  readonly modal = input(false, { transform: booleanAttribute });
+  readonly dismissable = input(true, { transform: booleanAttribute });
+  readonly closable = input(false, { transform: booleanAttribute });
+  readonly closeOnEscape = input(true, { transform: booleanAttribute });
+  readonly ariaLabel = input('Overlay panel');
+  readonly closeLabel = input('Close');
+  readonly styleClass = input('');
+  readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClick = output<MouseEvent>();
+  show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); } }
+  hide(): void { if (this.visible()) { this.visible.set(false); this.onHide.emit(); } }
+  toggle(): void { this.visible() ? this.hide() : this.show(); }
+  onEscape(): void { if (this.closeOnEscape()) this.hide(); }
+  @HostListener('document:mousedown', ['$event']) onDocumentClick(event: MouseEvent): void { if (!this.dismissable() || !this.visible()) return; const target = event.target as Node | null; if (target && !((event.currentTarget as Document).contains(target))) this.hide(); }
+}
+
+@Component({
+  selector: 'orc-popover',
+  standalone: true,
+  template: `<aside class="orc-p2-popover" [class]="styleClass()" [hidden]="!visible()" role="dialog" [attr.aria-label]="ariaLabel()" (keydown.escape)="onEscape()">@if (header()) { <header>{{ header() }}@if (closable()) { <button type="button" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }</header> }<ng-content /></aside>`,
+  styles: [P2_SHARED_STYLES + `.orc-p2-popover{position:absolute;z-index:1000;min-width:12rem;padding:1rem;border:1px solid #cbd5e1;border-radius:.6rem;background:#fff;box-shadow:0 12px 30px #0f172a26;color:#0f172a}.orc-p2-popover[hidden]{display:none}.orc-p2-popover header{display:flex;justify-content:space-between;margin:-.25rem 0 .5rem;font-weight:700}.orc-p2-popover header button{border:0;background:transparent}`],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class PopoverComponent extends OverlayPanelComponent {
+  readonly header = input('');
 }
 
 export interface SpeedDialAction extends P2Option<string> {
