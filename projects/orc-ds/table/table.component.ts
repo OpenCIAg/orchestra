@@ -39,6 +39,8 @@ export class TableComponent<T = any> {
   /** Dados a serem exibidos na tabela */
   readonly data = input<T[]>([]);
   readonly value = input<T[] | undefined>(undefined);
+  readonly frozenColumns = input<any[] | undefined>(undefined);
+  readonly frozenValue = input<T[] | undefined>(undefined);
 
   /** Configuração direta de colunas (alternativa ao uso de <orc-column>) */
   readonly columnsConfig = input<TableColumnConfig[] | undefined>(undefined);
@@ -94,6 +96,32 @@ export class TableComponent<T = any> {
   readonly size = input<'small' | 'large' | undefined>(undefined);
   readonly responsiveLayout = input('scroll');
   readonly breakpoint = input('960px');
+  readonly autoLayout = input(false, { transform: booleanAttribute });
+  readonly scrollable = input(false, { transform: booleanAttribute });
+  readonly scrollDirection = input<'vertical' | 'horizontal' | 'both'>('vertical');
+  readonly scrollHeight = input<string | undefined>(undefined);
+  readonly virtualScroll = input(false, { transform: booleanAttribute });
+  readonly virtualScrollItemSize = input<number | undefined>(undefined);
+  readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined);
+  readonly resizableColumns = input(false, { transform: booleanAttribute });
+  readonly reorderableColumns = input(false, { transform: booleanAttribute });
+  readonly customSort = input(false, { transform: booleanAttribute });
+  readonly showInitialSortBadge = input(true, { transform: booleanAttribute });
+  readonly exportFilename = input('download');
+  readonly csvSeparator = input(',');
+  readonly exportHeader = input<string | undefined>(undefined);
+  readonly stateKey = input<string | undefined>(undefined);
+  readonly stateStorage = input<'session' | 'local'>('session');
+  readonly editMode = input<'cell' | 'row'>('row');
+  readonly rowExpandMode = input<'multiple' | 'single'>('multiple');
+  readonly groupRowsBy = input<any>(undefined);
+  readonly rowGroupMode = input<'subheader' | 'rowspan' | undefined>(undefined);
+  readonly rowTrackBy = input<((index: number, row: T) => unknown) | undefined>(undefined);
+  readonly contextMenuSelection = model<T | null>(null);
+  readonly contextMenuSelectionMode = input<'separate' | 'joint'>('separate');
+  readonly filters = input<Record<string, unknown>>({});
+  readonly filterDelay = input(300);
+  readonly filterLocale = input<string | undefined>(undefined);
   readonly filterable = input(false, { transform: booleanAttribute });
   readonly filterPlaceholder = input('Filter');
   readonly filter = model('');
@@ -156,6 +184,18 @@ export class TableComponent<T = any> {
   readonly lazy = input(false, { transform: booleanAttribute });
   readonly onPage = output<{ first: number; rows: number }>();
   readonly onLazyLoad = output<{ first: number; rows: number }>();
+  readonly onRowExpand = output<{ data: T }>();
+  readonly onRowCollapse = output<{ data: T }>();
+  readonly onContextMenuSelect = output<{ data: T; originalEvent: Event }>();
+  readonly onColResize = output<unknown>();
+  readonly onColReorder = output<unknown>();
+  readonly onRowReorder = output<unknown>();
+  readonly onEditInit = output<unknown>();
+  readonly onEditComplete = output<unknown>();
+  readonly onEditCancel = output<unknown>();
+  readonly onHeaderCheckboxToggle = output<unknown>();
+  readonly onStateSave = output<unknown>();
+  readonly onStateRestore = output<unknown>();
 
   // ── Evento de Clique na Linha ─────────────────────────────
   readonly rowClick = output<T>();
