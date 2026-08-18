@@ -153,7 +153,7 @@ The root public API exposes 89 secondary entry points. Alias entry points intent
 | `toast` | `orc-toast-container`, `orc-toast` | Notifications |
 | `tooltip` | `[orcTooltip]`, `orc-tooltip-overlay` | Short contextual help |
 | `dialog` | `DialogComponent` alias of `ModalComponent` | Modal terminology alias |
-| `menu` | `MenuComponent` alias of `DropdownComponent` | Menu terminology alias |
+| `menu` | `MenuComponent` | PrimeNG-style model/popup menu |
 | `pagination` | `PaginationComponent` alias of `PaginatorComponent` | Pagination terminology alias |
 | `drawer` | `orc-drawer` | Side/top/bottom panel |
 | `popover` | `orc-popover` | Contextual content |
@@ -332,7 +332,7 @@ Both implement `ControlValueAccessor` and expose a Signals model. Use `[(value)]
 - `orc-modal` model: `isOpen: boolean` (false). Inputs: `size: sm | md | lg | xl | fullScreen | custom` (md), `status: neutral | danger` (neutral), `inline` (false), `closeOnBackdropClick` (true), `showCloseButton` (true), `ariaLabelledBy`, `ariaDescribedBy`, `zIndex` (1000). Output: `closed`. Escape is handled by the native dialog lifecycle; the previous active element is restored. Use `modal-header`, `modal-body`, and `modal-footer` slots.
 - `orc-drawer` model: `open` (false). Inputs: `placement: left | right | top | bottom` (right), `label` (`Painel lateral`), `closeOnBackdrop` (true), `dismissible` (true). Output: `closed`. Use `drawer-title` and `drawer-actions` slots. A non-dismissible drawer must still expose a clear internal close action.
 - `orc-popover` model: `open` (false). Inputs: `placement: top | right | bottom | left` (bottom), `label` (`Conteúdo adicional`). Its trigger is projected with `[popover-trigger]`. It closes on Escape/outside interaction according to the implementation.
-- `orc-dropdown` inputs: `items: DropdownItem[]` (empty), `placement` (`bottom-start`); output `itemSelect: DropdownItem`. A `DropdownItem` has `label` and optional `id`, `icon`, `shortcut`, `danger`, `disabled`, `divider`, `action`, and recursive `children`. Keep the trigger a real button. `menu` is a canonical alias of this implementation.
+- `orc-dropdown` inputs: `items: DropdownItem[]` (empty), `placement` (`bottom-start`); output `itemSelect: DropdownItem`. A `DropdownItem` has `label` and optional `id`, `icon`, `shortcut`, `danger`, `disabled`, `divider`, `action`, and recursive `children`. Keep the trigger a real button. `menu` is a separate PrimeNG-style model/popup menu entrypoint.
 
 #### `orc-tooltip`, `orc-drawer`, and named navigation aliases
 
@@ -372,7 +372,7 @@ The tooltip API is a directive. Attach `[orcTooltip]`, `[appTooltip]`, or `[uiTo
 
 #### `orc-form`-adjacent aliases
 
-`text-input` is a named alias of `InputComponent`. `toggle` is a named alias of `SwitchComponent`. `file-upload` is a named alias of `FileUploaderComponent`. `dialog`, `menu`, and `pagination` are aliases described above. The alias entry points preserve the canonical selector and public API; only the TypeScript export name changes.
+`text-input` is a named alias of `InputComponent`. `toggle` is a named alias of `SwitchComponent`. `file-upload` is a named alias of `FileUploaderComponent`. `dialog` and `pagination` are aliases described above. `menu` is a separate PrimeNG-style model/popup menu component.
 
 ### P2 expansion components
 
