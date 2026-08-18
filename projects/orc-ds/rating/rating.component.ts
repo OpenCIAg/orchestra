@@ -163,25 +163,30 @@ export class RatingComponent implements ControlValueAccessor {
       case 'ArrowUp':
         event.preventDefault();
         this.updateValue(current + step);
+        this.onRate.emit({ originalEvent: event, value: this.value() });
         break;
       case 'ArrowLeft':
       case 'ArrowDown':
         event.preventDefault();
         this.updateValue(current - step);
+        this.onRate.emit({ originalEvent: event, value: this.value() });
         break;
       case 'Home':
         event.preventDefault();
         this.updateValue(this.allowHalf() ? 0.5 : 1);
+        this.onRate.emit({ originalEvent: event, value: this.value() });
         break;
       case 'End':
         event.preventDefault();
         this.updateValue(this.effectiveStars());
+        this.onRate.emit({ originalEvent: event, value: this.value() });
         break;
       case 'Escape':
       case '0':
         if (this.clearable()) {
           event.preventDefault();
           this.updateValue(0);
+          this.onCancel.emit(event);
         }
         break;
     }

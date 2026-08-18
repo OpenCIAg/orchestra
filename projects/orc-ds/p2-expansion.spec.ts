@@ -362,6 +362,10 @@ describe('P2 expansion components', () => {
     component.onItemClick(new MouseEvent('click'), 8);
     expect(component.value()).toBe(8);
     expect(component.starsArray()).toHaveSize(10);
+    const rated = jasmine.createSpy('rated');
+    component.onRate.subscribe(rated);
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    expect(rated).toHaveBeenCalledWith(jasmine.objectContaining({ value: 9 }));
   });
 
   it('supports Knob ControlValueAccessor and styled value configuration', () => {
