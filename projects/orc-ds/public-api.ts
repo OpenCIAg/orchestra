@@ -131,6 +131,7 @@ export * from '@ciag/orchestra/input-password';
 export * from '@ciag/orchestra/input-number';
 export * from '@ciag/orchestra/input-text';
 export * from '@ciag/orchestra/textarea';
+export * from '@ciag/orchestra/input-textarea';
 export * from '@ciag/orchestra/input-tags';
 export * from '@ciag/orchestra/toggle-switch';
 export * from '@ciag/orchestra/autofocus';
