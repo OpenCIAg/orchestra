@@ -29,14 +29,14 @@ export class TieredMenuComponent {
 
 @Component({
   selector: 'orc-panel-menu', standalone: true,
-  template: `<div class="orc-panel-menu" role="tree" [attr.aria-label]="ariaLabel()">@for (item of items(); track $index) { <button type="button" role="treeitem" [disabled]="item.disabled" (click)="toggle(item)">{{ item.icon }} {{ item.label }} <span>{{ open().has(item) ? '−' : '+' }}</span></button> @if (open().has(item) && item.items?.length) { <div class="children">@for (child of item.items; track $index) { <button type="button" role="treeitem" [disabled]="child.disabled" (click)="select(child)">{{ child.icon }} {{ child.label }}</button> }</div> } }</div>`,
+  template: `<div class="orc-panel-menu" role="tree" [attr.aria-label]="ariaLabel()">@for (item of items(); track $index) { <button type="button" role="treeitem" [attr.aria-expanded]="item.items?.length ? open().has(item) : null" [disabled]="item.disabled || disabled()" (click)="toggle(item)">{{ item.icon }} {{ item.label }} <span>{{ open().has(item) ? '−' : '+' }}</span></button> @if (open().has(item) && item.items?.length) { <div class="children">@for (child of item.items; track $index) { <button type="button" role="treeitem" [disabled]="child.disabled || disabled()" (click)="select(child)">{{ child.icon }} {{ child.label }}</button> }</div> } }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-panel-menu{display:grid;width:100%;border:1px solid #e2e8f0;border-radius:.5rem;overflow:hidden}.orc-panel-menu>button,.children button{display:flex;justify-content:space-between;border:0;border-bottom:1px solid #f1f5f9;background:#fff;padding:.65rem .8rem;text-align:left}.children{display:grid;padding-left:1rem;background:#f8fafc}.children button{background:transparent}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelMenuComponent {
-  readonly items = input<PrimeMenuItem[]>([]); readonly ariaLabel = input('Panel menu'); readonly open = signal(new Set<PrimeMenuItem>()); readonly itemSelect = output<PrimeMenuItem>();
-  toggle(item: PrimeMenuItem): void { if (item.disabled) return; if (!item.items?.length) return this.select(item); const next = new Set(this.open()); next.has(item) ? next.delete(item) : next.add(item); this.open.set(next); }
-  select(item: PrimeMenuItem): void { if (!item.disabled) { item.command?.(); this.itemSelect.emit(item); } }
+  readonly items = input<PrimeMenuItem[]>([]); readonly ariaLabel = input('Panel menu'); readonly disabled = input(false, { transform: booleanAttribute }); readonly multiple = input(false, { transform: booleanAttribute }); readonly open = model<ReadonlySet<PrimeMenuItem>>(new Set()); readonly itemSelect = output<PrimeMenuItem>(); readonly onItemExpand = output<PrimeMenuItem>(); readonly onItemCollapse = output<PrimeMenuItem>();
+  toggle(item: PrimeMenuItem): void { if (item.disabled || this.disabled()) return; if (!item.items?.length) return this.select(item); const next = new Set(this.open()); const expanded = next.has(item); if (expanded) { next.delete(item); this.onItemCollapse.emit(item); } else { if (!this.multiple()) next.clear(); next.add(item); this.onItemExpand.emit(item); } this.open.set(next); }
+  select(item: PrimeMenuItem): void { if (!item.disabled && !this.disabled()) { item.command?.(); this.itemSelect.emit(item); } }
 }
 
 @Component({

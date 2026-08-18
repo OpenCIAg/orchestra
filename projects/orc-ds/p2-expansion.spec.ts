@@ -26,7 +26,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
 import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
-import { TieredMenuComponent } from './p2/p2-advanced-components';
+import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -384,5 +384,21 @@ describe('P2 expansion components', () => {
     expect(component.visible()).toBeTrue();
     component.hide();
     expect(component.visible()).toBeFalse();
+  });
+
+  it('supports PanelMenu controlled expansion and multiple mode', () => {
+    const fixture = TestBed.createComponent(PanelMenuComponent);
+    const component = fixture.componentInstance;
+    const first = { label: 'First', items: [{ label: 'Child' }] };
+    const second = { label: 'Second', items: [{ label: 'Child 2' }] };
+    fixture.componentRef.setInput('items', [first, second]);
+    component.toggle(first);
+    expect(component.open().has(first)).toBeTrue();
+    component.toggle(second);
+    expect(component.open().has(first)).toBeFalse();
+    fixture.componentRef.setInput('multiple', true);
+    component.toggle(first);
+    expect(component.open().has(first)).toBeTrue();
+    expect(component.open().has(second)).toBeTrue();
   });
 });
