@@ -136,6 +136,15 @@ describe('P2 expansion components', () => {
     expect(component.value()).toEqual(['2025-01-05', '2025-01-10']);
   });
 
+  it('supports DatePicker keyboard show and Escape close behavior', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const component = fixture.componentInstance;
+    component.onInputKeydown({ key: 'ArrowDown', preventDefault() {} } as KeyboardEvent);
+    expect(component.overlayVisible()).toBeTrue();
+    component.onInputKeydown({ key: 'Escape', preventDefault() {} } as KeyboardEvent);
+    expect(component.overlayVisible()).toBeFalse();
+  });
+
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
     const listbox = TestBed.createComponent(ListboxComponent<any>);
     listbox.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
