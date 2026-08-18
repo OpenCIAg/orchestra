@@ -21,6 +21,15 @@ describe('ModalComponent', () => {
       expect(component).toBeTruthy();
     });
 
+    it('supports PrimeNG baseZIndex and autoZIndex inputs', () => {
+      fixture.componentRef.setInput('baseZIndex', 2000);
+      fixture.componentRef.setInput('zIndex', 1000);
+      fixture.componentRef.setInput('autoZIndex', true);
+      expect(component.effectiveZIndex()).toBe(2000);
+      fixture.componentRef.setInput('autoZIndex', false);
+      expect(component.effectiveZIndex()).toBe(1000);
+    });
+
     it('should emit closed output and update isOpen on onClose', () => {
       let closedEmitted = false;
       component.isOpen.set(true);

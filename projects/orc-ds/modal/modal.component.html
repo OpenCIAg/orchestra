@@ -2,7 +2,7 @@
   #dialogRef
   [class]="modalClasses() + ' ' + styleClass() + ' ' + maskStyleClass()"
   [style]="style()"
-  [style.z-index]="inline() ? 'auto' : zIndex()"
+  [style.z-index]="inline() ? 'auto' : effectiveZIndex()"
   (cancel)="onCancel($event)"
   (click)="onBackdropClick($event)"
   [attr.role]="role()"
@@ -34,7 +34,7 @@
           </svg>
         </orc-button>
       }
-      @if (maximizable()) { <button type="button" class="orc-modal__maximize" (click)="toggleMaximize()" [attr.aria-label]="maximized() ? 'Restore' : 'Maximize'">{{ maximized() ? '▣' : '□' }}</button> }
+      @if (maximizable()) { <button type="button" class="orc-modal__maximize" (click)="toggleMaximize()" [attr.aria-label]="maximized() ? 'Restore' : 'Maximize'">{{ maximized() ? minimizeIcon() : maximizeIcon() }}</button> }
     </header>
 
     <!-- BODY -->
