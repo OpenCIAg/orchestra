@@ -158,6 +158,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly onShow = output<void>();
   readonly onHide = output<void>();
   readonly onClear = output<Event>();
+  readonly onOptionSelect = output<{ originalEvent: Event; value: any }>();
+  readonly onOptionUnselect = output<{ originalEvent: Event; value: any }>();
   readonly onClick = output<MouseEvent>();
   readonly onFocus = output<FocusEvent>();
   readonly onBlur = output<FocusEvent>();
@@ -368,6 +370,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     this.isOpen.set(true);
     this.opened.emit();
     this.onShow.emit();
+    if (this.lazy() || this.virtualScroll()) this.onLazyLoad.emit({ first: 0, last: Math.max(0, this.dataOptions().length - 1) });
 
     if (this.filterEnabled()) {
       setTimeout(() => this.searchInputRef()?.nativeElement?.focus(), 50);
@@ -420,12 +423,16 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       this.value.set(current);
       this.onModelChange(current);
       this.selectionChange.emit(current);
-      this.onChange.emit({ originalEvent: originalEvent ?? new Event('change'), value: current });
+      const event = originalEvent ?? new Event('change');
+      this.onChange.emit({ originalEvent: event, value: current });
+      (index > -1 ? this.onOptionUnselect : this.onOptionSelect).emit({ originalEvent: event, value: val });
     } else {
       this.value.set(val);
       this.onModelChange(val);
       this.selectionChange.emit(val);
-      this.onChange.emit({ originalEvent: originalEvent ?? new Event('change'), value: val });
+      const event = originalEvent ?? new Event('change');
+      this.onChange.emit({ originalEvent: event, value: val });
+      this.onOptionSelect.emit({ originalEvent: event, value: val });
       this.closePanel();
     }
   }
@@ -441,6 +448,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       this.value.set(updated);
       this.onModelChange(updated);
       this.selectionChange.emit(updated);
+      this.onChange.emit({ originalEvent: event, value: updated });
+      this.onOptionUnselect.emit({ originalEvent: event, value: itemValue });
     } else {
       this.clearValue(event);
     }
@@ -455,6 +464,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     this.value.set(clearedVal);
     this.onModelChange(clearedVal);
     this.selectionChange.emit(clearedVal);
+    this.onChange.emit({ originalEvent: event, value: clearedVal });
     this.onClear.emit(event);
   }
 

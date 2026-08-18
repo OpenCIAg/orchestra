@@ -304,6 +304,16 @@ describe('P2 expansion components', () => {
     component.onDataOptionClick(component.options()![0] as any);
     expect(component.value()).toBe('br');
     expect(component.selectedItems()[0].label).toBe('Brazil');
+    const changed = jasmine.createSpy('changed');
+    const selected = jasmine.createSpy('selected');
+    component.onChange.subscribe(changed);
+    component.onOptionSelect.subscribe(selected);
+    component.onDataOptionClick(component.options()![1] as any, new Event('click'));
+    expect(changed).toHaveBeenCalled();
+    expect(selected).toHaveBeenCalledWith({ originalEvent: jasmine.any(Event), value: 'pt' });
+    const clearEvent = new MouseEvent('click');
+    component.clearValue(clearEvent);
+    expect(component.value()).toBeUndefined();
   });
 
   it('supports Checkbox binary true/false values and lifecycle outputs', () => {
