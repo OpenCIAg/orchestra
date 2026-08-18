@@ -167,7 +167,7 @@
         [totalItems]="effectiveTotalItems()"
         [(pageSize)]="pageSize"
         [(currentPage)]="currentPage"
-        [pageSizeOptions]="pageSizeOptions()"
+        [pageSizeOptions]="effectiveRowsPerPageOptions()"
         [showPageSizeSelector]="true"
         (pageChange)="handlePageChange($event)"
       />

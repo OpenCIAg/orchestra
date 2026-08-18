@@ -346,8 +346,14 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('globalFilterFields', ['name']);
     component.applyFilter('alpha');
     expect(component.displayData()).toHaveSize(1);
+    fixture.componentRef.setInput('rowsPerPageOptions', [1, 2]);
+    fixture.componentRef.setInput('showGridlines', true);
+    fixture.componentRef.setInput('metaKeySelection', false);
+    let selectedEvent: unknown;
+    component.onRowSelect.subscribe(event => selectedEvent = event);
     component.toggleRowSelect(component.displayData()[0], true);
     expect(component.selectedRows()).toHaveSize(1);
+    expect(selectedEvent).toEqual({ data: { id: 1, name: 'Alpha' } });
     component.handlePageChange({ page: 2, pageSize: 5, startIndex: 6 });
     expect(component.currentPage()).toBe(2);
   });

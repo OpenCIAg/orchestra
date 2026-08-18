@@ -58,6 +58,9 @@ export class TableComponent<T = any> {
   readonly selectionChange = output<T[]>();
   readonly rowSelect = output<{ data: T }>();
   readonly rowUnselect = output<{ data: T }>();
+  readonly onRowSelect = output<{ data: T }>();
+  readonly onRowUnselect = output<{ data: T }>();
+  readonly selectAllChange = output<{ checked: boolean; data: T[] }>();
 
   // ── Ordenação ─────────────────────────────────────────────
   /** Chave da coluna ordenada atualmente */
@@ -84,6 +87,13 @@ export class TableComponent<T = any> {
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly tableStyleClass = input('');
+  readonly tableStyle = input<Record<string, string | number> | undefined>(undefined);
+  readonly rowHover = input(false, { transform: booleanAttribute });
+  readonly showGridlines = input(false, { transform: booleanAttribute });
+  readonly stripedRows = input(false, { transform: booleanAttribute });
+  readonly size = input<'small' | 'large' | undefined>(undefined);
+  readonly responsiveLayout = input('scroll');
+  readonly breakpoint = input('960px');
   readonly filterable = input(false, { transform: booleanAttribute });
   readonly filterPlaceholder = input('Filter');
   readonly filter = model('');
@@ -122,6 +132,27 @@ export class TableComponent<T = any> {
 
   /** Opções de tamanho de página */
   readonly pageSizeOptions = input<number[]>([5, 10, 20, 50]);
+  readonly rowsPerPageOptions = input<number[] | undefined>(undefined, { alias: 'rowsPerPageOptions' });
+  readonly pageLinks = input(5);
+  readonly alwaysShowPaginator = input(true, { transform: booleanAttribute });
+  readonly paginatorPosition = input<'top' | 'bottom' | 'both'>('bottom');
+  readonly paginatorStyleClass = input('');
+  readonly currentPageReportTemplate = input<string | undefined>(undefined);
+  readonly showCurrentPageReport = input(false, { transform: booleanAttribute });
+  readonly showJumpToPageDropdown = input(false, { transform: booleanAttribute });
+  readonly showJumpToPageInput = input(false, { transform: booleanAttribute });
+  readonly showFirstLastIcon = input(false, { transform: booleanAttribute });
+  readonly showPageLinks = input(true, { transform: booleanAttribute });
+  readonly lazyLoadOnInit = input(true, { transform: booleanAttribute });
+  readonly metaKeySelection = input(true, { transform: booleanAttribute });
+  readonly selectionPageOnly = input(false, { transform: booleanAttribute });
+  readonly dataKey = input<string | undefined>(undefined);
+  readonly defaultSortOrder = input(1);
+  readonly sortMode = input<'single' | 'multiple'>('single');
+  readonly resetPageOnSort = input(true, { transform: booleanAttribute });
+  readonly compareSelectionBy = input<'equals' | 'deepEquals'>('equals');
+  readonly loadingIcon = input<string | undefined>(undefined);
+  readonly showLoader = input(true, { transform: booleanAttribute });
   readonly lazy = input(false, { transform: booleanAttribute });
   readonly onPage = output<{ first: number; rows: number }>();
   readonly onLazyLoad = output<{ first: number; rows: number }>();
@@ -133,6 +164,7 @@ export class TableComponent<T = any> {
   readonly declaredColumns = contentChildren(ColumnDirective);
   readonly effectiveData = computed(() => this.value() ?? this.data());
   readonly effectivePageSize = computed(() => this.rowsInput() ?? this.pageSize());
+  readonly effectiveRowsPerPageOptions = computed(() => this.rowsPerPageOptions() ?? this.pageSizeOptions());
   readonly effectivePaginated = computed(() => this.paginated() || this.paginator());
   readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());
 
@@ -233,6 +265,7 @@ export class TableComponent<T = any> {
     this.selectedRows.set(current);
     this.selectionChange.emit(current);
     (checked ? this.rowSelect : this.rowUnselect).emit({ data: row });
+    (checked ? this.onRowSelect : this.onRowUnselect).emit({ data: row });
   }
 
   toggleSelectAll(event: CheckboxChangeEvent | boolean): void {
@@ -253,6 +286,7 @@ export class TableComponent<T = any> {
 
     this.selectedRows.set(currentSelected);
     this.selectionChange.emit(currentSelected);
+    this.selectAllChange.emit({ checked, data: currentSelected });
   }
 
   handleSort(columnKey: string, isSortable?: boolean): void {
