@@ -1,7 +1,11 @@
 <div
-  class="orc-textarea-container"
+  class="p-inputtextarea p-component orc-textarea-container"
+  [class]="'p-inputtextarea p-component orc-textarea-container ' + styleClass()"
+  [style]="style()"
   [class.orc-textarea-container--disabled]="effectiveDisabled()"
-  [class.orc-textarea-container--readonly]="readonly()"
+    [class.orc-textarea-container--readonly]="readonly()"
+    [class.p-inputtextarea-fluid]="fluid()"
+    [attr.data-pc-name]="'textarea'"
 >
   <!-- ── Rótulo / Label ──────────────────────────────────────── -->
   @if (label()) {
@@ -36,17 +40,19 @@
       [readOnly]="readonly()"
       [required]="required()"
       [rows]="rows()"
+      [attr.cols]="cols()"
       [maxLength]="maxLength() ?? null"
       [minLength]="minLength() ?? null"
       [autofocus]="autofocus()"
       [attr.aria-label]="ariaLabel() || null"
+      [attr.aria-labelledby]="ariaLabelledBy() || null"
       [attr.aria-invalid]="status() === 'error' ? 'true' : null"
       [attr.aria-describedby]="computedAriaDescribedBy()"
       [style.resize]="autoResize() ? 'none' : resize()"
       (input)="onInput($event)"
       (focus)="onFocus($event)"
       (blur)="onBlur($event)"
-      class="orc-textarea__native"
+      class="p-inputtextarea p-component orc-textarea__native"
     ></textarea>
   </div>
 

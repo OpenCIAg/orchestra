@@ -42,6 +42,7 @@ export class TextareaComponent implements ControlValueAccessor {
 
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly id = input<string>('');
+  readonly inputId = input<string | undefined>(undefined);
   readonly name = input<string>('');
   readonly size = input<InputSize>('md');
   readonly status = input<InputStatus>('default');
@@ -55,6 +56,9 @@ export class TextareaComponent implements ControlValueAccessor {
   readonly rows = input<number, unknown>(4, {
     transform: (val: unknown) => numberAttribute(val, 4),
   });
+  readonly cols = input<number | undefined, unknown>(undefined, {
+    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+  });
   readonly resize = input<TextareaResize>('vertical');
   readonly autoResize = input(false, { transform: booleanAttribute });
   readonly maxLength = input<number | undefined, unknown>(undefined, {
@@ -65,9 +69,14 @@ export class TextareaComponent implements ControlValueAccessor {
   });
   readonly showCharCount = input(false, { transform: booleanAttribute });
   readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly variant = input<'filled' | 'outlined' | undefined>(undefined);
+  readonly fluid = input(false, { transform: booleanAttribute });
 
   // Acessibilidade WCAG
   readonly ariaLabel = input<string>('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly ariaDescribedby = input<string>('');
 
   // ── Two-Way Model ─────────────────────────────────────────
@@ -85,7 +94,7 @@ export class TextareaComponent implements ControlValueAccessor {
   protected readonly viewValue = linkedSignal<string>(() => this.value());
 
   // ── Computeds ─────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
 
