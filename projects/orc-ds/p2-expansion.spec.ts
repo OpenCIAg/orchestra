@@ -247,6 +247,18 @@ describe('P2 expansion components', () => {
     expect(modelValue).toBe(55);
   });
 
+  it('normalizes Knob values to its min/max/step contract', () => {
+    const fixture = TestBed.createComponent(KnobComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('min', 10);
+    fixture.componentRef.setInput('max', 20);
+    fixture.componentRef.setInput('step', 2);
+    component.writeValue(99);
+    expect(component.value()).toBe(20);
+    component.onInput({ target: { value: '13' } } as unknown as Event);
+    expect(component.value()).toBe(14);
+  });
+
   it('normalizes progress values and exposes PrimeNG display configuration', () => {
     const bar = TestBed.createComponent(ProgressBarComponent);
     bar.componentRef.setInput('value', 140);
