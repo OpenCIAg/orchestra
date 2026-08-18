@@ -7,6 +7,10 @@ export interface PrimeMenuItem {
   value?: string;
   icon?: string;
   disabled?: boolean;
+  visible?: boolean;
+  url?: string;
+  target?: string;
+  badge?: string;
   separator?: boolean;
   items?: PrimeMenuItem[];
   command?: () => void;
@@ -15,15 +19,16 @@ export interface PrimeMenuItem {
 @Component({
   selector: 'orc-menu', standalone: true,
   imports: [CommonModule],
-  template: `<ng-template #renderItems let-menuItems>@for (item of menuItems; track $index) { @if (item.separator) { <hr /> } @else { <div class="menu-entry"><button type="button" role="menuitem" [attr.aria-haspopup]="item.items?.length ? 'true' : null" [disabled]="disabled() || item.disabled" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.items?.length) { <span aria-hidden="true">›</span> }</button>@if (item.items?.length) { <ul role="menu"><ng-container *ngTemplateOutlet="renderItems; context: { $implicit: item.items }" /></ul> }</div> } }</ng-template>@if (!popup() || visible()) { <nav class="orc-menu" [id]="id()" [class]="styleClass()" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" (keydown)="onKeydown($event)"><ng-container *ngTemplateOutlet="renderItems; context: { $implicit: effectiveModel() }" /></nav> }`,
+  template: `<ng-template #renderItems let-menuItems>@for (item of menuItems; track $index) { @if (item.visible !== false) { @if (item.separator) { <hr /> } @else { <div class="menu-entry"><button type="button" role="menuitem" [attr.aria-haspopup]="item.items?.length ? 'true' : null" [disabled]="disabled() || item.disabled" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.badge) { <span class="badge">{{ item.badge }}</span> } @if (item.items?.length) { <span aria-hidden="true">›</span> }</button>@if (item.items?.length) { <ul role="menu"><ng-container *ngTemplateOutlet="renderItems; context: { $implicit: item.items }" /></ul> }</div> } } }</ng-template>@if (!popup() || visible()) { <nav class="p-menu p-component orc-menu" [id]="id()" [class]="'p-menu p-component orc-menu ' + styleClass()" [style]="style()" [style.z-index]="popup() && autoZIndex() ? baseZIndex() + 1 : null" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'menu'" [class.p-menu-overlay]="popup()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)" (keydown)="onKeydown($event)"><ng-container *ngTemplateOutlet="renderItems; context: { $implicit: effectiveModel() }" /></nav> }`,
   styles: [P2_SHARED_STYLES + `.orc-menu{display:grid;min-width:12rem;padding:.35rem;border:1px solid #e2e8f0;border-radius:.5rem;background:#fff;box-shadow:0 10px 24px #0f172a1a}.menu-entry{position:relative}.orc-menu button{display:flex;justify-content:space-between;gap:1rem;width:100%;border:0;border-radius:.35rem;background:transparent;padding:.55rem .7rem;text-align:left}.orc-menu button:hover:not(:disabled){background:#eff6ff}.orc-menu hr{width:100%;border:0;border-top:1px solid #e2e8f0}.orc-menu ul{position:absolute;z-index:2;top:0;left:calc(100% - .25rem);display:grid;min-width:12rem;margin:0;padding:.35rem;border:1px solid #e2e8f0;border-radius:.5rem;background:#fff;box-shadow:0 10px 24px #0f172a1a;list-style:none}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuComponent {
   readonly model = input<PrimeMenuItem[]>([]);
   readonly items = this.model;
-  readonly popup = input(false, { transform: booleanAttribute }); readonly visible = model(false); readonly id = input<string | undefined>(undefined); readonly styleClass = input(''); readonly ariaLabel = input('Menu'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0);
-  readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = this.itemSelect; readonly onShow = output<void>(); readonly onHide = output<void>(); readonly activeIndex = signal(0);
+  readonly popup = input(false, { transform: booleanAttribute }); readonly visible = model(false); readonly id = input<string | undefined>(undefined); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input(''); readonly appendTo = input<HTMLElement | string | null | undefined>(undefined); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly showTransitionOptions = input(''); readonly hideTransitionOptions = input(''); readonly ariaLabel = input('Menu'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly tabindex = input(0);
+  readonly disabled = input(false, { transform: booleanAttribute });
+  readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = this.itemSelect; readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly activeIndex = signal(0);
   effectiveModel(): PrimeMenuItem[] { return this.model(); }
   activate(item: PrimeMenuItem): void { if (this.disabled() || item.disabled || item.separator) return; item.command?.(); this.itemSelect.emit(item); if (this.popup()) this.hide(); }
   show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); } }
