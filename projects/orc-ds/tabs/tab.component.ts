@@ -5,6 +5,8 @@ import {
   TemplateRef,
   viewChild,
   computed,
+  booleanAttribute,
+  model,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabIconPosition } from './tabs.types';
@@ -25,6 +27,13 @@ export class TabComponent {
   readonly icon = input<string>('');
   readonly iconPosition = input<TabIconPosition>('start');
   readonly disabled = input<boolean>(false);
+  readonly closable = input(false, { transform: booleanAttribute });
+  readonly cache = input(true, { transform: booleanAttribute });
+  readonly tooltip = input<string | undefined>(undefined);
+  readonly tooltipPosition = input<'top' | 'bottom' | 'left' | 'right'>('top');
+  readonly headerStyle = input<Record<string, string | number> | undefined>(undefined);
+  readonly headerStyleClass = input('');
+  readonly selected = input(false, { transform: booleanAttribute });
   readonly badge = input<string | number | undefined>(undefined);
   readonly id = input<string>('');
 
@@ -36,4 +45,5 @@ export class TabComponent {
   private readonly fallbackId = `orc-tab-${++uniqueTabIdCounter}`;
   readonly tabId = computed(() => this.id() || this.fallbackId);
   readonly panelId = computed(() => `${this.tabId()}-panel`);
+  readonly closed = model(false);
 }

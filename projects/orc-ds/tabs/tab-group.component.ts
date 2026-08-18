@@ -31,7 +31,13 @@ export class TabGroupComponent {
   readonly scrollable = input<boolean>(false);
   readonly selectOnFocus = input<boolean>(false);
   readonly lazy = input(false);
+  readonly controlClose = input(false);
   readonly showNavigators = input(true);
+  readonly nextButtonAriaLabel = input('Next tab');
+  readonly prevButtonAriaLabel = input('Previous tab');
+  readonly autoHideButtons = input(true);
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly styleClass = input('');
   readonly tabindex = input(0);
   readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string>('Abas de navegação');
@@ -40,9 +46,12 @@ export class TabGroupComponent {
   readonly tabChange = output<TabChangeEvent>();
   readonly onChange = output<TabChangeEvent>();
   readonly tabFocus = output<{ index: number; tab: TabComponent }>();
+  readonly onClose = output<{ originalEvent: Event; index: number; tab: TabComponent }>();
 
   // Abas filhas registradas via contentChildren
   readonly tabs = contentChildren(TabComponent);
+  readonly visibleTabs = computed(() => this.tabs().filter(tab => !tab.closed()));
+  readonly loadedTabs = new Set<TabComponent>();
 
   // Referências dos botões de abas para navegação por teclado e foco programático
   readonly tabButtons = viewChildren<ElementRef<HTMLButtonElement>>('tabBtn');
@@ -50,7 +59,7 @@ export class TabGroupComponent {
 
   // ── Seleção de Aba ────────────────────────────────────────
   selectTab(index: number): void {
-    const tabList = this.tabs();
+    const tabList = this.visibleTabs();
     if (index < 0 || index >= tabList.length) return;
 
     const targetTab = tabList[index];
@@ -58,6 +67,7 @@ export class TabGroupComponent {
 
     this.selectedIndex.set(index);
     this.value.set(index);
+    this.loadedTabs.add(targetTab);
     const event = { index, tab: targetTab };
     this.tabChange.emit(event);
     this.onChange.emit(event);
@@ -65,7 +75,7 @@ export class TabGroupComponent {
 
   // ── Navegação Acessível por Teclado (WAI-ARIA Tabs) ───────
   onKeydown(event: KeyboardEvent, currentIndex: number): void {
-    const tabList = this.tabs();
+    const tabList = this.visibleTabs();
     if (!tabList || tabList.length === 0) return;
 
     const enabledIndices = tabList
@@ -116,7 +126,7 @@ export class TabGroupComponent {
   }
 
   onFocus(index: number): void {
-    const tab = this.tabs()[index];
+    const tab = this.visibleTabs()[index];
     if (!tab || tab.disabled()) return;
     this.tabFocus.emit({ index, tab });
     if (this.selectOnFocus()) this.selectTab(index);
@@ -127,5 +137,16 @@ export class TabGroupComponent {
     if (buttons && buttons[index]) {
       buttons[index].nativeElement.focus();
     }
+  }
+
+  closeTab(index: number, event: Event): void {
+    const tab = this.visibleTabs()[index];
+    if (!tab || !tab.closable() || tab.disabled()) return;
+    this.onClose.emit({ originalEvent: event, index, tab });
+    if (this.controlClose()) return;
+    tab.closed.set(true);
+    const nextIndex = Math.min(this.activeIndex(), Math.max(0, this.visibleTabs().length - 1));
+    this.selectedIndex.set(nextIndex);
+    this.value.set(nextIndex);
   }
 }

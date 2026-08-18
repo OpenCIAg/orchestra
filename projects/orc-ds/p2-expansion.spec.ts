@@ -53,6 +53,7 @@ import { ImageCompareComponent, InplaceComponent, TerminalComponent } from './p2
 import { BlockUiComponent } from './p2/p2-advanced-components';
 import { SpeedDialComponent } from './p2/p2-overlay-components';
 import { ChartComponent, EditorComponent } from './p2/p2-chart-editor-components';
+import { TabComponent, TabGroupComponent } from './tabs';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -1239,6 +1240,15 @@ describe('P2 expansion components', () => {
     component.activate(items[1], new Event('click'));
     expect(component.activeItem()).toBe(items[1]);
     expect(component.isActive(items[1])).toBeTrue();
+  });
+
+  it('supports PrimeNG TabPanel closable/cache inputs and TabView navigation labels', () => {
+    const tab = TestBed.createComponent(TabComponent).componentInstance;
+    expect(tab.cache()).toBeTrue();
+    expect(tab.closable()).toBeFalse();
+    const group = TestBed.createComponent(TabGroupComponent).componentInstance;
+    expect(group.controlClose()).toBeFalse();
+    expect(group.nextButtonAriaLabel()).toBe('Next tab');
   });
 
   it('exposes PrimeNG drag/drop standalone directives', () => {

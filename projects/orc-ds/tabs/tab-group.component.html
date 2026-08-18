@@ -5,6 +5,8 @@
 
 <div
   class="orc-tab-group"
+  [class]="styleClass()"
+  [style]="style()"
   [class.orc-tab-group--variant-line]="variant() === 'line'"
   [class.orc-tab-group--variant-filled]="variant() === 'filled'"
   [class.orc-tab-group--size-sm]="size() === 'sm'"
@@ -21,7 +23,7 @@
     [attr.aria-label]="ariaLabel()"
     [attr.tabindex]="tabindex()"
   >
-    <ng-container *ngFor="let tab of tabs(); let i = index">
+    <ng-container *ngFor="let tab of visibleTabs(); let i = index">
       <!-- Divisor sutil entre abas inativas na variante Filled (Figma Node 69:2171) -->
       <span
         *ngIf="variant() === 'filled' && i > 0 && activeIndex() !== i && activeIndex() !== i - 1"
@@ -42,6 +44,9 @@
         [attr.aria-controls]="tab.panelId()"
         [tabindex]="activeIndex() === i ? 0 : -1"
         [disabled]="tab.disabled()"
+        [title]="tab.tooltip() || null"
+        [class]="tab.headerStyleClass()"
+        [style]="tab.headerStyle()"
         (click)="selectTab(i)"
         (focus)="onFocus(i)"
         (keydown)="onKeydown($event, i)"
@@ -83,6 +88,8 @@
           {{ tab.badge() }}
         </span>
 
+        <span *ngIf="tab.closable()" class="orc-tab-group__close" role="button" tabindex="0" [attr.aria-label]="'Close ' + tab.label()" (click)="closeTab(i, $event); $event.stopPropagation()" (keydown.enter)="closeTab(i, $event); $event.stopPropagation()">×</span>
+
         <!-- Ícone à Direita (end) -->
         <span
           *ngIf="tab.icon() && tab.iconPosition() === 'end'"
@@ -100,7 +107,7 @@
   <!-- Painéis de Conteúdo das Abas (WAI-ARIA Tabpanels) -->
   <div class="orc-tab-group__panels">
     <div
-      *ngFor="let tab of tabs(); let i = index"
+      *ngFor="let tab of visibleTabs(); let i = index"
       role="tabpanel"
       class="orc-tab-group__panel"
       [class.orc-tab-group__panel--active]="activeIndex() === i"
@@ -109,7 +116,7 @@
       [hidden]="activeIndex() !== i"
       tabindex="0"
     >
-      <ng-container *ngIf="activeIndex() === i">
+      <ng-container *ngIf="activeIndex() === i || (!lazy() || tab.cache()) && loadedTabs.has(tab)">
         <ng-container *ngTemplateOutlet="tab.contentTemplate() || null"></ng-container>
       </ng-container>
     </div>
