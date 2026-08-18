@@ -27,9 +27,15 @@ export class PaginatorComponent {
   // ── Inputs & Models (Signals API) ─────────────────────────
   /** Total de itens na coleção de dados */
   readonly totalItems = input<number>(0);
+  /** PrimeNG naming alias for totalItems. */
+  readonly totalRecords = input<number | undefined>(undefined);
 
   /** Quantidade de itens por página (Two-Way Data Binding) */
   readonly pageSize = model<number>(10);
+  /** PrimeNG naming alias for pageSize. */
+  readonly rows = this.pageSize;
+  /** PrimeNG zero-based first-row model. */
+  readonly first = model<number>(0);
 
   /** Página atual selecionada (1-indexed, Two-Way Data Binding) */
   readonly currentPage = model<number>(1);
@@ -57,6 +63,7 @@ export class PaginatorComponent {
 
   /** Quantidade máxima de botões numéricos visíveis antes de colapsar */
   readonly maxVisiblePages = input<number>(7);
+  readonly pageLinkSize = this.maxVisiblePages;
 
   /** Rótulo do botão Anterior */
   readonly previousLabel = input<string>('Anterior');
@@ -79,24 +86,25 @@ export class PaginatorComponent {
   // ── Outputs (Event Emitting) ──────────────────────────────
   /** Disparado sempre que a página ou o pageSize é alterado */
   readonly pageChange = output<PageChangeEvent>();
+  readonly effectiveTotalRecords = computed(() => this.totalRecords() ?? this.totalItems());
 
   // ── Computeds (Reatividade Inteligente) ────────────────────
   /** Total de páginas calculado dinamicamente */
   readonly totalPages = computed(() => {
-    const total = this.totalItems();
+    const total = this.effectiveTotalRecords();
     const size = Math.max(1, this.pageSize() || 1);
     return Math.max(1, Math.ceil(total / size));
   });
 
   /** Índice inicial do intervalo visível (1-indexed) */
   readonly startIndex = computed(() => {
-    if (this.totalItems() === 0) return 0;
+    if (this.effectiveTotalRecords() === 0) return 0;
     return (this.currentPage() - 1) * this.pageSize() + 1;
   });
 
   /** Índice final do intervalo visível (1-indexed) */
   readonly endIndex = computed(() => {
-    return Math.min(this.currentPage() * this.pageSize(), this.totalItems());
+    return Math.min(this.currentPage() * this.pageSize(), this.effectiveTotalRecords());
   });
 
   /** Se está na primeira página */
@@ -159,6 +167,7 @@ export class PaginatorComponent {
     const target = Math.max(1, Math.min(page, this.totalPages()));
     if (target !== this.currentPage()) {
       this.currentPage.set(target);
+      this.first.set((target - 1) * this.pageSize());
       this.emitPageChangeEvent();
     }
   }
@@ -199,9 +208,10 @@ export class PaginatorComponent {
 
     if (newSize && newSize !== this.pageSize()) {
       this.pageSize.set(newSize);
+      this.first.set((this.currentPage() - 1) * newSize);
 
       // Ajusta a página atual caso exceda o novo total de páginas
-      const newTotalPages = Math.max(1, Math.ceil(this.totalItems() / newSize));
+      const newTotalPages = Math.max(1, Math.ceil(this.effectiveTotalRecords() / newSize));
       if (this.currentPage() > newTotalPages) {
         this.currentPage.set(newTotalPages);
       }
@@ -213,12 +223,14 @@ export class PaginatorComponent {
   /** Emite o evento unificado de alteração */
   private emitPageChangeEvent(): void {
     this.pageChange.emit({
+      first: this.first(),
+      rows: this.pageSize(),
       page: this.currentPage(),
       pageSize: this.pageSize(),
       totalPages: this.totalPages(),
       startIndex: this.startIndex(),
       endIndex: this.endIndex(),
-      totalItems: this.totalItems(),
+      totalItems: this.effectiveTotalRecords(),
     });
   }
 }

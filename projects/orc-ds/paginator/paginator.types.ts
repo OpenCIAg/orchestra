@@ -1,4 +1,8 @@
 export interface PageChangeEvent {
+  /** PrimeNG-compatible zero-based first row index. */
+  first: number;
+  /** PrimeNG-compatible rows-per-page value. */
+  rows: number;
   /** Página atual selecionada (1-indexed) */
   page: number;
   /** Quantidade de itens por página */

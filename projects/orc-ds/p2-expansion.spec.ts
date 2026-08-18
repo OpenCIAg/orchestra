@@ -22,6 +22,7 @@ import { StepperComponent } from './stepper/stepper.component';
 import { TableComponent } from './table/table.component';
 import { PanelComponent } from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -309,5 +310,16 @@ describe('P2 expansion components', () => {
     expect(component.open()).toBeTrue();
     component.close();
     expect(component.visible()).toBeFalse();
+  });
+
+  it('supports PrimeNG paginator aliases and first/rows event fields', () => {
+    const fixture = TestBed.createComponent(PaginatorComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('totalRecords', 100);
+    component.rows.set(10);
+    component.goToPage(3);
+    expect(component.totalRecords()).toBe(100);
+    expect(component.first()).toBe(20);
+    expect(component.rows()).toBe(10);
   });
 });
