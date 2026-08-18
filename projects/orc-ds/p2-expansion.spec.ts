@@ -413,6 +413,17 @@ describe('P2 expansion components', () => {
     expect(pickComponent.sourceSelected().has('a')).toBeTrue();
   });
 
+  it('supports Galleria PrimeNG navigation configuration and keyboard navigation', () => {
+    const fixture = TestBed.createComponent(GalleriaComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('images', [{ src: 'a' }, { src: 'b' }]);
+    fixture.componentRef.setInput('fullScreen', true);
+    fixture.componentRef.setInput('showItemNavigators', true);
+    component.onKeydown({ key: 'ArrowRight', preventDefault() {} } as KeyboardEvent);
+    expect(component.activeIndex()).toBe(1);
+    expect(component.fullScreen()).toBeTrue();
+  });
+
   it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
     const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
     panel.show();
