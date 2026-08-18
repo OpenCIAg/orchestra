@@ -8,8 +8,8 @@
     </button>
     @if (clearable() && value()) { <button type="button" class="orc-color-picker__clear" (click)="clear()" [disabled]="effectiveDisabled()" aria-label="Remover cor">×</button> }
   </div>
-  @if (isOpen()) {
-    <div class="orc-color-picker__panel" role="dialog" aria-label="Paleta de cores">
+  @if (isOpen() || inline()) {
+    <div class="orc-color-picker__panel" [class]="panelStyleClass()" role="dialog" aria-label="Paleta de cores">
       <input class="orc-color-picker__native" type="color" [value]="nativeValue()" (input)="onNativeColor($event)" [disabled]="effectiveDisabled()" aria-label="Seletor nativo de cor" />
       @if (showInput()) { <input class="orc-color-picker__text" type="text" [value]="value()" (input)="onTextInput($event)" aria-label="Código hexadecimal" inputmode="text" /> }
       <div class="orc-color-picker__presets" aria-label="Cores predefinidas">

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostListener, booleanAt
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export type ColorPickerSize = 'sm' | 'md' | 'lg';
+export type ColorPickerFormat = 'hex' | 'rgb' | 'hsv';
 
 let nextColorPickerId = 0;
 
@@ -27,32 +28,34 @@ export class ColorPickerComponent implements ControlValueAccessor {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly clearable = input(true, { transform: booleanAttribute });
   readonly showInput = input(true, { transform: booleanAttribute });
+  readonly format = input<ColorPickerFormat>('hex'); readonly inline = input(false, { transform: booleanAttribute }); readonly panelStyleClass = input('');
   readonly ariaLabel = input('Escolher cor');
   readonly colorChange = output<string>();
+  readonly onChange = output<{ value: string }>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClear = output<void>();
   readonly isOpen = signal(false);
   private readonly cvaDisabled = signal(false);
   readonly effectiveId = computed(() => this.id() || this.uniqueId);
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
   readonly nativeValue = computed(() => this.toNativeHex(this.value()));
 
-  private onChange: (value: string) => void = () => {};
+  private cvaChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
 
   writeValue(value: unknown): void { if (typeof value === 'string' && this.isValidColor(value)) this.value.set(value); }
-  registerOnChange(fn: (value: string) => void): void { this.onChange = fn; }
+  registerOnChange(fn: (value: string) => void): void { this.cvaChange = fn; }
   registerOnTouched(fn: () => void): void { this.onTouched = fn; }
   setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
 
-  toggle(): void { if (!this.effectiveDisabled()) this.isOpen.update(open => !open); }
+  toggle(): void { if (!this.effectiveDisabled() && !this.inline()) { const next = !this.isOpen(); this.isOpen.set(next); (next ? this.onShow : this.onHide).emit(); } }
   selectColor(color: string): void { if (!this.effectiveDisabled() && this.isValidColor(color)) { this.update(color); this.isOpen.set(false); } }
   onNativeColor(event: Event): void { this.update((event.target as HTMLInputElement).value.toUpperCase()); }
   onTextInput(event: Event): void { const color = (event.target as HTMLInputElement).value; if (this.isValidColor(color)) this.update(color.toUpperCase()); }
-  clear(): void { if (!this.effectiveDisabled()) { this.update(''); this.isOpen.set(false); } }
+  clear(): void { if (!this.effectiveDisabled()) { this.update(''); this.isOpen.set(false); this.onClear.emit(); this.onHide.emit(); } }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void { if (!this.host.nativeElement.contains(event.target as Node)) this.isOpen.set(false); }
 
-  private update(color: string): void { this.value.set(color); this.onChange(color); this.colorChange.emit(color); this.onTouched(); }
+  private update(color: string): void { this.value.set(color); this.cvaChange(color); this.colorChange.emit(color); this.onChange.emit({ value: color }); this.onTouched(); }
   private isValidColor(color: string): boolean { return /^#[0-9A-Fa-f]{3}(?:[0-9A-Fa-f]{3})?$/.test(color); }
   private toNativeHex(color: string): string { if (/^#[0-9A-Fa-f]{3}$/.test(color)) return '#' + color.slice(1).split('').map(char => char + char).join(''); return this.isValidColor(color) ? color : '#000000'; }
 }

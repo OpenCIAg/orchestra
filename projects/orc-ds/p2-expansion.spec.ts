@@ -29,6 +29,7 @@ import { ContextMenuComponent } from './p2/p2-overlay-components';
 import { SplitterComponent } from './p2/p2-overlay-components';
 import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
@@ -441,5 +442,16 @@ describe('P2 expansion components', () => {
     expect(component.normalizedSizes()).toEqual([50, 50]);
     component.resize(0, 10);
     expect(component.normalizedSizes()[0]).toBeGreaterThan(50);
+  });
+
+  it('supports ColorPicker format inputs and clear behavior', () => {
+    const fixture = TestBed.createComponent(ColorPickerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('inline', true);
+    fixture.componentRef.setInput('format', 'hex');
+    component.selectColor('#ffffff');
+    expect(component.value()).toBe('#ffffff');
+    component.clear();
+    expect(component.value()).toBe('');
   });
 });
