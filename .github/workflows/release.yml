@@ -55,4 +55,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TAG: ${{ github.ref_name == 'main' && 'latest' || github.ref_name }}
+          NPM_TAG: ${{ github.ref_name == 'main' && 'latest' || github.ref_name == 'v19' && 'angular19' || github.ref_name == 'v20' && 'angular20' || github.ref_name == 'v21' && 'angular21' || 'angular22' }}
