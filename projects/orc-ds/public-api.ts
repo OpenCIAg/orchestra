@@ -158,3 +158,5 @@ export * from '@ciag/orchestra/radio-button';
 export * from '@ciag/orchestra/defer';
 export * from '@ciag/orchestra/drag-drop';
 export * from '@ciag/orchestra/tab-menu';
+export * from '@ciag/orchestra/chips';
+export * from '@ciag/orchestra/input-chips';
