@@ -63,12 +63,7 @@ jobs:
       - name: Build library
         run: npm run build:lib
 
-      - name: Create Release Pull Request or Publish
-        uses: changesets/action@v1
-        with:
-          baseBranch: ${{ github.ref_name }}
-          publish: npm publish ./dist/orc-ds --access public --tag $NPM_TAG
-          version: npx changeset version
+      - name: Publish package
+        run: npm publish ./dist/orc-ds --access public --tag "$NPM_TAG"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TAG: ${{ github.ref_name == 'main' && 'latest' || github.ref_name == 'v19' && 'angular19' || github.ref_name == 'v20' && 'angular20' || github.ref_name == 'v21' && 'angular21' || 'angular22' }}
