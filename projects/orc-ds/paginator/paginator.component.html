@@ -119,6 +119,19 @@
     </li>
   </ul>
 
+  @if (showJumpToPageDropdown() || showJumpToPageInput()) {
+    <div class="orc-paginator__jump" role="group" aria-label="Jump to page">
+      @if (showJumpToPageDropdown()) {
+        <select [value]="currentPage()" (change)="goToPage(+$any($event.target).value)" [disabled]="disabled()" aria-label="Page">
+          @for (page of allPages(); track page) { <option [value]="page">{{ page }}</option> }
+        </select>
+      }
+      @if (showJumpToPageInput()) {
+        <input type="number" min="1" [max]="totalPages()" [value]="jumpPageInput()" (input)="jumpPageInput.set($any($event.target).value)" (change)="jumpToPage()" aria-label="Page number" />
+      }
+    </div>
+  }
+
   <!-- Seletor de Itens por Página (Figma Node 32:18566: "20 / Página") -->
   <div
     *ngIf="showPageSizeSelector() && effectivePageSizeOptions().length > 0"

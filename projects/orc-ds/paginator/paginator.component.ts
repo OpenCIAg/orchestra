@@ -100,6 +100,7 @@ export class PaginatorComponent {
 
   /** Atributo de acessibilidade aria-label da tag nav */
   readonly ariaLabel = input<string>('Paginação');
+  readonly jumpPageInput = model('');
 
   // ── Outputs (Event Emitting) ──────────────────────────────
   /** Disparado sempre que a página ou o pageSize é alterado */
@@ -182,6 +183,7 @@ export class PaginatorComponent {
 
     return pages;
   });
+  readonly allPages = computed(() => Array.from({ length: this.totalPages() }, (_, index) => index + 1));
 
   // ── Ações de Navegação ────────────────────────────────────
   /** Navega para uma página específica */
@@ -193,6 +195,12 @@ export class PaginatorComponent {
       this.first.set((target - 1) * this.effectivePageSize());
       this.emitPageChangeEvent();
     }
+  }
+
+  jumpToPage(): void {
+    const target = Number(this.jumpPageInput());
+    if (Number.isFinite(target)) this.goToPage(target);
+    this.jumpPageInput.set('');
   }
 
   /** Navega para a página anterior */
