@@ -21,6 +21,8 @@ export class ChipComponent {
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly id = input<string | undefined>(undefined);
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly selected = model(false);
   readonly removed = output<string | number>();
   readonly onRemove = output<Event>();
@@ -30,6 +32,6 @@ export class ChipComponent {
   }
   remove(event: Event): void {
     event.stopPropagation();
-    if (!this.disabled()) { this.removed.emit(this.value() || this.label()); this.onRemove.emit(event); }
+    if (!this.disabled()) { this.removed.emit(this.value() !== '' ? this.value() : this.label()); this.onRemove.emit(event); }
   }
 }

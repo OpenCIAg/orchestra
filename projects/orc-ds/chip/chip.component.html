@@ -1,4 +1,4 @@
-<div class="orc-chip" [class]="'orc-chip orc-chip--' + variant() + ' orc-chip--' + size() + ' ' + styleClass()" [style]="style()" [class.orc-chip--selected]="selected()" [class.orc-chip--disabled]="disabled()" role="option" [attr.aria-selected]="selectable() ? selected() : null" [attr.aria-disabled]="disabled() ? 'true' : null">
+<div [id]="id() || null" class="p-chip p-component orc-chip" [class]="'p-chip p-component orc-chip orc-chip--' + variant() + ' orc-chip--' + size() + ' ' + styleClass()" [style]="style()" [class.orc-chip--selected]="selected()" [class.orc-chip--disabled]="disabled()" [attr.data-pc-name]="'chip'" role="option" [attr.aria-label]="ariaLabel() || label() || null" [attr.aria-selected]="selectable() ? selected() : null" [attr.aria-disabled]="disabled() ? 'true' : null">
   @if (selectable()) {
     <button type="button" class="orc-chip__main" [disabled]="disabled()" [attr.aria-pressed]="selected()" (click)="toggle()">@if (image()) { <img [src]="image()" alt="" /> } @else if (icon()) { <span aria-hidden="true">{{ icon() }}</span> }{{ label() }}</button>
   } @else {
