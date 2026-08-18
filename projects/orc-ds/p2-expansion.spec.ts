@@ -26,6 +26,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
 import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
+import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
@@ -400,5 +401,18 @@ describe('P2 expansion components', () => {
     component.toggle(first);
     expect(component.open().has(first)).toBeTrue();
     expect(component.open().has(second)).toBeTrue();
+  });
+
+  it('supports OrganizationChart expansion and multiple selection', () => {
+    const fixture = TestBed.createComponent(OrganizationChartComponent);
+    const component = fixture.componentInstance;
+    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child' }] };
+    fixture.componentRef.setInput('value', [root]);
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    component.toggle(root);
+    expect(component.flatNodes()).toHaveSize(2);
+    component.select(root);
+    component.select(root.children[0]);
+    expect(component.selected()).toEqual(['root', 'child']);
   });
 });
