@@ -47,6 +47,8 @@ export class TableComponent<T = any> {
 
   /** Propriedade identificadora única de cada linha (padrão: 'id') */
   readonly rowKey = input<string>('id');
+  readonly id = input<string | undefined>(undefined);
+  readonly ariaLabel = input('Data table');
 
   // ── Seleção de Linhas ─────────────────────────────────────
   /** Habilita seleção de linhas com checkbox na primeira coluna */
@@ -299,7 +301,8 @@ export class TableComponent<T = any> {
     if (this.compareSelectionBy() === 'deepEquals') {
       try { return JSON.stringify(left) === JSON.stringify(right); } catch { return left === right; }
     }
-    const leftId = this.getRowId(left); const rightId = this.getRowId(right);
+    const key = this.dataKey() || this.rowKey();
+    const leftId = (left as any)?.[key] ?? this.getRowId(left); const rightId = (right as any)?.[key] ?? this.getRowId(right);
     return leftId === rightId;
   }
 
@@ -325,7 +328,7 @@ export class TableComponent<T = any> {
 
   toggleSelectAll(event: CheckboxChangeEvent | boolean): void {
     const checked = typeof event === 'boolean' ? event : event.checked;
-    const currentDisplay = this.displayData();
+    const currentDisplay = this.selectionPageOnly() ? this.displayData() : this.sortedData();
     let currentSelected = [...this.selectedRows()];
 
     if (checked) {

@@ -1,12 +1,14 @@
 <div
-  class="orc-table-container"
+  [id]="id() || null"
+  class="p-datatable p-component orc-table-container"
   [class.orc-table-container--bordered]="bordered()"
   [class.orc-table-container--striped]="striped()"
   [class.orc-table-container--hoverable]="hoverable()"
-  [class]="styleClass()"
+  [class]="'p-datatable p-component orc-table-container ' + styleClass()"
+  [attr.data-pc-name]="'datatable'"
   [style]="style()"
 >
-  <div class="orc-table-wrapper" role="region" aria-label="Tabela de dados" tabindex="0">
+  <div class="orc-table-wrapper" role="region" [attr.aria-label]="ariaLabel()" tabindex="0">
     @if (filterable()) {
       <input class="orc-table__filter" type="search" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="applyFilter(($any($event.target)).value)" aria-label="Filter table" />
     }
