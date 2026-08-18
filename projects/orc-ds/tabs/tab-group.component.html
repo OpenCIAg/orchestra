@@ -4,8 +4,9 @@
 </div>
 
 <div
-  class="orc-tab-group"
-  [class]="styleClass()"
+  class="p-tabview p-component orc-tab-group"
+  [class]="'p-tabview p-component orc-tab-group ' + styleClass()"
+  [attr.data-pc-name]="'tabview'"
   [style]="style()"
   [class.orc-tab-group--variant-line]="variant() === 'line'"
   [class.orc-tab-group--variant-filled]="variant() === 'filled'"
@@ -18,7 +19,7 @@
 >
   <!-- Barra de Abas (WAI-ARIA Tablist) -->
   <div
-    class="orc-tab-group__header"
+    class="p-tabview-nav-container orc-tab-group__header"
     role="tablist"
     [attr.aria-label]="ariaLabel()"
     [attr.tabindex]="tabindex()"
@@ -36,7 +37,7 @@
         #tabBtn
         type="button"
         role="tab"
-        class="orc-tab-group__tab"
+        class="p-tabview-nav-link orc-tab-group__tab"
         [class.orc-tab-group__tab--active]="activeIndex() === i"
         [class.orc-tab-group__tab--disabled]="tab.disabled()"
         [id]="tab.tabId()"
@@ -109,7 +110,7 @@
     <div
       *ngFor="let tab of visibleTabs(); let i = index"
       role="tabpanel"
-      class="orc-tab-group__panel"
+      class="p-tabview-panel orc-tab-group__panel"
       [class.orc-tab-group__panel--active]="activeIndex() === i"
       [id]="tab.panelId()"
       [attr.aria-labelledby]="tab.tabId()"

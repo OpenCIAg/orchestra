@@ -120,8 +120,8 @@ export class TabGroupComponent {
     }
 
     if (targetIndex !== -1) {
-      this.selectTab(targetIndex);
       this.focusTab(targetIndex);
+      if (this.selectOnFocus()) this.selectTab(targetIndex);
     }
   }
 
