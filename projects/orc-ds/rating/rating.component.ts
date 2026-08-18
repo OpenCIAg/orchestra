@@ -51,6 +51,7 @@ export class RatingComponent implements ControlValueAccessor {
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly styleClass = input(''); readonly iconOnClass = input(''); readonly iconOffClass = input('');
+  readonly iconOnStyle = input<Record<string, string | number> | undefined>(undefined); readonly iconOffStyle = input<Record<string, string | number> | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly cancel = input(true, { transform: booleanAttribute }); readonly cancelIcon = input('×');
   
   // Array de rótulos ex: ['Péssimo', 'Ruim', 'Regular', 'Bom', 'Excelente']
   readonly tooltips = input<string[]>([]);
@@ -109,12 +110,15 @@ export class RatingComponent implements ControlValueAccessor {
 
     if (this.clearable() && this.value() === selectedValue) {
       selectedValue = 0;
+      this.onCancel.emit(event);
     }
 
     this.updateValue(selectedValue);
     this.onTouched();
     this.onRate.emit({ originalEvent: event, value: selectedValue });
   }
+
+  cancelRating(event: Event): void { if (this.effectiveDisabled() || this.readonly()) return; this.updateValue(0); this.onTouched(); this.onCancel.emit(event); }
 
   onItemHover(index: number, isHalf: boolean = false): void {
     if (this.effectiveDisabled() || this.readonly()) return;

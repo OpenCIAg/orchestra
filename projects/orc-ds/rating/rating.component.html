@@ -11,10 +11,12 @@
   [attr.aria-valuemax]="effectiveStars()"
   [attr.aria-valuetext]="value() + ' de ' + effectiveStars()"
   [attr.tabindex]="effectiveDisabled() ? -1 : 0"
+  [attr.autofocus]="autofocus() ? '' : null"
   (focus)="handleFocus($event)"
   (blur)="handleBlur($event)"
   (mouseleave)="onMouseLeave()"
 >
+  @if (cancel() && value() > 0) { <button type="button" class="orc-rating__cancel" [disabled]="effectiveDisabled() || readonly()" (click)="cancelRating($event)" aria-label="Cancel rating">{{ cancelIcon() }}</button> }
   <div class="orc-rating__items">
     @for (i of starsArray(); track i) {
       <!-- 
@@ -56,12 +58,12 @@
           }
 
           <!-- Ícone Base (Vazio) -->
-          <div class="orc-rating__icon">
+          <div class="orc-rating__icon" [class]="iconOffClass()" [style]="iconOffStyle()">
             <ng-container *ngTemplateOutlet="customIconTemplate || defaultStar"></ng-container>
           </div>
 
           <!-- Ícone Preenchido (Mascarado por largura) -->
-          <div class="orc-rating__icon orc-rating__icon--filled"
+          <div class="orc-rating__icon orc-rating__icon--filled" [class]="iconOnClass()" [style]="iconOnStyle()"
                [style.width.%]="displayValue() >= i ? 100 : (displayValue() > i - 1 ? (displayValue() - (i - 1)) * 100 : 0)">
             <div class="orc-rating__icon-content">
               <ng-container *ngTemplateOutlet="customIconTemplate || defaultStar"></ng-container>
