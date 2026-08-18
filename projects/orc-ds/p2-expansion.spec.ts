@@ -998,8 +998,15 @@ describe('P2 expansion components', () => {
     inplace.activate();
     expect(inplace.active()).toBeTrue();
     inplace.deactivate();
-    const dial = TestBed.createComponent(SpeedDialComponent).componentInstance;
+    const dialFixture = TestBed.createComponent(SpeedDialComponent);
+    const dial = dialFixture.componentInstance;
     dial.show();
+    expect(dial.open()).toBeTrue();
+    document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    expect(dial.open()).toBeFalse();
+    dial.show();
+    dialFixture.componentRef.setInput('hideOnClickOutside', false);
+    document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     expect(dial.open()).toBeTrue();
     dial.hide();
     const compare = TestBed.createComponent(ImageCompareComponent).componentInstance;

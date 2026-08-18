@@ -164,6 +164,7 @@ export interface SpeedDialAction extends P2Option<string> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpeedDialComponent {
+  private readonly host = inject(ElementRef<HTMLElement>);
   readonly actions = input<SpeedDialAction[]>([]); readonly model = input<SpeedDialAction[] | null>(null); readonly direction = input<'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right'>('up'); readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>('linear'); readonly radius = input(0); readonly transitionDelay = input(0); readonly mask = input(false, { transform: booleanAttribute }); readonly disabled = input(false, { transform: booleanAttribute }); readonly hideOnClickOutside = input(true, { transform: booleanAttribute }); readonly styleClass = input(''); readonly buttonClass = input(''); readonly ariaLabel = input('Actions');
   readonly open = model(false);
   readonly icon = input('+');
@@ -175,6 +176,7 @@ export class SpeedDialComponent {
   show(event?: Event): void { if (this.disabled()) return; this.open.set(true); this.visibleChange.emit(true); if (event) this.onShow.emit(event); }
   hide(event?: Event): void { this.open.set(false); this.visibleChange.emit(false); if (event) this.onHide.emit(event); }
   activate(action: SpeedDialAction): void { if (!this.disabled() && !action.disabled) { this.actionSelect.emit(action); this.hide(); } }
+  @HostListener('document:mousedown', ['$event']) onDocumentClick(event: MouseEvent): void { if (!this.hideOnClickOutside() || !this.open()) return; const target = event.target as Node | null; if (target && !this.host.nativeElement.contains(target)) this.hide(event); }
 }
 
 @Component({
