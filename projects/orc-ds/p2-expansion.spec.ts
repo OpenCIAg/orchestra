@@ -29,6 +29,7 @@ import { TableComponent } from './table/table.component';
 import { PanelComponent } from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
@@ -103,6 +104,20 @@ describe('P2 expansion components', () => {
     expect(component.value()).toEqual(['alpha', 'alpha']);
     component.clear(new Event('clear'));
     expect(component.value()).toEqual([]);
+  });
+
+  it('enforces DatePicker selection mode and disabled dates', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('dataType', 'date');
+    fixture.componentRef.setInput('disabledDays', [0]);
+    component.update({ target: { value: '2025-01-05' } } as unknown as Event);
+    expect(component.value()).toBe('');
+    component.update({ target: { value: '2025-01-06' } } as unknown as Event);
+    expect(component.value()).toEqual(new Date('2025-01-06T00:00:00'));
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    component.update({ target: { value: '2025-01-06, 2025-01-07' } } as unknown as Event);
+    expect(component.value()).toHaveSize(2);
   });
 
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
@@ -496,6 +511,19 @@ describe('P2 expansion components', () => {
     expect(component.activeIndex()).toBe(0);
     component.hide();
     expect(component.visible()).toBeFalse();
+  });
+
+  it('supports Paginator jump controls and clamped page state', () => {
+    const fixture = TestBed.createComponent(PaginatorComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('totalRecords', 100);
+    fixture.componentRef.setInput('rows', 10);
+    component.jumpPageInput.set('99');
+    component.jumpToPage();
+    expect(component.currentPage()).toBe(10);
+    component.jumpPageInput.set('0');
+    component.jumpToPage();
+    expect(component.currentPage()).toBe(1);
   });
 
   it('supports PanelMenu controlled expansion and multiple mode', () => {
