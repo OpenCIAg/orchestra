@@ -1,7 +1,7 @@
 @for (pos of positions; track pos) {
   @if (toastsByPosition()[pos].length > 0) {
     <div
-      class="orc-toast-stack"
+      class="p-toast p-component orc-toast-stack"
       [class]="'orc-toast-stack--' + pos"
       role="region"
       aria-label="Notificações"
