@@ -227,6 +227,8 @@ export class FileUploaderComponent implements ControlValueAccessor {
     }
 
     const newItems: FileItemData[] = filesToAdd.map(file => this.createFileItem(file));
+    const invalidFiles = newItems.filter(item => item.status === 'error').map(item => item.file);
+    if (invalidFiles.length) this.onError.emit({ files: invalidFiles });
     
     if (!this.multiple()) {
       this.files.set(newItems);

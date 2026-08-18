@@ -1,4 +1,4 @@
-<div class="orc-file-uploader" [class.orc-file-uploader--disabled]="isDisabled()" [class]="styleClass()" [style]="style()">
+<div class="p-fileupload p-component orc-file-uploader" [class]="'p-fileupload p-component orc-file-uploader ' + (styleClass() || '')" [class.orc-file-uploader--disabled]="isDisabled()" [style]="style()" [attr.data-pc-name]="'fileupload'">
   
   <input 
     #fileInput
@@ -13,7 +13,7 @@
   />
 
   <div 
-    class="orc-file-uploader__dropzone"
+    class="p-fileupload-content orc-file-uploader__dropzone"
     [class.orc-file-uploader__dropzone--dragover]="isDragging() || forceDragover()"
     [class.orc-file-uploader__dropzone--disabled]="isDisabled()"
     role="button"
