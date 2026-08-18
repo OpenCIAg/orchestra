@@ -16,6 +16,7 @@ import { RatingComponent } from './rating/rating.component';
 import { KnobComponent, OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
+import { ProgressSpinnerComponent } from './progress/progress-spinner.component';
 import { ButtonComponent } from './button/button.component';
 import { AlertComponent } from './alert/alert.component';
 import { CardComponent } from './card/card.component';
@@ -283,6 +284,15 @@ describe('P2 expansion components', () => {
     circle.componentRef.setInput('animationDuration', '1s');
     expect(circle.componentInstance.normalizedValue()).toBe(25);
     expect(circle.componentInstance.strokeDashOffset()).toBeGreaterThan(0);
+  });
+
+  it('provides a dedicated ProgressSpinner selector and API', () => {
+    const fixture = TestBed.createComponent(ProgressSpinnerComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('size', 32);
+    fixture.componentRef.setInput('strokeWidth', 4);
+    expect(component.size()).toBe(32);
+    expect(component.strokeWidth()).toBe(4);
   });
 
   it('sorts and selects rows in the data table', () => {
