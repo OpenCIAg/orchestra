@@ -54,6 +54,7 @@ import { BlockUiComponent } from './p2/p2-advanced-components';
 import { SpeedDialComponent } from './p2/p2-overlay-components';
 import { ChartComponent, EditorComponent } from './p2/p2-chart-editor-components';
 import { TabComponent, TabGroupComponent } from './tabs';
+import { ImageComponent } from './image/image.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -880,6 +881,21 @@ describe('P2 expansion components', () => {
     expect(textEvent.source).toBe('user');
     expect(textEvent.html).toContain('Hello');
     expect(selectionEvent).toEqual(jasmine.objectContaining({ source: 'user' }));
+  });
+
+  it('supports PrimeNG Image preview, zoom, rotation, and hide lifecycle', () => {
+    const fixture = TestBed.createComponent(ImageComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('src', 'image.jpg');
+    fixture.componentRef.setInput('preview', true);
+    component.onImageClick();
+    expect(component.previewVisible()).toBeTrue();
+    component.zoomIn();
+    expect(component.scale()).toBe(1.25);
+    component.rotateRight();
+    expect(component.rotation()).toBe(90);
+    component.closePreview();
+    expect(component.previewVisible()).toBeFalse();
   });
 
   it('supports Galleria circular navigation and image change events', () => {
