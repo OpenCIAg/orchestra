@@ -20,21 +20,25 @@ export class SkeletonComponent {
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly variant = input<SkeletonVariant>('text');
   readonly animation = input<SkeletonAnimation>('shimmer');
+  readonly shape = input<'rectangle' | 'square' | 'circle' | undefined>(undefined);
+  readonly size = input<string | number | undefined>(undefined);
   readonly width = input<string | number>('');
   readonly height = input<string | number>('');
   readonly borderRadius = input<string>('');
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly ariaLabel = input<string>('Carregando conteúdo...');
 
   // ── Host Bindings ─────────────────────────────────────────
   @HostBinding('style.display')
   get hostDisplay(): string {
-    return this.variant() === 'circular' ? 'inline-block' : 'block';
+    return this.effectiveVariant() === 'circular' ? 'inline-block' : 'block';
   }
 
   @HostBinding('style.width')
   get hostWidth(): string {
     const w = this.computedWidth();
-    return w || (this.variant() === 'circular' ? '40px' : '100%');
+    return w || (this.effectiveVariant() === 'circular' ? '40px' : '100%');
   }
 
   @HostBinding('style.vertical-align')
@@ -42,10 +46,12 @@ export class SkeletonComponent {
 
   // ── Computed Dimensions ───────────────────────────────────
   readonly computedWidth = computed(() => {
+    const size = this.size();
+    if (size) return typeof size === 'number' ? `${size}px` : size;
     const w = this.width();
     if (w) return typeof w === 'number' ? `${w}px` : w;
 
-    switch (this.variant()) {
+    switch (this.effectiveVariant()) {
       case 'circular':
         return '40px';
       case 'text':
@@ -56,10 +62,12 @@ export class SkeletonComponent {
   });
 
   readonly computedHeight = computed(() => {
+    const size = this.size();
+    if (size) return typeof size === 'number' ? `${size}px` : size;
     const h = this.height();
     if (h) return typeof h === 'number' ? `${h}px` : h;
 
-    switch (this.variant()) {
+    switch (this.effectiveVariant()) {
       case 'circular':
         return '40px';
       case 'rectangular':
@@ -74,7 +82,7 @@ export class SkeletonComponent {
     const r = this.borderRadius();
     if (r) return r;
 
-    switch (this.variant()) {
+    switch (this.effectiveVariant()) {
       case 'circular':
         return '50%';
       case 'text':
@@ -82,5 +90,12 @@ export class SkeletonComponent {
       default:
         return '8px';
     }
+  });
+
+  readonly effectiveVariant = computed<SkeletonVariant>(() => {
+    const shape = this.shape();
+    if (shape === 'circle') return 'circular';
+    if (shape === 'square') return 'rectangular';
+    return this.variant();
   });
 }

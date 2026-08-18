@@ -39,6 +39,8 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
 import { ConfirmDialogComponent, ConfirmationService, PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 import { DropdownComponent } from './dropdown/dropdown.component';
+import { SkeletonComponent } from './skeleton/skeleton.component';
+import { ChipComponent } from './chip/chip.component';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -566,5 +568,37 @@ describe('P2 expansion components', () => {
     expect(changed).toBe(1);
     expect(component.selectedLabel()).toBe('Alpha');
     expect(component.isOptionDisabled(component.options()![1])).toBeTrue();
+  });
+
+  it('supports PrimeNG Skeleton shape, size, style, and animation aliases', () => {
+    const fixture = TestBed.createComponent(SkeletonComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('shape', 'circle');
+    fixture.componentRef.setInput('size', 32);
+    fixture.componentRef.setInput('animation', 'wave');
+    expect(component.effectiveVariant()).toBe('circular');
+    expect(component.computedWidth()).toBe('32px');
+  });
+
+  it('supports PrimeNG Chip icon/image/remove aliases', () => {
+    const fixture = TestBed.createComponent(ChipComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('label', 'Angular');
+    fixture.componentRef.setInput('icon', '★');
+    fixture.componentRef.setInput('removable', true);
+    let removed = false;
+    component.onRemove.subscribe(() => removed = true);
+    component.remove(new Event('click'));
+    expect(removed).toBeTrue();
+  });
+
+  it('supports ProgressSpinner animation and string stroke width aliases', () => {
+    const fixture = TestBed.createComponent(ProgressCircleComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('mode', 'indeterminate');
+    fixture.componentRef.setInput('animation', 'none');
+    fixture.componentRef.setInput('strokeWidth', '6');
+    expect(component.computedStrokeWidth()).toBe(6);
+    expect(component.isIndeterminate()).toBeTrue();
   });
 });

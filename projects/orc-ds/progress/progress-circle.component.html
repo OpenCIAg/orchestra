@@ -7,7 +7,7 @@
   [class.orc-progress-circle--success]="variant() === 'success'"
   [class.orc-progress-circle--warning]="variant() === 'warning'"
   [class.orc-progress-circle--error]="variant() === 'error' || variant() === 'danger'"
-  [class.orc-progress-circle--indeterminate]="isIndeterminate()"
+  [class.orc-progress-circle--indeterminate]="isIndeterminate() && animation() !== 'none'"
   [style.width.px]="pixelSize()"
   [style.height.px]="pixelSize()"
 >

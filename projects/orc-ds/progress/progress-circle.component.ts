@@ -30,7 +30,8 @@ export class ProgressCircleComponent {
   readonly size = input<ProgressSize | number>('md');
 
   /** Espessura do traço (em px). Se omitido, é calculado proporcionalmente ao tamanho */
-  readonly strokeWidth = input<number | undefined>(undefined);
+  readonly strokeWidth = input<number | string | undefined>(undefined);
+  readonly animation = input<'spin' | 'none'>('spin');
 
   /** Exibe o valor numérico centralizado dentro do círculo */
   readonly showValue = input<boolean>(false);
@@ -83,7 +84,8 @@ export class ProgressCircleComponent {
 
   readonly computedStrokeWidth = computed<number>(() => {
     const custom = this.strokeWidth();
-    if (custom !== undefined && custom > 0) return custom;
+    const numeric = typeof custom === 'string' ? Number.parseFloat(custom) : custom;
+    if (numeric !== undefined && numeric > 0) return numeric;
 
     const s = this.pixelSize();
     if (s <= 32) return 3;

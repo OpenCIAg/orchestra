@@ -1,8 +1,8 @@
-<div class="orc-chip" [class]="'orc-chip orc-chip--' + variant() + ' orc-chip--' + size()" [class.orc-chip--selected]="selected()" [class.orc-chip--disabled]="disabled()" role="option" [attr.aria-selected]="selectable() ? selected() : null" [attr.aria-disabled]="disabled() ? 'true' : null">
+<div class="orc-chip" [class]="'orc-chip orc-chip--' + variant() + ' orc-chip--' + size() + ' ' + styleClass()" [style]="style()" [class.orc-chip--selected]="selected()" [class.orc-chip--disabled]="disabled()" role="option" [attr.aria-selected]="selectable() ? selected() : null" [attr.aria-disabled]="disabled() ? 'true' : null">
   @if (selectable()) {
-    <button type="button" class="orc-chip__main" [disabled]="disabled()" [attr.aria-pressed]="selected()" (click)="toggle()">{{ label() }}</button>
+    <button type="button" class="orc-chip__main" [disabled]="disabled()" [attr.aria-pressed]="selected()" (click)="toggle()">@if (image()) { <img [src]="image()" alt="" /> } @else if (icon()) { <span aria-hidden="true">{{ icon() }}</span> }{{ label() }}</button>
   } @else {
-    <span class="orc-chip__main">{{ label() }}</span>
+    <span class="orc-chip__main">@if (image()) { <img [src]="image()" alt="" /> } @else if (icon()) { <span aria-hidden="true">{{ icon() }}</span> }{{ label() }}</span>
   }
-  @if (removable()) { <button type="button" class="orc-chip__remove" [disabled]="disabled()" (click)="remove($event)" aria-label="Remover">×</button> }
+  @if (removable()) { <button type="button" class="orc-chip__remove" [disabled]="disabled()" (click)="remove($event)" aria-label="Remove">{{ removeIcon() }}</button> }
 </div>
