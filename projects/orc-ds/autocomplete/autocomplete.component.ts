@@ -39,6 +39,9 @@ export class AutocompleteComponent implements ControlValueAccessor {
   readonly options = input<AutocompleteOption[]>([]);
   readonly minChars = input(0, { transform: numberAttribute });
   readonly clearable = input(true, { transform: booleanAttribute });
+  readonly loading = input(false, { transform: booleanAttribute });
+  readonly dropdown = input(false, { transform: booleanAttribute });
+  readonly emptyMessage = input('No results found');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input('');
@@ -48,6 +51,8 @@ export class AutocompleteComponent implements ControlValueAccessor {
   readonly isOpen = signal(false);
   readonly activeIndex = signal(-1);
   readonly optionSelected = output<AutocompleteOption>();
+  readonly onChange = output<{ value: string | null }>();
+  readonly onClear = output<void>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onFocusEvent = output<Event>(); readonly onBlurEvent = output<Event>();
   private readonly cvaDisabled = signal(false);
 
   readonly effectiveId = computed(() => this.id() || this.uniqueId);
@@ -62,13 +67,13 @@ export class AutocompleteComponent implements ControlValueAccessor {
   });
   readonly describedBy = computed(() => this.errorMessage() ? `${this.effectiveId()}-error` : this.helperText() ? `${this.effectiveId()}-helper` : null);
 
-  private onChange: (value: string | null) => void = () => {};
+  private cvaChange: (value: string | null) => void = () => {};
   private onTouched: () => void = () => {};
 
   writeValue(value: unknown): void {
     this.value.set(value === null || value === undefined ? null : String(value));
   }
-  registerOnChange(fn: (value: string | null) => void): void { this.onChange = fn; }
+  registerOnChange(fn: (value: string | null) => void): void { this.cvaChange = fn; }
   registerOnTouched(fn: () => void): void { this.onTouched = fn; }
   setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
 
@@ -79,13 +84,15 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.activeIndex.set(this.firstEnabledIndex());
   }
 
-  onFocus(): void {
-    if (!this.effectiveDisabled() && this.query().length >= this.minChars()) this.isOpen.set(true);
+  onFocus(event?: Event): void {
+    if (!this.effectiveDisabled() && (this.dropdown() || this.query().length >= this.minChars())) { this.isOpen.set(true); this.onShow.emit(); }
+    if (event) this.onFocusEvent.emit(event);
   }
 
-  onBlur(): void {
+  onBlur(event?: Event): void {
     this.onTouched();
-    setTimeout(() => this.isOpen.set(false), 120);
+    setTimeout(() => { if (this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); } }, 120);
+    if (event) this.onBlurEvent.emit(event);
   }
 
   select(option: AutocompleteOption): void {
@@ -94,7 +101,8 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.query.set(option.label);
     this.isOpen.set(false);
     this.activeIndex.set(-1);
-    this.onChange(option.value);
+    this.cvaChange(option.value);
+    this.onChange.emit({ value: option.value });
     this.optionSelected.emit(option);
   }
 
@@ -103,7 +111,8 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.value.set(null);
     this.query.set('');
     this.isOpen.set(false);
-    this.onChange(null);
+    this.cvaChange(null);
+    this.onChange.emit({ value: null }); this.onClear.emit();
   }
 
   @HostListener('document:click', ['$event'])

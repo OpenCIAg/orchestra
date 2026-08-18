@@ -27,6 +27,7 @@ import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p
 import { MessagesComponent } from './p2/p2-message-components';
 import { ContextMenuComponent } from './p2/p2-overlay-components';
 import { OrganizationChartComponent } from './p2/p2-org-knob-components';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
 describe('P2 expansion components', () => {
@@ -414,5 +415,18 @@ describe('P2 expansion components', () => {
     component.select(root);
     component.select(root.children[0]);
     expect(component.selected()).toEqual(['root', 'child']);
+  });
+
+  it('supports Autocomplete dropdown, loading, and clear lifecycle', () => {
+    const fixture = TestBed.createComponent(AutocompleteComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('options', [{ value: 'a', label: 'Alpha' }]);
+    fixture.componentRef.setInput('dropdown', true);
+    component.onFocus();
+    expect(component.isOpen()).toBeTrue();
+    component.select(component.filteredOptions()[0]);
+    expect(component.value()).toBe('a');
+    component.clear();
+    expect(component.value()).toBeNull();
   });
 });

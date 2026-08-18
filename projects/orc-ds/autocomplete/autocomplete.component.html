@@ -19,14 +19,15 @@
       [attr.aria-describedby]="describedBy()"
       autocomplete="off"
       (input)="onInput($event)"
-      (focus)="onFocus()"
-      (blur)="onBlur()"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
       (keydown)="onKeydown($event)"
     />
     @if (clearable() && (query() || value())) { <button type="button" class="orc-autocomplete__clear" (mousedown)="$event.preventDefault()" (click)="clear($event)" aria-label="Limpar seleção">×</button> }
   </div>
-  @if (isOpen() && filteredOptions().length) {
+  @if (isOpen() && (filteredOptions().length || loading())) {
     <ul class="orc-autocomplete__list" [id]="listId()" role="listbox">
+      @if (loading()) { <li class="orc-autocomplete__option">{{ emptyMessage() }}</li> }
       @for (option of filteredOptions(); track option.value) {
         <li
           class="orc-autocomplete__option"
@@ -43,6 +44,7 @@
           @if (option.description) { <small>{{ option.description }}</small> }
         </li>
       }
+      @if (!loading() && !filteredOptions().length) { <li class="orc-autocomplete__option">{{ emptyMessage() }}</li> }
     </ul>
   }
   @if (errorMessage() || helperText()) { <p class="orc-autocomplete__message" [class.orc-autocomplete__message--error]="!!errorMessage()" [id]="describedBy()">{{ errorMessage() || helperText() }}</p> }
