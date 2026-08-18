@@ -6,6 +6,7 @@ import { CollapsibleComponent } from './collapsible/collapsible.component';
 import { NumberInputComponent } from './number-input/number-input.component';
 import { InputComponent } from './input/input.component';
 import { TextareaComponent } from './input/textarea.component';
+import { ChipInputComponent } from './chip-input/chip-input.component';
 
 describe('P1 core components', () => {
   it('clamps number input values and increments by step', () => {
@@ -47,6 +48,17 @@ describe('P1 core components', () => {
     textarea.componentRef.setInput('errorMessage', 'Required');
     textarea.detectChanges();
     expect(textarea.nativeElement.querySelector('textarea')?.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('marks ChipInput touched when chips are removed', () => {
+    const fixture = TestBed.createComponent(ChipInputComponent);
+    const component = fixture.componentInstance;
+    component.writeValue(['Angular']);
+    let touched = false;
+    component.registerOnTouched(() => touched = true);
+    component.removeChip(0);
+    expect(touched).toBeTrue();
+    expect(component.value()).toEqual([]);
   });
 
   it('selects an autocomplete option and emits its value', () => {

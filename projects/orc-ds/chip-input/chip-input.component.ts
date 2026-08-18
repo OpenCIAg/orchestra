@@ -145,6 +145,7 @@ export class ChipInputComponent implements ControlValueAccessor {
       const items = pastedText.split(/[\n,]+/).map(item => item.trim()).filter(item => item.length > 0);
       
       items.forEach(item => this.addChip(item, true));
+      this.onTouched();
       this.updateFormAndEmit();
     }
   }
@@ -194,7 +195,7 @@ export class ChipInputComponent implements ControlValueAccessor {
     
     this.value.update(arr => arr.filter((_, i) => i !== index));
     this.a11yMessage.set(`Item ${removedItem} removido.`);
-    
+    this.onTouched();
     this.updateFormAndEmit();
   }
 
