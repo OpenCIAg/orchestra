@@ -70,13 +70,15 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly minFractionDigits = input<number | undefined>(undefined);
   readonly maxFractionDigits = input<number | undefined>(undefined);
   readonly ariaLabel = input('');
+  readonly incrementButtonAriaLabel = input('Increase value');
+  readonly decrementButtonAriaLabel = input('Decrease value');
   readonly ariaRequired = input<boolean | undefined>(undefined); readonly title = input<string | undefined>(undefined); readonly maxlength = input<number | undefined>(undefined); readonly autocomplete = input<string | undefined>(undefined); readonly localeMatcher = input<'lookup' | 'best fit'>('best fit'); readonly variant = input<'filled' | 'outlined' | undefined>(undefined); readonly fluid = input(false, { transform: booleanAttribute });
 
   readonly value = model<number | null>(null);
   readonly blur = output<FocusEvent>();
   readonly onInput = output<{ originalEvent: Event; value: number | null }>(); readonly onFocus = output<Event>(); readonly onBlur = output<FocusEvent>(); readonly onKeyDown = output<KeyboardEvent>(); readonly onClear = output<void>();
   private readonly cvaDisabled = signal(false);
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
   readonly displayValue = computed(() => {
     const value = this.value();
