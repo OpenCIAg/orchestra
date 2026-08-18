@@ -1,8 +1,10 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ContentChild,
   input,
   computed,
+  TemplateRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressMode, ProgressVariant, ProgressSize } from './progress.types';
@@ -16,6 +18,10 @@ import { ProgressMode, ProgressVariant, ProgressSize } from './progress.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressBarComponent {
+  /** PrimeNG-compatible projected content template (`#content`, implicit value). */
+  @ContentChild('content', { read: TemplateRef })
+  readonly contentTemplate?: TemplateRef<unknown>;
+
   // ── Inputs (Signals API) ──────────────────────────────────
   /** Valor percentual atual do progresso (0 a 100) */
   readonly value = input<number>(0);
@@ -86,7 +92,7 @@ export class ProgressBarComponent {
   readonly effectiveColor = computed(() => this.customColor() || this.color() || '');
 
   readonly hasHeader = computed<boolean>(() => {
-    return Boolean(this.label() || this.showValue());
+    return Boolean(this.label());
   });
 
   readonly segmentArray = computed<number[]>(() => {

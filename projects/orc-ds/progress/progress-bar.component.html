@@ -1,5 +1,5 @@
 <div
-  class="orc-progress-bar-host"
+  class="p-progressbar p-component orc-progress-bar-host"
   [class]="'orc-progress-bar-host ' + styleClass()"
   [style]="style()"
   [class.orc-progress-bar--rounded]="rounded()"
@@ -12,6 +12,10 @@
   [class.orc-progress-bar--warning]="variant() === 'warning'"
   [class.orc-progress-bar--error]="variant() === 'error' || variant() === 'danger'"
   [class.orc-progress-bar--indeterminate]="isIndeterminate()"
+  [class.p-progressbar-determinate]="!isIndeterminate()"
+  [class.p-progressbar-indeterminate]="isIndeterminate()"
+  [attr.data-pc-name]="'progressbar'"
+  [attr.data-pc-section]="'root'"
 >
   <!-- Header (Label & Valor numérico) -->
   @if (hasHeader()) {
@@ -59,10 +63,19 @@
       [style.height]="customHeight() ? (customHeight() + (customHeight().toString().endsWith('px') ? '' : 'px')) : null"
     >
       <div
-        class="orc-progress-bar__fill"
+        class="p-progressbar-value p-progressbar-value-animate orc-progress-bar__fill"
         [style.width]="isIndeterminate() ? null : (normalizedValue() + '%')"
         [style.background-color]="effectiveColor() || null"
-      ></div>
+        [attr.data-pc-section]="'value'"
+      >
+        <div class="p-progressbar-label orc-progress-bar__value" [class]="'p-progressbar-label orc-progress-bar__value ' + valueStyleClass()" [attr.data-pc-section]="'label'">
+          @if (contentTemplate) {
+            <ng-container *ngTemplateOutlet="contentTemplate; context: { $implicit: value() }"></ng-container>
+          } @else if (showValue() && normalizedValue() !== 0) {
+            {{ value() }}{{ unit() }}
+          }
+        </div>
+      </div>
     </div>
   }
 </div>
