@@ -102,7 +102,7 @@ export class CalendarComponent {
   readonly ariaLabel = input('Calendar');
   readonly inline = input(true, { transform: booleanAttribute }); readonly showTime = input(false, { transform: booleanAttribute }); readonly dateFormat = input('yy-mm-dd'); readonly showButtonBar = input(false, { transform: booleanAttribute }); readonly selectionMode = input<'single' | 'multiple' | 'range'>('single'); readonly disabledDates = input<Date[]>([]); readonly disabledDays = input<number[]>([]); readonly showOtherMonths = input(true, { transform: booleanAttribute }); readonly selectOtherMonths = input(false, { transform: booleanAttribute });
   readonly dateSelected = output<string>();
-  readonly onSelect = output<{ value: string }>(); readonly onClear = output<void>(); readonly onTodayClick = output<string>();
+  readonly onSelect = output<{ value: string | string[] }>(); readonly onClear = output<void>(); readonly onTodayClick = output<string>();
   readonly weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
   readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
@@ -145,7 +145,7 @@ export class CalendarComponent {
     this.onModelChange(next);
     this.onModelTouched();
     this.dateSelected.emit(day.iso);
-    this.onSelect.emit({ value: next as any });
+    this.onSelect.emit({ value: next });
   }
 
   clear(): void { if (this.isDisabled()) return; this.value.set(''); this.onModelChange(''); this.onModelTouched(); this.onClear.emit(); }

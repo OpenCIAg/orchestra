@@ -87,6 +87,16 @@ describe('P2 expansion components', () => {
     expect(component.value()).toBe('');
   });
 
+  it('exposes Calendar multiple selection arrays through onSelect', () => {
+    const fixture = TestBed.createComponent(CalendarComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    const selected = jasmine.createSpy('selected');
+    component.onSelect.subscribe(selected);
+    component.selectDay(component.days()[15]);
+    expect(selected).toHaveBeenCalledWith({ value: jasmine.any(Array) });
+  });
+
   it('filters a combobox and emits the selected option', () => {
     const fixture = TestBed.createComponent(ComboboxComponent<string>);
     const component = fixture.componentInstance;
