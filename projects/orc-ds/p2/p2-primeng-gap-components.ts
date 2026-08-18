@@ -114,13 +114,14 @@ export class SplitButtonComponent { readonly model = input<Array<{ label: string
 
 @Component({
   selector: 'orc-scroll-top', standalone: true,
-  template: `@if (visible()) { <button type="button" class="orc-p2-scroll-top" (click)="scroll()" [attr.aria-label]="ariaLabel()">↑</button> }`,
+  template: `@if (visible()) { <button type="button" class="p-scrolltop p-component orc-p2-scroll-top" [class]="'p-scrolltop p-component orc-p2-scroll-top ' + styleClass()" [style]="style()" [attr.aria-label]="buttonAriaLabel() || ariaLabel()" [attr.data-pc-name]="'scrolltop'" (click)="scroll()">{{ icon() }}</button> }`,
   styles: [P2_SHARED_STYLES + `.orc-p2-scroll-top{position:fixed;right:1.25rem;bottom:1.25rem;z-index:10;width:2.5rem;height:2.5rem;border:0;border-radius:50%;background:#2563eb;color:#fff;font-size:1.25rem;box-shadow:0 4px 14px #0f172a33}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScrollTopComponent {
-  readonly threshold = input(200); readonly target = input<'window' | 'parent'>('window'); readonly behavior = input<'auto' | 'smooth'>('smooth'); readonly styleClass = input(''); readonly buttonAriaLabel = input<string | undefined>(undefined); readonly ariaLabel = input('Scroll to top'); readonly visible = model(false);
+  readonly threshold = input(200); readonly target = input<'window' | 'parent'>('window'); readonly behavior = input<'auto' | 'smooth'>('smooth'); readonly icon = input('↑'); readonly styleClass = input(''); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly buttonAriaLabel = input<string | undefined>(undefined); readonly ariaLabel = input('Scroll to top'); readonly showTransitionOptions = input('150ms ease'); readonly hideTransitionOptions = input('150ms ease'); readonly visible = model(false); readonly clicked = output<void>();
   constructor(private readonly host: ElementRef<HTMLElement>) {}
-  @HostListener('window:scroll') onScroll(): void { this.visible.set((globalThis.scrollY || 0) > this.threshold()); }
-  scroll(): void { globalThis.scrollTo?.({ top: 0, behavior: this.behavior() }); }
+  @HostListener('window:scroll') onScroll(): void { if (this.target() === 'window') this.visible.set((globalThis.scrollY || 0) > this.threshold()); }
+  @HostListener('scroll') onParentScroll(): void { if (this.target() === 'parent') { const parent = this.host.nativeElement.parentElement; this.visible.set((parent?.scrollTop || 0) > this.threshold()); } }
+  scroll(): void { if (this.target() === 'parent') this.host.nativeElement.parentElement?.scrollTo?.({ top: 0, behavior: this.behavior() }); else globalThis.scrollTo?.({ top: 0, behavior: this.behavior() }); this.clicked.emit(); }
 }
