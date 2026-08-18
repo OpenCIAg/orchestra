@@ -229,15 +229,16 @@ export class FileUploaderComponent implements ControlValueAccessor {
     const newItems: FileItemData[] = filesToAdd.map(file => this.createFileItem(file));
     const invalidFiles = newItems.filter(item => item.status === 'error').map(item => item.file);
     if (invalidFiles.length) this.onError.emit({ files: invalidFiles });
-    
+    const validItems = newItems.filter(item => item.status !== 'error');
+
     if (!this.multiple()) {
-      this.files.set(newItems);
+      this.files.set(validItems);
     } else {
-      this.files.update(list => [...list, ...newItems]);
+      this.files.update(list => [...list, ...validItems]);
     }
 
     this.onChange(this.files());
-    this.onSelect.emit({ originalEvent, files: filesToAdd, currentFiles: this.files().map(item => item.file) });
+    if (validItems.length) this.onSelect.emit({ originalEvent, files: validItems.map(item => item.file), currentFiles: this.files().map(item => item.file) });
     if (this.auto()) this.upload();
   }
 
@@ -283,7 +284,6 @@ export class FileUploaderComponent implements ControlValueAccessor {
       errorMessage,
       previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined
     };
-    if (item.status === 'error') this.onError.emit({ files: [file] });
     return item;
   }
 
