@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, Directive, HostListener, computed, forwardRef, input, model, output, signal } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, Directive, ElementRef, HostListener, computed, forwardRef, input, model, output, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2Option, P2_SHARED_STYLES } from './p2-shared';
 
@@ -65,12 +65,21 @@ export class CascadeSelectComponent { readonly options = input<CascadeOption[]>(
 @Directive({ selector: '[orcKeyFilter],[pKeyFilter]', standalone: true })
 export class KeyFilterDirective { readonly pattern = input<string | RegExp>('[0-9]'); readonly validateOnly = input(false, { transform: booleanAttribute }); readonly ngModelChange = output<string | number>(); @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent): void { if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return; const regex = this.pattern() instanceof RegExp ? this.pattern() as RegExp : new RegExp(this.pattern()); if (!regex.test(event.key)) event.preventDefault(); } }
 
-@Directive({ selector: '[orcInputMask],[pInputMask]', standalone: true })
-export class InputMaskDirective {
+@Directive({ selector: '[orcInputMask],[pInputMask]', standalone: true, providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputMaskDirective), multi: true }] })
+export class InputMaskDirective implements ControlValueAccessor {
   readonly mask = input(''); readonly type = input(''); readonly slotChar = input('_'); readonly autoClear = input(true, { transform: booleanAttribute }); readonly showClear = input(false, { transform: booleanAttribute }); readonly unmask = input(false, { transform: booleanAttribute }); readonly characterPattern = input('[A-Za-z0-9]'); readonly onComplete = output<string>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onInput = output<Event>(); readonly onKeydown = output<Event>(); readonly onClear = output<void>();
-  @HostListener('input', ['$event']) handleInput(event: Event): void { const element = event.target as HTMLInputElement; const raw = element.value.replace(/[^a-zA-Z0-9]/g, ''); let index = 0; const formatted = this.mask().split('').map(token => token === '9' || token === 'a' || token === '*' ? (raw[index++] || (this.autoClear() ? '' : this.slotChar())) : token).join(''); element.value = formatted; this.onInput.emit(event); if (index >= raw.length && raw.length > 0) this.onComplete.emit(this.unmask() ? raw : formatted); }
+  private onModelChange: (value: string) => void = () => {};
+  private onModelTouched: () => void = () => {};
+  private cvaDisabled = false;
+  constructor(private readonly host: ElementRef<HTMLInputElement>) {}
+  writeValue(value: unknown): void { this.host.nativeElement.value = this.format(value == null ? '' : String(value)); }
+  registerOnChange(fn: (value: string) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
+  setDisabledState(disabled: boolean): void { this.cvaDisabled = disabled; this.host.nativeElement.disabled = disabled; }
+  private format(value: string): string { const raw = value.replace(/[^a-zA-Z0-9]/g, ''); let index = 0; return this.mask().split('').map(token => token === '9' || token === 'a' || token === '*' ? (raw[index++] || (this.autoClear() ? '' : this.slotChar())) : token).join(''); }
+  @HostListener('input', ['$event']) handleInput(event: Event): void { if (this.cvaDisabled) return; const element = event.target as HTMLInputElement; const raw = element.value.replace(/[^a-zA-Z0-9]/g, ''); const formatted = this.format(raw); element.value = formatted; this.onModelChange(this.unmask() ? raw : formatted); this.onInput.emit(event); if (raw.length > 0 && raw.length >= this.mask().split('').filter(token => token === '9' || token === 'a' || token === '*').length) this.onComplete.emit(this.unmask() ? raw : formatted); }
   @HostListener('focus', ['$event']) handleFocus(event: Event): void { this.onFocus.emit(event); }
-  @HostListener('blur', ['$event']) handleBlur(event: Event): void { this.onBlur.emit(event); }
+  @HostListener('blur', ['$event']) handleBlur(event: Event): void { this.onModelTouched(); this.onBlur.emit(event); }
   @HostListener('keydown', ['$event']) handleKeydown(event: Event): void { this.onKeydown.emit(event); }
-  clear(): void { this.onClear.emit(); }
+  clear(): void { if (this.cvaDisabled) return; this.host.nativeElement.value = ''; this.onModelChange(''); this.onClear.emit(); }
 }
