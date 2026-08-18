@@ -570,6 +570,24 @@ describe('P2 expansion components', () => {
     expect(component.fullScreen()).toBeTrue();
   });
 
+  it('supports Galleria autoPlay slideshow lifecycle', () => {
+    const fixture = TestBed.createComponent(GalleriaComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('images', [{ src: 'a' }, { src: 'b' }]);
+    fixture.componentRef.setInput('circular', true);
+    fixture.componentRef.setInput('autoPlay', true);
+    fixture.componentRef.setInput('transitionInterval', 10);
+    jasmine.clock().install();
+    try {
+      component.restartSlideShow();
+      jasmine.clock().tick(10);
+      expect(component.activeIndex()).toBe(1);
+      component.stopSlideShow();
+    } finally {
+      jasmine.clock().uninstall();
+    }
+  });
+
   it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
     const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
     panel.show();
