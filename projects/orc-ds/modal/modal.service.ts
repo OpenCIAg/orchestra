@@ -28,7 +28,10 @@ export class ModalService {
 
     // 2. Setar inputs se fornecidos
     if (inputs) {
-      Object.entries(inputs).forEach(([key, value]) => {
+      const config = inputs as Record<string, unknown>;
+      const componentInputs = { ...config };
+      if (config['data'] !== undefined && componentInputs['data'] === undefined) componentInputs['data'] = config['data'];
+      Object.entries(componentInputs).forEach(([key, value]) => {
         componentRef.setInput(key, value);
       });
     }

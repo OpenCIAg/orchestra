@@ -32,6 +32,7 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { AvatarComponent } from './avatar/avatar.component';
 import { AvatarGroupComponent } from './avatar/avatar-group.component';
+import { ModalRef } from './modal/modal-ref';
 import { BadgeComponent } from './badge/badge.component';
 import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
@@ -497,6 +498,14 @@ describe('P2 expansion components', () => {
     group.componentRef.setInput('max', 2);
     expect(group.componentInstance.visibleItems()).toHaveSize(2);
     expect(group.componentInstance.calculatedExcess()).toBe(1);
+  });
+
+  it('supports DynamicDialog-style ModalRef close results', () => {
+    let destroyed = false;
+    const ref = new ModalRef({ instance: {} } as any, () => destroyed = true);
+    ref.close({ saved: true });
+    expect(destroyed).toBeTrue();
+    expect(ref.afterClosed()).toEqual({ saved: true });
   });
 
   it('supports Menubar nested submenu activation', () => {
