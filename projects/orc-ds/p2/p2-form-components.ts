@@ -56,9 +56,9 @@ const fromMonthKey = (value: string): Date => {
             class="p-datepicker-day p-datepicker-calendar-container orc-p2-calendar__day"
             [class.orc-p2-calendar__day--outside]="!day.inCurrentMonth"
             [class.orc-p2-calendar__day--today]="day.today"
-            [class.orc-p2-calendar__day--selected]="value() === day.iso"
+            [class.orc-p2-calendar__day--selected]="isSelected(day.iso)"
             [disabled]="day.disabled"
-            [attr.aria-selected]="value() === day.iso"
+            [attr.aria-selected]="isSelected(day.iso)"
             [attr.aria-label]="day.iso"
             (click)="selectDay(day)">
             {{ day.day }}
@@ -84,7 +84,7 @@ const fromMonthKey = (value: string): Date => {
 })
 export class CalendarComponent {
   private readonly uniqueId = `orc-calendar-${++nextCalendarId}`;
-  readonly value = model('');
+  readonly value = model<string | string[]>('');
   readonly currentMonth = model(toMonthKey(new Date()));
   readonly min = input('');
   readonly max = input('');
@@ -100,6 +100,7 @@ export class CalendarComponent {
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
 
   readonly monthLabel = computed(() => fromMonthKey(this.currentMonth()).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }));
+  isSelected(iso: string): boolean { const value = this.value(); return Array.isArray(value) ? value.includes(iso) : value === iso; }
   readonly days = computed<CalendarDay[]>(() => {
     const month = fromMonthKey(this.currentMonth());
     const start = new Date(month.getFullYear(), month.getMonth(), 1 - month.getDay());
@@ -122,9 +123,19 @@ export class CalendarComponent {
 
   selectDay(day: CalendarDay): void {
     if (day.disabled) return;
-    this.value.set(day.iso);
+    let next: string | string[] = day.iso;
+    if (this.selectionMode() === 'multiple') {
+      const values = Array.isArray(this.value()) ? [...this.value()] : [];
+      const index = values.indexOf(day.iso);
+      index >= 0 ? values.splice(index, 1) : values.push(day.iso);
+      next = values;
+    } else if (this.selectionMode() === 'range') {
+      const values = Array.isArray(this.value()) ? [...this.value()] : [];
+      next = values.length !== 1 ? [day.iso] : (values[0] <= day.iso ? [values[0], day.iso] : [day.iso, values[0]]);
+    }
+    this.value.set(next);
     this.dateSelected.emit(day.iso);
-    this.onSelect.emit({ value: day.iso });
+    this.onSelect.emit({ value: next as any });
   }
 
   clear(): void { if (this.disabled()) return; this.value.set(''); this.onClear.emit(); }
