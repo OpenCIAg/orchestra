@@ -20,7 +20,7 @@ import { InputSize, InputStatus, TextareaResize } from './input.types';
 let nextTextareaUniqueId = 0;
 
 @Component({
-  selector: 'orc-textarea',
+  selector: 'orc-textarea, orc-input-textarea',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './textarea.component.html',

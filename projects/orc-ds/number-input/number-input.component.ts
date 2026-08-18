@@ -20,7 +20,7 @@ export type NumberInputStatus = 'default' | 'error' | 'success';
 let nextNumberInputId = 0;
 
 @Component({
-  selector: 'orc-number-input',
+  selector: 'orc-number-input, orc-input-number',
   standalone: true,
   templateUrl: './number-input.component.html',
   styleUrl: './number-input.component.scss',

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, HostListener, booleanAttribute, inp
 export type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 
 @Component({
-  selector: 'orc-drawer',
+  selector: 'orc-drawer, orc-sidebar',
   standalone: true,
   templateUrl: './drawer.component.html',
   styleUrl: './drawer.component.scss',

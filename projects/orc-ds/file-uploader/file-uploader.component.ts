@@ -21,7 +21,7 @@ import { FileItemComponent } from './file-item/file-item.component';
 import { FileItemData, FileStatus } from './file-uploader.types';
 
 @Component({
-  selector: 'orc-file-uploader',
+  selector: 'orc-file-uploader, orc-file-upload',
   standalone: true,
   imports: [CommonModule, FileItemComponent],
   templateUrl: './file-uploader.component.html',
