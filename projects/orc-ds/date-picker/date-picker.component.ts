@@ -16,7 +16,7 @@ export class DatePickerCalendarComponent {
   select(iso:string):void{if(!this.days().find(day=>day.iso===iso)?.disabled){this.value.set(iso);this.dateSelected.emit(iso);}}
 }
 
-@Component({selector:'orc-date-picker',standalone:true,imports:[CommonModule, DatePickerCalendarComponent],templateUrl:'./date-picker.component.html',styleUrl:'./date-picker.component.scss',changeDetection:ChangeDetectionStrategy.OnPush,providers:[{provide:NG_VALUE_ACCESSOR,useExisting:forwardRef(()=>DatePickerComponent),multi:true}]})
+@Component({selector:'orc-date-picker',standalone:true,imports:[CommonModule, DatePickerCalendarComponent],templateUrl:'./date-picker.component.html',styleUrl:'./date-picker.component.scss',changeDetection:ChangeDetectionStrategy.OnPush,host:{'class':'p-datepicker p-component','[attr.id]':'inputId() || null','[attr.data-pc-name]':"'datepicker'"},providers:[{provide:NG_VALUE_ACCESSOR,useExisting:forwardRef(()=>DatePickerComponent),multi:true}]})
 export class DatePickerComponent implements ControlValueAccessor {
   readonly calendars = viewChildren(DatePickerCalendarComponent);
   readonly maxDateCount=input<number | undefined>(undefined, { transform: numberAttribute }); readonly hideOnDateTimeSelect=input(true, { transform: booleanAttribute });
