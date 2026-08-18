@@ -21,7 +21,12 @@ export class ColorPickerComponent implements ControlValueAccessor {
   private readonly uniqueId = `orc-color-picker-${++nextColorPickerId}`;
 
   readonly id = input('');
+  readonly inputId = input<string | undefined>(undefined);
   readonly label = input('');
+  readonly style = input<Record<string, any> | null | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly appendTo = input<unknown>(undefined);
+  readonly tabindex = input(0);
   readonly value = model('#1C6AED');
   readonly size = input<ColorPickerSize>('md');
   readonly presets = input<string[]>(DEFAULT_PRESETS);
@@ -30,11 +35,12 @@ export class ColorPickerComponent implements ControlValueAccessor {
   readonly showInput = input(true, { transform: booleanAttribute });
   readonly format = input<ColorPickerFormat>('hex'); readonly inline = input(false, { transform: booleanAttribute }); readonly panelStyleClass = input('');
   readonly ariaLabel = input('Escolher cor');
+  readonly showTransitionOptions = input('150ms ease'); readonly hideTransitionOptions = input('150ms ease');
   readonly colorChange = output<string>();
   readonly onChange = output<{ value: string }>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClear = output<void>();
   readonly isOpen = signal(false);
   private readonly cvaDisabled = signal(false);
-  readonly effectiveId = computed(() => this.id() || this.uniqueId);
+  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
   readonly nativeValue = computed(() => this.toNativeHex(this.value()));
 

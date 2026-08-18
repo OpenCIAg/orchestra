@@ -1,7 +1,7 @@
-<div class="orc-color-picker" [class.orc-color-picker--disabled]="effectiveDisabled()">
+<div class="p-colorpicker p-component orc-color-picker" [class]="'p-colorpicker p-component orc-color-picker ' + styleClass()" [style]="style()" [class.orc-color-picker--disabled]="effectiveDisabled()" [attr.data-pc-name]="'colorpicker'">
   @if (label()) { <label class="orc-color-picker__label" [for]="effectiveId()">{{ label() }}</label> }
   <div class="orc-color-picker__control">
-    <button type="button" class="orc-color-picker__trigger" [id]="effectiveId()" [disabled]="effectiveDisabled()" [attr.aria-label]="ariaLabel()" [attr.aria-expanded]="isOpen()" (click)="toggle()">
+    <button type="button" class="orc-color-picker__trigger" [id]="effectiveId()" [disabled]="effectiveDisabled()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-expanded]="isOpen()" (click)="toggle()">
       <span class="orc-color-picker__swatch" [style.background-color]="value() || 'transparent'" aria-hidden="true"></span>
       @if (showInput()) { <span class="orc-color-picker__value">{{ value() || 'Sem cor' }}</span> }
       <span class="orc-color-picker__chevron" aria-hidden="true">⌄</span>
@@ -9,7 +9,7 @@
     @if (clearable() && value()) { <button type="button" class="orc-color-picker__clear" (click)="clear()" [disabled]="effectiveDisabled()" aria-label="Remover cor">×</button> }
   </div>
   @if (isOpen() || inline()) {
-    <div class="orc-color-picker__panel" [class]="panelStyleClass()" role="dialog" aria-label="Paleta de cores">
+    <div class="p-colorpicker-panel p-component orc-color-picker__panel" [class]="'p-colorpicker-panel p-component orc-color-picker__panel ' + panelStyleClass()" role="dialog" aria-label="Paleta de cores">
       <input class="orc-color-picker__native" type="color" [value]="nativeValue()" (input)="onNativeColor($event)" [disabled]="effectiveDisabled()" aria-label="Seletor nativo de cor" />
       @if (showInput()) { <input class="orc-color-picker__text" type="text" [value]="value()" (input)="onTextInput($event)" aria-label="Código hexadecimal" inputmode="text" /> }
       <div class="orc-color-picker__presets" aria-label="Cores predefinidas">
