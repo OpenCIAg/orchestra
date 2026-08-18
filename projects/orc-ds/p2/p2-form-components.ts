@@ -84,7 +84,7 @@ export class CalendarComponent {
   readonly max = input('');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input('Calendar');
-  readonly inline = input(true, { transform: booleanAttribute }); readonly showTime = input(false, { transform: booleanAttribute }); readonly dateFormat = input('yy-mm-dd'); readonly showButtonBar = input(false, { transform: booleanAttribute });
+  readonly inline = input(true, { transform: booleanAttribute }); readonly showTime = input(false, { transform: booleanAttribute }); readonly dateFormat = input('yy-mm-dd'); readonly showButtonBar = input(false, { transform: booleanAttribute }); readonly selectionMode = input<'single' | 'multiple' | 'range'>('single'); readonly disabledDates = input<Date[]>([]); readonly disabledDays = input<number[]>([]); readonly showOtherMonths = input(true, { transform: booleanAttribute }); readonly selectOtherMonths = input(false, { transform: booleanAttribute });
   readonly dateSelected = output<string>();
   readonly onSelect = output<{ value: string }>(); readonly onClear = output<void>(); readonly onTodayClick = output<string>();
   readonly weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -102,7 +102,7 @@ export class CalendarComponent {
         day: date.getDate(),
         inCurrentMonth: date.getMonth() === month.getMonth(),
         today: iso === today,
-        disabled: this.disabled() || (!!this.min() && iso < this.min()) || (!!this.max() && iso > this.max()),
+        disabled: this.disabled() || (!!this.min() && iso < this.min()) || (!!this.max() && iso > this.max()) || this.disabledDays().includes(date.getDay()) || this.disabledDates().some(disabled => disabled.toDateString() === date.toDateString()) || (!this.selectOtherMonths() && date.getMonth() !== month.getMonth()),
       };
     });
   });
