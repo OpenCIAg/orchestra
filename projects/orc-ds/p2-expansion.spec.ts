@@ -383,6 +383,21 @@ describe('P2 expansion components', () => {
     expect(component.selected().size).toBe(0);
   });
 
+  it('emits DataView layout and initial lazy-load lifecycle events', () => {
+    const fixture = TestBed.createComponent(DataViewComponent);
+    const component = fixture.componentInstance as DataViewComponent<{ id: number }>;
+    fixture.componentRef.setInput('lazy', true);
+    fixture.componentRef.setInput('lazyLoadOnInit', true);
+    const lazy = jasmine.createSpy('lazy');
+    const layout = jasmine.createSpy('layout');
+    component.onLazyLoad.subscribe(lazy);
+    component.onChangeLayout.subscribe(layout);
+    component.ngOnInit();
+    component.setLayout('list');
+    expect(lazy).toHaveBeenCalledWith({ first: 0, rows: 10 });
+    expect(layout).toHaveBeenCalledWith('list');
+  });
+
   it('supports controlled OverlayPanel and Popover show/hide lifecycle', () => {
     const panel = TestBed.createComponent(OverlayPanelComponent).componentInstance;
     panel.show();
