@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, forwardRef, input, model, output } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, ElementRef, forwardRef, input, model, output, signal, viewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2_SHARED_STYLES } from './p2-shared';
 
@@ -8,15 +8,16 @@ export interface ChartData { labels: string[]; datasets: ChartDataset[]; }
 
 @Component({
   selector: 'orc-chart', standalone: true,
-  template: `<div class="orc-chart" [class]="styleClass()" [style.width]="width()" [style.height]="height()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()"><svg viewBox="0 0 100 60" preserveAspectRatio="none" role="img"><g class="grid"><line x1="5" y1="5" x2="5" y2="55" /><line x1="5" y1="55" x2="98" y2="55" /></g>@if (type() === 'bar') { @for (bar of bars(); track $index) { <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.width" [attr.height]="bar.height" [attr.fill]="bar.color" (click)="selectPoint(bar.index, $event)" /> } } @else if (type() === 'line') { @for (line of lines(); track $index) { <polyline [attr.points]="line.points" [attr.stroke]="line.color" /> @for (point of line.pointList; track $index) { <circle [attr.cx]="point.x" [attr.cy]="point.y" r=".8" [attr.fill]="line.color" (click)="selectPoint(point.index, $event)" /> } } } @else { @for (slice of doughnutSlices(); track $index) { <path [attr.d]="slice.path" [attr.fill]="slice.color" (click)="selectPoint(slice.index, $event)" /> } } </svg><div class="legend">@for (item of legend(); track $index) { <span><i [style.background]="item.color"></i>{{ item.label }}</span> }</div></div>`,
+  template: `<div class="orc-chart" [class]="styleClass()" [style.width]="width()" [style.height]="height()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()"><svg #chartSvg viewBox="0 0 100 60" preserveAspectRatio="none" role="img"><g class="grid"><line x1="5" y1="5" x2="5" y2="55" /><line x1="5" y1="55" x2="98" y2="55" /></g>@if (type() === 'bar') { @for (bar of bars(); track $index) { <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.width" [attr.height]="bar.height" [attr.fill]="bar.color" (click)="selectPoint(bar.index, $event)" /> } } @else if (type() === 'line') { @for (line of lines(); track $index) { <polyline [attr.points]="line.points" [attr.stroke]="line.color" /> @for (point of line.pointList; track $index) { <circle [attr.cx]="point.x" [attr.cy]="point.y" r=".8" [attr.fill]="line.color" (click)="selectPoint(point.index, $event)" /> } } } @else { @for (slice of doughnutSlices(); track $index) { <path [attr.d]="slice.path" [attr.fill]="slice.color" (click)="selectPoint(slice.index, $event)" /> } } </svg><div class="legend">@for (item of legend(); track $index) { <span><i [style.background]="item.color"></i>{{ item.label }}</span> }</div></div>`,
   styles: [P2_SHARED_STYLES + `.orc-chart{display:block;width:100%;min-height:12rem}.orc-chart svg{display:block;width:100%;height:calc(100% - 1.5rem);overflow:visible}.grid line{stroke:#e2e8f0;stroke-width:.25}.orc-chart rect{cursor:pointer}.orc-chart polyline{fill:none;stroke-width:1.2;stroke-linejoin:round;stroke-linecap:round}.orc-chart circle{cursor:pointer}.legend{display:flex;flex-wrap:wrap;gap:.7rem;font-size:.75rem;color:#475569}.legend span{display:inline-flex;gap:.3rem;align-items:center}.legend i{display:inline-block;width:.65rem;height:.65rem;border-radius:.15rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartComponent {
   readonly type = input<ChartType | 'scatter' | 'bubble' | 'pie' | 'polarArea' | 'radar'>('bar'); readonly data = input<ChartData>({ labels: [], datasets: [] }); readonly plugins = input<any[]>([]); readonly width = input<string | undefined>(undefined); readonly height = input('260px'); readonly responsive = input(true, { transform: booleanAttribute }); readonly styleClass = input(''); readonly ariaLabel = input('Chart'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly pointClick = output<number>(); readonly onDataSelect = output<{ index: number; originalEvent?: Event }>();
-  refresh(): void {}
-  reinit(): void {}
-  getBase64Image(): string | undefined { return undefined; }
+  readonly chartSvg = viewChild<ElementRef<SVGSVGElement>>('chartSvg'); readonly renderVersion = signal(0);
+  refresh(): void { this.renderVersion.update(value => value + 1); }
+  reinit(): void { this.refresh(); }
+  getBase64Image(): string | undefined { const svg = this.chartSvg()?.nativeElement; if (!svg || typeof XMLSerializer === 'undefined') return undefined; const encoded = btoa(unescape(encodeURIComponent(new XMLSerializer().serializeToString(svg)))); return `data:image/svg+xml;base64,${encoded}`; }
   generateLegend(): string { return this.data().labels.join(', '); }
   selectPoint(index: number, event?: Event): void { this.pointClick.emit(index); this.onDataSelect.emit({ index, originalEvent: event }); }
   private color(index: number, dataset: ChartDataset): string { const value = dataset.backgroundColor; return Array.isArray(value) ? (value[index] || '#3b82f6') : (value || '#3b82f6'); }
