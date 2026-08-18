@@ -489,6 +489,11 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('popup', true);
     component.show();
     expect(component.visible()).toBeTrue();
+    fixture.componentRef.setInput('items', [{ label: 'File', value: 'file' }, { label: 'Edit', value: 'edit' }]);
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    expect(component.activeIndex()).toBe(1);
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'Home' }));
+    expect(component.activeIndex()).toBe(0);
     component.hide();
     expect(component.visible()).toBeFalse();
   });
