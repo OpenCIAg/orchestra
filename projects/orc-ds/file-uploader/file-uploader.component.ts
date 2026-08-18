@@ -48,6 +48,12 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly maxFiles = input<number>(10);
   readonly fileLimit = input<number | undefined>(undefined, { transform: numberAttribute });
   readonly maxFileSize = input(5 * 1024 * 1024, { transform: numberAttribute }); // PrimeNG-compatible bytes
+  readonly invalidFileSizeMessageSummary = input('File too large');
+  readonly invalidFileSizeMessageDetail = input('Maximum allowed size is {0}.');
+  readonly invalidFileTypeMessageSummary = input('Invalid file type');
+  readonly invalidFileTypeMessageDetail = input('Allowed file types: {0}.');
+  readonly invalidFileLimitMessageSummary = input('Maximum number of files exceeded');
+  readonly invalidFileLimitMessageDetail = input('Maximum {0} files allowed.');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly label = input<string>('Clique ou arraste seus arquivos aqui');
   readonly subLabel = input<string>('Suporta imagens e PDFs');
@@ -78,6 +84,9 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly onProgress = output<{ progress: number }>();
   readonly onBeforeUpload = output<void>();
   readonly uploadHandler = output<{ files: File[] }>();
+  readonly onSend = output<{ files: File[] }>();
+  readonly onImageError = output<{ file: File; originalEvent: Event }>();
+  readonly onRemoveUploadedFile = output<{ file: File; originalEvent: Event }>();
 
   // ── Internal State (Signals) ────────────────────────────────
   readonly files = signal<FileItemData[]>([]);
@@ -186,7 +195,10 @@ export class FileUploaderComponent implements ControlValueAccessor {
       filesToAdd = [newFiles[0]];
     } else {
       const remainingSlots = (this.fileLimit() ?? this.maxFiles()) - currentFiles.length;
-      if (remainingSlots <= 0) return;
+      if (remainingSlots <= 0) {
+        this.onError.emit({ files: [], error: this.invalidFileLimitMessageDetail().replace('{0}', String(this.fileLimit() ?? this.maxFiles())) });
+        return;
+      }
       filesToAdd = newFiles.slice(0, remainingSlots);
     }
 
@@ -227,10 +239,10 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
     if (isOverSize) {
       status = 'error';
-      errorMessage = `O arquivo excede o limite de ${this.formatBytes(this.maxFileSize())}`;
+      errorMessage = `${this.invalidFileSizeMessageSummary()}: ${this.invalidFileSizeMessageDetail().replace('{0}', this.formatBytes(this.maxFileSize()))}`;
     } else if (isInvalidType) {
       status = 'error';
-      errorMessage = 'Formato de arquivo não suportado';
+      errorMessage = `${this.invalidFileTypeMessageSummary()}: ${this.invalidFileTypeMessageDetail().replace('{0}', this.accept())}`;
     }
 
     const item = {
