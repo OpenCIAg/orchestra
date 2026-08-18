@@ -18,6 +18,7 @@ import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { ButtonComponent } from './button/button.component';
 import { AlertComponent } from './alert/alert.component';
+import { CardComponent } from './card/card.component';
 import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
 import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
@@ -622,5 +623,18 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('closable', true);
     expect(component.activeMessage()).toBe('Saved');
     expect(component.isClosable()).toBeTrue();
+  });
+
+  it('supports PrimeNG Card header, subheader, style, and click aliases', () => {
+    const fixture = TestBed.createComponent(CardComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('header', 'Summary');
+    fixture.componentRef.setInput('subheader', 'Details');
+    fixture.componentRef.setInput('clickable', true);
+    let clicked = false;
+    component.onClickEvent.subscribe(() => clicked = true);
+    component.onClick();
+    expect(component.header()).toBe('Summary');
+    expect(clicked).toBeFalse();
   });
 });

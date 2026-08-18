@@ -1,14 +1,19 @@
 <div
-  class="card"
+  class="card {{ styleClass() }}"
+  [style]="style()"
   [class.card--clickable]="clickable()"
   [class.card--selected]="selected()"
   [class.card--dashboard]="variant() === 'dashboard'"
   [attr.role]="clickable() ? 'button' : null"
   [attr.tabindex]="clickable() ? 0 : null"
   [attr.aria-selected]="selected() ? true : null"
-  (click)="onClick()"
+  [attr.aria-label]="ariaLabel() || null"
+  (click)="onClick(); onClickEvent.emit($event)"
   (keydown.enter)="onClick()"
   (keydown.space)="onClick()"
 >
+  @if (header() || subheader()) {
+    <div class="card__header">@if (header()) { <div class="card__title">{{ header() }}</div> } @if (subheader()) { <div class="card__subtitle">{{ subheader() }}</div> }</div>
+  }
   <ng-content></ng-content>
 </div>
