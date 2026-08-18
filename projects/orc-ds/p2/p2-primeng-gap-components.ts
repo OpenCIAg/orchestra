@@ -5,7 +5,7 @@ import { P2_SHARED_STYLES } from './p2-shared';
 
 @Component({
   selector: 'orc-panel', standalone: true,
-  template: `<section class="orc-p2-panel" [class]="styleClass()" [class.collapsed]="collapsed()" [attr.aria-label]="ariaLabel() || null">
+  template: `<section class="p-panel p-component orc-p2-panel" [class]="'p-panel p-component orc-p2-panel ' + styleClass()" [style]="style()" [class.collapsed]="collapsed()" [attr.aria-label]="ariaLabel() || null" [attr.data-pc-name]="'panel'">
     <header class="orc-p2-panel__header" (click)="toggle()">
       <span class="orc-p2-panel__title"><ng-content select="[orcPanelHeader]" /> @if (!hasHeader()) { {{ header() }} }</span>
       @if (toggleable()) { <button type="button" class="orc-p2-panel__toggle" [attr.aria-expanded]="!collapsed()" (click)="$event.stopPropagation(); toggle()" [attr.aria-label]="collapsed() ? 'Expand panel' : 'Collapse panel'">{{ collapsed() ? '＋' : '−' }}</button> }
@@ -26,7 +26,7 @@ export class PanelComponent {
 
 @Component({
   selector: 'orc-fieldset', standalone: true,
-  template: `<fieldset class="orc-p2-fieldset" [class.collapsed]="collapsed()" [class]="styleClass()" [attr.aria-label]="ariaLabel() || legend()"><legend>{{ legend() }}@if (toggleable()) { <button type="button" [attr.aria-expanded]="!collapsed()" (click)="toggle()" [attr.aria-label]="collapsed() ? 'Expand' : 'Collapse'">{{ collapsed() ? '＋' : '−' }}</button> }</legend>@if (!collapsed()) { <div class="content"><ng-content /></div> }</fieldset>`,
+  template: `<fieldset class="p-fieldset p-component orc-p2-fieldset" [class]="'p-fieldset p-component orc-p2-fieldset ' + styleClass()" [style]="style()" [class.collapsed]="collapsed()" [attr.aria-label]="ariaLabel() || legend()" [attr.data-pc-name]="'fieldset'"><legend>{{ legend() }}@if (toggleable()) { <button type="button" [attr.aria-expanded]="!collapsed()" (click)="toggle()" [attr.aria-label]="collapsed() ? 'Expand' : 'Collapse'">{{ collapsed() ? '＋' : '−' }}</button> }</legend>@if (!collapsed()) { <div class="content"><ng-content /></div> }</fieldset>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-fieldset{min-width:0;border:1px solid #e2e8f0;border-radius:.625rem;background:#fff;color:#0f172a}.orc-p2-fieldset legend{padding:0 .45rem;font-weight:600}.orc-p2-fieldset legend button{margin-left:.5rem;border:0;background:transparent}.orc-p2-fieldset .content{padding:.85rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -39,7 +39,7 @@ export class FieldsetComponent {
 
 @Component({
   selector: 'orc-float-label', standalone: true,
-  template: `<span class="orc-p2-float-label"><ng-content /></span>`,
+  template: `<span class="p-floatlabel p-component orc-p2-float-label" [class]="'p-floatlabel p-component orc-p2-float-label variant-' + variant() + ' ' + styleClass()"><ng-content /></span>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-float-label{position:relative;display:block}.orc-p2-float-label>label{position:absolute;z-index:1;top:50%;left:.75rem;transform:translateY(-50%);padding:0 .2rem;color:#64748b;background:#fff;pointer-events:none;transition:.15s}.orc-p2-float-label:focus-within>label,.orc-p2-float-label>.filled+label{top:0;font-size:.75rem;color:#2563eb}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -47,7 +47,7 @@ export class FloatLabelComponent { readonly variant = input<'in' | 'over' | 'on'
 
 @Component({
   selector: 'orc-fluid', standalone: true,
-  template: `<div class="orc-p2-fluid"><ng-content /></div>`,
+  template: `<div class="p-fluid p-component orc-p2-fluid" [class]="'p-fluid p-component orc-p2-fluid ' + styleClass()"><ng-content /></div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-fluid{display:flex;flex-direction:column;width:100%;gap:1rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
