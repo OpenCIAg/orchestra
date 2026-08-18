@@ -9,6 +9,8 @@ import {
   ComponentRef,
   ViewContainerRef,
   Renderer2,
+  booleanAttribute,
+  numberAttribute,
 } from '@angular/core';
 import { TooltipComponent } from './tooltip.component';
 import { TooltipPosition, TooltipTheme } from './tooltip.types';
@@ -33,12 +35,23 @@ export class TooltipDirective implements OnDestroy {
   readonly tooltipTheme = input<TooltipTheme>('dark');
   readonly tooltipShowDelay = input<number>(150);
   readonly tooltipHideDelay = input<number>(100);
-  readonly tooltipDisabled = input<boolean>(false);
+  readonly showDelay = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly hideDelay = input<number | undefined>(undefined, { transform: numberAttribute });
+  readonly tooltipEvent = input<'hover' | 'focus' | 'both'>('both');
+  readonly position = input<TooltipPosition | undefined>(undefined);
+  readonly autoHide = input(true, { transform: booleanAttribute });
+  readonly hideOnEscape = input(true, { transform: booleanAttribute });
+  readonly tooltipDisabled = input<boolean>(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly appendTo = input<'body' | 'self'>('body');
 
   // Texto efetivo do tooltip
   readonly tooltipText = computed(() => {
     return this.appTooltip() || this.uiTooltip() || this.orcTooltip() || '';
   });
+  readonly effectiveShowDelay = computed(() => this.showDelay() ?? this.tooltipShowDelay());
+  readonly effectiveHideDelay = computed(() => this.hideDelay() ?? this.tooltipHideDelay());
+  readonly effectivePosition = computed(() => this.position() ?? this.tooltipPosition());
 
   private componentRef: ComponentRef<TooltipComponent> | null = null;
   private showTimeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -47,26 +60,31 @@ export class TooltipDirective implements OnDestroy {
 
   @HostListener('mouseenter')
   onMouseEnter(): void {
+    if (this.tooltipEvent() === 'focus') return;
     this.scheduleShow();
   }
 
   @HostListener('mouseleave')
   onMouseLeave(): void {
+    if (this.tooltipEvent() === 'focus' || !this.autoHide()) return;
     this.scheduleHide();
   }
 
   @HostListener('focusin')
   onFocusIn(): void {
+    if (this.tooltipEvent() === 'hover') return;
     this.scheduleShow();
   }
 
   @HostListener('focusout')
   onFocusOut(): void {
+    if (this.tooltipEvent() === 'hover') return;
     this.scheduleHide();
   }
 
   @HostListener('keydown.escape')
   onEscape(): void {
+    if (!this.hideOnEscape()) return;
     this.hideImmediately();
   }
 
@@ -76,7 +94,7 @@ export class TooltipDirective implements OnDestroy {
     this.clearHideTimeout();
     if (this.componentRef) return;
 
-    const delay = this.tooltipShowDelay();
+    const delay = this.effectiveShowDelay();
     if (delay <= 0) {
       this.show();
     } else {
@@ -88,7 +106,7 @@ export class TooltipDirective implements OnDestroy {
     this.clearShowTimeout();
     if (!this.componentRef) return;
 
-    const delay = this.tooltipHideDelay();
+    const delay = this.effectiveHideDelay();
     if (delay <= 0) {
       this.hide();
     } else {
@@ -105,11 +123,12 @@ export class TooltipDirective implements OnDestroy {
 
     instance.text.set(this.tooltipText());
     instance.theme.set(this.tooltipTheme());
-    instance.position.set(this.tooltipPosition());
+    instance.position.set(this.effectivePosition());
     instance.id.set(this.tooltipId);
+    instance.styleClass.set(this.styleClass());
 
     const domElement = this.componentRef.location.nativeElement as HTMLElement;
-    this.renderer.appendChild(document.body, domElement);
+    this.renderer.appendChild(this.appendTo() === 'self' ? this.elementRef.nativeElement : document.body, domElement);
 
     // The tooltip starts with empty signal values. Render the new inputs before
     // measuring it, otherwise positioning uses the empty shell's dimensions
@@ -180,7 +199,7 @@ export class TooltipDirective implements OnDestroy {
     const tooltipRect = tooltipEl.getBoundingClientRect();
 
     const margin = 8;
-    let pos = this.tooltipPosition();
+    let pos = this.effectivePosition();
 
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;

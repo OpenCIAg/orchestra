@@ -25,4 +25,5 @@ export class TooltipComponent {
   readonly actualPosition = signal<TooltipPosition>('top');
   readonly visible = signal<boolean>(false);
   readonly id = signal<string>('');
+  readonly styleClass = signal<string>('');
 }
