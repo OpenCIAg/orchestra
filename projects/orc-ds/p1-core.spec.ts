@@ -4,6 +4,8 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { ChipComponent } from './chip/chip.component';
 import { CollapsibleComponent } from './collapsible/collapsible.component';
 import { NumberInputComponent } from './number-input/number-input.component';
+import { InputComponent } from './input/input.component';
+import { TextareaComponent } from './input/textarea.component';
 
 describe('P1 core components', () => {
   it('clamps number input values and increments by step', () => {
@@ -32,6 +34,19 @@ describe('P1 core components', () => {
     component.handleInput({ target: { value: '1,5' } } as unknown as Event);
     expect(component.value()).toBe(1.5);
     expect(component.tabindex()).toBe(0);
+  });
+
+  it('treats error messages as invalid input state', () => {
+    const input = TestBed.createComponent(InputComponent);
+    input.componentRef.setInput('errorMessage', 'Required');
+    input.detectChanges();
+    expect(input.nativeElement.querySelector('input')?.getAttribute('aria-invalid')).toBe('true');
+    expect(input.nativeElement.textContent).toContain('Required');
+
+    const textarea = TestBed.createComponent(TextareaComponent);
+    textarea.componentRef.setInput('errorMessage', 'Required');
+    textarea.detectChanges();
+    expect(textarea.nativeElement.querySelector('textarea')?.getAttribute('aria-invalid')).toBe('true');
   });
 
   it('selects an autocomplete option and emits its value', () => {

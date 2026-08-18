@@ -28,7 +28,7 @@
     [class.orc-input-box--focused]="isFocused()"
     [class.orc-input-box--disabled]="effectiveDisabled()"
     [class.orc-input-box--readonly]="readonly()"
-    [class.orc-input-box--error]="status() === 'error'"
+    [class.orc-input-box--error]="status() === 'error' || !!errorMessage()"
     [class.orc-input-box--success]="status() === 'success'"
     (click)="focusNative()"
   >
@@ -60,7 +60,7 @@
       [autofocus]="autofocus()"
       [attr.aria-label]="ariaLabel() || null"
       [attr.aria-labelledby]="ariaLabelledBy() || null"
-      [attr.aria-invalid]="status() === 'error' ? 'true' : null"
+      [attr.aria-invalid]="status() === 'error' || errorMessage() ? 'true' : null"
       [attr.aria-describedby]="computedAriaDescribedBy()"
       (input)="onInput($event)"
       (focus)="onFocus($event)"
@@ -118,10 +118,10 @@
   </div>
 
   <!-- ── Mensagens de Ajuda, Erro e Contador de Caracteres ────── -->
-  @if ((status() === 'error' && errorMessage()) || helperText() || showCharCount()) {
+  @if (errorMessage() || helperText() || showCharCount()) {
     <div class="orc-input__footer">
       <div class="orc-input__message-area">
-        @if (status() === 'error' && errorMessage()) {
+        @if (errorMessage()) {
           <p [id]="errorId()" class="orc-input__message orc-input__message--error" role="alert">
             <svg class="orc-input__message-icon" viewBox="0 0 16 16" fill="currentColor">
               <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 10.5a.75.75 0 110-1.5.75.75 0 010 1.5zM8.75 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" />

@@ -114,7 +114,7 @@ export class TextareaComponent implements ControlValueAccessor {
     if (this.ariaDescribedby()) {
       ids.push(this.ariaDescribedby());
     }
-    if (this.status() === 'error' && this.errorMessage()) {
+    if ((this.status() === 'error' || this.errorMessage()) && this.errorMessage()) {
       ids.push(this.errorId());
     } else if (this.helperText()) {
       ids.push(this.helperId());
