@@ -12,7 +12,12 @@ export interface ChartData { labels: string[]; datasets: ChartDataset[]; }
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartComponent {
-  readonly type = input<ChartType>('bar'); readonly data = input<ChartData>({ labels: [], datasets: [] }); readonly height = input('260px'); readonly ariaLabel = input('Chart'); readonly pointClick = output<number>();
+  readonly type = input<ChartType | 'scatter' | 'bubble' | 'pie' | 'polarArea' | 'radar'>('bar'); readonly data = input<ChartData>({ labels: [], datasets: [] }); readonly plugins = input<any[]>([]); readonly width = input<string | undefined>(undefined); readonly height = input('260px'); readonly responsive = input(true, { transform: booleanAttribute }); readonly styleClass = input(''); readonly ariaLabel = input('Chart'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly pointClick = output<number>(); readonly onDataSelect = output<{ index: number; originalEvent?: Event }>();
+  refresh(): void {}
+  reinit(): void {}
+  getBase64Image(): string | undefined { return undefined; }
+  generateLegend(): string { return this.data().labels.join(', '); }
+  selectPoint(index: number, event?: Event): void { this.pointClick.emit(index); this.onDataSelect.emit({ index, originalEvent: event }); }
   private color(index: number, dataset: ChartDataset): string { const value = dataset.backgroundColor; return Array.isArray(value) ? (value[index] || '#3b82f6') : (value || '#3b82f6'); }
   private maxValue(): number { return Math.max(1, ...this.data().datasets.flatMap(dataset => dataset.data)); }
   bars(): Array<{ x: number; y: number; width: number; height: number; color: string; index: number }> { const datasets = this.data().datasets; const count = this.data().labels.length; const max = this.maxValue(); const slot = 88 / Math.max(1, count); const width = Math.max(1, slot / Math.max(1, datasets.length) - .8); const result: Array<{ x: number; y: number; width: number; height: number; color: string; index: number }> = []; datasets.forEach((dataset, datasetIndex) => dataset.data.forEach((value, index) => { const height = value / max * 48; result.push({ x: 6 + index * slot + datasetIndex * (width + .4), y: 54 - height, width, height, color: this.color(index, dataset), index }); })); return result; }
@@ -28,8 +33,9 @@ export class ChartComponent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditorComponent {
-  readonly value = model(''); readonly placeholder = input('Write something…'); readonly readonly = input(false, { transform: booleanAttribute }); readonly ariaLabel = input('Editor'); readonly blur = output<string>();
+  readonly value = model(''); readonly placeholder = input('Write something…'); readonly readonly = input(false, { transform: booleanAttribute }); readonly styleClass = input(''); readonly formats = input<string[] | undefined>(undefined); readonly modules = input<Record<string, unknown> | undefined>(undefined); readonly bounds = input<HTMLElement | string | undefined>(undefined); readonly scrollingContainer = input<HTMLElement | string | undefined>(undefined); readonly debug = input<string | undefined>(undefined); readonly ariaLabel = input('Editor'); readonly blur = output<string>(); readonly onInit = output<unknown>(); readonly onTextChange = output<{ html: string; text: string }>(); readonly onSelectionChange = output<unknown>();
   readonly actions = [{ command: 'bold', icon: 'B', label: 'Bold' }, { command: 'italic', icon: 'I', label: 'Italic' }, { command: 'underline', icon: 'U', label: 'Underline' }];
-  onInput(event: Event): void { this.value.set((event.target as HTMLElement).innerHTML); }
+  onInput(event: Event): void { const html = (event.target as HTMLElement).innerHTML; this.value.set(html); this.onTextChange.emit({ html, text: (event.target as HTMLElement).innerText }); }
   exec(command: string): void { if (this.readonly()) return; if (typeof document !== 'undefined') document.execCommand(command); }
+  getQuill(): null { return null; }
 }
