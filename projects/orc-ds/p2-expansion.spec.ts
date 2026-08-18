@@ -31,6 +31,7 @@ import { OrganizationChartComponent } from './p2/p2-org-knob-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { BadgeComponent } from './badge/badge.component';
+import { MenubarComponent } from './p2/p2-data-components';
 import { ToastService } from './toast/toast.service';
 import { PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
 
@@ -477,5 +478,15 @@ describe('P2 expansion components', () => {
     service.remove(first);
     expect(service.toasts().map(toast => toast.id)).not.toContain(first);
     service.clear();
+  });
+
+  it('supports Menubar nested submenu activation', () => {
+    const fixture = TestBed.createComponent(MenubarComponent);
+    const component = fixture.componentInstance;
+    const item = { value: 'file', label: 'File', children: [{ value: 'new', label: 'New' }] };
+    fixture.componentRef.setInput('items', [item]);
+    component.activate(item);
+    expect(component.openItem()).toBe(item);
+    component.activate(item.children[0]);
   });
 });
