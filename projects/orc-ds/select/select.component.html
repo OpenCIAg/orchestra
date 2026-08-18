@@ -1,4 +1,4 @@
-<div class="orc-select-wrapper" [class.is-disabled]="effectiveDisabled()" [class.is-invalid]="isInvalid()">
+<div class="orc-select-wrapper" [class.is-disabled]="effectiveDisabled()" [class.is-invalid]="isInvalid()" [class]="styleClass()" [style]="style()">
   <!-- Label -->
   @if (label()) {
     <label [for]="effectiveId()" class="orc-select-label">
@@ -25,9 +25,11 @@
     [attr.aria-haspopup]="'listbox'"
     [attr.aria-disabled]="effectiveDisabled()"
     [attr.aria-invalid]="isInvalid()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-label]="ariaLabel() || null"
     [attr.aria-describedby]="computedAriaDescribedBy()"
-    [attr.tabindex]="effectiveDisabled() ? -1 : 0"
-    (click)="togglePanel()"
+    [attr.tabindex]="effectiveDisabled() ? -1 : (tabindex() ?? 0)"
+    (click)="onClick.emit($event); togglePanel()"
     (keydown)="onKeyDown($event)"
     (focus)="onTriggerFocus($event)"
     (blur)="onTriggerBlur($event)"
@@ -92,9 +94,11 @@
       }
 
       <div class="orc-select-arrow" [class.is-expanded]="isOpen()">
+        @if (dropdownIcon()) { <span>{{ dropdownIcon() }}</span> } @else {
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+        }
       </div>
     </div>
   </div>
@@ -117,6 +121,9 @@
     [id]="listboxId()"
     class="orc-select-dropdown"
     role="listbox"
+    [class]="panelStyleClass()"
+    [style]="panelStyle()"
+    [style.max-height]="scrollHeight()"
     [attr.aria-multiselectable]="multiple()"
   >
     <!-- Header projection -->
@@ -130,6 +137,8 @@
           type="text"
           class="orc-select-search-input"
           [placeholder]="filterPlaceholder() || searchPlaceholder()"
+          [attr.aria-label]="ariaFilterLabel() || 'Filter options'"
+          [attr.maxlength]="maxlength()"
           [value]="searchTerm()"
           (input)="onSearchInput($event)"
           (keydown)="onKeyDown($event)"
@@ -139,6 +148,9 @@
 
     <!-- Options Container -->
     <div class="orc-select-options-list">
+      @if (loading()) {
+        <div class="orc-select-empty-state" aria-live="polite">{{ loadingIcon() || 'Loading…' }}</div>
+      } @else {
       @if (isDataMode()) {
         @for (opt of filteredDataOptions(); track opt.value; let idx = $index) {
           <div
@@ -149,7 +161,7 @@
             role="option"
             [attr.aria-selected]="multiple() ? (value() || []).includes(opt.value) : value() === opt.value"
             [attr.aria-disabled]="opt.disabled"
-            (click)="onDataOptionClick(opt)"
+            (click)="onDataOptionClick(opt, $event)"
           >
             @if (opt.avatarUrl) {
               <img [src]="opt.avatarUrl" alt="" class="orc-option-avatar" />
@@ -170,12 +182,13 @@
           </div>
         } @empty {
           <div class="orc-select-empty-state">
-            {{ searchEmptyText() }}
+            {{ searchTerm() ? (emptyFilterMessage() || searchEmptyText()) : emptyMessage() }}
           </div>
         }
       } @else {
         <!-- Projected <orc-option> elements -->
         <ng-content></ng-content>
+      }
       }
     </div>
 

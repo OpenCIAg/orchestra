@@ -87,19 +87,51 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly optionDisabled = input<string | undefined>(undefined);
   readonly filter = input<boolean | undefined>(undefined, { transform: booleanAttribute });
   readonly filterPlaceholder = input('');
+  readonly filterLocale = input<string | undefined>(undefined);
   readonly filterBy = input<string | undefined>(undefined);
+  readonly filterFields = input<string[] | undefined>(undefined);
+  readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte'>('contains');
+  readonly emptyFilterMessage = input('Nenhum resultado encontrado');
+  readonly emptyMessage = input('Nenhuma opção disponível');
   readonly showClear = input(false, { transform: booleanAttribute });
   readonly inputId = input<string | undefined>(undefined);
+  readonly style = input<Record<string, string> | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly panelStyle = input<Record<string, string> | undefined>(undefined);
+  readonly panelStyleClass = input('');
+  readonly appendTo = input<unknown>(undefined);
+  readonly overlayOptions = input<Record<string, unknown> | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(undefined);
   readonly variant = input<'filled' | 'outlined'>('outlined');
   readonly size = input<'small' | 'large' | undefined>(undefined);
   readonly fluid = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
+  readonly loadingIcon = input<string | undefined>(undefined);
   readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly autofocusFilter = input(false, { transform: booleanAttribute });
   readonly editable = input(false, { transform: booleanAttribute });
+  readonly checkmark = input(false, { transform: booleanAttribute });
+  readonly dropdownIcon = input('');
+  readonly optionGroupLabel = input<string | undefined>(undefined);
+  readonly optionGroupChildren = input<string>('items');
+  readonly autoDisplayFirst = input(false, { transform: booleanAttribute });
+  readonly group = input(false, { transform: booleanAttribute });
+  readonly lazy = input(false, { transform: booleanAttribute });
+  readonly virtualScroll = input(false, { transform: booleanAttribute });
+  readonly virtualScrollItemSize = input<number | undefined>(undefined);
+  readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined);
+  readonly focusOnHover = input(true, { transform: booleanAttribute });
+  readonly selectOnFocus = input(false, { transform: booleanAttribute });
+  readonly autoOptionFocus = input(false, { transform: booleanAttribute });
+  readonly maxlength = input<number | undefined>(undefined);
+  readonly showTransitionOptions = input<string | undefined>(undefined);
+  readonly hideTransitionOptions = input<string | undefined>(undefined);
   readonly scrollHeight = input('200px');
 
   // Acessibilidade WCAG
   readonly ariaLabel = input<string>('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly ariaFilterLabel = input<string | undefined>(undefined);
   readonly ariaDescribedby = input<string>('');
 
   // ── Two-Way Model Signal ───────────────────────────────────
@@ -118,6 +150,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly onHide = output<void>();
   readonly onClear = output<Event>();
   readonly onClick = output<MouseEvent>();
+  readonly onFocus = output<FocusEvent>();
+  readonly onBlur = output<FocusEvent>();
+  readonly onLazyLoad = output<{ first: number; last: number }>();
 
   // ── Internal State Signals ─────────────────────────────────
   readonly isOpen = signal<boolean>(false);
@@ -165,8 +200,25 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     const list = this.dataOptions();
     const term = this.searchTerm().trim().toLowerCase();
     if (!term) return list;
-    return list.filter((opt) => this.getOptionLabel(opt).toLowerCase().includes(term) || (opt.description && opt.description.toLowerCase().includes(term)));
+    return list.filter((opt) => {
+      const fields = this.filterFields() ?? (this.filterBy() ? this.filterBy()!.split(',').map((f) => f.trim()).filter(Boolean) : ['label', 'description']);
+      const values = fields.map((field) => String((opt as any)?.[field] ?? '')).filter(Boolean);
+      if (!values.length) values.push(this.getOptionLabel(opt));
+      return values.some((value) => this.matchesFilter(value, term));
+    });
   });
+
+  private matchesFilter(value: string, term: string): boolean {
+    const normalized = value.toLocaleLowerCase(this.filterLocale() || undefined);
+    const query = term.toLocaleLowerCase(this.filterLocale() || undefined);
+    switch (this.filterMatchMode()) {
+      case 'startsWith': return normalized.startsWith(query);
+      case 'endsWith': return normalized.endsWith(query);
+      case 'equals': return normalized === query;
+      case 'notEquals': return normalized !== query;
+      default: return normalized.includes(query);
+    }
+  }
 
   getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
   getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
@@ -342,12 +394,12 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     this.selectValue(optionComponent.value());
   }
 
-  onDataOptionClick(option: SelectOption): void {
+  onDataOptionClick(option: SelectOption, event?: Event): void {
     if (this.isOptionDisabled(option)) return;
-    this.selectValue(this.getOptionValue(option));
+    this.selectValue(this.getOptionValue(option), event);
   }
 
-  private selectValue(val: any): void {
+  private selectValue(val: any, originalEvent?: Event): void {
     if (this.multiple()) {
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
       const index = current.indexOf(val);
@@ -359,12 +411,12 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       this.value.set(current);
       this.onModelChange(current);
       this.selectionChange.emit(current);
-      this.onChange.emit({ originalEvent: new Event('change'), value: current });
+      this.onChange.emit({ originalEvent: originalEvent ?? new Event('change'), value: current });
     } else {
       this.value.set(val);
       this.onModelChange(val);
       this.selectionChange.emit(val);
-      this.onChange.emit({ originalEvent: new Event('change'), value: val });
+      this.onChange.emit({ originalEvent: originalEvent ?? new Event('change'), value: val });
       this.closePanel();
     }
   }
@@ -511,12 +563,14 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   onTriggerFocus(event: FocusEvent): void {
     this.isFocused.set(true);
     this.focus.emit(event);
+    this.onFocus.emit(event);
   }
 
   onTriggerBlur(event: FocusEvent): void {
     this.isFocused.set(false);
     this.onTouched();
     this.blur.emit(event);
+    this.onBlur.emit(event);
   }
 
   @HostListener('document:click', ['$event.target'])
