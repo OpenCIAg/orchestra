@@ -13,6 +13,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SwitchComponent } from './switch/switch.component';
 import { SliderComponent } from './slider/slider.component';
 import { RatingComponent } from './rating/rating.component';
+import { KnobComponent } from './p2/p2-org-knob-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -145,6 +146,18 @@ describe('P2 expansion components', () => {
     component.onItemClick(new MouseEvent('click'), 8);
     expect(component.value()).toBe(8);
     expect(component.starsArray()).toHaveSize(10);
+  });
+
+  it('supports Knob ControlValueAccessor and styled value configuration', () => {
+    const fixture = TestBed.createComponent(KnobComponent);
+    const component = fixture.componentInstance;
+    let modelValue = 0;
+    component.registerOnChange(value => modelValue = value);
+    component.writeValue(42);
+    expect(component.value()).toBe(42);
+    expect(component.dashOffset()).toBeGreaterThan(0);
+    component.onInput({ target: { value: '55' } } as unknown as Event);
+    expect(modelValue).toBe(55);
   });
 
   it('sorts and selects rows in the data table', () => {
