@@ -7,11 +7,12 @@ let nextTreeSelectId = 0;
 @Component({
   selector: 'orc-segmented-control',
   standalone: true,
-  template: `<div class="p-selectbutton p-buttonset p-component orc-p2-segmented" [class]="'p-selectbutton p-buttonset p-component orc-p2-segmented ' + styleClass()" [style]="style()" [attr.id]="inputId() || null" role="group" [attr.aria-label]="label()" [attr.data-pc-name]="'selectbutton'" (keydown)="onKeydown($event)">@for (option of options(); track option.value) { <button type="button" class="p-button p-component" [disabled]="option.disabled || disabled()" [attr.tabindex]="tabindex()" [class.selected]="isSelected(option)" [attr.aria-pressed]="isSelected(option)" (click)="select(option)">{{ option.icon }} {{ option.label }}</button> }</div>`,
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SegmentedControlComponent), multi: true }],
+  template: `<div class="p-selectbutton p-buttonset p-component orc-p2-segmented" [class]="'p-selectbutton p-buttonset p-component orc-p2-segmented ' + styleClass()" [style]="style()" [attr.id]="inputId() || null" role="group" [attr.aria-label]="label()" [attr.data-pc-name]="'selectbutton'" (keydown)="onKeydown($event)">@for (option of options(); track option.value) { <button type="button" class="p-button p-component" [disabled]="option.disabled || disabled() || cvaDisabled()" [attr.tabindex]="tabindex()" [class.selected]="isSelected(option)" [attr.aria-pressed]="isSelected(option)" (click)="select(option)">{{ option.icon }} {{ option.label }}</button> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-segmented { display: inline-flex; gap: .2rem; padding: .2rem; border-radius: .6rem; background: #f1f5f9; } .orc-p2-segmented button { border: 0; border-radius: .4rem; background: transparent; color: #475569; padding: .5rem .75rem; } .orc-p2-segmented button.selected { background: #fff; color: #1d4ed8; box-shadow: 0 1px 3px #0f172a1a; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SegmentedControlComponent<T = unknown> {
+export class SegmentedControlComponent<T = unknown> implements ControlValueAccessor {
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T | null>(null);
   readonly label = input('Options');
@@ -21,9 +22,16 @@ export class SegmentedControlComponent<T = unknown> {
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly valueChangeEvent = output<T>();
+  protected readonly cvaDisabled = signal(false);
+  private onModelChange: (value: T | null) => void = () => {};
+  private onModelTouched: () => void = () => {};
   readonly activeIndex = signal(0);
   isSelected(option: P2Option<T>): boolean { return this.value() === option.value; }
-  select(option: P2Option<T>): void { if (option.disabled || this.disabled()) return; this.value.set(option.value); this.valueChangeEvent.emit(option.value); }
+  writeValue(value: T | null): void { this.value.set(value); }
+  registerOnChange(fn: (value: T | null) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
+  setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
+  select(option: P2Option<T>): void { if (option.disabled || this.disabled() || this.cvaDisabled()) return; this.value.set(option.value); this.onModelChange(option.value); this.onModelTouched(); this.valueChangeEvent.emit(option.value); }
   onKeydown(event: KeyboardEvent): void {
     const options = this.options(); if (!options.length) return;
     if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); const delta = event.key === 'ArrowRight' ? 1 : -1; this.activeIndex.update(index => (index + delta + options.length) % options.length); }
