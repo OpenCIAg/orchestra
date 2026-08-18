@@ -72,7 +72,7 @@ export class ModalComponent implements OnDestroy {
 
       if (open && !dialog.open) {
         this.previousActiveElement = document.activeElement as HTMLElement;
-        dialog.showModal();
+        if (this.modal()) dialog.showModal(); else dialog.show();
         if (this.blockScroll()) document.body.style.overflow = 'hidden'; // Scroll lock
         this.onShow.emit();
         if (this.focusOnShow()) queueMicrotask(() => this.focusInitialElement());

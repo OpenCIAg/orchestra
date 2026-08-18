@@ -7,7 +7,7 @@
   (cancel)="onCancel($event)"
   (click)="onBackdropClick($event)"
   [attr.role]="role()"
-  aria-modal="true"
+  [attr.aria-modal]="inline() || !modal() ? null : 'true'"
   [attr.aria-labelledby]="ariaLabelledBy() || null"
   [attr.aria-label]="ariaLabel() || null"
   [attr.aria-describedby]="ariaDescribedBy() || null"
