@@ -116,7 +116,7 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
     }
 
     if (this.radioGroup) {
-      this.radioGroup.select(this.value());
+      this.radioGroup.select(this.value(), event);
     } else {
       this.standaloneChecked.set(true);
       this.checked.set(true);

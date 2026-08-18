@@ -13,7 +13,7 @@ export interface RadioGroupContext {
   readonly isError: Signal<boolean>;
   registerRadio(radio: RadioButtonItem): void;
   unregisterRadio(radio: RadioButtonItem): void;
-  select(value: any): void;
+  select(value: any, event?: Event): void;
   hasSelectedRadio(): boolean;
   isFirstEnabled(radio: RadioButtonItem): boolean;
   handleKeydown(event: KeyboardEvent, currentRadio: RadioButtonItem): void;

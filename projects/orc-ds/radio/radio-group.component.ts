@@ -47,6 +47,7 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
 
   // Model & Outputs (Signals API)
   readonly value = model<any>(null);
+  readonly onChange = output<{ originalEvent?: Event; value: any }>();
 
   // Estado interno
   private readonly cvaDisabled = signal<boolean>(false);
@@ -62,7 +63,7 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
   readonly isError = computed(() => this.error());
 
   // Callbacks do ControlValueAccessor
-  private onChange: (value: any) => void = () => {};
+  private onModelChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
   writeValue(val: any): void {
@@ -70,7 +71,7 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
   }
 
   registerOnChange(fn: (value: any) => void): void {
-    this.onChange = fn;
+    this.onModelChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {
@@ -89,12 +90,13 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
     this.radios.update((list) => list.filter((r) => r !== radio));
   }
 
-  select(val: any): void {
+  select(val: any, originalEvent?: Event): void {
     if (this.isDisabled()) return;
 
     if (this.value() !== val) {
       this.value.set(val);
-      this.onChange(val);
+      this.onModelChange(val);
+      this.onChange.emit({ originalEvent, value: val });
     }
     this.onTouched();
   }
