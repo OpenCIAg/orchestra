@@ -432,13 +432,14 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   selector: 'orc-tags-input',
   standalone: true,
   template: `
-    <div class="orc-p2-tags-input">
+    <div class="orc-p2-tags-input {{ styleClass() }}" [style]="style()">
       @if (label()) { <label>{{ label() }}</label> }
       <div class="input-shell" [class.is-disabled]="disabled()">
-        @for (tag of value(); track $index) { <span class="tag">{{ tag }} <button type="button" [disabled]="disabled()" [attr.aria-label]="'Remove ' + tag" (click)="removeTag($index)">×</button></span> }
-        <input [placeholder]="value().length ? '' : placeholder()" [disabled]="disabled()" [value]="draft()" (input)="draft.set(($any($event.target)).value)" (keydown)="onKeydown($event)" />
+        @for (tag of value(); track $index) { <span class="tag" (click)="onChipClick.emit({ value: tag, index: $index, originalEvent: $event })">{{ tag }} <button type="button" [disabled]="effectiveDisabled()" [attr.aria-label]="'Remove ' + tag" (click)="removeTag($index); $event.stopPropagation()">×</button></span> }
+        <input [id]="inputId() || null" [placeholder]="value().length ? '' : placeholder()" [disabled]="effectiveDisabled()" [value]="draft()" [attr.maxlength]="maxLength() || null" [attr.aria-label]="ariaLabel() || null" (input)="draft.set(($any($event.target)).value)" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onBlurCommit()" />
       </div>
       @if (suggestions().length && draft()) { <ul class="suggestions" role="listbox">@for (suggestion of filteredSuggestions(); track suggestion) { <li role="option" (mousedown)="$event.preventDefault()" (click)="addTag(suggestion)">{{ suggestion }}</li> }</ul> }
+      @if (showClear() && value().length) { <button type="button" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (helperText()) { <small>{{ helperText() }}</small> }
     </div>
   `,
@@ -456,9 +457,28 @@ export class TagsInputComponent implements ControlValueAccessor {
   readonly helperText = input('');
   readonly suggestions = input<string[]>([]);
   readonly maxTags = input<number | undefined>(undefined);
+  readonly max = input<number | undefined>(undefined, { alias: 'max' });
+  readonly maxLength = input<number | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly allowDuplicate = input(false, { transform: booleanAttribute });
+  readonly caseSensitiveDuplication = input(false, { transform: booleanAttribute });
+  readonly addOnTab = input(false, { transform: booleanAttribute });
+  readonly addOnBlur = input(false, { transform: booleanAttribute });
+  readonly separator = input<string | RegExp | undefined>(undefined);
+  readonly showClear = input(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly inputId = input<string | undefined>(undefined);
+  readonly ariaLabel = input('');
   readonly tagAdded = output<string>();
   readonly tagRemoved = output<string>();
+  readonly onAdd = output<{ value: string }>();
+  readonly onRemove = output<{ value: string; index: number }>();
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
+  readonly onChipClick = output<{ value: string; index: number; originalEvent: Event }>();
+  readonly onClear = output<Event>();
+  protected readonly cvaDisabled = signal(false);
   private onChange: (value: string[]) => void = () => undefined;
   private onTouchedCallback: () => void = () => undefined;
 
@@ -467,20 +487,28 @@ export class TagsInputComponent implements ControlValueAccessor {
   writeValue(value: string[] | null): void { this.value.set(Array.isArray(value) ? [...value] : []); }
   registerOnChange(fn: (value: string[]) => void): void { this.onChange = fn; }
   registerOnTouched(fn: () => void): void { this.onTouchedCallback = fn; }
-  setDisabledState(disabled: boolean): void { /* input remains the source of truth for this lightweight control */ void disabled; }
+  setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
+  readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
   onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' || event.key === ',') { event.preventDefault(); this.addTag(this.draft().trim()); }
+    const separator = this.separator();
+    const separatorPressed = typeof separator === 'string' ? event.key === separator : separator instanceof RegExp && separator.test(event.key);
+    if (event.key === 'Enter' || (event.key === 'Tab' && this.addOnTab()) || separatorPressed) { event.preventDefault(); this.addTag(this.draft().trim()); }
     if (event.key === 'Backspace' && !this.draft() && this.value().length) this.removeTag(this.value().length - 1);
   }
+  onBlurCommit(): void { if (this.addOnBlur()) this.addTag(this.draft().trim()); }
   addTag(tag: string): void {
     const normalized = tag.trim();
-    if (!normalized || this.disabled() || this.value().includes(normalized) || (this.maxTags() !== undefined && this.value().length >= this.maxTags()!)) return;
+    const duplicate = this.value().some(item => this.caseSensitiveDuplication() ? item === normalized : item.toLowerCase() === normalized.toLowerCase());
+    const max = this.max() ?? this.maxTags();
+    if (!normalized || this.effectiveDisabled() || (!this.allowDuplicate() && duplicate) || (max !== undefined && this.value().length >= max)) return;
     const next = [...this.value(), normalized]; this.value.set(next); this.draft.set(''); this.onChange(next); this.tagAdded.emit(normalized);
+    this.onAdd.emit({ value: normalized });
   }
   removeTag(index: number): void {
-    if (this.disabled()) return;
+    if (this.effectiveDisabled()) return;
     const removed = this.value()[index]; if (removed === undefined) return;
-    const next = this.value().filter((_, current) => current !== index); this.value.set(next); this.onChange(next); this.tagRemoved.emit(removed);
+    const next = this.value().filter((_, current) => current !== index); this.value.set(next); this.onChange(next); this.tagRemoved.emit(removed); this.onRemove.emit({ value: removed, index });
   }
+  clear(event: Event): void { if (this.effectiveDisabled()) return; this.value.set([]); this.draft.set(''); this.onChange([]); this.onClear.emit(event); }
   onTouched(): void { this.onTouchedCallback(); }
 }

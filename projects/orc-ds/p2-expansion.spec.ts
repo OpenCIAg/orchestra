@@ -85,6 +85,21 @@ describe('P2 expansion components', () => {
     expect(tags.componentInstance.value()).toEqual(['angular']);
   });
 
+  it('supports PrimeNG Chips separator, duplicate, blur, clear, and lifecycle aliases', () => {
+    const fixture = TestBed.createComponent(TagsInputComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('allowDuplicate', true);
+    fixture.componentRef.setInput('separator', ';');
+    component.onKeydown(new KeyboardEvent('keydown', { key: ';' }));
+    component.draft.set('alpha');
+    component.onKeydown(new KeyboardEvent('keydown', { key: ';' }));
+    component.draft.set('alpha');
+    component.onKeydown(new KeyboardEvent('keydown', { key: ';' }));
+    expect(component.value()).toEqual(['alpha', 'alpha']);
+    component.clear(new Event('clear'));
+    expect(component.value()).toEqual([]);
+  });
+
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
     const listbox = TestBed.createComponent(ListboxComponent<any>);
     listbox.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
