@@ -43,11 +43,12 @@ export interface ContextMenuItem extends P2Option<string> {
 @Component({
   selector: 'orc-context-menu',
   standalone: true,
-  template: `<div class="orc-p2-context-menu-host" (contextmenu)="openAt($event)"><ng-content />@if (open()) { <div class="p-contextmenu p-component orc-p2-context-menu" [class]="'p-contextmenu p-component orc-p2-context-menu ' + styleClass()" [style]="style()" [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null" [id]="id()" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'contextmenu'" [style.left.px]="position().x" [style.top.px]="position().y" (keydown)="onKeydown($event)">@for (item of effectiveItems(); track item.value || $index) { @if (item.visible !== false) { <button type="button" role="menuitem" [disabled]="item.disabled" [class.danger]="item.danger" (click)="activate(item)">{{ item.label }} @if (item.badge) { <span>{{ item.badge }}</span> } @if (item.shortcut) { <small>{{ item.shortcut }}</small> }</button> } }</div> }</div>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-context-menu-host { position: relative; min-height: 2rem; } .orc-p2-context-menu { position: fixed; z-index: 10; display: grid; min-width: 12rem; padding: .25rem; border: 1px solid #cbd5e1; border-radius: .55rem; background: #fff; box-shadow: 0 12px 28px #0f172a26; } .orc-p2-context-menu button { display: flex; justify-content: space-between; border: 0; border-radius: .35rem; background: transparent; padding: .55rem .7rem; text-align: left; } .orc-p2-context-menu button:hover { background: #eff6ff; } .orc-p2-context-menu button.danger { color: #b91c1c; } small { color: #64748b; }`],
+  template: `<div class="orc-p2-context-menu-host" (contextmenu)="openAt($event)"><ng-content />@if (open()) { <div class="p-contextmenu p-component orc-p2-context-menu" [class]="'p-contextmenu p-component orc-p2-context-menu ' + styleClass()" [style]="style()" [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null" [id]="id()" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'contextmenu'" [style.left.px]="position().x" [style.top.px]="position().y" (keydown)="onKeydown($event)">@for (item of effectiveItems(); track item.value || $index) { @if (item.visible !== false) { <button type="button" role="menuitem" [disabled]="item.disabled" [class.active]="isActive(item)" [class.danger]="item.danger" [attr.tabindex]="isActive(item) ? 0 : -1" (click)="activate(item)">{{ item.label }} @if (item.badge) { <span>{{ item.badge }}</span> } @if (item.shortcut) { <small>{{ item.shortcut }}</small> } </button> } }</div> }</div>`,
+  styles: [P2_SHARED_STYLES + `.orc-p2-context-menu-host { position: relative; min-height: 2rem; } .orc-p2-context-menu { position: fixed; z-index: 10; display: grid; min-width: 12rem; padding: .25rem; border: 1px solid #cbd5e1; border-radius: .55rem; background: #fff; box-shadow: 0 12px 28px #0f172a26; } .orc-p2-context-menu button { display: flex; justify-content: space-between; border: 0; border-radius: .35rem; background: transparent; padding: .55rem .7rem; text-align: left; } .orc-p2-context-menu button:hover, .orc-p2-context-menu button.active { background: #eff6ff; } .orc-p2-context-menu button.danger { color: #b91c1c; } small { color: #64748b; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContextMenuComponent {
+  private readonly host = inject(ElementRef<HTMLElement>);
   readonly items = input<ContextMenuItem[]>([]);
   readonly model = input<ContextMenuItem[] | undefined>(undefined);
   readonly open = model(false);
@@ -59,16 +60,20 @@ export class ContextMenuComponent {
   readonly ariaLabel = input('Context menu');
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly position = signal({ x: 0, y: 0 });
+  readonly activeIndex = signal(0);
   readonly itemSelect = output<ContextMenuItem>();
   readonly opened = output<{ x: number; y: number }>();
   readonly onShow = output<void>(); readonly onHide = output<void>();
   effectiveItems(): ContextMenuItem[] { return this.model() ?? this.items(); }
-  openAt(event: MouseEvent): void { event.preventDefault(); this.position.set({ x: event.clientX, y: event.clientY }); this.open.set(true); this.opened.emit(this.position()); this.onShow.emit(); }
-  show(event?: MouseEvent): void { if (event) this.position.set({ x: event.clientX, y: event.clientY }); if (!this.open()) { this.open.set(true); this.onShow.emit(); } }
+  private selectableItems(): ContextMenuItem[] { return this.effectiveItems().filter(item => item.visible !== false && !item.disabled); }
+  isActive(item: ContextMenuItem): boolean { return this.selectableItems()[this.activeIndex()] === item; }
+  openAt(event: MouseEvent): void { event.preventDefault(); this.position.set({ x: event.clientX, y: event.clientY }); this.activeIndex.set(0); this.open.set(true); this.opened.emit(this.position()); this.onShow.emit(); }
+  show(event?: MouseEvent): void { if (event) this.position.set({ x: event.clientX, y: event.clientY }); if (!this.open()) { this.activeIndex.set(0); this.open.set(true); this.onShow.emit(); } }
   hide(): void { if (this.open()) { this.open.set(false); this.onHide.emit(); } }
   toggle(event?: MouseEvent): void { this.open() ? this.hide() : this.show(event); }
   activate(item: ContextMenuItem): void { if (item.disabled) return; this.itemSelect.emit(item); this.hide(); }
-  onKeydown(event: KeyboardEvent): void { if (event.key === 'Escape') { event.preventDefault(); this.hide(); } }
+  onKeydown(event: KeyboardEvent): void { const items = this.selectableItems(); if (event.key === 'Escape') { event.preventDefault(); this.hide(); return; } if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); const delta = event.key === 'ArrowDown' ? 1 : -1; this.activeIndex.update(index => items.length ? (index + delta + items.length) % items.length : 0); return; } if (event.key === 'Home' || event.key === 'End') { event.preventDefault(); this.activeIndex.set(event.key === 'Home' ? 0 : Math.max(0, items.length - 1)); return; } if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); const item = items[this.activeIndex()]; if (item) this.activate(item); } }
+  @HostListener('document:mousedown', ['$event']) onDocumentClick(event: MouseEvent): void { if (!this.open()) return; const target = event.target as Node | null; if (target && !this.host.nativeElement.contains(target)) this.hide(); }
 }
 
 /** PrimeNG OverlayPanel/Popover-compatible controlled overlay surface. */
