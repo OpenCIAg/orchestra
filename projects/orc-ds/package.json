@@ -1,6 +1,6 @@
 {
   "name": "@ciag/orchestra",
-  "version": "21.0.0",
+  "version": "22.0.0",
   "description": "Enterprise Angular Component Framework and Design System",
   "keywords": [
     "angular",
@@ -18,10 +18,10 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@angular/cdk": "^19.0.0",
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@angular/forms": "^19.0.0",
+    "@angular/cdk": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
     "rxjs": "^7.8.0"
   },
   "dependencies": {
