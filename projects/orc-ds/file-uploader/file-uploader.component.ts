@@ -182,7 +182,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
   }
 
   clear(): void { if (this.isDisabled()) return; this.files.set([]); this.onChange([]); this.onClear.emit(); }
-  upload(): void { if (!this.files().length) return; this.onBeforeUpload.emit(); const files = this.files().map(item => item.file); if (this.customUpload()) this.uploadHandler.emit({ files }); else this.onUpload.emit({ files }); }
+  upload(): void { if (!this.files().length) return; this.onBeforeUpload.emit(); const files = this.files().map(item => item.file); this.onSend.emit({ files }); if (this.customUpload()) this.uploadHandler.emit({ files }); else this.onUpload.emit({ files }); }
   choose(): void { this.onAreaClick(); }
   uploader(): void { this.upload(); }
 
