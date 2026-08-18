@@ -369,6 +369,16 @@ describe('P2 expansion components', () => {
     expect(component.orientation()).toBe('vertical');
   });
 
+  it('preserves the source event in slider change notifications', () => {
+    const fixture = TestBed.createComponent(SliderComponent);
+    const component = fixture.componentInstance;
+    const changed = jasmine.createSpy('changed');
+    component.onChange.subscribe(changed);
+    component.writeValue(20);
+    (component as any).onKeyDown(new KeyboardEvent('keydown', { key: 'ArrowRight' }), 'end');
+    expect(changed).toHaveBeenCalledWith(jasmine.objectContaining({ originalEvent: jasmine.any(KeyboardEvent), value: 21 }));
+  });
+
   it('supports PrimeNG rating stars and rate events', () => {
     const fixture = TestBed.createComponent(RatingComponent);
     const component = fixture.componentInstance;

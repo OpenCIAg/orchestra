@@ -301,7 +301,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     this.isDragging.set(true);
     this.activePointerId = event.pointerId;
 
-    this.updateValueByTarget(targetThumb, clickedVal);
+    this.updateValueByTarget(targetThumb, clickedVal, event);
 
     // Adiciona ouvintes globais para continuidade fluida do arraste
     window.addEventListener('pointermove', this.onGlobalPointerMove);
@@ -330,7 +330,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
 
     const thumb = this.activeThumb();
     if (thumb) {
-      this.updateValueByTarget(thumb, currentVal);
+      this.updateValueByTarget(thumb, currentVal, event);
     }
   };
 
@@ -391,7 +391,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
 
     if (handled) {
       event.preventDefault();
-      this.updateValueByTarget(thumb, nextVal);
+      this.updateValueByTarget(thumb, nextVal, event);
       this.sliderChange.emit(this.value());
     }
   }
@@ -414,7 +414,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   }
 
   // ── Utilitários de Cálculo e Atualização ───────────────────
-  private updateValueByTarget(thumb: 'start' | 'end', rawVal: number): void {
+  private updateValueByTarget(thumb: 'start' | 'end', rawVal: number, originalEvent?: Event): void {
     const min = this.minVal();
     const max = this.maxVal();
     const steppedVal = this.snapToStep(this.clamp(rawVal, min, max));
@@ -430,12 +430,12 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
       this.value.set(nextRange);
       this.onModelChange(nextRange);
       this.sliderInput.emit(nextRange);
-      this.onChange.emit({ value: nextRange });
+      this.onChange.emit({ originalEvent, value: nextRange });
     } else {
       this.value.set(steppedVal);
       this.onModelChange(steppedVal);
       this.sliderInput.emit(steppedVal);
-      this.onChange.emit({ value: steppedVal });
+      this.onChange.emit({ originalEvent, value: steppedVal });
     }
   }
 
