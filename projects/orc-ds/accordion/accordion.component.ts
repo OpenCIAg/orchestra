@@ -5,6 +5,7 @@ import {
   model,
   output,
   signal,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionToggleEvent, AccordionVariant } from './accordion.types';
@@ -20,12 +21,13 @@ import type { AccordionItemComponent } from './accordion-item.component';
 })
 export class AccordionComponent {
   // Inputs (Signals API)
-  readonly multiple = input<boolean>(false);
+  readonly multiple = input<boolean>(false, { transform: booleanAttribute });
   readonly value = model<string | number | string[] | number[]>(0);
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly variant = input<AccordionVariant>('default');
   readonly styleClass = input('');
   readonly ariaLabel = input('Accordion');
+  readonly id = input<string | undefined>(undefined);
   readonly expandIcon = input<string | undefined>(undefined);
   readonly collapseIcon = input<string | undefined>(undefined);
   readonly selectOnFocus = input(false);

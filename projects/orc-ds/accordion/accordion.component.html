@@ -1,9 +1,11 @@
 <div
-  class="orc-accordion"
-  [class]="styleClass()"
+  [id]="id() || null"
+  class="p-accordion p-component orc-accordion"
+  [class]="'p-accordion p-component orc-accordion ' + styleClass()"
   [class.orc-accordion--separated]="variant() === 'separated'"
   [class.orc-accordion--bordered]="variant() === 'bordered'"
-  role="presentation"
+  role="region"
+  [attr.data-pc-name]="'accordion'"
   [attr.aria-label]="ariaLabel()"
 >
   <ng-content></ng-content>

@@ -1,5 +1,5 @@
 <div
-  class="orc-accordion-item"
+  class="p-accordionpanel orc-accordion-item"
   [class.orc-accordion-item--expanded]="expanded()"
   [class.orc-accordion-item--disabled]="disabled()"
 >
@@ -7,7 +7,8 @@
   <button
     #headerBtn
     type="button"
-    class="orc-accordion-item__header"
+    class="p-accordionheader orc-accordion-item__header"
+    [attr.data-pc-section]="'header'"
     [attr.id]="headerId()"
     [attr.aria-expanded]="expanded()"
     [attr.aria-controls]="panelId()"
@@ -43,7 +44,7 @@
 
   <!-- Painel de Conteúdo com Animação Fluida (WAI-ARIA Region) -->
   <div
-    class="orc-accordion-item__collapse"
+    class="p-accordioncontent orc-accordion-item__collapse"
     [class.orc-accordion-item__collapse--expanded]="expanded()"
     [attr.id]="panelId()"
     role="region"
