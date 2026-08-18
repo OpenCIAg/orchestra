@@ -13,6 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2Option, P2_SHARED_STYLES, P2Size } from './p2-shared';
 
 let nextMultiSelectId = 0;
+let nextTagsInputId = 0;
 
 export interface CalendarDay {
   iso: string;
@@ -438,13 +439,13 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   selector: 'orc-tags-input, orc-chips, orc-input-chips',
   standalone: true,
   template: `
-    <div class="orc-p2-tags-input {{ styleClass() }}" [style]="style()">
-      @if (label()) { <label>{{ label() }}</label> }
-      <div class="input-shell" [class.is-disabled]="disabled()">
-        @for (tag of value(); track $index) { <span class="tag" (click)="onChipClick.emit({ value: tag, index: $index, originalEvent: $event })">{{ tag }} <button type="button" [disabled]="effectiveDisabled()" [attr.aria-label]="'Remove ' + tag" (click)="removeTag($index); $event.stopPropagation()">×</button></span> }
-        <input [id]="inputId() || null" [placeholder]="value().length ? '' : placeholder()" [disabled]="effectiveDisabled()" [value]="draft()" [attr.maxlength]="maxLength() || null" [attr.aria-label]="ariaLabel() || null" (input)="draft.set(($any($event.target)).value)" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onBlurCommit()" />
+    <div class="p-chips p-component orc-p2-tags-input" [class]="'p-chips p-component orc-p2-tags-input ' + styleClass()" [style]="style()" [attr.data-pc-name]="'chips'">
+      @if (label()) { <label [for]="effectiveId()">{{ label() }}</label> }
+      <div class="p-chips-multiple-container input-shell" [class.is-disabled]="disabled()">
+        @for (tag of value(); track $index) { <span class="p-chips-token tag" (click)="onChipClick.emit({ value: tag, index: $index, originalEvent: $event })">{{ tag }} <button type="button" [disabled]="effectiveDisabled()" [attr.aria-label]="'Remove ' + tag" (click)="removeTag($index); $event.stopPropagation()">×</button></span> }
+        <input [id]="effectiveId()" [placeholder]="value().length ? '' : placeholder()" [disabled]="effectiveDisabled()" [value]="draft()" [attr.maxlength]="maxLength() || null" [attr.aria-label]="ariaLabel() || null" (input)="draft.set(($any($event.target)).value)" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onBlurCommit()" />
       </div>
-      @if (suggestions().length && draft()) { <ul class="suggestions" role="listbox">@for (suggestion of filteredSuggestions(); track suggestion) { <li role="option" (mousedown)="$event.preventDefault()" (click)="addTag(suggestion)">{{ suggestion }}</li> }</ul> }
+      @if (suggestions().length && draft()) { <ul class="p-chips-panel p-component suggestions" [id]="effectiveId() + '-panel'" role="listbox">@for (suggestion of filteredSuggestions(); track suggestion) { <li class="p-chips-option" role="option" (mousedown)="$event.preventDefault()" (click)="addTag(suggestion)">{{ suggestion }}</li> }</ul> }
       @if (showClear() && value().length) { <button type="button" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (helperText()) { <small>{{ helperText() }}</small> }
     </div>
@@ -456,6 +457,7 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TagsInputComponent), multi: true }],
 })
 export class TagsInputComponent implements ControlValueAccessor {
+  private readonly uniqueId = `orc-chips-${++nextTagsInputId}`;
   readonly value = model<string[]>([]);
   readonly draft = signal('');
   readonly label = input('');
@@ -485,6 +487,7 @@ export class TagsInputComponent implements ControlValueAccessor {
   readonly onChipClick = output<{ value: string; index: number; originalEvent: Event }>();
   readonly onClear = output<Event>();
   protected readonly cvaDisabled = signal(false);
+  readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
   private onChange: (value: string[]) => void = () => undefined;
   private onTouchedCallback: () => void = () => undefined;
 
