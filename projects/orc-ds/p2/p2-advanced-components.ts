@@ -45,7 +45,7 @@ export class PanelMenuComponent {
   styles: [P2_SHARED_STYLES + `.orc-mega-menu{display:flex;flex-wrap:wrap;gap:1.5rem;padding:1rem;border:1px solid #e2e8f0;border-radius:.5rem;background:#fff}.orc-mega-menu section{display:grid;align-content:start;min-width:10rem;gap:.25rem}.orc-mega-menu h3{margin:0 0 .35rem;font-size:.85rem}.orc-mega-menu button{border:0;background:transparent;padding:.35rem;text-align:left}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MegaMenuComponent { readonly items = input<PrimeMenuItem[]>([]); readonly ariaLabel = input('Mega menu'); readonly itemSelect = output<PrimeMenuItem>(); select(item: PrimeMenuItem): void { if (!item.disabled) { item.command?.(); this.itemSelect.emit(item); } } }
+export class MegaMenuComponent { readonly items = input<PrimeMenuItem[]>([]); readonly model = input<PrimeMenuItem[] | undefined>(undefined); readonly orientation = input<'horizontal' | 'vertical'>('horizontal'); readonly styleClass = input(''); readonly ariaLabel = input('Mega menu'); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = this.itemSelect; select(item: PrimeMenuItem): void { if (!this.disabled() && !item.disabled) { item.command?.(); this.itemSelect.emit(item); } } }
 
 @Component({
   selector: 'orc-block-ui', standalone: true,
@@ -53,7 +53,7 @@ export class MegaMenuComponent { readonly items = input<PrimeMenuItem[]>([]); re
   styles: [P2_SHARED_STYLES + `.orc-block-ui{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#fff9;backdrop-filter:blur(1px);color:#0f172a}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlockUiComponent { readonly blocked = input(false, { transform: booleanAttribute }); readonly message = input('Please wait…'); }
+export class BlockUiComponent { readonly blocked = input(false, { transform: booleanAttribute }); readonly target = input<HTMLElement | null>(null); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly styleClass = input(''); readonly message = input('Please wait…'); readonly block = output<void>(); readonly unblock = output<void>(); }
 
 @Injectable({ providedIn: 'root' })
 export class ConfirmationService {

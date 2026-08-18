@@ -16,10 +16,12 @@ import { P2_SHARED_STYLES } from './p2-shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelComponent {
-  readonly header = input(''); readonly toggleable = input(false, { transform: booleanAttribute }); readonly styleClass = input('');
+  readonly header = input(''); readonly legend = input<string | undefined>(undefined); readonly toggleable = input(false, { transform: booleanAttribute }); readonly styleClass = input(''); readonly style = input<Record<string, string> | null>(null); readonly transitionOptions = input('');
   readonly collapsed = model(false); readonly ariaLabel = input(''); readonly onBeforeToggle = output<{ collapsed: boolean }>(); readonly onAfterToggle = output<{ collapsed: boolean }>();
   hasHeader(): boolean { return !!this.header(); }
   toggle(): void { if (!this.toggleable()) return; const next = !this.collapsed(); this.onBeforeToggle.emit({ collapsed: next }); this.collapsed.set(next); this.onAfterToggle.emit({ collapsed: next }); }
+  expand(): void { if (this.collapsed()) this.toggle(); }
+  collapse(): void { if (!this.collapsed()) this.toggle(); }
 }
 
 @Component({
@@ -28,7 +30,7 @@ export class PanelComponent {
   styles: [P2_SHARED_STYLES + `.orc-p2-float-label{position:relative;display:block}.orc-p2-float-label>label{position:absolute;z-index:1;top:50%;left:.75rem;transform:translateY(-50%);padding:0 .2rem;color:#64748b;background:#fff;pointer-events:none;transition:.15s}.orc-p2-float-label:focus-within>label,.orc-p2-float-label>.filled+label{top:0;font-size:.75rem;color:#2563eb}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FloatLabelComponent {}
+export class FloatLabelComponent { readonly variant = input<'in' | 'over' | 'on'>('over'); readonly styleClass = input(''); }
 
 @Component({
   selector: 'orc-fluid', standalone: true,
@@ -36,7 +38,7 @@ export class FloatLabelComponent {}
   styles: [P2_SHARED_STYLES + `.orc-p2-fluid{display:flex;flex-direction:column;width:100%;gap:1rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FluidComponent {}
+export class FluidComponent { readonly styleClass = input(''); }
 
 @Component({
   selector: 'orc-overlay-badge', standalone: true,
@@ -54,8 +56,10 @@ export interface MeterItem { value: number; label?: string; color?: string; }
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterGroupComponent {
-  readonly values = input<MeterItem[]>([]); readonly max = input(100); readonly color = input('#3b82f6'); readonly label = input(''); readonly ariaLabel = input('Meter');
-  total(): number { return this.values().reduce((sum, item) => sum + item.value, 0); }
+  readonly values = input<MeterItem[]>([]); readonly value = input<MeterItem[] | undefined>(undefined); readonly min = input(0); readonly max = input(100); readonly color = input('#3b82f6'); readonly label = input(''); readonly labelPosition = input<'start' | 'end'>('end'); readonly labelOrientation = input<'horizontal' | 'vertical'>('horizontal'); readonly orientation = input<'horizontal' | 'vertical'>('horizontal'); readonly styleClass = input(''); readonly ariaLabel = input('Meter');
+  effectiveValues(): MeterItem[] { return this.value() ?? this.values(); }
+  total(): number { return this.effectiveValues().reduce((sum, item) => sum + item.value, 0); }
+  percent(item: MeterItem): number { return Math.max(0, Math.min(100, ((item.value - this.min()) / Math.max(1, this.max() - this.min())) * 100)); }
 }
 
 @Component({
@@ -95,8 +99,8 @@ export class SplitButtonComponent { readonly label = input('Action'); readonly i
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScrollTopComponent {
-  readonly threshold = input(200); readonly ariaLabel = input('Scroll to top'); readonly visible = model(false);
+  readonly threshold = input(200); readonly target = input<'window' | 'parent'>('window'); readonly behavior = input<'auto' | 'smooth'>('smooth'); readonly styleClass = input(''); readonly buttonAriaLabel = input<string | undefined>(undefined); readonly ariaLabel = input('Scroll to top'); readonly visible = model(false);
   constructor(private readonly host: ElementRef<HTMLElement>) {}
   @HostListener('window:scroll') onScroll(): void { this.visible.set((globalThis.scrollY || 0) > this.threshold()); }
-  scroll(): void { globalThis.scrollTo?.({ top: 0, behavior: 'smooth' }); }
+  scroll(): void { globalThis.scrollTo?.({ top: 0, behavior: this.behavior() }); }
 }

@@ -112,13 +112,15 @@ export interface SpeedDialAction extends P2Option<string> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpeedDialComponent {
-  readonly actions = input<SpeedDialAction[]>([]);
+  readonly actions = input<SpeedDialAction[]>([]); readonly model = input<SpeedDialAction[] | null>(null); readonly direction = input<'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right'>('up'); readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>('linear'); readonly radius = input(0); readonly transitionDelay = input(0); readonly mask = input(false, { transform: booleanAttribute }); readonly disabled = input(false, { transform: booleanAttribute }); readonly hideOnClickOutside = input(true, { transform: booleanAttribute }); readonly styleClass = input(''); readonly buttonClass = input(''); readonly ariaLabel = input('Actions');
   readonly open = model(false);
   readonly icon = input('+');
   readonly openLabel = input('Open actions');
   readonly closeLabel = input('Close actions');
-  readonly actionSelect = output<SpeedDialAction>();
-  activate(action: SpeedDialAction): void { if (!action.disabled) { this.actionSelect.emit(action); this.open.set(false); } }
+  readonly actionSelect = output<SpeedDialAction>(); readonly visibleChange = output<boolean>(); readonly onVisibleChange = this.visibleChange; readonly onShow = output<Event>(); readonly onHide = output<Event>(); readonly onClick = output<MouseEvent>();
+  show(event?: Event): void { if (this.disabled()) return; this.open.set(true); this.visibleChange.emit(true); if (event) this.onShow.emit(event); }
+  hide(event?: Event): void { this.open.set(false); this.visibleChange.emit(false); if (event) this.onHide.emit(event); }
+  activate(action: SpeedDialAction): void { if (!this.disabled() && !action.disabled) { this.actionSelect.emit(action); this.hide(); } }
 }
 
 @Component({

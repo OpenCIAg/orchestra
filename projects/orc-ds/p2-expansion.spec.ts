@@ -47,6 +47,10 @@ import { ConfirmDialogComponent, ConfirmationService, PanelMenuComponent, Tiered
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
 import { ChipComponent } from './chip/chip.component';
+import { FloatLabelComponent, MeterGroupComponent } from './p2/p2-primeng-gap-components';
+import { ImageCompareComponent, InplaceComponent, TerminalComponent } from './p2/p2-input-gap-components';
+import { BlockUiComponent } from './p2/p2-advanced-components';
+import { SpeedDialComponent } from './p2/p2-overlay-components';
 
 describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
@@ -380,6 +384,31 @@ describe('P2 expansion components', () => {
     expect(component.totalRecords()).toBe(100);
     expect(component.first()).toBe(20);
     expect(component.rows()).toBe(10);
+  });
+
+  it('supports remaining PrimeNG structural and utility aliases', () => {
+    const block = TestBed.createComponent(BlockUiComponent).componentInstance;
+    expect(block.blocked()).toBeFalse();
+    const meter = TestBed.createComponent(MeterGroupComponent);
+    meter.componentRef.setInput('value', [{ value: 25, label: 'CPU' }]);
+    expect(meter.componentInstance.total()).toBe(25);
+    expect(meter.componentInstance.percent(meter.componentInstance.effectiveValues()[0])).toBe(25);
+    const inplace = TestBed.createComponent(InplaceComponent).componentInstance;
+    inplace.activate();
+    expect(inplace.active()).toBeTrue();
+    inplace.deactivate();
+    const dial = TestBed.createComponent(SpeedDialComponent).componentInstance;
+    dial.show();
+    expect(dial.open()).toBeTrue();
+    dial.hide();
+    const compare = TestBed.createComponent(ImageCompareComponent).componentInstance;
+    compare.setPosition(120);
+    expect(compare.position()).toBe(100);
+    const terminal = TestBed.createComponent(TerminalComponent).componentInstance;
+    terminal.command.set('help');
+    terminal.submit(new Event('submit'));
+    expect(terminal.history()[0].command).toBe('help');
+    expect(TestBed.createComponent(FloatLabelComponent).componentInstance.variant()).toBe('over');
   });
 
   it('supports Galleria circular navigation and image change events', () => {
