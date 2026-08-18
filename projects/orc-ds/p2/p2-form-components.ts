@@ -15,6 +15,7 @@ import { P2Option, P2_SHARED_STYLES, P2Size } from './p2-shared';
 let nextMultiSelectId = 0;
 let nextTagsInputId = 0;
 let nextCalendarId = 0;
+let nextDateInputId = 0;
 
 export interface CalendarDay {
   iso: string;
@@ -244,11 +245,11 @@ export class ComboboxComponent<T = unknown> {
   selector: 'orc-date-input',
   standalone: true,
   template: `
-    <label class="orc-p2-date-input">
-      @if (label()) { <span>{{ label() }} @if (required()) { <sup>*</sup> }</span> }
-      <input type="date" [value]="value()" [min]="min() || null" [max]="max() || null" [disabled]="effectiveDisabled()" [readonly]="readonly()" [attr.aria-invalid]="!!error()" (input)="onInput($event)" (blur)="onTouched()" />
+    <label class="p-datepicker p-component orc-p2-date-input" [class]="'p-datepicker p-component orc-p2-date-input ' + styleClass()" [style]="style()" [class.p-datepicker-fluid]="fluid()" [attr.data-pc-name]="'datepicker'">
+      @if (label()) { <span [id]="effectiveId() + '-label'">{{ label() }} @if (required()) { <sup>*</sup> }</span> }
+      <input class="p-inputtext p-component" [id]="effectiveId()" [name]="name()" type="date" [value]="value()" [min]="min() || null" [max]="max() || null" [disabled]="effectiveDisabled()" [readonly]="readonly()" [autofocus]="autofocus()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel() || null" [attr.aria-labelledby]="ariaLabelledBy() || (label() ? effectiveId() + '-label' : null)" [attr.aria-describedby]="helperText() ? effectiveId() + '-helper' : null" [attr.aria-invalid]="!!error()" (input)="onInput($event)" (blur)="onTouched()" />
       @if (error()) { <small class="error" role="alert">{{ error() }}</small> }
-      @if (!error() && helperText()) { <small>{{ helperText() }}</small> }
+      @if (!error() && helperText()) { <small [id]="effectiveId() + '-helper'">{{ helperText() }}</small> }
     </label>
   `,
   styles: [P2_SHARED_STYLES + `
@@ -260,6 +261,7 @@ export class ComboboxComponent<T = unknown> {
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateInputComponent), multi: true }],
 })
 export class DateInputComponent implements ControlValueAccessor {
+  private readonly uniqueId = `orc-date-input-${++nextDateInputId}`;
   readonly value = model('');
   readonly label = input('');
   readonly name = input('');
@@ -270,10 +272,19 @@ export class DateInputComponent implements ControlValueAccessor {
   readonly required = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
+  readonly inputId = input<string | undefined>(undefined);
+  readonly ariaLabel = input('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly fluid = input(false, { transform: booleanAttribute });
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly tabindex = input<number | undefined>(undefined);
   readonly cvaDisabled = signal(false);
   private onChange: (value: string) => void = () => undefined;
   private onTouchedCallback: () => void = () => undefined;
   readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
+  readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
 
   writeValue(value: string | null): void { this.value.set(value ?? ''); }
   registerOnChange(fn: (value: string) => void): void { this.onChange = fn; }
