@@ -72,6 +72,7 @@ export class ModalComponent implements OnDestroy {
         dialog.showModal();
         if (this.blockScroll()) document.body.style.overflow = 'hidden'; // Scroll lock
         this.onShow.emit();
+        if (this.focusOnShow()) queueMicrotask(() => this.focusInitialElement());
       } else if (!open && dialog.open) {
         dialog.close();
         document.body.style.removeProperty('overflow');
@@ -132,6 +133,13 @@ export class ModalComponent implements OnDestroy {
   show(): void { this.visible.set(true); this.isOpen.set(true); }
   close(): void { this.onClose(); }
   toggleMaximize(): void { if (!this.maximizable()) return; this.maximized.update(value => !value); this.onMaximize.emit({ maximized: this.maximized() }); }
+
+  private focusInitialElement(): void {
+    const dialog = this.dialogRef?.nativeElement;
+    if (!dialog || !(this.isOpen() || this.visible())) return;
+    const first = dialog.querySelector<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    (first || dialog).focus();
+  }
 
   @HostListener('document:keydown', ['$event'])
   trapFocus(event: KeyboardEvent): void {

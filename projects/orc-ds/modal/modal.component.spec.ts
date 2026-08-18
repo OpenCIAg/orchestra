@@ -49,6 +49,16 @@ describe('ModalComponent', () => {
       expect(event.preventDefault).toHaveBeenCalled();
       expect(document.activeElement).toBe(first);
     });
+
+    it('focuses the first eligible control when focusOnShow is enabled', async () => {
+      fixture.componentRef.setInput('inline', true);
+      fixture.componentRef.setInput('focusOnShow', true);
+      fixture.componentRef.setInput('showCloseButton', true);
+      fixture.componentRef.setInput('isOpen', true);
+      fixture.detectChanges();
+      component['focusInitialElement']();
+      expect(document.activeElement?.tagName).toBe('BUTTON');
+    });
   });
 
   describe('Host Integration Tests', () => {
