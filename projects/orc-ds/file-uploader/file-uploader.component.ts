@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { FileItemComponent } from './file-item/file-item.component';
 
 import { FileItemData, FileStatus } from './file-uploader.types';
@@ -42,6 +43,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly name = input<string | undefined>(undefined);
   readonly url = input<string | undefined>(undefined);
   readonly method = input<'post' | 'put'>('post');
+  readonly headers = input<HttpHeaders | undefined>(undefined);
   readonly multiple = input(true, { transform: booleanAttribute });
   readonly auto = input(false, { transform: booleanAttribute });
   readonly withCredentials = input(false, { transform: booleanAttribute });
@@ -92,6 +94,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly files = signal<FileItemData[]>([]);
   readonly isDragging = signal<boolean>(false);
   private readonly cvaDisabled = signal(false);
+  private readonly http = inject(HttpClient, { optional: true });
   
   // ── CVA callbacks ───────────────────────────────────────────
   private onChange: (value: FileItemData[]) => void = () => {};
@@ -182,7 +185,23 @@ export class FileUploaderComponent implements ControlValueAccessor {
   }
 
   clear(): void { if (this.isDisabled()) return; this.files.set([]); this.onChange([]); this.onClear.emit(); }
-  upload(): void { if (!this.files().length) return; this.onBeforeUpload.emit(); const files = this.files().map(item => item.file); this.onSend.emit({ files }); if (this.customUpload()) this.uploadHandler.emit({ files }); else this.onUpload.emit({ files }); }
+  upload(): void {
+    if (this.isDisabled() || !this.files().length) return;
+    this.onBeforeUpload.emit();
+    const files = this.files().map(item => item.file);
+    this.onSend.emit({ files });
+    if (this.customUpload() || !this.url() || !this.http) { this.customUpload() ? this.uploadHandler.emit({ files }) : this.onUpload.emit({ files }); return; }
+    const form = new FormData();
+    files.forEach(file => form.append(this.name() || 'files', file, file.name));
+    const request = this.http.request(this.method(), this.url()!, { body: form, headers: this.headers(), withCredentials: this.withCredentials(), reportProgress: true, observe: 'events' });
+    request.subscribe({
+      next: event => {
+        if (event.type === HttpEventType.UploadProgress && event.total) this.onProgress.emit({ progress: Math.round((event.loaded / event.total) * 100) });
+        if (event.type === HttpEventType.Response) { this.onProgress.emit({ progress: 100 }); this.onUpload.emit({ files }); }
+      },
+      error: error => this.onError.emit({ files, error: String(error?.message || error?.statusText || 'Upload failed') })
+    });
+  }
   choose(): void { this.onAreaClick(); }
   uploader(): void { this.upload(); }
 
