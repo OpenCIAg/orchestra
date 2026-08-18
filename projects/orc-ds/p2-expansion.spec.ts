@@ -151,6 +151,7 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('currentMonth', '2025-01');
     fixture.componentRef.setInput('firstDayOfWeek', 1);
     expect(component.days()[0].iso).toBe('2024-12-30');
+    expect(component.weekdayLabels()[0]).toBe('Mo');
   });
 
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
