@@ -4,6 +4,7 @@ import {
   input,
   computed,
   HostBinding,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -29,8 +30,13 @@ export class LoadingSpinnerComponent {
   readonly type = input<SpinnerType>('ring');
   readonly text = input<string>('');
   readonly textPosition = input<SpinnerTextPosition>('right');
-  readonly fullScreen = input<boolean>(false);
-  readonly backdrop = input<boolean>(true);
+  readonly fullScreen = input<boolean>(false, { transform: booleanAttribute });
+  readonly backdrop = input<boolean>(true, { transform: booleanAttribute });
+  readonly strokeWidth = input(3);
+  readonly fill = input('none');
+  readonly animation = input<'spin' | 'none'>('spin');
+  readonly styleClass = input('');
+  readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string>('Carregando...');
 
   @HostBinding('class.orc-spinner--fullscreen-host')
