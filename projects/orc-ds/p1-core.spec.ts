@@ -17,6 +17,15 @@ describe('P1 core components', () => {
     expect(fixture.componentInstance.value()).toBe(8);
   });
 
+  it('formats InputNumber values with PrimeNG currency options', () => {
+    const fixture = TestBed.createComponent(NumberInputComponent);
+    fixture.componentRef.setInput('mode', 'currency');
+    fixture.componentRef.setInput('currency', 'USD');
+    fixture.componentRef.setInput('locale', 'en-US');
+    fixture.componentInstance.writeValue(12.5);
+    expect(fixture.componentInstance.displayValue()).toContain('$12.50');
+  });
+
   it('selects an autocomplete option and emits its value', () => {
     const fixture = TestBed.createComponent(AutocompleteComponent);
     const option = { value: 'sp', label: 'São Paulo' };
