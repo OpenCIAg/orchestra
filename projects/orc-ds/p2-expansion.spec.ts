@@ -770,6 +770,19 @@ describe('P2 expansion components', () => {
     expect(component.visible()).toBeFalse();
   });
 
+  it('renders and activates nested Menu items through the PrimeNG model shape', () => {
+    const fixture = TestBed.createComponent(MenuComponent);
+    const component = fixture.componentInstance;
+    const command = jasmine.createSpy('nestedCommand');
+    const child = { label: 'Child', command };
+    const parent = { label: 'Parent', items: [child] };
+    fixture.componentRef.setInput('model', [parent]);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('ul[role="menu"]').length).toBe(1);
+    component.activate(child);
+    expect(command).toHaveBeenCalled();
+  });
+
   it('supports OrganizationChart expansion and multiple selection', () => {
     const fixture = TestBed.createComponent(OrganizationChartComponent);
     const component = fixture.componentInstance;
