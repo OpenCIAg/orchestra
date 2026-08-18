@@ -1,4 +1,5 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, forwardRef, input, model, output } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2_SHARED_STYLES } from './p2-shared';
 
 export type ChartType = 'bar' | 'line' | 'doughnut';
@@ -28,14 +29,23 @@ export class ChartComponent {
 
 @Component({
   selector: 'orc-editor', standalone: true,
-  template: `<section class="orc-editor" [class.readonly]="readonly()" [attr.aria-label]="ariaLabel()"><div class="toolbar" role="toolbar">@for (action of actions; track action.command) { <button type="button" [disabled]="readonly()" (click)="exec(action.command)" [attr.aria-label]="action.label">{{ action.icon }}</button> }</div><div class="surface" contenteditable="true" [attr.contenteditable]="readonly() ? 'false' : 'true'" [attr.data-placeholder]="placeholder()" [innerHTML]="value()" (input)="onInput($event)" (blur)="blur.emit(value())"></div></section>`,
+  template: `<section class="orc-editor" [class.readonly]="readonly()" [attr.aria-label]="ariaLabel()"><div class="toolbar" role="toolbar">@for (action of actions; track action.command) { <button type="button" [disabled]="readonly()" (click)="exec(action.command)" [attr.aria-label]="action.label">{{ action.icon }}</button> }</div><div class="surface" contenteditable="true" [attr.contenteditable]="readonly() ? 'false' : 'true'" [attr.data-placeholder]="placeholder()" [innerHTML]="value()" (input)="onInput($event)" (blur)="handleBlur()"></div></section>`,
   styles: [P2_SHARED_STYLES + `.orc-editor{width:100%;border:1px solid #cbd5e1;border-radius:.5rem;overflow:hidden;background:#fff}.toolbar{display:flex;gap:.2rem;padding:.35rem;border-bottom:1px solid #e2e8f0;background:#f8fafc}.toolbar button{width:2rem;height:2rem;border:0;border-radius:.3rem;background:transparent}.toolbar button:hover:not(:disabled){background:#e2e8f0}.surface{min-height:10rem;padding:.75rem;outline:0;color:#0f172a}.surface:empty:before{content:attr(data-placeholder);color:#94a3b8}.readonly .toolbar{display:none}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => EditorComponent), multi: true }],
 })
-export class EditorComponent {
+export class EditorComponent implements ControlValueAccessor {
   readonly value = model(''); readonly placeholder = input('Write something…'); readonly readonly = input(false, { transform: booleanAttribute }); readonly styleClass = input(''); readonly formats = input<string[] | undefined>(undefined); readonly modules = input<Record<string, unknown> | undefined>(undefined); readonly bounds = input<HTMLElement | string | undefined>(undefined); readonly scrollingContainer = input<HTMLElement | string | undefined>(undefined); readonly debug = input<string | undefined>(undefined); readonly ariaLabel = input('Editor'); readonly blur = output<string>(); readonly onInit = output<unknown>(); readonly onTextChange = output<{ html: string; text: string }>(); readonly onSelectionChange = output<unknown>();
   readonly actions = [{ command: 'bold', icon: 'B', label: 'Bold' }, { command: 'italic', icon: 'I', label: 'Italic' }, { command: 'underline', icon: 'U', label: 'Underline' }];
-  onInput(event: Event): void { const html = (event.target as HTMLElement).innerHTML; this.value.set(html); this.onTextChange.emit({ html, text: (event.target as HTMLElement).innerText }); }
+  private onModelChange: (value: string) => void = () => {};
+  private onModelTouched: () => void = () => {};
+  private cvaDisabled = false;
+  writeValue(value: unknown): void { this.value.set(value == null ? '' : String(value)); }
+  registerOnChange(fn: (value: string) => void): void { this.onModelChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onModelTouched = fn; }
+  setDisabledState(disabled: boolean): void { this.cvaDisabled = disabled; }
+  onInput(event: Event): void { if (this.readonly() || this.cvaDisabled) return; const html = (event.target as HTMLElement).innerHTML; this.value.set(html); this.onModelChange(html); this.onTextChange.emit({ html, text: (event.target as HTMLElement).innerText }); }
+  handleBlur(): void { this.onModelTouched(); this.blur.emit(this.value()); }
   exec(command: string): void { if (this.readonly()) return; if (typeof document !== 'undefined') document.execCommand(command); }
   getQuill(): null { return null; }
 }
