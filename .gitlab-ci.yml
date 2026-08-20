@@ -10,14 +10,14 @@ default:
         - package-lock.json
     paths:
       - .npm/
-  before_script:
-    - npm ci --legacy-peer-deps --cache .npm
 
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/.npm"
 
 build_docs:
   stage: validate
+  before_script:
+    - npm ci --legacy-peer-deps --cache .npm
   script:
     - |
       case "$CI_COMMIT_REF_NAME" in
