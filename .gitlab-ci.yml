@@ -19,7 +19,11 @@ variables:
 build_docs:
   stage: validate
   script:
-    - npm run verify:compatibility
+    - |
+      case "$CI_COMMIT_REF_NAME" in
+        main|v19|v20|v21|v22) RELEASE_BRANCH="$CI_COMMIT_REF_NAME" npm run verify:compatibility ;;
+        *) echo "Skipping release-line compatibility check for $CI_COMMIT_REF_NAME" ;;
+      esac
     - npm run build:lib
     - npm run build:docs
   artifacts:
