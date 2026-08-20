@@ -1,0 +1,8 @@
+services:
+  orchestra-docs:
+    build:
+      context: ../..
+      dockerfile: deploy/komodo/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${ORCHESTRA_DOCS_PORT:-8080}:80"

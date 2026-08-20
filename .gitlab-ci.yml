@@ -1,0 +1,49 @@
+stages:
+  - validate
+  - deploy
+
+default:
+  image: node:22.22.3-bookworm
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  before_script:
+    - npm ci --legacy-peer-deps --cache .npm
+
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+build_docs:
+  stage: validate
+  script:
+    - npm run verify:compatibility
+    - npm run build:lib
+    - npm run build:docs
+  artifacts:
+    name: "docs-$CI_COMMIT_SHORT_SHA"
+    expire_in: 7 days
+    paths:
+      - dist/docs/browser/
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+deploy_komodo:
+  stage: deploy
+  image: curlimages/curl:8.10.1
+  script:
+    - test -n "$KOMODO_WEBHOOK_URL" || (echo "KOMODO_WEBHOOK_URL is required" && exit 1)
+    - test -n "$KOMODO_WEBHOOK_SECRET" || (echo "KOMODO_WEBHOOK_SECRET is required" && exit 1)
+    - >-
+      curl --fail-with-body --show-error --silent
+      --request POST
+      --header "Content-Type: application/json"
+      --header "X-Gitlab-Token: $KOMODO_WEBHOOK_SECRET"
+      --data "{\"ref\":\"$CI_COMMIT_REF_NAME\",\"after\":\"$CI_COMMIT_SHA\"}"
+      "$KOMODO_WEBHOOK_URL"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
