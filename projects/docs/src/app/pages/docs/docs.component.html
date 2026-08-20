@@ -9,62 +9,40 @@
 
         <div class="sidebar__section">
           <span class="sidebar__label">Introdução</span>
-          <a href="#overview"
-             (click)="scrollToSection('overview', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'overview'">Visão Geral</a>
-          <a href="#principles"
-             (click)="scrollToSection('principles', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'principles'">Princípios</a>
+          <a href="#overview" (click)="scrollToSection('overview', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'overview'">Visão Geral</a>
+          <a href="#principles" (click)="scrollToSection('principles', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'principles'">Princípios</a>
         </div>
 
         <div class="sidebar__section">
           <span class="sidebar__label">Identidade Visual</span>
-          <a href="#logo"
-             (click)="scrollToSection('logo', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'logo'">Logo & Ícone</a>
-          <a href="#colors"
-             (click)="scrollToSection('colors', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'colors'">Paleta de Cores</a>
-          <a href="#typography"
-             (click)="scrollToSection('typography', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'typography'">Tipografia</a>
-          <a href="#spacing"
-             (click)="scrollToSection('spacing', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'spacing'">Espaçamento</a>
-          <a href="#shadows"
-             (click)="scrollToSection('shadows', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'shadows'">Sombras & Raios</a>
+          <a href="#logo" (click)="scrollToSection('logo', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'logo'">Logo & Ícone</a>
+          <a href="#colors" (click)="scrollToSection('colors', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'colors'">Paleta de Cores</a>
+          <a href="#typography" (click)="scrollToSection('typography', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'typography'">Tipografia</a>
+          <a href="#spacing" (click)="scrollToSection('spacing', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'spacing'">Espaçamento</a>
+          <a href="#shadows" (click)="scrollToSection('shadows', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'shadows'">Sombras & Raios</a>
         </div>
 
         <div class="sidebar__section">
           <span class="sidebar__label">Assets</span>
-          <a href="#assets"
-             (click)="scrollToSection('assets', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'assets'">Downloads</a>
-          <a href="#tokens"
-             (click)="scrollToSection('tokens', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'tokens'">Design Tokens</a>
+          <a href="#assets" (click)="scrollToSection('assets', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'assets'">Downloads</a>
+          <a href="#tokens" (click)="scrollToSection('tokens', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'tokens'">Design Tokens</a>
         </div>
 
         <div class="sidebar__section">
           <span class="sidebar__label">Uso</span>
-          <a href="#dos"
-             (click)="scrollToSection('dos', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'dos'">Boas práticas</a>
-          <a href="#donts"
-             (click)="scrollToSection('donts', $event)"
-             class="sidebar__link"
-             [class.sidebar__link--active]="activeSection() === 'donts'">O que evitar</a>
+          <a href="#dos" (click)="scrollToSection('dos', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'dos'">Boas práticas</a>
+          <a href="#donts" (click)="scrollToSection('donts', $event)" class="sidebar__link"
+            [class.sidebar__link--active]="activeSection() === 'donts'">O que evitar</a>
         </div>
 
       </nav>
@@ -87,20 +65,6 @@
           <orc-badge text="Angular 19" status="info" variant="soft" size="sm" />
           <orc-badge text="WCAG 2.1 AA" status="neutral" variant="soft" size="sm" />
         </div>
-        <orc-alert class="docs-callout" severity="info" variant="subtle" title="Comece pelo catálogo de componentes"
-          message="Use Components para encontrar o playground, as variações e a API completa de cada elemento. Este guia concentra os tokens e princípios compartilhados." />
-        <div class="system-preview" aria-label="Exemplo de composição Orchestra">
-          <div class="system-preview__copy">
-            <span class="system-preview__eyebrow">Composição de referência</span>
-            <h2>Fundamentos que se comportam como produto.</h2>
-            <p>Os mesmos primitives usados nos showcases estão disponíveis para a sua aplicação Angular.</p>
-          </div>
-          <div class="system-preview__controls">
-            <orc-input id="docs-component-query" label="Componente" value="Button"
-              helperText="Inputs, feedback e navegação usam os mesmos tokens." />
-            <orc-progress-bar [value]="72" label="Cobertura documentada" [showValue]="true" variant="success" />
-          </div>
-        </div>
       </section>
 
       <orc-divider class="divider" ariaLabel="Fim da visão geral" />
@@ -110,20 +74,40 @@
         <h2 class="section-heading">Princípios</h2>
         <div class="principles-grid">
           <orc-card class="principle-card">
-            <orc-card-header><span class="principle-icon" aria-hidden="true">⬡</span><h3 class="principle-title">Clareza</h3></orc-card-header>
-            <orc-card-body><p class="principle-desc">Cada elemento tem uma função clara. Removemos tudo que não agrega valor ao usuário.</p></orc-card-body>
+            <orc-card-header><span class="principle-icon" aria-hidden="true">⬡</span>
+              <h3 class="principle-title">Clareza</h3>
+            </orc-card-header>
+            <orc-card-body>
+              <p class="principle-desc">Cada elemento tem uma função clara. Removemos tudo que não agrega valor ao
+                usuário.</p>
+            </orc-card-body>
           </orc-card>
           <orc-card class="principle-card">
-            <orc-card-header><span class="principle-icon" aria-hidden="true">◎</span><h3 class="principle-title">Consistência</h3></orc-card-header>
-            <orc-card-body><p class="principle-desc">Tokens únicos que se propagam por todo o sistema, garantindo harmonia visual.</p></orc-card-body>
+            <orc-card-header><span class="principle-icon" aria-hidden="true">◎</span>
+              <h3 class="principle-title">Consistência</h3>
+            </orc-card-header>
+            <orc-card-body>
+              <p class="principle-desc">Tokens únicos que se propagam por todo o sistema, garantindo harmonia visual.
+              </p>
+            </orc-card-body>
           </orc-card>
           <orc-card class="principle-card">
-            <orc-card-header><span class="principle-icon" aria-hidden="true">⬔</span><h3 class="principle-title">Acessibilidade</h3></orc-card-header>
-            <orc-card-body><p class="principle-desc">Contraste mínimo 4.5:1, foco visível e semântica HTML correta em todos os componentes.</p></orc-card-body>
+            <orc-card-header><span class="principle-icon" aria-hidden="true">⬔</span>
+              <h3 class="principle-title">Acessibilidade</h3>
+            </orc-card-header>
+            <orc-card-body>
+              <p class="principle-desc">Contraste mínimo 4.5:1, foco visível e semântica HTML correta em todos os
+                componentes.</p>
+            </orc-card-body>
           </orc-card>
           <orc-card class="principle-card">
-            <orc-card-header><span class="principle-icon" aria-hidden="true">◈</span><h3 class="principle-title">Escala</h3></orc-card-header>
-            <orc-card-body><p class="principle-desc">Projetado para crescer. Cada decisão de token suporta temas e extensões futuras.</p></orc-card-body>
+            <orc-card-header><span class="principle-icon" aria-hidden="true">◈</span>
+              <h3 class="principle-title">Escala</h3>
+            </orc-card-header>
+            <orc-card-body>
+              <p class="principle-desc">Projetado para crescer. Cada decisão de token suporta temas e extensões futuras.
+              </p>
+            </orc-card-body>
           </orc-card>
         </div>
       </section>
@@ -191,19 +175,17 @@
         <h3 class="subsection-heading">Identidade Visual</h3>
         <div class="brand-palette">
           @for (c of brandColors; track c.token) {
-          <div class="brand-swatch" [style.background]="c.hex"
-            (click)="copyColor(c.hex)"
+          <div class="brand-swatch" [style.background]="c.hex" (click)="copyColor(c.hex)"
             [title]="copiedColor() === c.hex ? '&#x2713; Copiado!' : 'Clique para copiar ' + c.hex"
-            [class.brand-swatch--copied]="copiedColor() === c.hex"
-            role="button" tabindex="0" style="cursor:pointer;"
+            [class.brand-swatch--copied]="copiedColor() === c.hex" role="button" tabindex="0" style="cursor:pointer;"
             (keydown.enter)="copyColor(c.hex)" (keydown.space)="copyColor(c.hex)">
             <div class="brand-swatch__body" [class.brand-swatch__body--dark]="c.textLight">
               <span class="brand-swatch__name">{{ c.name }}</span>
               <code class="brand-swatch__token">{{ c.token }}</code>
               @if (copiedColor() === c.hex) {
-                <code class="brand-swatch__hex brand-swatch__hex--copied">✓ Copiado!</code>
+              <code class="brand-swatch__hex brand-swatch__hex--copied">✓ Copiado!</code>
               } @else {
-                <code class="brand-swatch__hex">{{ c.hex }}</code>
+              <code class="brand-swatch__hex">{{ c.hex }}</code>
               }
             </div>
           </div>
@@ -213,19 +195,17 @@
         <h3 class="subsection-heading" style="margin-top: 2rem">Cores de Status</h3>
         <div class="color-row">
           @for (s of statusColors; track s.hex) {
-          <div class="color-swatch" [style.background]="s.bg"
-            (click)="copyColor(s.hex)"
+          <div class="color-swatch" [style.background]="s.bg" (click)="copyColor(s.hex)"
             [title]="copiedColor() === s.hex ? '&#x2713; Copiado!' : 'Clique para copiar ' + s.hex"
-            [class.color-swatch--copied]="copiedColor() === s.hex"
-            role="button" tabindex="0" style="cursor:pointer;"
+            [class.color-swatch--copied]="copiedColor() === s.hex" role="button" tabindex="0" style="cursor:pointer;"
             (keydown.enter)="copyColor(s.hex)" (keydown.space)="copyColor(s.hex)">
             <div class="color-swatch__info color-swatch__info--light">
               <span class="color-swatch__name">{{ s.name }}</span>
               <code class="color-swatch__token">{{ s.token }}</code>
               @if (copiedColor() === s.hex) {
-                <code class="color-swatch__hex">✓ Copiado!</code>
+              <code class="color-swatch__hex">✓ Copiado!</code>
               } @else {
-                <code class="color-swatch__hex">{{ s.hex }}</code>
+              <code class="color-swatch__hex">{{ s.hex }}</code>
               }
             </div>
           </div>
@@ -236,15 +216,14 @@
         <div class="zinc-scale">
           @for (swatch of zincScale; track swatch.token) {
           <div class="zinc-chip" [style.background]="swatch.hex" [class.zinc-chip--light]="swatch.light"
-            (click)="copyColor(swatch.hex)"
-            [class.zinc-chip--copied]="copiedColor() === swatch.hex"
-            role="button" tabindex="0" style="cursor:pointer;"
-            (keydown.enter)="copyColor(swatch.hex)" (keydown.space)="copyColor(swatch.hex)">
+            (click)="copyColor(swatch.hex)" [class.zinc-chip--copied]="copiedColor() === swatch.hex" role="button"
+            tabindex="0" style="cursor:pointer;" (keydown.enter)="copyColor(swatch.hex)"
+            (keydown.space)="copyColor(swatch.hex)">
             <span class="zinc-chip__label">{{ swatch.name }}</span>
             @if (copiedColor() === swatch.hex) {
-              <code class="zinc-chip__hex">✓ Copiado!</code>
+            <code class="zinc-chip__hex">✓ Copiado!</code>
             } @else {
-              <code class="zinc-chip__hex">{{ swatch.hex }}</code>
+            <code class="zinc-chip__hex">{{ swatch.hex }}</code>
             }
           </div>
           }
@@ -477,7 +456,8 @@
       <!-- Boas práticas -->
       <section class="doc-section" id="dos">
         <h2 class="section-heading">Boas Práticas</h2>
-        <p class="section-subdesc">Diretrizes recomendadas para garantir coerência e qualidade visual em todos os produtos.</p>
+        <p class="section-subdesc">Diretrizes recomendadas para garantir coerência e qualidade visual em todos os
+          produtos.</p>
 
         <div class="rule-list">
           <div class="rule rule--do">
@@ -486,15 +466,18 @@
           </div>
           <div class="rule rule--do">
             <span class="rule__icon">✓</span>
-            <span>Garanta que todos os elementos interativos tenham foco visível e contraste adequado para acessibilidade (WCAG AA).</span>
+            <span>Garanta que todos os elementos interativos tenham foco visível e contraste adequado para
+              acessibilidade (WCAG AA).</span>
           </div>
           <div class="rule rule--do">
             <span class="rule__icon">✓</span>
-            <span>Mantenha a hierarquia tipográfica consistente usando os pesos e escalas predefinidos da família Poppins.</span>
+            <span>Mantenha a hierarquia tipográfica consistente usando os pesos e escalas predefinidos da família
+              Poppins.</span>
           </div>
           <div class="rule rule--do">
             <span class="rule__icon">✓</span>
-            <span>Mantenha espaçamento mínimo de <code>16px</code> ao redor de marcas, ícones e componentes isolados.</span>
+            <span>Mantenha espaçamento mínimo de <code>16px</code> ao redor de marcas, ícones e componentes
+              isolados.</span>
           </div>
         </div>
       </section>
@@ -504,12 +487,14 @@
       <!-- O que evitar -->
       <section class="doc-section" id="donts">
         <h2 class="section-heading">O que evitar</h2>
-        <p class="section-subdesc">Práticas que prejudicam a consistência e a experiência visual do sistema de design.</p>
+        <p class="section-subdesc">Práticas que prejudicam a consistência e a experiência visual do sistema de design.
+        </p>
 
         <div class="rule-list">
           <div class="rule rule--dont">
             <span class="rule__icon">✕</span>
-            <span>Não declare cores hexadecimais avulsas ou hardcoded diretamente nos estilos locais dos componentes.</span>
+            <span>Não declare cores hexadecimais avulsas ou hardcoded diretamente nos estilos locais dos
+              componentes.</span>
           </div>
           <div class="rule rule--dont">
             <span class="rule__icon">✕</span>
