@@ -113,7 +113,7 @@ export class PaginatorComponent {
   readonly effectivePageLinkSize = computed(() => Math.max(1, this.pageLinkSizeInput() ?? this.maxVisiblePages()));
   readonly effectiveShowFirstLast = computed(() => this.showFirstLastButtons() || this.showFirstLastIcon());
 
-  constructor() { effect(() => { const rows = this.effectivePageSize(); const first = Math.max(0, this.first()); const page = Math.floor(first / rows) + 1; if (page !== this.currentPage()) this.currentPage.set(page); }, { allowSignalWrites: true }); }
+  constructor() { effect(() => { const rows = this.effectivePageSize(); const first = Math.max(0, this.first()); const page = Math.floor(first / rows) + 1; if (page !== this.currentPage()) this.currentPage.set(page); }); }
 
   // ── Computeds (Reatividade Inteligente) ────────────────────
   /** Total de páginas calculado dinamicamente */

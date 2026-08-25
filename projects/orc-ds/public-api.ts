@@ -27,6 +27,7 @@ export * from '@ciag/orchestra/tabs';
 export * from '@ciag/orchestra/toast';
 export * from '@ciag/orchestra/tooltip';
 export * from '@ciag/orchestra/menu';
+export * from '@ciag/orchestra/navigation';
 export * from '@ciag/orchestra/dialog';
 export * from '@ciag/orchestra/pagination';
 export * from '@ciag/orchestra/drawer';

@@ -7,24 +7,24 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background: var(--bg-app, #ffffff);
+  background: var(--orc-surface, var(--bg-app, #ffffff));
   border-radius: 20px;
   overflow: hidden;
   box-sizing: border-box;
 
   &--bordered {
-    border: 1px solid var(--orc-border, #d9d9d9);
+    border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
   }
 
   &--striped {
     .orc-table__body .orc-table__row:nth-child(even):not(.orc-table__row--selected) {
-      background-color: var(--orc-th, #f9f9f9);
+      background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
     }
   }
 
   &--hoverable {
     .orc-table__body .orc-table__row:hover:not(.orc-table__row--loading) {
-      background-color: rgba(28, 106, 237, 0.03);
+      background-color: color-mix(in srgb, var(--orc-interactive, #1c6aed) 4%, transparent);
     }
   }
 }
@@ -36,7 +36,7 @@
   outline: none;
 
   &:focus-visible {
-    box-shadow: inset 0 0 0 2px var(--orc-color-azul-eletrico, #1c6aed);
+    box-shadow: inset 0 0 0 2px var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
   }
 }
 
@@ -50,11 +50,11 @@
 
 // ── Cabeçalho (Figma Spec) ──────────────────────────────────
 .orc-table__head {
-  background-color: var(--orc-th, #f9f9f9);
+  background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
 }
 
 .orc-table__head-row {
-  border-bottom: 1px solid var(--orc-border, #d9d9d9);
+  border-bottom: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
 }
 
 .orc-table__th {
@@ -62,8 +62,8 @@
   padding: 12px 16px;
   font-size: 15px;
   font-weight: 500;
-  color: var(--orc-font-main, #141414);
-  border-bottom: 1px solid var(--orc-border, #d9d9d9);
+  color: var(--orc-text, var(--text-primary, #141414));
+  border-bottom: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
   box-sizing: border-box;
   white-space: nowrap;
   outline: none;
@@ -81,16 +81,16 @@
     user-select: none;
 
     &:hover {
-      background-color: var(--orc-highlight-cinza-claro, #ededed);
+      background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
     }
 
     &:focus-visible {
-      box-shadow: inset 0 0 0 2px var(--orc-color-azul-eletrico, #1c6aed);
+      box-shadow: inset 0 0 0 2px var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
   }
 
   &--sorted {
-    color: var(--orc-color-azul-eletrico, #1c6aed);
+    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
   }
 }
 
@@ -120,11 +120,11 @@
 
 // ── Corpo da Tabela ─────────────────────────────────────────
 .orc-table__body {
-  background-color: var(--bg-app, #ffffff);
+  background-color: var(--orc-surface, var(--bg-app, #ffffff));
 }
 
 .orc-table__row {
-  border-bottom: 1px solid var(--orc-border, #d9d9d9);
+  border-bottom: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
   transition: background-color var(--transition-fast, 0.2s ease);
 
   &:last-child {
@@ -132,7 +132,7 @@
   }
 
   &--selected {
-    background-color: rgba(28, 106, 237, 0.08) !important;
+    background-color: var(--orc-interactive-soft) !important;
   }
 }
 
@@ -142,7 +142,7 @@
   vertical-align: middle;
   font-size: 14px;
   line-height: 20px;
-  color: var(--orc-font-main, #141414);
+  color: var(--orc-text, var(--text-primary, #141414));
   box-sizing: border-box;
 
   &--checkbox {
@@ -182,7 +182,7 @@
 .orc-table__empty-icon {
   width: 44px;
   height: 44px;
-  color: #929292;
+  color: var(--orc-text-muted, #929292);
   margin-bottom: 4px;
 
   svg {
@@ -194,21 +194,21 @@
 .orc-table__empty-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--orc-font-main, #141414);
+  color: var(--orc-text, var(--text-primary, #141414));
   margin: 0;
 }
 
 .orc-table__empty-desc {
   font-size: 13px;
-  color: var(--orc-font-secondary, #58595b);
+  color: var(--orc-text-secondary, var(--text-secondary, #58595b));
   margin: 0;
 }
 
 // ── Rodapé / Paginação ──────────────────────────────────────
 .orc-table__footer {
   padding: 12px 16px;
-  background-color: var(--bg-app, #ffffff);
-  border-top: 1px solid var(--orc-border, #d9d9d9);
+  background-color: var(--orc-surface, var(--bg-app, #ffffff));
+  border-top: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
   display: flex;
   align-items: center;
   justify-content: flex-end;

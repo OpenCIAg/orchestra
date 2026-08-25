@@ -3,14 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "workspaces": [
-    "projects/orc-ds"
+    "dist/orc-ds"
   ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve docs",
     "start:template": "ng serve template --port 4300",
     "build": "ng build orc-ds && ng build docs && ng build template",
-    "build:lib": "ng build orc-ds",
+    "build:lib": "ng build orc-ds && npm install",
     "build:docs": "ng build docs",
     "build:template": "ng build template",
     "watch:lib": "ng build orc-ds --watch --configuration development",
@@ -24,6 +24,7 @@
     "changeset": "changeset"
   },
   "dependencies": {
+    "@ciag/orchestra": "^22.0.1",
     "@angular/cdk": "^22.1.2",
     "@angular/common": "^22.1.2",
     "@angular/compiler": "^22.1.2",

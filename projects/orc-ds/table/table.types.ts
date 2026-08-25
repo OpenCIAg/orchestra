@@ -22,3 +22,12 @@ export interface TableColumnConfig {
   width?: string;
   align?: ColumnAlign;
 }
+
+/** Controlled query emitted by `orc-table` in server-driven mode. */
+export interface TableQuery {
+  first: number;
+  rows: number;
+  sort?: { column: string; direction: SortDirection };
+  filter?: string;
+  filters: Record<string, unknown>;
+}

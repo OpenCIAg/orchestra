@@ -16,7 +16,7 @@
   gap: var(--space-2, 0.5rem);
   padding: 0.625rem 0.75rem; // 10px 12px
   border-radius: var(--radius-md, 0.625rem);
-  color: var(--orc-font-main, #141414);
+  color: var(--orc-text, var(--text-primary, #141414));
   font-family: var(--font-sans, 'Poppins', sans-serif);
   font-size: 0.875rem; // 14px
   line-height: 1.25rem; // 20px
@@ -25,16 +25,16 @@
   transition: background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease);
 
   &:hover {
-    background-color: var(--orc-highlight-cinza-claro, #EDEDED);
+    background-color: var(--orc-interactive-soft, var(--bg-subtle, #EDEDED));
   }
 }
 
 :host(.is-active) .orc-option-container {
-  background-color: var(--orc-highlight-cinza-claro, #EDEDED);
+  background-color: var(--orc-interactive-soft, var(--bg-subtle, #EDEDED));
 }
 
 :host(.is-selected) .orc-option-container {
-  background-color: var(--orc-highlight-cinza-claro, #EDEDED);
+  background-color: var(--orc-interactive-soft, var(--bg-subtle, #EDEDED));
   font-weight: 500;
 }
 
@@ -82,7 +82,7 @@
 .orc-option-description {
   font-size: 0.75rem; // 12px
   line-height: 1rem;
-  color: var(--orc-font-secondary, #666666);
+  color: var(--orc-text-secondary, var(--text-secondary, #666666));
   font-weight: normal;
   white-space: nowrap;
   overflow: hidden;
@@ -94,5 +94,5 @@
   height: 1.125rem;
   flex-shrink: 0;
   margin-left: auto;
-  color: var(--orc-font-main, #141414);
+  color: var(--orc-text, var(--text-primary, #141414));
 }

@@ -15,11 +15,11 @@
   // ── INFORMAÇÕES DE ITENS ──────────────────────────────────
   &__info {
     font-size: 0.875rem;
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
     white-space: nowrap;
 
     strong {
-      color: var(--orc-font-main, #141414);
+      color: var(--orc-text, var(--orc-font-main, #141414));
       font-weight: 600;
     }
   }
@@ -44,7 +44,7 @@
     background: transparent;
     border: none;
     border-radius: 8px; // Figma rounded-[8px]
-    color: var(--orc-font-main, #141414);
+    color: var(--orc-text, var(--orc-font-main, #141414));
     font-family: inherit;
     font-size: 0.875rem; // 14px
     font-weight: 400; // Poppins:Regular
@@ -55,12 +55,12 @@
     text-decoration: none;
 
     &:hover:not(:disabled) {
-      background: var(--bg-subtle, #f9f9f9);
-      color: var(--orc-color-azul-royal, #0406ab);
+      background: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
+      color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406ab));
     }
 
     &:focus-visible {
-      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       outline-offset: 2px;
     }
 
@@ -80,14 +80,14 @@
 
     // Página Ativa (Figma Node 18:1762 - bg-[#F9F9F9], font-weight: SemiBold)
     &--active {
-      background: var(--orc-th, #f9f9f9);
+      background: var(--orc-surface-subtle, var(--orc-th, #f9f9f9));
       font-weight: 600; // Poppins:SemiBold
-      color: var(--orc-font-main, #141414);
+      color: var(--orc-text, var(--orc-font-main, #141414));
       cursor: default;
 
       &:hover {
-        background: var(--orc-th, #f9f9f9);
-        color: var(--orc-font-main, #141414);
+        background: var(--orc-surface-subtle, var(--orc-th, #f9f9f9));
+        color: var(--orc-text, var(--orc-font-main, #141414));
       }
     }
 
@@ -125,7 +125,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
   }
 
   &__icon-dots {
@@ -146,32 +146,32 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     height: 36px;
-    background: var(--orc-fill-input, #ffffff);
-    border: 1px solid var(--orc-border, #d9d9d9);
+    background: var(--orc-control-surface, var(--orc-fill-input, #ffffff));
+    border: 1px solid var(--orc-border-default, var(--orc-border, #d9d9d9));
     border-radius: 10px; // Figma rounded-[10px]
     padding: 3px 36px 3px 12px; // Figma pl-[12px] pr-[10px] py-[3px]
     font-family: inherit;
     font-size: 0.875rem; // 14px
     line-height: 22px;
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
     cursor: pointer;
     outline: none;
     transition: all var(--transition-fast, 120ms ease);
 
     &:hover:not(:disabled) {
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
-      color: var(--orc-font-main, #141414);
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(--orc-text, var(--orc-font-main, #141414));
     }
 
     &:focus-visible {
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
-      box-shadow: 0 0 0 3px rgba(28, 106, 237, 0.15);
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      box-shadow: 0 0 0 3px var(--orc-interactive-shadow);
     }
 
     &:disabled {
       opacity: 0.4;
       cursor: not-allowed;
-      background: var(--bg-muted, #ededed);
+      background: var(--orc-surface-muted, var(--bg-muted, #ededed));
     }
   }
 
@@ -182,7 +182,7 @@
     transform: translateY(-50%);
     width: 16px;
     height: 16px;
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
     pointer-events: none;
     display: flex;
     align-items: center;

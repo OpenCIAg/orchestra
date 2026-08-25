@@ -4,6 +4,7 @@ import {
   input,
   computed,
   HostBinding,
+  booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SkeletonVariant, SkeletonAnimation } from './skeleton.types';
@@ -25,6 +26,8 @@ export class SkeletonComponent {
   readonly width = input<string | number>('');
   readonly height = input<string | number>('');
   readonly borderRadius = input<string>('');
+  readonly fitContent = input(false, { transform: booleanAttribute });
+  readonly display = input<'block' | 'inline-block' | 'inline'>('block');
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly ariaLabel = input<string>('Carregando conteúdo...');
@@ -32,13 +35,13 @@ export class SkeletonComponent {
   // ── Host Bindings ─────────────────────────────────────────
   @HostBinding('style.display')
   get hostDisplay(): string {
-    return this.effectiveVariant() === 'circular' ? 'inline-block' : 'block';
+    return this.fitContent() ? this.display() : (this.effectiveVariant() === 'circular' ? 'inline-block' : 'block');
   }
 
   @HostBinding('style.width')
   get hostWidth(): string {
     const w = this.computedWidth();
-    return w || (this.effectiveVariant() === 'circular' ? '40px' : '100%');
+    return this.fitContent() ? 'inherit' : (w || (this.effectiveVariant() === 'circular' ? '40px' : '100%'));
   }
 
   @HostBinding('style.vertical-align')

@@ -61,13 +61,13 @@
   .orc-stepper__connector-line--horizontal {
     flex: 1;
     height: 3px;
-    background-color: var(--orc-border, #d9d9d9);
+    background-color: var(--orc-border-default, var(--orc-border, #d9d9d9));
     margin: 19px 8px 0;
     align-self: flex-start;
     transition: background-color 0.3s ease;
 
     &.orc-stepper__connector-line--completed {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
   }
 
@@ -88,35 +88,35 @@
   // ── Estados Horizontal ─────────────────────────────────────
   .orc-stepper__item--completed {
     .orc-stepper__marker {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
-      color: #ffffff;
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(--orc-on-interactive, #ffffff);
     }
     .orc-stepper__title {
-      color: var(--orc-font-main, #141414);
+      color: var(--orc-text, var(--orc-font-main, #141414));
       font-weight: 500;
     }
   }
 
   .orc-stepper__item--active {
     .orc-stepper__marker {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
-      color: #ffffff;
-      border: 2px solid #ffffff;
-      box-shadow: 0 0 0 1px var(--orc-color-azul-eletrico, #1c6aed);
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(--orc-on-interactive, #ffffff);
+      border: 2px solid var(--orc-surface-raised, #ffffff);
+      box-shadow: 0 0 0 1px var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
     .orc-stepper__title {
-      color: var(--orc-color-azul-eletrico, #1c6aed);
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       font-weight: 600;
     }
   }
 
   .orc-stepper__item--pending {
     .orc-stepper__marker {
-      background-color: var(--orc-border, #d9d9d9);
-      color: #ffffff;
+      background-color: var(--orc-border-default, var(--orc-border, #d9d9d9));
+      color: var(--orc-on-interactive, #ffffff);
     }
     .orc-stepper__title {
-      color: #929292;
+      color: var(--orc-text-muted, #929292);
       font-weight: 400;
     }
   }
@@ -125,15 +125,15 @@
   &.orc-stepper--icon {
     .orc-stepper__item--active {
       .orc-stepper__marker {
-        background-color: rgba(28, 106, 237, 0.2);
-        color: var(--orc-color-azul-eletrico, #1c6aed);
+        background-color: var(--orc-interactive-soft);
+        color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       }
     }
     .orc-stepper__item--pending {
       .orc-stepper__marker {
-        background-color: var(--orc-th, #f9f9f9);
-        color: #929292;
-        border: 1px solid var(--orc-border, #d9d9d9);
+        background-color: var(--orc-surface-subtle, var(--orc-th, #f9f9f9));
+        color: var(--orc-text-muted, #929292);
+        border: 1px solid var(--orc-border-default, var(--orc-border, #d9d9d9));
       }
     }
   }
@@ -186,14 +186,14 @@
   .orc-stepper__connector-line--vertical {
     width: 2px;
     min-height: 36px;
-    background-color: var(--orc-border, #d9d9d9);
+    background-color: var(--orc-border-default, var(--orc-border, #d9d9d9));
     margin-left: 15px;
     margin-top: 4px;
     margin-bottom: 4px;
     transition: background-color 0.3s ease;
 
     &.orc-stepper__connector-line--completed {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
   }
 
@@ -209,36 +209,36 @@
   // ── Estados Vertical (Figma Spec) ──────────────────────────
   .orc-stepper__item--completed {
     .orc-stepper__marker {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
-      border: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
-      color: #ffffff;
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(--orc-on-interactive, #ffffff);
     }
     .orc-stepper__title {
-      color: var(--orc-color-azul-eletrico, #1c6aed);
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       font-weight: 500;
     }
   }
 
   .orc-stepper__item--active {
     .orc-stepper__marker {
-      background-color: #ffffff;
-      border: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
-      color: var(--orc-color-azul-eletrico, #1c6aed);
+      background-color: var(--orc-surface-raised, #ffffff);
+      border: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
     .orc-stepper__title {
-      color: var(--orc-color-azul-eletrico, #1c6aed);
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       font-weight: 600;
     }
   }
 
   .orc-stepper__item--pending {
     .orc-stepper__marker {
-      background-color: #ffffff;
-      border: 2px solid var(--orc-border, #d9d9d9);
-      color: var(--orc-font-secondary, #58595b);
+      background-color: var(--orc-surface-raised, #ffffff);
+      border: 2px solid var(--orc-border-default, var(--orc-border, #d9d9d9));
+      color: var(--orc-text-secondary, var(--orc-font-secondary, #58595b));
     }
     .orc-stepper__title {
-      color: var(--orc-font-secondary, #58595b);
+      color: var(--orc-text-secondary, var(--orc-font-secondary, #58595b));
       font-weight: 500;
     }
   }
@@ -261,7 +261,7 @@
 .orc-stepper__subtitle {
   font-size: 12px;
   line-height: 16px;
-  color: #929292;
+  color: var(--orc-text-muted, #929292);
   margin-top: 2px;
 }
 

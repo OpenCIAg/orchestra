@@ -48,7 +48,7 @@
     box-sizing: border-box;
 
     &:focus-visible {
-      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       outline-offset: -2px;
     }
   }
@@ -81,8 +81,8 @@
     font-weight: 600;
     padding: 1px 6px;
     border-radius: 9999px;
-    background: rgba(28, 106, 237, 0.12);
-    color: var(--orc-color-azul-eletrico, #1c6aed);
+    background: var(--orc-interactive-soft);
+    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     margin-left: 8px;
   }
 
@@ -101,7 +101,7 @@
   // ──────────────────────────────────────────────────────────
   &--variant-line {
     .orc-tab-group__header {
-      box-shadow: inset 0 -2px 0 var(--highlight-cinzaclaro, #ededed);
+      box-shadow: inset 0 -2px 0 var(--orc-surface-muted, var(--highlight-cinzaclaro, #ededed));
       gap: 0;
     }
 
@@ -110,30 +110,30 @@
       padding: 0 20px;
       font-size: 1rem; // 16px (Figma text-[16px])
       font-weight: 400; // Poppins:Regular
-      color: #929292; // Figma inactive tab color
+      color: var(--orc-text-muted, #929292); // Figma inactive tab color
       box-shadow: inset 0 -2px 0 transparent;
 
       .orc-tab-group__icon {
         width: 20px;
         height: 20px;
-        color: #929292;
+        color: var(--orc-text-muted, #929292);
       }
 
       &:hover:not(:disabled) {
-        color: var(--orc-color-azul-royal, #0406ab);
+        color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406ab));
         .orc-tab-group__icon {
-          color: var(--orc-color-azul-royal, #0406ab);
+          color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406ab));
         }
       }
 
       // ACTIVE STATE (Figma Node 29:17879)
       &--active {
-        color: var(--orc-color-azul-eletrico, #1c6aed);
+        color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
         font-weight: 600; // Poppins:SemiBold
-        box-shadow: inset 0 -2px 0 var(--orc-color-azul-eletrico, #1c6aed);
+        box-shadow: inset 0 -2px 0 var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
 
         .orc-tab-group__icon {
-          color: var(--orc-color-azul-eletrico, #1c6aed);
+          color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
         }
       }
 
@@ -151,7 +151,7 @@
   // ──────────────────────────────────────────────────────────
   &--variant-filled {
     .orc-tab-group__header {
-      background: var(--highlight-cinzaclaro, #ededed);
+      background: var(--orc-surface-muted, var(--highlight-cinzaclaro, #ededed));
       padding: 5px;
       border-radius: 10px;
       display: inline-flex;
@@ -165,7 +165,7 @@
       padding: 0 16px;
       font-size: 0.9375rem; // 15px (Figma text-[15px])
       font-weight: 400; // Poppins:Regular
-      color: var(--orc-font-main, #141414);
+      color: var(--orc-text, var(--orc-font-main, #141414));
       border-radius: 10px;
       transition: all var(--transition-fast, 120ms ease);
 
@@ -175,19 +175,19 @@
       }
 
       &:hover:not(:disabled):not(.orc-tab-group__tab--active) {
-        color: var(--orc-color-azul-royal, #0406ab);
-        background-color: rgba(255, 255, 255, 0.6);
+        color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406ab));
+        background-color: color-mix(in srgb, var(--orc-surface-raised) 60%, transparent);
         .orc-tab-group__icon {
-          color: var(--orc-color-azul-royal, #0406ab);
+          color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406ab));
         }
       }
 
       // ACTIVE STATE (Figma Node 69:2164)
       &--active {
-        background-color: var(--bg, #ffffff);
-        color: var(--orc-font-main, #141414);
+        background-color: var(--orc-surface-raised, var(--bg, #ffffff));
+        color: var(--orc-text, var(--orc-font-main, #141414));
         font-weight: 500; // Poppins:Medium
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        box-shadow: var(--shadow-sm);
       }
 
       // DISABLED STATE
@@ -202,7 +202,7 @@
       display: inline-block;
       width: 1px;
       height: 16px;
-      background-color: #d4d4d8;
+      background-color: var(--orc-border-default, #d4d4d8);
       margin: 0 2px;
     }
   }
@@ -255,7 +255,7 @@
   &__panel {
     outline: none;
     &:focus-visible {
-      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       border-radius: var(--radius-sm, 6px);
     }
   }

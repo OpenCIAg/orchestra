@@ -11,6 +11,7 @@ import {
   PLATFORM_ID,
   inject,
   OnDestroy,
+  AfterViewInit,
   HostListener
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -27,7 +28,8 @@ export type ModalStatus = 'neutral' | 'danger';
   styleUrl: './modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ModalComponent implements OnDestroy {
+export class ModalComponent implements AfterViewInit, OnDestroy {
+  private static activeScrollLocks = 0;
   // ── Referência ao elemento nativo <dialog> ─────────────────
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
 
@@ -58,33 +60,43 @@ export class ModalComponent implements OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
   private previousActiveElement: HTMLElement | null = null;
+  private hasScrollLock = false;
 
   constructor() {
     effect(() => {
-      if (!this.isBrowser) return;
-      
-      if (this.inline()) return; // Inline mode doesn't use showModal()
-
-      const open = this.isOpen() || this.visible();
-      const dialog = this.dialogRef?.nativeElement;
-      
-      if (!dialog) return;
-
-      if (open && !dialog.open) {
-        this.previousActiveElement = document.activeElement as HTMLElement;
-        if (this.modal()) dialog.showModal(); else dialog.show();
-        if (this.blockScroll()) document.body.style.overflow = 'hidden'; // Scroll lock
-        this.onShow.emit();
-        if (this.focusOnShow()) queueMicrotask(() => this.focusInitialElement());
-      } else if (!open && dialog.open) {
-        dialog.close();
-        document.body.style.removeProperty('overflow');
-        if (this.previousActiveElement) {
-          this.previousActiveElement.focus();
-        }
-        this.onHide.emit();
-      }
+      this.syncDialogState();
     });
+  }
+
+  ngAfterViewInit(): void {
+    // A signal may already be true before ViewChild is assigned. The
+    // constructor effect cannot observe that non-signal assignment, so sync
+    // once after the native dialog enters the view.
+    this.syncDialogState();
+  }
+
+  private syncDialogState(): void {
+    if (!this.isBrowser || this.inline()) return; // Inline mode doesn't use showModal()
+
+    const open = this.isOpen() || this.visible();
+    const dialog = this.dialogRef?.nativeElement;
+
+    if (!dialog) return;
+
+    if (open && !dialog.open) {
+      this.previousActiveElement = document.activeElement as HTMLElement;
+      if (this.modal()) dialog.showModal(); else dialog.show();
+      this.acquireScrollLock();
+      this.onShow.emit();
+      if (this.focusOnShow()) queueMicrotask(() => this.focusInitialElement());
+    } else if (!open && dialog.open) {
+      dialog.close();
+      this.releaseScrollLock();
+      if (this.previousActiveElement) {
+        this.previousActiveElement.focus();
+      }
+      this.onHide.emit();
+    }
   }
 
   // ── Computed Classes ────────────────────────────────────────
@@ -94,7 +106,8 @@ export class ModalComponent implements OnDestroy {
       'orc-modal--inline': this.inline(),
       [`orc-modal--size-${this.size()}`]: true,
       'orc-modal--status-danger': this.status() === 'danger',
-      'orc-modal--fullscreen': this.size() === 'fullScreen'
+      'orc-modal--fullscreen': this.size() === 'fullScreen',
+      'orc-modal--maximized': this.maximized()
     };
   });
 
@@ -108,7 +121,8 @@ export class ModalComponent implements OnDestroy {
 
   onCancel(event: Event): void {
     // Disparado nativamente ao apertar 'Escape'
-    if (this.closeOnEscape()) { event.preventDefault(); this.onClose(); }
+    event.preventDefault();
+    if (this.closeOnEscape()) this.onClose();
   }
 
   onBackdropClick(event: MouseEvent): void {
@@ -117,14 +131,6 @@ export class ModalComponent implements OnDestroy {
     const dialog = this.dialogRef.nativeElement;
     // O <dialog> cobre a tela inteira com seu backdrop.
     // O click nele tem rect bounds específicos. Se clicar fora do conteúdo interno, é o backdrop.
-    const rect = dialog.getBoundingClientRect();
-    const isInDialog = (
-      rect.top <= event.clientY &&
-      event.clientY <= rect.top + rect.height &&
-      rect.left <= event.clientX &&
-      event.clientX <= rect.left + rect.width
-    );
-    
     // Como o conteúdo real está no <div class="orc-modal__container">, 
     // clicar no dialog propriamente (se o padding não cobrir a tela) é backdrop.
     // Mas a forma mais segura é checar o target.
@@ -136,6 +142,20 @@ export class ModalComponent implements OnDestroy {
   show(): void { this.visible.set(true); this.isOpen.set(true); }
   close(): void { this.onClose(); }
   toggleMaximize(): void { if (!this.maximizable()) return; this.maximized.update(value => !value); this.onMaximize.emit({ maximized: this.maximized() }); }
+
+  private acquireScrollLock(): void {
+    if (!this.isBrowser || !this.blockScroll() || this.hasScrollLock) return;
+    if (ModalComponent.activeScrollLocks === 0) document.body.style.overflow = 'hidden';
+    ModalComponent.activeScrollLocks += 1;
+    this.hasScrollLock = true;
+  }
+
+  private releaseScrollLock(): void {
+    if (!this.isBrowser || !this.hasScrollLock) return;
+    ModalComponent.activeScrollLocks = Math.max(0, ModalComponent.activeScrollLocks - 1);
+    if (ModalComponent.activeScrollLocks === 0) document.body.style.removeProperty('overflow');
+    this.hasScrollLock = false;
+  }
 
   private focusInitialElement(): void {
     const dialog = this.dialogRef?.nativeElement;
@@ -157,8 +177,6 @@ export class ModalComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.isBrowser) {
-      document.body.style.removeProperty('overflow');
-    }
+    this.releaseScrollLock();
   }
 }

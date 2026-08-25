@@ -230,7 +230,7 @@
   padding: 0 11px;
   border: 1px solid var(--border-default);
   border-radius: 999px;
-  background: var(--bg-surface, #fff);
+  background: var(--bg-surface);
   color: var(--text-secondary);
   font: inherit;
   font-size: .75rem;
@@ -248,7 +248,7 @@
 
 .filter-chip--active {
   border-color: color-mix(in srgb, var(--orc-color-azul-eletrico) 40%, var(--border-default));
-  background: color-mix(in srgb, var(--orc-color-azul-eletrico) 10%, var(--bg-surface, #fff));
+  background: color-mix(in srgb, var(--orc-color-azul-eletrico) 10%, var(--bg-surface));
   color: var(--orc-color-azul-eletrico);
 }
 

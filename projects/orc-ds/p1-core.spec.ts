@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ChipComponent } from './chip/chip.component';
@@ -86,6 +86,17 @@ describe('P1 core components', () => {
     fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'Escape' }));
     expect(fixture.componentInstance.isOpen()).toBeTrue();
   });
+
+  it('cancels deferred blur work when autocomplete is destroyed', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AutocompleteComponent);
+    const hidden = jasmine.createSpy('hidden');
+    fixture.componentInstance.onHide.subscribe(hidden);
+    fixture.componentInstance.isOpen.set(true);
+    fixture.componentInstance.onBlur();
+    fixture.destroy();
+    tick(120);
+    expect(hidden).not.toHaveBeenCalled();
+  }));
 
   it('moves a carousel to the next enabled item', () => {
     const fixture = TestBed.createComponent(CarouselComponent);

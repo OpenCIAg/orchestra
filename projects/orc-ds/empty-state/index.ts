@@ -1,1 +1,1 @@
-export { EmptyStateComponent } from '@ciag/orchestra/p2';
+export * from './empty-state.component';

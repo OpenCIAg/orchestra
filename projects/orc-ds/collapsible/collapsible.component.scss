@@ -1,8 +1,8 @@
 :host { display: block; width: 100%; }
-.orc-collapsible { overflow: hidden; border: 1px solid var(--orc-border, #d9d9d9); border-radius: var(--radius-md, 10px); background: var(--fill-modal, #fff); }
-.orc-collapsible__trigger { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 14px 16px; border: 0; background: transparent; color: var(--orc-font-main, #141414); text-align: left; cursor: pointer; &:hover:not(:disabled) { background: var(--orc-th, #f7f8fa); } &:focus-visible { outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed); outline-offset: -2px; } &:disabled { cursor: not-allowed; } }
-.orc-collapsible__heading { display: grid; gap: 3px; min-width: 0; strong { font-size: 14px; } small { color: var(--orc-font-secondary, #666); font-size: 12px; font-weight: 400; } }
+.orc-collapsible { overflow: hidden; border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9)); border-radius: var(--radius-md, 10px); background: var(--orc-surface-raised, var(--fill-modal, #fff)); }
+.orc-collapsible__trigger { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 14px 16px; border: 0; background: transparent; color: var(--orc-text, var(--text-primary, #141414)); text-align: left; cursor: pointer; &:hover:not(:disabled) { background: var(--orc-surface-subtle, var(--bg-subtle, #f7f8fa)); } &:focus-visible { outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed)); outline-offset: -2px; } &:disabled { cursor: not-allowed; } }
+.orc-collapsible__heading { display: grid; gap: 3px; min-width: 0; strong { font-size: 14px; } small { color: var(--orc-text-secondary, var(--text-secondary, #666)); font-size: 12px; font-weight: 400; } }
 .orc-collapsible__chevron { transition: transform .2s; font-size: 18px; }
 .orc-collapsible--open .orc-collapsible__chevron { transform: rotate(180deg); }
-.orc-collapsible__content { padding: 0 16px 16px; color: var(--orc-font-secondary, #666); line-height: 1.5; }
+.orc-collapsible__content { padding: 0 16px 16px; color: var(--orc-text-secondary, var(--text-secondary, #666)); line-height: 1.5; }
 .orc-collapsible--disabled { opacity: .55; }

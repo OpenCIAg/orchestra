@@ -99,38 +99,38 @@
 
   // ── BORDERED (AVATAR GROUP SEPARATION) ────────────────────
   &--bordered {
-    box-shadow: 0 0 0 2px var(--orc-bg, #ffffff);
+    box-shadow: 0 0 0 2px var(--orc-surface, var(--orc-bg, #ffffff));
   }
 
   // ── COLOR VARIANTS (Figma Node 382:5074) ──────────────────
   &--variant-default {
-    background-color: #ececf0;
-    color: #0a0a0a;
+    background-color: var(--orc-status-neutral-bg, #ececf0);
+    color: var(--orc-status-neutral-fg, var(--orc-text, #0a0a0a));
   }
 
   &--variant-primary {
     background-color: var(--orc-color-azul-eletrico, #1c6aed);
-    color: #ffffff;
+    color: var(--orc-on-dark, #ffffff);
   }
 
   &--variant-royal {
     background-color: var(--orc-color-azul-royal, #0406ab);
-    color: #ffffff;
+    color: var(--orc-on-dark, #ffffff);
   }
 
   &--variant-orange {
     background-color: var(--orc-color-laranja, #ff6a1c);
-    color: #ffffff;
+    color: var(--orc-on-dark, #ffffff);
   }
 
   &--variant-purple {
     background-color: var(--orc-color-roxo-lavender, #6a1ced);
-    color: #ffffff;
+    color: var(--orc-on-dark, #ffffff);
   }
 
   &--variant-cyan {
     background-color: var(--orc-color-ciano, #1cedb9);
-    color: #141414;
+    color: var(--orc-text, #141414);
   }
 
   // ── INNER IMAGE ───────────────────────────────────────────
@@ -167,7 +167,7 @@
     width: var(--status-size, 10px);
     height: var(--status-size, 10px);
     border-radius: 9999px;
-    border: 2px solid var(--orc-bg, #ffffff);
+    border: 2px solid var(--orc-surface, var(--orc-bg, #ffffff));
     box-sizing: content-box;
     z-index: 2;
 
@@ -193,19 +193,19 @@
 
     // Status Colors
     &--online {
-      background-color: #22c55e; // Green
+      background-color: var(--orc-status-success-fg, #22c55e); // Green
     }
 
     &--busy {
-      background-color: var(--color-error, #fb2c36); // Red
+      background-color: var(--orc-danger, var(--color-error, #fb2c36)); // Red
     }
 
     &--away {
-      background-color: var(--color-warning, #fe9a00); // Amber
+      background-color: var(--orc-status-warning-fg, var(--color-warning, #fe9a00)); // Amber
     }
 
     &--offline {
-      background-color: #999999; // Gray
+      background-color: var(--orc-text-muted, #999999); // Gray
     }
   }
 
@@ -219,7 +219,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+      outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       outline-offset: 2px;
     }
   }

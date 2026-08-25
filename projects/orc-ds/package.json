@@ -1,6 +1,6 @@
 {
   "name": "@ciag/orchestra",
-  "version": "22.0.1",
+  "version": "22.0.2",
   "description": "Enterprise Angular Component Framework and Design System",
   "keywords": [
     "angular",
@@ -16,7 +16,38 @@
     "type": "git",
     "url": "https://github.com/OpenCIAg/orchestra"
   },
-  "sideEffects": false,
+  "style": "styles/index.scss",
+  "sass": "styles/index.scss",
+  "sideEffects": [
+    "styles/**/*.scss",
+    "styles/**/*.css"
+  ],
+  "exports": {
+    "./styles": {
+      "sass": "./styles/index.scss",
+      "default": "./styles/index.scss"
+    },
+    "./styles/index": {
+      "sass": "./styles/index.scss",
+      "default": "./styles/index.scss"
+    },
+    "./styles/index.scss": {
+      "sass": "./styles/index.scss",
+      "default": "./styles/index.scss"
+    },
+    "./styles/core": {
+      "sass": "./styles/core.scss",
+      "default": "./styles/core.scss"
+    },
+    "./styles/core.scss": {
+      "sass": "./styles/core.scss",
+      "default": "./styles/core.scss"
+    },
+    "./styles/*": {
+      "sass": "./styles/*",
+      "default": "./styles/*"
+    }
+  },
   "peerDependencies": {
     "@angular/cdk": "^22.0.0",
     "@angular/common": "^22.0.0",

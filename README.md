@@ -24,11 +24,17 @@ Include Orchestra's multi-tier design tokens, CSS layers, and themes in your app
 @use '@ciag/orchestra/styles/index';
 ```
 
-Or add the prebuilt CSS to `angular.json`:
+`styles/index` preserves Orchestra's legacy global reset for existing applications. New applications that own their CSS reset can load the tokens, themes, layers, and mixins without that global reset:
+
+```scss
+@use '@ciag/orchestra/styles/core';
+```
+
+Or add the shipped Sass entry directly to `angular.json`:
 
 ```json
 "styles": [
-  "node_modules/@ciag/orchestra/styles/index.css",
+  "node_modules/@ciag/orchestra/styles/index.scss",
   "src/styles.scss"
 ]
 ```

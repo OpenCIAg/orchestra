@@ -39,7 +39,7 @@
 
     // Borda separadora branca (padrão Figma)
     .orc-avatar {
-      box-shadow: 0 0 0 2px var(--orc-bg, #ffffff);
+      box-shadow: 0 0 0 2px var(--orc-surface, var(--orc-bg, #ffffff));
     }
 
     &:not(:first-child) {
@@ -54,8 +54,8 @@
 
   &__excess {
     .orc-avatar {
-      background-color: #ececf0;
-      color: #0a0a0a;
+      background-color: var(--orc-status-neutral-bg, #ececf0);
+      color: var(--orc-status-neutral-fg, var(--orc-text, #0a0a0a));
       font-weight: 500;
     }
   }

@@ -75,7 +75,7 @@
 
   // ── PILL SHAPE ────────────────────────────────────────────
   &--pill {
-    border-radius: 9999px !important;
+    border-radius: 9999px;
   }
 
   // ── DOT ONLY ──────────────────────────────────────────────
@@ -83,8 +83,8 @@
     padding: 0;
     width: auto;
     height: auto;
-    background: transparent !important;
-    border: none !important;
+    background: transparent;
+    border: none;
   }
 
   // ── ICONS & DOTS ──────────────────────────────────────────
@@ -129,7 +129,7 @@
 
     &:hover {
       opacity: 1;
-      background-color: rgba(0, 0, 0, 0.08);
+      background-color: color-mix(in srgb, currentColor 12%, transparent);
     }
   }
 
@@ -138,42 +138,42 @@
   // ──────────────────────────────────────────────────────────
   &--variant-soft {
     &.orc-badge--status-primary {
-      background-color: rgba(28, 106, 237, 0.12);
-      color: var(--orc-color-azul-eletrico, #1c6aed);
+      background-color: var(--orc-interactive-soft);
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
     &.orc-badge--status-secondary,
     &.orc-badge--status-neutral {
-      background-color: var(--status-neutral-soft-bg, #eceef2);
-      color: var(--status-neutral-soft-fg, #141414);
+      background-color: var(--orc-status-neutral-bg, var(--status-neutral-soft-bg, #eceef2));
+      color: var(--orc-status-neutral-fg, var(--status-neutral-soft-fg, #141414));
     }
     &.orc-badge--status-success {
-      background-color: var(--status-success-soft-bg, #b8e7d7);
-      color: var(--status-success-soft-fg, #006f4a);
+      background-color: var(--orc-status-success-bg, var(--status-success-soft-bg, #b8e7d7));
+      color: var(--orc-status-success-fg, var(--status-success-soft-fg, #006f4a));
     }
     &.orc-badge--status-info {
-      background-color: var(--status-info-soft-bg, #e1eaf6);
-      color: var(--status-info-soft-fg, #2b7fff);
+      background-color: var(--orc-status-info-bg, var(--status-info-soft-bg, #e1eaf6));
+      color: var(--orc-status-info-fg, var(--status-info-soft-fg, #2b7fff));
     }
     &.orc-badge--status-warning {
-      background-color: var(--status-warning-soft-bg, #f6ecdd);
-      color: var(--status-warning-soft-fg, #fe9a00);
+      background-color: var(--orc-status-warning-bg, var(--status-warning-soft-bg, #f6ecdd));
+      color: var(--orc-status-warning-fg, var(--status-warning-soft-fg, #fe9a00));
     }
     &.orc-badge--status-danger {
-      background-color: var(--status-danger-soft-bg, #f6d7d8);
-      color: var(--status-danger-soft-fg, #fb2c36);
+      background-color: var(--orc-status-danger-bg, var(--status-danger-soft-bg, #f6d7d8));
+      color: var(--orc-status-danger-fg, var(--status-danger-soft-fg, #fb2c36));
     }
     &.orc-badge--status-pending {
-      background-color: var(--orc-highlight-cinza-claro, #ededed);
-      color: var(--text-primary, #141414);
+      background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
+      color: var(--orc-text, var(--text-primary, #141414));
     }
     &.orc-badge--status-active {
-      background-color: var(--orc-bg, #ffffff);
-      border: 1px solid var(--border-default, #d9d9d9);
-      color: var(--text-primary, #141414);
+      background-color: var(--orc-surface, var(--bg-app, #ffffff));
+      border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
+      color: var(--orc-text, var(--text-primary, #141414));
     }
     &.orc-badge--status-inactive {
       background-color: transparent;
-      color: var(--text-secondary, #666666);
+      color: var(--orc-text-secondary, var(--text-secondary, #666666));
     }
   }
 
@@ -182,44 +182,44 @@
   // ──────────────────────────────────────────────────────────
   &--variant-solid {
     &.orc-badge--status-primary {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
-      color: #ffffff;
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(--orc-on-interactive, #ffffff);
     }
     &.orc-badge--status-secondary {
-      background-color: var(--status-neutral-soft-bg, #eceef2);
-      color: var(--status-neutral-soft-fg, #141414);
+      background-color: var(--orc-status-neutral-bg, var(--status-neutral-soft-bg, #eceef2));
+      color: var(--orc-status-neutral-fg, var(--status-neutral-soft-fg, #141414));
     }
     &.orc-badge--status-neutral {
       background-color: var(--bg-inverse, #141414);
       color: var(--text-inverse, #ffffff);
     }
     &.orc-badge--status-success {
-      background-color: #006f4a;
-      color: #ffffff;
+      background-color: var(--orc-status-success-fg, #006f4a);
+      color: var(--orc-on-interactive, #ffffff);
     }
     &.orc-badge--status-info {
-      background-color: #2b7fff;
-      color: #ffffff;
+      background-color: var(--orc-status-info-fg, #2b7fff);
+      color: var(--orc-on-interactive, #ffffff);
     }
     &.orc-badge--status-warning {
-      background-color: #fe9a00;
-      color: #141414;
+      background-color: var(--orc-status-warning-fg, #fe9a00);
+      color: var(--orc-text, #141414);
     }
     &.orc-badge--status-danger {
-      background-color: #d4183d; // Destructive solid from Figma
-      color: #ffffff;
+      background-color: var(--orc-danger, #d4183d);
+      color: var(--orc-on-danger, #ffffff);
     }
     &.orc-badge--status-pending {
-      background-color: #71717a;
-      color: #ffffff;
+      background-color: var(--orc-text-secondary, #71717a);
+      color: var(--orc-on-interactive, #ffffff);
     }
     &.orc-badge--status-active {
-      background-color: #006f4a;
-      color: #ffffff;
+      background-color: var(--orc-status-success-fg, #006f4a);
+      color: var(--orc-on-interactive, #ffffff);
     }
     &.orc-badge--status-inactive {
-      background-color: #a1a1aa;
-      color: #ffffff;
+      background-color: var(--orc-text-muted, #a1a1aa);
+      color: var(--orc-on-interactive, #ffffff);
     }
   }
 
@@ -228,28 +228,28 @@
   // ──────────────────────────────────────────────────────────
   &--variant-outline {
     background-color: transparent;
-    border: 1px solid var(--border-default, #d9d9d9);
-    color: var(--text-primary, #141414);
+    border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
+    color: var(--orc-text, var(--text-primary, #141414));
 
     &.orc-badge--status-primary {
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
-      color: var(--orc-color-azul-eletrico, #1c6aed);
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
     &.orc-badge--status-success {
-      border-color: #006f4a;
-      color: #006f4a;
+      border-color: var(--orc-status-success-fg, #006f4a);
+      color: var(--orc-status-success-fg, #006f4a);
     }
     &.orc-badge--status-info {
-      border-color: #2b7fff;
-      color: #2b7fff;
+      border-color: var(--orc-status-info-fg, #2b7fff);
+      color: var(--orc-status-info-fg, #2b7fff);
     }
     &.orc-badge--status-warning {
-      border-color: #fe9a00;
-      color: #fe9a00;
+      border-color: var(--orc-status-warning-fg, #fe9a00);
+      color: var(--orc-status-warning-fg, #fe9a00);
     }
     &.orc-badge--status-danger {
-      border-color: #fb2c36;
-      color: #fb2c36;
+      border-color: var(--orc-danger, #fb2c36);
+      color: var(--orc-danger, #fb2c36);
     }
   }
 
@@ -260,16 +260,16 @@
     background-color: transparent;
     padding: 0 4px;
 
-    &.orc-badge--status-primary { color: var(--orc-color-azul-eletrico, #1c6aed); }
+    &.orc-badge--status-primary { color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed)); }
     &.orc-badge--status-secondary,
-    &.orc-badge--status-neutral { color: var(--text-secondary, #71717a); }
-    &.orc-badge--status-success { color: #006f4a; }
-    &.orc-badge--status-info { color: #2b7fff; }
-    &.orc-badge--status-warning { color: #fe9a00; }
-    &.orc-badge--status-danger { color: #fb2c36; }
-    &.orc-badge--status-pending { color: #fe9a00; }
-    &.orc-badge--status-active { color: #006f4a; }
-    &.orc-badge--status-inactive { color: #999999; }
+    &.orc-badge--status-neutral { color: var(--orc-text-secondary, var(--text-secondary, #71717a)); }
+    &.orc-badge--status-success { color: var(--orc-status-success-fg, #006f4a); }
+    &.orc-badge--status-info { color: var(--orc-status-info-fg, #2b7fff); }
+    &.orc-badge--status-warning { color: var(--orc-status-warning-fg, #fe9a00); }
+    &.orc-badge--status-danger { color: var(--orc-danger, #fb2c36); }
+    &.orc-badge--status-pending { color: var(--orc-status-warning-fg, #fe9a00); }
+    &.orc-badge--status-active { color: var(--orc-status-success-fg, #006f4a); }
+    &.orc-badge--status-inactive { color: var(--orc-text-muted, #999999); }
   }
 
   // ──────────────────────────────────────────────────────────
@@ -277,7 +277,7 @@
   // ──────────────────────────────────────────────────────────
   &--variant-ghost {
     background-color: transparent;
-    color: var(--text-primary, #141414);
+    color: var(--orc-text, var(--text-primary, #141414));
     padding: 0 4px;
   }
 }
