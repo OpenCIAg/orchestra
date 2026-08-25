@@ -29,28 +29,28 @@
           }
 
           <!-- Colunas Declaradas via <orc-column> -->
-          @for (col of declaredColumns(); track col.key()) {
+          @for (col of effectiveColumns(); track col.key) {
             <th
               scope="col"
               class="orc-table__th"
-              [class.orc-table__th--sortable]="col.sortable()"
-              [class.orc-table__th--sorted]="sortColumn() === col.key()"
-              [style.width]="col.width() || null"
-              [style.text-align]="col.align()"
-              [attr.aria-sort]="getAriaSort(col.key(), col.sortable())"
-              (click)="handleSort(col.key(), col.sortable())"
-              (keydown.enter)="handleSort(col.key(), col.sortable())"
-              (keydown.space)="handleSort(col.key(), col.sortable()); $event.preventDefault()"
-              [tabindex]="col.sortable() ? 0 : -1"
+              [class.orc-table__th--sortable]="col.sortable"
+              [class.orc-table__th--sorted]="sortColumn() === col.key"
+              [style.width]="col.width || null"
+              [style.text-align]="col.align"
+              [attr.aria-sort]="getAriaSort(col.key, col.sortable)"
+              (click)="handleSort(col.key, col.sortable)"
+              (keydown.enter)="handleSort(col.key, col.sortable)"
+              (keydown.space)="handleSort(col.key, col.sortable); $event.preventDefault()"
+              [tabindex]="col.sortable ? 0 : -1"
             >
-              @if (col.headerTemplate(); as headerTpl) {
+              @if (col.headerTemplate; as headerTpl) {
                 <ng-container *ngTemplateOutlet="headerTpl.templateRef; context: { column: col }"></ng-container>
               } @else {
-                <div class="orc-table__th-content" [style.justify-content]="col.align() === 'center' ? 'center' : (col.align() === 'right' ? 'flex-end' : 'flex-start')">
-                  <span class="orc-table__th-text">{{ col.header() }}</span>
-                  @if (col.sortable()) {
+                <div class="orc-table__th-content" [style.justify-content]="col.align === 'center' ? 'center' : (col.align === 'right' ? 'flex-end' : 'flex-start')">
+                  <span class="orc-table__th-text">{{ col.header }}</span>
+                  @if (col.sortable) {
                     <span class="orc-table__sort-icon" aria-hidden="true">
-                      @if (sortColumn() === col.key()) {
+                        @if (sortColumn() === col.key) {
                         @if (sortDirection() === 'asc') {
                           <!-- Seta Ascendente (SVG Figma) -->
                           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -88,9 +88,9 @@
                   <orc-skeleton variant="rectangular" width="18px" height="18px" borderRadius="4px" />
                 </td>
               }
-              @for (col of declaredColumns(); track col.key()) {
+              @for (col of effectiveColumns(); track col.key) {
                 <td class="orc-table__td">
-                  <orc-skeleton variant="text" height="16px" [width]="col.key() === 'id' ? '40px' : '75%'" />
+                  <orc-skeleton variant="text" height="16px" [width]="col.key === 'id' ? '40px' : '75%'" />
                 </td>
               }
             </tr>
@@ -101,7 +101,7 @@
           <tr class="orc-table__empty-row">
             <td
               class="orc-table__empty-cell"
-              [attr.colspan]="declaredColumns().length + (selectionEnabled() ? 1 : 0)"
+              [attr.colspan]="effectiveColumns().length + (selectionEnabled() ? 1 : 0)"
             >
               <div class="orc-table__empty-content">
                 <div class="orc-table__empty-icon" aria-hidden="true">
@@ -138,25 +138,25 @@
               }
 
               <!-- Células de Dados -->
-              @for (col of declaredColumns(); track col.key()) {
-                <td class="orc-table__td" [style.text-align]="col.align()">
-                  @if (col.cellTemplate(); as cellTpl) {
+              @for (col of effectiveColumns(); track col.key) {
+                <td class="orc-table__td" [style.text-align]="col.align">
+                  @if (col.cellTemplate; as cellTpl) {
                     <ng-container
                       *ngTemplateOutlet="cellTpl.templateRef; context: {
                         $implicit: row,
                         row: row,
                         index: rowIndex,
                         column: col,
-                        value: getCellValue(row, col.key())
+                        value: getCellValue(row, col.key)
                       }"
                     ></ng-container>
                   } @else {
-                    <span class="orc-table__cell-value">{{ getCellValue(row, col.key()) }}</span>
+                    <span class="orc-table__cell-value">{{ getCellValue(row, col.key) }}</span>
                   }
                 </td>
               }
             </tr>
-            @if (rowExpansionTemplate() && isExpanded(row)) { <tr class="orc-table__expansion-row"><td [attr.colspan]="declaredColumns().length + (selectionEnabled() ? 1 : 0)"><ng-container *ngTemplateOutlet="rowExpansionTemplate()!.templateRef; context: { $implicit: row, row: row, index: rowIndex }"></ng-container></td></tr> }
+            @if (rowExpansionTemplate() && isExpanded(row)) { <tr class="orc-table__expansion-row"><td [attr.colspan]="effectiveColumns().length + (selectionEnabled() ? 1 : 0)"><ng-container *ngTemplateOutlet="rowExpansionTemplate()!.templateRef; context: { $implicit: row, row: row, index: rowIndex }"></ng-container></td></tr> }
           }
         }
       </tbody>

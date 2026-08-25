@@ -14,6 +14,7 @@ import { CheckboxComponent, CheckboxChangeEvent } from '@ciag/orchestra/checkbox
 import { PaginatorComponent } from '@ciag/orchestra/paginator';
 import { SkeletonComponent } from '@ciag/orchestra/skeleton';
 import { ColumnDirective } from './table-column.directive';
+import { CellDefDirective, HeaderCellDefDirective } from './table-cell-def.directive';
 import {
   SortDirection,
   TableSortEvent,
@@ -22,6 +23,16 @@ import {
 import { TableFooterDirective, TableRowExpansionDirective } from './table-slots.directive';
 
 interface TablePageChangeEvent { page: number; pageSize: number; startIndex: number; }
+
+interface TableColumnView {
+  key: string;
+  header: string;
+  sortable: boolean;
+  width: string;
+  align: 'left' | 'center' | 'right';
+  cellTemplate?: CellDefDirective;
+  headerTemplate?: HeaderCellDefDirective;
+}
 
 @Component({
   selector: 'orc-table',
@@ -223,6 +234,28 @@ export class TableComponent<T = any> {
   readonly effectiveRowsPerPageOptions = computed(() => this.rowsPerPageOptions() ?? this.pageSizeOptions());
   readonly effectivePaginated = computed(() => this.paginated() || this.paginator());
   readonly selectionEnabled = computed(() => this.selectable() || !!this.selectionMode());
+  readonly effectiveColumns = computed<TableColumnView[]>(() => {
+    const configured = this.columnsConfig();
+    if (configured?.length) {
+      return configured.map((column) => ({
+        key: column.key,
+        header: column.header,
+        sortable: Boolean(column.sortable),
+        width: column.width ?? '',
+        align: column.align ?? 'left',
+      }));
+    }
+
+    return this.declaredColumns().map((column) => ({
+      key: column.key(),
+      header: column.header(),
+      sortable: column.sortable(),
+      width: column.width(),
+      align: column.align(),
+      cellTemplate: column.cellTemplate(),
+      headerTemplate: column.headerTemplate(),
+    }));
+  });
 
   // ── Computeds ─────────────────────────────────────────────
   readonly effectiveTotalItems = computed(() => {
@@ -382,7 +415,13 @@ export class TableComponent<T = any> {
     this.emitQuery();
   }
 
-  applyFilter(value: string): void { this.filter.set(value); this.onFilter.emit({ value }); this.emitQuery(); }
+  applyFilter(value: string): void {
+    this.filter.set(value);
+    this.currentPage.set(1);
+    this.first.set(0);
+    this.onFilter.emit({ value });
+    this.emitQuery();
+  }
   handlePageChange(event: TablePageChangeEvent): void { const first = Math.max(0, event.startIndex - 1); const rows = event.pageSize; const page = event.page; this.currentPage.set(page); this.pageSize.set(rows); this.first.set(first); const payload = { first, rows }; this.onPage.emit(payload); if (this.lazy() || this.serverDriven()) this.onLazyLoad.emit(payload); this.emitQuery(); }
 
   toggleRowExpansion(row: T): void { const expanded = this.expandedRows(); const exists = expanded.some(item => this.sameRow(item, row)); this.expandedRows.set(exists ? expanded.filter(item => !this.sameRow(item, row)) : [...expanded, row]); (exists ? this.onRowCollapse : this.onRowExpand).emit({ data: row }); }
@@ -418,7 +457,7 @@ export class TableComponent<T = any> {
   exportCSV(options?: { selectionOnly?: boolean }): void {
     if (typeof document === 'undefined') return;
     const rows = options?.selectionOnly ? this.selectedRows() : this.effectiveData();
-    const columns = this.declaredColumns().map(column => ({ key: column.key(), header: column.header() }));
+    const columns = this.effectiveColumns().map(column => ({ key: column.key, header: column.header }));
     const header = this.exportHeader() ?? columns.map(column => column.header).join(this.csvSeparator());
     const escape = (value: unknown): string => {
       const text = String(value ?? '');
