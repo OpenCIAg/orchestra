@@ -39,17 +39,10 @@
     <ng-content select="[iconLeft]"></ng-content>
   }
 
-  <!-- Keep projected Orchestra icons available to icon-only buttons. -->
-  <span class="orc-button__projected-icon" aria-hidden="true">
-    <ng-content select="orc-icon"></ng-content>
-  </span>
-
   <!-- Content -->
-  @if (!iconOnly()) {
-    <span class="orc-button__text">
-      <ng-content></ng-content>
-    </span>
-  }
+  <span class="orc-button__text" [class.orc-button__text--icon-only]="iconOnly()">
+    <ng-content></ng-content>
+  </span>
   @if (badge() !== undefined) { <span class="orc-button__badge {{ badgeClass() }}">{{ badge() }}</span> }
 
   <!-- Right Icon -->

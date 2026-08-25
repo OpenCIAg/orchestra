@@ -132,8 +132,8 @@ describe('ButtonComponent', () => {
       hostFixture.detectChanges();
 
       const buttonEl = hostFixture.nativeElement.querySelector('button');
-      expect(buttonEl.querySelector('.orc-button__projected-icon orc-icon')).toBeTruthy();
-      expect(buttonEl.querySelector('.orc-button__text')).toBeFalsy();
+      expect(buttonEl.querySelector('.orc-button__text--icon-only orc-icon')).toBeTruthy();
+      expect(buttonEl.querySelector('.orc-button__text')).toBeTruthy();
     });
   });
 });
