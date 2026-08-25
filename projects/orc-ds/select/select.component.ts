@@ -176,6 +176,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly effectiveId = computed(() => this.id() || this.inputId() || this.uniqueId);
   readonly filterEnabled = computed(() => this.filter() ?? this.searchable());
   readonly listboxId = computed(() => `${this.effectiveId()}-listbox`);
+  readonly activeOptionId = computed(() => this.activeOptionIndex() >= 0 ? `${this.listboxId()}-option-${this.activeOptionIndex()}` : null);
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
 
@@ -212,9 +213,10 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     const term = this.searchTerm().trim().toLowerCase();
     if (!term) return list;
     return list.filter((opt) => {
-      const fields = this.filterFields() ?? (this.filterBy() ? this.filterBy()!.split(',').map((f) => f.trim()).filter(Boolean) : ['label', 'description']);
-      const values = fields.map((field) => String((opt as any)?.[field] ?? '')).filter(Boolean);
-      if (!values.length) values.push(this.getOptionLabel(opt));
+      const fields = this.filterFields() ?? (this.filterBy() ? this.filterBy()!.split(',').map((f) => f.trim()).filter(Boolean) : undefined);
+      const values = fields?.length
+        ? fields.map((field) => String((opt as any)?.[field] ?? '')).filter(Boolean)
+        : [this.getOptionLabel(opt), String((opt as any)?.description ?? '')].filter(Boolean);
       return values.some((value) => this.matchesFilter(value, term));
     });
   });
@@ -227,8 +229,19 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       case 'endsWith': return normalized.endsWith(query);
       case 'equals': return normalized === query;
       case 'notEquals': return normalized !== query;
+      case 'in': return query.split(',').map(item => item.trim()).filter(Boolean).includes(normalized);
+      case 'lt': return this.compareNumericFilter(value, term, (left, right) => left < right);
+      case 'lte': return this.compareNumericFilter(value, term, (left, right) => left <= right);
+      case 'gt': return this.compareNumericFilter(value, term, (left, right) => left > right);
+      case 'gte': return this.compareNumericFilter(value, term, (left, right) => left >= right);
       default: return normalized.includes(query);
     }
+  }
+
+  private compareNumericFilter(value: string, term: string, compare: (value: number, query: number) => boolean): boolean {
+    const numericValue = Number(value);
+    const numericQuery = Number(term);
+    return Number.isFinite(numericValue) && Number.isFinite(numericQuery) && compare(numericValue, numericQuery);
   }
 
   getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
@@ -346,6 +359,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
 
   openPanel(): void {
     if (this.isOpen() || this.effectiveDisabled() || this.readonly()) return;
+    if (!this.portal) return;
 
     const triggerNative = this.triggerEl()?.nativeElement || this.hostEl.nativeElement;
     const triggerWidth = triggerNative.getBoundingClientRect().width;
@@ -414,6 +428,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   private selectValue(val: any, originalEvent?: Event): void {
+    if (this.effectiveDisabled() || this.readonly()) return;
     if (this.multiple()) {
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
       const index = current.findIndex(item => this.sameOptionValue(item, val));
@@ -446,7 +461,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
 
     if (this.multiple()) {
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      const updated = current.filter((v) => v !== itemValue);
+      const updated = current.filter((v) => !this.sameOptionValue(v, itemValue));
       this.value.set(updated);
       this.onModelChange(updated);
       this.selectionChange.emit(updated);
@@ -547,7 +562,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
 
   private navigateOption(direction: number): void {
     if (this.isDataMode()) {
-      const optionsList = this.filteredDataOptions().filter((o) => !o.disabled);
+      const optionsList = this.filteredDataOptions().filter((o) => !this.isOptionDisabled(o));
       if (optionsList.length === 0) return;
       let nextIndex = this.activeOptionIndex() + direction;
       if (nextIndex < 0) nextIndex = optionsList.length - 1;
@@ -569,9 +584,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     if (idx < 0) return;
 
     if (this.isDataMode()) {
-      const optionsList = this.filteredDataOptions().filter((o) => !o.disabled);
+      const optionsList = this.filteredDataOptions().filter((o) => !this.isOptionDisabled(o));
       if (optionsList[idx]) {
-        this.selectValue(optionsList[idx].value);
+        this.selectValue(this.getOptionValue(optionsList[idx]));
       }
     } else {
       const visibleOpts = this.getVisibleOptions();

@@ -102,7 +102,7 @@
 
     &:hover {
       opacity: 1;
-      background-color: rgba(0, 0, 0, 0.08);
+      background-color: color-mix(in srgb, currentColor 8%, transparent);
     }
 
     &:focus-visible {
@@ -124,23 +124,23 @@
     border: 1px solid transparent;
 
     &.orc-alert--severity-info {
-      background-color: var(--status-info-soft-bg, #E1EAF6);
-      color: var(--status-info-soft-fg, #2B7FFF);
+      background-color: var(--orc-status-info-bg, var(--status-info-soft-bg, #E1EAF6));
+      color: var(--orc-status-info-fg, var(--status-info-soft-fg, #2B7FFF));
     }
 
     &.orc-alert--severity-success {
-      background-color: var(--status-success-soft-bg, #B8E7D7);
-      color: var(--status-success-soft-fg, #006F4A);
+      background-color: var(--orc-status-success-bg, var(--status-success-soft-bg, #B8E7D7));
+      color: var(--orc-status-success-fg, var(--status-success-soft-fg, #006F4A));
     }
 
     &.orc-alert--severity-warning {
-      background-color: var(--status-warning-soft-bg, #F6ECDD);
-      color: var(--status-warning-soft-fg, #FE9A00);
+      background-color: var(--orc-status-warning-bg, var(--status-warning-soft-bg, #F6ECDD));
+      color: var(--orc-status-warning-fg, var(--status-warning-soft-fg, #FE9A00));
     }
 
     &.orc-alert--severity-error {
-      background-color: var(--status-danger-soft-bg, #F6D7D8);
-      color: var(--status-danger-soft-fg, #FB2C36);
+      background-color: var(--orc-status-danger-bg, var(--status-danger-soft-bg, #F6D7D8));
+      color: var(--orc-danger, var(--status-danger-soft-fg, #FB2C36));
     }
   }
 
@@ -148,23 +148,23 @@
   // ── VARIANTE: OUTLINE (Figma: Borda sutil / fundo limpo) ────
   // ────────────────────────────────────────────────────────────
   &--variant-outline {
-    background-color: var(--orc-bg, #FFFFFF);
-    border: 1px solid var(--border-default, #D9D9D9);
+    background-color: var(--orc-surface, var(--orc-bg, #FFFFFF));
+    border: 1px solid var(--orc-border-default, var(--border-default, #D9D9D9));
 
     &.orc-alert--severity-info {
-      color: var(--color-info, #2B7FFF);
+      color: var(--orc-status-info-fg, var(--color-info, #2B7FFF));
     }
 
     &.orc-alert--severity-success {
-      color: var(--color-success, #006F4A);
+      color: var(--orc-status-success-fg, var(--color-success, #006F4A));
     }
 
     &.orc-alert--severity-warning {
-      color: var(--color-warning, #FE9A00);
+      color: var(--orc-status-warning-fg, var(--color-warning, #FE9A00));
     }
 
     &.orc-alert--severity-error {
-      color: var(--color-error, #FB2C36);
+      color: var(--orc-danger, var(--color-error, #FB2C36));
     }
   }
 
@@ -173,27 +173,27 @@
   // ────────────────────────────────────────────────────────────
   &--variant-filled {
     border: 1px solid transparent;
-    color: #FFFFFF;
+    color: var(--orc-on-dark, #FFFFFF);
 
     &.orc-alert--severity-info {
-      background-color: var(--color-info, #2B7FFF);
+      background-color: var(--orc-status-info-fg, var(--color-info, #2B7FFF));
     }
 
     &.orc-alert--severity-success {
-      background-color: var(--color-success, #006F4A);
+      background-color: var(--orc-status-success-fg, var(--color-success, #006F4A));
     }
 
     &.orc-alert--severity-warning {
-      background-color: var(--color-warning, #FE9A00);
-      color: #FFFFFF;
+      background-color: var(--orc-status-warning-fg, var(--color-warning, #FE9A00));
+      color: var(--orc-on-dark, #FFFFFF);
     }
 
     &.orc-alert--severity-error {
-      background-color: var(--color-error, #FB2C36);
+      background-color: var(--orc-danger, var(--color-error, #FB2C36));
     }
 
     .orc-alert__close:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: color-mix(in srgb, var(--orc-on-dark) 20%, transparent);
     }
   }
 }

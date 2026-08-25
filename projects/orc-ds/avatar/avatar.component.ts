@@ -52,13 +52,10 @@ export class AvatarComponent {
 
   constructor() {
     // Reseta estado de erro caso a URL da imagem mude
-    effect(
-      () => {
-        this.src();
-        this.imageFailed.set(false);
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      this.src();
+      this.imageFailed.set(false);
+    });
   }
 
   // ── Sinais Computados ──────────────────────────────────────

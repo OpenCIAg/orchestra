@@ -126,13 +126,13 @@
 
   // ── VARIANTS ───────────────────────────────────────────────
   &--variant-primary {
-    background-color: var(--orc-color-azul-eletrico, #1C6AED);
-    color: #FFFFFF;
-    border-color: var(--orc-color-azul-eletrico, #1C6AED);
+    background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
+    color: var(--orc-on-interactive, #FFFFFF);
+    border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
 
     &:hover:not(:disabled) {
-      background-color: var(--orc-color-azul-royal, #0406AB);
-      border-color: var(--orc-color-azul-royal, #0406AB);
+      background-color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
+      border-color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
     }
 
     &:active:not(:disabled) {
@@ -141,13 +141,13 @@
   }
 
   &--variant-secondary {
-    background-color: var(--orc-highlight-cinza-claro, #EDEDED);
-    color: var(--text-primary, #141414);
-    border-color: var(--orc-highlight-cinza-claro, #EDEDED);
+    background-color: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #EDEDED));
+    color: var(--orc-text, var(--text-primary, #141414));
+    border-color: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #EDEDED));
 
     &:hover:not(:disabled) {
-      background-color: var(--orc-secondary-bg, #D9D9D9);
-      border-color: var(--orc-secondary-bg, #D9D9D9);
+      background-color: var(--orc-border-strong, var(--orc-secondary-bg, #D9D9D9));
+      border-color: var(--orc-border-strong, var(--orc-secondary-bg, #D9D9D9));
     }
 
     &:active:not(:disabled) {
@@ -157,38 +157,38 @@
 
   &--variant-outline {
     background-color: transparent;
-    color: var(--text-primary, #141414);
-    border-color: var(--border-default, #D9D9D9);
+    color: var(--orc-text, var(--text-primary, #141414));
+    border-color: var(--orc-border-default, var(--border-default, #D9D9D9));
 
     &:hover:not(:disabled) {
-      background-color: var(--bg-subtle, #F9F9F9);
-      border-color: var(--border-strong, #D9D9D9);
-      color: var(--orc-color-azul-eletrico, #1C6AED);
+      background-color: var(--orc-surface-subtle, var(--bg-subtle, #F9F9F9));
+      border-color: var(--orc-border-strong, var(--border-strong, #D9D9D9));
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
     }
 
     &:active:not(:disabled) {
-      background-color: var(--bg-muted, #EDEDED);
+      background-color: var(--orc-surface-muted, var(--bg-muted, #EDEDED));
     }
   }
 
   &--variant-ghost {
     background-color: transparent;
-    color: var(--text-primary, #141414);
+    color: var(--orc-text, var(--text-primary, #141414));
     border-color: transparent;
 
     &:hover:not(:disabled) {
-      background-color: var(--bg-subtle, #F9F9F9);
-      color: var(--orc-color-azul-eletrico, #1C6AED);
+      background-color: var(--orc-surface-subtle, var(--bg-subtle, #F9F9F9));
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
     }
 
     &:active:not(:disabled) {
-      background-color: var(--bg-muted, #EDEDED);
+      background-color: var(--orc-surface-muted, var(--bg-muted, #EDEDED));
     }
   }
 
   &--variant-link {
     background-color: transparent;
-    color: var(--orc-color-azul-eletrico, #1C6AED);
+    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
     border-color: transparent;
     width: auto;
     height: auto;
@@ -198,7 +198,7 @@
 
     &:hover:not(:disabled) {
       text-decoration: underline;
-      color: var(--orc-color-azul-royal, #0406AB);
+      color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
     }
 
     &:active:not(:disabled) {
@@ -207,13 +207,13 @@
   }
 
   &--variant-danger {
-    background-color: var(--color-error, #FB2C36);
-    color: #ffffff;
-    border-color: var(--color-error, #FB2C36);
+    background-color: var(--orc-danger, var(--color-error, #FB2C36));
+    color: var(--orc-on-danger, #FFFFFF);
+    border-color: var(--orc-danger, var(--color-error, #FB2C36));
 
     &:hover:not(:disabled) {
-      background-color: #d4183d;
-      border-color: #d4183d;
+      background-color: color-mix(in srgb, var(--orc-danger, #d4183d) 86%, var(--orc-text, #141414));
+      border-color: color-mix(in srgb, var(--orc-danger, #d4183d) 86%, var(--orc-text, #141414));
     }
 
     &:active:not(:disabled) {

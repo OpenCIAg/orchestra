@@ -8,7 +8,7 @@ import {
   booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProgressMode, ProgressVariant, ProgressSize } from './progress.types';
+import { ProgressMarker, ProgressMode, ProgressVariant, ProgressSize } from './progress.types';
 
 @Component({
   selector: 'orc-progress-bar',
@@ -70,6 +70,7 @@ export class ProgressBarComponent {
 
   /** Cor customizada da trilha / fundo da barra */
   readonly customTrackColor = input<string>('');
+  readonly markers = input<ProgressMarker[]>([]);
 
   /** Sobrescreve o rótulo de acessibilidade aria-label */
   readonly ariaLabel = input<string>('');

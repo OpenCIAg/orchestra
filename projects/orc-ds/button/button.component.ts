@@ -40,6 +40,9 @@ export class ButtonComponent {
   readonly id = input<string | undefined>(undefined);
   readonly tabindex = input<number | undefined>(undefined);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly ariaExpanded = input<boolean | undefined>(undefined);
+  readonly ariaControls = input<string | undefined>(undefined);
+  readonly form = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly badge = input<string | number | undefined>(undefined);
@@ -87,7 +90,7 @@ export class ButtonComponent {
       [`orc-button--size-${this.size()}`]: true,
       'orc-button--disabled': this.isDisabled(),
       'orc-button--loading': this.loading(),
-      'orc-button--full-width': this.fullWidth(),
+      'orc-button--full-width': this.fullWidth() || this.fluid(),
       'orc-button--icon-only': this.iconOnly(),
       'orc-button--text': this.text(),
       'orc-button--outlined': this.outlined(),
@@ -95,8 +98,6 @@ export class ButtonComponent {
       'orc-button--rounded': this.rounded(),
       'orc-button--plain': this.plain(),
       'orc-button--fluid': this.fluid(),
-      'p-button': true,
-      'p-component': true,
     };
   });
   readonly buttonClassString = computed(() => `${Object.entries(this.buttonClasses()).filter(([, enabled]) => enabled).map(([name]) => name).join(' ')} ${this.styleClass()}`.trim());

@@ -76,6 +76,9 @@
           }
         </div>
       </div>
+      @for (marker of markers(); track marker.value) {
+        <span class="orc-progress-bar__marker" [style.left.%]="marker.value" [attr.data-tone]="marker.tone || null" [attr.aria-label]="marker.label || ('Meta: ' + marker.value + '%')"><span class="orc-progress-bar__marker-line"></span>@if (marker.label) { <span class="orc-progress-bar__marker-label">{{ marker.label }}</span> }</span>
+      }
     </div>
   }
 </div>

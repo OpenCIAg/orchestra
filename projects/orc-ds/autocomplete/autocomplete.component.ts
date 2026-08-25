@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   HostListener,
   booleanAttribute,
@@ -28,7 +29,9 @@ let nextAutocompleteId = 0;
 })
 export class AutocompleteComponent implements ControlValueAccessor {
   private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly uniqueId = `orc-autocomplete-${++nextAutocompleteId}`;
+  private blurTimeout: ReturnType<typeof setTimeout> | null = null;
 
   readonly id = input('');
   readonly inputId = input<string | undefined>(undefined);
@@ -87,6 +90,10 @@ export class AutocompleteComponent implements ControlValueAccessor {
   private cvaChange: (value: string | null) => void = () => {};
   private onTouched: () => void = () => {};
 
+  constructor() {
+    this.destroyRef.onDestroy(() => this.clearBlurTimeout());
+  }
+
   writeValue(value: unknown): void {
     this.value.set(value === null || value === undefined ? null : String(value));
   }
@@ -102,6 +109,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
   }
 
   onFocus(event?: Event): void {
+    this.clearBlurTimeout();
     if (!this.effectiveDisabled() && (this.dropdown() || this.query().length >= this.effectiveMinLength())) { this.isOpen.set(true); this.onShow.emit(); }
     if (event) this.onFocusEvent.emit(event);
   }
@@ -109,6 +117,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
   toggleDropdown(event?: Event): void {
     event?.preventDefault();
     if (this.effectiveDisabled()) return;
+    this.clearBlurTimeout();
     if (this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); return; }
     this.isOpen.set(true); this.activeIndex.set(this.firstEnabledIndex()); this.onShow.emit();
   }
@@ -119,12 +128,17 @@ export class AutocompleteComponent implements ControlValueAccessor {
       const selected = this.effectiveOptions().find(option => option.label === this.query());
       if (!selected) this.clear();
     }
-    setTimeout(() => { if (this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); } }, 120);
+    this.clearBlurTimeout();
+    this.blurTimeout = setTimeout(() => {
+      this.blurTimeout = null;
+      if (this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); }
+    }, 120);
     if (event) this.onBlurEvent.emit(event);
   }
 
   select(option: AutocompleteOption): void {
     if (option.disabled || this.effectiveDisabled()) return;
+    this.clearBlurTimeout();
     this.value.set(option.value);
     this.query.set(option.label);
     this.isOpen.set(false);
@@ -136,6 +150,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   clear(event?: Event): void {
     event?.preventDefault();
+    this.clearBlurTimeout();
     this.value.set(null);
     this.query.set('');
     this.isOpen.set(false);
@@ -145,6 +160,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
+    this.clearBlurTimeout();
     if (!this.host.nativeElement.contains(event.target as Node) && this.isOpen()) { this.isOpen.set(false); this.onHide.emit(); }
   }
 
@@ -174,5 +190,12 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   private firstEnabledIndex(): number {
     return this.filteredOptions().findIndex(option => !option.disabled);
+  }
+
+  private clearBlurTimeout(): void {
+    if (this.blurTimeout) {
+      clearTimeout(this.blurTimeout);
+      this.blurTimeout = null;
+    }
   }
 }

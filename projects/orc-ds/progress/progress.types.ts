@@ -9,3 +9,9 @@ export type ProgressVariant =
   | 'danger';
 
 export type ProgressSize = 'sm' | 'md' | 'lg' | 'xl';
+
+export interface ProgressMarker {
+  value: number;
+  label?: string;
+  tone?: ProgressVariant;
+}

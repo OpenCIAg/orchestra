@@ -4,7 +4,11 @@
     "outDir": "../../out-tsc/spec",
     "types": [
       "jasmine"
-    ]
+    ],
+    "paths": {
+      "@ciag/orchestra": ["./public-api.ts"],
+      "@ciag/orchestra/*": ["./*"]
+    }
   },
   "include": [
     "**/*.spec.ts",

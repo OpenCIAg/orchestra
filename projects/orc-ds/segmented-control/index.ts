@@ -1,1 +1,1 @@
-export { SegmentedControlComponent } from '@ciag/orchestra/p2';
+export * from './segmented-control.component';

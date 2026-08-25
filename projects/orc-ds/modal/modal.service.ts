@@ -5,8 +5,12 @@ import {
   Type,
   createComponent,
   ComponentRef,
+  InjectionToken,
+  Injector,
 } from '@angular/core';
 import { ModalRef } from './modal-ref';
+
+export const ORC_MODAL_DATA = new InjectionToken<unknown>('ORC_MODAL_DATA');
 
 @Injectable({ providedIn: 'root' })
 export class ModalService {
@@ -20,17 +24,23 @@ export class ModalService {
    * O componente injetado DEVE conter a tag <orc-modal> com [isOpen]="true" internamente,
    * para que o modal nativo assuma a camada de visualização (Top Layer do HTML5).
    */
-  open<T>(component: Type<T>, inputs?: Record<string, unknown>): ModalRef<T> {
+  open<TComponent, TData = undefined, TResult = undefined>(
+    component: Type<TComponent>,
+    config: { data?: TData; inputs?: Partial<Record<keyof TComponent, unknown>> } = {},
+  ): ModalRef<TComponent, TResult> {
+    const componentInjector = Injector.create({
+      parent: this.injector,
+      providers: [{ provide: ORC_MODAL_DATA, useValue: config.data }],
+    });
     // 1. Instanciar o componente dinamicamente
-    const componentRef: ComponentRef<T> = createComponent(component, {
+    const componentRef: ComponentRef<TComponent> = createComponent(component, {
       environmentInjector: this.injector,
+      elementInjector: componentInjector,
     });
 
     // 2. Setar inputs se fornecidos
-    if (inputs) {
-      const config = inputs as Record<string, unknown>;
-      const componentInputs = { ...config };
-      if (config['data'] !== undefined && componentInputs['data'] === undefined) componentInputs['data'] = config['data'];
+    if (config.inputs) {
+      const componentInputs = config.inputs as Record<string, unknown>;
       Object.entries(componentInputs).forEach(([key, value]) => {
         componentRef.setInput(key, value);
       });
@@ -49,6 +59,6 @@ export class ModalService {
       componentRef.destroy();
     };
 
-    return new ModalRef<T>(componentRef, destroyFn);
+    return new ModalRef<TComponent, TResult>(componentRef, destroyFn);
   }
 }
