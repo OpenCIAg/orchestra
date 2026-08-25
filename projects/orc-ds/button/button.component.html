@@ -39,6 +39,11 @@
     <ng-content select="[iconLeft]"></ng-content>
   }
 
+  <!-- Keep projected Orchestra icons available to icon-only buttons. -->
+  <span class="orc-button__projected-icon" aria-hidden="true">
+    <ng-content select="orc-icon"></ng-content>
+  </span>
+
   <!-- Content -->
   @if (!iconOnly()) {
     <span class="orc-button__text">

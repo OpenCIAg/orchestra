@@ -69,15 +69,24 @@ describe('ButtonComponent', () => {
 
   describe('Integration in host component', () => {
     @Component({
+      selector: 'orc-icon',
       standalone: true,
-      imports: [ButtonComponent],
+      template: '<svg aria-hidden="true"></svg>',
+    })
+    class ProjectedIconStub {}
+
+    @Component({
+      standalone: true,
+      imports: [ButtonComponent, ProjectedIconStub],
       template: `
         <orc-button
           [variant]="variant()"
           [size]="size()"
           [disabled]="disabled()"
+          [iconOnly]="iconOnly()"
           (click)="onClick()"
         >
+          <orc-icon></orc-icon>
           Salvar
         </orc-button>
       `,
@@ -86,6 +95,7 @@ describe('ButtonComponent', () => {
       readonly variant = signal<'primary' | 'secondary'>('primary');
       readonly size = signal<'sm' | 'md' | 'lg'>('md');
       readonly disabled = signal<boolean>(false);
+      readonly iconOnly = signal<boolean>(false);
       clicked = 0;
 
       onClick() {
@@ -115,6 +125,15 @@ describe('ButtonComponent', () => {
       const buttonEl = hostFixture.nativeElement.querySelector('button');
       buttonEl.click();
       expect(hostComponent.clicked).toBe(1);
+    });
+
+    it('should preserve a projected Orchestra icon for icon-only buttons', () => {
+      hostComponent.iconOnly.set(true);
+      hostFixture.detectChanges();
+
+      const buttonEl = hostFixture.nativeElement.querySelector('button');
+      expect(buttonEl.querySelector('.orc-button__projected-icon orc-icon')).toBeTruthy();
+      expect(buttonEl.querySelector('.orc-button__text')).toBeFalsy();
     });
   });
 });

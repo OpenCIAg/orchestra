@@ -95,6 +95,17 @@
     line-height: 1;
   }
 
+  &__projected-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+
+    &:empty {
+      display: none;
+    }
+  }
+
   // ── SIZES ──────────────────────────────────────────────────
   &--size-sm {
     height: 2rem; // 32px
