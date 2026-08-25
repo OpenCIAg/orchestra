@@ -1,7 +1,7 @@
 :host {
   display: block;
   width: 100%;
-  min-width: 0;
+  min-width: 12.5rem;
 }
 
 .orc-date-picker {
@@ -29,7 +29,7 @@
 .orc-date-picker__control input {
   flex: 1 1 auto;
   width: 100%;
-  min-width: 8rem;
+  min-width: 7rem;
   box-sizing: border-box;
   min-height: 2.5rem;
   padding: 0 var(--space-3);
@@ -59,7 +59,7 @@
 }
 
 .orc-date-picker__control > button[aria-label="Open calendar"] {
-  width: 2.5rem;
+  width: 2rem;
   padding: 0;
   font-size: 1rem;
 }
