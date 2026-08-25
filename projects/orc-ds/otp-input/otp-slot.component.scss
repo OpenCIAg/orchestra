@@ -9,8 +9,8 @@
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--text-primary);
-  background-color: var(--orc-secondary-bg);
+  color: var(--orc-text, var(--text-primary));
+  background-color: var(--orc-surface-muted, var(--orc-secondary-bg));
   border: 1px solid transparent;
   border-radius: 0px;
   outline: none;
@@ -27,9 +27,9 @@
   }
 
   &:focus {
-    border-color: var(--orc-color-azul-eletrico);
-    background-color: var(--orc-fill-input);
-    box-shadow: 0 0 0 2px rgba(28, 106, 237, 0.2);
+    border-color: var(--orc-interactive, var(--orc-color-azul-eletrico));
+    background-color: var(--orc-control-surface, var(--orc-fill-input));
+    box-shadow: 0 0 0 2px var(--orc-interactive-shadow);
     z-index: 2;
   }
 

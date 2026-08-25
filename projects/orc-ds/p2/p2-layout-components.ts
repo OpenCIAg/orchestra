@@ -116,7 +116,7 @@ export class BoxComponent {
   selector: 'orc-separator',
   standalone: true,
   template: `<div class="orc-p2-separator" [class.vertical]="orientation() === 'vertical'" role="separator" [attr.aria-orientation]="orientation()" [attr.aria-label]="label() || null"></div>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-separator { width: 100%; height: 1px; background: #cbd5e1; } .orc-p2-separator.vertical { width: 1px; height: 100%; min-height: 1rem; }`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-separator { width: 100%; height: 1px; background: var(--orc-component-surface-subtle); } .orc-p2-separator.vertical { width: 1px; height: 100%; min-height: 1rem; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeparatorComponent {
@@ -152,7 +152,7 @@ export class TypographyComponent {
   selector: 'orc-text',
   standalone: true,
   template: `<span [class]="'orc-p2-text orc-p2-text--' + size()" [class.muted]="muted()" [class.truncate]="truncate()"><ng-content /></span>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-text { color: #0f172a; } .orc-p2-text--sm { font-size: .875rem; } .orc-p2-text--md { font-size: 1rem; } .orc-p2-text--lg { font-size: 1.25rem; } .muted { color: #64748b; } .truncate { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-text { color: var(--orc-component-text); } .orc-p2-text--sm { font-size: .875rem; } .orc-p2-text--md { font-size: 1rem; } .orc-p2-text--lg { font-size: 1.25rem; } .muted { color: var(--orc-component-text-muted); } .truncate { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextComponent {
@@ -165,7 +165,7 @@ export class TextComponent {
   selector: 'orc-kbd',
   standalone: true,
   template: `<kbd class="orc-p2-kbd" [attr.aria-label]="ariaLabel() || null">@for (key of normalizedKeys(); track $index) { <span>{{ key }}</span> }</kbd>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-kbd { display: inline-flex; gap: .2rem; align-items: center; padding: .15rem .35rem; border: 1px solid #cbd5e1; border-bottom-width: 2px; border-radius: .3rem; background: #f8fafc; color: #334155; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; }`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-kbd { display: inline-flex; gap: .2rem; align-items: center; padding: .15rem .35rem; border: 1px solid var(--orc-component-border-strong); border-bottom-width: 2px; border-radius: .3rem; background: var(--orc-component-surface-subtle); color: var(--orc-component-text-secondary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KbdComponent {
@@ -181,7 +181,7 @@ export class KbdComponent {
   selector: 'orc-link',
   standalone: true,
   template: `<a class="orc-p2-link" [href]="disabled() ? null : href()" [target]="target() || null" [rel]="target() === '_blank' ? 'noopener noreferrer' : null" [class.disabled]="disabled()" [class.underline]="underline()" [attr.aria-label]="ariaLabel() || null" [attr.aria-disabled]="disabled()" (click)="onClick($event)"><ng-content /></a>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-link { color: #2563eb; text-decoration: none; } .orc-p2-link.underline, .orc-p2-link:hover { text-decoration: underline; } .orc-p2-link.disabled { pointer-events: none; color: #94a3b8; }`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-link { color: var(--orc-component-interactive); text-decoration: none; } .orc-p2-link.underline, .orc-p2-link:hover { text-decoration: underline; } .orc-p2-link.disabled { pointer-events: none; color: var(--orc-component-text-muted); }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinkComponent {

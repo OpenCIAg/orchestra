@@ -7,7 +7,7 @@
   overflow: visible; // O overflow é lidado pelo container interno
 
   &::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--orc-scrim, rgb(0 0 0 / 0.5));
     backdrop-filter: blur(4px);
     animation: fadeIn 0.2s ease;
   }
@@ -35,7 +35,7 @@
   // ── STATUS ──────────────────────────────────────────────────
   &--status-danger {
     .orc-modal__container {
-      border-color: var(--color-error, #fb2c36);
+      border-color: var(--orc-danger, var(--color-error, #fb2c36));
     }
   }
 
@@ -52,6 +52,14 @@
     height: 100vh;
     border-radius: 0;
     max-height: 100vh;
+  }
+
+  &--maximized .orc-modal__container {
+    max-width: 100vw;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
   }
 }
 

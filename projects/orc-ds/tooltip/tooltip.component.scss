@@ -17,7 +17,7 @@
   font-weight: 400;
   line-height: 20px;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--orc-shadow-overlay, var(--shadow-lg));
   transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1), transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 0;
 
@@ -27,20 +27,20 @@
 
   // ── Themes ────────────────────────────────────────────────
   &--dark {
-    background-color: var(--orc-font-main, #141414);
-    color: #FFFFFF;
+    background-color: var(--bg-inverse, var(--orc-font-main, #141414));
+    color: var(--text-inverse, #FFFFFF);
 
     .orc-tooltip__arrow {
-      color: var(--orc-font-main, #141414);
+      color: var(--bg-inverse, var(--orc-font-main, #141414));
     }
   }
 
   &--light {
-    background-color: var(--orc-secondary-bg, #D9D9D9);
-    color: var(--orc-font-main, #141414);
+    background-color: var(--orc-surface-muted, var(--orc-secondary-bg, #D9D9D9));
+    color: var(--orc-text, var(--orc-font-main, #141414));
 
     .orc-tooltip__arrow {
-      color: var(--orc-secondary-bg, #D9D9D9);
+      color: var(--orc-surface-muted, var(--orc-secondary-bg, #D9D9D9));
     }
   }
 

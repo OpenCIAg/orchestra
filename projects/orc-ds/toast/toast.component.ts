@@ -43,6 +43,7 @@ export class ToastComponent {
   readonly progress = signal<number>(100);
 
   private timerInterval: ReturnType<typeof setInterval> | null = null;
+  private dismissTimeout: ReturnType<typeof setTimeout> | null = null;
   private remainingTime = 0;
   private totalDuration = 0;
   private lastTick = 0;
@@ -75,6 +76,7 @@ export class ToastComponent {
 
     this.destroyRef.onDestroy(() => {
       this.clearTimer();
+      this.clearDismissTimeout();
     });
   }
 
@@ -119,6 +121,13 @@ export class ToastComponent {
     }
   }
 
+  private clearDismissTimeout(): void {
+    if (this.dismissTimeout) {
+      clearTimeout(this.dismissTimeout);
+      this.dismissTimeout = null;
+    }
+  }
+
   onMouseEnter(): void {
     this.isHovered.set(true);
   }
@@ -132,10 +141,12 @@ export class ToastComponent {
     if (this.isExiting()) return;
     this.isExiting.set(true);
     this.clearTimer();
+    this.clearDismissTimeout();
     this.onClose.emit({ originalEvent, message: this.toast() });
 
     // Permite animação de saída antes da remoção final
-    setTimeout(() => {
+    this.dismissTimeout = setTimeout(() => {
+      this.dismissTimeout = null;
       this.dismiss.emit(this.toast().id);
     }, 200);
   }

@@ -316,6 +316,34 @@ describe('P2 expansion components', () => {
     expect(fixture.componentInstance.isSelected(fixture.componentInstance.options()[0])).toBeTrue();
   });
 
+  it('emits MultiSelect changes without a DOM event and respects readonly mode', () => {
+    const fixture = TestBed.createComponent(MultiSelectComponent<string>);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('options', [{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]);
+    const changed = jasmine.createSpy('changed');
+    component.onChange.subscribe(changed);
+
+    component.select(component.options()[0]);
+    expect(changed).toHaveBeenCalledWith({ originalEvent: jasmine.any(Event), value: ['one'] });
+
+    fixture.componentRef.setInput('readonly', true);
+    component.select(component.options()[1]);
+    component.clear();
+    expect(component.value()).toEqual(['one']);
+  });
+
+  it('uses Listbox dataKey when toggling a copied object value', () => {
+    const fixture = TestBed.createComponent(ListboxComponent<any>);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('multiple', true);
+    fixture.componentRef.setInput('dataKey', 'id');
+    fixture.componentRef.setInput('options', [{ id: 1, label: 'Alpha' }]);
+    component.writeValue([{ id: 1 }]);
+
+    component.select({ id: 1, label: 'Copied Alpha' });
+    expect(component.value()).toEqual([]);
+  });
+
   it('defaults DateInput tabindex while retaining native min/max constraints', () => {
     const fixture = TestBed.createComponent(DateInputComponent);
     fixture.componentRef.setInput('min', '2025-01-01');
@@ -368,6 +396,13 @@ describe('P2 expansion components', () => {
     component.onDataOptionClick(component.options()![1] as any, new Event('click'));
     expect(changed).toHaveBeenCalled();
     expect(selected).toHaveBeenCalledWith({ originalEvent: jasmine.any(Event), value: 'pt' });
+    fixture.componentRef.setInput('filter', true);
+    component.searchTerm.set('port');
+    expect(component.filteredDataOptions().map(option => (option as any).code)).toEqual(['pt']);
+    fixture.componentRef.setInput('filterMatchMode', 'gte');
+    fixture.componentRef.setInput('options', [{ code: 'low', title: '10' }, { code: 'high', title: '20' }]);
+    component.searchTerm.set('20');
+    expect(component.filteredDataOptions().map(option => (option as any).code)).toEqual(['high']);
     const clearEvent = new MouseEvent('click');
     component.clearValue(clearEvent);
     expect(component.value()).toBeUndefined();

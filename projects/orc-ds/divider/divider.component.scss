@@ -1,11 +1,11 @@
 :host { display: block; width: 100%; }
-.orc-divider { display: flex; align-items: center; gap: 12px; width: 100%; color: var(--orc-font-secondary, #666); }
+.orc-divider { display: flex; align-items: center; gap: 12px; width: 100%; color: var(--orc-text-secondary, var(--text-secondary, #666)); }
 .orc-divider--inset { padding-inline: 16px; box-sizing: border-box; }
-.orc-divider__line { flex: 1; min-width: 0; border-top: 1px var(--orc-border, #d9d9d9); }
+.orc-divider__line { flex: 1; min-width: 0; border-top: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9)); }
 .orc-divider--dashed .orc-divider__line { border-top-style: dashed; }
 .orc-divider--dotted .orc-divider__line { border-top-style: dotted; }
 .orc-divider__label { font-size: 12px; white-space: nowrap; }
 .orc-divider--vertical { width: auto; min-height: 24px; height: 100%; flex-direction: column; }
-.orc-divider--vertical .orc-divider__line { width: 1px; height: auto; min-height: 12px; border-top: 0; border-left: 1px var(--orc-border, #d9d9d9); }
+.orc-divider--vertical .orc-divider__line { width: 1px; height: auto; min-height: 12px; border-top: 0; border-left: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9)); }
 .orc-divider--vertical.orc-divider--dashed .orc-divider__line { border-left-style: dashed; }
 .orc-divider--vertical.orc-divider--dotted .orc-divider__line { border-left-style: dotted; }

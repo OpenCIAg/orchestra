@@ -91,6 +91,10 @@
   box-sizing: border-box;
 }
 
+.orc-progress-bar__marker { position: absolute; top: 0; height: 100%; z-index: 1; color: var(--orc-text-secondary, #58595b); pointer-events: none; }
+.orc-progress-bar__marker-line { display: block; width: 2px; height: 100%; background: currentColor; transform: translateX(-1px); }
+.orc-progress-bar__marker-label { position: absolute; top: calc(100% + 4px); left: 0; transform: translateX(-50%); white-space: nowrap; font-size: 11px; line-height: 1; }
+
 // ── Modo Indeterminado ──────────────────────────────────────
 .orc-progress-bar--indeterminate {
   .orc-progress-bar__fill {

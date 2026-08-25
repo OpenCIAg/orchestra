@@ -17,7 +17,7 @@
   justify-content: center;
 
   &--backdrop {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: var(--orc-scrim, rgb(15 23 42 / 0.56));
     backdrop-filter: blur(4px);
   }
 }
@@ -62,19 +62,19 @@
 
   // ── Color Variants ────────────────────────────────────────
   &--primary {
-    color: var(--orc-color-azul-eletrico, #1C6AED);
+    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
   }
 
   &--secondary {
-    color: var(--orc-color-azul-royal, #0406AB);
+    color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
   }
 
   &--neutral {
-    color: var(--orc-font-main, #141414);
+    color: var(--orc-text, var(--orc-font-main, #141414));
   }
 
   &--white {
-    color: #FFFFFF;
+    color: var(--orc-on-dark, #FFFFFF);
   }
 
   // ── Ring / Rollin Spinner ─────────────────────────────────
@@ -159,11 +159,11 @@
 .orc-spinner-text {
   font-size: 14px;
   font-weight: 500;
-  color: var(--orc-font-main, #141414);
+  color: var(--orc-text, var(--orc-font-main, #141414));
   user-select: none;
 
   .orc-spinner--white + & {
-    color: #FFFFFF;
+    color: var(--orc-on-dark, #FFFFFF);
   }
 }
 

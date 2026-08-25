@@ -22,6 +22,7 @@
     role="combobox"
     [attr.aria-expanded]="isOpen()"
     [attr.aria-controls]="listboxId()"
+    [attr.aria-activedescendant]="activeOptionId()"
     [attr.aria-haspopup]="'listbox'"
     [attr.aria-disabled]="effectiveDisabled()"
     [attr.aria-invalid]="isInvalid()"
@@ -155,12 +156,13 @@
         @for (opt of filteredDataOptions(); track getOptionValue(opt); let idx = $index) {
           <div
             class="orc-data-option"
+            [id]="listboxId() + '-option-' + idx"
             [class.is-selected]="isDataOptionSelected(opt)"
             [class.is-active]="activeOptionIndex() === idx"
-            [class.is-disabled]="opt.disabled"
+            [class.is-disabled]="isOptionDisabled(opt)"
             role="option"
             [attr.aria-selected]="isDataOptionSelected(opt)"
-            [attr.aria-disabled]="opt.disabled"
+            [attr.aria-disabled]="isOptionDisabled(opt)"
             (click)="onDataOptionClick(opt, $event)"
           >
             @if (opt.avatarUrl) {
@@ -169,7 +171,7 @@
               <i [class]="opt.icon" class="orc-option-icon" aria-hidden="true"></i>
             }
             <div class="orc-option-content">
-              <span class="orc-option-label">{{ opt.label }}</span>
+              <span class="orc-option-label">{{ getOptionLabel(opt) }}</span>
               @if (opt.description) {
                 <span class="orc-option-description">{{ opt.description }}</span>
               }

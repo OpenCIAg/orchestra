@@ -6,6 +6,7 @@ import {
   model,
   computed,
   contentChildren,
+  contentChild,
   booleanAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,6 +19,7 @@ import {
   TableSortEvent,
   TableColumnConfig,
 } from './table.types';
+import { TableFooterDirective, TableRowExpansionDirective } from './table-slots.directive';
 
 interface TablePageChangeEvent { page: number; pageSize: number; startIndex: number; }
 
@@ -122,6 +124,9 @@ export class TableComponent<T = any> {
   readonly contextMenuSelection = model<T | null>(null);
   readonly contextMenuSelectionMode = input<'separate' | 'joint'>('separate');
   readonly filters = input<Record<string, unknown>>({});
+  /** Consumer owns fetching, filtering and paging; the table only emits queries. */
+  readonly serverDriven = input(false, { transform: booleanAttribute });
+  readonly queryChange = output<import('./table.types').TableQuery>();
   readonly filterDelay = input(300);
   readonly filterLocale = input<string | undefined>(undefined);
   readonly filterable = input(false, { transform: booleanAttribute });
@@ -210,6 +215,9 @@ export class TableComponent<T = any> {
 
   // ── Diretivas Filhas (<orc-column>) ───────────────────────
   readonly declaredColumns = contentChildren(ColumnDirective);
+  readonly footerTemplate = contentChild(TableFooterDirective);
+  readonly rowExpansionTemplate = contentChild(TableRowExpansionDirective);
+  readonly expandedRows = model<T[]>([]);
   readonly effectiveData = computed(() => this.value() ?? this.data());
   readonly effectivePageSize = computed(() => this.rowsInput() ?? this.pageSize());
   readonly effectiveRowsPerPageOptions = computed(() => this.rowsPerPageOptions() ?? this.pageSizeOptions());
@@ -224,6 +232,7 @@ export class TableComponent<T = any> {
 
   /** Dados ordenados localmente */
   readonly filteredData = computed(() => {
+    if (this.serverDriven()) return this.effectiveData();
     const query = this.filter().trim().toLocaleLowerCase();
     if (!query) return this.effectiveData();
     const fields = this.globalFilterFields();
@@ -231,6 +240,7 @@ export class TableComponent<T = any> {
   });
 
   readonly sortedData = computed(() => {
+    if (this.serverDriven()) return this.filteredData();
     const raw = [...this.filteredData()];
     const col = this.sortField() || this.sortColumn();
     const dir = this.sortOrder() < 0 ? 'desc' : this.sortDirection();
@@ -261,7 +271,7 @@ export class TableComponent<T = any> {
   /** Dados exibidos na página atual */
   readonly displayData = computed(() => {
     const sorted = this.sortedData();
-    if (!this.effectivePaginated()) {
+    if (this.serverDriven() || !this.effectivePaginated()) {
       return sorted;
     }
     const page = Math.max(1, this.currentPage());
@@ -369,10 +379,15 @@ export class TableComponent<T = any> {
     this.onSort.emit(event);
     this.sortFunction.emit(event);
     if (this.resetPageOnSort()) { this.currentPage.set(1); this.first.set(0); }
+    this.emitQuery();
   }
 
-  applyFilter(value: string): void { this.filter.set(value); this.onFilter.emit({ value }); }
-  handlePageChange(event: TablePageChangeEvent): void { const first = Math.max(0, event.startIndex - 1); const rows = event.pageSize; const page = event.page; this.currentPage.set(page); this.pageSize.set(rows); this.first.set(first); const payload = { first, rows }; this.onPage.emit(payload); if (this.lazy()) this.onLazyLoad.emit(payload); }
+  applyFilter(value: string): void { this.filter.set(value); this.onFilter.emit({ value }); this.emitQuery(); }
+  handlePageChange(event: TablePageChangeEvent): void { const first = Math.max(0, event.startIndex - 1); const rows = event.pageSize; const page = event.page; this.currentPage.set(page); this.pageSize.set(rows); this.first.set(first); const payload = { first, rows }; this.onPage.emit(payload); if (this.lazy() || this.serverDriven()) this.onLazyLoad.emit(payload); this.emitQuery(); }
+
+  toggleRowExpansion(row: T): void { const expanded = this.expandedRows(); const exists = expanded.some(item => this.sameRow(item, row)); this.expandedRows.set(exists ? expanded.filter(item => !this.sameRow(item, row)) : [...expanded, row]); (exists ? this.onRowCollapse : this.onRowExpand).emit({ data: row }); }
+  isExpanded(row: T): boolean { return this.expandedRows().some(item => this.sameRow(item, row)); }
+  private emitQuery(): void { if (!this.serverDriven()) return; this.queryChange.emit({ first: this.first(), rows: this.effectivePageSize(), sort: this.sortColumn() ? { column: this.sortColumn(), direction: this.sortDirection() } : undefined, filter: this.filter() || undefined, filters: this.filters() }); }
 
   handleRowClick(row: any): void {
     this.rowClick.emit(row);

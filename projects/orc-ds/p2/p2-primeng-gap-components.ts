@@ -12,7 +12,7 @@ import { P2_SHARED_STYLES } from './p2-shared';
     </header>
     @if (!collapsed()) { <div class="orc-p2-panel__content"><ng-content /></div> }
   </section>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-panel{border:1px solid #e2e8f0;border-radius:.625rem;background:#fff;overflow:hidden}.orc-p2-panel__header{display:flex;align-items:center;justify-content:space-between;min-height:2.75rem;padding:.65rem .85rem;background:#f8fafc;font-weight:600;cursor:pointer}.orc-p2-panel__content{padding:.85rem}.orc-p2-panel__toggle{border:0;background:transparent;font-size:1.15rem}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-panel{border:1px solid var(--orc-component-border);border-radius:.625rem;background:var(--orc-component-surface);overflow:hidden}.orc-p2-panel__header{display:flex;align-items:center;justify-content:space-between;min-height:2.75rem;padding:.65rem .85rem;background:var(--orc-component-surface-subtle);font-weight:600;cursor:pointer}.orc-p2-panel__content{padding:.85rem}.orc-p2-panel__toggle{border:0;background:transparent;font-size:1.15rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelComponent {
@@ -27,7 +27,7 @@ export class PanelComponent {
 @Component({
   selector: 'orc-fieldset', standalone: true,
   template: `<fieldset class="p-fieldset p-component orc-p2-fieldset" [class]="'p-fieldset p-component orc-p2-fieldset ' + styleClass()" [style]="style()" [class.collapsed]="collapsed()" [attr.aria-label]="ariaLabel() || legend()" [attr.data-pc-name]="'fieldset'"><legend>{{ legend() }}@if (toggleable()) { <button type="button" [attr.aria-expanded]="!collapsed()" (click)="toggle()" [attr.aria-label]="collapsed() ? 'Expand' : 'Collapse'">{{ collapsed() ? '＋' : '−' }}</button> }</legend>@if (!collapsed()) { <div class="content"><ng-content /></div> }</fieldset>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-fieldset{min-width:0;border:1px solid #e2e8f0;border-radius:.625rem;background:#fff;color:#0f172a}.orc-p2-fieldset legend{padding:0 .45rem;font-weight:600}.orc-p2-fieldset legend button{margin-left:.5rem;border:0;background:transparent}.orc-p2-fieldset .content{padding:.85rem}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-fieldset{min-width:0;border:1px solid var(--orc-component-border);border-radius:.625rem;background:var(--orc-component-surface);color:var(--orc-component-text)}.orc-p2-fieldset legend{padding:0 .45rem;font-weight:600}.orc-p2-fieldset legend button{margin-left:.5rem;border:0;background:transparent}.orc-p2-fieldset .content{padding:.85rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldsetComponent {
@@ -40,7 +40,7 @@ export class FieldsetComponent {
 @Component({
   selector: 'orc-float-label', standalone: true,
   template: `<span class="p-floatlabel p-component orc-p2-float-label" [class]="'p-floatlabel p-component orc-p2-float-label variant-' + variant() + ' ' + styleClass()"><ng-content /></span>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-float-label{position:relative;display:block}.orc-p2-float-label>label{position:absolute;z-index:1;top:50%;left:.75rem;transform:translateY(-50%);padding:0 .2rem;color:#64748b;background:#fff;pointer-events:none;transition:.15s}.orc-p2-float-label:focus-within>label,.orc-p2-float-label>.filled+label{top:0;font-size:.75rem;color:#2563eb}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-float-label{position:relative;display:block}.orc-p2-float-label>label{position:absolute;z-index:1;top:50%;left:.75rem;transform:translateY(-50%);padding:0 .2rem;color:var(--orc-component-text-muted);background:var(--orc-component-surface);pointer-events:none;transition:.15s}.orc-p2-float-label:focus-within>label,.orc-p2-float-label>.filled+label{top:0;font-size:.75rem;color:var(--orc-component-interactive)}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FloatLabelComponent { readonly variant = input<'in' | 'over' | 'on'>('over'); readonly styleClass = input(''); }
@@ -56,7 +56,7 @@ export class FluidComponent { readonly styleClass = input(''); }
 @Component({
   selector: 'orc-overlay-badge', standalone: true,
   template: `<span class="orc-p2-overlay-badge"><ng-content /><span class="orc-p2-overlay-badge__value" [class.dot]="!value()">{{ value() }}</span></span>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-overlay-badge{position:relative;display:inline-flex}.orc-p2-overlay-badge__value{position:absolute;top:-.45rem;right:-.45rem;min-width:1.15rem;height:1.15rem;padding:0 .25rem;border-radius:999px;background:#ef4444;color:#fff;font-size:.7rem;line-height:1.15rem;text-align:center}.orc-p2-overlay-badge__value.dot{width:.6rem;min-width:.6rem;height:.6rem;padding:0}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-overlay-badge{position:relative;display:inline-flex}.orc-p2-overlay-badge__value{position:absolute;top:-.45rem;right:-.45rem;min-width:1.15rem;height:1.15rem;padding:0 .25rem;border-radius:999px;background:var(--orc-component-danger);color:var(--orc-component-on-dark);font-size:.7rem;line-height:1.15rem;text-align:center}.orc-p2-overlay-badge__value.dot{width:.6rem;min-width:.6rem;height:.6rem;padding:0}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverlayBadgeComponent { readonly value = input<string | number>(''); }
@@ -65,7 +65,7 @@ export interface MeterItem { value: number; label?: string; color?: string; }
 @Component({
   selector: 'orc-meter-group', standalone: true,
   template: `<div class="p-metergroup p-component orc-p2-meter" [class]="'p-metergroup p-component orc-p2-meter ' + styleClass()" [style]="style()" [class.vertical]="orientation() === 'vertical'" [attr.aria-label]="ariaLabel()" [attr.data-pc-name]="'metergroup'">@if (label() && labelPosition() === 'start') { <small>{{ label() }} {{ total() }}/{{ max() }}</small> }<div class="orc-p2-meter__track" role="meter" [attr.aria-valuemin]="min()" [attr.aria-valuemax]="max()" [attr.aria-valuenow]="total()">@for (item of effectiveValues(); track $index) { <span [style.width.%]="orientation() === 'horizontal' ? percent(item) : null" [style.height.%]="orientation() === 'vertical' ? percent(item) : null" [style.background]="item.color || color()" [attr.title]="item.label || null"></span> }</div>@if (label() && labelPosition() === 'end') { <small>{{ label() }} {{ total() }}/{{ max() }}</small> }</div>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-meter{display:grid;gap:.35rem;width:100%}.orc-p2-meter__track{display:flex;height:.65rem;overflow:hidden;border-radius:999px;background:#e2e8f0}.orc-p2-meter__track span{min-width:0}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-meter{display:grid;gap:.35rem;width:100%}.orc-p2-meter__track{display:flex;height:.65rem;overflow:hidden;border-radius:999px;background:var(--orc-component-surface-subtle)}.orc-p2-meter__track span{min-width:0}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterGroupComponent {
@@ -78,7 +78,7 @@ export class MeterGroupComponent {
 @Component({
   selector: 'orc-password, orc-input-password', standalone: true,
   template: `<div class="orc-p2-password" [class]="styleClass()" [style]="style()" [class.fluid]="fluid()"><label *ngIf="label()" [attr.for]="inputId()">{{ label() }}</label><div class="control"><input [id]="inputId()" [type]="visible() ? 'text' : 'password'" [value]="value()" [placeholder]="placeholder()" [autocomplete]="autocomplete()" [attr.maxlength]="maxLength()" [disabled]="disabled() || cvaDisabled()" [readonly]="readonly()" [autofocus]="autofocus()" [attr.tabindex]="tabindex()" [class]="inputStyleClass()" [style]="inputStyle()" (input)="onInput($event)" (focus)="handleFocus($event)" (blur)="handleBlur($event)" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" />@if (showClear() && value()) { <button type="button" [disabled]="disabled() || cvaDisabled()" (click)="clear()" aria-label="Clear">×</button> }@if (toggleMask()) { <button type="button" [disabled]="disabled() || cvaDisabled()" (click)="toggleVisible()" [attr.aria-label]="visible() ? 'Hide password' : 'Show password'">{{ visible() ? '◉' : '○' }}</button> }</div>@if (feedback() && (value() || focused())) { <div class="feedback" aria-live="polite"><span>{{ value() ? strengthLabel() : promptLabel() }}</span><span class="meter" [class]="strength()"></span></div> }</div>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-password{display:flex;align-items:center;border:1px solid #cbd5e1;border-radius:.5rem;overflow:hidden}.orc-p2-password input{min-width:0;flex:1;border:0;padding:.55rem .7rem;outline:0}.orc-p2-password button{border:0;background:transparent;padding:.5rem}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-password{display:flex;align-items:center;border:1px solid var(--orc-component-border-strong);border-radius:.5rem;overflow:hidden}.orc-p2-password input{min-width:0;flex:1;border:0;padding:.55rem .7rem;outline:0}.orc-p2-password button{border:0;background:transparent;padding:.5rem}`],
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 'class': 'p-password p-component', '[attr.data-pc-name]': "'password'" },
@@ -103,7 +103,7 @@ export class PasswordComponent implements ControlValueAccessor {
 @Component({
   selector: 'orc-split-button', standalone: true,
   template: `<div class="p-splitbutton p-component orc-p2-split" [class]="'p-splitbutton p-component orc-p2-split ' + styleClass()" [style]="style()" [attr.data-pc-name]="'splitbutton'"><button type="button" [disabled]="buttonDisabled() || disabled() || loading()" [autofocus]="autofocus()" [attr.tabindex]="tabindex()" (click)="onDefaultButtonClick($event)">@if (loading()) { … } @else { {{ icon() }} {{ label() }} }</button><button type="button" class="arrow" [disabled]="menuButtonDisabled() || disabled() || loading()" [attr.tabindex]="tabindex()" (click)="toggleOpen($event)" [attr.aria-label]="expandAriaLabel()">⌄</button>@if (open()) { <div class="orc-p2-split__menu" [class]="menuStyleClass()" [style]="menuStyle()">@for (item of effectiveModel(); track $index) { @if (item.visible !== false) { <button type="button" [disabled]="item.disabled" (click)="activate(item)">{{ item.icon }} {{ item.label }}</button> } }<ng-content /></div> }</div>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-split{position:relative;display:inline-flex}.orc-p2-split>button{border:1px solid #2563eb;padding:.55rem .8rem;background:#2563eb;color:#fff}.orc-p2-split>.arrow{border-left-color:#60a5fa;border-radius:0 .4rem .4rem 0}.orc-p2-split>button:first-child{border-radius:.4rem 0 0 .4rem}.orc-p2-split__menu{position:absolute;z-index:3;top:calc(100% + .25rem);right:0;min-width:10rem;padding:.35rem;border:1px solid #e2e8f0;border-radius:.4rem;background:#fff;box-shadow:0 8px 20px #0f172a1a}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-split{position:relative;display:inline-flex}.orc-p2-split>button{border:1px solid var(--orc-component-interactive);padding:.55rem .8rem;background:var(--orc-component-interactive);color:var(--orc-component-on-interactive)}.orc-p2-split>.arrow{border-left-color:var(--orc-component-interactive-hover);border-radius:0 .4rem .4rem 0}.orc-p2-split>button:first-child{border-radius:.4rem 0 0 .4rem}.orc-p2-split__menu{position:absolute;z-index:3;top:calc(100% + .25rem);right:0;min-width:10rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.4rem;background:var(--orc-component-surface);box-shadow:0 8px 20px var(--orc-component-shadow-color)}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitButtonComponent { readonly model = input<Array<{ label: string; icon?: string; disabled?: boolean; visible?: boolean; command?: () => void }>>([]); readonly label = input('Action'); readonly icon = input(''); readonly iconPos = input<'left' | 'right'>('left'); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input(''); readonly menuStyle = input<Record<string, any> | null | undefined>(undefined); readonly menuStyleClass = input(''); readonly appendTo = input<unknown>(undefined); readonly expandAriaLabel = input('More actions'); readonly tooltip = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly buttonDisabled = input(false, { transform: booleanAttribute }); readonly menuButtonDisabled = input(false, { transform: booleanAttribute }); readonly loading = input(false, { transform: booleanAttribute }); readonly closeOnEscape = input(true, { transform: booleanAttribute }); readonly size = input<'small' | 'large' | undefined>(undefined); readonly severity = input<string | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly tabindex = input(0); readonly open = model(false); readonly primaryClick = output<Event>(); readonly onClick = this.primaryClick; readonly dropdownClick = output<Event>(); readonly onDropdownClick = this.dropdownClick; readonly onMenuShow = output<void>(); readonly onMenuHide = output<void>();
@@ -117,7 +117,7 @@ export class SplitButtonComponent { readonly model = input<Array<{ label: string
 @Component({
   selector: 'orc-scroll-top', standalone: true,
   template: `@if (visible()) { <button type="button" class="p-scrolltop p-component orc-p2-scroll-top" [class]="'p-scrolltop p-component orc-p2-scroll-top ' + styleClass()" [style]="style()" [attr.aria-label]="buttonAriaLabel() || ariaLabel()" [attr.data-pc-name]="'scrolltop'" (click)="scroll()">{{ icon() }}</button> }`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-scroll-top{position:fixed;right:1.25rem;bottom:1.25rem;z-index:10;width:2.5rem;height:2.5rem;border:0;border-radius:50%;background:#2563eb;color:#fff;font-size:1.25rem;box-shadow:0 4px 14px #0f172a33}`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-scroll-top{position:fixed;right:1.25rem;bottom:1.25rem;z-index:10;width:2.5rem;height:2.5rem;border:0;border-radius:50%;background:var(--orc-component-interactive);color:var(--orc-component-on-interactive);font-size:1.25rem;box-shadow:0 4px 14px var(--orc-component-shadow-color)}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScrollTopComponent {
