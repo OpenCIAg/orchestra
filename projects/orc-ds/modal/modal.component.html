@@ -1,7 +1,7 @@
 <dialog
   #dialogRef
   [id]="id() || null"
-  [class]="'p-dialog p-component ' + modalClasses() + ' ' + styleClass()"
+  [class]="'p-dialog p-component ' + modalClassNames() + ' ' + styleClass()"
   [style]="style()"
   [style.z-index]="inline() ? 'auto' : effectiveZIndex()"
   (cancel)="onCancel($event)"

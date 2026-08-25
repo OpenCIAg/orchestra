@@ -111,6 +111,16 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
     };
   });
 
+  /**
+   * Angular string interpolation coerces a class map to "[object Object]".
+   * Convert the map explicitly so every modal selector receives its base,
+   * size, status, inline, and maximized classes.
+   */
+  readonly modalClassNames = computed(() => {
+    const classes = this.modalClasses();
+    return Object.keys(classes).filter(className => classes[className as keyof typeof classes]).join(' ');
+  });
+
   // ── Handlers ────────────────────────────────────────────────
   onClose(): void {
     if (this.isOpen() || this.visible()) {
