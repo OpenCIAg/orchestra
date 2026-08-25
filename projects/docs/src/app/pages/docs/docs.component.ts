@@ -15,6 +15,9 @@ import { ButtonComponent } from '@ciag/orchestra/button';
 import { CardBodyComponent, CardComponent, CardHeaderComponent } from '@ciag/orchestra/card';
 import { ChipComponent } from '@ciag/orchestra/chip';
 import { DividerComponent } from '@ciag/orchestra/divider';
+import { AlertComponent } from '@ciag/orchestra/alert';
+import { InputComponent } from '@ciag/orchestra/input';
+import { ProgressBarComponent } from '@ciag/orchestra/progress';
 
 interface ZincSwatch {
   name: string;
@@ -71,6 +74,9 @@ interface CiagLogoGroup {
     CardHeaderComponent,
     ChipComponent,
     DividerComponent,
+    AlertComponent,
+    InputComponent,
+    ProgressBarComponent,
   ],
   templateUrl: './docs.component.html',
   styleUrl: './docs.component.scss',
