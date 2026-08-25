@@ -30,7 +30,8 @@ export class IconButtonComponent {
   private readonly sanitizer = inject(DomSanitizer);
 
   // ── Outputs (Signals API) ─────────────────────────────────────────
-  readonly click = output<MouseEvent>();
+  /** Keep the public property while avoiding a native/output `click` collision. */
+  readonly click = output<MouseEvent>({ alias: 'clicked' });
 
   // ── Computed Signals ──────────────────────────────────────────────
   readonly isDisabled = computed(() => this.disabled() || this.loading());

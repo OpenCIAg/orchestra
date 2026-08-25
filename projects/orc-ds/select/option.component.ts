@@ -40,7 +40,10 @@ export class OptionComponent {
 
   // ── Signal Inputs ──────────────────────────────────────────
   readonly id = input<string>('');
-  readonly value = input.required<any>();
+  // Options can be projected before Angular has applied their inputs. Keep a
+  // safe undefined default so select effects do not throw NG0950 during the
+  // first change-detection pass; a missing value remains a valid empty option.
+  readonly value = input<any>(undefined);
   readonly label = input<string>('');
   readonly description = input<string | undefined>(undefined);
   readonly icon = input<string | undefined>(undefined);

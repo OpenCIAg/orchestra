@@ -9,6 +9,7 @@ import { SegmentedControlComponent, TreeSelectComponent } from './p2/p2-selectio
 import { CascadeSelectComponent } from './p2/p2-form-gap-components';
 import { DataViewComponent } from './p2/p2-advanced-components';
 import { ToggleButtonComponent } from './p2/p2-form-gap-components';
+import { OptionComponent } from './select/option.component';
 import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SwitchComponent } from './switch/switch.component';
@@ -406,6 +407,13 @@ describe('P2 expansion components', () => {
     const clearEvent = new MouseEvent('click');
     component.clearValue(clearEvent);
     expect(component.value()).toBeUndefined();
+  });
+
+  it('does not throw when a projected option is checked before its value input arrives', () => {
+    const fixture = TestBed.createComponent(OptionComponent);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.value()).toBeUndefined();
   });
 
   it('supports Checkbox binary true/false values and lifecycle outputs', () => {
