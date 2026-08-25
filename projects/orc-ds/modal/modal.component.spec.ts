@@ -30,6 +30,32 @@ describe('ModalComponent', () => {
       expect(component.effectiveZIndex()).toBe(1000);
     });
 
+    it('reflects maximized state in the modal classes', () => {
+      fixture.componentRef.setInput('maximizable', true);
+      component.toggleMaximize();
+      expect(component.maximized()).toBeTrue();
+      expect(component.modalClasses()['orc-modal--maximized']).toBeTrue();
+    });
+
+    it('opens a native dialog when visibility is true before view initialization', () => {
+      fixture.componentRef.setInput('isOpen', true);
+      fixture.detectChanges();
+
+      expect((fixture.nativeElement.querySelector('dialog') as HTMLDialogElement).open).toBeTrue();
+    });
+
+    it('prevents native Escape from closing when closeOnEscape is disabled', () => {
+      component.isOpen.set(true);
+      fixture.componentRef.setInput('closeOnEscape', false);
+      const event = new Event('cancel');
+      spyOn(event, 'preventDefault');
+
+      component.onCancel(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(component.isOpen()).toBeTrue();
+    });
+
     it('should emit closed output and update isOpen on onClose', () => {
       let closedEmitted = false;
       component.isOpen.set(true);

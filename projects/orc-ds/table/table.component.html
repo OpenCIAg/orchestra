@@ -156,6 +156,7 @@
                 </td>
               }
             </tr>
+            @if (rowExpansionTemplate() && isExpanded(row)) { <tr class="orc-table__expansion-row"><td [attr.colspan]="declaredColumns().length + (selectionEnabled() ? 1 : 0)"><ng-container *ngTemplateOutlet="rowExpansionTemplate()!.templateRef; context: { $implicit: row, row: row, index: rowIndex }"></ng-container></td></tr> }
           }
         }
       </tbody>
@@ -175,4 +176,5 @@
       />
     </div>
   }
+  @if (footerTemplate()) { <div class="orc-table__aggregate-footer"><ng-container *ngTemplateOutlet="footerTemplate()!.templateRef"></ng-container></div> }
 </div>

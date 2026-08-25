@@ -21,14 +21,14 @@
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-  color: var(--orc-font-main, #141414);
+  color: var(--orc-text, var(--text-primary, #141414));
   margin-bottom: 6px;
   user-select: none;
   cursor: pointer;
 }
 
 .orc-textarea__required-marker {
-  color: #fb2c36;
+  color: var(--orc-danger, #fb2c36);
   margin-left: 3px;
   font-weight: 700;
 }
@@ -37,8 +37,8 @@
 .orc-textarea-box {
   display: flex;
   width: 100%;
-  background-color: var(--fill-modal, #ffffff);
-  border: 1px solid var(--orc-border, #d9d9d9);
+  background-color: var(--orc-control-surface, var(--fill-input, #ffffff));
+  border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
   border-radius: 10px;
   box-sizing: border-box;
   cursor: text;
@@ -49,23 +49,23 @@
 
   // Hover
   &:hover:not(.orc-textarea-box--focused):not(.orc-textarea-box--disabled):not(.orc-textarea-box--error):not(.orc-textarea-box--success) {
-    background-color: var(--orc-th, #f9f9f9);
-    border-color: var(--orc-border, #d9d9d9);
+    background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
+    border-color: var(--orc-border-default, var(--border-default, #d9d9d9));
   }
 
   // Focus
   &--focused {
-    background-color: var(--fill-modal, #ffffff);
-    border-color: var(--orc-color-azul-eletrico, #1c6aed);
+    background-color: var(--orc-control-surface, var(--fill-input, #ffffff));
+    border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     box-shadow:
-      0px 4px 4px 8px rgba(43, 127, 255, 0.04),
-      0 0 0 1px var(--orc-color-azul-eletrico, #1c6aed);
+      0 0 0 3px var(--orc-interactive-shadow),
+      0 0 0 1px var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
   }
 
   // Disabled
   &--disabled {
-    background-color: var(--orc-highlight-cinza-claro, #ededed);
-    border-color: var(--orc-border, #d9d9d9);
+    background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
+    border-color: var(--orc-border-default, var(--border-default, #d9d9d9));
     opacity: 0.5;
     cursor: not-allowed;
 
@@ -76,7 +76,7 @@
 
   // Readonly
   &--readonly {
-    background-color: var(--orc-th, #f9f9f9);
+    background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
     cursor: default;
 
     .orc-textarea__native {
@@ -86,19 +86,19 @@
 
   // Status: Error
   &--error {
-    border-color: #fb2c36 !important;
+    border-color: var(--orc-danger, #fb2c36) !important;
 
     &.orc-textarea-box--focused {
-      box-shadow: 0 0 0 3px rgba(251, 44, 54, 0.15) !important;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--orc-danger, #fb2c36) 15%, transparent) !important;
     }
   }
 
   // Status: Success
   &--success {
-    border-color: #00c950 !important;
+    border-color: var(--orc-status-success-fg, var(--color-success, #00c950)) !important;
 
     &.orc-textarea-box--focused {
-      box-shadow: 0 0 0 3px rgba(0, 201, 80, 0.15) !important;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--orc-status-success-fg, var(--color-success, #00c950)) 15%, transparent) !important;
     }
   }
 
@@ -141,13 +141,13 @@
   border: none;
   outline: none;
   font-family: inherit;
-  color: var(--orc-font-main, #141414);
+  color: var(--orc-text, var(--text-primary, #141414));
   line-height: 1.5;
   padding: 0;
   margin: 0;
 
   &::placeholder {
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--text-secondary, #666666));
     font-weight: 400;
     opacity: 1;
   }
@@ -173,11 +173,11 @@
   line-height: 1.4;
 
   &--helper {
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--text-secondary, #666666));
   }
 
   &--error {
-    color: #fb2c36;
+    color: var(--orc-danger, #fb2c36);
     display: flex;
     align-items: center;
     gap: 4px;
@@ -193,13 +193,13 @@
 
 .orc-textarea__char-count {
   font-size: 11px;
-  color: var(--orc-font-secondary, #666666);
+  color: var(--orc-text-secondary, var(--text-secondary, #666666));
   white-space: nowrap;
   margin-left: auto;
   font-variant-numeric: tabular-nums;
 
   &--limit {
-    color: #fb2c36;
+    color: var(--orc-danger, #fb2c36);
     font-weight: 600;
   }
 }

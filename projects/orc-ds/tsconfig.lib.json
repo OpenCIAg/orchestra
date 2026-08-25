@@ -5,7 +5,11 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "@ciag/orchestra": ["./public-api.ts"],
+      "@ciag/orchestra/*": ["./*"]
+    }
   },
   "include": [
     "**/*.ts"

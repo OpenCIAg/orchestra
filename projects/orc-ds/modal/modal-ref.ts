@@ -1,18 +1,25 @@
 import { ComponentRef } from '@angular/core';
-import { signal } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
 
-export class ModalRef<T = any> {
-  readonly onClose = signal<unknown | undefined>(undefined);
-  constructor(private componentRef: ComponentRef<T>, private destroyCallback: () => void) {}
+export class ModalRef<TComponent = unknown, TResult = unknown> {
+  private readonly closed = new ReplaySubject<TResult | undefined>(1);
+  private hasClosed = false;
+  readonly afterClosed$: Observable<TResult | undefined> = this.closed.asObservable();
+  constructor(private componentRef: ComponentRef<TComponent>, private destroyCallback: () => void) {}
 
-  get instance(): T {
+  get instance(): TComponent {
     return this.componentRef.instance;
   }
 
-  close(result?: unknown): void {
-    this.onClose.set(result);
+  close(result?: TResult): void {
+    if (this.hasClosed) return;
+    this.hasClosed = true;
+    this.closed.next(result);
+    this.closed.complete();
     this.destroyCallback();
   }
 
-  afterClosed(): unknown | undefined { return this.onClose(); }
+  afterClosed(): Promise<TResult | undefined> {
+    return new Promise(resolve => this.afterClosed$.subscribe(resolve));
+  }
 }

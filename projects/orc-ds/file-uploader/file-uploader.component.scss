@@ -14,9 +14,9 @@
   }
 
   &__dropzone {
-    border: 3px dashed var(--border-default);
+    border: 3px dashed var(--orc-border-default, var(--border-default));
     border-radius: 16px;
-    background-color: var(--bg-app);
+    background-color: var(--orc-surface, var(--bg-app));
     padding: var(--space-8);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -24,19 +24,19 @@
 
     &:hover,
     &:focus-visible {
-      border-color: var(--color-accent);
-      background-color: var(--bg-subtle);
+      border-color: var(--orc-interactive, var(--color-accent));
+      background-color: var(--orc-surface-subtle, var(--bg-subtle));
     }
 
     &--dragover {
-      border-color: var(--orc-color-azul-eletrico);
-      background-color: rgba(28, 106, 237, 0.04);
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico));
+      background-color: color-mix(in srgb, var(--orc-interactive) 4%, transparent);
     }
 
     &--disabled {
       cursor: not-allowed;
-      border-color: var(--border-default) !important;
-      background-color: var(--bg-subtle) !important;
+      border-color: var(--orc-border-default, var(--border-default)) !important;
+      background-color: var(--orc-surface-subtle, var(--bg-subtle)) !important;
     }
   }
 
@@ -51,7 +51,7 @@
   &__icon {
     width: 70px;
     height: 70px;
-    color: var(--text-secondary);
+    color: var(--orc-text-secondary, var(--text-secondary));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,13 +71,13 @@
   &__label {
     font-size: 1rem;
     font-weight: 400; /* Regular in Figma */
-    color: var(--text-primary);
+    color: var(--orc-text, var(--text-primary));
   }
 
   &__sublabel {
     font-size: 1rem; /* 16px in Figma */
     font-weight: 400;
-    color: var(--text-secondary);
+    color: var(--orc-text-secondary, var(--text-secondary));
   }
 
   &__list {
@@ -93,15 +93,15 @@
       width: 6px;
     }
     &::-webkit-scrollbar-track {
-      background: var(--bg-subtle);
+      background: var(--orc-surface-subtle, var(--bg-subtle));
       border-radius: 4px;
     }
     &::-webkit-scrollbar-thumb {
-      background: var(--border-default);
+      background: var(--orc-border-default, var(--border-default));
       border-radius: 4px;
     }
     &::-webkit-scrollbar-thumb:hover {
-      background: var(--text-secondary);
+      background: var(--orc-text-secondary, var(--text-secondary));
     }
   }
 }

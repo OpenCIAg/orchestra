@@ -44,7 +44,7 @@
     width: 20px;
     height: 20px;
     border-radius: var(--radius-full, 9999px);
-    border: 2px solid #58595b; // Cinzas / Muito Escuro token from Figma
+    border: 2px solid var(--orc-border-strong, #58595b); // Cinzas / Muito Escuro token from Figma
     background-color: transparent;
     transition: border-color var(--transition-fast, 120ms ease),
                 background-color var(--transition-fast, 120ms ease),
@@ -58,7 +58,7 @@
     width: 10px;
     height: 10px;
     border-radius: var(--radius-full, 9999px);
-    background-color: var(--orc-color-azul-eletrico, #1c6aed);
+    background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     transform: scale(0);
     opacity: 0;
     transition: transform var(--transition-fast, 120ms ease),
@@ -75,14 +75,14 @@
   &__label {
     font-size: 0.875rem; // 14px
     font-weight: 400;
-    color: var(--orc-font-main, #141414);
+    color: var(--orc-text, var(--orc-font-main, #141414));
     line-height: 1.45;
     transition: color var(--transition-fast, 120ms ease), font-weight var(--transition-fast, 120ms ease);
   }
 
   &__description {
     font-size: 0.75rem; // 12px
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
     line-height: 1.4;
     margin-top: 2px;
   }
@@ -90,20 +90,20 @@
   // ── HOVER STATE ───────────────────────────────────────────
   &:hover:not(.orc-radio--disabled) {
     .orc-radio__circle {
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
   }
 
   // ── FOCUS-VISIBLE STATE ───────────────────────────────────
   .orc-radio__native-input:focus-visible + .orc-radio__box {
-    outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+    outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     outline-offset: 2px;
   }
 
   // ── CHECKED STATE ─────────────────────────────────────────
   &--checked {
     .orc-radio__circle {
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
 
     .orc-radio__dot {
@@ -113,26 +113,26 @@
 
     .orc-radio__label {
       font-weight: 500;
-      color: var(--orc-font-main, #141414);
+      color: var(--orc-text, var(--orc-font-main, #141414));
     }
   }
 
   // ── ERROR STATE ───────────────────────────────────────────
   &--error {
     .orc-radio__circle {
-      border-color: var(--color-error, #fb2c36) !important;
+      border-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
     }
 
     .orc-radio__dot {
-      background-color: var(--color-error, #fb2c36) !important;
+      background-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
     }
 
     .orc-radio__label {
-      color: var(--color-error, #fb2c36);
+      color: var(--orc-danger, var(--color-error, #fb2c36));
     }
 
     .orc-radio__native-input:focus-visible + .orc-radio__box {
-      outline-color: var(--color-error, #fb2c36);
+      outline-color: var(--orc-danger, var(--color-error, #fb2c36));
     }
   }
 
@@ -142,17 +142,17 @@
     opacity: 0.45;
 
     .orc-radio__circle {
-      border-color: var(--orc-border, #d9d9d9);
-      background-color: var(--orc-highlight-cinza-claro, #ededed);
+      border-color: var(--orc-border-default, var(--orc-border, #d9d9d9));
+      background-color: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #ededed));
     }
 
     .orc-radio__dot {
-      background-color: var(--orc-font-secondary, #666666);
+      background-color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
     }
 
     .orc-radio__label,
     .orc-radio__description {
-      color: var(--orc-font-secondary, #666666);
+      color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
     }
   }
 }

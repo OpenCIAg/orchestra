@@ -74,16 +74,16 @@ const fromMonthKey = (value: string): Date => {
     </section>
   `,
   styles: [P2_SHARED_STYLES + `
-    .orc-p2-calendar { width: min(100%, 320px); padding: 1rem; border: 1px solid #e2e8f0; border-radius: .875rem; background: #fff; color: #0f172a; }
+    .orc-p2-calendar { width: min(100%, 320px); padding: 1rem; border: 1px solid var(--orc-component-border); border-radius: .875rem; background: var(--orc-component-surface-raised); color: var(--orc-component-text); }
     .orc-p2-calendar__header, .orc-p2-calendar__weekdays, .orc-p2-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); align-items: center; gap: .25rem; }
     .orc-p2-calendar__header { grid-template-columns: 2rem 1fr 2rem; margin-bottom: .75rem; text-align: center; }
     .orc-p2-calendar__header button { border: 0; border-radius: .375rem; background: transparent; font-size: 1.35rem; line-height: 2rem; }
-    .orc-p2-calendar__header button:hover { background: #f1f5f9; }
-    .orc-p2-calendar__weekdays { margin-bottom: .25rem; color: #64748b; font-size: .7rem; font-weight: 700; text-align: center; text-transform: uppercase; }
+    .orc-p2-calendar__header button:hover { background: var(--orc-component-surface-muted); }
+    .orc-p2-calendar__weekdays { margin-bottom: .25rem; color: var(--orc-component-text-muted); font-size: .7rem; font-weight: 700; text-align: center; text-transform: uppercase; }
     .orc-p2-calendar__day { min-height: 2.2rem; border: 0; border-radius: .5rem; background: transparent; color: inherit; }
-    .orc-p2-calendar__day:hover:not(:disabled), .orc-p2-calendar__day--selected { background: #2563eb; color: #fff; }
-    .orc-p2-calendar__day--outside { color: #94a3b8; }
-    .orc-p2-calendar__day--today { box-shadow: inset 0 0 0 1px #2563eb; }
+    .orc-p2-calendar__day:hover:not(:disabled), .orc-p2-calendar__day--selected { background: var(--orc-component-interactive); color: var(--orc-component-on-interactive); }
+    .orc-p2-calendar__day--outside { color: var(--orc-component-text-muted); }
+    .orc-p2-calendar__day--today { box-shadow: inset 0 0 0 1px var(--orc-component-interactive-shadow); }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => CalendarComponent), multi: true }],
@@ -200,17 +200,17 @@ export class CalendarComponent {
     </div>
   `,
   styles: [P2_SHARED_STYLES + `
-    .orc-p2-field { position: relative; display: grid; gap: .35rem; width: 100%; color: #0f172a; }
+    .orc-p2-field { position: relative; display: grid; gap: .35rem; width: 100%; color: var(--orc-component-text); }
     label { font-size: .875rem; font-weight: 600; }
     .orc-p2-combobox { position: relative; display: flex; align-items: center; }
-    input { width: 100%; min-height: 2.5rem; border: 1px solid #cbd5e1; border-radius: .5rem; padding: .5rem .75rem; }
+    input { width: 100%; min-height: 2.5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; padding: .5rem .75rem; background: var(--orc-component-control); color: var(--orc-component-text); }
     .orc-p2-clear { position: absolute; right: .25rem; border: 0; background: transparent; font-size: 1.2rem; }
-    .orc-p2-options { position: absolute; z-index: 2; top: 4.3rem; right: 0; left: 0; max-height: 15rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid #cbd5e1; border-radius: .5rem; background: #fff; box-shadow: 0 10px 25px #0f172a1a; list-style: none; }
+    .orc-p2-options { position: absolute; z-index: 2; top: 4.3rem; right: 0; left: 0; max-height: 15rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-surface-raised); box-shadow: var(--orc-component-overlay-shadow); list-style: none; }
     .orc-p2-options li { display: grid; gap: .1rem; padding: .55rem .65rem; border-radius: .35rem; cursor: pointer; }
-    .orc-p2-options li:hover, .orc-p2-options .is-active { background: #eff6ff; }
-    .orc-p2-options .is-disabled { color: #94a3b8; cursor: not-allowed; }
-    .orc-p2-options small { color: #64748b; }
-    .orc-p2-empty { color: #64748b; cursor: default !important; }
+    .orc-p2-options li:hover, .orc-p2-options .is-active { background: var(--orc-component-interactive-soft); }
+    .orc-p2-options .is-disabled { color: var(--orc-component-text-muted); cursor: not-allowed; }
+    .orc-p2-options small { color: var(--orc-component-text-muted); }
+    .orc-p2-empty { color: var(--orc-component-text-muted); cursor: default !important; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -292,9 +292,9 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
     </label>
   `,
   styles: [P2_SHARED_STYLES + `
-    .orc-p2-date-input { display: grid; gap: .35rem; color: #0f172a; font-size: .875rem; font-weight: 600; }
-    input { min-height: 2.5rem; border: 1px solid #cbd5e1; border-radius: .5rem; padding: .5rem .65rem; font-weight: 400; }
-    small { color: #64748b; font-weight: 400; } .error { color: #b91c1c; }
+    .orc-p2-date-input { display: grid; gap: .35rem; color: var(--orc-component-text); font-size: .875rem; font-weight: 600; }
+    input { min-height: 2.5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; padding: .5rem .65rem; background: var(--orc-component-control); color: var(--orc-component-text); font-weight: 400; }
+    small { color: var(--orc-component-text-muted); font-weight: 400; } .error { color: var(--orc-component-danger); }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateInputComponent), multi: true }],
@@ -337,7 +337,7 @@ export class DateInputComponent implements ControlValueAccessor {
   selector: 'orc-input-group',
   standalone: true,
   template: `<div class="orc-p2-input-group" role="group" [attr.aria-label]="label() || null"><span class="prefix" [class.empty]="!prefix()">{{ prefix() }}</span><div class="control"><ng-content /></div><span class="suffix" [class.empty]="!suffix()">{{ suffix() }}</span></div>`,
-  styles: [P2_SHARED_STYLES + `.orc-p2-input-group { display: flex; align-items: stretch; width: 100%; min-height: 2.5rem; border: 1px solid #cbd5e1; border-radius: .5rem; overflow: hidden; background: #fff; } .prefix, .suffix { display: inline-flex; align-items: center; padding-inline: .7rem; background: #f8fafc; color: #475569; font-size: .875rem; } .prefix.empty, .suffix.empty { display: none; } .control { display: flex; flex: 1; align-items: center; min-width: 0; } .control ::ng-deep input, .control ::ng-deep textarea, .control ::ng-deep select { width: 100%; border: 0; outline: 0; padding: .5rem .7rem; background: transparent; }`],
+  styles: [P2_SHARED_STYLES + `.orc-p2-input-group { display: flex; align-items: stretch; width: 100%; min-height: 2.5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; overflow: hidden; background: var(--orc-component-control); } .prefix, .suffix { display: inline-flex; align-items: center; padding-inline: .7rem; background: var(--orc-component-surface-subtle); color: var(--orc-component-text-secondary); font-size: .875rem; } .prefix.empty, .suffix.empty { display: none; } .control { display: flex; flex: 1; align-items: center; min-width: 0; } .control ::ng-deep input, .control ::ng-deep textarea, .control ::ng-deep select { width: 100%; border: 0; outline: 0; padding: .5rem .7rem; background: transparent; color: var(--orc-component-text); }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputGroupComponent {
@@ -363,9 +363,9 @@ export class InputGroupComponent {
     </div>
   `,
   styles: [P2_SHARED_STYLES + `
-    .orc-p2-listbox-wrap { display: grid; gap: .35rem; color: #0f172a; } label { font-size: .875rem; font-weight: 600; }
-    .orc-p2-listbox { max-height: 16rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid #cbd5e1; border-radius: .5rem; list-style: none; outline: none; }
-    li { display: grid; gap: .1rem; padding: .55rem .65rem; border-radius: .35rem; cursor: pointer; } li:hover, li.is-selected { background: #eff6ff; color: #1d4ed8; } li.is-disabled { color: #94a3b8; cursor: not-allowed; } small, .empty { color: #64748b; } .empty { cursor: default; }
+    .orc-p2-listbox-wrap { display: grid; gap: .35rem; color: var(--orc-component-text); } label { font-size: .875rem; font-weight: 600; }
+    .orc-p2-listbox { max-height: 16rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; list-style: none; outline: none; }
+    li { display: grid; gap: .1rem; padding: .55rem .65rem; border-radius: .35rem; cursor: pointer; } li:hover, li.is-selected { background: var(--orc-component-interactive-soft); color: var(--orc-component-interactive-hover); } li.is-disabled { color: var(--orc-component-text-muted); cursor: not-allowed; } small, .empty { color: var(--orc-component-text-muted); } .empty { cursor: default; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -406,11 +406,12 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
     if (this.multiple()) {
       const value = this.value();
       const current = Array.isArray(value) ? [...value] : [];
-      const index = current.indexOf(candidate);
+      const index = current.findIndex(item => this.sameValue(item, candidate));
       index >= 0 ? current.splice(index, 1) : current.push(candidate);
       next = current as T[];
     } else next = candidate;
-    this.value.set(next); this.onModelChange(next); this.onModelTouched(); this.optionSelected.emit(option); if (event) { this.onChange.emit({ originalEvent: event, value: next }); this.onClick.emit({ originalEvent: event, option }); }
+    const originalEvent = event ?? new Event('change');
+    this.value.set(next); this.onModelChange(next); this.onModelTouched(); this.optionSelected.emit(option); this.onChange.emit({ originalEvent, value: next }); this.onClick.emit({ originalEvent, option });
   }
 
   onKeydown(event: KeyboardEvent): void {
@@ -424,6 +425,7 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
         this.activeIndex.set(enabledIndexes[(currentPosition + delta + enabledIndexes.length) % enabledIndexes.length]);
       }
     } else if (event.key === 'Enter' && options[this.activeIndex()] && !this.isOptionDisabled(options[this.activeIndex()])) {
+      event.preventDefault();
       this.select(options[this.activeIndex()], event);
     }
   }
@@ -436,16 +438,16 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   template: `
     <div class="p-multiselect p-component orc-p2-multi-select" [class]="'p-multiselect p-component orc-p2-multi-select ' + styleClass()" [style]="style()" [class.fluid]="fluid()" [attr.data-pc-name]="'multiselect'">
       @if (label()) { <label [for]="effectiveId()">{{ label() }}</label> }
-      <button type="button" class="p-multiselect-label p-multiselect-trigger trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="effectiveId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" [attr.aria-controls]="effectiveId() + '-panel'" (click)="toggleOpen()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
+      <button type="button" class="p-multiselect-label p-multiselect-trigger trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="effectiveId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" [attr.aria-controls]="effectiveId() + '-panel'" [attr.aria-activedescendant]="activeOptionId()" [attr.aria-readonly]="readonly()" (click)="toggleOpen()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
         <span>{{ selectedLabels() || placeholder() }}</span><span aria-hidden="true">⌄</span>
       </button>
-      @if (showClear() && value().length) { <button type="button" class="clear" (click)="clear($event)" aria-label="Clear">×</button> }
+      @if (showClear() && value().length && !readonly()) { <button type="button" class="clear" (click)="clear($event)" aria-label="Clear">×</button> }
       @if (open()) {
-        @if (showToggleAll()) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? 'Clear all' : 'Select all' }}</button> }
+        @if (showToggleAll() && showHeader() && !readonly()) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? 'Clear all' : 'Select all' }}</button> }
         @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" [autofocus]="autofocusFilter()" /> }
         <ul class="p-multiselect-panel p-component options" [class]="'p-multiselect-panel p-component options ' + panelStyleClass()" [style]="panelStyle()" [id]="effectiveId() + '-panel'" role="listbox" aria-multiselectable="true">
           @if (loading()) { <li class="empty" aria-live="polite">{{ loadingIcon() || 'Loading…' }}</li> } @else {
-          @for (option of filteredOptions(); track getOptionValue(option)) { <li role="option" [attr.aria-selected]="isSelected(option)" [class.is-disabled]="isOptionDisabled(option)" (click)="select(option, $event)"><span class="check">{{ isSelected(option) ? '✓' : '' }}</span>{{ getOptionLabel(option) }}</li> }
+          @for (option of filteredOptions(); track getOptionValue(option); let index = $index) { <li role="option" [id]="effectiveId() + '-option-' + index" [attr.aria-selected]="isSelected(option)" [attr.aria-disabled]="isOptionDisabled(option)" [class.is-disabled]="isOptionDisabled(option)" [class.is-active]="activeIndex() === index" (click)="select(option, $event)"><span class="check">{{ isSelected(option) ? '✓' : '' }}</span>{{ getOptionLabel(option) }}</li> }
           @empty { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyMessage() }}</li> }
           }
         </ul>
@@ -453,12 +455,13 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
     </div>
   `,
   styles: [P2_SHARED_STYLES + `
-    .orc-p2-multi-select { position: relative; display: grid; gap: .35rem; color: #0f172a; } label { font-size: .875rem; font-weight: 600; }
-    .trigger { display: flex; justify-content: space-between; align-items: center; min-height: 2.5rem; border: 1px solid #cbd5e1; border-radius: .5rem; padding: .5rem .75rem; background: #fff; text-align: left; }
-    .options { position: absolute; z-index: 2; top: 4.2rem; right: 0; left: 0; max-height: 15rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid #cbd5e1; border-radius: .5rem; background: #fff; box-shadow: 0 10px 25px #0f172a1a; list-style: none; }
-    li { display: flex; gap: .5rem; align-items: center; padding: .55rem .65rem; border-radius: .35rem; cursor: pointer; } li:hover { background: #eff6ff; } .check { width: 1rem; color: #2563eb; } .empty { color: #64748b; cursor: default; }
+    .orc-p2-multi-select { position: relative; display: grid; gap: .35rem; color: var(--orc-component-text); } label { font-size: .875rem; font-weight: 600; }
+    .trigger { display: flex; justify-content: space-between; align-items: center; min-height: 2.5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; padding: .5rem .75rem; background: var(--orc-component-control); color: var(--orc-component-text); text-align: left; }
+    .options { position: absolute; z-index: 2; top: 4.2rem; right: 0; left: 0; max-height: 15rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-surface-raised); color: var(--orc-component-text); box-shadow: var(--orc-component-overlay-shadow); list-style: none; }
+    li { display: flex; gap: .5rem; align-items: center; padding: .55rem .65rem; border-radius: .35rem; cursor: pointer; } li:hover, li.is-active { background: var(--orc-component-interactive-soft); } li.is-disabled { color: var(--orc-component-text-muted); cursor: not-allowed; } .check { width: 1rem; color: var(--orc-component-interactive); } .empty { color: var(--orc-component-text-muted); cursor: default; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => MultiSelectComponent), multi: true }],
 })
 export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   private readonly uniqueId = `orc-multiselect-${++nextMultiSelectId}`;
@@ -472,9 +475,11 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | undefined>(undefined); readonly optionGroupLabel = input<string | undefined>(undefined); readonly optionGroupChildren = input('items'); readonly dataKey = input<string | undefined>(undefined); readonly group = input(false, { transform: booleanAttribute });
   readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly filterBy = input<string | undefined>(undefined); readonly filterFields = input<string[] | undefined>(undefined); readonly filterLocale = input<string | undefined>(undefined); readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte'>('contains'); readonly ariaFilterLabel = input<string | undefined>(undefined); readonly showClear = input(false, { transform: booleanAttribute }); readonly showToggleAll = input(true, { transform: booleanAttribute }); readonly showHeader = input(true, { transform: booleanAttribute }); readonly maxSelectedLabels = input<number | undefined>(undefined); readonly selectedItemsLabel = input('{0} items selected'); readonly selectionLimit = input<number | undefined>(undefined); readonly emptyFilterMessage = input('No results found'); readonly emptyMessage = input('No options'); readonly resetFilterOnHide = input(true, { transform: booleanAttribute }); readonly loading = input(false, { transform: booleanAttribute }); readonly loadingIcon = input<string | undefined>(undefined); readonly lazy = input(false, { transform: booleanAttribute }); readonly virtualScroll = input(false, { transform: booleanAttribute }); readonly virtualScrollItemSize = input<number | undefined>(undefined); readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly autofocusFilter = input(false, { transform: booleanAttribute }); readonly focusOnHover = input(true, { transform: booleanAttribute }); readonly selectOnFocus = input(false, { transform: booleanAttribute }); readonly autoOptionFocus = input(false, { transform: booleanAttribute }); readonly dropdownIcon = input(''); readonly chipIcon = input<string | undefined>(undefined); readonly display = input<'comma' | 'chip'>('comma'); readonly autocomplete = input('off'); readonly size = input<'small' | 'large' | undefined>(undefined); readonly tooltip = input(''); readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>('right'); readonly tooltipPositionStyle = input('absolute'); readonly tooltipStyleClass = input<string | undefined>(undefined); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0);
   readonly open = model(false);
+  readonly activeIndex = signal(-1);
   readonly optionSelected = output<P2Option<T>>(); readonly onChange = output<{ originalEvent: Event; value: T[] }>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onSelectAllChange = output<{ originalEvent: Event; checked: boolean }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onClear = output<Event>(); readonly onPanelShow = output<void>(); readonly onPanelHide = output<void>(); readonly onRemove = output<{ value: T; originalEvent: Event }>();
   protected cvaDisabled = signal(false); private onModelChange: (value: T[]) => void = () => {}; private onModelTouched: () => void = () => {};
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
+  readonly activeOptionId = computed(() => this.activeIndex() >= 0 ? `${this.effectiveId()}-option-${this.activeIndex()}` : null);
   readonly filteredOptions = computed(() => { const term = this.filterValue().trim(); if (!term) return this.options(); const fields = this.filterFields() ?? (this.filterBy() ? this.filterBy()!.split(',').map(field => field.trim()).filter(Boolean) : undefined); return this.options().filter(option => { const values = (fields?.length ? fields.map(field => String((option as any)?.[field] ?? '')) : [this.getOptionLabel(option)]); const locale = this.filterLocale() || undefined; const query = term.toLocaleLowerCase(locale); return values.some(value => { const normalized = value.toLocaleLowerCase(locale); switch (this.filterMatchMode()) { case 'startsWith': return normalized.startsWith(query); case 'endsWith': return normalized.endsWith(query); case 'equals': return normalized === query; case 'notEquals': return normalized !== query; default: return normalized.includes(query); } }); }); });
 
   writeValue(value: T[] | null): void { this.value.set(Array.isArray(value) ? [...value] : []); }
@@ -491,16 +496,38 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   }
   isSelected(option: P2Option<T>): boolean { return this.value().some(item => this.sameValue(item, this.getOptionValue(option))); }
   selectedLabels(): string { const labels = this.options().filter(option => this.isSelected(option)).map(option => this.getOptionLabel(option)); const max = this.maxSelectedLabels(); return max !== undefined && labels.length > max ? this.selectedItemsLabel().replace('{0}', String(labels.length)) : labels.join(', '); }
-  toggleOpen(): void { if (this.disabled() || this.cvaDisabled() || this.readonly()) return; this.open.update(value => !value); if (!this.open() && this.resetFilterOnHide()) this.filterValue.set(''); this.open() ? this.onPanelShow.emit() : this.onPanelHide.emit(); }
+  toggleOpen(): void { if (this.disabled() || this.cvaDisabled() || this.readonly()) return; this.open.update(value => !value); if (!this.open()) { if (this.resetFilterOnHide()) this.filterValue.set(''); this.activeIndex.set(-1); } this.open() ? this.onPanelShow.emit() : this.onPanelHide.emit(); }
+  onKeydown(event: KeyboardEvent): void {
+    if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
+    const options = this.filteredOptions();
+    const enabledIndexes = options.map((option, index) => this.isOptionDisabled(option) ? -1 : index).filter(index => index >= 0);
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!this.open()) { this.toggleOpen(); }
+      if (!enabledIndexes.length) return;
+      const delta = event.key === 'ArrowDown' ? 1 : -1;
+      const currentPosition = enabledIndexes.indexOf(this.activeIndex());
+      const position = currentPosition < 0 ? (delta > 0 ? -1 : 0) : currentPosition;
+      this.activeIndex.set(enabledIndexes[(position + delta + enabledIndexes.length) % enabledIndexes.length]);
+    } else if ((event.key === 'Enter' || event.key === ' ') && this.open() && this.activeIndex() >= 0) {
+      event.preventDefault();
+      const option = options[this.activeIndex()];
+      if (option) this.select(option, event);
+    } else if (event.key === 'Escape' && this.open()) {
+      event.preventDefault();
+      this.toggleOpen();
+    }
+  }
   select(option: P2Option<T>, event?: Event): void {
-    if (this.isOptionDisabled(option) || this.disabled() || this.cvaDisabled()) return;
+    if (this.isOptionDisabled(option) || this.disabled() || this.cvaDisabled() || this.readonly()) return;
     const current = [...this.value()];
     const candidate = this.getOptionValue(option); const index = current.findIndex(item => this.sameValue(item, candidate));
     if (index >= 0) current.splice(index, 1); else if (this.selectionLimit() === undefined || current.length < this.selectionLimit()!) current.push(candidate);
-    this.value.set(current); this.onModelChange(current); this.onModelTouched(); this.optionSelected.emit(option); if (event) { this.onChange.emit({ originalEvent: event, value: current }); if (index >= 0) this.onRemove.emit({ value: candidate, originalEvent: event }); }
+    const originalEvent = event ?? new Event('change');
+    this.value.set(current); this.onModelChange(current); this.onModelTouched(); this.onChange.emit({ originalEvent, value: current }); if (index >= 0) this.onRemove.emit({ value: candidate, originalEvent }); else this.optionSelected.emit(option);
   }
-  clear(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; this.value.set([]); this.onModelChange([]); this.onModelTouched(); this.onClear.emit(event); }
-  selectAll(event: Event): void { if (this.disabled() || this.cvaDisabled()) return; const selectable = this.options().filter(option => !this.isOptionDisabled(option)); const checked = !selectable.every(option => this.isSelected(option)); const limit = this.selectionLimit(); const next = checked ? selectable.slice(0, limit === undefined ? selectable.length : limit).map(option => this.getOptionValue(option)) : []; this.value.set(next); this.onModelChange(next); this.onModelTouched(); this.onSelectAllChange.emit({ originalEvent: event, checked }); }
+  clear(event?: Event): void { if (this.disabled() || this.cvaDisabled() || this.readonly()) return; const originalEvent = event ?? new Event('clear'); this.value.set([]); this.onModelChange([]); this.onModelTouched(); this.onChange.emit({ originalEvent, value: [] }); this.onClear.emit(originalEvent); }
+  selectAll(event?: Event): void { if (this.disabled() || this.cvaDisabled() || this.readonly()) return; const selectable = this.options().filter(option => !this.isOptionDisabled(option)); const checked = !selectable.every(option => this.isSelected(option)); const limit = this.selectionLimit(); const next = checked ? selectable.slice(0, limit === undefined ? selectable.length : limit).map(option => this.getOptionValue(option)) : []; const originalEvent = event ?? new Event('selectAll'); this.value.set(next); this.onModelChange(next); this.onModelTouched(); this.onChange.emit({ originalEvent, value: next }); this.onSelectAllChange.emit({ originalEvent, checked }); }
   allOptionsSelected(): boolean { const selectable = this.options().filter(option => !this.isOptionDisabled(option)); return selectable.length > 0 && selectable.every(option => this.isSelected(option)); }
   onFilterInput(event: Event): void { const filter = (event.target as HTMLInputElement).value; this.filterValue.set(filter); this.onFilter.emit({ originalEvent: event, filter }); }
 }
@@ -521,7 +548,7 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
     </div>
   `,
   styles: [P2_SHARED_STYLES + `
-    .orc-p2-tags-input { position: relative; display: grid; gap: .35rem; color: #0f172a; } label { font-size: .875rem; font-weight: 600; } .input-shell { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; min-height: 2.5rem; padding: .35rem .5rem; border: 1px solid #cbd5e1; border-radius: .5rem; } .input-shell.is-disabled { background: #f8fafc; } input { min-width: 6rem; flex: 1; border: 0; outline: 0; } .tag { display: inline-flex; align-items: center; gap: .2rem; padding: .2rem .45rem; border-radius: 999px; background: #dbeafe; color: #1d4ed8; font-size: .8rem; } .tag button { border: 0; padding: 0; background: transparent; color: inherit; } small { color: #64748b; font-weight: 400; } .suggestions { position: absolute; z-index: 2; top: 4.2rem; right: 0; left: 0; margin: 0; padding: .25rem; border: 1px solid #cbd5e1; border-radius: .5rem; background: #fff; box-shadow: 0 10px 25px #0f172a1a; list-style: none; } .suggestions li { padding: .5rem .65rem; cursor: pointer; } .suggestions li:hover { background: #eff6ff; }
+    .orc-p2-tags-input { position: relative; display: grid; gap: .35rem; color: var(--orc-component-text); } label { font-size: .875rem; font-weight: 600; } .input-shell { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; min-height: 2.5rem; padding: .35rem .5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-control); } .input-shell.is-disabled { background: var(--orc-component-surface-subtle); } input { min-width: 6rem; flex: 1; border: 0; outline: 0; background: transparent; color: var(--orc-component-text); } .tag { display: inline-flex; align-items: center; gap: .2rem; padding: .2rem .45rem; border-radius: 999px; background: var(--orc-component-interactive-soft); color: var(--orc-component-interactive-hover); font-size: .8rem; } .tag button { border: 0; padding: 0; background: transparent; color: inherit; } small { color: var(--orc-component-text-muted); font-weight: 400; } .suggestions { position: absolute; z-index: 2; top: 4.2rem; right: 0; left: 0; margin: 0; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-surface-raised); box-shadow: var(--orc-component-overlay-shadow); list-style: none; } .suggestions li { padding: .5rem .65rem; cursor: pointer; } .suggestions li:hover { background: var(--orc-component-interactive-soft); }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TagsInputComponent), multi: true }],

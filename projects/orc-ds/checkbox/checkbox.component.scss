@@ -34,9 +34,9 @@
     flex-shrink: 0;
     position: relative;
     border-radius: 4px; // Figma rounded-[4px]
-    border: 1px solid var(--orc-border, #d9d9d9); // Figma border-[#d9d9d9]
-    background-color: var(--orc-fill-input, #ffffff);
-    color: var(--orc-opposite-bw, #ffffff);
+    border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
+    background-color: var(--orc-control-surface, var(--orc-fill-input, #ffffff));
+    color: var(--orc-on-interactive, #ffffff);
     box-sizing: border-box;
     transition: background-color var(--transition-fast, 120ms ease),
                 border-color var(--transition-fast, 120ms ease),
@@ -69,7 +69,7 @@
   &__label {
     font-size: 0.875rem; // 14px
     font-weight: 400;
-    color: var(--orc-font-main, #141414);
+    color: var(--orc-text, var(--text-primary, #141414));
     line-height: 1.428;
     transition: color var(--transition-fast, 120ms ease),
                 font-weight var(--transition-fast, 120ms ease);
@@ -78,7 +78,7 @@
   // Helper description text
   &__description {
     font-size: 0.75rem; // 12px
-    color: var(--orc-font-secondary, #666666);
+    color: var(--orc-text-secondary, var(--text-secondary, #666666));
     line-height: 1.4;
     margin-top: 2px;
   }
@@ -86,7 +86,7 @@
   // Error message
   &__error {
     font-size: 0.75rem; // 12px
-    color: var(--color-error, #fb2c36);
+    color: var(--orc-danger, var(--color-error, #fb2c36));
     line-height: 1.4;
     margin-top: 2px;
     font-weight: 500;
@@ -95,60 +95,60 @@
   // ── HOVER STATE ───────────────────────────────────────────
   &:hover:not(.orc-checkbox--disabled) {
     .orc-checkbox__box {
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
   }
 
   // ── FOCUS-VISIBLE STATE ───────────────────────────────────
   .orc-checkbox__native-input:focus-visible + .orc-checkbox__box {
-    outline: 2px solid var(--orc-color-azul-eletrico, #1c6aed);
+    outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     outline-offset: 2px;
   }
 
   // ── CHECKED STATE (Figma #1C6AED) ─────────────────────────
   &--checked {
     .orc-checkbox__box {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
 
     .orc-checkbox__label {
       font-weight: 500; // Figma Poppins:Medium for Option 1 checked
-      color: var(--orc-font-main, #141414);
+      color: var(--orc-text, var(--text-primary, #141414));
     }
   }
 
   // ── INDETERMINATE STATE ───────────────────────────────────
   &--indeterminate {
     .orc-checkbox__box {
-      background-color: var(--orc-color-azul-eletrico, #1c6aed);
-      border-color: var(--orc-color-azul-eletrico, #1c6aed);
+      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
 
     .orc-checkbox__label {
       font-weight: 500;
-      color: var(--orc-font-main, #141414);
+      color: var(--orc-text, var(--text-primary, #141414));
     }
   }
 
   // ── ERROR STATE ───────────────────────────────────────────
   &--error {
     .orc-checkbox__box {
-      border-color: var(--color-error, #fb2c36) !important;
+      border-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
     }
 
     &.orc-checkbox--checked .orc-checkbox__box,
     &.orc-checkbox--indeterminate .orc-checkbox__box {
-      background-color: var(--color-error, #fb2c36) !important;
-      border-color: var(--color-error, #fb2c36) !important;
+      background-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
+      border-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
     }
 
     .orc-checkbox__label {
-      color: var(--color-error, #fb2c36);
+      color: var(--orc-danger, var(--color-error, #fb2c36));
     }
 
     .orc-checkbox__native-input:focus-visible + .orc-checkbox__box {
-      outline-color: var(--color-error, #fb2c36);
+      outline-color: var(--orc-danger, var(--color-error, #fb2c36));
     }
   }
 
@@ -158,19 +158,19 @@
     opacity: 0.5;
 
     .orc-checkbox__box {
-      background-color: var(--orc-highlight-cinza-claro, #ededed);
-      border-color: var(--orc-border, #d9d9d9);
+      background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
+      border-color: var(--orc-border-default, var(--border-default, #d9d9d9));
     }
 
     &.orc-checkbox--checked .orc-checkbox__box,
     &.orc-checkbox--indeterminate .orc-checkbox__box {
-      background-color: var(--orc-font-secondary, #666666);
-      border-color: var(--orc-font-secondary, #666666);
+      background-color: var(--orc-text-secondary, var(--text-secondary, #666666));
+      border-color: var(--orc-text-secondary, var(--text-secondary, #666666));
     }
 
     .orc-checkbox__label,
     .orc-checkbox__description {
-      color: var(--orc-font-secondary, #666666);
+      color: var(--orc-text-secondary, var(--text-secondary, #666666));
     }
   }
 }

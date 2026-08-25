@@ -10,15 +10,11 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../shared/footer/footer.component';
-import { AlertComponent } from '@ciag/orchestra/alert';
 import { BadgeComponent } from '@ciag/orchestra/badge';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { CardBodyComponent, CardComponent, CardHeaderComponent } from '@ciag/orchestra/card';
 import { ChipComponent } from '@ciag/orchestra/chip';
 import { DividerComponent } from '@ciag/orchestra/divider';
-import { InputComponent } from '@ciag/orchestra/input';
-import { ProgressBarComponent } from '@ciag/orchestra/progress';
-
 
 interface ZincSwatch {
   name: string;
@@ -68,7 +64,6 @@ interface CiagLogoGroup {
   imports: [
     RouterModule,
     FooterComponent,
-    AlertComponent,
     BadgeComponent,
     ButtonComponent,
     CardBodyComponent,
@@ -76,8 +71,6 @@ interface CiagLogoGroup {
     CardHeaderComponent,
     ChipComponent,
     DividerComponent,
-    InputComponent,
-    ProgressBarComponent,
   ],
   templateUrl: './docs.component.html',
   styleUrl: './docs.component.scss',
