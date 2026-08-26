@@ -2,6 +2,16 @@ import { TestBed } from '@angular/core/testing';
 import { DatePickerComponent } from './date-picker.component';
 
 describe('DatePickerComponent', () => {
+  it('omits optional native attributes when they are not configured', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    expect(input.getAttribute('name')).toBeNull();
+    expect(input.getAttribute('placeholder')).toBeNull();
+  });
+
   it('uses only the library calendar trigger and does not render a native date input', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     fixture.componentRef.setInput('showIcon', true);
