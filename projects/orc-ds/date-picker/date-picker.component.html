@@ -1,1 +1,148 @@
-<label class="orc-date-picker"><span class="orc-date-picker__label">{{label()}} @if(required()){<span aria-hidden="true">*</span>}</span><span class="orc-date-picker__control"><input [id]="inputId()" [name]="name()" [type]="timeOnly() ? 'time' : (showTime() ? 'datetime-local' : 'date')" [value]="inputValue()" [min]="calendarMin() || ''" [max]="calendarMax() || ''" [placeholder]="placeholder()" [required]="required()" [disabled]="disabled() || cvaDisabled()" [readonly]="readonlyInput()" [autofocus]="autofocus()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-invalid]="error() ? 'true' : null" [attr.tabindex]="tabindex()" (focus)="focus($event)" (input)="update($event)" (keydown)="onInputKeydown($event)" (blur)="touch($event)">@if(showIcon()){<button type="button" aria-label="Open calendar" (click)="toggle()">▣</button>}@if(showButtonBar()){<button type="button" (click)="today()">Today</button>@if(showClear()){<button type="button" (click)="clear()">Clear</button>}}@if(showClear() && !showButtonBar()){<button type="button" aria-label="Clear" (click)="clear()">Clear</button>}</span>@if(overlayVisible() || inline()){<div class="orc-date-picker__panel" role="dialog">@for (offset of monthOffsets(); track offset) {<orc-date-picker-calendar [value]="calendarValue()" [selectedValues]="calendarValues()" [monthOffset]="offset" [firstDayOfWeek]="firstDayOfWeek()" [min]="calendarMin()" [max]="calendarMax()" [disabled]="disabled() || cvaDisabled()" [disabledDates]="disabledDates() || []" [disabledDays]="disabledDays() || []" [showWeek]="showWeek()" [view]="view()" [showOtherMonths]="showOtherMonths()" [selectOtherMonths]="selectOtherMonths()" (dateSelected)="selectCalendarDate($event)" />}</div>}@if(showTime() || timeOnly()){<div class="orc-date-picker__time" aria-label="Time picker"><button type="button" aria-label="Previous hour" (click)="adjustTime('hour', -1)">−</button><span>{{displayHour()}}</span><button type="button" aria-label="Next hour" (click)="adjustTime('hour', 1)">+</button><span>:</span><button type="button" aria-label="Previous minute" (click)="adjustTime('minute', -1)">−</button><span>{{timeParts().minute | number:'2.0-0'}}</span><button type="button" aria-label="Next minute" (click)="adjustTime('minute', 1)">+</button>@if(showSeconds()){<span>:</span><button type="button" aria-label="Previous second" (click)="adjustTime('second', -1)">−</button><span>{{timeParts().second | number:'2.0-0'}}</span><button type="button" aria-label="Next second" (click)="adjustTime('second', 1)">+</button>}@if(hourFormat() === '12'){<button type="button" aria-label="Toggle AM or PM" (click)="toggleMeridiem()">{{meridiem()}}</button>}</div>}@if(error()){<span class="orc-date-picker__error" role="alert">{{error()}}</span>}@else if(helperText()){<span class="orc-date-picker__help" role="status">{{helperText()}}</span>}</label>
+<div
+  class="p-datepicker p-component orc-date-picker"
+  [class]="'p-datepicker p-component orc-date-picker ' + (styleClass() || '')"
+  [class.orc-date-picker--disabled]="disabled() || cvaDisabled()"
+  [class.orc-date-picker--fluid]="fluid()"
+  [style]="style()"
+>
+  @if (label()) {
+    <label class="orc-date-picker__label" [for]="effectiveInputId()">
+      {{ label() }}
+      @if (required()) { <span aria-hidden="true">*</span> }
+    </label>
+  }
+
+  <div class="orc-date-picker__anchor">
+    <div class="orc-date-picker__control" [class.orc-date-picker__control--with-trigger]="showIcon()">
+      <input
+        [class]="'orc-date-picker__input ' + (inputStyleClass() || '')"
+        [style]="inputStyle()"
+        [id]="effectiveInputId()"
+        [name]="name()"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        [value]="inputValue()"
+        [attr.min]="calendarMin() || null"
+        [attr.max]="calendarMax() || null"
+        [placeholder]="placeholder()"
+        [required]="required()"
+        [disabled]="disabled() || cvaDisabled()"
+        [readonly]="readonlyInput()"
+        [autofocus]="autofocus()"
+        [attr.aria-label]="ariaLabel()"
+        [attr.aria-labelledby]="ariaLabelledBy()"
+        [attr.aria-invalid]="error() ? 'true' : null"
+        [attr.aria-expanded]="inline() ? true : overlayVisible()"
+        [attr.aria-controls]="panelId()"
+        aria-haspopup="dialog"
+        [attr.tabindex]="tabindex()"
+        (focus)="focus($event)"
+        (click)="showOnFocus() ? show() : null"
+        (input)="update($event)"
+        (keydown)="onInputKeydown($event)"
+        (blur)="touch($event)"
+      >
+
+      @if (showIcon()) {
+        <button
+          type="button"
+          class="orc-date-picker__trigger"
+          [disabled]="disabled() || cvaDisabled()"
+          [attr.aria-label]="iconAriaLabel()"
+          [attr.aria-expanded]="overlayVisible()"
+          [attr.aria-controls]="panelId()"
+          aria-haspopup="dialog"
+          (mousedown)="$event.preventDefault()"
+          (click)="toggle()"
+        >
+          @if (icon()) {
+            <span [class]="icon()" aria-hidden="true"></span>
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 3v3M17 3v3M4 9h16"></path>
+              <rect x="4" y="5" width="16" height="16" rx="2"></rect>
+            </svg>
+          }
+        </button>
+      }
+    </div>
+
+    @if (overlayVisible() || inline()) {
+      <div
+        class="p-datepicker-panel p-component orc-date-picker__panel"
+        [class]="'p-datepicker-panel p-component orc-date-picker__panel ' + (panelStyleClass() || '')"
+        [class.orc-date-picker__panel--inline]="inline()"
+        [style]="panelStyle()"
+        [style.z-index]="inline() ? null : (autoZIndex() ? baseZIndex() + 1000 : baseZIndex())"
+        [id]="panelId()"
+        role="dialog"
+        [attr.aria-label]="ariaLabel() || label() || 'Choose date'"
+        [attr.aria-labelledby]="ariaLabelledBy()"
+        aria-modal="false"
+      >
+        @if (!timeOnly()) {
+          <div class="orc-date-picker__calendars">
+            @for (offset of monthOffsets(); track offset) {
+              <orc-date-picker-calendar
+                [value]="calendarValue()"
+                [selectedValues]="calendarValues()"
+                [monthOffset]="offset"
+                [firstDayOfWeek]="firstDayOfWeek()"
+                [min]="calendarMin()"
+                [max]="calendarMax()"
+                [disabled]="disabled() || cvaDisabled()"
+                [disabledDates]="disabledDates() || []"
+                [disabledDays]="disabledDays() || []"
+                [showWeek]="showWeek()"
+                [view]="view()"
+                [showOtherMonths]="showOtherMonths()"
+                [selectOtherMonths]="selectOtherMonths()"
+                [embedded]="true"
+                (dateSelected)="selectCalendarDate($event)"
+              />
+            }
+          </div>
+        }
+
+        @if (showTime() || timeOnly()) {
+          <div class="orc-date-picker__time" aria-label="Time picker">
+            <button type="button" aria-label="Previous hour" (click)="adjustTime('hour', -1)">−</button>
+            <span>{{ displayHour() }}</span>
+            <button type="button" aria-label="Next hour" (click)="adjustTime('hour', 1)">+</button>
+            <span>:</span>
+            <button type="button" aria-label="Previous minute" (click)="adjustTime('minute', -1)">−</button>
+            <span>{{ timeParts().minute | number:'2.0-0' }}</span>
+            <button type="button" aria-label="Next minute" (click)="adjustTime('minute', 1)">+</button>
+            @if (showSeconds()) {
+              <span>:</span>
+              <button type="button" aria-label="Previous second" (click)="adjustTime('second', -1)">−</button>
+              <span>{{ timeParts().second | number:'2.0-0' }}</span>
+              <button type="button" aria-label="Next second" (click)="adjustTime('second', 1)">+</button>
+            }
+            @if (hourFormat() === '12') {
+              <button type="button" aria-label="Toggle AM or PM" (click)="toggleMeridiem()">{{ meridiem() }}</button>
+            }
+          </div>
+        }
+
+        @if (showButtonBar() || showClear()) {
+          <footer class="orc-date-picker__buttonbar">
+            @if (showButtonBar()) {
+              <button type="button" [class]="'orc-date-picker__panel-action ' + (todayButtonStyleClass() || '')" (click)="today()">Today</button>
+            }
+            @if (showClear()) {
+              <button type="button" [class]="'orc-date-picker__panel-action ' + (clearButtonStyleClass() || '')" [disabled]="!inputValue()" (click)="clear()">Clear</button>
+            }
+          </footer>
+        }
+      </div>
+    }
+  </div>
+
+  @if (error()) {
+    <span class="orc-date-picker__error" role="alert">{{ error() }}</span>
+  } @else if (helperText()) {
+    <span class="orc-date-picker__help" role="status">{{ helperText() }}</span>
+  }
+</div>
