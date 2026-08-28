@@ -36,7 +36,7 @@
           </svg>
         </orc-button>
       }
-      @if (maximizable()) { <button type="button" class="orc-modal__maximize" (click)="toggleMaximize()" [attr.aria-label]="maximized() ? 'Restore' : 'Maximize'">{{ maximized() ? minimizeIcon() : maximizeIcon() }}</button> }
+      @if (maximizable()) { <button type="button" class="orc-modal__maximize" (click)="toggleMaximize()" [attr.aria-label]="(maximized() ? restoreAriaLabel() : maximizeAriaLabel()) || null">{{ maximized() ? minimizeIcon() : maximizeIcon() }}</button> }
     </header>
 
     <!-- BODY -->

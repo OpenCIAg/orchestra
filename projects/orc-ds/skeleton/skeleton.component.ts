@@ -30,7 +30,7 @@ export class SkeletonComponent {
   readonly display = input<'block' | 'inline-block' | 'inline'>('block');
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
-  readonly ariaLabel = input<string>('Carregando conteúdo...');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   // ── Host Bindings ─────────────────────────────────────────
   @HostBinding('style.display')

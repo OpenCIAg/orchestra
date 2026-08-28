@@ -59,7 +59,7 @@ export class AlertComponent {
   readonly ariaLabel = input<string>('');
 
   /** Rótulo acessível do botão de fechar */
-  readonly closeAriaLabel = input<string>('Fechar alerta');
+  readonly closeAriaLabel = input<string | undefined>(undefined);
 
   // ── Outputs (Signals API) ─────────────────────────────────────────
   /** Emitido quando o usuário clica no botão de fechar */

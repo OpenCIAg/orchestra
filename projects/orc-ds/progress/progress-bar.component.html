@@ -37,8 +37,8 @@
       [attr.aria-valuenow]="currentSegment()"
       [attr.aria-valuemin]="1"
       [attr.aria-valuemax]="segmentArray().length"
-      [attr.aria-label]="ariaLabel() || label() || 'Etapas do progresso'"
-      [attr.aria-valuetext]="ariaValueText() || ('Etapa ' + currentSegment() + ' de ' + segmentArray().length)"
+      [attr.aria-label]="ariaLabel() || label() || null"
+      [attr.aria-valuetext]="ariaValueText() || null"
     >
       @for (seg of segmentArray(); track seg) {
         <div
@@ -57,8 +57,8 @@
       [attr.aria-valuenow]="isIndeterminate() ? null : normalizedValue()"
       [attr.aria-valuemin]="isIndeterminate() ? null : 0"
       [attr.aria-valuemax]="isIndeterminate() ? null : 100"
-      [attr.aria-label]="ariaLabel() || label() || 'Progresso'"
-      [attr.aria-valuetext]="ariaValueText() || (isIndeterminate() ? 'Carregando...' : formattedValue())"
+      [attr.aria-label]="ariaLabel() || label() || null"
+      [attr.aria-valuetext]="ariaValueText() || (isIndeterminate() ? null : formattedValue())"
       [style.background-color]="customTrackColor() || null"
       [style.height]="customHeight() ? (customHeight() + (customHeight().toString().endsWith('px') ? '' : 'px')) : null"
     >
@@ -77,7 +77,7 @@
         </div>
       </div>
       @for (marker of markers(); track marker.value) {
-        <span class="orc-progress-bar__marker" [style.left.%]="marker.value" [attr.data-tone]="marker.tone || null" [attr.aria-label]="marker.label || ('Meta: ' + marker.value + '%')"><span class="orc-progress-bar__marker-line"></span>@if (marker.label) { <span class="orc-progress-bar__marker-label">{{ marker.label }}</span> }</span>
+        <span class="orc-progress-bar__marker" [style.left.%]="marker.value" [attr.data-tone]="marker.tone || null" [attr.aria-label]="marker.label || null"><span class="orc-progress-bar__marker-line"></span>@if (marker.label) { <span class="orc-progress-bar__marker-label">{{ marker.label }}</span> }</span>
       }
     </div>
   }

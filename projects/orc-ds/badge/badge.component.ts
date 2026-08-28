@@ -32,7 +32,8 @@ export class BadgeComponent {
   readonly dismissible = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly pill = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly id = input<string | undefined>(undefined);
-  readonly ariaLabel = input<string>('');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly removeAriaLabel = input<string | undefined>(undefined);
   readonly styleClass = input('');
 
   // Outputs (Signals API)
@@ -71,7 +72,7 @@ export class BadgeComponent {
   readonly accessibleLabel = computed(() => {
     if (this.ariaLabel()) return this.ariaLabel();
     if (this.displayValue()) return this.displayValue();
-    return `Badge de status ${this.status()}`;
+    return undefined;
   });
 
   // ── Handlers ──────────────────────────────────────────────

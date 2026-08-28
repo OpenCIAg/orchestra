@@ -6,7 +6,7 @@
   @if (renderedSrc()) {
     <img
       [src]="renderedSrc()"
-      [alt]="alt()"
+      [attr.alt]="alt() || null"
       [loading]="loading()"
       [srcset]="srcSet() || null"
       [sizes]="sizes() || null"
@@ -19,20 +19,20 @@
       (error)="onError($event)"
       (click)="onImageClick()"
     />
-  } @else {
-    <div class="orc-image__placeholder" role="img" [attr.aria-label]="ariaLabel() || alt() || placeholder()">{{ placeholder() }}</div>
+  } @else if (placeholder()) {
+    <div class="orc-image__placeholder" role="img" [attr.aria-label]="ariaLabel() || alt() || null">{{ placeholder() }}</div>
   }
   @if (previewVisible()) {
     <div class="orc-image__preview-mask" role="dialog" aria-modal="true" (click)="closePreview()">
       <div class="orc-image__preview-content" (click)="$event.stopPropagation()">
         <div class="orc-image__preview-toolbar" role="toolbar">
-          <button type="button" aria-label="Zoom out" (click)="zoomOut()">−</button>
-          <button type="button" aria-label="Zoom in" (click)="zoomIn()">+</button>
-          <button type="button" aria-label="Rotate left" (click)="rotateLeft()">↶</button>
-          <button type="button" aria-label="Rotate right" (click)="rotateRight()">↷</button>
-          <button type="button" aria-label="Close preview" (click)="closePreview()">×</button>
+          <button type="button" [attr.aria-label]="zoomOutAriaLabel() || null" (click)="zoomOut()">−</button>
+          <button type="button" [attr.aria-label]="zoomInAriaLabel() || null" (click)="zoomIn()">+</button>
+          <button type="button" [attr.aria-label]="rotateLeftAriaLabel() || null" (click)="rotateLeft()">↶</button>
+          <button type="button" [attr.aria-label]="rotateRightAriaLabel() || null" (click)="rotateRight()">↷</button>
+          <button type="button" [attr.aria-label]="closePreviewAriaLabel() || null" (click)="closePreview()">×</button>
         </div>
-        <img [src]="previewImageSrc() || renderedSrc()" [srcset]="previewImageSrcSet() || null" [sizes]="previewImageSizes() || null" [alt]="alt()" [style.transform]="'scale(' + scale() + ') rotate(' + rotation() + 'deg)'" />
+        <img [src]="previewImageSrc() || renderedSrc()" [srcset]="previewImageSrcSet() || null" [sizes]="previewImageSizes() || null" [attr.alt]="alt() || null" [style.transform]="'scale(' + scale() + ') rotate(' + rotation() + 'deg)'" />
       </div>
     </div>
   }

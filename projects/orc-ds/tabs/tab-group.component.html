@@ -89,7 +89,7 @@
           {{ tab.badge() }}
         </span>
 
-        <span *ngIf="tab.closable()" class="orc-tab-group__close" role="button" tabindex="0" [attr.aria-label]="'Close ' + tab.label()" (click)="closeTab(i, $event); $event.stopPropagation()" (keydown.enter)="closeTab(i, $event); $event.stopPropagation()">×</span>
+        <span *ngIf="tab.closable()" class="orc-tab-group__close" role="button" tabindex="0" [attr.aria-label]="tab.closeAriaLabel() || null" (click)="closeTab(i, $event); $event.stopPropagation()" (keydown.enter)="closeTab(i, $event); $event.stopPropagation()">×</span>
 
         <!-- Ícone à Direita (end) -->
         <span

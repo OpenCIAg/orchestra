@@ -28,6 +28,7 @@ export class TabComponent {
   readonly iconPosition = input<TabIconPosition>('start');
   readonly disabled = input<boolean>(false);
   readonly closable = input(false, { transform: booleanAttribute });
+  readonly closeAriaLabel = input<string | undefined>(undefined);
   readonly cache = input(true, { transform: booleanAttribute });
   readonly tooltip = input<string | undefined>(undefined);
   readonly tooltipPosition = input<'top' | 'bottom' | 'left' | 'right'>('top');

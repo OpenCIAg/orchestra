@@ -4,7 +4,7 @@
       class="p-toast p-component orc-toast-stack"
       [class]="'orc-toast-stack--' + pos"
       role="region"
-      aria-label="Notificações"
+      [attr.aria-label]="ariaLabel() || null"
       aria-live="polite"
     >
       @for (item of toastsByPosition()[pos]; track item.id) {

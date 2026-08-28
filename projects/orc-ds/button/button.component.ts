@@ -51,7 +51,7 @@ export class ButtonComponent {
   readonly iconRight = input<string | undefined>(undefined);
   readonly iconOnly = input<boolean>(false);
   readonly type = input<'button' | 'submit' | 'reset'>('button');
-  readonly ariaLabel = input<string>('');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   private readonly sanitizer = inject(DomSanitizer);
 

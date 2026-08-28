@@ -34,7 +34,7 @@ export class ChipInputComponent implements ControlValueAccessor {
   readonly id = input<string>('');
   readonly inputId = input<string | undefined>(undefined);
   readonly label = input<string>('');
-  readonly placeholder = input<string>('Digite e pressione Enter...');
+  readonly placeholder = input<string | undefined>(undefined);
   readonly helperText = input<string>('');
   readonly errorMessage = input<string>('');
   readonly disabled = input(false, { transform: booleanAttribute });

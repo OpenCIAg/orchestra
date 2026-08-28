@@ -30,11 +30,13 @@ describe('DatePickerComponent', () => {
     expect(trigger.textContent?.trim()).toBe('');
   });
 
-  it('renders Today and Clear inside an anchored overlay panel', () => {
+  it('renders configured Today and Clear actions inside an anchored overlay panel', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     fixture.componentRef.setInput('showIcon', true);
     fixture.componentRef.setInput('showButtonBar', true);
     fixture.componentRef.setInput('showClear', true);
+    fixture.componentRef.setInput('todayLabel', 'Today');
+    fixture.componentRef.setInput('clearLabel', 'Clear');
     fixture.componentRef.setInput('value', '2026-08-26');
     fixture.componentInstance.show();
     fixture.detectChanges();
@@ -53,15 +55,29 @@ describe('DatePickerComponent', () => {
     expect(fixture.componentInstance.value()).toBe('');
   });
 
-  it('keeps a standalone Clear action in the panel instead of beside the input', () => {
+  it('keeps a configured standalone Clear action in the panel instead of beside the input', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     fixture.componentRef.setInput('showClear', true);
+    fixture.componentRef.setInput('clearLabel', 'Clear');
     fixture.componentRef.setInput('value', '2026-08-26');
     fixture.componentInstance.show();
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('.orc-date-picker__control button')).toBeNull();
     expect(fixture.nativeElement.querySelector('.orc-date-picker__buttonbar button')?.textContent?.trim()).toBe('Clear');
+  });
+
+  it('does not invent action labels when optional labels are omitted', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    fixture.componentRef.setInput('showIcon', true);
+    fixture.componentRef.setInput('showButtonBar', true);
+    fixture.componentRef.setInput('showClear', true);
+    fixture.componentRef.setInput('value', '2026-08-26');
+    fixture.componentInstance.show();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.orc-date-picker__buttonbar')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.orc-date-picker__trigger')?.getAttribute('aria-label')).toBeNull();
   });
 
   it('closes the overlay and emits the outside event only for clicks outside the component', () => {

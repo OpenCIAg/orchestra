@@ -35,7 +35,7 @@
       [id]="effectiveId()"
       [name]="name()"
       [value]="stringValue()"
-      [placeholder]="placeholder()"
+      [attr.placeholder]="placeholder() || null"
       [disabled]="effectiveDisabled()"
       [readOnly]="readonly()"
       [required]="required()"

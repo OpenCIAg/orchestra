@@ -15,7 +15,7 @@ export class ScrollAreaComponent {
   readonly maxHeight = input<string | number>('240px');
   readonly maxWidth = input<string | number>('');
   readonly alwaysShowScrollbar = input(false, { transform: booleanAttribute });
-  readonly label = input('Scrollable content');
+  readonly label = input<string | undefined>(undefined);
   readonly scrolled = output<{ top: number; left: number }>();
   readonly canScrollBack = signal(false);
   readonly canScrollForward = signal(false);

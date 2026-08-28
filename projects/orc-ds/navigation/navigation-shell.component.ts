@@ -11,7 +11,7 @@ import { NavigationItem } from './navigation.types';
 export class NavigationShellComponent {
   readonly open = input(false, { transform: booleanAttribute });
   readonly rail = input(false, { transform: booleanAttribute });
-  readonly ariaLabel = input('Main navigation');
+  readonly ariaLabel = input<string | undefined>(undefined);
 }
 
 @Component({

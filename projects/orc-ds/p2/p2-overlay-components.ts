@@ -4,14 +4,14 @@ import { P2Option, P2_SHARED_STYLES, P2Orientation } from './p2-shared';
 @Component({
   selector: 'orc-floating-action-button',
   standalone: true,
-  template: `<button type="button" class="orc-p2-fab" [class.extended]="extended()" [class.loading]="loading()" [disabled]="disabled() || loading()" [attr.aria-label]="ariaLabel()" (click)="clicked.emit($event)">@if (loading()) { <span aria-hidden="true">…</span> } @else { <span aria-hidden="true">{{ icon() }}</span> } @if (extended()) { <span>{{ label() }}</span> }</button>`,
+  template: `<button type="button" class="orc-p2-fab" [class.extended]="extended()" [class.loading]="loading()" [disabled]="disabled() || loading()" [attr.aria-label]="ariaLabel() || null" (click)="clicked.emit($event)">@if (loading()) { <span aria-hidden="true">…</span> } @else { <span aria-hidden="true">{{ icon() }}</span> } @if (extended() && label()) { <span>{{ label() }}</span> }</button>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-fab { display: inline-flex; gap: .5rem; align-items: center; justify-content: center; min-width: 3rem; min-height: 3rem; border: 0; border-radius: 999px; background: var(--orc-component-interactive); color: var(--orc-component-on-interactive); box-shadow: 0 8px 18px var(--orc-component-interactive-shadow); font-weight: 700; } .orc-p2-fab.extended { padding-inline: 1rem; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FloatingActionButtonComponent {
   readonly label = input('');
   readonly icon = input('+');
-  readonly ariaLabel = input('Create');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly extended = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
@@ -21,12 +21,12 @@ export class FloatingActionButtonComponent {
 @Component({
   selector: 'orc-close-button',
   standalone: true,
-  template: `<button type="button" class="orc-p2-close-button" [class]="'orc-p2-close-button orc-p2-close-button--' + size()" [disabled]="disabled()" [attr.aria-label]="ariaLabel()" (click)="close.emit()">{{ icon() }}</button>`,
+  template: `<button type="button" class="orc-p2-close-button" [class]="'orc-p2-close-button orc-p2-close-button--' + size()" [disabled]="disabled()" [attr.aria-label]="ariaLabel() || null" (click)="close.emit()">{{ icon() }}</button>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-close-button { display: inline-grid; place-items: center; border: 0; border-radius: .4rem; background: transparent; color: var(--orc-component-text-secondary); } .orc-p2-close-button:hover { background: var(--orc-component-surface-muted); color: var(--orc-component-text); } .orc-p2-close-button--sm { width: 1.5rem; height: 1.5rem; } .orc-p2-close-button--md { width: 2rem; height: 2rem; } .orc-p2-close-button--lg { width: 2.5rem; height: 2.5rem; font-size: 1.3rem; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CloseButtonComponent {
-  readonly ariaLabel = input('Close');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly icon = input('×');
   readonly size = input<'sm' | 'md' | 'lg'>('md');
   readonly disabled = input(false, { transform: booleanAttribute });
@@ -43,7 +43,7 @@ export interface ContextMenuItem extends P2Option<string> {
 @Component({
   selector: 'orc-context-menu',
   standalone: true,
-  template: `<div class="orc-p2-context-menu-host" (contextmenu)="openAt($event)"><ng-content />@if (open()) { <div class="p-contextmenu p-component orc-p2-context-menu" [class]="'p-contextmenu p-component orc-p2-context-menu ' + styleClass()" [style]="style()" [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null" [id]="id()" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'contextmenu'" [style.left.px]="position().x" [style.top.px]="position().y" (keydown)="onKeydown($event)">@for (item of effectiveItems(); track item.value || $index) { @if (item.visible !== false) { <button type="button" role="menuitem" [disabled]="item.disabled" [class.active]="isActive(item)" [class.danger]="item.danger" [attr.tabindex]="isActive(item) ? 0 : -1" (click)="activate(item)">{{ item.label }} @if (item.badge) { <span>{{ item.badge }}</span> } @if (item.shortcut) { <small>{{ item.shortcut }}</small> } </button> } }</div> }</div>`,
+  template: `<div class="orc-p2-context-menu-host" (contextmenu)="openAt($event)"><ng-content />@if (open()) { <div class="p-contextmenu p-component orc-p2-context-menu" [class]="'p-contextmenu p-component orc-p2-context-menu ' + styleClass()" [style]="style()" [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null" [id]="id()" role="menu" [attr.aria-label]="ariaLabel() || null" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'contextmenu'" [style.left.px]="position().x" [style.top.px]="position().y" (keydown)="onKeydown($event)">@for (item of effectiveItems(); track item.value || $index) { @if (item.visible !== false) { <button type="button" role="menuitem" [disabled]="item.disabled" [class.active]="isActive(item)" [class.danger]="item.danger" [attr.tabindex]="isActive(item) ? 0 : -1" (click)="activate(item)">{{ item.label }} @if (item.badge) { <span>{{ item.badge }}</span> } @if (item.shortcut) { <small>{{ item.shortcut }}</small> } </button> } }</div> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-context-menu-host { position: relative; min-height: 2rem; } .orc-p2-context-menu { position: fixed; z-index: 10; display: grid; min-width: 12rem; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .55rem; background: var(--orc-component-surface); box-shadow: 0 12px 28px var(--orc-component-shadow-color); } .orc-p2-context-menu button { display: flex; justify-content: space-between; border: 0; border-radius: .35rem; background: transparent; padding: .55rem .7rem; text-align: left; } .orc-p2-context-menu button:hover, .orc-p2-context-menu button.active { background: var(--orc-component-interactive-soft); } .orc-p2-context-menu button.danger { color: var(--orc-component-danger); } small { color: var(--orc-component-text-muted); }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -57,7 +57,7 @@ export class ContextMenuComponent {
   readonly target = input<HTMLElement | string | undefined>(undefined);
   readonly style = input<Record<string, any> | null | undefined>(undefined);
   readonly styleClass = input(''); readonly appendTo = input<HTMLElement | string | null | undefined>(undefined); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly id = input<string | undefined>(undefined); readonly breakpoint = input(''); readonly tabindex = input(0);
-  readonly ariaLabel = input('Context menu');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly position = signal({ x: 0, y: 0 });
   readonly activeIndex = signal(0);
@@ -80,7 +80,7 @@ export class ContextMenuComponent {
 @Component({
   selector: 'orc-overlay-panel',
   standalone: true,
-  template: `<section [id]="id() || null" class="p-overlaypanel p-component orc-p2-overlay-panel" [class]="'p-overlaypanel p-component orc-p2-overlay-panel ' + styleClass()" [style]="style()" [style.z-index]="computedZIndex()" [hidden]="!visible()" role="dialog" tabindex="-1" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-modal]="modal()" data-pc-name="overlaypanel" (keydown.escape)="onEscape()">@if (closable() || showCloseIcon()) { <button type="button" class="close" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }<ng-content /></section>`,
+  template: `<section [id]="id() || null" class="p-overlaypanel p-component orc-p2-overlay-panel" [class]="'p-overlaypanel p-component orc-p2-overlay-panel ' + styleClass()" [style]="style()" [style.z-index]="computedZIndex()" [hidden]="!visible()" role="dialog" tabindex="-1" [attr.aria-label]="ariaLabel() || null" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-modal]="modal()" data-pc-name="overlaypanel" (keydown.escape)="onEscape()">@if ((closable() || showCloseIcon()) && closeLabel()) { <button type="button" class="close" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }<ng-content /></section>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-overlay-panel{position:absolute;z-index:1000;min-width:12rem;padding:1rem;border:1px solid var(--orc-component-border-strong);border-radius:.6rem;background:var(--orc-component-surface);box-shadow:0 12px 30px var(--orc-component-shadow-color);color:var(--orc-component-text)}.orc-p2-overlay-panel[hidden]{display:none}.close{position:absolute;top:.35rem;right:.35rem;border:0;background:transparent;color:var(--orc-component-text-muted);font-size:1.1rem}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -92,10 +92,10 @@ export class OverlayPanelComponent {
   readonly closable = input(false, { transform: booleanAttribute });
   readonly showCloseIcon = input(false, { transform: booleanAttribute });
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
-  readonly ariaLabel = input('Overlay panel');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly id = input<string | undefined>(undefined);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
-  readonly closeLabel = input('Close');
+  readonly closeLabel = input<string | undefined>(undefined);
   readonly ariaCloseLabel = this.closeLabel;
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly styleClass = input('');
@@ -144,7 +144,7 @@ export class OverlayComponent {
 @Component({
   selector: 'orc-popover',
   standalone: true,
-  template: `<aside [id]="id() || null" class="p-popover p-component orc-p2-popover" [class]="'p-popover p-component orc-p2-popover ' + styleClass()" [style]="style()" [style.z-index]="computedZIndex()" [hidden]="!visible()" role="dialog" tabindex="-1" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" data-pc-name="popover" (keydown.escape)="onEscape()">@if (header()) { <header>{{ header() }}@if (closable()) { <button type="button" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }</header> }<ng-content /></aside>`,
+  template: `<aside [id]="id() || null" class="p-popover p-component orc-p2-popover" [class]="'p-popover p-component orc-p2-popover ' + styleClass()" [style]="style()" [style.z-index]="computedZIndex()" [hidden]="!visible()" role="dialog" tabindex="-1" [attr.aria-label]="ariaLabel() || null" [attr.aria-labelledby]="ariaLabelledBy()" data-pc-name="popover" (keydown.escape)="onEscape()">@if (header()) { <header>{{ header() }}@if (closable() && closeLabel()) { <button type="button" [attr.aria-label]="closeLabel()" (click)="hide()">×</button> }</header> }<ng-content /></aside>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-popover{position:absolute;z-index:1000;min-width:12rem;padding:1rem;border:1px solid var(--orc-component-border-strong);border-radius:.6rem;background:var(--orc-component-surface);box-shadow:0 12px 30px var(--orc-component-shadow-color);color:var(--orc-component-text)}.orc-p2-popover[hidden]{display:none}.orc-p2-popover header{display:flex;justify-content:space-between;margin:-.25rem 0 .5rem;font-weight:700}.orc-p2-popover header button{border:0;background:transparent}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -159,17 +159,17 @@ export interface SpeedDialAction extends P2Option<string> {
 @Component({
   selector: 'orc-speed-dial',
   standalone: true,
-  template: `<div class="orc-p2-speed-dial" [class]="styleClass()"><div class="actions" [class.open]="open()">@if (open()) { @for (action of effectiveActions(); track action.value) { <button type="button" [disabled]="disabled() || action.disabled" [attr.aria-label]="action.label" (click)="activate(action)">{{ action.icon || '•' }}</button> } }</div><button type="button" class="trigger" [disabled]="disabled()" [attr.aria-expanded]="open()" [attr.aria-label]="open() ? closeLabel() : openLabel()" (click)="toggleButton($event)">{{ open() ? '×' : icon() }}</button></div>`,
+  template: `<div class="orc-p2-speed-dial" [class]="styleClass()"><div class="actions" [class.open]="open()">@if (open()) { @for (action of effectiveActions(); track action.value) { <button type="button" [disabled]="disabled() || action.disabled" [attr.aria-label]="action.label || null" (click)="activate(action)">{{ action.icon }}</button> } }</div><button type="button" class="trigger" [disabled]="disabled()" [attr.aria-expanded]="open()" [attr.aria-label]="(open() ? closeLabel() : openLabel()) || null" (click)="toggleButton($event)">{{ open() ? '×' : icon() }}</button></div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-speed-dial { display: inline-flex; flex-direction: column; align-items: center; gap: .5rem; } .actions { display: flex; flex-direction: column-reverse; gap: .45rem; } .actions button, .trigger { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border: 0; border-radius: 999px; background: var(--orc-component-surface-subtle); color: var(--orc-component-text); } .trigger { background: var(--orc-component-interactive); color: var(--orc-component-on-interactive); font-size: 1.3rem; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpeedDialComponent {
   private readonly host = inject(ElementRef<HTMLElement>);
-  readonly actions = input<SpeedDialAction[]>([]); readonly model = input<SpeedDialAction[] | null>(null); readonly direction = input<'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right'>('up'); readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>('linear'); readonly radius = input(0); readonly transitionDelay = input(0); readonly mask = input(false, { transform: booleanAttribute }); readonly disabled = input(false, { transform: booleanAttribute }); readonly hideOnClickOutside = input(true, { transform: booleanAttribute }); readonly styleClass = input(''); readonly buttonClass = input(''); readonly ariaLabel = input('Actions');
+  readonly actions = input<SpeedDialAction[]>([]); readonly model = input<SpeedDialAction[] | null>(null); readonly direction = input<'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right'>('up'); readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>('linear'); readonly radius = input(0); readonly transitionDelay = input(0); readonly mask = input(false, { transform: booleanAttribute }); readonly disabled = input(false, { transform: booleanAttribute }); readonly hideOnClickOutside = input(true, { transform: booleanAttribute }); readonly styleClass = input(''); readonly buttonClass = input(''); readonly ariaLabel = input<string | undefined>(undefined);
   readonly open = model(false);
   readonly icon = input('+');
-  readonly openLabel = input('Open actions');
-  readonly closeLabel = input('Close actions');
+  readonly openLabel = input<string | undefined>(undefined);
+  readonly closeLabel = input<string | undefined>(undefined);
   readonly actionSelect = output<SpeedDialAction>(); readonly visibleChange = output<boolean>(); readonly onVisibleChange = this.visibleChange; readonly onShow = output<Event>(); readonly onHide = output<Event>(); readonly onClick = output<MouseEvent>();
   effectiveActions(): SpeedDialAction[] { return this.model() ?? this.actions(); }
   toggleButton(event: MouseEvent): void { this.onClick.emit(event); this.open() ? this.hide(event) : this.show(event); }
@@ -200,14 +200,15 @@ export interface SplitterPanel {
 @Component({
   selector: 'orc-splitter',
   standalone: true,
-  template: `<div class="orc-p2-splitter" [class.vertical]="orientation() === 'vertical'" role="group" [attr.aria-label]="label()">@if (panels().length) { @for (panel of panels(); track panel.id; let index = $index) { <section class="panel" [style.flex-basis.%]="panelSize(index)"><header>{{ panel.label || panel.id }}</header><div class="panel-body"></div></section>@if (index < panels().length - 1) { <button type="button" class="gutter" [attr.aria-label]="'Resize ' + (panel.label || panel.id)" (click)="resize(index, 5)" (keydown.shift.arrowleft)="resize(index, -5)" (keydown.shift.arrowright)="resize(index, 5)" (keydown.shift.arrowup)="resize(index, -5)" (keydown.shift.arrowdown)="resize(index, 5)" (keyup)="onResizeEnd.emit($event)"></button> } } } @else { <ng-content /> }</div>`,
+  template: `<div class="orc-p2-splitter" [class.vertical]="orientation() === 'vertical'" role="group" [attr.aria-label]="label() || null">@if (panels().length) { @for (panel of panels(); track panel.id; let index = $index) { <section class="panel" [style.flex-basis.%]="panelSize(index)"><header>{{ panel.label || panel.id }}</header><div class="panel-body"></div></section>@if (index < panels().length - 1) { <button type="button" class="gutter" [attr.aria-label]="resizeLabel() || null" (click)="resize(index, 5)" (keydown.shift.arrowleft)="resize(index, -5)" (keydown.shift.arrowright)="resize(index, 5)" (keydown.shift.arrowup)="resize(index, -5)" (keydown.shift.arrowdown)="resize(index, 5)" (keyup)="onResizeEnd.emit($event)"></button> } } } @else { <ng-content /> }</div>`,
   styles: [P2_SHARED_STYLES + `.orc-p2-splitter { display: flex; min-height: 8rem; width: 100%; gap: 1px; background: var(--orc-component-surface-subtle); } .orc-p2-splitter.vertical { flex-direction: column; } .panel { min-width: 0; min-height: 0; flex: 1 1 0; background: var(--orc-component-surface); color: var(--orc-component-text); } .panel header { padding: .45rem .65rem; border-bottom: 1px solid var(--orc-component-border); font-size: .8rem; font-weight: 700; } .panel-body { min-height: 4rem; padding: .5rem; } .gutter{flex:0 0 .45rem;border:0;background:var(--orc-component-surface-subtle);cursor:col-resize}.vertical .gutter{cursor:row-resize}`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitterComponent {
   readonly panels = input<SplitterPanel[]>([]);
   readonly orientation = input<P2Orientation>('horizontal');
-  readonly label = input('Resizable panels');
+  readonly label = input<string | undefined>(undefined);
+  readonly resizeLabel = input<string | undefined>(undefined);
   readonly sizes = model<number[]>([]);
   readonly onResizeStart = output<{ index: number }>(); readonly onResizeEnd = output<KeyboardEvent>(); readonly onResize = output<{ index: number; sizes: number[] }>();
   readonly normalizedSizes = computed(() => {

@@ -3,7 +3,7 @@
   <aside [id]="id() || null" class="orc-drawer p-drawer p-component" [class]="'orc-drawer p-drawer p-component orc-drawer--' + placement() + ' ' + styleClass()" role="dialog" [attr.aria-modal]="modal()" [attr.aria-label]="ariaLabel() || label()" [attr.aria-labelledby]="ariaLabelledBy() || null" [style]="style()" [style.z-index]="baseZIndex()">
     <div class="orc-drawer__header">
       <ng-content select="[drawer-title]" />
-      @if (closable() && showCloseIcon()) { <button type="button" class="orc-drawer__close p-drawer-close-button" (click)="close()" aria-label="Fechar painel">×</button> }
+      @if (closable() && showCloseIcon()) { <button type="button" class="orc-drawer__close p-drawer-close-button" (click)="close()" [attr.aria-label]="closeAriaLabel() || null">×</button> }
     </div>
     <div class="orc-drawer__body"><ng-content /></div>
     <div class="orc-drawer__footer"><ng-content select="[drawer-actions]" /></div>

@@ -43,8 +43,8 @@ export class CheckboxComponent implements ControlValueAccessor {
   readonly required = input(false, { transform: booleanAttribute });
   readonly error = input(false, { transform: booleanAttribute });
   readonly errorMessage = input<string>('');
-  readonly ariaLabel = input<string>('');
-  readonly ariaLabelledby = input<string>('');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly ariaLabelledby = input<string | undefined>(undefined);
   readonly ariaDescribedby = input<string>('');
   readonly ariaLabelledBy = input<string | undefined>(undefined); readonly inputId = input<string | undefined>(undefined); readonly readonly = input(false, { transform: booleanAttribute }); readonly binary = input(false, { transform: booleanAttribute }); readonly trueValue = input<any>(true); readonly falseValue = input<any>(false); readonly variant = input<'filled' | 'outlined'>('outlined'); readonly size = input<'small' | 'large' | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly styleClass = input('');
 

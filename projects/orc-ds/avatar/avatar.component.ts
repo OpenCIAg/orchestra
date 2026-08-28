@@ -33,6 +33,7 @@ export class AvatarComponent {
   readonly icon = input<string | undefined>(undefined);
   readonly initials = input<string>('');
   readonly alt = input<string>('');
+  readonly statusLabel = input<string | undefined>(undefined);
   readonly size = input<AvatarSize>('md');
   readonly shape = input<AvatarShape>('circular');
   readonly status = input<AvatarStatus | undefined>(undefined);
@@ -103,26 +104,10 @@ export class AvatarComponent {
     return variants[index];
   });
 
-  readonly accessibleLabel = computed(() => {
-    if (this.alt()) return this.alt();
-    if (this.name() || this.label()) return `Avatar de ${this.name() || this.label()}`;
-    if (this.computedInitials()) return `Avatar ${this.computedInitials()}`;
-    return 'Avatar do usuário';
-  });
+  readonly accessibleLabel = computed<string | undefined>(() => this.alt() || this.name() || this.label() || this.initials() || undefined);
 
   readonly statusText = computed(() => {
-    switch (this.status()) {
-      case 'online':
-        return 'Online';
-      case 'offline':
-        return 'Offline';
-      case 'busy':
-        return 'Ocupado';
-      case 'away':
-        return 'Ausente';
-      default:
-        return '';
-    }
+    return this.statusLabel() || '';
   });
 
   // ── Event Handlers ────────────────────────────────────────

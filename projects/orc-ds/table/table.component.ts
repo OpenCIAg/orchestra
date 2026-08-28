@@ -61,7 +61,9 @@ export class TableComponent<T = any> {
   /** Propriedade identificadora única de cada linha (padrão: 'id') */
   readonly rowKey = input<string>('id');
   readonly id = input<string | undefined>(undefined);
-  readonly ariaLabel = input('Data table');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly selectAllAriaLabel = input<string | undefined>(undefined);
+  readonly rowAriaLabel = input<string | undefined>(undefined);
 
   // ── Seleção de Linhas ─────────────────────────────────────
   /** Habilita seleção de linhas com checkbox na primeira coluna */
@@ -141,7 +143,8 @@ export class TableComponent<T = any> {
   readonly filterDelay = input(300);
   readonly filterLocale = input<string | undefined>(undefined);
   readonly filterable = input(false, { transform: booleanAttribute });
-  readonly filterPlaceholder = input('Filter');
+  readonly filterPlaceholder = input<string | undefined>(undefined);
+  readonly filterAriaLabel = input<string | undefined>(undefined);
   readonly filter = model('');
   readonly globalFilterFields = input<string[]>([]);
   readonly onFilter = output<{ value: string }>();
@@ -154,10 +157,10 @@ export class TableComponent<T = any> {
   readonly loadingRowsCount = input<number>(5);
 
   /** Título principal do estado vazio */
-  readonly emptyTitle = input<string>('Nenhum dado encontrado');
+  readonly emptyTitle = input<string | undefined>(undefined);
 
   /** Mensagem descritiva do estado vazio */
-  readonly emptyMessage = input<string>('Não há registros para serem exibidos no momento.');
+  readonly emptyMessage = input<string | undefined>(undefined);
 
   // ── Paginação Integrada ────────────────────────────────────
   /** Habilita rodapé com PaginatorComponent integrado */

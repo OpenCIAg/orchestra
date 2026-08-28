@@ -26,7 +26,7 @@ export class AccordionComponent {
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly variant = input<AccordionVariant>('default');
   readonly styleClass = input('');
-  readonly ariaLabel = input('Accordion');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly id = input<string | undefined>(undefined);
   readonly expandIcon = input<string | undefined>(undefined);
   readonly collapseIcon = input<string | undefined>(undefined);

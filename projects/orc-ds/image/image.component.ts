@@ -32,8 +32,13 @@ export class ImageComponent {
   readonly height = input<string | number>('');
   readonly loading = input<'eager' | 'lazy'>('lazy');
   readonly radius = input<'none' | 'sm' | 'md' | 'lg' | 'full'>('md');
-  readonly placeholder = input('Imagem indisponível');
-  readonly ariaLabel = input('');
+  readonly placeholder = input<string | undefined>(undefined);
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly zoomOutAriaLabel = input<string | undefined>(undefined);
+  readonly zoomInAriaLabel = input<string | undefined>(undefined);
+  readonly rotateLeftAriaLabel = input<string | undefined>(undefined);
+  readonly rotateRightAriaLabel = input<string | undefined>(undefined);
+  readonly closePreviewAriaLabel = input<string | undefined>(undefined);
   readonly preview = input(false, { transform: booleanAttribute });
   readonly styleClass = input('');
   readonly imageClass = input('');

@@ -56,7 +56,7 @@ export class StepperComponent {
   readonly selectOnFocus = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   /** Accessible label for the stepper navigation. */
-  readonly ariaLabel = input<string>('Steps');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   /** Modo linear: impede pular etapas à frente */
   readonly linear = input<boolean, unknown>(false, { transform: booleanAttribute });

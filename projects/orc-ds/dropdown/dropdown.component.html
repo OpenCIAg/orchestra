@@ -15,7 +15,7 @@
     >
       <span>{{ selectedLabel() || placeholder() }}</span>
       @if (showClear() && value() !== null && value() !== undefined) {
-        <span class="orc-dropdown-clear" role="button" tabindex="0" aria-label="Clear" (click)="clearValue($event); $event.stopPropagation()">×</span>
+        <span class="orc-dropdown-clear" role="button" tabindex="0" [attr.aria-label]="clearAriaLabel() || null" (click)="clearValue($event); $event.stopPropagation()">×</span>
       } @else { <span aria-hidden="true">⌄</span> }
     </button>
   </div>
@@ -26,14 +26,14 @@
 <ng-template #dropdownPanel>
   <div class="p-select-overlay p-component orc-dropdown-menu" [id]="effectiveId() + '-panel'" [style.max-height]="scrollHeight()" role="menu">
     @if (formMode()) {
-      <div role="listbox" aria-label="Options">
+      <div role="listbox" [attr.aria-label]="optionsAriaLabel() || null">
         @if (filter()) {
-          <input class="p-select-filter" type="search" [placeholder]="filterPlaceholder()" [value]="filterValue()" (input)="onFilterInput($event)" aria-label="Filter options" />
+          <input class="p-select-filter" type="search" [attr.placeholder]="filterPlaceholder() || null" [value]="filterValue()" (input)="onFilterInput($event)" [attr.aria-label]="filterAriaLabel() || null" />
         }
-        @if (loading()) { <div role="status">Loading</div> }
+        @if (loading() && loadingMessage()) { <div role="status">{{ loadingMessage() }}</div> }
         @for (option of filteredOptions(); track optionValueOf(option)) {
           <button type="button" role="option" class="orc-dropdown-item" [disabled]="isOptionDisabled(option)" [attr.aria-selected]="optionValueOf(option) === value()" (click)="selectOption(option, $event)" (keydown)="onItemKeydown($event)">{{ optionText(option) }}</button>
-        } @empty { @if (!loading()) { <div role="status">{{ emptyMessage() }}</div> } }
+        } @empty { @if (!loading() && emptyMessage()) { <div role="status">{{ emptyMessage() }}</div> } }
       </div>
     } @else { @for (item of items(); track item.id || item.label) {
       @if (item.divider) {

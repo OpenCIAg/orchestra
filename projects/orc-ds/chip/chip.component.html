@@ -4,5 +4,5 @@
   } @else {
     <span class="orc-chip__main">@if (image()) { <img [src]="image()" alt="" /> } @else if (icon()) { <span aria-hidden="true">{{ icon() }}</span> }{{ label() }}</span>
   }
-  @if (removable()) { <button type="button" class="orc-chip__remove" [disabled]="disabled()" (click)="remove($event)" aria-label="Remove">{{ removeIcon() }}</button> }
+  @if (removable()) { <button type="button" class="orc-chip__remove" [disabled]="disabled()" (click)="remove($event)" [attr.aria-label]="removeAriaLabel() || null">{{ removeIcon() }}</button> }
 </div>

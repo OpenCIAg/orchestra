@@ -47,7 +47,7 @@
       [name]="name()"
       [type]="currentType()"
       [value]="stringValue()"
-      [placeholder]="placeholder()"
+      [attr.placeholder]="placeholder() || null"
       [disabled]="effectiveDisabled()"
       [readOnly]="readonly()"
       [required]="required()"
@@ -74,7 +74,7 @@
         type="button"
         class="orc-input__action-btn orc-input__clear-btn"
         (click)="onClear($event)"
-        aria-label="Limpar campo"
+        [attr.aria-label]="clearAriaLabel() || null"
         tabindex="-1"
       >
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -89,7 +89,7 @@
         type="button"
         class="orc-input__action-btn orc-input__password-btn"
         (click)="togglePasswordVisibility($event)"
-        [attr.aria-label]="isPasswordVisible() ? 'Ocultar senha' : 'Exibir senha'"
+        [attr.aria-label]="isPasswordVisible() ? (hidePasswordAriaLabel() || null) : (showPasswordAriaLabel() || null)"
         tabindex="-1"
       >
         @if (isPasswordVisible()) {

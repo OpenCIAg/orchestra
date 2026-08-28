@@ -17,6 +17,11 @@ export class FileItemComponent {
   // ── Inputs ──────────────────────────────────────────────────
   readonly fileData = input.required<FileItemData>();
   readonly disabled = input<boolean>(false);
+  readonly removeAriaLabel = input<string | undefined>(undefined);
+  readonly uploadingLabel = input<string | undefined>(undefined);
+  readonly uploadedLabel = input<string | undefined>(undefined);
+  readonly errorLabel = input<string | undefined>(undefined);
+  readonly pendingLabel = input<string | undefined>(undefined);
 
   // ── Outputs ─────────────────────────────────────────────────
   readonly remove = output<string>();

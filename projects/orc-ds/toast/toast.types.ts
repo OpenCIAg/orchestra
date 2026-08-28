@@ -59,6 +59,8 @@ export interface ToastOptions {
   ariaLive?: 'polite' | 'assertive' | 'off';
   /** Rótulo de acessibilidade customizado */
   ariaLabel?: string;
+  /** Rótulo de acessibilidade do controle de fechamento */
+  closeAriaLabel?: string;
 }
 
 export interface ToastItem extends ToastOptions {

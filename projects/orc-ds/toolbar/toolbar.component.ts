@@ -25,7 +25,7 @@ export type ToolbarOrientation = 'horizontal' | 'vertical';
 export class ToolbarComponent {
   @ContentChildren(ToolbarItemDirective, { descendants: true }) readonly items!: QueryList<ToolbarItemDirective>;
   readonly orientation = input<ToolbarOrientation>('horizontal');
-  readonly label = input('Toolbar');
+  readonly label = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly loop = input(true, { transform: booleanAttribute });

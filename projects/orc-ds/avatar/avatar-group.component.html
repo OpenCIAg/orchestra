@@ -7,7 +7,7 @@
   [class.orc-avatar-group--size-lg]="size() === 'lg'"
   [class.orc-avatar-group--size-xl]="size() === 'xl'"
   role="group"
-  [attr.aria-label]="label()"
+  [attr.aria-label]="label() || null"
 >
   <!-- Modo com lista de items informada via input -->
   <ng-container *ngIf="items().length > 0">

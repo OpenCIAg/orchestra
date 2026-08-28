@@ -23,6 +23,7 @@ export class ChipComponent {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string | undefined>(undefined);
+  readonly removeAriaLabel = input<string | undefined>(undefined);
   readonly selected = model(false);
   readonly removed = output<string | number>();
   readonly onRemove = output<Event>();

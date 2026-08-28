@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressSpinnerComponent {
-  readonly strokeWidth = input<number | string>(6); readonly fill = input('currentColor'); readonly color = input('currentColor'); readonly animationDuration = input('1.6s'); readonly size = input(48); readonly ariaLabel = input('Loading'); readonly animation = input<'none' | 'spin'>('spin'); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input('');
+  readonly strokeWidth = input<number | string>(6); readonly fill = input('currentColor'); readonly color = input('currentColor'); readonly animationDuration = input('1.6s'); readonly size = input(48); readonly ariaLabel = input<string | undefined>(undefined); readonly animation = input<'none' | 'spin'>('spin'); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input('');
 }

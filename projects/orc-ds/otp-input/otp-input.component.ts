@@ -56,7 +56,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
   readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
   readonly size = input<'small' | 'large' | undefined>(undefined);
   readonly inputMode = input<'numeric' | 'text'>('numeric');
-  readonly ariaLabel = input<string>('Código de verificação');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   // Computed halves for grouped design
   readonly firstHalfIndices = computed(() => {

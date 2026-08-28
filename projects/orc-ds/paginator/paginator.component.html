@@ -12,13 +12,8 @@
   [class.orc-paginator--lg]="size() === 'lg'"
 >
   <!-- Texto Informativo de Itens (Opcional) -->
-  <div *ngIf="showTotalInfo() || showCurrentPageReport()" class="orc-paginator__info">
-    <ng-container *ngIf="currentPageReportTemplate(); else defaultReport">
-      {{ pageReport() }}
-    </ng-container>
-    <ng-template #defaultReport>
-      Exibindo <strong>{{ startIndex() }}–{{ endIndex() }}</strong> de <strong>{{ effectiveTotalRecords() }}</strong> itens
-    </ng-template>
+  <div *ngIf="(showTotalInfo() || showCurrentPageReport()) && pageReport()" class="orc-paginator__info">
+    {{ pageReport() }}
   </div>
 
   <!-- Lista de Navegação e Páginas -->
@@ -31,8 +26,8 @@
         [disabled]="isFirstPage() || disabled()"
         [attr.aria-disabled]="isFirstPage() || disabled()"
         (click)="firstPage()"
-        [attr.aria-label]="firstLabel()"
-        [title]="firstLabel()"
+        [attr.aria-label]="firstLabel() || null"
+        [attr.title]="firstLabel() || null"
       >
         <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M11 12L7 8L11 4M7 12L3 8L7 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -48,12 +43,12 @@
         [disabled]="isFirstPage() || disabled()"
         [attr.aria-disabled]="isFirstPage() || disabled()"
         (click)="prevPage()"
-        [attr.aria-label]="previousLabel()"
+        [attr.aria-label]="previousLabel() || null"
       >
         <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span class="orc-paginator__btn-text">{{ previousLabel() }}</span>
+        @if (previousLabel()) { <span class="orc-paginator__btn-text">{{ previousLabel() }}</span> }
       </button>
     </li>
 
@@ -69,7 +64,7 @@
           [attr.aria-current]="p === currentPage() ? 'page' : null"
           [disabled]="disabled()"
           (click)="goToPage(+p)"
-          [attr.aria-label]="'Ir para a página ' + p"
+          [attr.aria-label]="pageAriaLabel() ? pageAriaLabel() + ' ' + p : null"
         >
           {{ p }}
         </button>
@@ -94,9 +89,9 @@
         [disabled]="isLastPage() || disabled()"
         [attr.aria-disabled]="isLastPage() || disabled()"
         (click)="nextPage()"
-        [attr.aria-label]="nextLabel()"
+        [attr.aria-label]="nextLabel() || null"
       >
-        <span class="orc-paginator__btn-text">{{ nextLabel() }}</span>
+        @if (nextLabel()) { <span class="orc-paginator__btn-text">{{ nextLabel() }}</span> }
         <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -111,8 +106,8 @@
         [disabled]="isLastPage() || disabled()"
         [attr.aria-disabled]="isLastPage() || disabled()"
         (click)="lastPage()"
-        [attr.aria-label]="lastLabel()"
-        [title]="lastLabel()"
+        [attr.aria-label]="lastLabel() || null"
+        [attr.title]="lastLabel() || null"
       >
         <svg class="orc-paginator__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M5 4L9 8L5 12M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -122,14 +117,14 @@
   </ul>
 
   @if (showJumpToPageDropdown() || showJumpToPageInput()) {
-    <div class="orc-paginator__jump" role="group" aria-label="Jump to page">
+    <div class="orc-paginator__jump" role="group" [attr.aria-label]="jumpAriaLabel() || null">
       @if (showJumpToPageDropdown()) {
-        <select [value]="currentPage()" (change)="goToPage(+$any($event.target).value)" [disabled]="disabled()" aria-label="Page">
+        <select [value]="currentPage()" (change)="goToPage(+$any($event.target).value)" [disabled]="disabled()" [attr.aria-label]="pageAriaLabel() || null">
           @for (page of allPages(); track page) { <option [value]="page">{{ page }}</option> }
         </select>
       }
       @if (showJumpToPageInput()) {
-        <input type="number" min="1" [max]="totalPages()" [value]="jumpPageInput()" (input)="jumpPageInput.set($any($event.target).value)" (change)="jumpToPage()" aria-label="Page number" />
+        <input type="number" min="1" [max]="totalPages()" [value]="jumpPageInput()" (input)="jumpPageInput.set($any($event.target).value)" (change)="jumpToPage()" [attr.aria-label]="pageNumberAriaLabel() || null" />
       }
     </div>
   }
@@ -144,10 +139,10 @@
       [disabled]="disabled()"
       [value]="effectivePageSize()"
       (change)="onPageSizeChange($event)"
-      [attr.aria-label]="'Quantidade de itens por página'"
+      [attr.aria-label]="pageSizeAriaLabel() || null"
     >
       <option *ngFor="let opt of effectivePageSizeOptions()" [value]="opt">
-        {{ opt }} / {{ itemsPerPageLabel() }}
+        @if (itemsPerPageLabel()) { {{ opt }} / {{ itemsPerPageLabel() }} } @else { {{ opt }} }
       </option>
     </select>
     <div class="orc-paginator__select-icon" aria-hidden="true">
