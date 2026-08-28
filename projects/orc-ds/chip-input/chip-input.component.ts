@@ -57,6 +57,9 @@ export class ChipInputComponent implements ControlValueAccessor {
   readonly ariaLabel = input('');
   readonly separatorKeyCodes = input<string[]>(['Enter', ',', ' ']);
   readonly suggestions = input<string[]>([]);
+  /** Optional localized announcements for assistive technology. */
+  readonly addAnnouncement = input<((item: string) => string | undefined) | undefined>(undefined);
+  readonly removeAnnouncement = input<((item: string) => string | undefined) | undefined>(undefined);
 
   // ── Outputs ─────────────────────────────────────────────────
   readonly chipsChange = output<string[]>();
@@ -179,8 +182,7 @@ export class ChipInputComponent implements ControlValueAccessor {
     this.value.update(arr => [...arr, item]);
     this.inputValue.set('');
     
-    // Atualiza A11y
-    this.a11yMessage.set(`Item ${item} adicionado.`);
+    this.a11yMessage.set(this.addAnnouncement()?.(item) ?? '');
 
     if (!skipEmit) {
       this.updateFormAndEmit();
@@ -194,7 +196,7 @@ export class ChipInputComponent implements ControlValueAccessor {
     const removedItem = current[index];
     
     this.value.update(arr => arr.filter((_, i) => i !== index));
-    this.a11yMessage.set(`Item ${removedItem} removido.`);
+    this.a11yMessage.set(this.removeAnnouncement()?.(removedItem) ?? '');
     this.onTouched();
     this.updateFormAndEmit();
   }

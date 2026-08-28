@@ -61,6 +61,20 @@ describe('P1 core components', () => {
     expect(component.value()).toEqual([]);
   });
 
+  it('does not invent a language for chip announcements', () => {
+    const fixture = TestBed.createComponent(ChipInputComponent);
+    const component = fixture.componentInstance;
+
+    component.inputValue.set('Angular');
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
+    expect(component.a11yMessage()).toBe('');
+
+    fixture.componentRef.setInput('addAnnouncement', (item: string) => `Added ${item}`);
+    component.inputValue.set('Signals');
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
+    expect(component.a11yMessage()).toBe('Added Signals');
+  });
+
   it('selects an autocomplete option and emits its value', () => {
     const fixture = TestBed.createComponent(AutocompleteComponent);
     const option = { value: 'sp', label: 'São Paulo' };
