@@ -27,6 +27,16 @@ describe('InputComponent', () => {
       expect(component).toBeTruthy();
     });
 
+    it('should not impose optional native constraints when they are omitted', () => {
+      const inputEl: HTMLInputElement = fixture.nativeElement.querySelector('input');
+
+      expect(inputEl.maxLength).toBe(-1);
+      expect(inputEl.minLength).toBe(-1);
+      expect(inputEl.getAttribute('min')).toBeNull();
+      expect(inputEl.getAttribute('max')).toBeNull();
+      expect(inputEl.getAttribute('step')).toBeNull();
+    });
+
     it('should write value via writeValue', () => {
       component.writeValue('Teste Orchestra');
       expect(component.value()).toBe('Teste Orchestra');

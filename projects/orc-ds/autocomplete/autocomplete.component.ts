@@ -37,7 +37,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
   readonly inputId = input<string | undefined>(undefined);
   readonly name = input('');
   readonly label = input('');
-  readonly placeholder = input('Comece a digitar...');
+  readonly placeholder = input<string | undefined>(undefined);
   readonly helperText = input('');
   readonly errorMessage = input('');
   readonly options = input<AutocompleteOption[]>([]);
@@ -48,7 +48,9 @@ export class AutocompleteComponent implements ControlValueAccessor {
   readonly showClear = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly dropdown = input(false, { transform: booleanAttribute });
-  readonly emptyMessage = input('No results found');
+  readonly emptyMessage = input<string | undefined>(undefined);
+  readonly clearAriaLabel = input<string | undefined>(undefined);
+  readonly dropdownAriaLabel = input<string | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input('');

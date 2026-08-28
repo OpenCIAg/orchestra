@@ -19,7 +19,7 @@
   (blur)="handleBlur($event)"
   (mouseleave)="onMouseLeave()"
 >
-  @if (cancel() && value() > 0) { <button type="button" class="orc-rating__cancel" [disabled]="effectiveDisabled() || readonly()" (click)="cancelRating($event)" aria-label="Cancel rating">{{ cancelIcon() }}</button> }
+  @if (cancel() && value() > 0) { <button type="button" class="orc-rating__cancel" [disabled]="effectiveDisabled() || readonly()" (click)="cancelRating($event)" [attr.aria-label]="cancelAriaLabel() || null">{{ cancelIcon() }}</button> }
   <div class="orc-rating__items">
     @for (i of starsArray(); track i) {
       <!-- 

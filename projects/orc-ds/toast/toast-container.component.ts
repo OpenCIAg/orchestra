@@ -36,6 +36,7 @@ export class ToastContainerComponent {
   readonly hideTransformOptions = input('250ms ease-in');
   readonly showTransitionOptions = input('300ms ease-out');
   readonly hideTransitionOptions = input('250ms ease-in');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   constructor() {
     effect(() => {

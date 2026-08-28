@@ -46,7 +46,11 @@ export class CarouselComponent implements OnDestroy {
   readonly showArrows = input(true, { transform: booleanAttribute });
   readonly showNavigators = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
   readonly showIndicators = input(true, { transform: booleanAttribute });
-  readonly ariaLabel = input('Carousel');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly emptyMessage = input<string | undefined>(undefined);
+  readonly previousLabel = input<string | undefined>(undefined);
+  readonly nextLabel = input<string | undefined>(undefined);
+  readonly indicatorsLabel = input<string | undefined>(undefined);
 
   readonly slideChange = output<{ index: number; item: CarouselItem }>();
   readonly onPage = output<{ first: number; last: number; page: number; pageCount: number }>(); readonly onPlay = output<void>(); readonly onPause = output<void>();

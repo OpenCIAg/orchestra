@@ -4,7 +4,7 @@ export interface OtpInputContext {
   readonly length: Signal<number>;
   readonly inputMode: Signal<'numeric' | 'text'>;
   readonly placeholder: Signal<string>;
-  readonly ariaLabel: Signal<string>;
+  readonly ariaLabel: Signal<string | undefined>;
   readonly readonly: Signal<boolean>;
   readonly tabindex: Signal<number | null>;
   readonly mask: Signal<boolean>;

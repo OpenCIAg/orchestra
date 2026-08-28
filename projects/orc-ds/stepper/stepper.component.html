@@ -55,7 +55,7 @@
           <!-- Embedded Progress Bar in Step (Figma Vertical Stepper Spec) -->
           @if (step.progress !== undefined && (status === 'active' || orientation() === 'vertical')) {
           <div class="orc-stepper__step-progress">
-            <orc-progress-bar [value]="step.progress" variant="primary" label="Progresso" [showValue]="true" />
+            <orc-progress-bar [value]="step.progress" variant="primary" [showValue]="true" />
           </div>
           }
         </div>

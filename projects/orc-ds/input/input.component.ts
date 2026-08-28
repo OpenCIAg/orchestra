@@ -48,7 +48,8 @@ export class InputComponent implements ControlValueAccessor {
   readonly type = input<InputType>('text');
   readonly size = input<InputSize>('md');
   readonly status = input<InputStatus>('default');
-  readonly placeholder = input<string>('Digite algo...');
+  /** Optional consumer-provided hint. The library never invents placeholder copy. */
+  readonly placeholder = input<string | undefined>(undefined);
   readonly label = input<string>('');
   readonly helperText = input<string>('');
   readonly errorMessage = input<string>('');
@@ -79,6 +80,9 @@ export class InputComponent implements ControlValueAccessor {
 
   // Acessibilidade WCAG
   readonly ariaLabel = input<string>('');
+  readonly clearAriaLabel = input<string | undefined>(undefined);
+  readonly showPasswordAriaLabel = input<string | undefined>(undefined);
+  readonly hidePasswordAriaLabel = input<string | undefined>(undefined);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly ariaDescribedby = input<string>('');
 

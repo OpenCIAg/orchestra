@@ -1,4 +1,4 @@
-<div class="orc-scroll-area" [class.orc-scroll-area--horizontal]="orientation() === 'horizontal'" [class.orc-scroll-area--both]="orientation() === 'both'" [class.orc-scroll-area--always]="alwaysShowScrollbar()" [attr.aria-label]="label()">
+<div class="orc-scroll-area" [class.orc-scroll-area--horizontal]="orientation() === 'horizontal'" [class.orc-scroll-area--both]="orientation() === 'both'" [class.orc-scroll-area--always]="alwaysShowScrollbar()" [attr.aria-label]="label() || null">
   <div class="orc-scroll-area__shadow orc-scroll-area__shadow--top" [class.orc-scroll-area__shadow--visible]="canScrollBack()" aria-hidden="true"></div>
   <div class="orc-scroll-area__viewport" [style]="viewportStyle()" tabindex="0" (scroll)="onScroll($event)"><ng-content /></div>
   <div class="orc-scroll-area__shadow orc-scroll-area__shadow--bottom" [class.orc-scroll-area__shadow--visible]="canScrollForward()" aria-hidden="true"></div>

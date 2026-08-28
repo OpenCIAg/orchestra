@@ -38,7 +38,7 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
   /** PrimeNG Dialog-compatible visibility model; isOpen remains supported for Orchestra callers. */
   readonly visible = model<boolean>(false);
   readonly header = input<string | undefined>(undefined);
-  readonly modal = input(true); readonly closeOnEscape = input(true); readonly dismissableMask = input(true); readonly closable = input(true); readonly draggable = input(false); readonly resizable = input(false); readonly maximizable = input(false); readonly focusOnShow = input(true); readonly focusTrap = input(true); readonly blockScroll = input(true); readonly autoZIndex = input(true); readonly baseZIndex = input(1000); readonly position = input<'center' | 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright'>('center'); readonly style = input<string | Record<string, string | number> | undefined>(undefined); readonly styleClass = input(''); readonly maskStyle = input<Record<string, string | number> | undefined>(undefined); readonly maskStyleClass = input(''); readonly contentStyle = input<Record<string, string | number> | undefined>(undefined); readonly contentStyleClass = input(''); readonly appendTo = input<unknown>(undefined); readonly role = input('dialog'); readonly showHeader = input(true); readonly closeIcon = input('×'); readonly closeAriaLabel = input('Close'); readonly minimizeIcon = input('−'); readonly maximizeIcon = input('+'); readonly closeTabindex = input('0'); readonly breakpoints = input<Record<string, string> | undefined>(undefined);
+  readonly modal = input(true); readonly closeOnEscape = input(true); readonly dismissableMask = input(true); readonly closable = input(true); readonly draggable = input(false); readonly resizable = input(false); readonly maximizable = input(false); readonly focusOnShow = input(true); readonly focusTrap = input(true); readonly blockScroll = input(true); readonly autoZIndex = input(true); readonly baseZIndex = input(1000); readonly position = input<'center' | 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright'>('center'); readonly style = input<string | Record<string, string | number> | undefined>(undefined); readonly styleClass = input(''); readonly maskStyle = input<Record<string, string | number> | undefined>(undefined); readonly maskStyleClass = input(''); readonly contentStyle = input<Record<string, string | number> | undefined>(undefined); readonly contentStyleClass = input(''); readonly appendTo = input<unknown>(undefined); readonly role = input('dialog'); readonly showHeader = input(true); readonly closeIcon = input('×'); readonly closeAriaLabel = input<string | undefined>(undefined); readonly minimizeIcon = input('−'); readonly maximizeIcon = input('+'); readonly restoreAriaLabel = input<string | undefined>(undefined); readonly maximizeAriaLabel = input<string | undefined>(undefined); readonly closeTabindex = input('0'); readonly breakpoints = input<Record<string, string> | undefined>(undefined);
   readonly size = input<ModalSize>('md');
   readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string | undefined>(undefined);
@@ -109,6 +109,16 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
       'orc-modal--fullscreen': this.size() === 'fullScreen',
       'orc-modal--maximized': this.maximized()
     };
+  });
+
+  /**
+   * Angular string interpolation coerces a class map to "[object Object]".
+   * Convert the map explicitly so every modal selector receives its base,
+   * size, status, inline, and maximized classes.
+   */
+  readonly modalClassNames = computed(() => {
+    const classes = this.modalClasses();
+    return Object.keys(classes).filter(className => classes[className as keyof typeof classes]).join(' ');
   });
 
   // ── Handlers ────────────────────────────────────────────────

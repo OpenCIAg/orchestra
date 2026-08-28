@@ -18,7 +18,7 @@ export class FormComponent {
   readonly nativeForm = viewChild<ElementRef<HTMLFormElement>>('nativeForm');
   readonly layout = input<FormLayout>('stacked');
   readonly name = input('');
-  readonly ariaLabel = input('Formulário');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly novalidate = input(true, { transform: booleanAttribute });
   readonly formSubmit = output<FormSubmitEvent>();

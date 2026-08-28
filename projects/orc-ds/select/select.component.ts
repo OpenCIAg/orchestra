@@ -67,15 +67,15 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   // ── Signal Inputs ──────────────────────────────────────────
   readonly id = input<string>('');
   readonly name = input<string>('');
-  readonly placeholder = input<string>('Selecione uma opção');
+  readonly placeholder = input<string | undefined>(undefined);
   readonly label = input<string>('');
   readonly helperText = input<string>('');
   readonly errorMessage = input<string>('');
   readonly status = input<SelectStatus>('default');
   readonly multiple = input(false, { transform: booleanAttribute });
   readonly searchable = input(false, { transform: booleanAttribute });
-  readonly searchPlaceholder = input<string>('Buscar...');
-  readonly searchEmptyText = input<string>('Nenhum resultado encontrado');
+  readonly searchPlaceholder = input<string | undefined>(undefined);
+  readonly searchEmptyText = input<string | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
@@ -91,8 +91,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly filterBy = input<string | undefined>(undefined);
   readonly filterFields = input<string[] | undefined>(undefined);
   readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte'>('contains');
-  readonly emptyFilterMessage = input('Nenhum resultado encontrado');
-  readonly emptyMessage = input('Nenhuma opção disponível');
+  readonly emptyFilterMessage = input<string | undefined>(undefined);
+  readonly emptyMessage = input<string | undefined>(undefined);
   readonly showClear = input(false, { transform: booleanAttribute });
   readonly inputId = input<string | undefined>(undefined);
   readonly style = input<Record<string, string> | undefined>(undefined);
@@ -107,6 +107,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly fluid = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly loadingIcon = input<string | undefined>(undefined);
+  readonly loadingMessage = input<string | undefined>(undefined);
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly autofocusFilter = input(false, { transform: booleanAttribute });
   readonly editable = input(false, { transform: booleanAttribute });
@@ -141,6 +142,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly ariaLabel = input<string>('');
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly ariaFilterLabel = input<string | undefined>(undefined);
+  readonly clearAriaLabel = input<string | undefined>(undefined);
+  readonly removeOptionAriaLabel = input<string | undefined>(undefined);
   readonly ariaDescribedby = input<string>('');
 
   // ── Two-Way Model Signal ───────────────────────────────────

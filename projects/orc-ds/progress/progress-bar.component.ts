@@ -73,10 +73,10 @@ export class ProgressBarComponent {
   readonly markers = input<ProgressMarker[]>([]);
 
   /** Sobrescreve o rótulo de acessibilidade aria-label */
-  readonly ariaLabel = input<string>('');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   /** Sobrescreve a descrição audível aria-valuetext */
-  readonly ariaValueText = input<string>('');
+  readonly ariaValueText = input<string | undefined>(undefined);
 
   // ── Computeds Reativos ────────────────────────────────────
   readonly isIndeterminate = computed<boolean>(() => this.mode() === 'indeterminate');

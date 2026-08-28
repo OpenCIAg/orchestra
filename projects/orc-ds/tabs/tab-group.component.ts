@@ -33,14 +33,14 @@ export class TabGroupComponent {
   readonly lazy = input(false);
   readonly controlClose = input(false);
   readonly showNavigators = input(true);
-  readonly nextButtonAriaLabel = input('Next tab');
-  readonly prevButtonAriaLabel = input('Previous tab');
+  readonly nextButtonAriaLabel = input<string | undefined>(undefined);
+  readonly prevButtonAriaLabel = input<string | undefined>(undefined);
   readonly autoHideButtons = input(true);
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly styleClass = input('');
   readonly tabindex = input(0);
   readonly id = input<string | undefined>(undefined);
-  readonly ariaLabel = input<string>('Abas de navegação');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   // Outputs (Signals API)
   readonly tabChange = output<TabChangeEvent>();

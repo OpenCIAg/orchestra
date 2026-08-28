@@ -8,7 +8,7 @@
       type="text"
       role="combobox"
       [value]="displayText()"
-      [placeholder]="placeholder()"
+      [attr.placeholder]="placeholder() || null"
       [disabled]="effectiveDisabled()"
       [required]="required()"
       [attr.aria-label]="ariaLabel() || null"
@@ -23,12 +23,12 @@
       (blur)="onBlur($event)"
       (keydown)="onKeydown($event)"
     />
-    @if (effectiveShowClear() && (query() || value())) { <button type="button" class="orc-autocomplete__clear" (mousedown)="$event.preventDefault()" (click)="clear($event)" aria-label="Limpar seleção">×</button> }
-    @if (dropdown()) { <button type="button" class="p-autocomplete-dropdown" (mousedown)="$event.preventDefault()" (click)="toggleDropdown($event)" [disabled]="effectiveDisabled()" aria-label="Mostrar opções">⌄</button> }
+    @if (effectiveShowClear() && (query() || value())) { <button type="button" class="orc-autocomplete__clear" (mousedown)="$event.preventDefault()" (click)="clear($event)" [attr.aria-label]="clearAriaLabel() || null">×</button> }
+    @if (dropdown()) { <button type="button" class="p-autocomplete-dropdown" (mousedown)="$event.preventDefault()" (click)="toggleDropdown($event)" [disabled]="effectiveDisabled()" [attr.aria-label]="dropdownAriaLabel() || null">⌄</button> }
   </div>
   @if (isOpen() && (filteredOptions().length || loading())) {
     <ul class="p-autocomplete-panel p-component orc-autocomplete__list" [class]="'p-autocomplete-panel p-component orc-autocomplete__list ' + panelStyleClass()" [style]="panelStyle()" [id]="listId()" role="listbox">
-      @if (loading()) { <li class="orc-autocomplete__option">{{ emptyMessage() }}</li> }
+      @if (loading() && emptyMessage()) { <li class="orc-autocomplete__option">{{ emptyMessage() }}</li> }
       @for (option of filteredOptions(); track option.value) {
         <li
           class="orc-autocomplete__option"

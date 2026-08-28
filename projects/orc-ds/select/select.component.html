@@ -52,7 +52,7 @@
                     <button
                       type="button"
                       class="orc-chip-remove"
-                      aria-label="Remover opção"
+                      [attr.aria-label]="removeOptionAriaLabel() || null"
                       (click)="removeSelectedItem(item.value, $event)"
                     >
                       &times;
@@ -87,7 +87,7 @@
         <button
           type="button"
           class="orc-select-clear-btn"
-          aria-label="Limpar seleção"
+          [attr.aria-label]="clearAriaLabel() || null"
           (click)="clearValue($event)"
         >
           &times;
@@ -137,8 +137,8 @@
           #searchInput
           type="text"
           class="orc-select-search-input"
-          [placeholder]="filterPlaceholder() || searchPlaceholder()"
-          [attr.aria-label]="ariaFilterLabel() || 'Filter options'"
+          [attr.placeholder]="(filterPlaceholder() || searchPlaceholder()) || null"
+          [attr.aria-label]="ariaFilterLabel() || null"
           [attr.maxlength]="maxlength()"
           [value]="searchTerm()"
           (input)="onSearchInput($event)"
@@ -150,7 +150,7 @@
     <!-- Options Container -->
     <div class="orc-select-options-list">
       @if (loading()) {
-        <div class="orc-select-empty-state" aria-live="polite">{{ loadingIcon() || 'Loading…' }}</div>
+        @if (loadingIcon() || loadingMessage()) { <div class="orc-select-empty-state" aria-live="polite">{{ loadingIcon() || loadingMessage() }}</div> }
       } @else {
       @if (isDataMode()) {
         @for (opt of filteredDataOptions(); track getOptionValue(opt); let idx = $index) {

@@ -52,9 +52,9 @@ export class OtpSlotComponent {
   readonly slotTabIndex = computed(() => this.parentContext?.tabindex() ?? 0);
   readonly isAutofocus = computed(() => this.parentContext?.autofocus() && this.index() === 0);
 
-  readonly ariaLabel = computed(() => {
-    if (!this.parentContext) return `Dígito ${this.index() + 1}`;
-    return `${this.parentContext.ariaLabel()} - dígito ${this.index() + 1} de ${this.parentContext.length()}`;
+  readonly ariaLabel = computed<string | undefined>(() => {
+    const label = this.parentContext?.ariaLabel();
+    return label ? `${label} ${this.index() + 1}` : undefined;
   });
 
   onInput(event: Event): void {

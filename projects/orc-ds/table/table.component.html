@@ -10,7 +10,7 @@
 >
   <div class="orc-table-wrapper" role="region" [attr.aria-label]="ariaLabel()" tabindex="0">
     @if (filterable()) {
-      <input class="orc-table__filter" type="search" [value]="filter()" [placeholder]="filterPlaceholder()" (input)="applyFilter(($any($event.target)).value)" aria-label="Filter table" />
+      <input class="orc-table__filter" type="search" [value]="filter()" [attr.placeholder]="filterPlaceholder() || null" (input)="applyFilter(($any($event.target)).value)" [attr.aria-label]="filterAriaLabel() || null" />
     }
     <table class="orc-table {{ tableStyleClass() }}">
       <!-- ── Cabeçalho da Tabela ─────────────────────────────── -->
@@ -23,7 +23,7 @@
                 [checked]="isAllSelected()"
                 [indeterminate]="isSomeSelected()"
                 (change)="toggleSelectAll($event)"
-                ariaLabel="Selecionar todas as linhas"
+                [ariaLabel]="selectAllAriaLabel()"
               />
             </th>
           }
@@ -111,8 +111,8 @@
                     <line x1="9" y1="21" x2="9" y2="9"></line>
                   </svg>
                 </div>
-                <h4 class="orc-table__empty-title">{{ emptyTitle() }}</h4>
-                <p class="orc-table__empty-desc">{{ emptyMessage() }}</p>
+                @if (emptyTitle()) { <h4 class="orc-table__empty-title">{{ emptyTitle() }}</h4> }
+                @if (emptyMessage()) { <p class="orc-table__empty-desc">{{ emptyMessage() }}</p> }
               </div>
             </td>
           </tr>
@@ -132,7 +132,7 @@
                   <orc-checkbox
                     [checked]="selected"
                     (change)="toggleRowSelect(row, $event)"
-                    [ariaLabel]="'Selecionar linha ' + (rowIndex + 1)"
+                    [ariaLabel]="rowAriaLabel() ? rowAriaLabel() + ' ' + (rowIndex + 1) : undefined"
                   />
                 </td>
               }

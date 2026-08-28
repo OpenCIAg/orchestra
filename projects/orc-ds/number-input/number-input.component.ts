@@ -34,7 +34,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly id = input('');
   readonly name = input('');
   readonly label = input('');
-  readonly placeholder = input('');
+  readonly placeholder = input<string | undefined>(undefined);
   readonly helperText = input('');
   readonly errorMessage = input('');
   readonly status = input<NumberInputStatus>('default');
@@ -69,9 +69,10 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly useGrouping = input(true, { transform: booleanAttribute });
   readonly minFractionDigits = input<number | undefined>(undefined);
   readonly maxFractionDigits = input<number | undefined>(undefined);
-  readonly ariaLabel = input('');
-  readonly incrementButtonAriaLabel = input('Increase value');
-  readonly decrementButtonAriaLabel = input('Decrease value');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly clearAriaLabel = input<string | undefined>(undefined);
+  readonly incrementButtonAriaLabel = input<string | undefined>(undefined);
+  readonly decrementButtonAriaLabel = input<string | undefined>(undefined);
   readonly ariaRequired = input<boolean | undefined>(undefined); readonly title = input<string | undefined>(undefined); readonly maxlength = input<number | undefined>(undefined); readonly autocomplete = input<string | undefined>(undefined); readonly localeMatcher = input<'lookup' | 'best fit'>('best fit'); readonly variant = input<'filled' | 'outlined' | undefined>(undefined); readonly fluid = input(false, { transform: booleanAttribute });
 
   readonly value = model<number | null>(null);

@@ -34,7 +34,12 @@ export class ColorPickerComponent implements ControlValueAccessor {
   readonly clearable = input(true, { transform: booleanAttribute });
   readonly showInput = input(true, { transform: booleanAttribute });
   readonly format = input<ColorPickerFormat>('hex'); readonly inline = input(false, { transform: booleanAttribute }); readonly panelStyleClass = input('');
-  readonly ariaLabel = input('Escolher cor');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly clearAriaLabel = input<string | undefined>(undefined);
+  readonly panelAriaLabel = input<string | undefined>(undefined);
+  readonly nativeAriaLabel = input<string | undefined>(undefined);
+  readonly inputAriaLabel = input<string | undefined>(undefined);
+  readonly presetsAriaLabel = input<string | undefined>(undefined);
   readonly showTransitionOptions = input('150ms ease'); readonly hideTransitionOptions = input('150ms ease');
   readonly colorChange = output<string>();
   readonly onChange = output<{ value: string }>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onClear = output<void>();

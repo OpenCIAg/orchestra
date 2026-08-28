@@ -1,6 +1,6 @@
 <nav
   [id]="id() || null"
-  [attr.aria-label]="ariaLabel()"
+  [attr.aria-label]="ariaLabel() || null"
   class="p-breadcrumb p-component orc-breadcrumb"
   [class]="'p-breadcrumb p-component orc-breadcrumb ' + styleClass()"
   [attr.data-pc-name]="'breadcrumb'"
@@ -20,8 +20,7 @@
             type="button"
             class="orc-breadcrumb__ellipsis-btn"
             (click)="expand()"
-            aria-label="Expandir itens ocultos do breadcrumb"
-            title="Expandir itens ocultos"
+            [attr.aria-label]="expandAriaLabel() || null"
           >
             ...
           </button>

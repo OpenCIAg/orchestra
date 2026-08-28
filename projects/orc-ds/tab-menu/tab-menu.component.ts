@@ -24,7 +24,7 @@ export class TabMenuComponent {
   readonly popup = input(false, { transform: booleanAttribute });
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly styleClass = input('');
-  readonly ariaLabel = input('Tab menu');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly itemSelect = output<TabMenuItem>();
   isActive(item: TabMenuItem): boolean { return this.activeItem() === item || (!this.activeItem() && this.model().indexOf(item) === 0); }

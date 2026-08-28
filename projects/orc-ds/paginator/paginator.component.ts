@@ -85,22 +85,26 @@ export class PaginatorComponent {
   readonly pageLinkSizeInput = input<number | undefined>(undefined, { alias: 'pageLinkSize' });
 
   /** Rótulo do botão Anterior */
-  readonly previousLabel = input<string>('Anterior');
+  readonly previousLabel = input<string | undefined>(undefined);
 
   /** Rótulo do botão Próximo */
-  readonly nextLabel = input<string>('Próximo');
+  readonly nextLabel = input<string | undefined>(undefined);
 
   /** Rótulo do botão Primeira Página */
-  readonly firstLabel = input<string>('Primeira');
+  readonly firstLabel = input<string | undefined>(undefined);
 
   /** Rótulo do botão Última Página */
-  readonly lastLabel = input<string>('Última');
+  readonly lastLabel = input<string | undefined>(undefined);
 
   /** Sufixo exibido no seletor de itens (ex: "20 / Página") */
-  readonly itemsPerPageLabel = input<string>('Página');
+  readonly itemsPerPageLabel = input<string | undefined>(undefined);
 
   /** Atributo de acessibilidade aria-label da tag nav */
-  readonly ariaLabel = input<string>('Paginação');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly jumpAriaLabel = input<string | undefined>(undefined);
+  readonly pageAriaLabel = input<string | undefined>(undefined);
+  readonly pageNumberAriaLabel = input<string | undefined>(undefined);
+  readonly pageSizeAriaLabel = input<string | undefined>(undefined);
   readonly jumpPageInput = model('');
 
   // ── Outputs (Event Emitting) ──────────────────────────────
@@ -135,7 +139,8 @@ export class PaginatorComponent {
     return Math.min(this.currentPage() * this.effectivePageSize(), this.effectiveTotalRecords());
   });
   readonly pageReport = computed(() => {
-    const template = this.currentPageReportTemplate() || 'Showing {first} to {last} of {totalRecords} entries';
+    const template = this.currentPageReportTemplate();
+    if (!template) return '';
     return template
       .replaceAll('{first}', String(this.startIndex()))
       .replaceAll('{last}', String(this.endIndex()))

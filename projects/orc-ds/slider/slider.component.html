@@ -103,7 +103,7 @@
       [attr.aria-valuemin]="range() ? currentStartValue() : minVal()"
       [attr.aria-valuemax]="maxVal()"
       [attr.aria-valuetext]="formattedEndValue()"
-      [attr.aria-label]="range() ? ariaLabelMax() : (ariaLabel() || label() || 'Slider')"
+      [attr.aria-label]="range() ? ariaLabelMax() : (ariaLabel() || label() || null)"
       [attr.aria-orientation]="orientation()"
       [attr.aria-labelledby]="ariaLabelledBy()"
       [attr.aria-disabled]="effectiveDisabled() ? 'true' : null"

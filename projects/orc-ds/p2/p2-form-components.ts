@@ -39,14 +39,14 @@ const fromMonthKey = (value: string): Date => {
   selector: 'orc-calendar',
   standalone: true,
   template: `
-    <section class="p-datepicker p-component orc-p2-calendar" [class]="'p-datepicker p-component orc-p2-calendar ' + styleClass()" [style]="style()" [attr.data-pc-name]="'calendar'" [attr.data-pc-section]="'root'" [attr.aria-label]="ariaLabel()">
+    <section class="p-datepicker p-component orc-p2-calendar" [class]="'p-datepicker p-component orc-p2-calendar ' + styleClass()" [style]="style()" [attr.data-pc-name]="'calendar'" [attr.data-pc-section]="'root'" [attr.aria-label]="ariaLabel() || null">
       <header class="orc-p2-calendar__header">
-        <button type="button" aria-label="Mês anterior" (click)="previousMonth()">‹</button>
+        <button type="button" [attr.aria-label]="previousMonthLabel() || null" (click)="previousMonth()">‹</button>
         <strong>{{ monthLabel() }}</strong>
-        <button type="button" aria-label="Próximo mês" (click)="nextMonth()">›</button>
+        <button type="button" [attr.aria-label]="nextMonthLabel() || null" (click)="nextMonth()">›</button>
       </header>
       <div class="orc-p2-calendar__weekdays" aria-hidden="true">
-        @for (weekday of weekdays; track weekday) { <span>{{ weekday }}</span> }
+        @for (weekday of weekdays(); track weekday) { <span>{{ weekday }}</span> }
       </div>
       <div class="p-datepicker-calendar orc-p2-calendar__grid" [id]="effectiveId() + '-grid'" role="grid" [attr.aria-label]="monthLabel()">
         @for (day of days(); track day.iso) {
@@ -65,10 +65,10 @@ const fromMonthKey = (value: string): Date => {
           </button> }
         }
       </div>
-      @if (showButtonBar()) {
+      @if (showButtonBar() && (todayLabel() || clearLabel())) {
         <footer class="p-datepicker-buttonbar orc-p2-calendar__buttonbar">
-          <button type="button" (click)="today()">Today</button>
-          <button type="button" (click)="clear()">Clear</button>
+          @if (todayLabel()) { <button type="button" (click)="today()">{{ todayLabel() }}</button> }
+          @if (clearLabel()) { <button type="button" (click)="clear()">{{ clearLabel() }}</button> }
         </footer>
       }
     </section>
@@ -99,15 +99,17 @@ export class CalendarComponent {
   readonly inputId = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
-  readonly ariaLabel = input('Calendar');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly locale = input<string | undefined>(undefined); readonly previousMonthLabel = input<string | undefined>(undefined); readonly nextMonthLabel = input<string | undefined>(undefined); readonly todayLabel = input<string | undefined>(undefined); readonly clearLabel = input<string | undefined>(undefined);
   readonly inline = input(true, { transform: booleanAttribute }); readonly showTime = input(false, { transform: booleanAttribute }); readonly dateFormat = input('yy-mm-dd'); readonly showButtonBar = input(false, { transform: booleanAttribute }); readonly selectionMode = input<'single' | 'multiple' | 'range'>('single'); readonly disabledDates = input<Date[]>([]); readonly disabledDays = input<number[]>([]); readonly showOtherMonths = input(true, { transform: booleanAttribute }); readonly selectOtherMonths = input(false, { transform: booleanAttribute });
   readonly dateSelected = output<string>();
   readonly onSelect = output<{ value: string | string[] }>(); readonly onClear = output<void>(); readonly onTodayClick = output<string>();
-  readonly weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  private readonly effectiveLocale = computed(() => this.locale() || undefined);
+  readonly weekdays = computed(() => Array.from({ length: 7 }, (_, index) => new Intl.DateTimeFormat(this.effectiveLocale(), { weekday: 'short' }).format(new Date(2021, 7, 1 + index))));
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
   readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
 
-  readonly monthLabel = computed(() => fromMonthKey(this.currentMonth()).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }));
+  readonly monthLabel = computed(() => fromMonthKey(this.currentMonth()).toLocaleDateString(this.effectiveLocale(), { month: 'long', year: 'numeric' }));
   isSelected(iso: string): boolean { const value = this.value(); return Array.isArray(value) ? value.includes(iso) : value === iso; }
   readonly days = computed<CalendarDay[]>(() => {
     const month = fromMonthKey(this.currentMonth());
@@ -176,7 +178,7 @@ export class CalendarComponent {
           [id]="inputId"
           role="combobox"
           [value]="query()"
-          [placeholder]="placeholder()"
+          [attr.placeholder]="placeholder() || null"
           [disabled]="disabled() || cvaDisabled()"
           [attr.aria-expanded]="open()"
           [attr.aria-controls]="listId"
@@ -184,7 +186,7 @@ export class CalendarComponent {
           (input)="onInput($event)"
           (focus)="open.set(true)"
           (keydown)="onKeydown($event)" />
-        @if (query()) { <button type="button" class="orc-p2-clear" aria-label="Limpar" [disabled]="disabled()" (click)="clear()">×</button> }
+        @if (query() && clearAriaLabel()) { <button type="button" class="orc-p2-clear" [attr.aria-label]="clearAriaLabel()" [disabled]="disabled()" (click)="clear()">×</button> }
       </div>
       @if (open()) {
           <ul class="p-autocomplete-panel p-component orc-p2-options" [id]="listId" role="listbox">
@@ -193,7 +195,7 @@ export class CalendarComponent {
               <strong>{{ option.label }}</strong>
               @if (option.description) { <small>{{ option.description }}</small> }
             </li>
-          } @empty { <li class="orc-p2-empty">{{ emptyText() }}</li> }
+          } @empty { @if (emptyText()) { <li class="orc-p2-empty">{{ emptyText() }}</li> } }
         </ul>
       }
       @if (helperText()) { <small class="orc-p2-muted">{{ helperText() }}</small> }
@@ -223,9 +225,10 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
   readonly query = model('');
   readonly open = model(false);
   readonly label = input('');
-  readonly placeholder = input('Search…');
+  readonly placeholder = input<string | undefined>(undefined);
   readonly helperText = input('');
-  readonly emptyText = input('No results');
+  readonly emptyText = input<string | undefined>(undefined);
+  readonly clearAriaLabel = input<string | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
   protected readonly cvaDisabled = signal(false);
   private onModelChange: (value: T | null) => void = () => {};
@@ -352,13 +355,13 @@ export class InputGroupComponent {
   template: `
     <div class="p-listbox p-component orc-p2-listbox-wrap" [class]="'p-listbox p-component orc-p2-listbox-wrap ' + styleClass()" [style]="style()" [attr.data-pc-name]="'listbox'">
       @if (label()) { <label>{{ label() }}</label> }
-      @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" /> }
+      @if (filter()) { <input [value]="filterValue()" [attr.placeholder]="filterPlaceholder() || null" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || null" /> }
       <ul class="p-listbox-list orc-p2-listbox" [id]="id()" [class]="'p-listbox-list orc-p2-listbox ' + listStyleClass()" [style]="listStyle()" [style.max-height]="scrollHeight()" role="listbox" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-multiselectable]="multiple()" [attr.tabindex]="tabindex()" [attr.aria-activedescendant]="activeOptionId()" [attr.aria-disabled]="disabled() || cvaDisabled()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onModelTouched()">
         @for (option of filteredOptions(); track getOptionValue(option)) {
           <li class="p-listbox-option" [id]="optionId($index)" role="option" [attr.aria-selected]="isSelected(option)" [class.is-selected]="isSelected(option)" [class.is-active]="activeIndex() === $index" [class.is-disabled]="isOptionDisabled(option)" (mouseenter)="focusOnHover() && activeIndex.set($index)" (click)="select(option, $event)" (dblclick)="onDblClick.emit({ originalEvent: $event, option })">
             <span>{{ getOptionLabel(option) }}</span>@if (option.description) { <small>{{ option.description }}</small> }
           </li>
-        } @empty { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyText() }}</li> }
+        } @empty { @if (filterValue() ? emptyFilterMessage() : emptyText()) { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyText() }}</li> } }
       </ul>
     </div>
   `,
@@ -374,10 +377,10 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   readonly value = model<T | T[] | null>(null);
   readonly multiple = input(false, { transform: booleanAttribute });
   readonly label = input('');
-  readonly ariaLabel = input('Listbox');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly id = input<string | undefined>(undefined); readonly readonly = input(false, { transform: booleanAttribute }); readonly dataKey = input<string | undefined>(undefined); readonly selectOnFocus = input(false, { transform: booleanAttribute }); readonly focusOnHover = input(false, { transform: booleanAttribute }); readonly autoOptionFocus = input(false, { transform: booleanAttribute });
-  readonly emptyText = input('No options'); readonly emptyFilterMessage = input('No results found'); readonly searchMessage = input<string | undefined>(undefined); readonly selectionMessage = input<string | undefined>(undefined); readonly style = input<Record<string, string> | undefined>(undefined); readonly listStyle = input<Record<string, string> | undefined>(undefined); readonly listStyleClass = input(''); readonly striped = input(false, { transform: booleanAttribute }); readonly checkbox = input(false, { transform: booleanAttribute }); readonly checkmark = input(false, { transform: booleanAttribute }); readonly highlightOnSelect = input(false, { transform: booleanAttribute }); readonly showToggleAll = input(false, { transform: booleanAttribute }); readonly group = input(false, { transform: booleanAttribute }); readonly lazy = input(false, { transform: booleanAttribute }); readonly virtualScroll = input(false, { transform: booleanAttribute }); readonly virtualScrollItemSize = input<number | undefined>(undefined); readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined); readonly scrollHeight = input('16rem');
-  readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | ((option: any) => boolean) | undefined>(undefined); readonly optionGroupLabel = input<string | undefined>(undefined); readonly optionGroupChildren = input<string | undefined>(undefined); readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly filterBy = input<string | undefined>(undefined); readonly filterFields = input<string[] | undefined>(undefined); readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte' | string>('contains'); readonly filterLocale = input<string | undefined>(undefined); readonly ariaFilterLabel = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly tabindex = input(0); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly styleClass = input('');
+  readonly emptyText = input<string | undefined>(undefined); readonly emptyFilterMessage = input<string | undefined>(undefined); readonly searchMessage = input<string | undefined>(undefined); readonly selectionMessage = input<string | undefined>(undefined); readonly style = input<Record<string, string> | undefined>(undefined); readonly listStyle = input<Record<string, string> | undefined>(undefined); readonly listStyleClass = input(''); readonly striped = input(false, { transform: booleanAttribute }); readonly checkbox = input(false, { transform: booleanAttribute }); readonly checkmark = input(false, { transform: booleanAttribute }); readonly highlightOnSelect = input(false, { transform: booleanAttribute }); readonly showToggleAll = input(false, { transform: booleanAttribute }); readonly group = input(false, { transform: booleanAttribute }); readonly lazy = input(false, { transform: booleanAttribute }); readonly virtualScroll = input(false, { transform: booleanAttribute }); readonly virtualScrollItemSize = input<number | undefined>(undefined); readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined); readonly scrollHeight = input('16rem');
+  readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | ((option: any) => boolean) | undefined>(undefined); readonly optionGroupLabel = input<string | undefined>(undefined); readonly optionGroupChildren = input<string | undefined>(undefined); readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input<string | undefined>(undefined); readonly filterValue = model(''); readonly filterBy = input<string | undefined>(undefined); readonly filterFields = input<string[] | undefined>(undefined); readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte' | string>('contains'); readonly filterLocale = input<string | undefined>(undefined); readonly ariaFilterLabel = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly tabindex = input(0); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly styleClass = input('');
   readonly optionSelected = output<any>(); readonly onChange = output<{ originalEvent: Event; value: T | T[] | null }>(); readonly onClick = output<{ originalEvent: Event; option: any }>(); readonly onDblClick = output<{ originalEvent: Event; option: any }>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onSelectAllChange = output<{ originalEvent: Event; checked: boolean }>(); readonly onLazyLoad = output<{ first: number; last: number }>(); readonly onDrop = output<unknown>();
   readonly activeIndex = signal(0);
   protected readonly cvaDisabled = signal(false); private onModelChange: (value: T | T[] | null) => void = () => {}; protected onModelTouched: () => void = () => {};
@@ -441,14 +444,14 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
       <button type="button" class="p-multiselect-label p-multiselect-trigger trigger" [disabled]="disabled() || cvaDisabled()" [attr.id]="effectiveId()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.aria-expanded]="open()" [attr.aria-controls]="effectiveId() + '-panel'" [attr.aria-activedescendant]="activeOptionId()" [attr.aria-readonly]="readonly()" (click)="toggleOpen()" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)">
         <span>{{ selectedLabels() || placeholder() }}</span><span aria-hidden="true">⌄</span>
       </button>
-      @if (showClear() && value().length && !readonly()) { <button type="button" class="clear" (click)="clear($event)" aria-label="Clear">×</button> }
+      @if (showClear() && value().length && !readonly() && clearAriaLabel()) { <button type="button" class="clear" (click)="clear($event)" [attr.aria-label]="clearAriaLabel()">×</button> }
       @if (open()) {
-        @if (showToggleAll() && showHeader() && !readonly()) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? 'Clear all' : 'Select all' }}</button> }
-        @if (filter()) { <input [value]="filterValue()" [placeholder]="filterPlaceholder()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || 'Filter options'" [autofocus]="autofocusFilter()" /> }
+        @if (showToggleAll() && showHeader() && !readonly() && (allOptionsSelected() ? clearAllLabel() : selectAllLabel())) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? clearAllLabel() : selectAllLabel() }}</button> }
+        @if (filter()) { <input [value]="filterValue()" [attr.placeholder]="filterPlaceholder() || null" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || null" [autofocus]="autofocusFilter()" /> }
         <ul class="p-multiselect-panel p-component options" [class]="'p-multiselect-panel p-component options ' + panelStyleClass()" [style]="panelStyle()" [id]="effectiveId() + '-panel'" role="listbox" aria-multiselectable="true">
-          @if (loading()) { <li class="empty" aria-live="polite">{{ loadingIcon() || 'Loading…' }}</li> } @else {
+          @if (loading() && loadingMessage()) { <li class="empty" aria-live="polite">{{ loadingMessage() }}</li> } @else {
           @for (option of filteredOptions(); track getOptionValue(option); let index = $index) { <li role="option" [id]="effectiveId() + '-option-' + index" [attr.aria-selected]="isSelected(option)" [attr.aria-disabled]="isOptionDisabled(option)" [class.is-disabled]="isOptionDisabled(option)" [class.is-active]="activeIndex() === index" (click)="select(option, $event)"><span class="check">{{ isSelected(option) ? '✓' : '' }}</span>{{ getOptionLabel(option) }}</li> }
-          @empty { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyMessage() }}</li> }
+          @empty { @if (filterValue() ? emptyFilterMessage() : emptyMessage()) { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyMessage() }}</li> } }
           }
         </ul>
       }
@@ -468,12 +471,12 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T[]>([]);
   readonly label = input('');
-  readonly placeholder = input('Select options');
-  readonly emptyText = input('No options');
+  readonly placeholder = input<string | undefined>(undefined);
+  readonly emptyText = input<string | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute }); readonly readonly = input(false, { transform: booleanAttribute }); readonly fluid = input(false, { transform: booleanAttribute });
   readonly inputId = input<string | undefined>(undefined); readonly ariaLabel = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly tabindex = input<number | undefined>(undefined); readonly name = input<string | undefined>(undefined); readonly variant = input<'filled' | 'outlined'>('outlined'); readonly styleClass = input(''); readonly style = input<Record<string, string> | undefined>(undefined); readonly panelStyle = input<Record<string, string> | undefined>(undefined); readonly panelStyleClass = input(''); readonly appendTo = input<unknown>(undefined); readonly overlayOptions = input<Record<string, unknown> | undefined>(undefined);
   readonly optionLabel = input<string | undefined>(undefined); readonly optionValue = input<string | undefined>(undefined); readonly optionDisabled = input<string | undefined>(undefined); readonly optionGroupLabel = input<string | undefined>(undefined); readonly optionGroupChildren = input('items'); readonly dataKey = input<string | undefined>(undefined); readonly group = input(false, { transform: booleanAttribute });
-  readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input('Filter'); readonly filterValue = model(''); readonly filterBy = input<string | undefined>(undefined); readonly filterFields = input<string[] | undefined>(undefined); readonly filterLocale = input<string | undefined>(undefined); readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte'>('contains'); readonly ariaFilterLabel = input<string | undefined>(undefined); readonly showClear = input(false, { transform: booleanAttribute }); readonly showToggleAll = input(true, { transform: booleanAttribute }); readonly showHeader = input(true, { transform: booleanAttribute }); readonly maxSelectedLabels = input<number | undefined>(undefined); readonly selectedItemsLabel = input('{0} items selected'); readonly selectionLimit = input<number | undefined>(undefined); readonly emptyFilterMessage = input('No results found'); readonly emptyMessage = input('No options'); readonly resetFilterOnHide = input(true, { transform: booleanAttribute }); readonly loading = input(false, { transform: booleanAttribute }); readonly loadingIcon = input<string | undefined>(undefined); readonly lazy = input(false, { transform: booleanAttribute }); readonly virtualScroll = input(false, { transform: booleanAttribute }); readonly virtualScrollItemSize = input<number | undefined>(undefined); readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly autofocusFilter = input(false, { transform: booleanAttribute }); readonly focusOnHover = input(true, { transform: booleanAttribute }); readonly selectOnFocus = input(false, { transform: booleanAttribute }); readonly autoOptionFocus = input(false, { transform: booleanAttribute }); readonly dropdownIcon = input(''); readonly chipIcon = input<string | undefined>(undefined); readonly display = input<'comma' | 'chip'>('comma'); readonly autocomplete = input('off'); readonly size = input<'small' | 'large' | undefined>(undefined); readonly tooltip = input(''); readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>('right'); readonly tooltipPositionStyle = input('absolute'); readonly tooltipStyleClass = input<string | undefined>(undefined); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0);
+  readonly filter = input(false, { transform: booleanAttribute }); readonly filterPlaceholder = input<string | undefined>(undefined); readonly filterValue = model(''); readonly filterBy = input<string | undefined>(undefined); readonly filterFields = input<string[] | undefined>(undefined); readonly filterLocale = input<string | undefined>(undefined); readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte'>('contains'); readonly ariaFilterLabel = input<string | undefined>(undefined); readonly clearAriaLabel = input<string | undefined>(undefined); readonly selectAllLabel = input<string | undefined>(undefined); readonly clearAllLabel = input<string | undefined>(undefined); readonly showClear = input(false, { transform: booleanAttribute }); readonly showToggleAll = input(true, { transform: booleanAttribute }); readonly showHeader = input(true, { transform: booleanAttribute }); readonly maxSelectedLabels = input<number | undefined>(undefined); readonly selectedItemsLabel = input<string | undefined>(undefined); readonly selectionLimit = input<number | undefined>(undefined); readonly emptyFilterMessage = input<string | undefined>(undefined); readonly emptyMessage = input<string | undefined>(undefined); readonly resetFilterOnHide = input(true, { transform: booleanAttribute }); readonly loading = input(false, { transform: booleanAttribute }); readonly loadingIcon = input<string | undefined>(undefined); readonly loadingMessage = input<string | undefined>(undefined); readonly lazy = input(false, { transform: booleanAttribute }); readonly virtualScroll = input(false, { transform: booleanAttribute }); readonly virtualScrollItemSize = input<number | undefined>(undefined); readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly autofocusFilter = input(false, { transform: booleanAttribute }); readonly focusOnHover = input(true, { transform: booleanAttribute }); readonly selectOnFocus = input(false, { transform: booleanAttribute }); readonly autoOptionFocus = input(false, { transform: booleanAttribute }); readonly dropdownIcon = input(''); readonly chipIcon = input<string | undefined>(undefined); readonly display = input<'comma' | 'chip'>('comma'); readonly autocomplete = input('off'); readonly size = input<'small' | 'large' | undefined>(undefined); readonly tooltip = input(''); readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>('right'); readonly tooltipPositionStyle = input('absolute'); readonly tooltipStyleClass = input<string | undefined>(undefined); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0);
   readonly open = model(false);
   readonly activeIndex = signal(-1);
   readonly optionSelected = output<P2Option<T>>(); readonly onChange = output<{ originalEvent: Event; value: T[] }>(); readonly onFilter = output<{ originalEvent: Event; filter: string }>(); readonly onSelectAllChange = output<{ originalEvent: Event; checked: boolean }>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly onClear = output<Event>(); readonly onPanelShow = output<void>(); readonly onPanelHide = output<void>(); readonly onRemove = output<{ value: T; originalEvent: Event }>();
@@ -495,7 +498,7 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
     return key && left && right ? left?.[key] === right?.[key] : left === right;
   }
   isSelected(option: P2Option<T>): boolean { return this.value().some(item => this.sameValue(item, this.getOptionValue(option))); }
-  selectedLabels(): string { const labels = this.options().filter(option => this.isSelected(option)).map(option => this.getOptionLabel(option)); const max = this.maxSelectedLabels(); return max !== undefined && labels.length > max ? this.selectedItemsLabel().replace('{0}', String(labels.length)) : labels.join(', '); }
+  selectedLabels(): string { const labels = this.options().filter(option => this.isSelected(option)).map(option => this.getOptionLabel(option)); const max = this.maxSelectedLabels(); const template = this.selectedItemsLabel(); return max !== undefined && labels.length > max && template ? template.replace('{0}', String(labels.length)) : labels.join(', '); }
   toggleOpen(): void { if (this.disabled() || this.cvaDisabled() || this.readonly()) return; this.open.update(value => !value); if (!this.open()) { if (this.resetFilterOnHide()) this.filterValue.set(''); this.activeIndex.set(-1); } this.open() ? this.onPanelShow.emit() : this.onPanelHide.emit(); }
   onKeydown(event: KeyboardEvent): void {
     if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
@@ -539,11 +542,11 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
     <div class="p-chips p-component orc-p2-tags-input" [class]="'p-chips p-component orc-p2-tags-input ' + styleClass()" [style]="style()" [attr.data-pc-name]="'chips'">
       @if (label()) { <label [for]="effectiveId()">{{ label() }}</label> }
       <div class="p-chips-multiple-container input-shell" [class.is-disabled]="disabled()">
-        @for (tag of value(); track $index) { <span class="p-chips-token tag" (click)="onChipClick.emit({ value: tag, index: $index, originalEvent: $event })">{{ tag }} <button type="button" [disabled]="effectiveDisabled()" [attr.aria-label]="'Remove ' + tag" (click)="removeTag($index); $event.stopPropagation()">×</button></span> }
-        <input [id]="effectiveId()" [placeholder]="value().length ? '' : placeholder()" [disabled]="effectiveDisabled()" [value]="draft()" [attr.maxlength]="maxLength() || null" [attr.aria-label]="ariaLabel() || null" (input)="draft.set(($any($event.target)).value)" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onBlurCommit()" />
+        @for (tag of value(); track $index) { <span class="p-chips-token tag" (click)="onChipClick.emit({ value: tag, index: $index, originalEvent: $event })">{{ tag }} @if (removeAriaLabel()) { <button type="button" [disabled]="effectiveDisabled()" [attr.aria-label]="removeAriaLabel()" (click)="removeTag($index); $event.stopPropagation()">×</button> }</span> }
+        <input [id]="effectiveId()" [attr.placeholder]="value().length ? null : (placeholder() || null)" [disabled]="effectiveDisabled()" [value]="draft()" [attr.maxlength]="maxLength() || null" [attr.aria-label]="ariaLabel() || null" (input)="draft.set(($any($event.target)).value)" (keydown)="onKeydown($event)" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event); onBlurCommit()" />
       </div>
       @if (suggestions().length && draft()) { <ul class="p-chips-panel p-component suggestions" [id]="effectiveId() + '-panel'" role="listbox">@for (suggestion of filteredSuggestions(); track suggestion) { <li class="p-chips-option" role="option" (mousedown)="$event.preventDefault()" (click)="addTag(suggestion)">{{ suggestion }}</li> }</ul> }
-      @if (showClear() && value().length) { <button type="button" (click)="clear($event)" aria-label="Clear">×</button> }
+      @if (showClear() && value().length && clearAriaLabel()) { <button type="button" (click)="clear($event)" [attr.aria-label]="clearAriaLabel()">×</button> }
       @if (helperText()) { <small>{{ helperText() }}</small> }
     </div>
   `,
@@ -558,7 +561,7 @@ export class TagsInputComponent implements ControlValueAccessor {
   readonly value = model<string[]>([]);
   readonly draft = signal('');
   readonly label = input('');
-  readonly placeholder = input('Add a tag…');
+  readonly placeholder = input<string | undefined>(undefined);
   readonly helperText = input('');
   readonly suggestions = input<string[]>([]);
   readonly maxTags = input<number | undefined>(undefined);
@@ -571,6 +574,8 @@ export class TagsInputComponent implements ControlValueAccessor {
   readonly addOnBlur = input(false, { transform: booleanAttribute });
   readonly separator = input<string | RegExp | undefined>(undefined);
   readonly showClear = input(false, { transform: booleanAttribute });
+  readonly removeAriaLabel = input<string | undefined>(undefined);
+  readonly clearAriaLabel = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(undefined);
   readonly inputId = input<string | undefined>(undefined);

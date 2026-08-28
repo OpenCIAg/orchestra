@@ -80,9 +80,9 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   readonly valueFormatter = input<((val: number) => string) | undefined>(undefined);
   readonly label = input<string>('');
   readonly helperText = input<string>('');
-  readonly ariaLabel = input<string>('');
-  readonly ariaLabelMin = input<string>('Valor mínimo');
-  readonly ariaLabelMax = input<string>('Valor máximo');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly ariaLabelMin = input<string | undefined>(undefined);
+  readonly ariaLabelMax = input<string | undefined>(undefined);
 
   // ── Two-Way Model ─────────────────────────────────────────
   readonly value = model<SliderValue>(0);

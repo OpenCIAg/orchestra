@@ -16,7 +16,8 @@ export class TimelineComponent {
   readonly style = input<Record<string, string> | null>(null);
   readonly styleClass = input('');
   readonly orientation = input<TimelineOrientation>('vertical');
-  readonly ariaLabel = input('Timeline');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly emptyMessage = input<string | undefined>(undefined);
   readonly itemSelect = output<{ item: TimelineItem; index: number }>();
   readonly onItemClick = this.itemSelect;
 

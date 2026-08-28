@@ -14,7 +14,7 @@ export class DrawerComponent {
   /** PrimeNG-compatible visibility alias. */
   readonly visible = this.open;
   readonly placement = input<DrawerPlacement>('right');
-  readonly label = input('Painel lateral');
+  readonly label = input<string | undefined>(undefined);
   readonly closeOnBackdrop = input(true, { transform: booleanAttribute });
   readonly dismissible = input(true, { transform: booleanAttribute });
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
@@ -24,6 +24,7 @@ export class DrawerComponent {
   readonly ariaLabelledBy = input('');
   readonly closable = input(true, { transform: booleanAttribute });
   readonly showCloseIcon = input(true, { transform: booleanAttribute });
+  readonly closeAriaLabel = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | null>(null);
   readonly baseZIndex = input(1000);

@@ -37,6 +37,36 @@ describe('ModalComponent', () => {
       expect(component.modalClasses()['orc-modal--maximized']).toBeTrue();
     });
 
+    it('renders the active modal class map instead of coercing it to an object string', () => {
+      fixture.componentRef.setInput('size', 'lg');
+      fixture.componentRef.setInput('status', 'danger');
+      fixture.componentRef.setInput('styleClass', 'consumer-modal another-class');
+      fixture.detectChanges();
+
+      const dialog = fixture.nativeElement.querySelector('dialog') as HTMLDialogElement;
+
+      expect(dialog.classList).toContain('p-dialog');
+      expect(dialog.classList).toContain('p-component');
+      expect(dialog.classList).toContain('orc-modal');
+      expect(dialog.classList).toContain('orc-modal--size-lg');
+      expect(dialog.classList).toContain('orc-modal--status-danger');
+      expect(dialog.classList).toContain('consumer-modal');
+      expect(dialog.classList).toContain('another-class');
+      expect(dialog.className).not.toContain('[object Object]');
+    });
+
+    it('renders the size class for every modal size', () => {
+      const sizes = ['sm', 'md', 'lg', 'xl', 'custom', 'fullScreen'] as const;
+      const dialog = fixture.nativeElement.querySelector('dialog') as HTMLDialogElement;
+
+      for (const size of sizes) {
+        fixture.componentRef.setInput('size', size);
+        fixture.detectChanges();
+
+        expect(dialog.classList).toContain(`orc-modal--size-${size}`);
+      }
+    });
+
     it('opens a native dialog when visibility is true before view initialization', () => {
       fixture.componentRef.setInput('isOpen', true);
       fixture.detectChanges();

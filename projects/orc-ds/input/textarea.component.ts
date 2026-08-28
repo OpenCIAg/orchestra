@@ -46,7 +46,8 @@ export class TextareaComponent implements ControlValueAccessor {
   readonly name = input<string>('');
   readonly size = input<InputSize>('md');
   readonly status = input<InputStatus>('default');
-  readonly placeholder = input<string>('Digite algo...');
+  /** Optional consumer-provided hint. The library never invents placeholder copy. */
+  readonly placeholder = input<string | undefined>(undefined);
   readonly label = input<string>('');
   readonly helperText = input<string>('');
   readonly errorMessage = input<string>('');

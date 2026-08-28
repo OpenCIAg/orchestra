@@ -30,7 +30,7 @@
   <img
     *ngIf="showImage()"
     [src]="src()"
-    [alt]="alt() || accessibleLabel()"
+    [attr.alt]="alt() || accessibleLabel() || null"
     (error)="onImageError($event)"
     class="orc-avatar__img"
     loading="lazy"
@@ -70,7 +70,7 @@
     [class.orc-avatar__status--bottom-right]="statusPosition() === 'bottom-right'"
     [class.orc-avatar__status--top-left]="statusPosition() === 'top-left'"
     [class.orc-avatar__status--bottom-left]="statusPosition() === 'bottom-left'"
-    [attr.aria-label]="statusText()"
-    [title]="statusText()"
+    [attr.aria-label]="statusText() || null"
+    [attr.title]="statusText() || null"
   ></span>
 </div>

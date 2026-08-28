@@ -87,18 +87,7 @@ export class ToastService {
     const id = options.id || `orc-toast-${++this.idCounter}-${Date.now()}`;
     const type: ToastStatus = options.type || (options.severity === 'warn' ? 'warning' : options.severity === 'error' ? 'error' : options.severity === 'success' ? 'success' : 'info');
 
-    // Determina título padrão caso não informado
     let title = options.title || options.summary || '';
-    if (!title && !options.message) {
-      switch (type) {
-        case 'success': title = 'Sucesso'; break;
-        case 'error': title = 'Erro'; break;
-        case 'warning': title = 'Atenção'; break;
-        case 'info': title = 'Informação'; break;
-        case 'loading': title = 'Carregando'; break;
-        case 'notification': title = 'Notificação'; break;
-      }
-    }
 
     const toastItem: ToastItem = {
       ...options,
@@ -132,7 +121,7 @@ export class ToastService {
     return this.show({
       ...options,
       type: 'success',
-      title: options?.title || 'Sucesso',
+      title: options?.title,
       message,
     });
   }
@@ -141,7 +130,7 @@ export class ToastService {
     return this.show({
       ...options,
       type: 'info',
-      title: options?.title || 'Informação',
+      title: options?.title,
       message,
     });
   }
@@ -150,7 +139,7 @@ export class ToastService {
     return this.show({
       ...options,
       type: 'warning',
-      title: options?.title || 'Atenção',
+      title: options?.title,
       message,
     });
   }
@@ -159,7 +148,7 @@ export class ToastService {
     return this.show({
       ...options,
       type: 'error',
-      title: options?.title || 'Erro',
+      title: options?.title,
       message,
     });
   }
@@ -168,7 +157,7 @@ export class ToastService {
     return this.show({
       ...options,
       type: 'loading',
-      title: options?.title || 'Carregando',
+      title: options?.title,
       message,
       duration: options?.duration !== undefined ? options.duration : 0,
     });
@@ -178,7 +167,7 @@ export class ToastService {
     return this.show({
       ...options,
       type: 'notification',
-      title: options?.title || 'Notificações',
+      title: options?.title,
       message,
     });
   }

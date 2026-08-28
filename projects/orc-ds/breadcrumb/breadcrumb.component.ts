@@ -44,7 +44,8 @@ export class BreadcrumbComponent {
   readonly maxItems = input<number | undefined>(undefined);
   readonly itemsBeforeCollapse = input<number>(1);
   readonly itemsAfterCollapse = input<number>(1);
-  readonly ariaLabel = input<string>('Breadcrumb');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly expandAriaLabel = input<string | undefined>(undefined);
   readonly id = input<string | undefined>(undefined);
 
   // Outputs (Signals API)

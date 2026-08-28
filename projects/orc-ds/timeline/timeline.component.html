@@ -10,6 +10,6 @@
       </div>
     </li>
   } @empty {
-    <li class="orc-timeline__empty">Nenhum evento registrado.</li>
+    @if (emptyMessage()) { <li class="orc-timeline__empty">{{ emptyMessage() }}</li> }
   }
 </ol>

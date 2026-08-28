@@ -51,12 +51,17 @@ export class ButtonComponent {
   readonly iconRight = input<string | undefined>(undefined);
   readonly iconOnly = input<boolean>(false);
   readonly type = input<'button' | 'submit' | 'reset'>('button');
-  readonly ariaLabel = input<string>('');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   private readonly sanitizer = inject(DomSanitizer);
 
   // ── Outputs (Signals API) ─────────────────────────────────────────
-  readonly click = output<MouseEvent>();
+  /**
+   * The native button already bubbles a `click` event through the host.
+   * Keep the TypeScript property for consumers, but expose the component
+   * output under a distinct alias so `(click)` is not delivered twice.
+   */
+  readonly click = output<MouseEvent>({ alias: 'clicked' });
   readonly onFocus = output<FocusEvent>();
   readonly onBlur = output<FocusEvent>();
 

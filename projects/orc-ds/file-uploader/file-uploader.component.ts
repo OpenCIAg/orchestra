@@ -50,18 +50,24 @@ export class FileUploaderComponent implements ControlValueAccessor {
   readonly maxFiles = input<number>(10);
   readonly fileLimit = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
   readonly maxFileSize = input(5 * 1024 * 1024, { transform: numberAttribute }); // PrimeNG-compatible bytes
-  readonly invalidFileSizeMessageSummary = input('File too large');
-  readonly invalidFileSizeMessageDetail = input('Maximum allowed size is {0}.');
-  readonly invalidFileTypeMessageSummary = input('Invalid file type');
-  readonly invalidFileTypeMessageDetail = input('Allowed file types: {0}.');
-  readonly invalidFileLimitMessageSummary = input('Maximum number of files exceeded');
-  readonly invalidFileLimitMessageDetail = input('Maximum {0} files allowed.');
+  readonly invalidFileSizeMessageSummary = input<string | undefined>(undefined);
+  readonly invalidFileSizeMessageDetail = input<string | undefined>(undefined);
+  readonly invalidFileTypeMessageSummary = input<string | undefined>(undefined);
+  readonly invalidFileTypeMessageDetail = input<string | undefined>(undefined);
+  readonly invalidFileLimitMessageSummary = input<string | undefined>(undefined);
+  readonly invalidFileLimitMessageDetail = input<string | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly label = input<string>('Clique ou arraste seus arquivos aqui');
-  readonly subLabel = input<string>('Suporta imagens e PDFs');
+  readonly label = input<string | undefined>(undefined);
+  readonly subLabel = input<string | undefined>(undefined);
+  readonly dropzoneAriaLabel = input<string | undefined>(undefined);
   readonly chooseLabel = input<string | undefined>(undefined);
   readonly uploadLabel = input<string | undefined>(undefined);
   readonly cancelLabel = input<string | undefined>(undefined);
+  readonly removeAriaLabel = input<string | undefined>(undefined);
+  readonly uploadingLabel = input<string | undefined>(undefined);
+  readonly uploadedLabel = input<string | undefined>(undefined);
+  readonly errorLabel = input<string | undefined>(undefined);
+  readonly pendingLabel = input<string | undefined>(undefined);
   readonly previewWidth = input(100, { transform: numberAttribute });
   readonly styleClass = input<string | undefined>(undefined);
   readonly style = input<string | Record<string, string | number> | undefined>(undefined);
@@ -266,10 +272,14 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
     if (isOverSize) {
       status = 'error';
-      errorMessage = `${this.invalidFileSizeMessageSummary()}: ${this.invalidFileSizeMessageDetail().replace('{0}', this.formatBytes(this.maxFileSize()))}`;
+      const summary = this.invalidFileSizeMessageSummary();
+      const detail = this.invalidFileSizeMessageDetail();
+      errorMessage = summary && detail ? `${summary}: ${detail.replace('{0}', this.formatBytes(this.maxFileSize()))}` : summary || detail || '';
     } else if (isInvalidType) {
       status = 'error';
-      errorMessage = `${this.invalidFileTypeMessageSummary()}: ${this.invalidFileTypeMessageDetail().replace('{0}', this.accept())}`;
+      const summary = this.invalidFileTypeMessageSummary();
+      const detail = this.invalidFileTypeMessageDetail();
+      errorMessage = summary && detail ? `${summary}: ${detail.replace('{0}', this.accept())}` : summary || detail || '';
     }
 
     const item = {

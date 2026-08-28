@@ -249,7 +249,8 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('currentMonth', '2025-01');
     fixture.componentRef.setInput('firstDayOfWeek', 1);
     expect(component.days()[0].iso).toBe('2024-12-30');
-    expect(component.weekdayLabels()[0]).toBe('Mo');
+    fixture.componentRef.setInput('locale', 'en-US');
+    expect(component.weekdayLabels()[0]).toBe(new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(2021, 7, 2)));
   });
 
   it('renders week numbers when DatePicker showWeek is enabled', () => {
@@ -1593,13 +1594,13 @@ describe('P2 expansion components', () => {
     expect(component.isActive(items[1])).toBeTrue();
   });
 
-  it('supports PrimeNG TabPanel closable/cache inputs and TabView navigation labels', () => {
+  it('supports PrimeNG TabPanel closable/cache inputs and optional TabView navigation labels', () => {
     const tab = TestBed.createComponent(TabComponent).componentInstance;
     expect(tab.cache()).toBeTrue();
     expect(tab.closable()).toBeFalse();
     const group = TestBed.createComponent(TabGroupComponent).componentInstance;
     expect(group.controlClose()).toBeFalse();
-    expect(group.nextButtonAriaLabel()).toBe('Next tab');
+    expect(group.nextButtonAriaLabel()).toBeUndefined();
   });
 
   it('exposes PrimeNG drag/drop standalone directives', () => {

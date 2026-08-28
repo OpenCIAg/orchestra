@@ -94,7 +94,7 @@
     <button
       type="button"
       class="orc-toast__close"
-      aria-label="Fechar notificação"
+      [attr.aria-label]="toast().closeAriaLabel || null"
       (click)="handleClose($event); $event.stopPropagation()"
     >
       <svg viewBox="0 0 16 16" fill="none" class="orc-toast__close-icon" aria-hidden="true">

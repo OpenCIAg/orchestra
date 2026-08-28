@@ -38,7 +38,7 @@
           [iconOnly]="true" 
           [disabled]="disabled()"
           (click)="onRemove()"
-          ariaLabel="Remover arquivo"
+          [ariaLabel]="removeAriaLabel()"
         >
           <svg iconLeft viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -52,7 +52,7 @@
     @if (fileData().status === 'uploading' || fileData().progress > 0 && fileData().status !== 'success' && fileData().status !== 'error') {
       <div class="orc-file-item__progress-container">
         <div class="orc-file-item__progress-text-row">
-          <span class="orc-file-item__meta">{{ fileData().formattedSize }} | Calculando restante...</span>
+          <span class="orc-file-item__meta">{{ fileData().formattedSize }}@if (uploadingLabel()) { | {{ uploadingLabel() }} }</span>
           <span class="orc-file-item__meta">{{ fileData().progress }}%</span>
         </div>
         
@@ -66,13 +66,13 @@
     } @else {
       <!-- Estado de Sucesso ou Erro -->
       <div class="orc-file-item__meta">
-        {{ fileData().formattedSize }} | 100% | 
+        {{ fileData().formattedSize }} | 100%
         @if (fileData().status === 'success') {
-          Enviado com sucesso
+          @if (uploadedLabel()) { | {{ uploadedLabel() }} }
         } @else if (fileData().status === 'error') {
-          <span style="color: var(--color-error)">{{ fileData().errorMessage || 'Falha no envio' }}</span>
-        } @else {
-          Pendente
+          @if (fileData().errorMessage || errorLabel()) { <span style="color: var(--color-error)"> | {{ fileData().errorMessage || errorLabel() }}</span> }
+        } @else if (pendingLabel()) {
+          | {{ pendingLabel() }}
         }
       </div>
     }

@@ -37,7 +37,7 @@ export class LoadingSpinnerComponent {
   readonly animation = input<'spin' | 'none'>('spin');
   readonly styleClass = input('');
   readonly id = input<string | undefined>(undefined);
-  readonly ariaLabel = input<string>('Carregando...');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   @HostBinding('class.orc-spinner--fullscreen-host')
   get isFullScreen(): boolean {
