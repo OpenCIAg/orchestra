@@ -57,7 +57,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: v19-release-test-output
+          name: ${{ github.ref_name }}-release-test-output
           path: test-output.log
 
       - name: Build library

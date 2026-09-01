@@ -24,11 +24,17 @@ Include Orchestra's multi-tier design tokens, CSS layers, and themes in your app
 @use '@ciag/orchestra/styles/index';
 ```
 
-Or add the prebuilt CSS to `angular.json`:
+`styles/index` preserves Orchestra's legacy global reset for existing applications. New applications that own their CSS reset can load the tokens, themes, layers, and mixins without that global reset:
+
+```scss
+@use '@ciag/orchestra/styles/core';
+```
+
+Or add the shipped Sass entry directly to `angular.json`:
 
 ```json
 "styles": [
-  "node_modules/@ciag/orchestra/styles/index.css",
+  "node_modules/@ciag/orchestra/styles/index.scss",
   "src/styles.scss"
 ]
 ```
@@ -99,6 +105,16 @@ The milestone tracker’s 28 P0 items are available. Existing APIs remain compat
 ### P1 Core coverage
 
 P1 adds the recurring composite controls from the milestone tracker: Autocomplete, Carousel, Chip, Collapsible, Color Picker, Divider, Form, Icon, Image, Number Input, Scroll Area, Timeline, Toolbar, plus canonical Text Input and Toggle entry points. Existing Progress, Rating, Stepper, Textarea, and Modal APIs remain compatible. The docs app documents each control independently, including its states and API, for example `/components/autocomplete`, `/components/carousel`, and `/components/toolbar`.
+
+### Material Symbols
+
+`orc-icon` renders Google Material Symbols directly from their snake_case ligature names. The component stylesheet loads the Outlined, Rounded, and Sharp variable fonts from Google Fonts automatically, so no `index.html` or global stylesheet change is required:
+
+```html
+<orc-icon name="pin" family="rounded" fill="filled" size="md" ariaLabel="Fixar" />
+```
+
+Use `weight`, `grade`, and `opticalSize` for the remaining Material Symbols axes. The full generated name/search catalog is available from `@ciag/orchestra/icons` as `ORC_MATERIAL_SYMBOLS`. Because the font is remote, production CSPs must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are provided by Google under the [Apache License 2.0](https://developers.google.com/fonts/docs/material_symbols).
 
 ### P2 Expansion coverage
 
