@@ -356,13 +356,13 @@ The tooltip API is a directive. Attach `[orcTooltip]`, `[appTooltip]`, or `[uiTo
 
 #### `orc-icon`, `orc-code`, `orc-kbd`, and `orc-badge`
 
-- `orc-icon` inputs: `name: arrow-left | arrow-right | check | chevron-down | chevron-left | chevron-right | chevron-up | close | info | menu | minus | plus | search | star | warning | x-circle | circle` (circle), `size: xs | sm | md | lg | xl | number` (md), `strokeWidth` (2), `ariaLabel`, `title`. A decorative icon should not receive a redundant spoken label.
+- `orc-icon` renders Google Material Symbols by ligature name. Its complete generated catalog is exported from `@ciag/orchestra/icons` as `ORC_MATERIAL_SYMBOLS` and currently contains 3,903 names available in the Rounded family; use any Google snake_case name, including `pin` (the Google symbol tagged `pushpin`). Inputs: `name` (circle), `family: outlined | rounded | sharp` (rounded), `size: xs | sm | md | lg | xl | number` (md), `fill: outline | filled` (outline), `weight: number` (400, clamped to 100–700), `grade: number` (0, clamped to -50–200), `opticalSize: number | auto` (auto, clamped to 20–48), `ariaLabel`, and `title`. The component loads the Google Fonts CSS internally; consumers do not add a stylesheet, but their CSP/network must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are Apache 2.0 licensed; see the [official guide](https://developers.google.com/fonts/docs/material_symbols) and the package third-party notice.
 - `orc-code` inputs: `code`, `language` (`text`), `copyLabel` (`Copy`), `copiedLabel` (`Copied`). Output: `copiedEvent: string`. Use for code examples that need consistent copy behavior; do not build a bespoke pre/code toolbar.
 - `orc-kbd` inputs: `keys: string | string[]` (`⌘ K`), `ariaLabel`. Use for discoverable keyboard shortcuts, not as an interactive control.
 
 ### P1 inputs, utilities, and primitives
 
-#### `orc-chip`, `orc-divider`, `orc-color-picker`, `orc-icon`, `orc-image`, `orc-number-input`, `orc-scroll-area`, `orc-toolbar`
+#### `orc-chip`, `orc-divider`, `orc-color-picker`, `orc-image`, `orc-number-input`, `orc-scroll-area`, `orc-toolbar`
 
 - `orc-chip` inputs: `label`, `value: string | number`, `variant: neutral | primary | success | warning | danger` (neutral), `size: sm | md | lg` (md), `selectable`, `removable`, `disabled`; model `selected` (false); output `removed: string | number`. Use selectable chips for filters, not primary actions.
 - `orc-divider` inputs: `orientation: horizontal | vertical` (horizontal), `variant: solid | dashed | dotted` (solid), `label`, `inset`, `decorative` (true), `ariaLabel`. If `decorative=false`, provide a meaningful label or aria label.
