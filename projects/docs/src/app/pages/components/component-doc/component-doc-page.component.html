@@ -39,8 +39,8 @@
                 @case ('date-picker') {
                   <div class="example-stack">
                     <div class="example">
-                      <span class="example__label">Default · controlado</span>
-                      <orc-date-picker label="Data de entrega" [(value)]="dateValue" />
+                      <span class="example__label">Popover · controlado</span>
+                      <orc-date-picker label="Data de entrega" [(value)]="dateValue" [showIcon]="true" [showButtonBar]="true" [showClear]="true" />
                       <code>value = {{ dateValue() }}</code>
                     </div>
                     <div class="example">
@@ -349,28 +349,36 @@
                     <div class="example">
                       <span class="example__label">Sizes</span>
                       <div class="icon-row">
-                        <span><orc-icon [icon]="iconCatalog['circle']" size="xs" ariaLabel="Extra pequeno" /><small>xs</small></span>
-                        <span><orc-icon [icon]="iconCatalog['circle']" size="sm" ariaLabel="Pequeno" /><small>sm</small></span>
-                        <span><orc-icon [icon]="iconCatalog['circle']" size="md" ariaLabel="Médio" /><small>md</small></span>
-                        <span><orc-icon [icon]="iconCatalog['circle']" size="lg" ariaLabel="Grande" /><small>lg</small></span>
-                        <span><orc-icon [icon]="iconCatalog['circle']" size="xl" ariaLabel="Extra grande" /><small>xl</small></span>
+                        <span><orc-icon name="circle" size="xs" ariaLabel="Extra pequeno" /><small>xs</small></span>
+                        <span><orc-icon name="circle" size="sm" ariaLabel="Pequeno" /><small>sm</small></span>
+                        <span><orc-icon name="circle" size="md" ariaLabel="Médio" /><small>md</small></span>
+                        <span><orc-icon name="circle" size="lg" ariaLabel="Grande" /><small>lg</small></span>
+                        <span><orc-icon name="circle" size="xl" ariaLabel="Extra grande" /><small>xl</small></span>
                       </div>
                     </div>
                     <div class="example">
                       <span class="example__label">Names + semantics</span>
                       <div class="icon-row icon-row--named">
-                        <span><orc-icon [icon]="iconCatalog['check_circle']" ariaLabel="Concluído" /><small>check_circle</small></span>
-                        <span><orc-icon [icon]="iconCatalog['info']" ariaLabel="Informação" /><small>info</small></span>
-                        <span><orc-icon [icon]="iconCatalog['warning']" ariaLabel="Atenção" /><small>warning</small></span>
-                        <span><orc-icon [icon]="iconCatalog['star']" title="Favorito" /><small>star · decorative</small></span>
+                        <span><orc-icon name="check_circle" ariaLabel="Concluído" /><small>check_circle</small></span>
+                        <span><orc-icon name="info" ariaLabel="Informação" /><small>info</small></span>
+                        <span><orc-icon name="warning" ariaLabel="Atenção" /><small>warning</small></span>
+                        <span><orc-icon name="star" title="Favorito" /><small>star · labeled</small></span>
                       </div>
                     </div>
                     <div class="example icon-search-demo">
-                      <span class="example__label">Buscar no catálogo de 500 ícones</span>
+                      <span class="example__label">Buscar no catálogo completo de {{ iconSymbols.length }} Material Symbols</span>
                       <div class="icon-search-controls">
                         <label class="icon-search-input">
                           <span class="sr-only">Buscar ícone</span>
                           <input class="native-control" type="search" placeholder="Ex.: calendar, arrow, cloud" [value]="iconQuery()" (input)="iconQuery.set($any($event.target).value)" />
+                        </label>
+                        <label class="icon-search-select">
+                          <span>Família</span>
+                          <select class="native-control" [value]="iconFamily()" (change)="iconFamily.set($any($event.target).value)">
+                            <option value="rounded">Rounded</option>
+                            <option value="outlined">Outlined</option>
+                            <option value="sharp">Sharp</option>
+                          </select>
                         </label>
                         <label class="icon-search-select">
                           <span>Variante</span>
@@ -380,11 +388,11 @@
                           </select>
                         </label>
                       </div>
-                      <p class="example__caption">{{ filteredIconMetadata().length }} resultados exibidos · ordenados por popularidade.</p>
+                      <p class="example__caption">{{ filteredIconMetadata().length }} resultados exibidos por vez · ordenados por popularidade · pesquise para encontrar qualquer símbolo.</p>
                       <div class="icon-catalog-grid">
                         @for (entry of filteredIconMetadata(); track entry.name) {
                           <button class="icon-catalog-item" type="button" [title]="'Copiar ' + iconDeclaration(entry.name)" [attr.aria-label]="'Copiar declaração de ' + entry.name" (click)="copyIconDeclaration(entry.name)">
-                            <orc-icon [icon]="iconCatalog[entry.name]" [fill]="iconFill()" [ariaLabel]="entry.name" />
+                            <orc-icon [name]="entry.name" [family]="iconFamily()" [fill]="iconFill()" [ariaLabel]="entry.name" />
                             <span>{{ entry.name }}</span>
                           </button>
                         }
@@ -910,11 +918,10 @@
             <pre><code>npm install &#64;ciag/orchestra
 
 import &#123; IconComponent &#125; from '&#64;ciag/orchestra/icon';
-import &#123; orcSearchIcon &#125; from '&#64;ciag/orchestra/icons';
 
-// O build inclui somente as definições importadas.</code></pre>
+&lt;orc-icon name="search" family="rounded" fill="filled" ariaLabel="Buscar" /&gt;</code></pre>
           </div>
-          <div class="guidance"><span class="guidance__mark">i</span><p>O plano de release usa Changesets, build de todas as entry points, verificação de bundle e publicação npm com provenance. A instalação não depende de Google Fonts nem de requests em runtime.</p></div>
+          <div class="guidance"><span class="guidance__mark">i</span><p>O componente inclui a folha de estilo do Google Fonts internamente: não é necessário editar index.html ou styles.scss. A renderização depende de requests em runtime para <code>fonts.googleapis.com</code> e <code>fonts.gstatic.com</code>; permita esses domínios na CSP. Material Symbols são licenciados sob Apache 2.0 — <a href="https://developers.google.com/fonts/docs/material_symbols" target="_blank" rel="noreferrer">documentação e atribuição oficial</a>.</p></div>
         </section>
       }
     </main>

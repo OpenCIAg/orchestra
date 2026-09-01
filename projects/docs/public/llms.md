@@ -157,7 +157,7 @@ The root public API exposes 89 secondary entry points. Alias entry points intent
 | `pagination` | `PaginationComponent` alias of `PaginatorComponent` | Pagination terminology alias |
 | `drawer` | `orc-drawer` | Side/top/bottom panel |
 | `popover` | `orc-popover` | Contextual content |
-| `date-picker` | `orc-date-picker` | Native date field |
+| `date-picker` | `orc-date-picker` | Date field with calendar popover |
 | `tree-view` | `orc-tree-view` | Expandable hierarchy |
 | `form-field` | `orc-form-field` | Label/control/help wrapper |
 | `list` | `orc-list` | Accessible list |
@@ -302,7 +302,7 @@ Both implement `ControlValueAccessor` and expose a Signals model. Use `[(value)]
 
 - `orc-autocomplete` inputs: `id`, `name`, `label`, `placeholder` (`Comece a digitar...`), `helperText`, `errorMessage`, `options: AutocompleteOption[]`, `minChars` (0), `clearable` (true), `disabled`, `required`, `ariaLabel`. Model: `value: string | null` (null). Output: `optionSelected: AutocompleteOption`. An option contains `value`, `label`, and optional `description`/`disabled`. The emitted value is the option's value, not its visible label.
 - `orc-number-input` inputs: `id`, `name`, `label`, `placeholder`, `helperText`, `errorMessage`, `status: default | error | success` (default), `size: sm | md | lg` (md), `min?`, `max?`, `step` (1), `precision?`, `prefix`, `suffix`, `disabled`, `readonly`, `required`, `showControls` (true), `ariaLabel`. Model: `value: number | null` (null). Outputs: `valueChange`, `blur`. Values are clamped to min/max and formatted to precision for presentation.
-- `orc-date-picker` model: `value: string` (empty, ISO `yyyy-MM-dd`). Inputs: `label`, `min`, `max`, `helperText`, `error`, `required`, `disabled`. It is a native date control and is compatible with Angular forms. Pass ISO values, not localized display strings.
+- `orc-date-picker` model: `value: string` (empty, ISO `yyyy-MM-dd`). Inputs include `label`, `min`, `max`, `helperText`, `error`, `required`, `disabled`, `showIcon`, `showButtonBar`, and `showClear`. It uses the Orchestra calendar in an anchored popover and is compatible with Angular forms; no native browser date picker is opened. `Today` and `Clear` are rendered in the popover footer. Pass ISO values, not localized display strings.
 
 #### `orc-slider`, `orc-rating`, `orc-otp-input`, `orc-chip-input`, and file upload
 
@@ -356,13 +356,13 @@ The tooltip API is a directive. Attach `[orcTooltip]`, `[appTooltip]`, or `[uiTo
 
 #### `orc-icon`, `orc-code`, `orc-kbd`, and `orc-badge`
 
-- `orc-icon` inputs: `name: arrow-left | arrow-right | check | chevron-down | chevron-left | chevron-right | chevron-up | close | info | menu | minus | plus | search | star | warning | x-circle | circle` (circle), `size: xs | sm | md | lg | xl | number` (md), `strokeWidth` (2), `ariaLabel`, `title`. A decorative icon should not receive a redundant spoken label.
+- `orc-icon` renders Google Material Symbols by ligature name. Its complete generated catalog is exported from `@ciag/orchestra/icons` as `ORC_MATERIAL_SYMBOLS` and currently contains 3,903 names available in the Rounded family; use any Google snake_case name, including `pin` (the Google symbol tagged `pushpin`). Inputs: `name` (circle), `family: outlined | rounded | sharp` (rounded), `size: xs | sm | md | lg | xl | number` (md), `fill: outline | filled` (outline), `weight: number` (400, clamped to 100–700), `grade: number` (0, clamped to -50–200), `opticalSize: number | auto` (auto, clamped to 20–48), `ariaLabel`, and `title`. The component loads the Google Fonts CSS internally; consumers do not add a stylesheet, but their CSP/network must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are Apache 2.0 licensed; see the [official guide](https://developers.google.com/fonts/docs/material_symbols) and the package third-party notice.
 - `orc-code` inputs: `code`, `language` (`text`), `copyLabel` (`Copy`), `copiedLabel` (`Copied`). Output: `copiedEvent: string`. Use for code examples that need consistent copy behavior; do not build a bespoke pre/code toolbar.
 - `orc-kbd` inputs: `keys: string | string[]` (`⌘ K`), `ariaLabel`. Use for discoverable keyboard shortcuts, not as an interactive control.
 
 ### P1 inputs, utilities, and primitives
 
-#### `orc-chip`, `orc-divider`, `orc-color-picker`, `orc-icon`, `orc-image`, `orc-number-input`, `orc-scroll-area`, `orc-toolbar`
+#### `orc-chip`, `orc-divider`, `orc-color-picker`, `orc-image`, `orc-number-input`, `orc-scroll-area`, `orc-toolbar`
 
 - `orc-chip` inputs: `label`, `value: string | number`, `variant: neutral | primary | success | warning | danger` (neutral), `size: sm | md | lg` (md), `selectable`, `removable`, `disabled`; model `selected` (false); output `removed: string | number`. Use selectable chips for filters, not primary actions.
 - `orc-divider` inputs: `orientation: horizontal | vertical` (horizontal), `variant: solid | dashed | dotted` (solid), `label`, `inset`, `decorative` (true), `ariaLabel`. If `decorative=false`, provide a meaningful label or aria label.
