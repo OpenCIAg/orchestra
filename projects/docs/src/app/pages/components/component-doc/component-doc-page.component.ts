@@ -14,7 +14,8 @@ import { FileUploaderComponent } from '@ciag/orchestra/file-uploader';
 import { FormComponent, FormSubmitEvent } from '@ciag/orchestra/form';
 import { FormFieldComponent } from '@ciag/orchestra/form-field';
 import { IconComponent } from '@ciag/orchestra/icon';
-import { ORC_ICON_CATALOG, ORC_ICON_METADATA } from '@ciag/orchestra/icons';
+import type { IconFamily } from '@ciag/orchestra/icon';
+import { ORC_MATERIAL_SYMBOLS } from '@ciag/orchestra/icons';
 import { ImageComponent } from '@ciag/orchestra/image';
 import { ListComponent, ListItem } from '@ciag/orchestra/list';
 import { NumberInputComponent } from '@ciag/orchestra/number-input';
@@ -496,23 +497,27 @@ const COMPONENT_DOCS: Record<string, ComponentDoc> = {
   },
   icon: {
     id: 'icon', name: 'Icon', category: 'Utility', status: 'beta',
-    description: 'Material Symbols locais, tree-shakeable, com estilo rounded outline por padrão e variante filled opcional.',
+    description: 'Wrapper conciso para os mais de 3.900 Material Symbols do Google Fonts, com família e eixos variáveis controlados por inputs.',
     packagePath: '@ciag/orchestra/icon',
-    usage: `import { orcCheckCircleIcon } from '@ciag/orchestra/icons';\n\n<orc-icon\n  [icon]="orcCheckCircleIcon"\n  size="md"\n  ariaLabel="Concluído"\n/>`,
-    guidance: 'Ícones decorativos devem permanecer sem ariaLabel. Quando o ícone comunica uma ação ou estado sem texto, forneça um nome acessível.',
+    usage: `import { IconComponent } from '@ciag/orchestra/icon';\n\n<orc-icon\n  name="check_circle"\n  size="md"\n  ariaLabel="Concluído"\n/>`,
+    guidance: 'Ícones decorativos devem permanecer sem ariaLabel. Quando o ícone comunica uma ação ou estado sem texto, forneça um nome acessível. O componente carrega a fonte diretamente do Google Fonts; permita fonts.googleapis.com e fonts.gstatic.com na CSP.',
     variations: [
-      { label: 'Catalog', description: '500 ícones ranqueados por popularidade no Google Fonts.' },
+      { label: 'Catalog', description: 'Catálogo completo de Material Symbols Rounded, atualizado a partir dos metadados oficiais do Google.' },
+      { label: 'Families', description: 'Outlined, Rounded ou Sharp com o mesmo nome de ligadura.' },
       { label: 'Sizes', description: 'xs, sm, md, lg, xl ou um número em pixels.' },
-      { label: 'Fill', description: 'Rounded outline por padrão; use fill="filled" quando precisar.' },
+      { label: 'Axes', description: 'Fill, weight, grade e opticalSize são controlados sem CSS adicional.' },
       { label: 'Decorative / labeled', description: 'Semântica definida por ariaLabel e title.' },
     ],
     api: [
-      input('icon', 'OrcIconDefinition', 'null', 'Definição importada de @ciag/orchestra/icons.'),
-      input('name', 'string', "'circle'", 'Nome registrado opcionalmente com provideOrcIcons.'),
+      input('name', 'string', "'circle'", 'Nome snake_case da ligadura do Google Material Symbols.'),
+      input('family', "'outlined' | 'rounded' | 'sharp'", "'rounded'", 'Família visual do Material Symbols.'),
       input('size', "IconSize | number", "'md'", 'Tamanho semântico ou valor em pixels.'),
-      input('fill', "'outline' | 'filled'", "'outline'", 'Variante Material Symbols rounded.'),
+      input('fill', "'outline' | 'filled'", "'outline'", 'Eixo FILL: 0 para outline e 1 para filled.'),
+      input('weight', 'number', '400', 'Eixo wght entre 100 e 700.'),
+      input('grade', 'number', '0', 'Eixo GRAD entre -50 e 200.'),
+      input('opticalSize', "number | 'auto'", "'auto'", 'Eixo opsz entre 20 e 48; auto acompanha o tamanho do texto.'),
       input('ariaLabel', 'string', "''", 'Nome acessível; vazio mantém o ícone decorativo.'),
-      input('title', 'string', "''", 'Título nativo opcional do SVG.'),
+      input('title', 'string', "''", 'Título nativo opcional e fallback do nome acessível.'),
     ],
   },
   'scroll-area': {
@@ -725,23 +730,21 @@ export class ComponentDocPageComponent {
   readonly imageMessage = signal('Aguardando carregamento.');
   readonly scrollMessage = signal('Role o conteúdo para emitir scrolled.');
   readonly removedChip = signal('');
-  readonly iconCatalog = ORC_ICON_CATALOG;
+  readonly iconSymbols = ORC_MATERIAL_SYMBOLS;
   readonly iconQuery = signal('');
   readonly iconFill = signal<'outline' | 'filled'>('outline');
+  readonly iconFamily = signal<IconFamily>('rounded');
   readonly filteredIconMetadata = computed(() => {
     const query = this.iconQuery().trim().toLowerCase();
-    return ORC_ICON_METADATA
+    return ORC_MATERIAL_SYMBOLS
       .filter((entry) => !query || entry.name.includes(query) || (entry.tags ?? []).some((tag) => tag.toLowerCase().includes(query)))
       .slice(0, 48);
   });
 
-  iconVariableName(name: string): string {
-    return `orc${name.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('')}Icon`;
-  }
-
   iconDeclaration(name: string): string {
     const fill = this.iconFill() === 'filled' ? ' fill="filled"' : '';
-    return `<orc-icon [icon]="${this.iconVariableName(name)}"${fill} ariaLabel="${name}" />`;
+    const family = this.iconFamily() === 'rounded' ? '' : ` family="${this.iconFamily()}"`;
+    return `<orc-icon name="${name}"${family}${fill} ariaLabel="${name}" />`;
   }
 
   async copyIconDeclaration(name: string): Promise<void> {

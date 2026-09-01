@@ -1,10 +1,13 @@
 # Orchestra Material Symbols
 
-This secondary entry point contains the 500 highest-popularity icons from the
-Google Fonts icon metadata that are available in the Material Symbols Rounded
-set. The ranking and source metadata are recorded in `manifest.json`.
+This secondary entry point exposes the complete Material Symbols Rounded
+catalog available when the package was generated. `ORC_MATERIAL_SYMBOLS`
+contains the Google metadata used by the docs search and
+`ORC_MATERIAL_SYMBOL_CATALOG` provides name-based lookup.
 
-Definitions are generated at build time and have no runtime dependency on
-Google Fonts or the upstream repository. Icons render rounded outline paths by
-default; the same definition exposes an opt-in filled path through
-`<orc-icon fill="filled">`.
+`orc-icon` renders the name as a Google Material Symbols ligature. The icon
+font is loaded automatically from Google Fonts by the component stylesheet, so
+consumers do not need to add a stylesheet to their application entry point.
+The network request remains a runtime dependency: applications must allow
+`fonts.googleapis.com` and `fonts.gstatic.com` in their CSP and provide network
+access when icons are rendered.
