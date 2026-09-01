@@ -106,6 +106,16 @@ The milestone tracker’s 28 P0 items are available. Existing APIs remain compat
 
 P1 adds the recurring composite controls from the milestone tracker: Autocomplete, Carousel, Chip, Collapsible, Color Picker, Divider, Form, Icon, Image, Number Input, Scroll Area, Timeline, Toolbar, plus canonical Text Input and Toggle entry points. Existing Progress, Rating, Stepper, Textarea, and Modal APIs remain compatible. The docs app documents each control independently, including its states and API, for example `/components/autocomplete`, `/components/carousel`, and `/components/toolbar`.
 
+### Material Symbols
+
+`orc-icon` renders Google Material Symbols directly from their snake_case ligature names. The component stylesheet loads the Outlined, Rounded, and Sharp variable fonts from Google Fonts automatically, so no `index.html` or global stylesheet change is required:
+
+```html
+<orc-icon name="pin" family="rounded" fill="filled" size="md" ariaLabel="Fixar" />
+```
+
+Use `weight`, `grade`, and `opticalSize` for the remaining Material Symbols axes. The full generated name/search catalog is available from `@ciag/orchestra/icons` as `ORC_MATERIAL_SYMBOLS`. Because the font is remote, production CSPs must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are provided by Google under the [Apache License 2.0](https://developers.google.com/fonts/docs/material_symbols).
+
 ### P2 Expansion coverage
 
 P2 adds the enterprise/data-heavy and advanced-layout components from the tracker as tree-shakeable secondary entry points: Button Group, Calendar, Code, Combobox, Dropdown, File Upload, Grid, Kbd, Link, Menubar, Splitter, Tag, Typography, Aspect Ratio, Container, Floating Action Button, Hover Card, Portal, Segmented Control, Separator, Stack, Visually Hidden, Box, Close Button, Context Menu, Data Table, Date Input, Empty State, Flex, Input Group, Listbox, Multi Select, Space, Speed Dial, Tags Input, Text, Tree Select, and Virtual Scroller. Existing OTP Input, Progress Bar/Circle, Radio, and file-uploader APIs remain compatible; the docs app exposes the new controls through `/components/p2-expansion` and individual `/components/<id>` routes.

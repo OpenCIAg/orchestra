@@ -1,34 +1,49 @@
 import { TestBed } from '@angular/core/testing';
-import { IconComponent, provideOrcIcons } from './icon.component';
-import { orcHomeIcon } from '../icons/generated/home';
+import { IconComponent } from './icon.component';
 
 describe('IconComponent', () => {
-  it('renders an imported rounded outline definition', () => {
+  it('renders a rounded Material Symbol by name', () => {
     const fixture = TestBed.createComponent(IconComponent);
-    fixture.componentRef.setInput('icon', orcHomeIcon);
+    fixture.componentRef.setInput('name', 'pin');
     fixture.detectChanges();
 
-    const svg = fixture.nativeElement.querySelector('svg');
-    expect(svg.getAttribute('viewBox')).toBe('0 -960 960 960');
-    expect(svg.querySelector('path').getAttribute('d')).toContain('M220-180');
-    expect(svg.getAttribute('aria-hidden')).toBe('true');
+    const icon = fixture.nativeElement.querySelector('.orc-icon');
+    expect(icon.textContent.trim()).toBe('pin');
+    expect(icon.style.fontFamily).toContain('Material Symbols Rounded');
+    expect(icon.style.fontVariationSettings).toContain('"FILL" 0');
+    expect(icon.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('switches to the filled path without changing the icon definition', () => {
+  it('maps style inputs to the Material Symbols axes', () => {
     const fixture = TestBed.createComponent(IconComponent);
-    fixture.componentRef.setInput('icon', orcHomeIcon);
+    fixture.componentRef.setInput('family', 'outlined');
     fixture.componentRef.setInput('fill', 'filled');
+    fixture.componentRef.setInput('weight', 600);
+    fixture.componentRef.setInput('grade', -25);
+    fixture.componentRef.setInput('opticalSize', 32);
+    fixture.componentRef.setInput('size', 'lg');
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('path').getAttribute('d')).toContain('M160-180');
+    const icon = fixture.nativeElement.querySelector('.orc-icon');
+    expect(icon.style.fontFamily).toContain('Material Symbols Outlined');
+    expect(icon.style.fontSize).toBe('32px');
+    expect(icon.style.fontVariationSettings).toContain('"FILL" 1');
+    expect(icon.style.fontVariationSettings).toContain('"wght" 600');
+    expect(icon.style.fontVariationSettings).toContain('"GRAD" -25');
+    expect(icon.style.fontVariationSettings).toContain('"opsz" 32');
   });
 
-  it('resolves explicitly registered names', () => {
-    TestBed.configureTestingModule({ providers: [provideOrcIcons(orcHomeIcon)] });
+  it('uses an accessible name when provided', () => {
     const fixture = TestBed.createComponent(IconComponent);
-    fixture.componentRef.setInput('name', 'home');
+    fixture.componentRef.setInput('name', 'favorite');
+    fixture.componentRef.setInput('ariaLabel', 'Favorito');
+    fixture.componentRef.setInput('title', 'Favorito');
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('path').getAttribute('d')).toContain('M220-180');
+    const icon = fixture.nativeElement.querySelector('.orc-icon');
+    expect(icon.getAttribute('role')).toBe('img');
+    expect(icon.getAttribute('aria-label')).toBe('Favorito');
+    expect(icon.getAttribute('aria-hidden')).toBeNull();
+    expect(icon.getAttribute('title')).toBe('Favorito');
   });
 });
