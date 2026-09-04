@@ -119,6 +119,26 @@ describe('P2 expansion components', () => {
     expect(tags.componentInstance.value()).toEqual(['angular']);
   });
 
+  it('renders the multiselect filter inside the popup panel', () => {
+    const fixture = TestBed.createComponent(MultiSelectComponent<string>);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('options', [{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]);
+    fixture.componentRef.setInput('filter', true);
+    component.open.set(true);
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector('.panel') as HTMLElement;
+    const filter = panel?.querySelector('.filter-input') as HTMLInputElement;
+    const options = panel?.querySelector('ul[role="listbox"]') as HTMLUListElement;
+
+    expect(panel).not.toBeNull();
+    expect(filter).not.toBeNull();
+    expect(options).not.toBeNull();
+    expect(panel.contains(filter)).toBeTrue();
+    expect(panel.contains(options)).toBeTrue();
+    expect(fixture.nativeElement.querySelector('.orc-p2-multi-select > input')).toBeNull();
+  });
+
   it('supports PrimeNG Chips separator, duplicate, blur, clear, and lifecycle aliases', () => {
     const fixture = TestBed.createComponent(TagsInputComponent);
     const component = fixture.componentInstance;

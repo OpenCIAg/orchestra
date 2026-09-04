@@ -446,21 +446,33 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
       </button>
       @if (showClear() && value().length && !readonly() && clearAriaLabel()) { <button type="button" class="clear" (click)="clear($event)" [attr.aria-label]="clearAriaLabel()">×</button> }
       @if (open()) {
-        @if (showToggleAll() && showHeader() && !readonly() && (allOptionsSelected() ? clearAllLabel() : selectAllLabel())) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? clearAllLabel() : selectAllLabel() }}</button> }
-        @if (filter()) { <input [value]="filterValue()" [attr.placeholder]="filterPlaceholder() || null" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || null" [autofocus]="autofocusFilter()" /> }
-        <ul class="p-multiselect-panel p-component options" [class]="'p-multiselect-panel p-component options ' + panelStyleClass()" [style]="panelStyle()" [id]="effectiveId() + '-panel'" role="listbox" aria-multiselectable="true">
-          @if (loading() && loadingMessage()) { <li class="empty" aria-live="polite">{{ loadingMessage() }}</li> } @else {
-          @for (option of filteredOptions(); track getOptionValue(option); let index = $index) { <li role="option" [id]="effectiveId() + '-option-' + index" [attr.aria-selected]="isSelected(option)" [attr.aria-disabled]="isOptionDisabled(option)" [class.is-disabled]="isOptionDisabled(option)" [class.is-active]="activeIndex() === index" (click)="select(option, $event)"><span class="check">{{ isSelected(option) ? '✓' : '' }}</span>{{ getOptionLabel(option) }}</li> }
-          @empty { @if (filterValue() ? emptyFilterMessage() : emptyMessage()) { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyMessage() }}</li> } }
+        <div class="p-multiselect-panel p-component panel" [class]="'p-multiselect-panel p-component panel ' + panelStyleClass()" [style]="panelStyle()">
+          @if (showToggleAll() && showHeader() && !readonly() && (allOptionsSelected() ? clearAllLabel() : selectAllLabel())) { <button type="button" class="toggle-all" (click)="selectAll($event)">{{ allOptionsSelected() ? clearAllLabel() : selectAllLabel() }}</button> }
+          @if (filter()) {
+            <div class="filter-container">
+              <input class="filter-input" [value]="filterValue()" [attr.placeholder]="filterPlaceholder() || null" [attr.autocomplete]="autocomplete()" (input)="onFilterInput($event)" [attr.aria-label]="ariaFilterLabel() || null" [autofocus]="autofocusFilter()" />
+            </div>
           }
-        </ul>
+          <ul class="p-multiselect-items options" [id]="effectiveId() + '-panel'" role="listbox" aria-multiselectable="true">
+            @if (loading() && loadingMessage()) { <li class="empty" aria-live="polite">{{ loadingMessage() }}</li> } @else {
+            @for (option of filteredOptions(); track getOptionValue(option); let index = $index) { <li role="option" [id]="effectiveId() + '-option-' + index" [attr.aria-selected]="isSelected(option)" [attr.aria-disabled]="isOptionDisabled(option)" [class.is-disabled]="isOptionDisabled(option)" [class.is-active]="activeIndex() === index" (click)="select(option, $event)"><span class="check">{{ isSelected(option) ? '✓' : '' }}</span>{{ getOptionLabel(option) }}</li> }
+            @empty { @if (filterValue() ? emptyFilterMessage() : emptyMessage()) { <li class="empty">{{ filterValue() ? emptyFilterMessage() : emptyMessage() }}</li> } }
+            }
+          </ul>
+        </div>
       }
     </div>
   `,
   styles: [P2_SHARED_STYLES + `
     .orc-p2-multi-select { position: relative; display: grid; gap: .35rem; color: var(--orc-component-text); } label { font-size: .875rem; font-weight: 600; }
     .trigger { display: flex; justify-content: space-between; align-items: center; min-height: 2.5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; padding: .5rem .75rem; background: var(--orc-component-control); color: var(--orc-component-text); text-align: left; }
-    .options { position: absolute; z-index: 2; top: 4.2rem; right: 0; left: 0; max-height: 15rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-surface-raised); color: var(--orc-component-text); box-shadow: var(--orc-component-overlay-shadow); list-style: none; }
+    .panel { position: absolute; z-index: 2; top: calc(100% + .35rem); right: 0; left: 0; display: grid; gap: .35rem; max-height: min(20rem, 60vh); overflow: hidden; margin: 0; padding: .5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-surface-raised); color: var(--orc-component-text); box-shadow: var(--orc-component-overlay-shadow); }
+    .toggle-all { width: 100%; border: 0; border-radius: .35rem; padding: .4rem .55rem; background: var(--orc-component-surface-muted); color: var(--orc-component-text); text-align: left; }
+    .toggle-all:hover { background: var(--orc-component-interactive-soft); }
+    .filter-container { padding-bottom: .35rem; border-bottom: 1px solid var(--orc-component-border); }
+    .filter-input { width: 100%; min-height: 2.25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .4rem; padding: .45rem .6rem; background: var(--orc-component-control); color: var(--orc-component-text); outline: none; }
+    .filter-input:focus { border-color: var(--orc-component-interactive); box-shadow: 0 0 0 2px var(--orc-component-interactive-shadow); }
+    .options { min-height: 0; max-height: 15rem; overflow: auto; margin: 0; padding: .25rem; list-style: none; }
     li { display: flex; gap: .5rem; align-items: center; padding: .55rem .65rem; border-radius: .35rem; cursor: pointer; } li:hover, li.is-active { background: var(--orc-component-interactive-soft); } li.is-disabled { color: var(--orc-component-text-muted); cursor: not-allowed; } .check { width: 1rem; color: var(--orc-component-interactive); } .empty { color: var(--orc-component-text-muted); cursor: default; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
