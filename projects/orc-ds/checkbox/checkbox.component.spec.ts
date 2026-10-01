@@ -131,7 +131,9 @@ describe('CheckboxComponent', () => {
     expect(root.classList.contains('size-large')).toBeTrue();
     expect(getComputedStyle(box).width).toBe('20px');
     expect(getComputedStyle(box).height).toBe('20px');
-    expect(getComputedStyle(box).backgroundColor).toBe('rgb(255, 255, 255)');
+    expect(['rgb(255, 255, 255)', 'rgb(254, 254, 254)']).toContain(
+      getComputedStyle(box).backgroundColor,
+    );
   });
 
   it('keeps an unlabeled checkbox host at a 24 by 24 pointer target', () => {

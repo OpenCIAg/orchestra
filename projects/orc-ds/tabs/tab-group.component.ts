@@ -190,8 +190,8 @@ export class TabGroupComponent implements AfterViewInit, OnDestroy {
     const max = this.maxScroll(header);
     const logicalLeft = this.logicalScrollLeft(header, max);
     const state = {
-      previous: logicalLeft > 0,
-      next: logicalLeft < max,
+      previous: logicalLeft > 1,
+      next: max - logicalLeft > 1,
     };
     const current = this.navigation();
     if (current.previous !== state.previous || current.next !== state.next) {
