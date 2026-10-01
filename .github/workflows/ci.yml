@@ -33,6 +33,9 @@ jobs:
       - name: Verify component inventory and documentation links
         run: npm run verify:docs
 
+      - name: Verify generated alias parity spec
+        run: npm run verify:alias-parity
+
       - name: Run library tests
         run: |
           set -o pipefail
