@@ -42,3 +42,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Generation-process exhaust: never commit tarballs, spreadsheet trackers,
+# or root-level tracker output trees (docs/quality/verification/ stays tracked)
+*.tgz
+*.xlsx
+/outputs/
+/verification/
