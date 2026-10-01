@@ -68,6 +68,25 @@ function decoratedInput(member, source) {
   return { publicName, required };
 }
 
+function memberDocs(member) {
+  const comment = ts
+    .getJSDocCommentsAndTags(member)
+    .map((tag) => (typeof tag.comment === "string" ? tag.comment.trim() : ""))
+    .filter(Boolean)
+    .join(" ");
+  const deprecated = ts.getJSDocTags(member).find(
+    (tag) => tag.tagName.text === "deprecated",
+  );
+  const docs = {};
+  if (comment) docs.description = comment;
+  if (deprecated) {
+    docs.deprecated = true;
+    if (!comment && typeof deprecated.comment === "string")
+      docs.description = deprecated.comment.trim();
+  }
+  return docs;
+}
+
 for (const file of files.filter(
   (file) =>
     file.endsWith(".ts") &&
@@ -103,6 +122,7 @@ for (const file of files.filter(
       properties.find((item) => item.name?.getText(source) === "selector")
         ?.initializer?.text ?? "";
     const inputs = [];
+    const outputs = [];
     const publicInputNames = new Map();
     for (const member of node.members) {
       if (
@@ -124,8 +144,28 @@ for (const file of files.filter(
         )
           ? initializer
           : undefined;
+      const signalOutput =
+        initializer &&
+        ts.isCallExpression(initializer) &&
+        /^(output|outputFromObservable)$/.test(
+          initializer.expression.getText(source),
+        )
+          ? initializer
+          : undefined;
       const decoratorInput = decoratedInput(member, source);
-      if (!signalInput && !decoratorInput) continue;
+      if (!signalInput && !signalOutput && !decoratorInput) continue;
+
+      const docs = memberDocs(member);
+
+      if (signalOutput) {
+        outputs.push({
+          name,
+          kind: "output",
+          declaration: member.getText(source),
+          ...docs,
+        });
+        continue;
+      }
 
       const signalOptions = signalInput?.arguments[1];
       const publicName = signalInput
@@ -152,6 +192,7 @@ for (const file of files.filter(
           ? signalInput.expression.getText(source).endsWith(".required")
           : decoratorInput.required,
         declaration: member.getText(source),
+        ...docs,
       });
     }
     const baseClass = node.heritageClauses
@@ -166,6 +207,7 @@ for (const file of files.filter(
       line:
         source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1,
       inputs,
+      outputs,
       testReferences: specs
         .filter((spec) => new RegExp(`\\b${name}\\b`).test(spec.text))
         .map((spec) => relative(spec.file)),
@@ -265,12 +307,16 @@ const inputKinds = declarations
     counts[input.kind] = (counts[input.kind] ?? 0) + 1;
     return counts;
   }, {});
+const outputCount = declarations.reduce(
+  (total, item) => total + (item.outputs?.length ?? 0),
+  0,
+);
 const markdown = [
   "# Component and source inventory",
   "",
   "Generated with `node tools/quality/inventory.mjs`. Update it after adding or moving components. The machine-readable inventory records public input names separately from source property names, including aliases and inherited bindings. A test reference is evidence of a source reference, not proof of functional coverage; the audit and test results record that separately.",
   "",
-  `${components.length} component classes, ${directives.length} directives, ${services.length} services, and ${entryPoints.length} secondary entry points. ${sources.length} authored source/configuration/documentation files in the inventoried source trees. The JSON inventory contains ${Object.values(inputKinds).reduce((sum, count) => sum + count, 0)} public input bindings (${inputKinds.signal ?? 0} signal inputs, ${inputKinds.model ?? 0} models, and ${inputKinds.decorator ?? 0} decorated inputs), including inherited bindings. Generated icon metadata is checked as data rather than hand-written implementation.`,
+  `${components.length} component classes, ${directives.length} directives, ${services.length} services, and ${entryPoints.length} secondary entry points. ${sources.length} authored source/configuration/documentation files in the inventoried source trees. The JSON inventory contains ${Object.values(inputKinds).reduce((sum, count) => sum + count, 0)} public input bindings (${inputKinds.signal ?? 0} signal inputs, ${inputKinds.model ?? 0} models, and ${inputKinds.decorator ?? 0} decorated inputs) and ${outputCount} outputs, including inherited bindings. Generated icon metadata is checked as data rather than hand-written implementation.`,
   "",
   "| Declaration | Kind | Selector | Implementation | Referenced by specs |",
   "| --- | --- | --- | --- | --- |",
