@@ -78,3 +78,9 @@ jobs:
 
       - name: Verify server-side rendering
         run: npm run verify:ssr
+
+      - name: Upload SSR verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.ref_name }}-ssr-verification
+          path: verify-output/

@@ -44,8 +44,10 @@ testem.log
 Thumbs.db
 
 # Generation-process exhaust: never commit tarballs, spreadsheet trackers,
-# or root-level tracker output trees (docs/quality/verification/ stays tracked)
+# or tracker output trees. Verification evidence lives in CI artifacts, not
+# in git; the SSR verifier writes to /verify-output/ (gitignored).
 *.tgz
 *.xlsx
 /outputs/
 /verification/
+/verify-output/

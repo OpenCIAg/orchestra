@@ -16,7 +16,10 @@ import path from "node:path";
 const root = path.resolve(".");
 const distribution = path.join(root, "dist/orc-ds");
 const inventoryPath = path.join(root, "docs/quality/inventory.json");
-const outputDir = path.join(root, "docs/quality/verification");
+// Evidence is written outside the tracked tree; CI uploads it as a workflow
+// artifact instead of committing it (ORC_SSR_OUTPUT_DIR can override).
+const outputDir =
+  process.env.ORC_SSR_OUTPUT_DIR ?? path.join(root, "verify-output");
 const helperPath = path.join(root, "tools/quality/ssr-render-one.mjs");
 const selfCheckHelperPath = path.join(
   root,
@@ -361,7 +364,7 @@ try {
     "",
     `Generated ${new Date().toISOString()} against ${result.distribution}. Package archive SHA-256: \`${result.packageArchiveSha256}\`.`,
     "",
-    `The harness attempted all ${result.totalComponents} component declarations from [inventory.json](../inventory.json), importing each from the packed consumer and rendering it through Angular ${angularVersion}'s \`renderApplication\`. It imported ${result.imported}, instantiated ${result.instantiated}, matched ${result.matchedSelectors} canonical selectors, completed default lifecycle teardown for ${result.defaultLifecycle}, and completed rendering for ${result.rendered}; ${failures.length} failed.`,
+    `The harness attempted all ${result.totalComponents} component declarations from [inventory.json](../docs/quality/inventory.json), importing each from the packed consumer and rendering it through Angular ${angularVersion}'s \`renderApplication\`. It imported ${result.imported}, instantiated ${result.instantiated}, matched ${result.matchedSelectors} canonical selectors, completed default lifecycle teardown for ${result.defaultLifecycle}, and completed rendering for ${result.rendered}; ${failures.length} failed.`,
     "",
     "The runner isolates every component in a fresh Node process. Each worker uses Angular ViewChild against the imported component type and checks the canonical selector before renderApplication returns, so the marker cannot be produced by a static wrapper alone. This preserves a real server-render lifecycle and records teardown exceptions separately from import/render failures. Production mode suppresses framework startup noise; component warnings and errors remain in the JSON result.",
     "",
@@ -371,7 +374,7 @@ try {
       ? failures
           .map((failure) => {
             const source = failure.file
-              ? ` Source file in the inventory: [${failure.file}](../../../${failure.file}).`
+              ? ` Source file in the inventory: [${failure.file}](../${failure.file}).`
               : "";
             return `- **${failure.name}** (${failure.phase}) — ${String(failure.error).split("\n")[0]}.${source}`;
           })
@@ -390,7 +393,7 @@ try {
   writeFileSync(path.join(outputDir, "verify-ssr-report.md"), report);
   if (failures.length || diagnostics.length) {
     throw new Error(
-      `SSR verification found ${failures.length} failures and ${diagnostics.length} diagnostics. See docs/quality/verification/verify-ssr-result.json.`,
+      `SSR verification found ${failures.length} failures and ${diagnostics.length} diagnostics. See ${path.relative(root, path.join(outputDir, "verify-ssr-result.json"))}.`,
     );
   }
   console.log(
