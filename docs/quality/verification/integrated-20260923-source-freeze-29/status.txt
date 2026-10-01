@@ -1,0 +1,2 @@
+PASS
+behavior_coverage_source_refs=147/147; markdown_files=83; relative_links=621; markdown_line_anchors=405; p2_source_anchors_in_range=73; missing_or_out_of_range=0; changed_authored_text_files_checked=487; non_utf8_or_binary_skipped=0; trailing_whitespace=0; git_diff_check=clean

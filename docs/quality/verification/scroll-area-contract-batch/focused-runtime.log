@@ -1,0 +1,25 @@
+❯ Building...
+✔ Building...
+Initial chunk files                            | Names                                       |  Raw size
+chunk-NHMR36X4.js                              | -                                           |   2.25 MB | 
+polyfills.js                                   | polyfills                                   |   1.06 MB | 
+test_main.js                                   | test_main                                   | 230.78 kB | 
+jasmine-cleanup-1.js                           | jasmine-cleanup-1                           |  71.38 kB | 
+spec-scroll-area-scroll-area.component.spec.js | spec-scroll-area-scroll-area.component.spec |  16.95 kB | 
+spec-runtime-diagnostics.spec.js               | spec-runtime-diagnostics.spec               | 647 bytes | 
+jasmine-cleanup-0.js                           | jasmine-cleanup-0                           | 446 bytes | 
+
+                                               | Initial total                               |   3.62 MB
+
+Application bundle generation complete. [2.552 seconds] - 2026-09-22T21:00:29.362Z
+
+22 09 2026 18:00:29.529:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9899/
+22 09 2026 18:00:29.529:INFO [launcher]: Launching browsers ChromeHeadlessCI with concurrency unlimited
+22 09 2026 18:00:29.532:INFO [launcher]: Starting browser ChromeHeadless
+22 09 2026 18:00:30.058:INFO [Chrome Headless 153.0.0.0 (Mac OS 10.15.7)]: Connected on socket mY-9xBzJnjZUvJ-uAAAB with id 32114807
+Chrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 0 of 3[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 1 of 3[32m SUCCESS[39m (0 secs / 0.025 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 2 of 3[32m SUCCESS[39m (0 secs / 0.03 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 3 of 3[32m SUCCESS[39m (0 secs / 0.031 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 3 of 3[32m SUCCESS[39m (0.034 secs / 0.031 secs)
+[32mTOTAL: 3 SUCCESS[39m

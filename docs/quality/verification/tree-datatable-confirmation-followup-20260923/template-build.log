@@ -1,0 +1,34 @@
+
+> orc-ds-workspace@0.0.0 build:template
+> ng build template
+
+❯ Building...
+✔ Building...
+Initial chunk files   | Names                    |  Raw size | Estimated transfer size
+main-4Q7KPVW6.js      | main                     | 341.22 kB |                90.33 kB
+polyfills-RV3JTMEC.js | polyfills                |  35.78 kB |                11.63 kB
+styles-LGULNILN.css   | styles                   |  13.67 kB |                 2.06 kB
+
+                      | Initial total            | 390.67 kB |               104.02 kB
+
+Lazy chunk files      | Names                    |  Raw size | Estimated transfer size
+chunk-1E6UGVXU.js     | crud-page-component      | 136.06 kB |                27.45 kB
+chunk-BYmq4WVQ.js     | -                        |  93.73 kB |                22.62 kB
+chunk-CLNeRRdm.js     | settings-page-component  |  93.31 kB |                19.22 kB
+chunk-DtWagLbl.js     | -                        |  66.70 kB |                15.71 kB
+chunk-BFQAgBNg.js     | dashboard-page-component |  47.65 kB |                10.99 kB
+chunk-bCn5tSXZ.js     | -                        |  32.09 kB |                 7.70 kB
+chunk-CY_9eATo.js     | -                        |  30.32 kB |                 5.50 kB
+chunk-Bgy1OSTa.js     | main-layout-component    |  29.01 kB |                 6.07 kB
+chunk-D9GF0exP.js     | login-page-component     |  20.97 kB |                 5.06 kB
+chunk-m1UhjtSg.js     | -                        |  17.31 kB |                 3.87 kB
+chunk-Xs4_F2-w.js     | -                        |  12.80 kB |                 2.93 kB
+chunk-DXYidpe1.js     | -                        |  12.73 kB |                 2.94 kB
+chunk-Cj1_WuIW.js     | -                        |  12.00 kB |                 3.17 kB
+
+Application bundle generation complete. [1.680 seconds] - 2026-09-23T17:36:48.507Z
+
+Output location: /Users/matheuscastro/Workspaces/orc_ds/dist/template
+
+
+GATE_EXIT_CODE=0

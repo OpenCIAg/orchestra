@@ -8,9 +8,10 @@
       <div class="section-eyebrow">Componentes · Overlay</div>
       <h1 class="section-title">Modal / Dialog</h1>
       <p class="section-desc">
-        Janelas de diálogo nativas baseadas no elemento HTML5 <code>&lt;dialog&gt;</code>,
-        provendo acessibilidade total (Focus Trap, <code>Esc</code>, Top Layer) e flexibilidade de chamadas declarativas
-        ou programáticas.
+        Janelas de diálogo nativas baseadas no elemento HTML5
+        <code>&lt;dialog&gt;</code>, mantendo o foco dentro do diálogo, fechando
+        com <code>Esc</code> quando permitido e usando o Top Layer, além de
+        oferecer flexibilidade para chamadas declarativas ou programáticas.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -18,12 +19,17 @@
         <h2 class="section-subtitle">Demonstração interativa</h2>
 
         <div class="playground-grid">
-          <div class="panel preview-panel" style="grid-column: 1 / -1;">
+          <div class="panel preview-panel" style="grid-column: 1 / -1">
             <div class="panel__header">Formas de Abertura</div>
-            <div class="panel__body" style="flex-direction: row; flex-wrap: wrap; gap: 1rem;">
-
+            <div
+              class="panel__body"
+              style="flex-direction: row; flex-wrap: wrap; gap: 1rem"
+            >
               <!-- Declarativo Padrão -->
-              <orc-button variant="primary" (click)="isDeclarativeOpen.set(true)">
+              <orc-button
+                variant="primary"
+                (click)="isDeclarativeOpen.set(true)"
+              >
                 Modal Declarativo (Padrão)
               </orc-button>
 
@@ -33,17 +39,21 @@
               </orc-button>
 
               <!-- Sem fechar por fora -->
-              <orc-button variant="outline" (click)="isPreventCloseOpen.set(true)">
+              <orc-button
+                variant="outline"
+                (click)="isPreventCloseOpen.set(true)"
+              >
                 Obrigatório (Sem fechar ao clicar fora)
               </orc-button>
 
               <!-- Via Serviço -->
-              <orc-button variant="primary"
+              <orc-button
+                variant="primary"
                 iconLeft="<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='13 2 3 14 12 14 11 22 21 10 12 10 13 2'></polygon></svg>"
-                (click)="openProgrammaticModal()">
+                (click)="openProgrammaticModal()"
+              >
                 Abrir via ModalService
               </orc-button>
-
             </div>
           </div>
         </div>
@@ -53,49 +63,88 @@
       <orc-modal [(isOpen)]="isDeclarativeOpen">
         <span modal-header>Excluir repositório?</span>
         <div modal-body>
-          <p>Você está prestes a excluir este projeto. Essa ação é <strong>irreversível</strong>.</p>
-          <p style="margin-top: 1rem;">Para confirmar, digite o nome do projeto abaixo.</p>
+          <p>
+            Você está prestes a excluir este projeto. Essa ação é
+            <strong>irreversível</strong>.
+          </p>
+          <p style="margin-top: 1rem">
+            Para confirmar, digite o nome do projeto abaixo.
+          </p>
         </div>
         <div modal-footer>
-          <orc-button variant="ghost" (click)="isDeclarativeOpen.set(false)">Cancelar</orc-button>
-          <orc-button variant="danger" (click)="isDeclarativeOpen.set(false)">Excluir permanentemente</orc-button>
+          <orc-button variant="ghost" (click)="isDeclarativeOpen.set(false)"
+            >Cancelar</orc-button
+          >
+          <orc-button variant="danger" (click)="isDeclarativeOpen.set(false)"
+            >Excluir permanentemente</orc-button
+          >
         </div>
       </orc-modal>
 
       <!-- MODAL 2: Largo -->
       <orc-modal [(isOpen)]="isLargeOpen" size="lg">
         <span modal-header>Termos de Serviço</span>
-        <div modal-body style="max-height: 400px;">
+        <div modal-body style="max-height: 400px">
           <h3>1. Introdução</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt, nunc quis accumsan eleifend,
-            ipsum nunc scelerisque augue.</p>
-          <h3 style="margin-top: 1rem;">2. Privacidade</h3>
-          <p>Vivamus ultricies velit mauris, egestas vestibulum nulla vulputate eget. Suspendisse pulvinar interdum
-            nisi.</p>
-          <p>Pellentesque lacinia, erat vitae pulvinar sollicitudin, arcu felis consequat nisi, vitae fringilla neque
-            tellus finibus ligula.</p>
-          <h3 style="margin-top: 1rem;">3. Aceite</h3>
-          <p>Morbi sagittis, purus eu sodales efficitur, ligula mauris faucibus sem, vel finibus nisi dolor non orci.
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+            tincidunt, nunc quis accumsan eleifend, ipsum nunc scelerisque
+            augue.
           </p>
-          <h3 style="margin-top: 1rem;">4. Limitação de Responsabilidade</h3>
-          <p>Praesent scelerisque odio id turpis tincidunt pretium. Donec venenatis congue mi sit amet placerat.</p>
-          <p>Cras vel eros eu eros imperdiet suscipit. Etiam ullamcorper, leo non interdum interdum, magna leo feugiat
-            nibh, sit amet iaculis lacus nisi sed nisl.</p>
+          <h3 style="margin-top: 1rem">2. Privacidade</h3>
+          <p>
+            Vivamus ultricies velit mauris, egestas vestibulum nulla vulputate
+            eget. Suspendisse pulvinar interdum nisi.
+          </p>
+          <p>
+            Pellentesque lacinia, erat vitae pulvinar sollicitudin, arcu felis
+            consequat nisi, vitae fringilla neque tellus finibus ligula.
+          </p>
+          <h3 style="margin-top: 1rem">3. Aceite</h3>
+          <p>
+            Morbi sagittis, purus eu sodales efficitur, ligula mauris faucibus
+            sem, vel finibus nisi dolor non orci.
+          </p>
+          <h3 style="margin-top: 1rem">4. Limitação de Responsabilidade</h3>
+          <p>
+            Praesent scelerisque odio id turpis tincidunt pretium. Donec
+            venenatis congue mi sit amet placerat.
+          </p>
+          <p>
+            Cras vel eros eu eros imperdiet suscipit. Etiam ullamcorper, leo non
+            interdum interdum, magna leo feugiat nibh, sit amet iaculis lacus
+            nisi sed nisl.
+          </p>
         </div>
         <div modal-footer>
-          <orc-button variant="primary" (click)="isLargeOpen.set(false)">Eu aceito</orc-button>
+          <orc-button variant="primary" (click)="isLargeOpen.set(false)"
+            >Eu aceito</orc-button
+          >
         </div>
       </orc-modal>
 
       <!-- MODAL 3: Prevent backdrop close -->
-      <orc-modal [(isOpen)]="isPreventCloseOpen" [closeOnBackdropClick]="false" [showCloseButton]="false">
+      <orc-modal
+        [(isOpen)]="isPreventCloseOpen"
+        [closeOnBackdropClick]="false"
+        [closeOnEscape]="false"
+        [showCloseButton]="false"
+      >
         <span modal-header>Atualização Crítica</span>
         <div modal-body>
-          <p>Você precisa salvar suas alterações antes de prosseguir com a atualização do sistema.</p>
-          <p>Clicar fora do modal ou pressionar ESC <strong>não</strong> vai fechá-lo.</p>
+          <p>
+            Você precisa salvar suas alterações antes de prosseguir com a
+            atualização do sistema.
+          </p>
+          <p>
+            Clicar fora do modal ou pressionar ESC <strong>não</strong> vai
+            fechá-lo.
+          </p>
         </div>
         <div modal-footer>
-          <orc-button variant="primary" (click)="isPreventCloseOpen.set(false)">Salvar e Fechar</orc-button>
+          <orc-button variant="primary" (click)="isPreventCloseOpen.set(false)"
+            >Salvar e Fechar</orc-button
+          >
         </div>
       </orc-modal>
 
@@ -103,18 +152,28 @@
       <section class="section">
         <h2 class="section-subtitle">Componentes planos</h2>
 
-
         <!-- Container usando example-card com o tamanho rigorosamente mantido -->
-        <div class="playground-grid" style="grid-template-columns: 1fr; gap: 2rem;">
-
+        <div
+          class="playground-grid"
+          style="grid-template-columns: 1fr; gap: 2rem"
+        >
           <!-- Tipo: Inputs pequenos (500px) -->
           <div class="example-card">
-            <div class="example-card__header">
-              Inputs pequenos (500px)
-            </div>
-            <div class="example-card__body"
-              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
-              <orc-modal [inline]="true" size="custom" style="display: block; width: 500px; max-width: 100%;">
+            <div class="example-card__header">Inputs pequenos (500px)</div>
+            <div
+              class="example-card__body"
+              style="
+                background: var(--bg-subtle);
+                display: flex;
+                justify-content: center;
+                padding: 2rem;
+              "
+            >
+              <orc-modal
+                [inline]="true"
+                size="custom"
+                style="display: block; width: 500px; max-width: 100%"
+              >
                 <span modal-header>Título</span>
                 <div modal-body>
                   <p>Texto informativo do modal (Inputs pequenos)</p>
@@ -129,12 +188,21 @@
 
           <!-- Tipo: Informativos (500px) -->
           <div class="example-card">
-            <div class="example-card__header">
-              Informativos (500px)
-            </div>
-            <div class="example-card__body"
-              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
-              <orc-modal [inline]="true" size="custom" style="display: block; width: 500px; max-width: 100%;">
+            <div class="example-card__header">Informativos (500px)</div>
+            <div
+              class="example-card__body"
+              style="
+                background: var(--bg-subtle);
+                display: flex;
+                justify-content: center;
+                padding: 2rem;
+              "
+            >
+              <orc-modal
+                [inline]="true"
+                size="custom"
+                style="display: block; width: 500px; max-width: 100%"
+              >
                 <span modal-header>Título</span>
                 <div modal-body>
                   <p>Texto informativo do modal</p>
@@ -149,17 +217,29 @@
 
           <!-- Tipo: Exclusão (500px) -->
           <div class="example-card">
-            <div class="example-card__header">
-              Exclusão (500px)
-            </div>
-            <div class="example-card__body"
-              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
-              <orc-modal [inline]="true" status="danger" size="custom"
-                style="display: block; width: 500px; max-width: 100%;">
+            <div class="example-card__header">Exclusão (500px)</div>
+            <div
+              class="example-card__body"
+              style="
+                background: var(--bg-subtle);
+                display: flex;
+                justify-content: center;
+                padding: 2rem;
+              "
+            >
+              <orc-modal
+                [inline]="true"
+                status="danger"
+                size="custom"
+                style="display: block; width: 500px; max-width: 100%"
+              >
                 <span modal-header>Modal destrutivo</span>
                 <div modal-body>
-                  <p style="margin-top: -10px; color: var(--text-secondary);">Esta ação não pode ser desfeita. Isso
-                    excluirá permanentemente sua conta e removerá todos os dados dos nossos servidores.</p>
+                  <p style="margin-top: -10px; color: var(--text-secondary)">
+                    Esta ação não pode ser desfeita. Isso excluirá
+                    permanentemente sua conta e removerá todos os dados dos
+                    nossos servidores.
+                  </p>
                 </div>
                 <div modal-footer>
                   <orc-button variant="ghost">Cancelar</orc-button>
@@ -171,12 +251,21 @@
 
           <!-- Tipo: Formulários (500px) -->
           <div class="example-card">
-            <div class="example-card__header">
-              Formulários (500px)
-            </div>
-            <div class="example-card__body"
-              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
-              <orc-modal [inline]="true" size="custom" style="display: block; width: 500px; max-width: 100%;">
+            <div class="example-card__header">Formulários (500px)</div>
+            <div
+              class="example-card__body"
+              style="
+                background: var(--bg-subtle);
+                display: flex;
+                justify-content: center;
+                padding: 2rem;
+              "
+            >
+              <orc-modal
+                [inline]="true"
+                size="custom"
+                style="display: block; width: 500px; max-width: 100%"
+              >
                 <span modal-header>Título</span>
                 <div modal-body>
                   <p>Texto informativo do modal (Formulários)</p>
@@ -191,17 +280,34 @@
 
           <!-- Tipo: Erros (359px) -->
           <div class="example-card">
-            <div class="example-card__header">
-              Erros (359px)
-            </div>
-            <div class="example-card__body"
-              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
-              <orc-modal [inline]="true" status="danger" size="custom"
-                style="display: block; width: 359px; max-width: 100%;">
+            <div class="example-card__header">Erros (359px)</div>
+            <div
+              class="example-card__body"
+              style="
+                background: var(--bg-subtle);
+                display: flex;
+                justify-content: center;
+                padding: 2rem;
+              "
+            >
+              <orc-modal
+                [inline]="true"
+                status="danger"
+                size="custom"
+                style="display: block; width: 359px; max-width: 100%"
+              >
                 <span modal-header>Erro crítico</span>
-                <div modal-body style="display: flex; justify-content: center;">
-                  <p style="color: var(--text-secondary); text-align: left; width: 100%;">Não foi possível processar sua
-                    solicitação. Entre em contato com o suporte.</p>
+                <div modal-body style="display: flex; justify-content: center">
+                  <p
+                    style="
+                      color: var(--text-secondary);
+                      text-align: left;
+                      width: 100%;
+                    "
+                  >
+                    Não foi possível processar sua solicitação. Entre em contato
+                    com o suporte.
+                  </p>
                 </div>
               </orc-modal>
             </div>
@@ -209,23 +315,47 @@
 
           <!-- Tipo: Extenso (600px) -->
           <div class="example-card">
-            <div class="example-card__header">
-              Extenso (600px)
-            </div>
-            <div class="example-card__body"
-              style="background: var(--bg-subtle); display: flex; justify-content: center; padding: 2rem;">
-              <orc-modal [inline]="true" size="custom" style="display: block; width: 600px; max-width: 100%;">
+            <div class="example-card__header">Extenso (600px)</div>
+            <div
+              class="example-card__body"
+              style="
+                background: var(--bg-subtle);
+                display: flex;
+                justify-content: center;
+                padding: 2rem;
+              "
+            >
+              <orc-modal
+                [inline]="true"
+                size="custom"
+                style="display: block; width: 600px; max-width: 100%"
+              >
                 <span modal-header>Modais extensos (assinaturas de termo)</span>
                 <div modal-body>
-                  <div style="max-height: 400px; overflow-y: auto; padding-right: 8px;">
-                    <h4 style="margin-top: 0;">TERMO OFICIAL DE RECONHECIMENTO DA SUPREMACIA DA BATATINHA CORADA</h4>
-                    <p>Ao selecionar "Concordo", a pessoa usuária declara estar ciente, de forma livre e recreativa, das
-                      disposições estabelecidas neste Termo Fictício de Valorização Gastronômica, nos termos a seguir:
+                  <div
+                    style="
+                      max-height: 400px;
+                      overflow-y: auto;
+                      padding-right: 8px;
+                    "
+                  >
+                    <h4 style="margin-top: 0">
+                      TERMO OFICIAL DE RECONHECIMENTO DA SUPREMACIA DA BATATINHA
+                      CORADA
+                    </h4>
+                    <p>
+                      Ao selecionar "Concordo", a pessoa usuária declara estar
+                      ciente, de forma livre e recreativa, das disposições
+                      estabelecidas neste Termo Fictício de Valorização
+                      Gastronômica, nos termos a seguir:
                     </p>
-                    <br>
+                    <br />
                     <h5>CLÁUSULA 1 — DO OBJETO</h5>
-                    <p>1.1. O presente Termo estabelece o reconhecimento simbólico de que a batatinha corada configura o
-                      ápice das preparações à base de batata.</p>
+                    <p>
+                      1.1. O presente Termo estabelece o reconhecimento
+                      simbólico de que a batatinha corada configura o ápice das
+                      preparações à base de batata.
+                    </p>
                   </div>
                 </div>
                 <div modal-footer>
@@ -235,7 +365,6 @@
               </orc-modal>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -249,7 +378,7 @@
             <table class="api-table">
               <thead>
                 <tr>
-                  <th>Propriedade / Model</th>
+                  <th>Propriedade, model ou evento</th>
                   <th>Tipo</th>
                   <th>Padrão</th>
                   <th>Descrição</th>
@@ -260,32 +389,238 @@
                   <td><code>isOpen</code></td>
                   <td><code>model&lt;boolean&gt;</code></td>
                   <td><code>false</code></td>
-                  <td>Define se o modal está aberto. Suporta Two-way binding (`[(isOpen)]`).</td>
+                  <td>
+                    Define se o modal está aberto. Suporta Two-way binding
+                    (`[(isOpen)]`).
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>visible</code></td>
+                  <td><code>model&lt;boolean&gt;</code></td>
+                  <td><code>false</code></td>
+                  <td>
+                    Alias compatível para controlar a visibilidade. Prefira
+                    apenas um dos models por instância.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>header</code></td>
+                  <td><code>string</code></td>
+                  <td><code>undefined</code></td>
+                  <td>
+                    Texto de cabeçalho. Também é possível projetar conteúdo com
+                    o atributo <code>modal-header</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>modal</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>
+                    Usa <code>showModal()</code> para colocar o diálogo na top
+                    layer e restringir a interação ao modal.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>closeOnEscape</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>
+                    Permite fechar com Escape. Para fluxos obrigatórios, defina
+                    <code>false</code> e mantenha uma ação interna para concluir
+                    ou cancelar.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>size</code></td>
-                  <td><code>'sm' | 'md' | 'lg' | 'xl' | 'fullScreen'</code></td>
+                  <td>
+                    <code
+                      >'sm' | 'md' | 'lg' | 'xl' | 'fullScreen' | 'custom'</code
+                    >
+                  </td>
                   <td><code>'md'</code></td>
                   <td>Largura máxima e porte do modal.</td>
                 </tr>
                 <tr>
-                  <td><code>closeOnBackdropClick</code></td>
-                  <td><code>boolean</code></td>
-                  <td><code>true</code></td>
-                  <td>Se verdadeiro, clicar no escuro do fundo fecha o modal automaticamente.</td>
+                  <td><code>status</code></td>
+                  <td><code>'neutral' | 'danger'</code></td>
+                  <td><code>'neutral'</code></td>
+                  <td>
+                    Define o tratamento visual do diálogo; use
+                    <code>danger</code> para ações destrutivas.
+                  </td>
                 </tr>
                 <tr>
-                  <td><code>showCloseButton</code></td>
+                  <td><code>inline</code></td>
                   <td><code>boolean</code></td>
-                  <td><code>true</code></td>
-                  <td>Renderiza o botão "X" no canto superior direito do cabeçalho.</td>
+                  <td><code>false</code></td>
+                  <td>
+                    Renderiza o elemento sem abrir a camada modal nativa. Útil
+                    para exemplos e composições embutidas.
+                  </td>
                 </tr>
                 <tr>
-                  <td><code>zIndex</code></td>
-                  <td><code>number</code></td>
-                  <td><code>1000</code></td>
-                  <td>Prioridade de empilhamento caso hajam múltiplos modais. (Natível <code>&lt;dialog&gt;</code> top
-                    layer costuma anular necessidade).</td>
+                  <td><code>position</code></td>
+                  <td>
+                    <code
+                      >'center' | 'top' | 'bottom' | 'left' | 'right' |
+                      'topleft' | 'topright' | 'bottomleft' |
+                      'bottomright'</code
+                    >
+                  </td>
+                  <td><code>'center'</code></td>
+                  <td>Escolhe o alinhamento do diálogo na viewport.</td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>closeOnBackdropClick</code> /
+                    <code>dismissableMask</code>
+                  </td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>
+                    Permite fechar ao clicar na máscara. As duas opções precisam
+                    permanecer habilitadas.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>showCloseButton</code> / <code>closable</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Controla o botão de fechar no cabeçalho.</td>
+                </tr>
+                <tr>
+                  <td><code>showHeader</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>
+                    Controla a região de cabeçalho; sem título visível, forneça
+                    <code>ariaLabel</code> ou <code>ariaLabelledBy</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>closeIcon</code>, <code>closeAriaLabel</code>,
+                    <code>closeTabindex</code>
+                  </td>
+                  <td>
+                    <code>string</code>, <code>string</code>,
+                    <code>string</code>
+                  </td>
+                  <td>
+                    <code>'×'</code>, <code>'Close dialog'</code>,
+                    <code>0</code>
+                  </td>
+                  <td>
+                    Personaliza o ícone, o nome acessível e a ordem de foco do
+                    controle de fechamento.
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>maximizeIcon</code>, <code>minimizeIcon</code>,
+                    <code>maximizeAriaLabel</code>,
+                    <code>restoreAriaLabel</code>
+                  </td>
+                  <td><code>string</code></td>
+                  <td>
+                    <code>'+'</code>, <code>'−'</code>,
+                    <code>'Maximize dialog'</code>,
+                    <code>'Restore dialog'</code>
+                  </td>
+                  <td>
+                    Personaliza os símbolos e nomes acessíveis dos controles de
+                    maximização.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>focusOnShow</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>
+                    Move o foco para o primeiro controle habilitado ao abrir.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>focusTrap</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>Mantém a navegação por Tab dentro do diálogo modal.</td>
+                </tr>
+                <tr>
+                  <td><code>blockScroll</code></td>
+                  <td><code>boolean</code></td>
+                  <td><code>true</code></td>
+                  <td>
+                    Bloqueia a rolagem do documento enquanto o modal está
+                    aberto.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>maximizable</code> / <code>maximized</code></td>
+                  <td>
+                    <code>boolean</code> / <code>model&lt;boolean&gt;</code>
+                  </td>
+                  <td><code>false</code></td>
+                  <td>
+                    Exibe o controle de maximização e expõe o estado atual.
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>ariaLabel</code>, <code>ariaLabelledBy</code>,
+                    <code>ariaDescribedBy</code>, <code>role</code>
+                  </td>
+                  <td><code>string</code></td>
+                  <td><code>'dialog'</code> para <code>role</code></td>
+                  <td>
+                    Configura o nome e a descrição acessíveis. Um cabeçalho
+                    projetado fornece o nome padrão quando está visível.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>id</code></td>
+                  <td><code>string</code></td>
+                  <td><code>undefined</code></td>
+                  <td>Define um identificador estável para a instância.</td>
+                </tr>
+                <tr>
+                  <td><code>style</code></td>
+                  <td>
+                    <code>string | Record&lt;string, string | number&gt;</code>
+                  </td>
+                  <td><code>undefined</code></td>
+                  <td>Aplica estilos ao elemento de diálogo.</td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>styleClass</code>, <code>contentStyle</code>,
+                    <code>contentStyleClass</code>
+                  </td>
+                  <td>
+                    <code>string</code>,
+                    <code>Record&lt;string, string | number&gt;</code>,
+                    <code>string</code>
+                  </td>
+                  <td>
+                    <code>''</code>, <code>undefined</code>, <code>''</code>
+                  </td>
+                  <td>
+                    Aplica classes ao diálogo e estilos ou classes à região de
+                    conteúdo.
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>zIndex</code> / <code>baseZIndex</code> /
+                    <code>autoZIndex</code>
+                  </td>
+                  <td><code>number / number / boolean</code></td>
+                  <td><code>1000 / 1000 / true</code></td>
+                  <td>
+                    Define a prioridade de empilhamento entre superfícies; o
+                    navegador controla a ordem da top layer nativa.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>closed</code></td>
@@ -293,13 +628,39 @@
                   <td>-</td>
                   <td>Evento disparado sempre que o modal se fecha.</td>
                 </tr>
+                <tr>
+                  <td>
+                    <code>onShow</code>, <code>onHide</code>,
+                    <code>onMaximize</code>
+                  </td>
+                  <td>
+                    <code>output&lt;void&gt;</code> /
+                    <code>output&lt;MaximizeEvent&gt;</code>
+                  </td>
+                  <td>-</td>
+                  <td>
+                    Notificam a abertura, o fechamento e a alteração do estado
+                    maximizado; o evento carrega
+                    <code>maximized: boolean</code>.
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
+          <p class="section-desc">
+            As opções de compatibilidade <code>draggable</code>,
+            <code>resizable</code>, <code>appendTo</code>,
+            <code>breakpoints</code>, <code>maskStyle</code>,
+            <code>maskStyleClass</code>, <code>keepInViewport</code>,
+            <code>minX</code>, <code>minY</code>,
+            <code>transitionOptions</code> e <code>rtl</code> estão depreciadas
+            e não alteram o comportamento. Use os atributos de posicionamento,
+            foco e apresentação documentados acima.
+          </p>
         </div>
 
         <!-- 2. ModalService API -->
-        <div class="api-doc-block" style="margin-top: 2rem;">
+        <div class="api-doc-block" style="margin-top: 2rem">
           <h3 class="api-component-title">ModalService</h3>
           <div class="table-container">
             <table class="api-table">
@@ -314,10 +675,16 @@
                 <tr>
                   <td><code>open()</code></td>
                   <td>
-                    <code>open&lt;T&gt;(component: Type&lt;T&gt;, inputs?: Record&lt;string, unknown&gt;): ModalRef&lt;T&gt;</code>
+                    <code
+                      >open&lt;T&gt;(component: Type&lt;T&gt;, inputs?:
+                      Record&lt;string, unknown&gt;): ModalRef&lt;T&gt;</code
+                    >
                   </td>
-                  <td>Instancia e injeta um componente dinâmico no DOM. O componente fornecido deve conter o
-                    <code>&lt;orc-modal&gt;</code> internamente para acionar o Top Layer.
+                  <td>
+                    Instancia e injeta um componente dinâmico no DOM. O
+                    componente fornecido deve conter o
+                    <code>&lt;orc-modal&gt;</code> internamente para acionar o
+                    Top Layer.
                   </td>
                 </tr>
               </tbody>

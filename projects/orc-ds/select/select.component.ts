@@ -5,7 +5,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostListener,
   OnDestroy,
   TemplateRef,
   ViewContainerRef,
@@ -21,13 +20,26 @@ import {
   viewChild,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import {
+  isTopOverlay,
+  listenForOutsideInteraction,
+  overlayAttachmentTarget,
+  registerOverlay,
+} from '@ciag/orchestra/internal';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Overlay, OverlayConfig, OverlayRef, PositionStrategy, ConnectedPosition } from '@angular/cdk/overlay';
+import {
+  Overlay,
+  OverlayConfig,
+  OverlayRef,
+  PositionStrategy,
+  ConnectedPosition,
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { SelectOption } from './select-option.model';
 import { SelectStatus } from './select.types';
 import { OptionComponent } from './option.component';
+import { SELECT_HOST } from './select.tokens';
 
 let nextSelectUniqueId = 0;
 
@@ -39,6 +51,7 @@ let nextSelectUniqueId = 0;
   styleUrl: './select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    { provide: SELECT_HOST, useExisting: forwardRef(() => SelectComponent) },
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SelectComponent),
@@ -46,23 +59,35 @@ let nextSelectUniqueId = 0;
     },
   ],
 })
-export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
+export class SelectComponent
+  implements ControlValueAccessor, AfterViewInit, OnDestroy
+{
   private readonly uniqueId = `orc-select-${++nextSelectUniqueId}`;
   private hostEl = inject(ElementRef);
   private viewContainerRef = inject(ViewContainerRef);
   private overlay = inject(Overlay);
+  private readonly document = inject(DOCUMENT);
 
   // ── Overlay References ─────────────────────────────────────
   private overlayRef: OverlayRef | null = null;
   private portal!: TemplatePortal<unknown>;
+  private layerCleanup?: () => void;
+  private outsideCleanup?: () => void;
+  private focusTimer?: ReturnType<typeof setTimeout>;
+  private blurTimer?: ReturnType<typeof setTimeout>;
 
   // ── Element Signals ────────────────────────────────────────
   readonly triggerEl = viewChild<ElementRef<HTMLDivElement>>('triggerEl');
-  readonly searchInputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
-  readonly dropdownPanel = viewChild.required<TemplateRef<unknown>>('dropdownPanel');
+  readonly searchInputRef =
+    viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  readonly dropdownPanel =
+    viewChild.required<TemplateRef<unknown>>('dropdownPanel');
 
   // ── Content Children Options ───────────────────────────────
-  readonly projectedOptions = contentChildren(OptionComponent, { descendants: true });
+  readonly projectedOptions = contentChildren<OptionComponent>(
+    forwardRef(() => OptionComponent),
+    { descendants: true },
+  );
 
   // ── Signal Inputs ──────────────────────────────────────────
   readonly id = input<string>('');
@@ -85,12 +110,28 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly optionLabel = input<string | undefined>(undefined);
   readonly optionValue = input<string | undefined>(undefined);
   readonly optionDisabled = input<string | undefined>(undefined);
-  readonly filter = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
+  readonly filter = input<boolean | undefined, unknown>(undefined, {
+    transform: (value: unknown) =>
+      value === undefined || value === null
+        ? undefined
+        : booleanAttribute(value),
+  });
   readonly filterPlaceholder = input('');
   readonly filterLocale = input<string | undefined>(undefined);
   readonly filterBy = input<string | undefined>(undefined);
   readonly filterFields = input<string[] | undefined>(undefined);
-  readonly filterMatchMode = input<'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte'>('contains');
+  readonly filterMatchMode = input<
+    | 'contains'
+    | 'startsWith'
+    | 'endsWith'
+    | 'equals'
+    | 'notEquals'
+    | 'in'
+    | 'lt'
+    | 'lte'
+    | 'gt'
+    | 'gte'
+  >('contains');
   readonly emptyFilterMessage = input<string | undefined>(undefined);
   readonly emptyMessage = input<string | undefined>(undefined);
   readonly showClear = input(false, { transform: booleanAttribute });
@@ -100,7 +141,13 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly panelStyle = input<Record<string, string> | undefined>(undefined);
   readonly panelStyleClass = input('');
   readonly appendTo = input<unknown>(undefined);
-  readonly overlayOptions = input<Record<string, unknown> | undefined>(undefined);
+  /**
+   * @deprecated Compatibility input only; overlay options are not interpreted
+   * by this implementation. Use the supported `appendTo` input for placement.
+   */
+  readonly overlayOptions = input<Record<string, unknown> | undefined>(
+    undefined,
+  );
   readonly tabindex = input<number | undefined>(undefined);
   readonly variant = input<'filled' | 'outlined'>('outlined');
   readonly size = input<'small' | 'large' | undefined>(undefined);
@@ -109,32 +156,53 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly loadingIcon = input<string | undefined>(undefined);
   readonly loadingMessage = input<string | undefined>(undefined);
   readonly autofocus = input(false, { transform: booleanAttribute });
+  /** @deprecated Compatibility input only; the filter is focused when opened. */
   readonly autofocusFilter = input(false, { transform: booleanAttribute });
+  /** @deprecated Compatibility input only; editable text entry is not supported. */
   readonly editable = input(false, { transform: booleanAttribute });
+  /** @deprecated Compatibility input only; selected options always render a checkmark. */
   readonly checkmark = input(false, { transform: booleanAttribute });
   readonly dropdownIcon = input('');
+  /** @deprecated Compatibility input only; grouped option data is not rendered. */
   readonly optionGroupLabel = input<string | undefined>(undefined);
+  /** @deprecated Compatibility input only; grouped option data is not rendered. */
   readonly optionGroupChildren = input<string>('items');
+  /** @deprecated Compatibility input only; the first option is not auto-selected. */
   readonly autoDisplayFirst = input(false, { transform: booleanAttribute });
+  /** @deprecated Compatibility input only; option groups are not rendered. */
   readonly group = input(false, { transform: booleanAttribute });
   readonly lazy = input(false, { transform: booleanAttribute });
   readonly virtualScroll = input(false, { transform: booleanAttribute });
+  /** @deprecated Compatibility input only; virtual scrolling is not implemented. */
   readonly virtualScrollItemSize = input<number | undefined>(undefined);
-  readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(undefined);
+  /** @deprecated Compatibility input only; virtual scrolling is not implemented. */
+  readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(
+    undefined,
+  );
+  /** @deprecated Compatibility input only; virtual scrolling is not implemented. */
   readonly itemSize = input<number | undefined>(undefined);
   readonly dataKey = input<string | undefined>(undefined);
   readonly autoZIndex = input(true, { transform: booleanAttribute });
   readonly baseZIndex = input(0);
   readonly focusOnHover = input(true, { transform: booleanAttribute });
+  /** @deprecated Compatibility input only; focus does not select an option. */
   readonly selectOnFocus = input(false, { transform: booleanAttribute });
   readonly autoOptionFocus = input(false, { transform: booleanAttribute });
   readonly maxlength = input<number | undefined>(undefined);
+  /** @deprecated Compatibility input only; panel transitions use library CSS. */
   readonly showTransitionOptions = input<string | undefined>(undefined);
+  /** @deprecated Compatibility input only; panel transitions use library CSS. */
   readonly hideTransitionOptions = input<string | undefined>(undefined);
   readonly resetFilterOnHide = input(true, { transform: booleanAttribute });
+  /** @deprecated Compatibility input only; tooltip rendering is not provided. */
   readonly tooltip = input('');
-  readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>('right');
+  /** @deprecated Compatibility input only; tooltip rendering is not provided. */
+  readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>(
+    'right',
+  );
+  /** @deprecated Compatibility input only; tooltip rendering is not provided. */
   readonly tooltipPositionStyle = input('absolute');
+  /** @deprecated Compatibility input only; tooltip rendering is not provided. */
   readonly tooltipStyleClass = input<string | undefined>(undefined);
   readonly scrollHeight = input('200px');
 
@@ -176,28 +244,87 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   readonly activeOptionIndex = signal<number>(-1);
 
   // ── Computeds ──────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.id() || this.inputId() || this.uniqueId);
+  readonly effectiveId = computed(
+    () => this.id() || this.inputId() || this.uniqueId,
+  );
   readonly filterEnabled = computed(() => this.filter() ?? this.searchable());
   readonly listboxId = computed(() => `${this.effectiveId()}-listbox`);
-  readonly activeOptionId = computed(() => this.activeOptionIndex() >= 0 ? `${this.listboxId()}-option-${this.activeOptionIndex()}` : null);
+  readonly activeOptionId = computed(() => {
+    const index = this.activeOptionIndex();
+    if (index < 0) return null;
+    if (this.isDataMode()) {
+      const option = this.filteredDataOptions()[index];
+      return option && !this.isOptionDisabled(option)
+        ? `${this.listboxId()}-option-${index}`
+        : null;
+    }
+    const option = this.getVisibleOptions()[index];
+    return option ? option.id() || option.defaultId : null;
+  });
+  readonly labelId = computed(() => `${this.effectiveId()}-label`);
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
 
   readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled()
+    () => this.disabled() || this.cvaDisabled(),
   );
 
-  readonly isInvalid = computed(() => this.status() === 'error');
+  readonly isInvalid = computed(
+    () => this.status() === 'error' || !!this.errorMessage(),
+  );
 
   readonly computedAriaDescribedBy = computed(() => {
     const ids: string[] = [];
-    if (this.ariaDescribedby()) ids.push(this.ariaDescribedby());
+    const externalDescription = this.ariaDescribedby().trim();
+    if (externalDescription) ids.push(externalDescription);
     if (this.isInvalid() && this.errorMessage()) {
       ids.push(this.errorId());
     } else if (this.helperText()) {
       ids.push(this.helperId());
     }
     return ids.length ? ids.join(' ') : null;
+  });
+  readonly effectiveAriaLabel = computed(() => this.ariaLabel().trim() || null);
+  readonly effectiveAriaLabelledBy = computed(
+    () =>
+      this.ariaLabelledBy()?.trim() ||
+      (this.label().trim() ? this.labelId() : null),
+  );
+  readonly effectiveFilterPlaceholder = computed(
+    () =>
+      this.filterPlaceholder().trim() ||
+      this.searchPlaceholder()?.trim() ||
+      null,
+  );
+  readonly effectiveAriaFilterLabel = computed(
+    () => this.ariaFilterLabel()?.trim() || 'Filter options',
+  );
+  readonly effectiveClearAriaLabel = computed(
+    () => this.clearAriaLabel()?.trim() || 'Clear selection',
+  );
+  readonly effectiveRemoveOptionAriaLabel = computed(
+    () => this.removeOptionAriaLabel()?.trim() || null,
+  );
+
+  /** Close an open panel when a parent changes the control into a state that
+   * cannot interact with the list anymore. */
+  private readonly closeWhenUnavailable = effect(() => {
+    if ((this.effectiveDisabled() || this.readonly()) && this.isOpen()) {
+      this.closePanel();
+    }
+  });
+
+  /** Keep the visual active state aligned when projected options are hidden,
+   * removed, or disabled after keyboard focus has landed on them. */
+  private readonly syncProjectedActiveOption = effect(() => {
+    if (this.isDataMode()) return;
+
+    const visibleOptions = this.getVisibleOptions();
+    const activeOption = visibleOptions[this.activeOptionIndex()] ?? null;
+    this.projectedOptions().forEach((option) => {
+      const isActive = option === activeOption;
+      if (option.isActive() !== isActive) option.isActive.set(isActive);
+    });
   });
 
   // Effective list of options either from inputs or projected components
@@ -210,62 +337,181 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
 
   readonly isDataMode = computed(() => this.options() !== undefined);
 
+  readonly hasVisibleOptions = computed(() =>
+    this.isDataMode()
+      ? this.filteredDataOptions().length > 0
+      : this.projectedOptions().some((option) => !option.isHidden()),
+  );
+
+  readonly emptyStateMessage = computed(() =>
+    this.searchTerm().trim()
+      ? this.emptyFilterMessage() ||
+        this.searchEmptyText() ||
+        'No results found'
+      : this.emptyMessage() || 'No options available',
+  );
+
   // Filtered data options when searching
   readonly filteredDataOptions = computed<SelectOption[]>(() => {
     const list = this.dataOptions();
-    const term = this.searchTerm().trim().toLowerCase();
+    const term = this.searchTerm().trim();
     if (!term) return list;
     return list.filter((opt) => {
-      const fields = this.filterFields() ?? (this.filterBy() ? this.filterBy()!.split(',').map((f) => f.trim()).filter(Boolean) : undefined);
+      const fields =
+        this.filterFields() ??
+        (this.filterBy()
+          ? this.filterBy()!
+              .split(',')
+              .map((f) => f.trim())
+              .filter(Boolean)
+          : undefined);
       const values = fields?.length
-        ? fields.map((field) => String((opt as any)?.[field] ?? '')).filter(Boolean)
-        : [this.getOptionLabel(opt), String((opt as any)?.description ?? '')].filter(Boolean);
+        ? fields
+            .map((field) => String((opt as any)?.[field] ?? ''))
+            .filter(Boolean)
+        : [
+            this.getOptionLabel(opt),
+            String((opt as any)?.description ?? ''),
+          ].filter(Boolean);
       return values.some((value) => this.matchesFilter(value, term));
     });
   });
 
   private matchesFilter(value: string, term: string): boolean {
-    const normalized = value.toLocaleLowerCase(this.filterLocale() || undefined);
+    const normalized = value.toLocaleLowerCase(
+      this.filterLocale() || undefined,
+    );
     const query = term.toLocaleLowerCase(this.filterLocale() || undefined);
     switch (this.filterMatchMode()) {
-      case 'startsWith': return normalized.startsWith(query);
-      case 'endsWith': return normalized.endsWith(query);
-      case 'equals': return normalized === query;
-      case 'notEquals': return normalized !== query;
-      case 'in': return query.split(',').map(item => item.trim()).filter(Boolean).includes(normalized);
-      case 'lt': return this.compareNumericFilter(value, term, (left, right) => left < right);
-      case 'lte': return this.compareNumericFilter(value, term, (left, right) => left <= right);
-      case 'gt': return this.compareNumericFilter(value, term, (left, right) => left > right);
-      case 'gte': return this.compareNumericFilter(value, term, (left, right) => left >= right);
-      default: return normalized.includes(query);
+      case 'startsWith':
+        return normalized.startsWith(query);
+      case 'endsWith':
+        return normalized.endsWith(query);
+      case 'equals':
+        return normalized === query;
+      case 'notEquals':
+        return normalized !== query;
+      case 'in':
+        return query
+          .split(',')
+          .map((item) => item.trim())
+          .filter(Boolean)
+          .includes(normalized);
+      case 'lt':
+        return this.compareNumericFilter(
+          value,
+          term,
+          (left, right) => left < right,
+        );
+      case 'lte':
+        return this.compareNumericFilter(
+          value,
+          term,
+          (left, right) => left <= right,
+        );
+      case 'gt':
+        return this.compareNumericFilter(
+          value,
+          term,
+          (left, right) => left > right,
+        );
+      case 'gte':
+        return this.compareNumericFilter(
+          value,
+          term,
+          (left, right) => left >= right,
+        );
+      default:
+        return normalized.includes(query);
     }
   }
 
-  private compareNumericFilter(value: string, term: string, compare: (value: number, query: number) => boolean): boolean {
+  private compareNumericFilter(
+    value: string,
+    term: string,
+    compare: (value: number, query: number) => boolean,
+  ): boolean {
     const numericValue = Number(value);
     const numericQuery = Number(term);
-    return Number.isFinite(numericValue) && Number.isFinite(numericQuery) && compare(numericValue, numericQuery);
+    return (
+      Number.isFinite(numericValue) &&
+      Number.isFinite(numericQuery) &&
+      compare(numericValue, numericQuery)
+    );
   }
 
-  getOptionValue(option: any): any { const key = this.optionValue(); return key ? option?.[key] : option?.value ?? option; }
-  sameOptionValue(left: any, right: any): boolean { const key = this.dataKey(); return key && left && right ? left?.[key] === right?.[key] : left === right; }
-  isDataOptionSelected(option: SelectOption): boolean { const candidate = this.getOptionValue(option); const current = this.value(); return this.multiple() ? Array.isArray(current) && current.some(item => this.sameOptionValue(item, candidate)) : this.sameOptionValue(current, candidate); }
-  getOptionLabel(option: any): string { const key = this.optionLabel(); return String(key ? option?.[key] ?? '' : option?.label ?? option ?? ''); }
-  isOptionDisabled(option: any): boolean { const key = this.optionDisabled(); return Boolean(key ? option?.[key] : option?.disabled); }
+  getOptionValue(option: any): any {
+    const key = this.optionValue();
+    return key ? option?.[key] : (option?.value ?? option);
+  }
+  private toNativeFormValue(value: unknown): string {
+    let nativeValue = value;
+    if (this.isDataMode()) {
+      const option = this.dataOptions().find((candidate) =>
+        this.sameOptionValue(this.getOptionValue(candidate), value),
+      );
+      if (option) nativeValue = this.getOptionValue(option);
+    }
+    const key = this.dataKey();
+    if (
+      key &&
+      typeof nativeValue === 'object' &&
+      nativeValue !== null &&
+      key in nativeValue
+    ) {
+      nativeValue = (nativeValue as Record<string, unknown>)[key];
+    }
+    return nativeValue == null ? '' : String(nativeValue);
+  }
+  sameOptionValue(left: any, right: any): boolean {
+    const key = this.dataKey();
+    if (!key || left == null || right == null) return left === right;
+    const valueForKey = (value: any) =>
+      typeof value === 'object' && value !== null && key in value
+        ? value[key]
+        : value;
+    return valueForKey(left) === valueForKey(right);
+  }
+  isDataOptionSelected(option: SelectOption): boolean {
+    const candidate = this.getOptionValue(option);
+    const current = this.value();
+    return this.multiple()
+      ? Array.isArray(current) &&
+          current.some((item) => this.sameOptionValue(item, candidate))
+      : this.sameOptionValue(current, candidate);
+  }
+  getOptionLabel(option: any): string {
+    const key = this.optionLabel();
+    return String(
+      key ? (option?.[key] ?? '') : (option?.label ?? option ?? ''),
+    );
+  }
+  isOptionDisabled(option: any): boolean {
+    const key = this.optionDisabled();
+    return Boolean(key ? option?.[key] : option?.disabled);
+  }
 
   // Selected Option Items for display
-  readonly selectedItems = computed<{ label: string; value: any; icon?: string; avatarUrl?: string }[]>(() => {
+  readonly selectedItems = computed<
+    { label: string; value: any; icon?: string; avatarUrl?: string }[]
+  >(() => {
     const currentVal = this.value();
     if (currentVal === undefined || currentVal === null || currentVal === '') {
       return [];
     }
 
-    const valArray = this.multiple() ? (Array.isArray(currentVal) ? currentVal : [currentVal]) : [currentVal];
+    const valArray = this.multiple()
+      ? Array.isArray(currentVal)
+        ? currentVal
+        : [currentVal]
+      : [currentVal];
 
     if (this.isDataMode()) {
       const allData = this.dataOptions();
       return valArray.map((v) => {
-        const found = allData.find((opt) => this.sameOptionValue(this.getOptionValue(opt), v));
+        const found = allData.find((opt) =>
+          this.sameOptionValue(this.getOptionValue(opt), v),
+        );
         return {
           label: found ? this.getOptionLabel(found) : String(v),
           value: v,
@@ -278,7 +524,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     // Projected mode
     const proj = this.projectedOptions();
     return valArray.map((v) => {
-      const found = proj.find((opt) => opt.value() === v);
+      const found = proj.find((opt) => this.sameOptionValue(opt.value(), v));
       return {
         label: found ? found.getOptionText() : String(v),
         value: v,
@@ -286,6 +532,19 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
         avatarUrl: found?.avatarUrl(),
       };
     });
+  });
+
+  /** Native form values mirror the selection without putting the name on a div. */
+  readonly nativeFormValues = computed(() => {
+    const current = this.value();
+    const values = this.multiple()
+      ? Array.isArray(current)
+        ? current
+        : []
+      : current === undefined || current === null || current === ''
+        ? []
+        : [current];
+    return values.map((value) => this.toNativeFormValue(value));
   });
 
   readonly hasValue = computed(() => this.selectedItems().length > 0);
@@ -304,9 +563,11 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       projOptions.forEach((opt) => {
         if (isMulti) {
           const arr = Array.isArray(val) ? val : [];
-          opt.isSelected.set(arr.includes(opt.value()));
+          opt.isSelected.set(
+            arr.some((item) => this.sameOptionValue(item, opt.value())),
+          );
         } else {
-          opt.isSelected.set(val === opt.value());
+          opt.isSelected.set(this.sameOptionValue(val, opt.value()));
         }
       });
     });
@@ -314,7 +575,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     // Update visibility of projected options when searching
     effect(() => {
       if (this.isDataMode()) return;
-      const term = this.searchTerm().trim().toLowerCase();
+      const term = this.searchTerm().trim();
       const projOptions = this.projectedOptions();
 
       projOptions.forEach((opt) => {
@@ -322,8 +583,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
           opt.isHidden.set(false);
         } else {
           const desc = opt.description();
-          const matches = opt.getOptionText().toLowerCase().includes(term) ||
-                          (desc ? desc.toLowerCase().includes(term) : false);
+          const matches = [opt.getOptionText(), desc ?? ''].some((value) =>
+            this.matchesFilter(value, term),
+          );
           opt.isHidden.set(!matches);
         }
       });
@@ -331,10 +593,17 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   ngAfterViewInit(): void {
-    this.portal = new TemplatePortal(this.dropdownPanel(), this.viewContainerRef);
+    this.portal = new TemplatePortal(
+      this.dropdownPanel(),
+      this.viewContainerRef,
+    );
+    if (this.autofocus()) {
+      this.triggerEl()?.nativeElement.focus({ preventScroll: true });
+    }
   }
 
   ngOnDestroy(): void {
+    if (this.blurTimer !== undefined) clearTimeout(this.blurTimer);
     this.closePanel();
   }
 
@@ -364,7 +633,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     if (this.isOpen() || this.effectiveDisabled() || this.readonly()) return;
     if (!this.portal) return;
 
-    const triggerNative = this.triggerEl()?.nativeElement || this.hostEl.nativeElement;
+    const triggerNative =
+      this.triggerEl()?.nativeElement || this.hostEl.nativeElement;
     const triggerWidth = triggerNative.getBoundingClientRect().width;
 
     const positionStrategy = this.createPositionStrategy(triggerNative);
@@ -377,52 +647,101 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     });
 
     this.overlayRef = this.overlay.create(overlayConfig);
+    if (this.autoZIndex()) {
+      this.overlayRef.hostElement.style.zIndex = String(
+        Math.max(0, this.baseZIndex()) + 1000,
+      );
+    }
     this.overlayRef.backdropClick().subscribe(() => this.closePanel());
     this.overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        this.closePanel();
+        event.preventDefault();
+        this.closePanel(true);
         event.stopPropagation();
       }
     });
 
     this.overlayRef.attach(this.portal);
+    this.layerCleanup = registerOverlay(this.overlayRef.overlayElement, {
+      anchor: triggerNative,
+      onParentClose: () => this.closePanel(),
+    });
+    this.outsideCleanup = listenForOutsideInteraction(
+      this.document,
+      () => [this.hostEl.nativeElement, this.overlayRef?.overlayElement],
+      (event) => this.onDocumentClick(event.target, event.type),
+    );
     this.isOpen.set(true);
+    if (this.autoOptionFocus()) this.navigateOption(1);
     this.opened.emit();
     this.onShow.emit();
-    if (this.lazy() || this.virtualScroll()) this.onLazyLoad.emit({ first: 0, last: Math.max(0, this.dataOptions().length - 1) });
+    if (this.lazy() || this.virtualScroll())
+      this.onLazyLoad.emit({
+        first: 0,
+        last: Math.max(0, this.dataOptions().length - 1),
+      });
 
     if (this.filterEnabled()) {
-      setTimeout(() => this.searchInputRef()?.nativeElement?.focus(), 50);
+      this.focusTimer = setTimeout(() => {
+        this.focusTimer = undefined;
+        this.searchInputRef()?.nativeElement?.focus();
+      });
     }
   }
 
-  closePanel(): void {
+  closePanel(restoreFocus = false): void {
     if (!this.isOpen()) return;
+    if (this.focusTimer !== undefined) clearTimeout(this.focusTimer);
+    this.focusTimer = undefined;
+    this.outsideCleanup?.();
+    this.outsideCleanup = undefined;
+    this.layerCleanup?.();
+    this.layerCleanup = undefined;
     this.overlayRef?.dispose();
     this.overlayRef = null;
     this.isOpen.set(false);
     if (this.resetFilterOnHide()) this.searchTerm.set('');
     this.activeOptionIndex.set(-1);
-    this.onTouched();
     this.closed.emit();
     this.onHide.emit();
+    if (restoreFocus)
+      this.triggerEl()?.nativeElement.focus({ preventScroll: true });
   }
 
   private createPositionStrategy(origin: HTMLElement): PositionStrategy {
+    const parent = overlayAttachmentTarget(origin, this.appendTo() ?? 'body');
     const positions: ConnectedPosition[] = [
-      { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },
-      { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 },
+      {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: 4,
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+        offsetY: -4,
+      },
     ];
     return this.overlay
       .position()
       .flexibleConnectedTo(origin)
+      .withPopoverLocation(
+        parent === this.document.body
+          ? 'global'
+          : { type: 'parent', element: parent },
+      )
       .withPositions(positions)
       .withPush(true);
   }
 
   // ── Selection Logic ───────────────────────────────────────
-  onOptionSelected(optionComponent: OptionComponent): void {
-    this.selectValue(optionComponent.value());
+  onOptionSelected(optionComponent: OptionComponent, event?: Event): void {
+    if (optionComponent.disabled()) return;
+    this.selectValue(optionComponent.value(), event);
   }
 
   onDataOptionClick(option: SelectOption, event?: Event): void {
@@ -434,7 +753,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     if (this.effectiveDisabled() || this.readonly()) return;
     if (this.multiple()) {
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      const index = current.findIndex(item => this.sameOptionValue(item, val));
+      const index = current.findIndex((item) =>
+        this.sameOptionValue(item, val),
+      );
       if (index > -1) {
         current.splice(index, 1);
       } else {
@@ -445,7 +766,10 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       this.selectionChange.emit(current);
       const event = originalEvent ?? new Event('change');
       this.onChange.emit({ originalEvent: event, value: current });
-      (index > -1 ? this.onOptionUnselect : this.onOptionSelect).emit({ originalEvent: event, value: val });
+      (index > -1 ? this.onOptionUnselect : this.onOptionSelect).emit({
+        originalEvent: event,
+        value: val,
+      });
     } else {
       this.value.set(val);
       this.onModelChange(val);
@@ -453,7 +777,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
       const event = originalEvent ?? new Event('change');
       this.onChange.emit({ originalEvent: event, value: val });
       this.onOptionSelect.emit({ originalEvent: event, value: val });
-      this.closePanel();
+      this.closePanel(true);
     }
   }
 
@@ -464,7 +788,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
 
     if (this.multiple()) {
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      const updated = current.filter((v) => !this.sameOptionValue(v, itemValue));
+      const updated = current.filter(
+        (v) => !this.sameOptionValue(v, itemValue),
+      );
       this.value.set(updated);
       this.onModelChange(updated);
       this.selectionChange.emit(updated);
@@ -489,6 +815,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   setActiveOption(optionComponent: OptionComponent): void {
+    if (!this.focusOnHover()) return;
     const list = this.getVisibleOptions();
     const idx = list.indexOf(optionComponent);
     if (idx !== -1) {
@@ -498,12 +825,18 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   private getVisibleOptions(): OptionComponent[] {
-    return this.projectedOptions().filter((opt) => !opt.isHidden() && !opt.disabled());
+    return this.projectedOptions().filter(
+      (opt) => !opt.isHidden() && !opt.disabled(),
+    );
   }
 
-  private updateActiveHighlight(list: OptionComponent[], activeIdx: number): void {
-    list.forEach((opt, index) => {
-      opt.isActive.set(index === activeIdx);
+  private updateActiveHighlight(
+    list: OptionComponent[],
+    activeIdx: number,
+  ): void {
+    const activeOption = list[activeIdx];
+    this.projectedOptions().forEach((option) => {
+      option.isActive.set(option === activeOption);
     });
   }
 
@@ -556,8 +889,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
         break;
       case 'Escape':
         if (this.isOpen()) {
+          event.preventDefault();
           event.stopPropagation();
-          this.closePanel();
+          this.closePanel(true);
         }
         break;
     }
@@ -565,11 +899,13 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
 
   private navigateOption(direction: number): void {
     if (this.isDataMode()) {
-      const optionsList = this.filteredDataOptions().filter((o) => !this.isOptionDisabled(o));
-      if (optionsList.length === 0) return;
-      let nextIndex = this.activeOptionIndex() + direction;
-      if (nextIndex < 0) nextIndex = optionsList.length - 1;
-      if (nextIndex >= optionsList.length) nextIndex = 0;
+      const optionsList = this.filteredDataOptions();
+      if (!optionsList.some((option) => !this.isOptionDisabled(option))) return;
+      let nextIndex = this.activeOptionIndex();
+      do {
+        nextIndex =
+          (nextIndex + direction + optionsList.length) % optionsList.length;
+      } while (this.isOptionDisabled(optionsList[nextIndex]));
       this.activeOptionIndex.set(nextIndex);
     } else {
       const visibleOpts = this.getVisibleOptions();
@@ -587,8 +923,8 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     if (idx < 0) return;
 
     if (this.isDataMode()) {
-      const optionsList = this.filteredDataOptions().filter((o) => !this.isOptionDisabled(o));
-      if (optionsList[idx]) {
+      const optionsList = this.filteredDataOptions();
+      if (optionsList[idx] && !this.isOptionDisabled(optionsList[idx])) {
         this.selectValue(this.getOptionValue(optionsList[idx]));
       }
     } else {
@@ -599,25 +935,90 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnD
     }
   }
 
-  onTriggerFocus(event: FocusEvent): void {
+  onCompositeFocus(event: FocusEvent): void {
+    if (this.blurTimer !== undefined) clearTimeout(this.blurTimer);
+    this.blurTimer = undefined;
+    const wasFocused = this.isFocused();
     this.isFocused.set(true);
-    this.focus.emit(event);
-    this.onFocus.emit(event);
+    if (!wasFocused) {
+      this.focus.emit(event);
+      this.onFocus.emit(event);
+    }
   }
 
-  onTriggerBlur(event: FocusEvent): void {
+  onCompositeFocusOut(event: FocusEvent): void {
+    if (this.isFocusTargetInsideComposite(event.relatedTarget)) return;
+    if (this.blurTimer !== undefined) clearTimeout(this.blurTimer);
+
+    // A null relatedTarget is common when an overlay node is removed while
+    // focus is changing. Check the settled active element before declaring blur.
+    if (event.relatedTarget === null) {
+      this.blurTimer = setTimeout(() => {
+        this.blurTimer = undefined;
+        if (this.isActiveElementInsideComposite()) return;
+        this.finishCompositeBlur(event);
+      });
+      return;
+    }
+
+    this.finishCompositeBlur(event);
+  }
+
+  private isFocusTargetInsideComposite(target: EventTarget | null): boolean {
+    if (!target) return false;
+    const NodeConstructor = this.document.defaultView?.Node;
+    if (!NodeConstructor || !(target instanceof NodeConstructor)) return false;
+    const overlay = this.overlayRef?.overlayElement;
+    return (
+      this.hostEl.nativeElement.contains(target) || !!overlay?.contains(target)
+    );
+  }
+
+  private isActiveElementInsideComposite(): boolean {
+    return this.isFocusTargetInsideComposite(this.document.activeElement);
+  }
+
+  private finishCompositeBlur(event: FocusEvent): void {
+    if (!this.isFocused()) return;
     this.isFocused.set(false);
     this.onTouched();
     this.blur.emit(event);
     this.onBlur.emit(event);
+    if (this.isOpen()) this.closePanel();
   }
 
-  @HostListener('document:click', ['$event.target'])
-  onDocumentClick(target: EventTarget | null): void {
-    if (!this.isOpen()) return;
-    const insideHost = target instanceof Node && this.hostEl.nativeElement.contains(target);
-    const insideOverlay = this.overlayRef?.overlayElement.contains(target as Node);
-    if (!insideHost && !insideOverlay) {
+  onDocumentClick(target: EventTarget | null, eventType = 'click'): void {
+    // Wait for a click rather than pointerdown so native focusout gets the
+    // first chance to report a real composite blur.
+    if (!this.isOpen() || eventType !== 'click') return;
+    const host = this.hostEl.nativeElement;
+    const hostNode = host.ownerDocument.defaultView?.Node;
+    const insideHost =
+      !!hostNode && target instanceof hostNode && host.contains(target);
+    const overlay = this.overlayRef?.overlayElement;
+    const overlayNode = overlay?.ownerDocument.defaultView?.Node;
+    const insideOverlay =
+      !!overlay &&
+      !!overlayNode &&
+      target instanceof overlayNode &&
+      overlay.contains(target);
+    if (insideHost || insideOverlay) return;
+    if (overlay && !isTopOverlay(overlay)) return;
+
+    // A click on a non-focusable outside target may remove the currently
+    // focused panel without generating a useful browser focusout event.
+    if (this.isActiveElementInsideComposite()) {
+      const FocusEventConstructor = this.document.defaultView?.FocusEvent;
+      if (FocusEventConstructor) {
+        this.finishCompositeBlur(
+          new FocusEventConstructor('blur', { relatedTarget: target }),
+        );
+      } else {
+        this.isFocused.set(false);
+        this.onTouched();
+        this.closePanel();
+      }
+    } else {
       this.closePanel();
     }
   }

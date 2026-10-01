@@ -8,7 +8,7 @@
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-family: var(--font-sans, "Poppins", sans-serif);
 
   &--disabled {
     cursor: not-allowed;
@@ -48,7 +48,9 @@
     box-shadow var(--transition-fast, 0.2s ease);
 
   // Hover
-  &:hover:not(.orc-textarea-box--focused):not(.orc-textarea-box--disabled):not(.orc-textarea-box--error):not(.orc-textarea-box--success) {
+  &:hover:not(.orc-textarea-box--focused):not(.orc-textarea-box--disabled):not(
+      .orc-textarea-box--error
+    ):not(.orc-textarea-box--success) {
     background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
     border-color: var(--orc-border-default, var(--border-default, #d9d9d9));
   }
@@ -56,7 +58,10 @@
   // Focus
   &--focused {
     background-color: var(--orc-control-surface, var(--fill-input, #ffffff));
-    border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+    border-color: var(
+      --orc-interactive,
+      var(--orc-color-azul-eletrico, #1c6aed)
+    );
     box-shadow:
       0 0 0 3px var(--orc-interactive-shadow),
       0 0 0 1px var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
@@ -89,16 +94,25 @@
     border-color: var(--orc-danger, #fb2c36) !important;
 
     &.orc-textarea-box--focused {
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--orc-danger, #fb2c36) 15%, transparent) !important;
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--orc-danger, #fb2c36) 15%, transparent) !important;
     }
   }
 
   // Status: Success
   &--success {
-    border-color: var(--orc-status-success-fg, var(--color-success, #00c950)) !important;
+    border-color: var(
+      --orc-status-success-fg,
+      var(--color-success, #00c950)
+    ) !important;
 
     &.orc-textarea-box--focused {
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--orc-status-success-fg, var(--color-success, #00c950)) 15%, transparent) !important;
+      box-shadow: 0 0 0 3px
+        color-mix(
+          in srgb,
+          var(--orc-status-success-fg, var(--color-success, #00c950)) 15%,
+          transparent
+        ) !important;
     }
   }
 

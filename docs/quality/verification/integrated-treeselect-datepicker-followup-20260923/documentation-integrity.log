@@ -1,0 +1,15 @@
+{
+  "qualityMarkdown": 101,
+  "localMarkdownLinks": 735,
+  "publicLlmsLocalLinks": 1,
+  "sourceAnchors": 407,
+  "p2SourceAnchors": 171,
+  "ledgerRows": 147,
+  "inventoryComponents": 147,
+  "ledgerMissing": [],
+  "ledgerExtra": [],
+  "bad": [],
+  "unresolved": []
+}
+
+GATE_EXIT_CODE=0

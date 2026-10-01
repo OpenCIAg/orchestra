@@ -1,0 +1,29 @@
+❯ Building...
+✔ Building...
+Initial chunk files              | Names                         |  Raw size
+chunk-SHFXIAL3.js                | -                             |   2.48 MB | 
+polyfills.js                     | polyfills                     |   1.06 MB | 
+spec-modal-modal.service.spec.js | spec-modal-modal.service.spec | 159.83 kB | 
+jasmine-cleanup-1.js             | jasmine-cleanup-1             |  71.38 kB | 
+test_main.js                     | test_main                     |  22.10 kB | 
+jasmine-cleanup-0.js             | jasmine-cleanup-0             | 446 bytes | 
+
+                                 | Initial total                 |   3.79 MB
+
+Application bundle generation complete. [2.876 seconds] - 2026-09-22T19:07:11.135Z
+
+22 09 2026 16:07:11.223:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9878/
+22 09 2026 16:07:11.224:INFO [launcher]: Launching browsers ChromeHeadlessCI with concurrency unlimited
+22 09 2026 16:07:11.226:INFO [launcher]: Starting browser ChromeHeadless
+22 09 2026 16:07:11.704:INFO [Chrome Headless 153.0.0.0 (Mac OS 10.15.7)]: Connected on socket -B8CWemPRBBbKoD0AAAB with id 58912490
+Chrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 0 of 8[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 1 of 8[32m SUCCESS[39m (0 secs / 0.002 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 2 of 8[32m SUCCESS[39m (0 secs / 0.041 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 3 of 8[32m SUCCESS[39m (0 secs / 0.044 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 4 of 8[32m SUCCESS[39m (0 secs / 0.046 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 5 of 8[32m SUCCESS[39m (0 secs / 0.047 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 6 of 8[32m SUCCESS[39m (0 secs / 0.052 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 7 of 8[32m SUCCESS[39m (0 secs / 0.054 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 8 of 8[32m SUCCESS[39m (0 secs / 0.057 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 8 of 8[32m SUCCESS[39m (0.061 secs / 0.057 secs)
+[32mTOTAL: 8 SUCCESS[39m

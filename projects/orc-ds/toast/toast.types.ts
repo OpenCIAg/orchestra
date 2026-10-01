@@ -1,10 +1,5 @@
 export type ToastStatus =
-  | 'success'
-  | 'info'
-  | 'warning'
-  | 'error'
-  | 'loading'
-  | 'notification';
+  'success' | 'info' | 'warning' | 'error' | 'loading' | 'notification';
 
 export type ToastPosition =
   | 'top-right'

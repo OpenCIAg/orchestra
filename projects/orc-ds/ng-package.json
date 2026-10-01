@@ -3,13 +3,13 @@
   "dest": "../../dist/orc-ds",
   "lib": {
     "entryFile": "public-api.ts",
-    "styleIncludePaths": [
-      "./styles"
-    ]
+    "styleIncludePaths": ["./styles"]
   },
   "assets": [
     "./styles/**/*.scss",
     "./styles/**/*.css",
-    "./THIRD_PARTY_NOTICES.md"
-  ]
+    "./THIRD_PARTY_NOTICES.md",
+    "./CHANGELOG.md"
+  ],
+  "allowedNonPeerDependencies": ["dompurify"]
 }

@@ -1,0 +1,3 @@
+P2 FESM byte size before extraction: 1624036; after extraction: 1624037; delta: 1 bytes.
+P2 FESM gzip size before extraction: 167822; after extraction: 167960; delta: 138 bytes.
+Both packages were built from the same source state except that SpeedDial was embedded in p2-overlay-components.ts for the baseline and in p2-speed-dial-component.ts for the current build.

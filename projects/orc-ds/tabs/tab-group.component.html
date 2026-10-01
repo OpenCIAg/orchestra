@@ -18,91 +18,183 @@
   [attr.id]="id()"
 >
   <!-- Barra de Abas (WAI-ARIA Tablist) -->
-  <div
-    class="p-tabview-nav-container orc-tab-group__header"
-    role="tablist"
-    [attr.aria-label]="ariaLabel()"
-    [attr.tabindex]="tabindex()"
-  >
-    <ng-container *ngFor="let tab of visibleTabs(); let i = index">
-      <!-- Divisor sutil entre abas inativas na variante Filled (Figma Node 69:2171) -->
-      <span
-        *ngIf="variant() === 'filled' && i > 0 && activeIndex() !== i && activeIndex() !== i - 1"
-        class="orc-tab-group__divider"
-        aria-hidden="true"
-      ></span>
-
-      <!-- Botão da Aba Individual (WAI-ARIA Tab) -->
-      <button
-        #tabBtn
-        type="button"
-        role="tab"
-        class="p-tabview-nav-link orc-tab-group__tab"
-        [class.orc-tab-group__tab--active]="activeIndex() === i"
-        [class.orc-tab-group__tab--disabled]="tab.disabled()"
-        [id]="tab.tabId()"
-        [attr.aria-selected]="activeIndex() === i"
-        [attr.aria-controls]="tab.panelId()"
-        [tabindex]="activeIndex() === i ? 0 : -1"
-        [disabled]="tab.disabled()"
-        [title]="tab.tooltip() || null"
-        [class]="tab.headerStyleClass()"
-        [style]="tab.headerStyle()"
-        (click)="selectTab(i)"
-        (focus)="onFocus(i)"
-        (keydown)="onKeydown($event, i)"
-      >
-        <!-- Ícone à Esquerda (start) -->
+  <div class="orc-tab-group__navigation">
+    <button
+      *ngIf="
+        scrollable() &&
+        showNavigators() &&
+        (!autoHideButtons() || navigation().previous)
+      "
+      type="button"
+      class="orc-tab-group__navigator orc-tab-group__navigator--previous"
+      [attr.aria-label]="prevButtonAriaLabel() || 'Previous tabs'"
+      [disabled]="!navigation().previous"
+      (click)="scrollTabs('previous')"
+    >
+      {{ isRtl() ? "›" : "‹" }}
+    </button>
+    <div
+      #tabHeader
+      class="p-tabview-nav-container orc-tab-group__header"
+      role="tablist"
+      [attr.aria-label]="ariaLabel()"
+      (scroll)="updateNavigation()"
+    >
+      <ng-container *ngFor="let tab of visibleTabs(); let i = index">
+        <!-- Divisor sutil entre abas inativas na variante Filled (Figma Node 69:2171) -->
         <span
-          *ngIf="tab.icon() && tab.iconPosition() === 'start'"
-          class="orc-tab-group__icon orc-tab-group__icon--start"
+          *ngIf="
+            variant() === 'filled' &&
+            i > 0 &&
+            activeIndex() !== i &&
+            activeIndex() !== i - 1
+          "
+          class="orc-tab-group__divider"
           aria-hidden="true"
-        >
-          <!-- Home Icon padrão se icon='home' -->
-          <svg *ngIf="tab.icon() === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <!-- Settings Icon padrão se icon='settings' -->
-          <svg *ngIf="tab.icon() === 'settings'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-          <!-- Warning Icon padrão se icon='warning' -->
-          <svg *ngIf="tab.icon() === 'warning'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
-            <line x1="12" y1="9" x2="12" y2="13"></line>
-            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-          </svg>
-        </span>
+        ></span>
 
-        <!-- Label / Rótulo da Aba -->
-        <span class="orc-tab-group__label" *ngIf="tab.label()">
-          {{ tab.label() }}
-        </span>
+        <!-- Botão da Aba Individual (WAI-ARIA Tab) -->
+        <div class="orc-tab-group__tab-item">
+          <button
+            #tabBtn
+            type="button"
+            role="tab"
+            class="p-tabview-nav-link orc-tab-group__tab"
+            [class.orc-tab-group__tab--active]="activeIndex() === i"
+            [class.orc-tab-group__tab--disabled]="tab.disabled()"
+            [id]="tab.tabId()"
+            [attr.aria-selected]="activeIndex() === i"
+            [attr.aria-controls]="tab.panelId()"
+            [tabindex]="
+              !tab.disabled() && (focusedIndex() ?? activeIndex()) === i
+                ? tabindex()
+                : -1
+            "
+            [disabled]="tab.disabled()"
+            [title]="tab.tooltip() || null"
+            [class]="tab.headerStyleClass()"
+            [style]="tab.headerStyle()"
+            (click)="selectTab(i)"
+            (focus)="onFocus(i)"
+            (keydown)="onKeydown($event, i)"
+          >
+            <!-- Ícone à Esquerda (start) -->
+            <span
+              *ngIf="tab.icon() && tab.iconPosition() === 'start'"
+              class="orc-tab-group__icon orc-tab-group__icon--start"
+              aria-hidden="true"
+            >
+              <!-- Home Icon padrão se icon='home' -->
+              <svg
+                *ngIf="tab.icon() === 'home'"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <!-- Settings Icon padrão se icon='settings' -->
+              <svg
+                *ngIf="tab.icon() === 'settings'"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+                ></path>
+              </svg>
+              <!-- Warning Icon padrão se icon='warning' -->
+              <svg
+                *ngIf="tab.icon() === 'warning'"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+                ></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </span>
 
-        <!-- Projeção Customizada de Label (se houver) -->
-        <ng-container *ngTemplateOutlet="tab.customLabelTemplate() || null"></ng-container>
+            <!-- Label / Rótulo da Aba -->
+            <span class="orc-tab-group__label" *ngIf="tab.label()">
+              {{ tab.label() }}
+            </span>
 
-        <!-- Badge Opcional -->
-        <span *ngIf="tab.badge() !== undefined" class="orc-tab-group__badge">
-          {{ tab.badge() }}
-        </span>
+            <!-- Projeção Customizada de Label (se houver) -->
+            <ng-container
+              *ngTemplateOutlet="tab.customLabelTemplate() || null"
+            ></ng-container>
 
-        <span *ngIf="tab.closable()" class="orc-tab-group__close" role="button" tabindex="0" [attr.aria-label]="tab.closeAriaLabel() || null" (click)="closeTab(i, $event); $event.stopPropagation()" (keydown.enter)="closeTab(i, $event); $event.stopPropagation()">×</span>
+            <!-- Badge Opcional -->
+            <span
+              *ngIf="tab.badge() !== undefined"
+              class="orc-tab-group__badge"
+            >
+              {{ tab.badge() }}
+            </span>
 
-        <!-- Ícone à Direita (end) -->
-        <span
-          *ngIf="tab.icon() && tab.iconPosition() === 'end'"
-          class="orc-tab-group__icon orc-tab-group__icon--end"
-          aria-hidden="true"
-        >
-          <svg *ngIf="tab.icon() === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          </svg>
-        </span>
-      </button>
-    </ng-container>
+            <!-- Ícone à Direita (end) -->
+            <span
+              *ngIf="tab.icon() && tab.iconPosition() === 'end'"
+              class="orc-tab-group__icon orc-tab-group__icon--end"
+              aria-hidden="true"
+            >
+              <svg
+                *ngIf="tab.icon() === 'home'"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              </svg>
+            </span>
+          </button>
+
+          <button
+            *ngIf="tab.closable()"
+            type="button"
+            class="orc-tab-group__close"
+            [disabled]="tab.disabled()"
+            [attr.aria-label]="
+              tab.closeAriaLabel() || 'Close ' + (tab.label() || 'tab')
+            "
+            (click)="closeTab(i, $event)"
+          >
+            ×
+          </button>
+        </div>
+      </ng-container>
+    </div>
+    <button
+      *ngIf="
+        scrollable() &&
+        showNavigators() &&
+        (!autoHideButtons() || navigation().next)
+      "
+      type="button"
+      class="orc-tab-group__navigator orc-tab-group__navigator--next"
+      [attr.aria-label]="nextButtonAriaLabel() || 'Next tabs'"
+      [disabled]="!navigation().next"
+      (click)="scrollTabs('next')"
+    >
+      {{ isRtl() ? "‹" : "›" }}
+    </button>
   </div>
 
   <!-- Painéis de Conteúdo das Abas (WAI-ARIA Tabpanels) -->
@@ -117,8 +209,15 @@
       [hidden]="activeIndex() !== i"
       tabindex="0"
     >
-      <ng-container *ngIf="activeIndex() === i || (!lazy() || tab.cache()) && loadedTabs.has(tab)">
-        <ng-container *ngTemplateOutlet="tab.contentTemplate() || null"></ng-container>
+      <ng-container
+        *ngIf="
+          activeIndex() === i ||
+          ((!lazy() || tab.cache()) && loadedTabs.has(tab))
+        "
+      >
+        <ng-container
+          *ngTemplateOutlet="tab.contentTemplate() || null"
+        ></ng-container>
       </ng-container>
     </div>
   </div>

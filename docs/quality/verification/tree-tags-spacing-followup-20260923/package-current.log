@@ -1,0 +1,9 @@
+
+> orc-ds-workspace@0.0.0 verify:package
+> node tools/quality/verify-package.mjs
+
+
+added 16 packages in 867ms
+Validated 224 JavaScript entry points and consolidated aliases in an isolated npm consumer.
+Validated public type declarations without skipLibCheck.
+Validated 5 packed Sass entry points.

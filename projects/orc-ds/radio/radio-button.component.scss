@@ -9,7 +9,7 @@
   position: relative;
   cursor: pointer;
   user-select: none;
-  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-family: var(--font-sans, "Poppins", sans-serif);
   line-height: 1.4;
 
   // Native input visually hidden but fully accessible
@@ -36,6 +36,45 @@
     transition: background-color var(--transition-fast, 120ms ease);
   }
 
+  &--small {
+    .orc-radio__box {
+      width: 20px;
+      height: 20px;
+    }
+    .orc-radio__circle {
+      width: 16px;
+      height: 16px;
+    }
+    .orc-radio__dot {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  &--large {
+    .orc-radio__box {
+      width: 28px;
+      height: 28px;
+    }
+    .orc-radio__circle {
+      width: 24px;
+      height: 24px;
+    }
+    .orc-radio__dot {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &--filled {
+    .orc-radio__circle {
+      background-color: var(
+        --orc-control-surface,
+        var(--orc-fill-input, #ffffff)
+      );
+    }
+  }
+
   // 20x20px Outer border circle
   &__circle {
     display: flex;
@@ -46,9 +85,10 @@
     border-radius: var(--radius-full, 9999px);
     border: 2px solid var(--orc-border-strong, #58595b); // Cinzas / Muito Escuro token from Figma
     background-color: transparent;
-    transition: border-color var(--transition-fast, 120ms ease),
-                background-color var(--transition-fast, 120ms ease),
-                box-shadow var(--transition-fast, 120ms ease);
+    transition:
+      border-color var(--transition-fast, 120ms ease),
+      background-color var(--transition-fast, 120ms ease),
+      box-shadow var(--transition-fast, 120ms ease);
     position: relative;
     box-sizing: border-box;
   }
@@ -58,11 +98,15 @@
     width: 10px;
     height: 10px;
     border-radius: var(--radius-full, 9999px);
-    background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+    background-color: var(
+      --orc-interactive,
+      var(--orc-color-azul-eletrico, #1c6aed)
+    );
     transform: scale(0);
     opacity: 0;
-    transition: transform var(--transition-fast, 120ms ease),
-                opacity var(--transition-fast, 120ms ease);
+    transition:
+      transform var(--transition-fast, 120ms ease),
+      opacity var(--transition-fast, 120ms ease);
   }
 
   // Label & description container
@@ -77,7 +121,9 @@
     font-weight: 400;
     color: var(--orc-text, var(--orc-font-main, #141414));
     line-height: 1.45;
-    transition: color var(--transition-fast, 120ms ease), font-weight var(--transition-fast, 120ms ease);
+    transition:
+      color var(--transition-fast, 120ms ease),
+      font-weight var(--transition-fast, 120ms ease);
   }
 
   &__description {
@@ -90,20 +136,27 @@
   // ── HOVER STATE ───────────────────────────────────────────
   &:hover:not(.orc-radio--disabled) {
     .orc-radio__circle {
-      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
   }
 
   // ── FOCUS-VISIBLE STATE ───────────────────────────────────
   .orc-radio__native-input:focus-visible + .orc-radio__box {
-    outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+    outline: 2px solid
+      var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     outline-offset: 2px;
   }
 
   // ── CHECKED STATE ─────────────────────────────────────────
   &--checked {
     .orc-radio__circle {
-      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
 
     .orc-radio__dot {
@@ -124,7 +177,10 @@
     }
 
     .orc-radio__dot {
-      background-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
+      background-color: var(
+        --orc-danger,
+        var(--color-error, #fb2c36)
+      ) !important;
     }
 
     .orc-radio__label {
@@ -143,11 +199,17 @@
 
     .orc-radio__circle {
       border-color: var(--orc-border-default, var(--orc-border, #d9d9d9));
-      background-color: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #ededed));
+      background-color: var(
+        --orc-surface-muted,
+        var(--orc-highlight-cinza-claro, #ededed)
+      );
     }
 
     .orc-radio__dot {
-      background-color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
+      background-color: var(
+        --orc-text-secondary,
+        var(--orc-font-secondary, #666666)
+      );
     }
 
     .orc-radio__label,

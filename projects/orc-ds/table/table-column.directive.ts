@@ -5,7 +5,10 @@ import {
   booleanAttribute,
 } from '@angular/core';
 import { ColumnAlign } from './table.types';
-import { CellDefDirective, HeaderCellDefDirective } from './table-cell-def.directive';
+import {
+  CellDefDirective,
+  HeaderCellDefDirective,
+} from './table-cell-def.directive';
 
 @Directive({
   selector: 'orc-column, app-column',

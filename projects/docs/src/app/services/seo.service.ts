@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
@@ -13,7 +14,12 @@ export class SeoService {
 
   constructor() {
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+        takeUntilDestroyed(),
+      )
       .subscribe(() => this.update());
 
     this.update();
@@ -21,9 +27,11 @@ export class SeoService {
 
   private update(): void {
     const route = this.getDeepestRoute(this.router.routerState.snapshot.root);
-    const pageTitle = route.title || 'Orchestra Design System — Angular Components';
-    const description = route.data['description'] as string ||
-      'Orchestra é um design system Angular com componentes standalone, Signals, acessibilidade WCAG 2.1 AA, tokens e APIs TypeScript estritas.';
+    const pageTitle =
+      route.title || 'Orchestra Design System — Angular Components';
+    const description =
+      (route.data['description'] as string) ||
+      'Orchestra é um design system Angular com componentes standalone, Signals, semântica ARIA, foco visível e navegação por teclado, tokens e APIs TypeScript estritas.';
     const path = this.router.url.split(/[?#]/, 1)[0] || '/';
     const canonical = `${this.document.location?.origin || 'https://orchestra.ciag.org.br'}${path === '/' ? '/' : path}`;
 
@@ -35,7 +43,9 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:title', content: pageTitle });
     this.meta.updateTag({ name: 'twitter:description', content: description });
 
-    let canonicalLink = this.document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    let canonicalLink = this.document.head.querySelector<HTMLLinkElement>(
+      'link[rel="canonical"]',
+    );
     if (!canonicalLink) {
       canonicalLink = this.document.createElement('link');
       canonicalLink.rel = 'canonical';
@@ -44,7 +54,9 @@ export class SeoService {
     canonicalLink.href = canonical;
   }
 
-  private getDeepestRoute(route: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
+  private getDeepestRoute(
+    route: ActivatedRouteSnapshot,
+  ): ActivatedRouteSnapshot {
     let current = route;
     while (current.firstChild) {
       current = current.firstChild;

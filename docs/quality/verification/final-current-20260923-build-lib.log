@@ -1,0 +1,342 @@
+
+> orc-ds-workspace@0.0.0 build:lib
+> ng build orc-ds
+
+Building Angular Package
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/accordion'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/accordion
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/alert'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/alert
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/avatar'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/avatar
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/badge'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/badge
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/breadcrumb'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/breadcrumb
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/button'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/button
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/card'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/card
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/checkbox'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/checkbox
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/input'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/input
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/chip-input'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/chip-input
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/internal'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/internal
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/dropdown'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/dropdown
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/progress'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/progress
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/file-uploader'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/file-uploader
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/modal'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/modal
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/otp-input'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/otp-input
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/paginator'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/paginator
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/radio'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/radio
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/tooltip'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/tooltip
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/rating'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/rating
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/select'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/select
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/skeleton'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/skeleton
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/slider'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/slider
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/spinner'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/spinner
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/stepper'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/stepper
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/switch'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/switch
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/table'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/table
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/tabs'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/tabs
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/toast'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/toast
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/tag'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/tag
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/empty-state'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/empty-state
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/overlay-panel'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/overlay-panel
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/popover'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/popover
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/segmented-control'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✔ Compiling with Angular sources in partial compilation mode.
+- Writing FESM and DTS bundles
+✔ Writing FESM and DTS bundles
+✔ Built @ciag/orchestra/segmented-control
+
+------------------------------------------------------------------------------
+Building entry point '@ciag/orchestra/p2'
+------------------------------------------------------------------------------
+- Compiling with Angular sources in partial compilation mode.
+✖ Compiling with Angular sources in partial compilation mode.
+projects/orc-ds/internal/modal-isolation.ts:1:1 - error TS6059: File '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/internal/modal-isolation.ngtypecheck.ts' is not under 'rootDir' '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/p2'. 'rootDir' is expected to contain all source files.
+
+1 export interface OverlayLayer {
+  
+projects/orc-ds/internal/overlay-attachment.ts:1:1 - error TS6059: File '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/internal/overlay-attachment.ngtypecheck.ts' is not under 'rootDir' '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/p2'. 'rootDir' is expected to contain all source files.
+
+1 function parentElement(element: Element): Element | null {
+  
+projects/orc-ds/internal/overlay-lifecycle.ts:1:1 - error TS6059: File '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/internal/overlay-lifecycle.ngtypecheck.ts' is not under 'rootDir' '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/p2'. 'rootDir' is expected to contain all source files.
+
+1 import { createModalIsolation, OverlayLayer } from './modal-isolation';
+  
+projects/orc-ds/internal/overlay-lifecycle.ts:1:52 - error TS6059: File '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/internal/modal-isolation.ts' is not under 'rootDir' '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/p2'. 'rootDir' is expected to contain all source files.
+
+1 import { createModalIsolation, OverlayLayer } from './modal-isolation';
+                                                     ~~~~~~~~~~~~~~~~~~~
+projects/orc-ds/internal/overlay-lifecycle.ts:2:33 - error TS6059: File '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/internal/overlay-attachment.ts' is not under 'rootDir' '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/p2'. 'rootDir' is expected to contain all source files.
+
+2 import { overlayContains } from './overlay-attachment';
+                                  ~~~~~~~~~~~~~~~~~~~~~~
+projects/orc-ds/p2/p2-advanced-components.ts:5:36 - error TS6059: File '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/internal/overlay-lifecycle.ts' is not under 'rootDir' '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds/p2'. 'rootDir' is expected to contain all source files.
+
+5 import { lockDocumentScroll } from '../internal/overlay-lifecycle';
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

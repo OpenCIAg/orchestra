@@ -1,0 +1,10 @@
+
+> orc-ds-workspace@0.0.0 verify:docs
+> npm run verify:inventory && npm run verify:docs-integrity
+
+
+> orc-ds-workspace@0.0.0 verify:inventory
+> node tools/quality/inventory.mjs --check
+
+Generated inventory artifacts are stale: docs/quality/behavior-coverage-ledger.md. Run node tools/quality/inventory.mjs to update them.
+Verified 147 components, 19 directives, 4 services, and 223 entry points. Inventory: docs/quality/component-inventory.md

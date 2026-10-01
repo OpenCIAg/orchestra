@@ -41,11 +41,11 @@ export class BadgePageComponent {
     'Design System',
     'Angular 18',
     'Signals API',
-    'WCAG 2.1 AA',
+    'Keyboard focus',
   ]);
 
   removeTag(tagToRemove: string): void {
-    this.tags.update(list => list.filter(t => t !== tagToRemove));
+    this.tags.update((list) => list.filter((t) => t !== tagToRemove));
   }
 
   resetTags(): void {
@@ -53,7 +53,7 @@ export class BadgePageComponent {
       'Design System',
       'Angular 18',
       'Signals API',
-      'WCAG 2.1 AA',
+      'Keyboard focus',
     ]);
   }
 }

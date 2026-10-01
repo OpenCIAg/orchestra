@@ -1,0 +1,9 @@
+
+> orc-ds-workspace@0.0.0 verify:package:minimum
+> node tools/quality/verify-package.mjs --minimum-angular
+
+
+added 16 packages in 845ms
+Validated 224 JavaScript entry points and consolidated aliases in an isolated npm consumer.
+Validated public type declarations without skipLibCheck.
+Validated 5 packed Sass entry points.

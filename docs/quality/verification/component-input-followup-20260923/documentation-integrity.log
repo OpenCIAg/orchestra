@@ -1,0 +1,19 @@
+{
+  "qualityMarkdown": 95,
+  "localMarkdownLinks": 704,
+  "publicLlmsLocalLinks": 1,
+  "sourceAnchors": 407,
+  "p2SourceAnchors": 171,
+  "ledgerRows": 147,
+  "inventoryComponents": 147,
+  "ledgerMissing": [],
+  "ledgerExtra": [],
+  "unresolved": []
+}
+{
+  "matched": 146,
+  "total": 147,
+  "bad": [
+    "PaginatorComponent: ledger projects/orc-ds/paginator/paginator.component.ts#L23, inventory projects/orc-ds/paginator/paginator.component.ts#L49"
+  ]
+}

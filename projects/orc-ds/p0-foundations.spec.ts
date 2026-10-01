@@ -11,7 +11,9 @@ describe('P0 foundation components', () => {
     const fixture = TestBed.createComponent(DrawerComponent);
     fixture.componentInstance.open.set(true);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[role="dialog"]')).not.toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('[role="dialog"]'),
+    ).not.toBeNull();
     fixture.componentInstance.onEscape();
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
@@ -21,25 +23,39 @@ describe('P0 foundation components', () => {
     const fixture = TestBed.createComponent(PopoverComponent);
     fixture.componentInstance.toggle();
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[role="dialog"]')).not.toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('[role="dialog"]'),
+    ).not.toBeNull();
   });
 
   it('does not select a disabled list item', () => {
     const fixture = TestBed.createComponent(ListComponent);
-    const item: ListItem = { id: 'disabled', label: 'Disabled', disabled: true };
+    const item: ListItem = {
+      id: 'disabled',
+      label: 'Disabled',
+      disabled: true,
+    };
     let selected = false;
-    fixture.componentInstance.itemSelect.subscribe(() => selected = true);
+    fixture.componentInstance.itemSelect.subscribe(() => (selected = true));
     fixture.componentInstance.select(item);
     expect(selected).toBeFalse();
   });
 
   it('expands tree nodes and creates form primitives', () => {
     const tree = TestBed.createComponent(TreeViewComponent);
-    const node = { id: 'root', label: 'Root', children: [{ id: 'child', label: 'Child' }] };
+    const node = {
+      id: 'root',
+      label: 'Root',
+      children: [{ id: 'child', label: 'Child' }],
+    };
     tree.componentRef.setInput('nodes', [node]);
     tree.componentInstance.toggle(node);
     expect(tree.componentInstance.visibleNodes().length).toBe(2);
-    expect(TestBed.createComponent(DatePickerComponent).componentInstance).toBeTruthy();
-    expect(TestBed.createComponent(FormFieldComponent).componentInstance).toBeTruthy();
+    expect(
+      TestBed.createComponent(DatePickerComponent).componentInstance,
+    ).toBeTruthy();
+    expect(
+      TestBed.createComponent(FormFieldComponent).componentInstance,
+    ).toBeTruthy();
   });
 });

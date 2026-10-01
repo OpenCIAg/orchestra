@@ -1,0 +1,118 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link">← Voltar para componentes</a>
+      </div>
+
+      <div class="section-eyebrow">Componentes · Data Display</div>
+      <h1 class="section-title">Galleria</h1>
+      <p class="section-desc">
+        Navegue por imagens controladas com miniaturas, indicadores, rótulos
+        acessíveis e uma visualização em tela cheia.
+      </p>
+
+      <section class="section" id="preview">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Exemplo interativo</h2>
+            <p class="section-text">
+              O índice ativo é mantido pelo consumidor e pode ser alterado por
+              miniaturas, indicadores ou pelos controles anterior e próximo.
+            </p>
+          </div>
+          <span class="section-index">01 / 02</span>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-toolbar">
+            <span
+              class="demo-status"
+              aria-live="polite"
+              data-testid="gallery-status"
+            >
+              Imagem ativa: {{ activeTitle() }}
+            </span>
+            <button
+              type="button"
+              data-testid="preview-open"
+              (click)="openPreview()"
+            >
+              Abrir tela cheia
+            </button>
+          </div>
+
+          <div class="galleria-shell">
+            <orc-galleria
+              label="Galeria de paisagens"
+              roleDescription="Galeria de imagens"
+              [images]="images"
+              [activeIndex]="activeIndex()"
+              (activeIndexChange)="activeIndex.set($event)"
+              [visible]="visible()"
+              (visibleChange)="visible.set($event)"
+              [fullScreen]="fullScreen()"
+              previousLabel="Imagem anterior"
+              nextLabel="Próxima imagem"
+              closeLabel="Fechar galeria"
+              thumbnailLabel="Miniatura"
+              [showIndicators]="true"
+              [showIndicatorsOnItem]="true"
+              (imageChange)="recordImageChange($event)"
+            />
+          </div>
+
+          <div class="state-summary" aria-label="Estado atual da galeria">
+            <span
+              ><strong>Índice:</strong> {{ activeIndex() + 1 }} /
+              {{ images.length }}</span
+            >
+            <span><strong>Seleção:</strong> {{ activeTitle() }}</span>
+            <span class="state-note"
+              >As imagens são dados locais para manter o exemplo
+              determinístico.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Contrato de uso</h2>
+            <p class="section-text">
+              Forneça texto alternativo e nomes de ação para que cada mudança de
+              imagem seja compreensível por teclado e leitor de tela.
+            </p>
+          </div>
+          <span class="section-index">02 / 02</span>
+        </div>
+        <div class="contract-grid">
+          <article class="contract-card">
+            <h3>Indicadores e miniaturas</h3>
+            <p>
+              Use o clique ou o foco por teclado para escolher uma imagem e
+              manter o índice controlado.
+            </p>
+          </article>
+          <article class="contract-card">
+            <h3>Tela cheia</h3>
+            <p>
+              Abra a visualização por uma ação nomeada e feche com o botão ou
+              Escape.
+            </p>
+          </article>
+          <article class="contract-card">
+            <h3>Conteúdo acessível</h3>
+            <p>
+              Rótulos do componente, das miniaturas e dos controles permanecem
+              explícitos.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer />
+</div>

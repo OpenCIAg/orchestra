@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { ORC_RADIO_GROUP, RadioButtonItem } from './radio.types';
 
 let nextUniqueId = 0;
+const standaloneRadios = new Set<RadioButtonComponent>();
 
 @Component({
   selector: 'orc-radio-button',
@@ -25,7 +26,9 @@ let nextUniqueId = 0;
   styleUrl: './radio-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem {
+export class RadioButtonComponent
+  implements OnInit, OnDestroy, RadioButtonItem
+{
   // Inputs (Signals API)
   readonly value = input<any>(undefined);
   readonly label = input<string>('');
@@ -50,7 +53,9 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
   readonly onBlur = output<Event>();
 
   // Element reference ao input nativo para foco acessível
-  readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('nativeInput');
+  readonly inputElement =
+    viewChild<ElementRef<HTMLInputElement>>('nativeInput');
+  readonly element = inject(ElementRef<HTMLElement>);
 
   // ID interno único
   readonly uniqueId = `orc-radio-${++nextUniqueId}`;
@@ -59,7 +64,9 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
   readonly radioGroup = inject(ORC_RADIO_GROUP, { optional: true });
 
   // Identificadores e estados derivados (Signals)
-  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
+  readonly effectiveId = computed(
+    () => this.inputId() || this.id() || this.uniqueId,
+  );
 
   readonly effectiveName = computed(() => {
     if (this.name()) return this.name();
@@ -68,11 +75,16 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
   });
 
   readonly isDisabled = computed(() => {
-    return this.disabled() || (this.radioGroup ? this.radioGroup.isDisabled() : false);
+    return (
+      this.disabled() ||
+      (this.radioGroup ? this.radioGroup.isDisabled() : false)
+    );
   });
 
   readonly isError = computed(() => {
-    return this.error() || (this.radioGroup ? this.radioGroup.isError() : false);
+    return (
+      this.error() || (this.radioGroup ? this.radioGroup.isError() : false)
+    );
   });
 
   private readonly standaloneChecked = signal<boolean>(false);
@@ -91,7 +103,10 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
     if (this.isDisabled()) return -1;
     if (!this.radioGroup) return 0;
     if (this.isChecked()) return 0;
-    if (!this.radioGroup.hasSelectedRadio() && this.radioGroup.isFirstEnabled(this)) {
+    if (
+      !this.radioGroup.hasSelectedRadio() &&
+      this.radioGroup.isFirstEnabled(this)
+    ) {
       return 0;
     }
     return -1;
@@ -100,12 +115,16 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
   ngOnInit(): void {
     if (this.radioGroup) {
       this.radioGroup.registerRadio(this);
+    } else {
+      standaloneRadios.add(this);
     }
   }
 
   ngOnDestroy(): void {
     if (this.radioGroup) {
       this.radioGroup.unregisterRadio(this);
+    } else {
+      standaloneRadios.delete(this);
     }
   }
 
@@ -118,12 +137,30 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
     if (this.radioGroup) {
       this.radioGroup.select(this.value(), event);
     } else {
+      const input = this.inputElement()?.nativeElement;
+      const root = input?.getRootNode();
+      const form = input?.form ?? null;
+      standaloneRadios.forEach((radio) => {
+        const peerInput = radio.inputElement()?.nativeElement;
+        if (
+          radio !== this &&
+          peerInput &&
+          radio.effectiveName() === this.effectiveName() &&
+          peerInput.form === form &&
+          peerInput.getRootNode() === root
+        ) {
+          radio.setStandaloneChecked(false);
+        }
+      });
       this.standaloneChecked.set(true);
       this.checked.set(true);
     }
 
     this.select.emit(this.value());
-    this.onClick.emit({ originalEvent: event, value: this.binary() ? true : this.value() });
+    this.onClick.emit({
+      originalEvent: event,
+      value: this.binary() ? true : this.value(),
+    });
   }
 
   onKeyDown(event: KeyboardEvent): void {
@@ -136,6 +173,16 @@ export class RadioButtonComponent implements OnInit, OnDestroy, RadioButtonItem 
     this.inputElement()?.nativeElement.focus();
   }
 
-  onFocusEvent(event: Event): void { this.onFocus.emit(event); }
-  onBlurEvent(event: Event): void { this.onBlur.emit(event); }
+  onFocusEvent(event: Event): void {
+    this.onFocus.emit(event);
+  }
+  onBlurEvent(event: Event): void {
+    this.radioGroup?.touch(event);
+    this.onBlur.emit(event);
+  }
+
+  setStandaloneChecked(checked: boolean): void {
+    this.standaloneChecked.set(checked);
+    this.checked.set(checked);
+  }
 }

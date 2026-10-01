@@ -1,58 +1,51 @@
+@use "./semantics";
+
 @layer orchestra.tokens {
   :root,
   [data-theme="light"],
-  .theme-light {
+  .theme-light:not([data-theme="dark"]) {
     color-scheme: light;
-    --orc-bg: #FFFFFF;
+    --orc-bg: #ffffff;
     --orc-font-main: #141414;
-    --orc-secondary-bg: #D9D9D9;
+    --orc-secondary-bg: #d9d9d9;
     --orc-font-secondary: #666666;
-    --orc-border: #D9D9D9;
-    --orc-fill-input: #FFFFFF;
-    --orc-th: #F9F9F9;
-    --orc-fill-modal: #FFFFFF;
-    --orc-highlight-cinza-claro: #EDEDED;
-    --orc-opposite-bw: #FFFFFF;
-
+    --orc-border: #d9d9d9;
+    --orc-fill-input: #ffffff;
+    --orc-th: #f9f9f9;
+    --orc-fill-modal: #ffffff;
+    --orc-highlight-cinza-claro: #ededed;
+    --orc-opposite-bw: #ffffff;
     --color-accent: #141414;
     --color-accent-hover: #2a2a2a;
-    --color-accent-fg: #FFFFFF;
-
-    --bg-app: var(--orc-bg);
-    --bg-subtle: var(--orc-th);
-    --bg-muted: var(--orc-highlight-cinza-claro);
-    --bg-inverse: var(--orc-font-main);
-
-    --border-default: var(--orc-border);
-    --border-strong: var(--orc-secondary-bg);
-    --border-inverse: var(--orc-font-main);
-
-    --text-primary: var(--orc-font-main);
-    --text-secondary: var(--orc-font-secondary);
-    --text-muted: #999999;
-    --text-inverse: var(--orc-bg);
-
-    --status-neutral-soft-bg: #ECEEF2;
+    --color-accent-fg: #ffffff;
+    --text-muted: #666666;
+    --status-neutral-soft-bg: #eceef2;
     --status-neutral-soft-fg: #141414;
-    --status-info-soft-bg: #E1EAF6;
-    --status-info-soft-fg: #2B7FFF;
-    --status-success-soft-bg: #B8E7D7;
-    --status-success-soft-fg: #006F4A;
-    --status-warning-soft-bg: #F6ECDD;
-    --status-warning-soft-fg: #FE9A00;
-    --status-danger-soft-bg: #F6D7D8;
-    --status-danger-soft-fg: #FB2C36;
-    --skeleton-base: #F1F5F9;
-    --skeleton-highlight: #E2E8F0;
-
-    --orc-interactive: #1C6AED;
-    --orc-interactive-hover: #1556BE;
-    --orc-interactive-soft: #EFF6FF;
-    --orc-on-interactive: #FFFFFF;
-    --orc-on-danger: #FFFFFF;
-    --orc-on-dark: #FFFFFF;
+    --status-info-soft-bg: #e1eaf6;
+    --status-info-soft-fg: #1d4ed8;
+    --status-success-soft-bg: #b8e7d7;
+    --status-success-soft-fg: #006f4a;
+    --status-warning-soft-bg: #f6ecdd;
+    --status-warning-soft-fg: #92400e;
+    --status-danger-soft-bg: #f6d7d8;
+    --status-danger-soft-fg: #b91c1c;
+    --skeleton-base: #f1f5f9;
+    --skeleton-highlight: #e2e8f0;
+    --orc-interactive: #1c6aed;
+    --orc-interactive-hover: #1556be;
+    --orc-interactive-soft: #eff6ff;
+    --orc-on-interactive: #ffffff;
+    --orc-on-danger: #ffffff;
+    --orc-on-dark: #ffffff;
     --orc-scrim: rgb(15 23 42 / 0.56);
     --orc-shadow-color: rgb(15 23 42 / 0.14);
     --orc-interactive-shadow: rgb(37 99 235 / 0.25);
+    --orc-danger: #c8192c;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md:
+      0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --shadow-lg:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    @include semantics.aliases;
   }
 }

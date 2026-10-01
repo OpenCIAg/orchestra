@@ -1,4 +1,3 @@
-
 import {
   Component,
   ChangeDetectionStrategy,
@@ -14,7 +13,8 @@ import {
   TemplateRef,
   ElementRef,
   HostListener,
-  inject
+  inject,
+  AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -37,43 +37,69 @@ let nextUniqueId = 0;
     },
   ],
 })
-export class RatingComponent implements ControlValueAccessor {
+export class RatingComponent implements ControlValueAccessor, AfterViewInit {
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly uniqueId = `orc-rating-${++nextUniqueId}`;
 
   // -- Inputs ---------------------------------------------------------
   readonly id = input<string>(this.uniqueId);
   readonly max = input(5, { transform: numberAttribute });
-  readonly stars = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
+  readonly stars = input<number | undefined, unknown>(undefined, {
+    transform: numberAttribute,
+  });
   readonly allowHalf = input(false, { transform: booleanAttribute });
   readonly numeric = input(false, { transform: booleanAttribute });
   readonly clearable = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly styleClass = input(''); readonly style = input<Record<string, string | number> | undefined>(undefined); readonly ariaLabel = input<string | undefined>(undefined); readonly iconOnClass = input(''); readonly iconOffClass = input('');
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly iconOnClass = input('');
+  readonly iconOffClass = input('');
   readonly cancelAriaLabel = input<string | undefined>(undefined);
-  readonly iconOnStyle = input<Record<string, string | number> | undefined>(undefined); readonly iconOffStyle = input<Record<string, string | number> | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly cancel = input(true, { transform: booleanAttribute }); readonly cancelIcon = input('×');
-  
+  readonly iconOnStyle = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  readonly iconOffStyle = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly cancel = input(true, { transform: booleanAttribute });
+  readonly cancelIcon = input('×');
+
   // Array de rótulos ex: ['Péssimo', 'Ruim', 'Regular', 'Bom', 'Excelente']
   readonly tooltips = input<string[]>([]);
-  
+
   // Custom SVG via TemplateRef
   @ContentChild('customIcon') customIconTemplate?: TemplateRef<any>;
 
   // -- Value (Model / CVA) ------------------------------------------
   readonly value = model<number>(0);
-  
+
   // -- Internal State -----------------------------------------------
   readonly hoverValue = signal<number | null>(null);
   protected readonly cvaDisabled = signal<boolean>(false);
   protected readonly isFocused = signal<boolean>(false);
-  readonly onRate = output<{ originalEvent: Event; value: number }>(); readonly onCancel = output<Event>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>();
+  readonly onRate = output<{ originalEvent: Event; value: number }>();
+  readonly onCancel = output<Event>();
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
 
   // -- Computeds ----------------------------------------------------
-  readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
-  
-  readonly effectiveStars = computed(() => this.stars() ?? this.max());
-  readonly starsArray = computed(() => Array.from({ length: this.effectiveStars() }, (_, i) => i + 1));
+  readonly effectiveDisabled = computed(
+    () => this.disabled() || this.cvaDisabled(),
+  );
+
+  readonly effectiveStars = computed(() => {
+    const maximum = this.stars() ?? this.max();
+    return Number.isFinite(maximum) ? Math.max(0, maximum) : 0;
+  });
+  readonly starsArray = computed(() =>
+    Array.from({ length: this.effectiveStars() }, (_, i) => i + 1),
+  );
 
   readonly displayValue = computed(() => {
     const hover = this.hoverValue();
@@ -86,7 +112,7 @@ export class RatingComponent implements ControlValueAccessor {
 
   writeValue(val: any): void {
     const num = typeof val === 'number' ? val : parseFloat(val);
-    this.value.set(!isNaN(num) ? num : 0);
+    this.value.set(this.clampValue(num));
   }
 
   registerOnChange(fn: any): void {
@@ -101,13 +127,26 @@ export class RatingComponent implements ControlValueAccessor {
     this.cvaDisabled.set(isDisabled);
   }
 
+  ngAfterViewInit(): void {
+    if (this.autofocus() && !this.effectiveDisabled()) {
+      const control = this.elementRef.nativeElement.querySelector(
+        '[role="slider"]',
+      ) as HTMLElement | null;
+      control?.focus();
+    }
+  }
+
   // -- Interactions -------------------------------------------------
-  
+
   onItemClick(event: MouseEvent, index: number, isHalf: boolean = false): void {
     if (this.effectiveDisabled() || this.readonly()) return;
-    
+
     // In numeric mode, we ignore half clicks.
-    let selectedValue = this.numeric() ? index : (isHalf && this.allowHalf() ? index - 0.5 : index);
+    let selectedValue = this.numeric()
+      ? index
+      : isHalf && this.allowHalf()
+        ? index - 0.5
+        : index;
 
     if (this.clearable() && this.value() === selectedValue) {
       selectedValue = 0;
@@ -122,11 +161,20 @@ export class RatingComponent implements ControlValueAccessor {
     this.onRate.emit({ originalEvent: event, value: selectedValue });
   }
 
-  cancelRating(event: Event): void { if (this.effectiveDisabled() || this.readonly()) return; this.updateValue(0); this.onTouched(); this.onCancel.emit(event); }
+  cancelRating(event: Event): void {
+    if (this.effectiveDisabled() || this.readonly()) return;
+    this.updateValue(0);
+    this.onTouched();
+    this.onCancel.emit(event);
+  }
 
   onItemHover(index: number, isHalf: boolean = false): void {
     if (this.effectiveDisabled() || this.readonly()) return;
-    const hValue = this.numeric() ? index : (isHalf && this.allowHalf() ? index - 0.5 : index);
+    const hValue = this.numeric()
+      ? index
+      : isHalf && this.allowHalf()
+        ? index - 0.5
+        : index;
     this.hoverValue.set(hValue);
   }
 
@@ -149,9 +197,17 @@ export class RatingComponent implements ControlValueAccessor {
   }
 
   private updateValue(val: number): void {
-    const safeVal = Math.max(0, Math.min(val, this.effectiveStars()));
+    const safeVal = this.clampValue(val);
     this.value.set(safeVal);
     this.onChange(safeVal);
+  }
+
+  private clampValue(value: number): number {
+    const maximum = this.effectiveStars();
+    const upperBound = Number.isFinite(maximum) ? Math.max(0, maximum) : 0;
+    return Number.isFinite(value)
+      ? Math.max(0, Math.min(value, upperBound))
+      : 0;
   }
 
   // -- Keyboard Navigation (WCAG) -----------------------------------
@@ -179,7 +235,7 @@ export class RatingComponent implements ControlValueAccessor {
         break;
       case 'Home':
         event.preventDefault();
-        this.updateValue(this.allowHalf() ? 0.5 : 1);
+        this.updateValue(0);
         this.onTouched();
         this.onRate.emit({ originalEvent: event, value: this.value() });
         break;

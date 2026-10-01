@@ -1,4 +1,9 @@
-<div class="p-chips p-component orc-chip-input" [class]="'p-chips p-component orc-chip-input ' + styleClass()" [style]="style()" [attr.data-pc-name]="'chips'">
+<div
+  class="p-chips p-component orc-chip-input"
+  [class]="'p-chips p-component orc-chip-input ' + styleClass()"
+  [style]="style()"
+  [attr.data-pc-name]="'chips'"
+>
   <!-- Utilizamos o InputComponent estritamente como container -->
   <orc-input
     #orcInput
@@ -43,7 +48,7 @@
         <li
           class="orc-chip-suggestion-item"
           role="option"
-          (mousedown)="$event.preventDefault()" 
+          (mousedown)="$event.preventDefault()"
           (click)="selectSuggestion(suggestion)"
         >
           {{ suggestion }}

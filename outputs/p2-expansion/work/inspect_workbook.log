@@ -1,0 +1,1769 @@
+=== SUMMARY ===
+{"kind":"workbook","id":"wb/86zf5x","sheets":6,"tables":6}
+{"kind":"sheet","id":"ws/cju6bl","name":"Dashboard","index":0,"range":"A1:H16","address":"A1:H16","tables":1}
+{"kind":"table","sheet":"Dashboard","address":"A1:H16","rows":16,"cols":8,"values":[["UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker"],["UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker","UI Framework Component Milestone Tracker"],["Normalized coverage across 14 modern UI libraries • researched 2026-08-17",null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],["Metric","Value",null,"Category","Canonical items",null,null,null],["Frameworks",14,null,"Forms",63,null,null,null],["Documented component rows",925,null,"Data Display",50,null,null,null],["Canonical backlog items",339,null,"Utility",138,null,null,null],["P0 + P1 candidates",48,null,"Navigation",26,null,null,null],[null,null,null,"Feedback",23,null,null,null],[null,null,null,"Overlay",6,null,null,null],["Recommended milestone sequence",null,null,null,null,null,null,null],["1","P0 Foundations","Build ubiquitous primitives first: buttons, inputs, selection, overlays, navigation, feedback.",null,null,null,null,null],["2","P1 Core","Add common composite controls and robust state/variant coverage.",null,null,null,null,null],["3","P2 Expansion","Add enterprise/data-heavy components and advanced layout.",null,null,null,null,null],["4","P3 Differentiators","Add lower-frequency or ecosystem-specific components after demand validation.",null,null,null,null,null]]}
+{"kind":"sheet","id":"ws/wzi9rt","name":"Milestone Backlog","index":1,"range":"A1:L340","address":"A1:L340","tables":1}
+{"kind":"table","sheet":"Milestone Backlog","address":"A1:L340","rows":340,"cols":12,"values":[["Canonical Component","Category","Framework Count","Seen In","Aliases / Official Names","Variants to Implement","Behavior & Feature Requirements","Priority","Status","Owner","Milestone","Notes"],["Select","Forms",14,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitive...","Native Select, NativeSelect","filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/err...","P0 Foundation","Not Started",null,1,null],["Tooltip","Data Display",14,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitive...",null,"top/right/bottom/left; aligned start/center/end; arrow; delay; collision handling","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; portal/layering; focus trap/return; outside c...","P0 Foundation","Not Started",null,1,null],["Button","Utility",13,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Carbon, Fluent UI, HeroUI",null,"primary, secondary, outline, ghost/text, destructive, icon-only; sm/md/lg; loading; disabled","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/r...","P0 Foundation","Not Started",null,1,null],["Checkbox","Forms",13,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI","Checkbox Group","default + size/density/color/state variants where applicable","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disab...","P0 Foundation","Not Started",null,1,null],["Slider","Forms",13,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI","RangeSlider, Range Slider","default + size/density/color/state variants where applicable","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disab...","P0 Foundation","Not Started",null,1,null],["Tabs","Navigation",13,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI","Tablist","horizontal/vertical; controlled/uncontrolled; lazy; disabled; keyboard navigation","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/r...","P0 Foundation","Not Started",null,1,null],["Toast","Feedback",13,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Carbon, Fluent UI, Radix Primitives, HeroUI","Snackbar, Notification","info, success, warning, danger; solid/soft/outline; closable","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/r...","P0 Foundation","Not Started",null,1,null],["Accordion","Utility",12,"shadcn/ui, PrimeNG, Angular Material, MUI, Chakra UI, Mantine, Bootstrap, Vuetify, Carbon, Fluent UI, Radix Primitives, HeroUI","Expansion Panel, Expansion Panels","horizontal/vertical; controlled/uncontrolled; lazy; disabled; keyboard navigation","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/r...","P0 Foundation","Not Started",null,1,null],["Badge","Feedback",12,"shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Fluent UI, HeroUI",null,"info, success, warning, danger; solid/soft/outline; closable","keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/r...","P0 Foundation","Not Started",null,1,null]],"valuesTruncated":true,"valuesPreviewRows":10,"valuesPreviewCols":12,"valuesPreviewAddress":"A1:L10"}
+{"kind":"sheet","id":"ws/cakj5x","name":"Framework Inventory","index":2,"range":"A1:G926","address":"A1:G926","tables":1}
+{"kind":"table","sheet":"Framework Inventory","address":"A1:G926","rows":926,"cols":7,"values":[["Framework","Ecosystem","Approach","Official Component","Canonical Component","Category","Official Source"],["shadcn/ui","React","Styled source components","Accordion","Accordion","Utility","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Alert","Alert","Feedback","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Alert Dialog","Alert Dialog","Feedback","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Aspect Ratio","Aspect Ratio","Layout","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Attachment","Attachment","Utility","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Avatar","Avatar","Data Display","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Badge","Badge","Feedback","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Breadcrumb","Breadcrumbs","Navigation","https://ui.shadcn.com/docs/components"],["shadcn/ui","React","Styled source components","Bubble","Bubble","Utility","https://ui.shadcn.com/docs/components"]],"valuesTruncated":true,"valuesPreviewRows":10,"valuesPreviewCols":7,"valuesPreviewAddress":"A1:G10"}
+{"kind":"sheet","id":"ws/q7734b","name":"Coverage Matrix","index":3,"range":"A1:Q340","address":"A1:Q340","tables":1}
+{"kind":"table","sheet":"Coverage Matrix","address":"A1:Q340","rows":340,"cols":17,"values":[["Canonical Component","Category","shadcn/ui","PrimeNG","Angular Material","MUI","Ant Design","Chakra UI","Mantine","Bootstrap","Vuetify","Quasar","Carbon","Fluent UI","Radix Primitives","HeroUI","Coverage Count"],["Select","Forms","●","●","●","●","●","●","●","●","●","●","●","●","●","●",14],["Tooltip","Data Display","●","●","●","●","●","●","●","●","●","●","●","●","●","●",14],["Button","Utility","●","●","●","●","●","●","●","●","●","●","●","●",null,"●",13],["Checkbox","Forms","●","●","●","●","●","●","●",null,"●","●","●","●","●","●",13],["Slider","Forms","●","●","●","●","●","●","●",null,"●","●","●","●","●","●",13],["Tabs","Navigation","●","●","●","●","●","●","●",null,"●","●","●","●","●","●",13],["Toast","Feedback","●","●","●","●","●","●","●","●","●",null,"●","●","●","●",13],["Accordion","Utility","●","●","●","●",null,"●","●","●","●",null,"●","●","●","●",12],["Badge","Feedback","●","●","●","●","●","●","●","●","●","●",null,"●",null,"●",12],["Breadcrumbs","Navigation","●","●",null,"●","●","●","●","●","●","●","●","●",null,"●",12],["Card","Data Display","●","●","●","●","●","●","●","●","●","●",null,"●",null,"●",12],["Menu","Navigation","●","●","●","●","●","●","●",null,"●","●","●","●","●",null,12],["Avatar","Data Display","●","●",null,"●","●","●","●",null,"●","●",null,"●","●","●",11],["Drawer","Navigation","●","●","●","●","●","●","●","●","●",null,null,"●",null,"●",11],["Popover","Data Display","●","●",null,"●","●","●","●","●",null,null,"●","●","●","●",11],["Alert","Feedback","●","●",null,"●","●","●","●","●","●",null,null,"●",null,"●",10],["Date Picker","Forms","●","●","●","●","●","●",null,null,"●","●","●",null,null,"●",10],["Dialog","Overlay","●","●","●","●",null,"●","●",null,"●","●",null,"●","●",null,10],["Pagination","Navigation","●",null,null,"●","●","●","●","●","●","●","●",null,null,"●",10],["Spinner","Feedback","●","●",null,null,"●","●","●","●",null,"●","●","●",null,"●",10],["Switch","Forms","●","●",null,"●","●","●","●",null,"●",null,null,"●","●","●",10],["Table","Data Display","●","●","●","●","●","●","●",null,"●","●",null,null,null,"●",10],["Tree View","Data Display",null,"●","●","●","●","●","●",null,"●","●","●","●",null,null,10],["Form Field","Forms","●","●","●",null,null,"●","●",null,"●","●",null,"●","●",null,9],["Input","Forms","●",null,"●",null,"●","●","●",null,"●","●",null,"●",null,"●",9],["List","Data Display",null,null,"●","●","●","●","●",null,"●","●","●","●",null,null,9],["Radio Group","Forms","●","●","●","●",null,null,null,null,"●",null,"●","●","●","●",9],["Skeleton","Feedback","●","●",null,"●","●","●","●",null,null,"●",null,"●",null,"●",9],["Carousel","Data Display","●","●",null,null,"●","●",null,"●","●","●",null,"●",null,null,8],["Divider","Layout",null,"●","●","●","●",null,"●",null,"●",null,null,"●",null,"●",8],["Image","Data Display",null,"●",null,null,"●","●","●",null,"●","●",null,"●",null,"●",8],["Number Input","Forms",null,"●",null,null,"●","●","●",null,"●",null,"●","●",null,"●",8],["Progress","Feedback","●",null,null,"●","●","●","●","●",null,null,null,null,"●","●",8],["Rating","Forms",null,"●",null,"●","●","●","●",null,"●","●",null,"●",null,null,8],["Textarea","Typography & Media","●","●",null,"●",null,"●","●",null,"●",null,null,"●",null,"●",8],["Autocomplete","Forms",null,"●","●","●","●",null,"●",null,"●",null,null,null,null,"●",7],["Scroll Area","Utility","●","●",null,null,null,"●","●",null,null,"●",null,null,"●","●",7],["Timeline","Data Display",null,"●",null,"●","●","●","●",null,"●","●",null,null,null,null,7],["Chip","Data Display",null,"●",null,"●",null,null,"●",null,"●","●",null,null,null,"●",6],["Collapsible","Utility","●",null,null,null,"●","●","●","●",null,null,null,null,"●",null,6],["Color Picker","Forms",null,"●",null,null,"●","●","●",null,"●","●",null,null,null,null,6],["Form","Forms",null,null,null,null,"●",null,null,null,"●","●","●",null,"●","●",6],["Icon","Typography & Media",null,null,"●",null,"●","●",null,null,"●","●",null,"●",null,null,6],["Modal","Overlay",null,null,null,"●","●",null,"●","●",null,null,"●",null,null,"●",6],["Stepper","Navigation",null,"●","●","●",null,null,"●",null,"●","●",null,null,null,null,6],["Text Input","Forms",null,"●",null,"●",null,null,"●","●","●",null,"●",null,null,null,6],["Toggle","Forms","●","●",null,"●",null,null,null,null,null,"●","●",null,"●",null,6],["Toolbar","Navigation",null,"●","●",null,null,null,null,null,"●","●",null,"●","●",null,6],["Button Group","Utility","●",null,null,"●",null,null,null,"●","●","●",null,null,null,null,5],["Calendar","Data Display","●",null,null,null,"●","●",null,null,"●",null,null,null,null,"●",5],["Code","Data Display",null,null,null,null,null,"●","●",null,"●",null,"●",null,null,"●",5],["Combobox","Forms","●",null,null,null,null,"●","●",null,"●",null,null,"●",null,null,5],["Dropdown","Utility",null,null,null,null,"●",null,null,"●",null,null,"●","●",null,"●",5],["File Upload","Forms",null,"●",null,null,null,"●","●",null,"●",null,"●",null,null,null,5],["Grid","Layout",null,null,null,"●","●","●","●","●",null,null,null,null,null,null,5],["Kbd","Typography & Media","●",null,null,null,null,"●","●",null,"●",null,null,null,null,"●",5],["Link","Typography & Media",null,null,null,"●",null,"●",null,null,null,null,"●","●",null,"●",5],["Menubar","Navigation","●","●",null,"●",null,null,"●",null,null,null,null,null,"●",null,5],["OTP Input","Forms","●","●",null,null,null,null,null,null,"●",null,null,null,"●","●",5],["Progress Bar","Feedback",null,"●","●",null,null,null,null,null,"●",null,"●","●",null,null,5],["Progress Circle","Feedback",null,null,null,null,null,"●","●",null,"●","●",null,null,null,"●",5],["Splitter","Layout",null,"●",null,null,"●","●","●",null,null,"●",null,null,null,null,5],["Tag","Data Display",null,"●",null,null,"●","●",null,null,null,null,"●","●",null,null,5],["Typography","Typography & Media","●",null,null,"●","●",null,"●","●",null,null,null,null,null,null,5],["Aspect Ratio","Layout","●",null,null,null,null,"●","●",null,null,null,null,null,"●",null,4],["Container","Layout",null,null,null,"●",null,"●","●","●",null,null,null,null,null,null,4],["Floating Action Button","Utility",null,null,null,"●","●",null,null,null,"●","●",null,null,null,null,4],["Hover Card","Data Display","●",null,null,null,null,"●","●",null,null,null,null,null,"●",null,4],["Portal","Utility",null,null,null,"●",null,"●","●",null,null,null,null,null,"●",null,4],["Radio","Forms",null,null,null,null,"●","●","●",null,null,"●",null,null,null,null,4],["Segmented Control","Utility",null,"●",null,null,"●","●","●",null,null,null,null,null,null,null,4],["Separator","Layout","●",null,null,null,null,"●",null,null,null,"●",null,null,"●",null,4],["Stack","Layout",null,null,null,"●",null,"●","●","●",null,null,null,null,null,null,4],["Visually Hidden","Utility",null,null,null,null,null,"●","●","●",null,null,null,null,"●",null,4],["Box","Layout",null,null,null,"●",null,"●","●",null,null,null,null,null,null,null,3],["Close Button","Utility",null,null,null,null,null,"●","●","●",null,null,null,null,null,null,3],["Context Menu","Navigation","●","●",null,null,null,null,null,null,null,null,null,null,"●",null,3],["Data Table","Data Display","●",null,null,null,null,null,null,null,"●",null,"●",null,null,null,3],["Date Input","Forms",null,null,null,null,null,"●",null,null,"●",null,null,null,null,"●",3],["Empty State","Feedback",null,null,null,null,null,"●","●",null,"●",null,null,null,null,null,3],["Flex","Layout",null,null,null,null,"●","●","●",null,null,null,null,null,null,null,3],["Input Group","Forms","●","●",null,null,null,null,null,"●",null,null,null,null,null,null,3],["Listbox","Data Display",null,"●",null,null,null,"●",null,null,null,null,null,null,null,"●",3],["Multi Select","Forms",null,"●",null,null,null,null,"●",null,null,null,"●",null,null,null,3],["Space","Layout",null,null,null,null,"●",null,"●",null,null,"●",null,null,null,null,3],["Speed Dial","Utility",null,"●",null,"●",null,null,null,null,"●",null,null,null,null,null,3],["Tags Input","Forms",null,null,null,null,null,"●","●",null,null,null,null,"●",null,null,3],["Text","Typography & Media",null,null,null,null,null,"●","●",null,null,null,null,"●",null,null,3],["Tree Select","Forms",null,"●",null,null,"●",null,"●",null,null,null,null,null,null,null,3],["Virtual Scroller","Utility",null,"●",null,null,null,null,null,null,"●","●",null,null,null,null,3],["Affix","Utility",null,null,null,null,"●",null,"●",null,null,null,null,null,null,null,2],["Alert Dialog","Feedback","●",null,null,null,null,null,null,null,null,null,null,null,"●",null,2],["Anchor","Navigation",null,null,null,null,"●",null,"●",null,null,null,null,null,null,null,2],["App Bar","Navigation",null,null,null,"●",null,null,null,null,"●",null,null,null,null,null,2],["App Shell","Layout",null,null,null,null,null,null,"●",null,null,null,"●",null,null,null,2],["Banner","Utility",null,null,null,null,null,null,null,null,"●","●",null,null,null,null,2],["Blockquote","Typography & Media",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Bottom Navigation","Navigation",null,null,null,"●",null,null,null,null,"●",null,null,null,null,null,2],["Bottom Sheet","Overlay",null,null,"●",null,null,null,null,null,"●",null,null,null,null,null,2],["Button Toggle","Forms",null,null,"●",null,null,null,null,null,null,"●",null,null,null,null,2],["Cascader","Utility",null,null,null,null,"●",null,"●",null,null,null,null,null,null,null,2],["Center","Layout",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Chart","Data Display","●","●",null,null,null,null,null,null,null,null,null,null,null,null,2],["Color Swatch","Utility",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Data Grid","Layout",null,null,null,"●","●",null,null,null,null,null,null,null,null,null,2],["Data List","Data Display",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Editor","Utility",null,"●",null,null,null,null,null,null,null,"●",null,null,null,null,2],["Empty","Feedback","●",null,null,null,"●",null,null,null,null,null,null,null,null,null,2],["Group","Utility",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Highlight","Utility",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Icon Button","Typography & Media",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Image Gallery","Data Display",null,"●",null,"●",null,null,null,null,null,null,null,null,null,null,2],["Item","Utility","●",null,null,null,null,null,null,null,null,"●",null,null,null,null,2],["Knob","Utility",null,"●",null,null,null,null,null,null,null,"●",null,null,null,null,2],["Layout","Layout",null,null,null,null,"●",null,null,null,null,"●",null,null,null,null,2],["Loading Overlay","Feedback",null,"●",null,null,null,null,"●",null,null,null,null,null,null,null,2],["Locale Provider","Utility",null,null,null,null,null,"●",null,null,"●",null,null,null,null,null,2],["Marquee","Utility",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Masonry","Utility",null,null,null,"●","●",null,null,null,null,null,null,null,null,null,2],["Navbar","Navigation",null,null,null,null,null,null,null,"●",null,null,null,null,null,"●",2],["Navigation Menu","Navigation","●",null,null,null,null,null,null,null,null,null,null,null,"●",null,2],["No SSR","Utility",null,null,null,"●",null,null,null,null,"●",null,null,null,null,null,2],["Overlay","Overlay",null,null,null,null,null,null,"●",null,"●",null,null,null,null,null,2],["Paginator","Utility",null,"●","●",null,null,null,null,null,null,null,null,null,null,null,2],["Paper","Utility",null,null,null,"●",null,null,"●",null,null,null,null,null,null,null,2],["Parallax","Utility",null,null,null,null,null,null,null,null,"●","●",null,null,null,null,2],["Password Input","Forms",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Pin Input","Forms",null,null,null,null,null,"●","●",null,null,null,null,null,null,null,2],["Range","Forms",null,null,null,null,null,null,null,"●",null,"●",null,null,null,null,2],["Responsive","Utility",null,null,null,null,null,null,null,null,"●","●",null,null,null,null,2],["Steps","Navigation",null,null,null,null,"●","●",null,null,null,null,null,null,null,null,2],["Time Picker","Forms",null,null,null,null,"●",null,null,null,null,"●",null,null,null,null,2],["Toggle Group","Forms","●",null,null,null,null,null,null,null,null,null,null,null,"●",null,2],["Absolute Center","Layout",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Accessible Icon","Typography & Media",null,null,null,null,null,null,null,null,null,null,null,null,"●",null,1],["Action Bar","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["AI Label","Utility",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Ajax Bar","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Alpha Slider","Forms",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Angle Slider","Forms",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["App","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Attachment","Utility","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Avatar Group","Data Display",null,null,null,null,null,null,null,null,null,null,null,"●",null,null,1],["Backdrop","Utility",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Background Image","Data Display",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Bar","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Bleed","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Border Beam","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Bubble","Utility","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Burger","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Button Dropdown","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Cascade Select","Forms",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Charts","Data Display",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Chat Message","Feedback",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Checkbox / Radio","Forms",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Checkbox Card","Forms",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Chips","Data Display",null,null,"●",null,null,null,null,null,null,null,null,null,null,null,1],["Click-Away Listener","Data Display",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Clipboard","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Code Block","Data Display",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Color Modes","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Columns","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Command","Utility","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Config Provider","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Confirm Dialog","Overlay",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Confirm Edit","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Confirm Popup","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Contained List","Data Display",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Content Switcher","Forms",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Copy Button","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Core","Utility",null,null,"●",null,null,null,null,null,null,null,null,null,null,null,1],["CSS Baseline","Utility",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Data Iterator","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Data View","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Date Range Picker","Forms",null,null,null,null,null,null,null,null,null,null,null,null,null,"●",1],["Deferred Content","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Descriptions","Data Display",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Direction","Utility","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Direction Provider","Utility",null,null,null,null,null,null,null,null,null,null,null,null,"●",null,1],["Dock","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Download Trigger","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Editable","Forms",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Editable Pro Table","Forms",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Expansion Item","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Figures","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["File Button","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["File Picker","Forms",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Float","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Float Label","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Floating Indicator","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Floating Labels","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Floating Panel","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Floating Window","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Fluent Provider","Utility",null,null,null,null,null,null,null,null,null,null,null,"●",null,null,1],["Fluid","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Focus Trap","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Footer","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Format Byte","Forms",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Format Number","Forms",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Grid List","Data Display",null,null,"●",null,null,null,null,null,null,null,null,null,null,null,1],["Gutters","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Heading","Typography & Media",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Hover","Data Display",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Hue Slider","Forms",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Icon Field","Forms",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Icons","Typography & Media",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Ifta Label","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Image Compare","Data Display",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Images","Data Display",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Indicator","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Infinite Scroll","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Infinite Scroller","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Info Label","Utility",null,null,null,null,null,null,null,null,null,null,null,"●",null,null,1],["Inner Loading","Feedback",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Inplace","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Input Group Addon","Forms",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Input Mask","Forms",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Intersection","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Item Group","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Json Input","Forms",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Key Filter","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Lazy","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Linear Progress","Feedback",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Link Overlay","Overlay",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["List Group","Data Display",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Listy","Data Display",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Main","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Mark","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Marker","Utility","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Markup Table","Data Display",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Mask Input","Forms",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Mega Menu","Navigation",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Mentions","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Menu Buttons","Navigation",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Message Scroller","Feedback","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Meter Group","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Nav","Navigation",null,null,null,null,null,null,null,null,null,null,null,"●",null,null,1],["Nav Link","Navigation",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Navigation Drawer","Navigation",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Navs And Tabs","Navigation",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Number Field","Forms",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Number Formatter","Forms",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Option Group","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Order List","Data Display",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Organization Chart","Data Display",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Overflow List","Data Display",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Overlay Badge","Feedback",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Panel","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Panel Menu","Navigation",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Password","Forms",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Password Toggle Field","Forms",null,null,null,null,null,null,null,null,null,null,null,null,"●",null,1],["Persona","Utility",null,null,null,null,null,null,null,null,null,null,null,"●",null,null,1],["Pick List","Data Display",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Picker","Forms",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Pill","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Pills Input","Forms",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Placeholder","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Popconfirm","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Popper","Utility",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Popup Edit","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Popup Proxy","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Pro Descriptions","Data Display",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Pro Form","Forms",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Pro Layout","Layout",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Pro List","Data Display",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Progress Indicator","Feedback",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Progress Spinner","Feedback",null,null,"●",null,null,null,null,null,null,null,null,null,null,null,1],["Prose","Typography & Media",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Pull To Refresh","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["QR Code","Data Display",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["QRCode","Data Display",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Questionnaire","Utility","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Radio Card","Forms",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Range Calendar","Forms",null,null,null,null,null,null,null,null,null,null,null,null,null,"●",1],["Ratio","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Resizable","Utility","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Resize Observer","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Result","Feedback",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Rich Text Editor","Typography & Media",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Ripple","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Ripples","Utility",null,null,"●",null,null,null,null,null,null,null,null,null,null,null,1],["Rolling Number","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["RTL","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Scroll Observer","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Scroll Top","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Scroller","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Scrollspy","Navigation",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Search","Utility",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Searchbox","Layout",null,null,null,null,null,null,null,null,null,null,null,"●",null,null,1],["Semi Circle Progress","Feedback",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Sidebar","Navigation","●",null,null,null,null,null,null,null,null,null,null,null,null,null,1],["Skeleton Loader","Feedback",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Skip Nav","Navigation",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Slide Group","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Slide Item","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Slide Toggle","Forms",null,null,"●",null,null,null,null,null,null,null,null,null,null,null,1],["Slot","Utility",null,null,null,null,null,null,null,null,null,null,null,null,"●",null,1],["Snippet","Utility",null,null,null,null,null,null,null,null,null,null,null,null,null,"●",1],["Sort","Utility",null,null,"●",null,null,null,null,null,null,null,null,null,null,null,1],["Spacer","Layout",null,null,null,null,null,null,null,null,null,null,null,null,null,"●",1],["Sparkline","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Split Button","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Spoiler","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Stat","Data Display",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Statistic","Data Display",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Status","Feedback",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Structured List","Data Display",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Style Class","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["System Bar","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Tab Panels","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Table of Contents","Data Display",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Tables","Data Display",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Terminal","Utility",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Theme","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Theme Icon","Typography & Media",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Theme Provider","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Tiered Menu","Navigation",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Tile","Utility",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Time Input","Forms",null,null,null,null,null,null,null,null,null,null,null,null,null,"●",1],["Title","Typography & Media",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Toggle Tip","Forms",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1],["Toggletip","Forms",null,null,null,null,null,null,null,null,null,null,"●",null,null,null,1],["Tour","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Transfer","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Transfer List","Data Display",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Transition","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Transitions","Utility",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["Tree Table","Data Display",null,"●",null,null,null,null,null,null,null,null,null,null,null,null,1],["Unstyled Button","Utility",null,null,null,null,null,null,"●",null,null,null,null,null,null,null,1],["Upload","Forms",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Uploader","Forms",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Use Media Query","Utility",null,null,null,"●",null,null,null,null,null,null,null,null,null,null,1],["User","Utility",null,null,null,null,null,null,null,null,null,null,null,null,null,"●",1],["Utilities API","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Validation","Utility",null,null,null,null,null,null,null,"●",null,null,null,null,null,null,1],["Video","Utility",null,null,null,null,null,null,null,null,null,"●",null,null,null,null,1],["Watermark","Utility",null,null,null,null,"●",null,null,null,null,null,null,null,null,null,1],["Window","Utility",null,null,null,null,null,null,null,null,"●",null,null,null,null,null,1],["Wrap","Utility",null,null,null,null,null,"●",null,null,null,null,null,null,null,null,1]]}
+{"kind":"sheet","id":"ws/7b5usr","name":"Feature Checklist","index":4,"range":"A1:D23","address":"A1:D23","tables":1}
+{"kind":"table","sheet":"Feature Checklist","address":"A1:D23","rows":23,"cols":4,"values":[["Cross-cutting feature","Acceptance criteria","Status","Notes"],["Theme system","Design tokens; semantic colors; component recipes; runtime theme switching; CSS variables","Not Started",null],["Color modes","Light/dark/system; nested overrides; SSR-safe initialization","Not Started",null],["Sizing & density","xs–xl sizing; compact/comfortable density; touch targets","Not Started",null],["Responsive props","Breakpoint values; container queries where useful","Not Started",null],["RTL & i18n","Logical properties; direction provider; locale formatting; translated labels","Not Started",null],["Accessibility","WAI-ARIA patterns; keyboard maps; focus management; screen-reader announcements","Not Started",null],["Motion","Entrance/exit; reduced-motion support; interruptible animations","Not Started",null],["State model","Controlled/uncontrolled; defaults; reset; disabled/read-only/required/invalid/loading","Not Started",null],["Composition","Slots/parts; polymorphic rendering; as-child; render props","Not Started",null],["Forms","Labels/help/errors; native form submission; validation libraries","Not Started",null],["Overlay engine","Portal; stacking; focus trap/return; dismiss; outside click; scroll lock; collision","Not Started",null],["Collections","Single/multiple selection; typeahead; roving tabindex; grouping; async/loading/empty","Not Started",null],["Virtualization","Large lists/tables/trees; variable size; overscan; keyboard compatibility","Not Started",null],["Data table","Sort; filter; paginate; select; resize; reorder; pin; expand; edit; export","Not Started",null],["Styling API","Class hooks; data attributes; unstyled mode; per-part overrides","Not Started",null],["Icons","Icon package; currentColor; sizing; accessible labels","Not Started",null],["SSR/RSC","Hydration safety; stable IDs; server components strategy","Not Started",null],["Testing","Unit; interaction; accessibility; visual regression; cross-browser","Not Started",null],["Documentation","API; anatomy; examples; accessibility; migration; recipes","Not Started",null],["Tooling","CLI/generator; tree-shaking; typed APIs; codemods; changelog","Not Started",null],["Quality gates","Bundle budget; performance; WCAG target; browser matrix; deprecation policy","Not Started",null],["Definition of Done","Docs + tests + accessibility audit + RTL/dark mode + responsive + SSR verified","Not Started",null]]}
+{"kind":"sheet","id":"ws/w5zju0","name":"Sources & Scope","index":5,"range":"A1:D24","address":"A1:D24","tables":1}
+{"kind":"table","sheet":"Sources & Scope","address":"A1:D24","rows":24,"cols":4,"values":[["Sources, Scope & Method","Sources, Scope & Method","Sources, Scope & Method","Sources, Scope & Method"],["Sources, Scope & Method","Sources, Scope & Method","Sources, Scope & Method","Sources, Scope & Method"],[null,null,null,null],["Scope","All publicly documented components in the 14 selected libraries, normalized into a single implementation backlog. “All modern frameworks” is not finite; this tracker is a broad representative benchmark, not a claim to enumerate every library in existence.",null,null],["Normalization","Official component names are retained in Framework Inventory. Coverage Matrix uses canonical aliases so equivalent controls compare cleanly.",null,null],["Variants","Variant recommendations are milestone requirements synthesized from recurring patterns. Confirm exact API details against each linked official component page before cloning behavior.",null,null],["Freshness","Research date: 2026-08-17. Component catalogs change; review official indexes at each milestone planning cycle.",null,null],[null,null,null,null],[null,null,null,null],["Framework","Ecosystem","Approach","Official Component Index"],["shadcn/ui","React","Styled source components","https://ui.shadcn.com/docs/components"],["PrimeNG","Angular","Styled + unstyled suite","https://primeng.org/"],["Angular Material","Angular","Material design system","https://material.angular.dev/components"],["MUI","React","Material design system","https://mui.com/material-ui/all-components/"],["Ant Design","React","Enterprise design system","https://ant.design/components/overview/"],["Chakra UI","React","Accessible styled system","https://www.chakra-ui.com/docs/components/concepts/overview"],["Mantine","React","Accessible styled system","https://mantine.dev/core/package/"],["Bootstrap","CSS + JavaScript","CSS-first toolkit","https://getbootstrap.com/docs/5.3/getting-started/contents/"],["Vuetify","Vue","Material design system","https://vuetifyjs.com/en/components/all/"],["Quasar","Vue","Full UI framework","https://quasar.dev/components/"],["Carbon","React / Web Components","Enterprise design system","https://carbondesignsystem.com/components/overview/components/"],["Fluent UI","React / Web Components","Enterprise design system","https://fluent2.microsoft.design/components/web/react/"],["Radix Primitives","React","Headless primitives","https://www.radix-ui.com/primitives/docs/overview/introduction"],["HeroUI","React","Styled accessible system","https://beta.heroui.com/docs/components/dropdown"]]}
+=== P2 MATCHES ===
+{"kind":"match","sheet":"Dashboard","address":"A1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"B1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"C1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"D1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"E1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"F1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"G1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"H1","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"A2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"B2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"C2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"D2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"E2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"F2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"G2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"H2","value":"UI Framework Component Milestone Tracker","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"A12","value":"Recommended milestone sequence","formula":null,"match":"value"}
+{"kind":"match","sheet":"Dashboard","address":"B15","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H1","value":"Priority","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"K1","value":"Milestone","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"E9","value":"Expansion Panel, Expansion Panels","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H50","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H51","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H52","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H53","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H54","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H55","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H56","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H57","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H58","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H59","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H60","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H61","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H62","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H63","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H64","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H65","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H66","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H67","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H68","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H69","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H70","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H71","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H72","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H73","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H74","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H75","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H76","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H77","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H78","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H79","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H80","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H81","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H82","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H83","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H84","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H85","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H86","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H87","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H88","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H89","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H90","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"H91","value":"P2 Expansion","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"A185","value":"Expansion Item","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D169","value":"Expansion Panel","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D627","value":"Expansion Panels","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D702","value":"Expansion Item","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"E702","value":"Expansion Item","formula":null,"match":"value"}
+{"kind":"match","sheet":"Coverage Matrix","address":"A185","value":"Expansion Item","formula":null,"match":"value"}
+{"kind":"match","sheet":"Sources & Scope","address":"B6","value":"Variant recommendations are milestone requirements synthesized from recurring patterns. Confirm exact API details against each linked official component page before cloning behavior.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Sources & Scope","address":"B7","value":"Research date: 2026-08-17. Component catalogs change; review official indexes at each milestone planning cycle.","formula":null,"match":"value"}
+=== EMBEDDED INSTRUCTION SCAN ===
+{"kind":"match","sheet":"Milestone Backlog","address":"E60","value":"Input OTP, InputOtp, One-Time Password Field","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"A128","value":"Password Input","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"E128","value":"PasswordInput","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"A251","value":"Password","formula":null,"match":"value"}
+{"kind":"match","sheet":"Milestone Backlog","address":"A252","value":"Password Toggle Field","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D122","value":"Password","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"E122","value":"Password","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D398","value":"Password Input","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"E398","value":"Password Input","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D464","value":"PasswordInput","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"E464","value":"Password Input","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D856","value":"One-Time Password Field","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"D857","value":"Password Toggle Field","formula":null,"match":"value"}
+{"kind":"match","sheet":"Framework Inventory","address":"E857","value":"Password Toggle Field","formula":null,"match":"value"}
+{"kind":"match","sheet":"Coverage Matrix","address":"A128","value":"Password Input","formula":null,"match":"value"}
+{"kind":"match","sheet":"Coverage Matrix","address":"A251","value":"Password","formula":null,"match":"value"}
+{"kind":"match","sheet":"Coverage Matrix","address":"A252","value":"Password Toggle Field","formula":null,"match":"value"}
+=== SHEET Dashboard ===
+{
+  "address": "A1:H16",
+  "rows": 16,
+  "cols": 8,
+  "firstRows": [
+    [
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker"
+    ],
+    [
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker",
+      "UI Framework Component Milestone Tracker"
+    ],
+    [
+      "Normalized coverage across 14 modern UI libraries • researched 2026-08-17",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Metric",
+      "Value",
+      null,
+      "Category",
+      "Canonical items",
+      null,
+      null,
+      null
+    ],
+    [
+      "Frameworks",
+      14,
+      null,
+      "Forms",
+      63,
+      null,
+      null,
+      null
+    ],
+    [
+      "Documented component rows",
+      925,
+      null,
+      "Data Display",
+      50,
+      null,
+      null,
+      null
+    ],
+    [
+      "Canonical backlog items",
+      339,
+      null,
+      "Utility",
+      138,
+      null,
+      null,
+      null
+    ],
+    [
+      "P0 + P1 candidates",
+      48,
+      null,
+      "Navigation",
+      26,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "Feedback",
+      23,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      "Overlay",
+      6,
+      null,
+      null,
+      null
+    ],
+    [
+      "Recommended milestone sequence",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ],
+  "p2Rows": [
+    {
+      "index": 15,
+      "row": [
+        "3",
+        "P2 Expansion",
+        "Add enterprise/data-heavy components and advanced layout.",
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "formulaRows": [
+    {
+      "index": 9,
+      "row": [
+        "",
+        "=COUNTIF('Milestone Backlog'!$H$2:$H$340,\"P0 Foundation\")+COUNTIF('Milestone Backlog'!$H$2:$H$340,\"P1 Core\")",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  ]
+}
+=== SHEET Milestone Backlog ===
+{
+  "address": "A1:L340",
+  "rows": 340,
+  "cols": 12,
+  "firstRows": [
+    [
+      "Canonical Component",
+      "Category",
+      "Framework Count",
+      "Seen In",
+      "Aliases / Official Names",
+      "Variants to Implement",
+      "Behavior & Feature Requirements",
+      "Priority",
+      "Status",
+      "Owner",
+      "Milestone",
+      "Notes"
+    ],
+    [
+      "Select",
+      "Forms",
+      14,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI",
+      "Native Select, NativeSelect",
+      "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/error states",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Tooltip",
+      "Data Display",
+      14,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI",
+      null,
+      "top/right/bottom/left; aligned start/center/end; arrow; delay; collision handling",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; portal/layering; focus trap/return; outside click; escape; collision/scroll lock",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Button",
+      "Utility",
+      13,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Carbon, Fluent UI, HeroUI",
+      null,
+      "primary, secondary, outline, ghost/text, destructive, icon-only; sm/md/lg; loading; disabled",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Checkbox",
+      "Forms",
+      13,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI",
+      "Checkbox Group",
+      "default + size/density/color/state variants where applicable",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disabled/read-only; form integration",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Slider",
+      "Forms",
+      13,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI",
+      "RangeSlider, Range Slider",
+      "default + size/density/color/state variants where applicable",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disabled/read-only; form integration",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Tabs",
+      "Navigation",
+      13,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Vuetify, Quasar, Carbon, Fluent UI, Radix Primitives, HeroUI",
+      "Tablist",
+      "horizontal/vertical; controlled/uncontrolled; lazy; disabled; keyboard navigation",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Toast",
+      "Feedback",
+      13,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Carbon, Fluent UI, Radix Primitives, HeroUI",
+      "Snackbar, Notification",
+      "info, success, warning, danger; solid/soft/outline; closable",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Accordion",
+      "Utility",
+      12,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Chakra UI, Mantine, Bootstrap, Vuetify, Carbon, Fluent UI, Radix Primitives, HeroUI",
+      "Expansion Panel, Expansion Panels",
+      "horizontal/vertical; controlled/uncontrolled; lazy; disabled; keyboard navigation",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Badge",
+      "Feedback",
+      12,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Fluent UI, HeroUI",
+      null,
+      "info, success, warning, danger; solid/soft/outline; closable",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Breadcrumbs",
+      "Navigation",
+      12,
+      "shadcn/ui, PrimeNG, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Carbon, Fluent UI, HeroUI",
+      "Breadcrumb",
+      "default + size/density/color/state variants where applicable",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ],
+    [
+      "Card",
+      "Data Display",
+      12,
+      "shadcn/ui, PrimeNG, Angular Material, MUI, Ant Design, Chakra UI, Mantine, Bootstrap, Vuetify, Quasar, Fluent UI, HeroUI",
+      null,
+      "elevated, outline, filled; interactive; horizontal/vertical; media/actions",
+      "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+      "P0 Foundation",
+      "Not Started",
+      null,
+      1,
+      null
+    ]
+  ],
+  "p2Rows": [
+    {
+      "index": 9,
+      "row": [
+        "Accordion",
+        "Utility",
+        12,
+        "shadcn/ui, PrimeNG, Angular Material, MUI, Chakra UI, Mantine, Bootstrap, Vuetify, Carbon, Fluent UI, Radix Primitives, HeroUI",
+        "Expansion Panel, Expansion Panels",
+        "horizontal/vertical; controlled/uncontrolled; lazy; disabled; keyboard navigation",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P0 Foundation",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 50,
+      "row": [
+        "Button Group",
+        "Utility",
+        5,
+        "shadcn/ui, MUI, Bootstrap, Vuetify, Quasar",
+        null,
+        "primary, secondary, outline, ghost/text, destructive, icon-only; sm/md/lg; loading; disabled",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 51,
+      "row": [
+        "Calendar",
+        "Data Display",
+        5,
+        "shadcn/ui, Ant Design, Chakra UI, Vuetify, HeroUI",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 52,
+      "row": [
+        "Code",
+        "Data Display",
+        5,
+        "Chakra UI, Mantine, Vuetify, Carbon, HeroUI",
+        "Code Snippet",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 53,
+      "row": [
+        "Combobox",
+        "Forms",
+        5,
+        "shadcn/ui, Chakra UI, Mantine, Vuetify, Fluent UI",
+        null,
+        "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/error states",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 54,
+      "row": [
+        "Dropdown",
+        "Utility",
+        5,
+        "Ant Design, Bootstrap, Carbon, Fluent UI, HeroUI",
+        null,
+        "top/right/bottom/left; aligned start/center/end; arrow; delay; collision handling",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 55,
+      "row": [
+        "File Upload",
+        "Forms",
+        5,
+        "PrimeNG, Chakra UI, Mantine, Vuetify, Carbon",
+        "FileUpload, FileInput, File Input, File Uploader",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 56,
+      "row": [
+        "Grid",
+        "Layout",
+        5,
+        "MUI, Ant Design, Chakra UI, Mantine, Bootstrap",
+        "SimpleGrid",
+        "dense/comfortable; striped; sortable; filterable; selectable; expandable; virtualized; sticky",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/error states",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 57,
+      "row": [
+        "Kbd",
+        "Typography & Media",
+        5,
+        "shadcn/ui, Chakra UI, Mantine, Vuetify, HeroUI",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 58,
+      "row": [
+        "Link",
+        "Typography & Media",
+        5,
+        "MUI, Chakra UI, Carbon, Fluent UI, HeroUI",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 59,
+      "row": [
+        "Menubar",
+        "Navigation",
+        5,
+        "shadcn/ui, PrimeNG, MUI, Mantine, Radix Primitives",
+        null,
+        "single/multi-select; grouped; nested; checkbox/radio items; icons; shortcuts",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; portal/layering; focus trap/return; outside click; escape; collision/scroll lock",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 60,
+      "row": [
+        "OTP Input",
+        "Forms",
+        5,
+        "shadcn/ui, PrimeNG, Vuetify, Radix Primitives, HeroUI",
+        "Input OTP, InputOtp, One-Time Password Field",
+        "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disabled/read-only; form integration",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 61,
+      "row": [
+        "Progress Bar",
+        "Feedback",
+        5,
+        "PrimeNG, Angular Material, Vuetify, Carbon, Fluent UI",
+        "ProgressBar, Progress Linear",
+        "determinate/indeterminate; linear/circular; sizes; reduced motion",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 62,
+      "row": [
+        "Progress Circle",
+        "Feedback",
+        5,
+        "Chakra UI, Mantine, Vuetify, Quasar, HeroUI",
+        "RingProgress, Progress Circular, Circular Progress",
+        "determinate/indeterminate; linear/circular; sizes; reduced motion",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 63,
+      "row": [
+        "Splitter",
+        "Layout",
+        5,
+        "PrimeNG, Ant Design, Chakra UI, Mantine, Quasar",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 64,
+      "row": [
+        "Tag",
+        "Data Display",
+        5,
+        "PrimeNG, Ant Design, Chakra UI, Carbon, Fluent UI",
+        null,
+        "info, success, warning, danger; solid/soft/outline; closable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 65,
+      "row": [
+        "Typography",
+        "Typography & Media",
+        5,
+        "shadcn/ui, MUI, Ant Design, Mantine, Bootstrap",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 66,
+      "row": [
+        "Aspect Ratio",
+        "Layout",
+        4,
+        "shadcn/ui, Chakra UI, Mantine, Radix Primitives",
+        "AspectRatio",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 67,
+      "row": [
+        "Container",
+        "Layout",
+        4,
+        "MUI, Chakra UI, Mantine, Bootstrap",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 68,
+      "row": [
+        "Floating Action Button",
+        "Utility",
+        4,
+        "MUI, Ant Design, Vuetify, Quasar",
+        "FloatButton, Fab",
+        "primary, secondary, outline, ghost/text, destructive, icon-only; sm/md/lg; loading; disabled",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 69,
+      "row": [
+        "Hover Card",
+        "Data Display",
+        4,
+        "shadcn/ui, Chakra UI, Mantine, Radix Primitives",
+        "HoverCard",
+        "elevated, outline, filled; interactive; horizontal/vertical; media/actions",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 70,
+      "row": [
+        "Portal",
+        "Utility",
+        4,
+        "MUI, Chakra UI, Mantine, Radix Primitives",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 71,
+      "row": [
+        "Radio",
+        "Forms",
+        4,
+        "Ant Design, Chakra UI, Mantine, Quasar",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disabled/read-only; form integration",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 72,
+      "row": [
+        "Segmented Control",
+        "Utility",
+        4,
+        "PrimeNG, Ant Design, Chakra UI, Mantine",
+        "SelectButton, Segmented, SegmentedControl",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 73,
+      "row": [
+        "Separator",
+        "Layout",
+        4,
+        "shadcn/ui, Chakra UI, Quasar, Radix Primitives",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 74,
+      "row": [
+        "Stack",
+        "Layout",
+        4,
+        "MUI, Chakra UI, Mantine, Bootstrap",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 75,
+      "row": [
+        "Visually Hidden",
+        "Utility",
+        4,
+        "Chakra UI, Mantine, Bootstrap, Radix Primitives",
+        "VisuallyHidden",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 76,
+      "row": [
+        "Box",
+        "Layout",
+        3,
+        "MUI, Chakra UI, Mantine",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 77,
+      "row": [
+        "Close Button",
+        "Utility",
+        3,
+        "Chakra UI, Mantine, Bootstrap",
+        "CloseButton",
+        "primary, secondary, outline, ghost/text, destructive, icon-only; sm/md/lg; loading; disabled",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 78,
+      "row": [
+        "Context Menu",
+        "Navigation",
+        3,
+        "shadcn/ui, PrimeNG, Radix Primitives",
+        "ContextMenu",
+        "single/multi-select; grouped; nested; checkbox/radio items; icons; shortcuts",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; portal/layering; focus trap/return; outside click; escape; collision/scroll lock",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 79,
+      "row": [
+        "Data Table",
+        "Data Display",
+        3,
+        "shadcn/ui, Vuetify, Carbon",
+        null,
+        "dense/comfortable; striped; sortable; filterable; selectable; expandable; virtualized; sticky",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/error states",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 80,
+      "row": [
+        "Date Input",
+        "Forms",
+        3,
+        "Chakra UI, Vuetify, HeroUI",
+        null,
+        "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disabled/read-only; form integration",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 81,
+      "row": [
+        "Empty State",
+        "Feedback",
+        3,
+        "Chakra UI, Mantine, Vuetify",
+        "EmptyState",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 82,
+      "row": [
+        "Flex",
+        "Layout",
+        3,
+        "Ant Design, Chakra UI, Mantine",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 83,
+      "row": [
+        "Input Group",
+        "Forms",
+        3,
+        "shadcn/ui, PrimeNG, Bootstrap",
+        "InputGroup",
+        "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disabled/read-only; form integration",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 84,
+      "row": [
+        "Listbox",
+        "Data Display",
+        3,
+        "PrimeNG, Chakra UI, HeroUI",
+        null,
+        "single/multi-select; grouped; nested; checkbox/radio items; icons; shortcuts",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/error states",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 85,
+      "row": [
+        "Multi Select",
+        "Forms",
+        3,
+        "PrimeNG, Mantine, Carbon",
+        "MultiSelect, Multiselect",
+        "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/error states",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 86,
+      "row": [
+        "Space",
+        "Layout",
+        3,
+        "Ant Design, Mantine, Quasar",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 87,
+      "row": [
+        "Speed Dial",
+        "Utility",
+        3,
+        "PrimeNG, MUI, Vuetify",
+        "SpeedDial",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 88,
+      "row": [
+        "Tags Input",
+        "Forms",
+        3,
+        "Chakra UI, Mantine, Fluent UI",
+        "TagsInput, Tag Picker",
+        "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; validation; labels/help/error; required/disabled/read-only; form integration",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 89,
+      "row": [
+        "Text",
+        "Typography & Media",
+        3,
+        "Chakra UI, Mantine, Fluent UI",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 90,
+      "row": [
+        "Tree Select",
+        "Forms",
+        3,
+        "PrimeNG, Ant Design, Mantine",
+        "TreeSelect",
+        "filled, outline, underlined; sm/md/lg; prefix/suffix; clearable; disabled/read-only/error",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; async data; virtualization; empty/loading/error states",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 91,
+      "row": [
+        "Virtual Scroller",
+        "Utility",
+        3,
+        "PrimeNG, Vuetify, Quasar",
+        "VirtualScroller, Virtual Scroll",
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P2 Expansion",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    },
+    {
+      "index": 185,
+      "row": [
+        "Expansion Item",
+        "Utility",
+        1,
+        "Quasar",
+        null,
+        "default + size/density/color/state variants where applicable",
+        "keyboard + screen-reader semantics; focus-visible; controlled/uncontrolled; theming tokens; RTL; dark mode; responsive behavior; motion/reduced-motion",
+        "P3 Differentiator",
+        "Not Started",
+        null,
+        1,
+        null
+      ]
+    }
+  ],
+  "formulaRows": []
+}
+=== SHEET Framework Inventory ===
+{
+  "address": "A1:G926",
+  "rows": 926,
+  "cols": 7,
+  "firstRows": [
+    [
+      "Framework",
+      "Ecosystem",
+      "Approach",
+      "Official Component",
+      "Canonical Component",
+      "Category",
+      "Official Source"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Accordion",
+      "Accordion",
+      "Utility",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Alert",
+      "Alert",
+      "Feedback",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Alert Dialog",
+      "Alert Dialog",
+      "Feedback",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Aspect Ratio",
+      "Aspect Ratio",
+      "Layout",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Attachment",
+      "Attachment",
+      "Utility",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Avatar",
+      "Avatar",
+      "Data Display",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Badge",
+      "Badge",
+      "Feedback",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Breadcrumb",
+      "Breadcrumbs",
+      "Navigation",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Bubble",
+      "Bubble",
+      "Utility",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Button",
+      "Button",
+      "Utility",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "Button Group",
+      "Button Group",
+      "Utility",
+      "https://ui.shadcn.com/docs/components"
+    ]
+  ],
+  "p2Rows": [
+    {
+      "index": 169,
+      "row": [
+        "Angular Material",
+        "Angular",
+        "Material design system",
+        "Expansion Panel",
+        "Accordion",
+        "Utility",
+        "https://material.angular.dev/components"
+      ]
+    },
+    {
+      "index": 627,
+      "row": [
+        "Vuetify",
+        "Vue",
+        "Material design system",
+        "Expansion Panels",
+        "Accordion",
+        "Utility",
+        "https://vuetifyjs.com/en/components/all/"
+      ]
+    },
+    {
+      "index": 702,
+      "row": [
+        "Quasar",
+        "Vue",
+        "Full UI framework",
+        "Expansion Item",
+        "Expansion Item",
+        "Utility",
+        "https://quasar.dev/components/"
+      ]
+    }
+  ],
+  "formulaRows": []
+}
+=== SHEET Coverage Matrix ===
+{
+  "address": "A1:Q340",
+  "rows": 340,
+  "cols": 17,
+  "firstRows": [
+    [
+      "Canonical Component",
+      "Category",
+      "shadcn/ui",
+      "PrimeNG",
+      "Angular Material",
+      "MUI",
+      "Ant Design",
+      "Chakra UI",
+      "Mantine",
+      "Bootstrap",
+      "Vuetify",
+      "Quasar",
+      "Carbon",
+      "Fluent UI",
+      "Radix Primitives",
+      "HeroUI",
+      "Coverage Count"
+    ],
+    [
+      "Select",
+      "Forms",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      14
+    ],
+    [
+      "Tooltip",
+      "Data Display",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      14
+    ],
+    [
+      "Button",
+      "Utility",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      13
+    ],
+    [
+      "Checkbox",
+      "Forms",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      13
+    ],
+    [
+      "Slider",
+      "Forms",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      13
+    ],
+    [
+      "Tabs",
+      "Navigation",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      13
+    ],
+    [
+      "Toast",
+      "Feedback",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      "●",
+      "●",
+      "●",
+      13
+    ],
+    [
+      "Accordion",
+      "Utility",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      "●",
+      "●",
+      "●",
+      12
+    ],
+    [
+      "Badge",
+      "Feedback",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      null,
+      "●",
+      12
+    ],
+    [
+      "Breadcrumbs",
+      "Navigation",
+      "●",
+      "●",
+      null,
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      12
+    ],
+    [
+      "Card",
+      "Data Display",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      "●",
+      null,
+      "●",
+      null,
+      "●",
+      12
+    ]
+  ],
+  "p2Rows": [
+    {
+      "index": 185,
+      "row": [
+        "Expansion Item",
+        "Utility",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "●",
+        null,
+        null,
+        null,
+        null,
+        1
+      ]
+    }
+  ],
+  "formulaRows": []
+}
+=== SHEET Feature Checklist ===
+{
+  "address": "A1:D23",
+  "rows": 23,
+  "cols": 4,
+  "firstRows": [
+    [
+      "Cross-cutting feature",
+      "Acceptance criteria",
+      "Status",
+      "Notes"
+    ],
+    [
+      "Theme system",
+      "Design tokens; semantic colors; component recipes; runtime theme switching; CSS variables",
+      "Not Started",
+      null
+    ],
+    [
+      "Color modes",
+      "Light/dark/system; nested overrides; SSR-safe initialization",
+      "Not Started",
+      null
+    ],
+    [
+      "Sizing & density",
+      "xs–xl sizing; compact/comfortable density; touch targets",
+      "Not Started",
+      null
+    ],
+    [
+      "Responsive props",
+      "Breakpoint values; container queries where useful",
+      "Not Started",
+      null
+    ],
+    [
+      "RTL & i18n",
+      "Logical properties; direction provider; locale formatting; translated labels",
+      "Not Started",
+      null
+    ],
+    [
+      "Accessibility",
+      "WAI-ARIA patterns; keyboard maps; focus management; screen-reader announcements",
+      "Not Started",
+      null
+    ],
+    [
+      "Motion",
+      "Entrance/exit; reduced-motion support; interruptible animations",
+      "Not Started",
+      null
+    ],
+    [
+      "State model",
+      "Controlled/uncontrolled; defaults; reset; disabled/read-only/required/invalid/loading",
+      "Not Started",
+      null
+    ],
+    [
+      "Composition",
+      "Slots/parts; polymorphic rendering; as-child; render props",
+      "Not Started",
+      null
+    ],
+    [
+      "Forms",
+      "Labels/help/errors; native form submission; validation libraries",
+      "Not Started",
+      null
+    ],
+    [
+      "Overlay engine",
+      "Portal; stacking; focus trap/return; dismiss; outside click; scroll lock; collision",
+      "Not Started",
+      null
+    ]
+  ],
+  "p2Rows": [],
+  "formulaRows": []
+}
+=== SHEET Sources & Scope ===
+{
+  "address": "A1:D30",
+  "rows": 30,
+  "cols": 4,
+  "firstRows": [
+    [
+      "Sources, Scope & Method",
+      "Sources, Scope & Method",
+      "Sources, Scope & Method",
+      "Sources, Scope & Method"
+    ],
+    [
+      "Sources, Scope & Method",
+      "Sources, Scope & Method",
+      "Sources, Scope & Method",
+      "Sources, Scope & Method"
+    ],
+    [
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Scope",
+      "All publicly documented components in the 14 selected libraries, normalized into a single implementation backlog. “All modern frameworks” is not finite; this tracker is a broad representative benchmark, not a claim to enumerate every library in existence.",
+      null,
+      null
+    ],
+    [
+      "Normalization",
+      "Official component names are retained in Framework Inventory. Coverage Matrix uses canonical aliases so equivalent controls compare cleanly.",
+      null,
+      null
+    ],
+    [
+      "Variants",
+      "Variant recommendations are milestone requirements synthesized from recurring patterns. Confirm exact API details against each linked official component page before cloning behavior.",
+      null,
+      null
+    ],
+    [
+      "Freshness",
+      "Research date: 2026-08-17. Component catalogs change; review official indexes at each milestone planning cycle.",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Framework",
+      "Ecosystem",
+      "Approach",
+      "Official Component Index"
+    ],
+    [
+      "shadcn/ui",
+      "React",
+      "Styled source components",
+      "https://ui.shadcn.com/docs/components"
+    ],
+    [
+      "PrimeNG",
+      "Angular",
+      "Styled + unstyled suite",
+      "https://primeng.org/"
+    ]
+  ],
+  "p2Rows": [],
+  "formulaRows": []
+}

@@ -1,5 +1,5 @@
 <span
-  [id]="id() || null"
+  [attr.id]="id() || null"
   class="orc-badge"
   [class]="'orc-badge ' + styleClass()"
   [attr.data-pc-name]="'badge'"
@@ -9,26 +9,36 @@
   [class.orc-badge--variant-outline]="variant() === 'outline'"
   [class.orc-badge--variant-dot]="variant() === 'dot'"
   [class.orc-badge--variant-ghost]="variant() === 'ghost'"
-  [class.orc-badge--status-primary]="status() === 'primary'"
-  [class.orc-badge--status-secondary]="status() === 'secondary'"
-  [class.orc-badge--status-success]="status() === 'success' || status() === 'completed'"
-  [class.orc-badge--status-warning]="status() === 'warning'"
-  [class.orc-badge--status-danger]="status() === 'danger'"
-  [class.orc-badge--status-info]="status() === 'info' || status() === 'new'"
-  [class.orc-badge--status-neutral]="status() === 'neutral'"
-  [class.orc-badge--status-pending]="status() === 'pending'"
-  [class.orc-badge--status-active]="status() === 'active'"
-  [class.orc-badge--status-inactive]="status() === 'inactive'"
+  [class.orc-badge--status-primary]="effectiveStatus() === 'primary'"
+  [class.orc-badge--status-secondary]="effectiveStatus() === 'secondary'"
+  [class.orc-badge--status-success]="
+    effectiveStatus() === 'success' || effectiveStatus() === 'completed'
+  "
+  [class.orc-badge--status-warning]="effectiveStatus() === 'warning'"
+  [class.orc-badge--status-danger]="effectiveStatus() === 'danger'"
+  [class.orc-badge--status-info]="
+    effectiveStatus() === 'info' || effectiveStatus() === 'new'
+  "
+  [class.orc-badge--status-neutral]="effectiveStatus() === 'neutral'"
+  [class.orc-badge--status-pending]="effectiveStatus() === 'pending'"
+  [class.orc-badge--status-active]="effectiveStatus() === 'active'"
+  [class.orc-badge--status-inactive]="effectiveStatus() === 'inactive'"
   [class.orc-badge--size-sm]="size() === 'sm'"
   [class.orc-badge--size-md]="size() === 'md'"
   [class.orc-badge--size-lg]="size() === 'lg'"
   [class.orc-badge--pill]="pill()"
+  [class.orc-badge--dismissible]="dismissible()"
   [class.orc-badge--dot-only]="isDotOnly()"
-  role="status"
-  [attr.aria-label]="accessibleLabel()"
+  [attr.role]="computedRole() || null"
+  [attr.aria-live]="computedRole() === 'status' ? 'polite' : null"
+  [attr.aria-label]="computedRole() ? accessibleLabel() || null : null"
 >
   <!-- Dot Indicator (quando variant="dot" ou dot="true") -->
-  <span *ngIf="dot() || variant() === 'dot'" class="orc-badge__dot" aria-hidden="true"></span>
+  <span
+    *ngIf="dot() || variant() === 'dot'"
+    class="orc-badge__dot"
+    aria-hidden="true"
+  ></span>
 
   <!-- Ícone à Esquerda (Projetado via ng-content) -->
   <ng-content select="[badge-icon-left], [badgeIconLeft]"></ng-content>
@@ -37,7 +47,9 @@
   <ng-container *ngIf="showDefaultIcon()">
     <!-- Sucesso / Concluído -->
     <svg
-      *ngIf="status() === 'success' || status() === 'completed'"
+      *ngIf="
+        effectiveStatus() === 'success' || effectiveStatus() === 'completed'
+      "
       class="orc-badge__icon"
       viewBox="0 0 24 24"
       fill="none"
@@ -52,7 +64,7 @@
 
     <!-- Informação -->
     <svg
-      *ngIf="status() === 'info'"
+      *ngIf="effectiveStatus() === 'info'"
       class="orc-badge__icon"
       viewBox="0 0 24 24"
       fill="none"
@@ -69,7 +81,7 @@
 
     <!-- Aviso -->
     <svg
-      *ngIf="status() === 'warning'"
+      *ngIf="effectiveStatus() === 'warning'"
       class="orc-badge__icon"
       viewBox="0 0 24 24"
       fill="none"
@@ -79,14 +91,16 @@
       stroke-linejoin="round"
       aria-hidden="true"
     >
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+      <path
+        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+      ></path>
       <line x1="12" y1="9" x2="12" y2="13"></line>
       <line x1="12" y1="17" x2="12.01" y2="17"></line>
     </svg>
 
     <!-- Erro / Danger -->
     <svg
-      *ngIf="status() === 'danger'"
+      *ngIf="effectiveStatus() === 'danger'"
       class="orc-badge__icon"
       viewBox="0 0 24 24"
       fill="none"
@@ -103,7 +117,7 @@
 
     <!-- Pendente (Relógio) -->
     <svg
-      *ngIf="status() === 'pending'"
+      *ngIf="effectiveStatus() === 'pending'"
       class="orc-badge__icon"
       viewBox="0 0 24 24"
       fill="none"
@@ -119,7 +133,7 @@
 
     <!-- Novo (Sparkle / Arrow) -->
     <svg
-      *ngIf="status() === 'new'"
+      *ngIf="effectiveStatus() === 'new'"
       class="orc-badge__icon"
       viewBox="0 0 24 24"
       fill="none"
@@ -148,10 +162,19 @@
     *ngIf="dismissible()"
     type="button"
     class="orc-badge__dismiss"
-    [attr.aria-label]="removeAriaLabel() || null"
+    [attr.aria-label]="
+      removeAriaLabel() || 'Remove ' + (displayValue() || 'badge')
+    "
     (click)="onDismissClick($event)"
   >
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
     </svg>

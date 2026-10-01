@@ -1,0 +1,35 @@
+
+> orc-ds-workspace@0.0.0 build:docs
+> ng build docs
+
+❯ Building...
+✔ Building...
+Initial chunk files   | Names                        |  Raw size | Estimated transfer size
+main-QUTRFYX4.js      | main                         | 392.64 kB |               116.89 kB
+polyfills-RV3JTMEC.js | polyfills                    |  35.78 kB |                11.63 kB
+styles-45GNDGXW.css   | styles                       |  12.74 kB |                 1.80 kB
+
+                      | Initial total                | 441.16 kB |               130.33 kB
+
+Lazy chunk files      | Names                        |  Raw size | Estimated transfer size
+chunk-CQNlMvCf2.js    | component-doc-page-component |   2.14 MB |               377.25 kB
+chunk-BLlSLKp_.js     | -                            | 388.81 kB |                43.68 kB
+chunk-CmirL3GL.js     | table-page-component         |  69.38 kB |                16.18 kB
+chunk-BkXAMX3k.js     | progress-page-component      |  62.37 kB |                12.06 kB
+chunk-BjcOI4O5.js     | docs-component               |  60.73 kB |                11.65 kB
+chunk-CmqxI3Ym.js     | -                            |  53.31 kB |                13.85 kB
+chunk-dVw_zyWg.js     | slider-page-component        |  51.57 kB |                11.70 kB
+chunk-CZsYGYC72.js    | toast-page-component         |  51.31 kB |                11.00 kB
+chunk-C8EGorXC2.js    | select-page-component        |  50.16 kB |                11.56 kB
+chunk-DWKFOEDe.js     | -                            |  47.48 kB |                10.13 kB
+chunk-CpPMn5X72.js    | -                            |  46.07 kB |                11.15 kB
+chunk-Bb5QA2U72.js    | tabs-page-component          |  44.41 kB |                 9.74 kB
+chunk-qqoD62uz2.js    | input-page-component         |  41.14 kB |                 9.13 kB
+chunk-DEU2-xGL2.js    | switch-page-component        |  40.11 kB |                 8.64 kB
+chunk-DVEdjDou.js     | home-component               |  37.44 kB |                 9.14 kB
+...and 37 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [6.177 seconds] - 2026-09-23T08:48:13.736Z
+
+Output location: /Users/matheuscastro/Workspaces/orc_ds/dist/docs
+

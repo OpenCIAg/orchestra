@@ -1,0 +1,136 @@
+
+> orc-ds-workspace@0.0.0 test:docs
+> ng test docs --watch=false --browsers=ChromeHeadless
+
+❯ Building...
+✔ Building...
+Initial chunk files                                                                 | Names                                                                            |  Raw size
+chunk-SNWVQ6RO.js                                                                   | -                                                                                |   2.92 MB | 
+chunk-LWXNXDUR.js                                                                   | -                                                                                |   1.67 MB | 
+chunk-FVK2BIQL.js                                                                   | -                                                                                |   1.18 MB | 
+chunk-KIZBEP5F.js                                                                   | -                                                                                |   1.13 MB | 
+polyfills.js                                                                        | polyfills                                                                        |   1.06 MB | 
+chunk-CQAXYEPM.js                                                                   | -                                                                                | 351.51 kB | 
+chunk-SP5ZW5U7.js                                                                   | -                                                                                | 235.88 kB | 
+chunk-HXBINNAA.js                                                                   | -                                                                                | 193.67 kB | 
+chunk-WAF5SO5D.js                                                                   | -                                                                                | 184.51 kB | 
+chunk-LINUB5Q2.js                                                                   | -                                                                                | 126.60 kB | 
+chunk-OAF54EXA.js                                                                   | -                                                                                |  77.17 kB | 
+spec-app-app.component.spec.js                                                      | spec-app-app.component.spec                                                      |  72.28 kB | 
+jasmine-cleanup-1.js                                                                | jasmine-cleanup-1                                                                |  71.38 kB | 
+chunk-BEXAHCT4.js                                                                   | -                                                                                |  64.09 kB | 
+chunk-22RWBKZW.js                                                                   | -                                                                                |  58.14 kB | 
+chunk-HLZUH5QU.js                                                                   | -                                                                                |  53.97 kB | 
+chunk-CENV5FYF.js                                                                   | -                                                                                |  38.12 kB | 
+chunk-KE3N3BBH.js                                                                   | -                                                                                |  37.26 kB | 
+chunk-JFPZM3TL.js                                                                   | -                                                                                |  35.01 kB | 
+chunk-3DTPKWVR.js                                                                   | -                                                                                |  31.11 kB | 
+chunk-RGXMDOJD.js                                                                   | -                                                                                |  28.73 kB | 
+chunk-XXPX6Q3I.js                                                                   | -                                                                                |  23.37 kB | 
+chunk-OGEXSDGW.js                                                                   | -                                                                                |  21.55 kB | 
+chunk-SYYXFXPT.js                                                                   | -                                                                                |  21.02 kB | 
+chunk-RWJUABOV.js                                                                   | -                                                                                |  19.25 kB | 
+spec-app-app-routing.spec.js                                                        | spec-app-app-routing.spec                                                        |  18.35 kB | 
+chunk-S532OFV2.js                                                                   | -                                                                                |  15.98 kB | 
+styles.css                                                                          | styles                                                                           |  14.93 kB | 
+chunk-RXEJVVNB.js                                                                   | -                                                                                |  11.06 kB | 
+chunk-RPN5ZHZD.js                                                                   | -                                                                                |  10.37 kB | 
+chunk-5E2JYC6P.js                                                                   | -                                                                                |  10.21 kB | 
+chunk-O4UMZ6G5.js                                                                   | -                                                                                |   5.08 kB | 
+test_main.js                                                                        | test_main                                                                        |   4.56 kB | 
+spec-app-pages-components-order-list-order-list-page.component.spec.js              | spec-app-pages-components-order-list-order-list-page.component.spec              |   4.52 kB | 
+spec-app-pages-home-home.component.spec.js                                          | spec-app-pages-home-home.component.spec                                          |   3.89 kB | 
+spec-app-pages-components-component-doc-component-doc-page.component.spec.js        | spec-app-pages-components-component-doc-component-doc-page.component.spec        |   3.80 kB | 
+chunk-VTNWR672.js                                                                   | -                                                                                |   3.78 kB | 
+spec-app-pages-components-pick-list-pick-list-page.component.spec.js                | spec-app-pages-components-pick-list-pick-list-page.component.spec                |   3.74 kB | 
+spec-app-pages-components-component-doc-component-doc-editor-page.component.spec.js | spec-app-pages-components-component-doc-component-doc-editor-page.component.spec |   3.73 kB | 
+spec-app-pages-components-galleria-galleria-page.component.spec.js                  | spec-app-pages-components-galleria-galleria-page.component.spec                  |   3.51 kB | 
+spec-app-pages-components-file-uploader-file-uploader-page.component.spec.js        | spec-app-pages-components-file-uploader-file-uploader-page.component.spec        |   3.24 kB | 
+spec-app-pages-components-button-button-page.component.spec.js                      | spec-app-pages-components-button-button-page.component.spec                      |   2.01 kB | 
+spec-runtime-diagnostics.spec.js                                                    | spec-runtime-diagnostics.spec                                                    |   1.31 kB | 
+chunk-K3FFUBL6.js                                                                   | -                                                                                |   1.18 kB | 
+jasmine-cleanup-0.js                                                                | jasmine-cleanup-0                                                                | 446 bytes | 
+
+                                                                                    | Initial total                                                                    |   9.84 MB
+
+Lazy chunk files                                                                    | Names                                                                            |  Raw size
+chunk-CKUKQDUZ.js                                                                   | table-page-component                                                             | 161.64 kB | 
+chunk-D6KH5SMZ.js                                                                   | select-page-component                                                            | 125.78 kB | 
+chunk-WP6XRC3U.js                                                                   | progress-page-component                                                          |  93.92 kB | 
+chunk-VRFS2LIR.js                                                                   | slider-page-component                                                            |  92.03 kB | 
+chunk-4U4Y6OKD.js                                                                   | toast-page-component                                                             |  89.42 kB | 
+chunk-YQBH5UCX.js                                                                   | tabs-page-component                                                              |  85.46 kB | 
+chunk-TSQAM6ZI.js                                                                   | -                                                                                |  84.62 kB | 
+chunk-DFNFYZQC.js                                                                   | docs-component                                                                   |  69.19 kB | 
+chunk-C4VNTC2T.js                                                                   | switch-page-component                                                            |  67.46 kB | 
+chunk-U2D3ESFJ.js                                                                   | breadcrumb-page-component                                                        |  66.01 kB | 
+chunk-A4BEF6AL.js                                                                   | accordion-page-component                                                         |  62.31 kB | 
+chunk-N4CMKA47.js                                                                   | alert-page-component                                                             |  60.45 kB | 
+chunk-4P5ID654.js                                                                   | input-page-component                                                             |  49.59 kB | 
+chunk-4NJZORAB.js                                                                   | rating-page-component                                                            |  47.45 kB | 
+chunk-GQJGINWI.js                                                                   | spinner-page-component                                                           |  42.93 kB | 
+...and 23 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.748 seconds] - 2026-09-23T08:47:59.145Z
+
+23 09 2026 05:47:59.287:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+23 09 2026 05:47:59.287:INFO [launcher]: Launching browsers ChromeHeadless with concurrency unlimited
+23 09 2026 05:47:59.290:INFO [launcher]: Starting browser ChromeHeadless
+23 09 2026 05:47:59.897:INFO [Chrome Headless 153.0.0.0 (Mac OS 10.15.7)]: Connected on socket uh-6UMS8G_6YFTN5AAAB with id 99058897
+Chrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 0 of 54[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 1 of 54[32m SUCCESS[39m (0 secs / 0.081 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 2 of 54[32m SUCCESS[39m (0 secs / 0.11 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 3 of 54[32m SUCCESS[39m (0 secs / 0.133 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 4 of 54[32m SUCCESS[39m (0 secs / 0.19 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 5 of 54[32m SUCCESS[39m (0 secs / 0.212 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 6 of 54[32m SUCCESS[39m (0 secs / 0.228 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 7 of 54[32m SUCCESS[39m (0 secs / 0.256 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 8 of 54[32m SUCCESS[39m (0 secs / 0.339 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 9 of 54[32m SUCCESS[39m (0 secs / 0.363 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 10 of 54[32m SUCCESS[39m (0 secs / 0.394 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 11 of 54[32m SUCCESS[39m (0 secs / 0.41 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 12 of 54[32m SUCCESS[39m (0 secs / 0.43 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 13 of 54[32m SUCCESS[39m (0 secs / 0.45 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 14 of 54[32m SUCCESS[39m (0 secs / 0.462 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 15 of 54[32m SUCCESS[39m (0 secs / 0.481 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 16 of 54[32m SUCCESS[39m (0 secs / 0.488 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 17 of 54[32m SUCCESS[39m (0 secs / 0.503 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 18 of 54[32m SUCCESS[39m (0 secs / 0.553 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 19 of 54[32m SUCCESS[39m (0 secs / 0.57 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 20 of 54[32m SUCCESS[39m (0 secs / 0.585 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 21 of 54[32m SUCCESS[39m (0 secs / 0.609 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 22 of 54[32m SUCCESS[39m (0 secs / 0.631 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 23 of 54[32m SUCCESS[39m (0 secs / 0.65 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 24 of 54[32m SUCCESS[39m (0 secs / 0.675 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 25 of 54[32m SUCCESS[39m (0 secs / 0.696 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 26 of 54[32m SUCCESS[39m (0 secs / 0.716 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 27 of 54[32m SUCCESS[39m (0 secs / 0.754 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 28 of 54[32m SUCCESS[39m (0 secs / 0.807 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 29 of 54[32m SUCCESS[39m (0 secs / 0.824 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 30 of 54[32m SUCCESS[39m (0 secs / 1.156 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 31 of 54[32m SUCCESS[39m (0 secs / 1.159 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 32 of 54[32m SUCCESS[39m (0 secs / 1.171 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 33 of 54[32m SUCCESS[39m (0 secs / 1.174 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 34 of 54[32m SUCCESS[39m (0 secs / 1.182 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 35 of 54[32m SUCCESS[39m (0 secs / 1.184 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 36 of 54[32m SUCCESS[39m (0 secs / 1.185 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 37 of 54[32m SUCCESS[39m (0 secs / 1.187 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 38 of 54[32m SUCCESS[39m (0 secs / 1.192 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 39 of 54[32m SUCCESS[39m (0 secs / 1.198 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 40 of 54[32m SUCCESS[39m (0 secs / 1.201 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 41 of 54[32m SUCCESS[39m (0 secs / 1.207 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 42 of 54[32m SUCCESS[39m (0 secs / 1.236 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 43 of 54[32m SUCCESS[39m (0 secs / 1.259 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 44 of 54[32m SUCCESS[39m (0 secs / 1.272 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 45 of 54[32m SUCCESS[39m (0 secs / 1.273 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 46 of 54[32m SUCCESS[39m (0 secs / 1.275 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 47 of 54[32m SUCCESS[39m (0 secs / 1.277 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 48 of 54[32m SUCCESS[39m (0 secs / 1.28 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 49 of 54[32m SUCCESS[39m (0 secs / 1.282 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 50 of 54[32m SUCCESS[39m (0 secs / 1.283 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 51 of 54[32m SUCCESS[39m (0 secs / 1.293 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 52 of 54[32m SUCCESS[39m (0 secs / 1.295 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 53 of 54[32m SUCCESS[39m (0 secs / 1.306 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 54 of 54[32m SUCCESS[39m (0 secs / 1.311 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 54 of 54[32m SUCCESS[39m (1.349 secs / 1.311 secs)
+[32mTOTAL: 54 SUCCESS[39m

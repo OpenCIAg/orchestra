@@ -1,0 +1,27 @@
+❯ Building...
+✔ Building...
+Initial chunk files            | Names                       |  Raw size
+chunk-2AELQLY3.js              | -                           |   2.32 MB | 
+polyfills.js                   | polyfills                   |   1.06 MB | 
+jasmine-cleanup-1.js           | jasmine-cleanup-1           |  71.38 kB | 
+spec-splitter-contract.spec.js | spec-splitter-contract.spec |  57.68 kB | 
+test_main.js                   | test_main                   |  21.66 kB | 
+jasmine-cleanup-0.js           | jasmine-cleanup-0           | 446 bytes | 
+
+                               | Initial total               |   3.53 MB
+
+Application bundle generation complete. [3.398 seconds] - 2026-09-23T23:56:11.549Z
+
+23 09 2026 20:56:11.714:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+23 09 2026 20:56:11.714:INFO [launcher]: Launching browsers ChromeHeadlessCI with concurrency unlimited
+23 09 2026 20:56:11.717:INFO [launcher]: Starting browser ChromeHeadless
+23 09 2026 20:56:12.267:INFO [Chrome Headless 153.0.0.0 (Mac OS 10.15.7)]: Connected on socket 8df_dwf4qVjUiw3QAAAB with id 77604461
+Chrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 0 of 6[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 1 of 6[32m SUCCESS[39m (0 secs / 0.034 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 2 of 6[32m SUCCESS[39m (0 secs / 0.035 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 3 of 6[32m SUCCESS[39m (0 secs / 0.037 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 4 of 6[32m SUCCESS[39m (0 secs / 0.039 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 5 of 6[32m SUCCESS[39m (0 secs / 0.041 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 6 of 6[32m SUCCESS[39m (0 secs / 0.042 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 6 of 6[32m SUCCESS[39m (0.045 secs / 0.042 secs)
+[32mTOTAL: 6 SUCCESS[39m

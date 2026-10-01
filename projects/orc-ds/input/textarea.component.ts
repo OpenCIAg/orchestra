@@ -12,6 +12,7 @@ import {
   viewChild,
   booleanAttribute,
   numberAttribute,
+  AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -34,11 +35,12 @@ let nextTextareaUniqueId = 0;
     },
   ],
 })
-export class TextareaComponent implements ControlValueAccessor {
+export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
   private readonly uniqueId = `orc-textarea-${++nextTextareaUniqueId}`;
 
   // ── Native Textarea Element Reference ─────────────────────
-  readonly nativeTextareaRef = viewChild<ElementRef<HTMLTextAreaElement>>('nativeTextarea');
+  readonly nativeTextareaRef =
+    viewChild<ElementRef<HTMLTextAreaElement>>('nativeTextarea');
 
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly id = input<string>('');
@@ -58,20 +60,25 @@ export class TextareaComponent implements ControlValueAccessor {
     transform: (val: unknown) => numberAttribute(val, 4),
   });
   readonly cols = input<number | undefined, unknown>(undefined, {
-    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+    transform: (val: unknown) =>
+      val !== undefined && val !== null ? numberAttribute(val) : undefined,
   });
   readonly resize = input<TextareaResize>('vertical');
   readonly autoResize = input(false, { transform: booleanAttribute });
   readonly maxLength = input<number | undefined, unknown>(undefined, {
-    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+    transform: (val: unknown) =>
+      val !== undefined && val !== null ? numberAttribute(val) : undefined,
   });
   readonly minLength = input<number | undefined, unknown>(undefined, {
-    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+    transform: (val: unknown) =>
+      val !== undefined && val !== null ? numberAttribute(val) : undefined,
   });
   readonly showCharCount = input(false, { transform: booleanAttribute });
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly variant = input<'filled' | 'outlined' | undefined>(undefined);
   readonly fluid = input(false, { transform: booleanAttribute });
 
@@ -95,12 +102,14 @@ export class TextareaComponent implements ControlValueAccessor {
   protected readonly viewValue = linkedSignal<string>(() => this.value());
 
   // ── Computeds ─────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
+  readonly effectiveId = computed(
+    () => this.inputId() || this.id() || this.uniqueId,
+  );
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
 
   readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled()
+    () => this.disabled() || this.cvaDisabled(),
   );
 
   readonly stringValue = computed(() => {
@@ -115,7 +124,10 @@ export class TextareaComponent implements ControlValueAccessor {
     if (this.ariaDescribedby()) {
       ids.push(this.ariaDescribedby());
     }
-    if ((this.status() === 'error' || this.errorMessage()) && this.errorMessage()) {
+    if (
+      (this.status() === 'error' || this.errorMessage()) &&
+      this.errorMessage()
+    ) {
       ids.push(this.errorId());
     } else if (this.helperText()) {
       ids.push(this.helperId());
@@ -144,6 +156,10 @@ export class TextareaComponent implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.cvaDisabled.set(isDisabled);
+  }
+
+  ngAfterViewInit(): void {
+    this.adjustHeight();
   }
 
   // ── Handlers de Eventos ───────────────────────────────────

@@ -1,0 +1,62 @@
+
+> orc-ds-workspace@0.0.0 verify:package
+> node tools/quality/verify-package.mjs
+
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: undefined@undefined
+npm error Found: @angular/common@22.1.7
+npm error node_modules/@angular/common
+npm error   peer @angular/common@"^22.0.0" from @ciag/orchestra@22.1.0
+npm error   node_modules/@ciag/orchestra
+npm error     @ciag/orchestra@"file:/var/folders/qm/kzy8my_n3q70rt4bnf_8d1dw0000gn/T/orchestra-package-5qwkcI/ciag-orchestra-22.1.0.tgz" from the root project
+npm error   peer @angular/common@"^22.0.0 || ^23.0.0" from @angular/cdk@22.2.0
+npm error   node_modules/@angular/cdk
+npm error     peer @angular/cdk@"^22.0.0" from @ciag/orchestra@22.1.0
+npm error     node_modules/@ciag/orchestra
+npm error       @ciag/orchestra@"file:/var/folders/qm/kzy8my_n3q70rt4bnf_8d1dw0000gn/T/orchestra-package-5qwkcI/ciag-orchestra-22.1.0.tgz" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer @angular/common@"22.1.8" from @angular/forms@22.1.8
+npm error node_modules/@angular/forms
+npm error   peer @angular/forms@"^22.0.0" from @ciag/orchestra@22.1.0
+npm error   node_modules/@ciag/orchestra
+npm error     @ciag/orchestra@"file:/var/folders/qm/kzy8my_n3q70rt4bnf_8d1dw0000gn/T/orchestra-package-5qwkcI/ciag-orchestra-22.1.0.tgz" from the root project
+npm error   peer @angular/forms@"^22.0.0 || ^23.0.0" from @angular/cdk@22.2.0
+npm error   node_modules/@angular/cdk
+npm error     peer @angular/cdk@"^22.0.0" from @ciag/orchestra@22.1.0
+npm error     node_modules/@ciag/orchestra
+npm error       @ciag/orchestra@"file:/var/folders/qm/kzy8my_n3q70rt4bnf_8d1dw0000gn/T/orchestra-package-5qwkcI/ciag-orchestra-22.1.0.tgz" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /Users/matheuscastro/.npm/_logs/2026-09-23T17_36_56_060Z-eresolve-report.txt
+npm error A complete log of this run can be found in: /Users/matheuscastro/.npm/_logs/2026-09-23T17_36_56_060Z-debug-0.log
+Package verification fixture retained at /var/folders/qm/kzy8my_n3q70rt4bnf_8d1dw0000gn/T/orchestra-package-5qwkcI
+node:internal/errors:985
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npm install --ignore-scripts --no-fund --no-audit
+    at genericNodeError (node:internal/errors:985:15)
+    at wrappedFn (node:internal/errors:539:14)
+    at checkExecSyncError (node:child_process:925:11)
+    at execFileSync (node:child_process:961:15)
+    at file:///Users/matheuscastro/Workspaces/orc_ds/tools/quality/verify-package.mjs:93:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:633:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 15096,
+  stdout: null,
+  stderr: null
+}
+
+Node.js v24.16.0
+
+GATE_EXIT_CODE=1

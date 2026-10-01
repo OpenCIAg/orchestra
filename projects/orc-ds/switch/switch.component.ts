@@ -72,7 +72,8 @@ export class SwitchComponent implements ControlValueAccessor {
   readonly onBlur = output<Event>();
 
   // Element reference do botão interativo
-  readonly buttonElement = viewChild<ElementRef<HTMLButtonElement>>('switchButton');
+  readonly buttonElement =
+    viewChild<ElementRef<HTMLButtonElement>>('switchButton');
 
   // Identificador único interno
   readonly uniqueId = `orc-switch-${++nextSwitchUniqueId}`;
@@ -81,7 +82,9 @@ export class SwitchComponent implements ControlValueAccessor {
   private readonly cvaDisabled = signal<boolean>(false);
 
   // Identificadores e estados derivados (Signals)
-  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
+  readonly effectiveId = computed(
+    () => this.inputId() || this.id() || this.uniqueId,
+  );
   readonly labelId = computed(() => `${this.effectiveId()}-label`);
   readonly descriptionId = computed(() => `${this.effectiveId()}-desc`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
@@ -90,24 +93,34 @@ export class SwitchComponent implements ControlValueAccessor {
   readonly isError = computed(() => this.error() || !!this.errorMessage());
 
   readonly computedAriaLabelledBy = computed(() => {
-    if (this.ariaLabelledby()) return this.ariaLabelledby();
-    if (this.label()) return this.labelId();
+    const labelledBy = this.ariaLabelledBy()?.trim();
+    if (labelledBy) return labelledBy;
+    const legacyLabelledBy = this.ariaLabelledby().trim();
+    if (legacyLabelledBy) return legacyLabelledBy;
+    if (this.label().trim()) return this.labelId();
     return null;
   });
 
+  readonly computedAriaLabel = computed(() => this.ariaLabel().trim() || null);
+
   readonly computedAriaDescribedBy = computed(() => {
-    if (this.ariaDescribedby()) return this.ariaDescribedby();
-    if (this.errorMessage()) return this.errorId();
-    if (this.description()) return this.descriptionId();
+    const describedBy = this.ariaDescribedby().trim();
+    if (describedBy) return describedBy;
+    if (this.errorMessage().trim()) return this.errorId();
+    if (this.description().trim()) return this.descriptionId();
     return null;
   });
 
   readonly hasContent = computed(() => {
-    return !!this.label() || !!this.description() || !!this.errorMessage();
+    return Boolean(
+      this.label().trim() ||
+      this.description().trim() ||
+      this.errorMessage().trim(),
+    );
   });
 
   // Callbacks do ControlValueAccessor
-  private onModelChange: (value: boolean) => void = () => {};
+  private onModelChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
   // ── ControlValueAccessor Implementation ───────────────────
@@ -115,7 +128,7 @@ export class SwitchComponent implements ControlValueAccessor {
     this.checked.set(val === this.trueValue());
   }
 
-  registerOnChange(fn: (value: boolean) => void): void {
+  registerOnChange(fn: (value: any) => void): void {
     this.onModelChange = fn;
   }
 
@@ -144,7 +157,11 @@ export class SwitchComponent implements ControlValueAccessor {
       checked: newChecked,
       value: newChecked ? this.trueValue() : this.falseValue(),
     });
-    this.onChange.emit({ originalEvent: event, checked: newChecked, value: newChecked ? this.trueValue() : this.falseValue() });
+    this.onChange.emit({
+      originalEvent: event,
+      checked: newChecked,
+      value: newChecked ? this.trueValue() : this.falseValue(),
+    });
   }
 
   handleBlur(event?: Event): void {
@@ -165,7 +182,10 @@ export class SwitchComponent implements ControlValueAccessor {
       checked: newChecked,
       value: newChecked ? this.trueValue() : this.falseValue(),
     });
-    this.onChange.emit({ checked: newChecked, value: newChecked ? this.trueValue() : this.falseValue() });
+    this.onChange.emit({
+      checked: newChecked,
+      value: newChecked ? this.trueValue() : this.falseValue(),
+    });
   }
 
   focus(): void {

@@ -1,15 +1,49 @@
-<ol class="orc-timeline" [class.orc-timeline--horizontal]="orientation() === 'horizontal'" [attr.aria-label]="ariaLabel()">
-  @for (item of items(); track trackItem($index, item)) {
-    <li class="orc-timeline__item" [class]="'orc-timeline__item orc-timeline__item--' + (item.status || 'pending')" tabindex="0" [attr.aria-label]="item.title" (click)="selectItem(item, $index)" (keydown)="onItemKeydown($event, item, $index)">
-      <div class="orc-timeline__marker" aria-hidden="true">{{ item.icon || ($index + 1) }}</div>
-      @if ($index < items().length - 1) { <div class="orc-timeline__connector" aria-hidden="true"></div> }
-      <div class="orc-timeline__content">
-        @if (item.date) { <time class="orc-timeline__date">{{ item.date }}</time> }
-        <h3>{{ item.title }}</h3>
-        @if (item.description) { <p>{{ item.description }}</p> }
-      </div>
+<ol
+  class="orc-timeline"
+  [class]="
+    'orc-timeline orc-timeline--align-' + renderedAlign() + ' ' + styleClass()
+  "
+  [class.orc-timeline--horizontal]="renderedOrientation() === 'horizontal'"
+  [ngStyle]="style()"
+  [attr.aria-label]="ariaLabel()"
+>
+  @for (item of renderedItems(); track trackItem($index, item)) {
+    <li
+      class="orc-timeline__item"
+      [class]="
+        'orc-timeline__item orc-timeline__item--' + (item.status || 'pending')
+      "
+    >
+      <button
+        type="button"
+        class="orc-timeline__item-control"
+        [attr.aria-current]="item.status === 'current' ? 'step' : null"
+        (click)="selectItem(item, $index)"
+      >
+        <span class="orc-timeline__marker" aria-hidden="true">{{
+          item.icon || $index + 1
+        }}</span>
+        @if ($index < renderedItems().length - 1) {
+          <span class="orc-timeline__connector" aria-hidden="true"></span>
+        }
+        <span class="orc-timeline__content">
+          @if (item.date) {
+            <time class="orc-timeline__date">{{ item.date }}</time>
+          }
+          <span class="orc-timeline__title" role="heading" aria-level="3">{{
+            item.title
+          }}</span>
+          @if (item.description) {
+            <span class="orc-timeline__description">{{
+              item.description
+            }}</span>
+          }
+        </span>
+      </button>
     </li>
   } @empty {
-    @if (emptyMessage()) { <li class="orc-timeline__empty">{{ emptyMessage() }}</li> }
+    @if (emptyMessage()) {
+      <li class="orc-timeline__empty">{{ emptyMessage() }}</li>
+    }
   }
 </ol>

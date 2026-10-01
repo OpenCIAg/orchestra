@@ -1,0 +1,11 @@
+{
+  "distribution": "/Users/matheuscastro/Workspaces/orc_ds/dist/orc-ds",
+  "expectedBindings": 21,
+  "registeredBindings": 21,
+  "missing": [],
+  "duplicate": [],
+  "pickListAllTransfer": [
+    "onMoveAllToTarget",
+    "onMoveAllToSource"
+  ]
+}

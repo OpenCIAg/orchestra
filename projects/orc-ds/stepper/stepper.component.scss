@@ -5,7 +5,7 @@
 
 .orc-stepper {
   width: 100%;
-  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-family: var(--font-sans, "Poppins", sans-serif);
 }
 
 .orc-stepper__list {
@@ -67,7 +67,10 @@
     transition: background-color 0.3s ease;
 
     &.orc-stepper__connector-line--completed {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
   }
 
@@ -88,7 +91,10 @@
   // ── Estados Horizontal ─────────────────────────────────────
   .orc-stepper__item--completed {
     .orc-stepper__marker {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
       color: var(--orc-on-interactive, #ffffff);
     }
     .orc-stepper__title {
@@ -99,10 +105,14 @@
 
   .orc-stepper__item--active {
     .orc-stepper__marker {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
       color: var(--orc-on-interactive, #ffffff);
       border: 2px solid var(--orc-surface-raised, #ffffff);
-      box-shadow: 0 0 0 1px var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      box-shadow: 0 0 0 1px
+        var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
     .orc-stepper__title {
       color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
@@ -193,7 +203,10 @@
     transition: background-color 0.3s ease;
 
     &.orc-stepper__connector-line--completed {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
   }
 
@@ -209,8 +222,12 @@
   // ── Estados Vertical (Figma Spec) ──────────────────────────
   .orc-stepper__item--completed {
     .orc-stepper__marker {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
-      border: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
+      border: 2px solid
+        var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       color: var(--orc-on-interactive, #ffffff);
     }
     .orc-stepper__title {
@@ -222,7 +239,8 @@
   .orc-stepper__item--active {
     .orc-stepper__marker {
       background-color: var(--orc-surface-raised, #ffffff);
-      border: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border: 2px solid
+        var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
     .orc-stepper__title {

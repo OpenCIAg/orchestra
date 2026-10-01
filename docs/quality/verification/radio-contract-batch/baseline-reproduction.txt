@@ -1,0 +1,16 @@
+Radio contract baseline reproduction
+Date: 2026-09-22
+
+Runner:
+NG_BUILD_MAX_WORKERS=2 /Users/matheuscastro/.nvm/versions/node/v24.16.0/bin/node ./node_modules/@angular/cli/bin/ng.js test orc-ds --watch=false --browsers=ChromeHeadlessCI --include='projects/orc-ds/radio/radio-contract.spec.ts'
+
+Baseline result before radio fixes: 6 total, 5 failed, 1 passed.
+
+Confirmed failures:
+- selected disabled radio prevented enabled roving fallback (radio-contract.spec.ts:45)
+- group blur did not mark the updateOn-blur control touched (radio-contract.spec.ts:55)
+- keyboard group selection bypassed child output/original event (radio-contract.spec.ts:69-70)
+- projected DOM reorder did not drive keyboard order (radio-contract.spec.ts:82)
+- standalone same-name radios diverged visually from native exclusivity (radio-contract.spec.ts:95)
+
+The requested --port=9877 option is not supported by this Angular CLI version (Unknown argument: port); Karma used its configured default localhost:9876.

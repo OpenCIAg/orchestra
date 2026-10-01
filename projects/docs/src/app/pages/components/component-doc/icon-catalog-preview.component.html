@@ -1,0 +1,124 @@
+<div class="example-stack">
+  <div class="example">
+    <span class="example__label">Sizes</span>
+    <div class="icon-row">
+      <span
+        ><orc-icon name="circle" size="xs" ariaLabel="Extra pequeno" /><small
+          >xs</small
+        ></span
+      >
+      <span
+        ><orc-icon name="circle" size="sm" ariaLabel="Pequeno" /><small
+          >sm</small
+        ></span
+      >
+      <span
+        ><orc-icon name="circle" size="md" ariaLabel="Médio" /><small
+          >md</small
+        ></span
+      >
+      <span
+        ><orc-icon name="circle" size="lg" ariaLabel="Grande" /><small
+          >lg</small
+        ></span
+      >
+      <span
+        ><orc-icon name="circle" size="xl" ariaLabel="Extra grande" /><small
+          >xl</small
+        ></span
+      >
+    </div>
+  </div>
+  <div class="example">
+    <span class="example__label">Names + semantics</span>
+    <div class="icon-row icon-row--named">
+      <span
+        ><orc-icon name="check_circle" ariaLabel="Concluído" /><small
+          >check_circle</small
+        ></span
+      >
+      <span
+        ><orc-icon name="info" ariaLabel="Informação" /><small
+          >info</small
+        ></span
+      >
+      <span
+        ><orc-icon name="warning" ariaLabel="Atenção" /><small
+          >warning</small
+        ></span
+      >
+      <span
+        ><orc-icon name="star" title="Favorito" /><small
+          >star · labeled</small
+        ></span
+      >
+    </div>
+  </div>
+  <div class="example icon-search-demo">
+    <span class="example__label"
+      >Buscar no catálogo completo de {{ iconSymbols.length }} Material
+      Symbols</span
+    >
+    <div class="icon-search-controls">
+      <label class="icon-search-input">
+        <span class="sr-only">Buscar ícone</span>
+        <input
+          class="native-control"
+          type="search"
+          placeholder="Ex.: calendar, arrow, cloud"
+          [value]="iconQuery()"
+          (input)="iconQuery.set($any($event.target).value)"
+        />
+      </label>
+      <label class="icon-search-select">
+        <span>Família</span>
+        <select
+          class="native-control"
+          [value]="iconFamily()"
+          (change)="iconFamily.set($any($event.target).value)"
+        >
+          <option value="rounded">Rounded</option>
+          <option value="outlined">Outlined</option>
+          <option value="sharp">Sharp</option>
+        </select>
+      </label>
+      <label class="icon-search-select">
+        <span>Variante</span>
+        <select
+          class="native-control"
+          [value]="iconFill()"
+          (change)="iconFill.set($any($event.target).value)"
+        >
+          <option value="outline">Rounded outline</option>
+          <option value="filled">Rounded filled</option>
+        </select>
+      </label>
+    </div>
+    <p class="example__caption">
+      {{ filteredIconMetadata().length }} resultados exibidos por vez ·
+      ordenados por popularidade · pesquise para encontrar qualquer símbolo.
+    </p>
+    <div class="icon-catalog-grid">
+      @for (entry of filteredIconMetadata(); track entry.name) {
+        <button
+          class="icon-catalog-item"
+          type="button"
+          [title]="'Copiar ' + iconDeclaration(entry.name)"
+          [attr.aria-label]="'Copiar declaração de ' + entry.name"
+          (click)="copyIconDeclaration(entry.name)"
+        >
+          <orc-icon
+            [name]="entry.name"
+            [family]="iconFamily()"
+            [fill]="iconFill()"
+            [ariaLabel]="entry.name"
+          />
+          <span>{{ entry.name }}</span>
+        </button>
+      }
+      @if (!filteredIconMetadata().length) {
+        <p class="example__caption">Nenhum ícone encontrado.</p>
+      }
+    </div>
+  </div>
+</div>

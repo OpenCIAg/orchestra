@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostListener,
+  OnDestroy,
   TemplateRef,
   ViewContainerRef,
   inject,
@@ -18,8 +18,20 @@ import {
   viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Overlay, OverlayConfig, OverlayRef, PositionStrategy, ConnectedPosition } from '@angular/cdk/overlay';
+import {
+  Overlay,
+  OverlayConfig,
+  OverlayRef,
+  PositionStrategy,
+  ConnectedPosition,
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
+import {
+  listenForOutsideInteraction,
+  registerOverlay,
+  nativeModalFor,
+} from '@ciag/orchestra/internal';
 import { DropdownItem } from './dropdown.types';
 
 let nextDropdownId = 0;
@@ -31,19 +43,31 @@ let nextDropdownId = 0;
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DropdownComponent), multi: true }],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DropdownComponent),
+      multi: true,
+    },
+  ],
 })
-export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
+export class DropdownComponent
+  implements AfterViewInit, OnDestroy, ControlValueAccessor
+{
   readonly items = input<DropdownItem[]>([]);
   readonly inputId = input<string | undefined>(undefined);
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly placement = input<string>('bottom-start');
   /** PrimeNG Dropdown/Select-compatible form mode. Menu mode remains the default. */
   readonly options = input<unknown[] | undefined>(undefined);
   readonly optionLabel = input<string | undefined>(undefined);
   readonly optionValue = input<string | undefined>(undefined);
-  readonly optionDisabled = input<string | ((option: unknown) => boolean) | undefined>(undefined);
+  readonly optionDisabled = input<
+    string | ((option: unknown) => boolean) | undefined
+  >(undefined);
   readonly placeholder = input<string | undefined>(undefined);
   readonly loading = input(false, { transform: booleanAttribute });
   readonly showClear = input(false, { transform: booleanAttribute });
@@ -72,11 +96,16 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
 
   private overlayRef: OverlayRef | null = null;
   private portal!: TemplatePortal<unknown>;
-  private hostEl = inject(ElementRef);
+  private hostEl = inject<ElementRef<HTMLElement>>(ElementRef);
+  private document = inject(DOCUMENT);
+  private outsideCleanup?: () => void;
+  private layerCleanup?: () => void;
+  private focusTimer?: ReturnType<typeof setTimeout>;
+  private returnFocus: HTMLElement | null = null;
   private viewContainerRef = inject(ViewContainerRef);
   private overlay = inject(Overlay);
 
-  readonly dropdownPanel = viewChild.required<TemplateRef<unknown>>('dropdownPanel');
+  readonly dropdownPanel = viewChild<TemplateRef<unknown>>('dropdownPanel');
   readonly isOpen = signal(false);
   readonly visible = model(false);
   readonly filterValue = signal('');
@@ -90,27 +119,53 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
     const term = this.filterValue().trim().toLowerCase();
     const options = this.options() ?? [];
     if (!term) return options;
-    return options.filter(option => this.optionText(option).toLowerCase().includes(term));
+    const fields = this.filterBy()
+      ?.split(',')
+      .map((field) => field.trim())
+      .filter(Boolean);
+    return options.filter((option) =>
+      fields?.length
+        ? fields.some((field) =>
+            String(this.readField(option, field) ?? '')
+              .toLowerCase()
+              .includes(term),
+          )
+        : this.optionText(option).toLowerCase().includes(term),
+    );
   });
   readonly selectedLabel = computed(() => {
-    const selected = (this.options() ?? []).find(option => this.optionValueOf(option) === this.value());
+    const selected = (this.options() ?? []).find(
+      (option) => this.optionValueOf(option) === this.value(),
+    );
     return selected === undefined ? '' : this.optionText(selected);
   });
 
   constructor() {
     effect(() => {
       const requested = this.visible();
-      if (requested && !this.isOpen() && this.formMode()) this.open();
-      if (!requested && this.isOpen() && this.formMode()) this.close();
+      this.dropdownPanel();
+      if (requested && !this.isOpen()) this.open();
+      if (
+        (!requested || this.disabled() || this.cvaDisabled()) &&
+        this.isOpen()
+      )
+        this.close();
     });
   }
 
   ngAfterViewInit(): void {
-    this.portal = new TemplatePortal(this.dropdownPanel(), this.viewContainerRef);
+    this.portal = new TemplatePortal(
+      this.dropdownPanel()!,
+      this.viewContainerRef,
+    );
   }
 
   open(): void {
     if (this.isOpen() || this.disabled() || this.cvaDisabled()) return;
+    const template = this.dropdownPanel();
+    if (!template) return;
+    this.portal ??= new TemplatePortal(template, this.viewContainerRef);
+    this.returnFocus = this.document.activeElement as HTMLElement | null;
     const positionStrategy = this.createPositionStrategy();
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
@@ -122,25 +177,49 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
     this.overlayRef.backdropClick().subscribe(() => this.close());
     this.overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        this.close();
+        event.preventDefault();
+        this.close(true);
         event.stopPropagation();
       }
     });
     this.overlayRef.attach(this.portal);
     this.isOpen.set(true);
     this.visible.set(true);
-    if (this.formMode()) this.onShow.emit();
-    setTimeout(() => this.overlayRef?.overlayElement.querySelector<HTMLElement>('[role="menuitem"]:not([disabled])')?.focus());
+    this.onShow.emit();
+    this.layerCleanup = registerOverlay(this.overlayRef.overlayElement, {
+      anchor: this.hostEl.nativeElement,
+      onParentClose: () => this.close(),
+    });
+    this.outsideCleanup = listenForOutsideInteraction(
+      this.document,
+      () => [this.hostEl.nativeElement, this.overlayRef?.overlayElement],
+      () => this.close(),
+    );
+    this.focusTimer = setTimeout(() => {
+      this.focusTimer = undefined;
+      const panel = this.overlayRef?.overlayElement;
+      (
+        panel?.querySelector<HTMLElement>('input') ??
+        panel?.querySelector<HTMLElement>(
+          '[aria-selected="true"]:not([disabled])',
+        ) ??
+        panel?.querySelector<HTMLElement>(
+          '[role="menuitem"]:not([disabled]), [role="option"]:not([disabled])',
+        )
+      )?.focus();
+    });
   }
 
-  close(): void {
+  close(restoreFocus = false): void {
     if (!this.isOpen()) return;
-    this.overlayRef?.dispose();
+    this.disposeOverlay();
     this.overlayRef = null;
     this.isOpen.set(false);
     this.visible.set(false);
     if (this.resetFilterOnHide()) this.filterValue.set('');
-    if (this.formMode()) this.onHide.emit();
+    this.onTouched();
+    this.onHide.emit();
+    if (restoreFocus && this.returnFocus?.isConnected) this.returnFocus.focus();
   }
 
   toggle(): void {
@@ -148,43 +227,68 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
   }
 
   onItemClick(item: DropdownItem, $event: MouseEvent): void {
-    if (item.disabled) {
+    if (item.disabled || this.disabled() || this.cvaDisabled()) {
       $event.stopPropagation();
-      return;
-    }
-    if (item.children?.length) {
       return;
     }
     this.itemSelect.emit(item);
     item.action?.();
-    this.close();
+    this.close(true);
+  }
+
+  private readField(option: unknown, path: string): unknown {
+    return path
+      .split('.')
+      .reduce<unknown>(
+        (value, key) =>
+          value !== null && typeof value === 'object'
+            ? (value as Record<string, unknown>)[key]
+            : undefined,
+        option,
+      );
   }
 
   optionText(option: unknown): string {
     const key = this.optionLabel();
-    return String(key ? (option as Record<string, unknown>)?.[key] ?? '' : (option as any)?.label ?? option ?? '');
+    return String(
+      key
+        ? (this.readField(option, key) ?? '')
+        : (this.readField(option, 'label') ?? option ?? ''),
+    );
   }
 
   optionValueOf(option: unknown): unknown {
     const key = this.optionValue();
-    return key ? (option as Record<string, unknown>)?.[key] : (option as any)?.value ?? option;
+    return key
+      ? this.readField(option, key)
+      : (this.readField(option, 'value') ?? option);
   }
 
   isOptionDisabled(option: unknown): boolean {
     const rule = this.optionDisabled();
-    return typeof rule === 'function' ? rule(option) : Boolean(rule ? (option as Record<string, unknown>)?.[rule] : (option as any)?.disabled);
+    return typeof rule === 'function'
+      ? rule(option)
+      : Boolean(this.readField(option, rule || 'disabled'));
   }
 
   selectOption(option: unknown, event: Event): void {
-    if (this.isOptionDisabled(option)) return;
+    if (
+      this.disabled() ||
+      this.cvaDisabled() ||
+      this.loading() ||
+      this.isOptionDisabled(option)
+    )
+      return;
     const value = this.optionValueOf(option);
     this.value.set(value);
     this.onModelChange(value);
     this.onChange.emit({ originalEvent: event, value });
-    this.close();
+    this.close(true);
   }
 
   clearValue(event: Event): void {
+    if (this.disabled() || this.cvaDisabled() || this.loading()) return;
+    this.onTouched();
     this.value.set(null);
     this.onModelChange(null);
     this.onChange.emit({ originalEvent: event, value: null });
@@ -197,30 +301,56 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
     this.filterChange.emit(value);
   }
 
-  writeValue(value: unknown): void { this.value.set(value); }
-  registerOnChange(fn: (value: unknown) => void): void { this.onModelChange = fn; }
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
-  setDisabledState(disabled: boolean): void { this.cvaDisabled.set(disabled); }
+  writeValue(value: unknown): void {
+    this.value.set(value);
+  }
+  registerOnChange(fn: (value: unknown) => void): void {
+    this.onModelChange = fn;
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+  setDisabledState(disabled: boolean): void {
+    this.cvaDisabled.set(disabled);
+  }
 
   onItemKeydown(event: KeyboardEvent): void {
     const current = event.currentTarget as HTMLButtonElement;
-    const menu = current.closest<HTMLElement>('[role="menu"], [role="listbox"]');
-    const buttons = Array.from(menu?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]:not([disabled]), [role="option"]:not([disabled])') ?? []);
+    const menu = current.closest<HTMLElement>(
+      '[role="menu"], [role="listbox"]',
+    );
+    const buttons = Array.from(
+      menu?.querySelectorAll<HTMLButtonElement>(
+        '[role="menuitem"]:not([disabled]), [role="option"]:not([disabled])',
+      ) ?? [],
+    );
     const index = buttons.indexOf(current);
     if (!buttons.length || index < 0) return;
-    const target = event.key === 'ArrowDown' ? buttons[(index + 1) % buttons.length]
-      : event.key === 'ArrowUp' ? buttons[(index - 1 + buttons.length) % buttons.length]
-      : event.key === 'Home' ? buttons[0]
-      : event.key === 'End' ? buttons[buttons.length - 1]
-      : undefined;
-    if (target) { event.preventDefault(); target.focus(); }
+    const target =
+      event.key === 'ArrowDown'
+        ? buttons[(index + 1) % buttons.length]
+        : event.key === 'ArrowUp'
+          ? buttons[(index - 1 + buttons.length) % buttons.length]
+          : event.key === 'Home'
+            ? buttons[0]
+            : event.key === 'End'
+              ? buttons[buttons.length - 1]
+              : undefined;
+    if (target) {
+      event.preventDefault();
+      target.focus();
+    }
   }
 
   private createPositionStrategy(): PositionStrategy {
     const positions = this.getConnectedPositions();
+    const modal = nativeModalFor(this.hostEl.nativeElement);
     return this.overlay
       .position()
       .flexibleConnectedTo(this.hostEl)
+      .withPopoverLocation(
+        modal ? { type: 'parent', element: modal } : 'global',
+      )
       .withPositions(positions)
       .withFlexibleDimensions(false)
       .withPush(true);
@@ -229,20 +359,82 @@ export class DropdownComponent implements AfterViewInit, ControlValueAccessor {
   private getConnectedPositions(): ConnectedPosition[] {
     switch (this.placement()) {
       case 'bottom-end':
-        return [{ originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top' }];
+        return [
+          {
+            originX: 'end',
+            originY: 'bottom',
+            overlayX: 'end',
+            overlayY: 'top',
+          },
+        ];
       case 'top-start':
-        return [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom' }];
+        return [
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+        ];
       case 'top-end':
-        return [{ originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom' }];
+        return [
+          {
+            originX: 'end',
+            originY: 'top',
+            overlayX: 'end',
+            overlayY: 'bottom',
+          },
+        ];
       default:
-        return [{ originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' }];
+        return [
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+        ];
     }
   }
 
-  @HostListener('document:click', ['$event.target'])
-  onDocumentClick(target: EventTarget | null): void {
-    if (!this.isOpen()) return;
-    const inside = target instanceof Node && this.hostEl.nativeElement.contains(target);
-    if (!inside) this.close();
+  onTriggerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.open();
+    }
+  }
+
+  onPanelKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.close(true);
+    } else if (event.key === 'Tab') {
+      // Restore the trigger before default Tab advances to the next control.
+      this.close(true);
+    } else if (
+      (event.target as HTMLElement).matches('input') &&
+      event.key === 'ArrowDown'
+    ) {
+      event.preventDefault();
+      this.overlayRef?.overlayElement
+        .querySelector<HTMLElement>('[role="option"]:not([disabled])')
+        ?.focus();
+    }
+  }
+
+  private disposeOverlay(): void {
+    if (this.focusTimer !== undefined) clearTimeout(this.focusTimer);
+    this.focusTimer = undefined;
+    this.outsideCleanup?.();
+    this.outsideCleanup = undefined;
+    this.layerCleanup?.();
+    this.layerCleanup = undefined;
+    this.overlayRef?.dispose();
+    this.overlayRef = null;
+  }
+
+  ngOnDestroy(): void {
+    this.disposeOverlay();
   }
 }

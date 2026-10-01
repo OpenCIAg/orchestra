@@ -10,6 +10,7 @@ import {
   ElementRef,
   viewChild,
   booleanAttribute,
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -46,7 +47,16 @@ export class CheckboxComponent implements ControlValueAccessor {
   readonly ariaLabel = input<string | undefined>(undefined);
   readonly ariaLabelledby = input<string | undefined>(undefined);
   readonly ariaDescribedby = input<string>('');
-  readonly ariaLabelledBy = input<string | undefined>(undefined); readonly inputId = input<string | undefined>(undefined); readonly readonly = input(false, { transform: booleanAttribute }); readonly binary = input(false, { transform: booleanAttribute }); readonly trueValue = input<any>(true); readonly falseValue = input<any>(false); readonly variant = input<'filled' | 'outlined'>('outlined'); readonly size = input<'small' | 'large' | undefined>(undefined); readonly autofocus = input(false, { transform: booleanAttribute }); readonly styleClass = input('');
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly inputId = input<string | undefined>(undefined);
+  readonly readonly = input(false, { transform: booleanAttribute });
+  readonly binary = input(false, { transform: booleanAttribute });
+  readonly trueValue = input<any>(true);
+  readonly falseValue = input<any>(false);
+  readonly variant = input<'filled' | 'outlined'>('outlined');
+  readonly size = input<'small' | 'large' | undefined>(undefined);
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly styleClass = input('');
 
   // Two-way Models (Signals API)
   readonly checked = model<boolean>(false);
@@ -54,10 +64,13 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   // Outputs (Signals API)
   readonly change = output<CheckboxChangeEvent>();
-  readonly onChange = output<CheckboxChangeEvent>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>();
+  readonly onChange = output<CheckboxChangeEvent>();
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
 
   // Element reference ao input nativo para controle de foco
-  readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('nativeInput');
+  readonly inputElement =
+    viewChild<ElementRef<HTMLInputElement>>('nativeInput');
 
   // ID interno único
   readonly uniqueId = `orc-checkbox-${++nextCheckboxUniqueId}`;
@@ -67,7 +80,9 @@ export class CheckboxComponent implements ControlValueAccessor {
   private readonly cvaValue = signal<any>(false);
 
   // Identificadores e estados derivados (Signals)
-  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
+  readonly effectiveId = computed(
+    () => this.inputId() || this.id() || this.uniqueId,
+  );
   readonly labelId = computed(() => `${this.effectiveId()}-label`);
   readonly descriptionId = computed(() => `${this.effectiveId()}-desc`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
@@ -98,10 +113,23 @@ export class CheckboxComponent implements ControlValueAccessor {
   private onModelChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
+  constructor() {
+    effect(() => {
+      const native = this.inputElement()?.nativeElement;
+      if (native) native.indeterminate = this.indeterminate();
+    });
+  }
+
   // ── ControlValueAccessor Implementation ───────────────────
   writeValue(val: any): void {
     this.cvaValue.set(val);
-    this.checked.set(this.binary() ? val === this.trueValue() : Array.isArray(val) ? val.some(item => item === this.value()) : Boolean(val));
+    this.checked.set(
+      this.binary()
+        ? val === this.trueValue()
+        : Array.isArray(val)
+          ? val.some((item) => item === this.value())
+          : Boolean(val),
+    );
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
@@ -118,12 +146,25 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   // ── Event Handlers ────────────────────────────────────────
   onNativeChange(event: Event): void {
+    // The component emits a structured change output below. Prevent the
+    // native event from reaching a host listener a second time.
+    event.stopPropagation();
+
     if (this.isDisabled()) {
       event.preventDefault();
       return;
     }
 
     const input = event.target as HTMLInputElement;
+
+    // Native checkboxes do not implement readonly behavior themselves. Keep
+    // the input focusable, but restore its visual state and suppress updates.
+    if (this.readonly()) {
+      event.preventDefault();
+      input.checked = this.checked();
+      input.indeterminate = this.indeterminate();
+      return;
+    }
 
     // Se estava em estado indeterminado, alternar limpa o indeterminado e marca como checado
     if (this.indeterminate()) {
@@ -139,7 +180,11 @@ export class CheckboxComponent implements ControlValueAccessor {
     this.onModelChange(emittedValue);
     this.onTouched();
 
-    const eventValue = { checked: newChecked, indeterminate: this.indeterminate(), value: this.value() };
+    const eventValue = {
+      checked: newChecked,
+      indeterminate: this.indeterminate(),
+      value: this.value(),
+    };
     this.change.emit(eventValue);
     this.onChange.emit(eventValue);
   }
@@ -149,20 +194,26 @@ export class CheckboxComponent implements ControlValueAccessor {
     if (event) this.onBlur.emit(event);
   }
 
-  handleFocus(event: Event): void { this.onFocus.emit(event); }
+  handleFocus(event: Event): void {
+    this.onFocus.emit(event);
+  }
 
   /*
     The output value follows PrimeNG's binary/trueValue/falseValue contract,
     while `checked` remains the visual boolean state used by Orchestra.
   */
-  modelValue(): any { return this.nextModelValue(this.checked()); }
+  modelValue(): any {
+    return this.nextModelValue(this.checked());
+  }
 
   /* legacy method retained for callers that used the old boolean-only API */
-  onLegacyBlur(): void { this.onTouched(); }
+  onLegacyBlur(): void {
+    this.onTouched();
+  }
 
   // ── Public API Methods ────────────────────────────────────
   toggle(): void {
-    if (this.isDisabled()) return;
+    if (this.isDisabled() || this.readonly()) return;
 
     if (this.indeterminate()) {
       this.indeterminate.set(false);
@@ -195,7 +246,9 @@ export class CheckboxComponent implements ControlValueAccessor {
     const current = this.cvaValue();
     if (!Array.isArray(current) || this.value() === undefined) return checked;
     return checked
-      ? current.some(item => item === this.value()) ? current : [...current, this.value()]
-      : current.filter(item => item !== this.value());
+      ? current.some((item) => item === this.value())
+        ? current
+        : [...current, this.value()]
+      : current.filter((item) => item !== this.value());
   }
 }

@@ -21,7 +21,9 @@ export class SkeletonComponent {
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly variant = input<SkeletonVariant>('text');
   readonly animation = input<SkeletonAnimation>('shimmer');
-  readonly shape = input<'rectangle' | 'square' | 'circle' | undefined>(undefined);
+  readonly shape = input<'rectangle' | 'square' | 'circle' | undefined>(
+    undefined,
+  );
   readonly size = input<string | number | undefined>(undefined);
   readonly width = input<string | number>('');
   readonly height = input<string | number>('');
@@ -29,19 +31,27 @@ export class SkeletonComponent {
   readonly fitContent = input(false, { transform: booleanAttribute });
   readonly display = input<'block' | 'inline-block' | 'inline'>('block');
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly ariaLabel = input<string | undefined>(undefined);
 
   // ── Host Bindings ─────────────────────────────────────────
   @HostBinding('style.display')
   get hostDisplay(): string {
-    return this.fitContent() ? this.display() : (this.effectiveVariant() === 'circular' ? 'inline-block' : 'block');
+    return this.fitContent()
+      ? this.display()
+      : this.effectiveVariant() === 'circular'
+        ? 'inline-block'
+        : 'block';
   }
 
   @HostBinding('style.width')
   get hostWidth(): string {
     const w = this.computedWidth();
-    return this.fitContent() ? 'inherit' : (w || (this.effectiveVariant() === 'circular' ? '40px' : '100%'));
+    return this.fitContent()
+      ? 'inherit'
+      : w || (this.effectiveVariant() === 'circular' ? '40px' : '100%');
   }
 
   @HostBinding('style.vertical-align')

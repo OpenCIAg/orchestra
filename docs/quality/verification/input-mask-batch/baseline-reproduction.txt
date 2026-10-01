@@ -1,0 +1,16 @@
+KeyFilter/InputMask baseline reproduction
+Date: 2026-09-22
+
+Runner:
+NG_BUILD_MAX_WORKERS=2 /Users/matheuscastro/.nvm/versions/node/v24.16.0/bin/node ./node_modules/@angular/cli/bin/ng.js test orc-ds --watch=false --browsers=ChromeHeadlessCI --ts-config=projects/orc-ds/tsconfig.input-mask-contract.tmp.json --include='projects/orc-ds/input-mask-contract.spec.ts'
+
+Baseline result before source fixes: 7 total, 3 failed, 4 passed.
+
+Confirmed failures:
+- InputMask custom accessibility/state inputs were not reflected to the native input (input-mask-contract.spec.ts:156-167)
+- InputMask composition input was reformatted before composition completed (input-mask-contract.spec.ts:144)
+- InputMask CVA formatting discarded custom star characters before applying characterPattern (input-mask-contract.spec.ts:114)
+
+The baseline also exposed an unmask assertion that was corrected in the host fixture to update the signal before the CVA write. The final test keeps the real reactive-form path.
+
+Karma used its configured default localhost:9876; this Angular CLI does not accept --port=9877.

@@ -1,8 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { booleanAttribute, ChangeDetectionStrategy, Component, Injectable, OnInit, computed, input, model, output, signal } from '@angular/core';
+import {
+  afterNextRender,
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  OnDestroy,
+  effect,
+  inject,
+  input,
+  model,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { P2_SHARED_STYLES } from './p2-shared';
 
 export interface PrimeMenuItem {
+  /** Menu destinations apply to leaf items; items with children remain disclosure buttons. */
   label: string;
   value?: string;
   icon?: string;
@@ -16,121 +32,608 @@ export interface PrimeMenuItem {
   command?: () => void;
 }
 
+let nextMenuId = 0;
+
+function getOwnedActiveHTMLElement(
+  ownerDocument: Document | null,
+): HTMLElement | null {
+  const active = ownerDocument?.activeElement ?? null;
+  const HTMLElementConstructor = ownerDocument?.defaultView?.HTMLElement;
+  if (
+    !ownerDocument ||
+    !active ||
+    !HTMLElementConstructor ||
+    !(active instanceof HTMLElementConstructor) ||
+    active === ownerDocument.body
+  ) {
+    return null;
+  }
+  return active;
+}
+
 @Component({
-  selector: 'orc-menu', standalone: true,
+  selector: 'orc-menu',
+  standalone: true,
   imports: [CommonModule],
-  template: `<ng-template #renderItems let-menuItems>@for (item of menuItems; track $index) { @if (item.visible !== false) { @if (item.separator) { <hr /> } @else { <div class="menu-entry"><button type="button" role="menuitem" [class.active]="isActive(item)" [attr.tabindex]="isActive(item) ? 0 : -1" [attr.aria-haspopup]="item.items?.length ? 'true' : null" [disabled]="disabled() || item.disabled" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.badge) { <span class="badge">{{ item.badge }}</span> } @if (item.items?.length) { <span aria-hidden="true">›</span> }</button>@if (item.items?.length) { <ul role="menu"><ng-container *ngTemplateOutlet="renderItems; context: { $implicit: item.items }" /></ul> }</div> } } }</ng-template>@if (!popup() || visible()) { <nav class="p-menu p-component orc-menu" [id]="id()" [class]="'p-menu p-component orc-menu ' + styleClass()" [style]="style()" [style.z-index]="popup() && autoZIndex() ? baseZIndex() + 1 : null" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'menu'" [class.p-menu-overlay]="popup()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)" (keydown)="onKeydown($event)"><ng-container *ngTemplateOutlet="renderItems; context: { $implicit: effectiveModel() }" /></nav> }`,
-  styles: [P2_SHARED_STYLES + `.orc-menu{display:grid;min-width:12rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color)}.menu-entry{position:relative}.orc-menu button{display:flex;justify-content:space-between;gap:1rem;width:100%;border:0;border-radius:.35rem;background:transparent;padding:.55rem .7rem;text-align:left}.orc-menu button:hover:not(:disabled){background:var(--orc-component-interactive-soft)}.orc-menu hr{width:100%;border:0;border-top:1px solid var(--orc-component-border)}.orc-menu ul{position:absolute;z-index:2;top:0;left:calc(100% - .25rem);display:grid;min-width:12rem;margin:0;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color);list-style:none}`],
+  template: `
+    <ng-template #renderItems let-menuItems>
+      @for (item of menuItems; track $index) {
+        @if (item.visible !== false) {
+          @if (item.separator) {
+            <hr />
+          } @else {
+            <div class="menu-entry">
+              @if (isLeafLink(item)) {
+                <a
+                  role="menuitem"
+                  [attr.data-orc-menu-item]="itemDomId(item)"
+                  [class.active]="isActive(item)"
+                  [attr.tabindex]="
+                    isActive(item) && !disabled() ? tabindex() : -1
+                  "
+                  [attr.href]="item.disabled || disabled() ? null : item.url"
+                  [attr.target]="item.target || null"
+                  [attr.rel]="
+                    item.target === '_blank' ? 'noopener noreferrer' : null
+                  "
+                  [attr.aria-disabled]="
+                    item.disabled || disabled() ? 'true' : null
+                  "
+                  (click)="activate(item)"
+                  (keydown)="onKeydown($event, item)"
+                  ><span class="menu-item-content"
+                    ><span class="menu-item-icon" aria-hidden="true">{{
+                      item.icon
+                    }}</span
+                    ><span>{{ item.label }}</span></span
+                  >
+                  @if (item.badge) {
+                    <span class="badge">{{ item.badge }}</span>
+                  }
+                </a>
+              } @else {
+                <button
+                  type="button"
+                  role="menuitem"
+                  [attr.data-orc-menu-item]="itemDomId(item)"
+                  [class.active]="isActive(item)"
+                  [attr.tabindex]="
+                    isActive(item) && !disabled() ? tabindex() : -1
+                  "
+                  [attr.aria-haspopup]="
+                    hasVisibleChildren(item) ? 'true' : null
+                  "
+                  [attr.aria-expanded]="
+                    hasVisibleChildren(item)
+                      ? isExpanded(item)
+                        ? 'true'
+                        : 'false'
+                      : null
+                  "
+                  [attr.aria-controls]="
+                    hasVisibleChildren(item) ? submenuId(item) : null
+                  "
+                  [disabled]="disabled() || item.disabled"
+                  (click)="activate(item)"
+                  (keydown)="onKeydown($event, item)"
+                >
+                  <span class="menu-item-content"
+                    ><span class="menu-item-icon" aria-hidden="true">{{
+                      item.icon
+                    }}</span
+                    ><span>{{ item.label }}</span></span
+                  >
+                  @if (item.badge) {
+                    <span class="badge">{{ item.badge }}</span>
+                  }
+                  @if (hasVisibleChildren(item)) {
+                    <span aria-hidden="true">{{
+                      isExpanded(item) ? '−' : '›'
+                    }}</span>
+                  }
+                </button>
+              }
+              @if (hasVisibleChildren(item)) {
+                <ul
+                  role="menu"
+                  [attr.id]="submenuId(item)"
+                  [attr.aria-label]="item.label"
+                  [attr.aria-hidden]="isExpanded(item) ? null : 'true'"
+                  [class.menu-submenu-hidden]="!isExpanded(item)"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      renderItems;
+                      context: { $implicit: item.items }
+                    "
+                  />
+                </ul>
+              }
+            </div>
+          }
+        }
+      }
+    </ng-template>
+    @if (!popup() || visible()) {
+      <nav
+        #menuHost
+        class="p-menu p-component orc-menu"
+        [attr.id]="id()"
+        [class]="'p-menu p-component orc-menu ' + styleClass()"
+        [style]="style()"
+        [style.z-index]="popup() && autoZIndex() ? baseZIndex() + 1 : null"
+        role="menu"
+        [attr.aria-label]="ariaLabel()"
+        [attr.aria-labelledby]="ariaLabelledBy()"
+        [attr.tabindex]="-1"
+        [attr.data-pc-name]="'menu'"
+        [class.p-menu-overlay]="popup()"
+        (focusin)="onFocusIn($event)"
+        (focusout)="onFocusOut($event)"
+        (keydown)="onKeydown($event)"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            renderItems;
+            context: { $implicit: effectiveModel() }
+          "
+        />
+      </nav>
+    }
+  `,
+  styles: [
+    P2_SHARED_STYLES +
+      `.orc-menu{display:grid;min-width:12rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color)}.menu-entry{position:relative}.menu-item-content{display:inline-flex;align-items:center;gap:.5rem;min-width:0}.orc-menu button,.orc-menu a{display:flex;justify-content:space-between;gap:1rem;width:100%;border:0;border-radius:.35rem;background:transparent;padding:.55rem .7rem;text-align:start;color:inherit;text-decoration:none}.orc-menu button:hover:not(:disabled),.orc-menu a:hover:not([aria-disabled="true"]){background:var(--orc-component-interactive-soft)}.orc-menu hr{width:100%;border:0;border-top:1px solid var(--orc-component-border)}.orc-menu ul{position:absolute;z-index:2;top:0;inset-inline-start:calc(100% - .25rem);display:grid;min-width:12rem;margin:0;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color);list-style:none}.menu-submenu-hidden{display:none}`,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuComponent {
-  readonly model = input<PrimeMenuItem[]>([]);
-  readonly items = this.model;
-  readonly popup = input(false, { transform: booleanAttribute }); readonly visible = model(false); readonly id = input<string | undefined>(undefined); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input(''); readonly appendTo = input<HTMLElement | string | null | undefined>(undefined); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly showTransitionOptions = input(''); readonly hideTransitionOptions = input(''); readonly ariaLabel = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly tabindex = input(0);
+export class MenuComponent implements OnDestroy {
+  readonly model = input<PrimeMenuItem[] | undefined>(undefined);
+  readonly items = input<PrimeMenuItem[]>([]);
+  readonly popup = input(false, { transform: booleanAttribute });
+  readonly visible = model(false);
+  readonly id = input<string | undefined>(undefined);
+  readonly style = input<Record<string, any> | null | undefined>(undefined);
+  readonly styleClass = input('');
+  /** @deprecated Compatibility-only input; Menu renders inline and ignores attachment requests. */
+  readonly appendTo = input<HTMLElement | string | null | undefined>(undefined);
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  readonly baseZIndex = input(0);
+  /** @deprecated Compatibility-only input; Menu does not animate visibility transitions. */
+  readonly showTransitionOptions = input('');
+  /** @deprecated Compatibility-only input; Menu does not animate visibility transitions. */
+  readonly hideTransitionOptions = input('');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly tabindex = input(0);
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = this.itemSelect; readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); readonly activeIndex = signal(0);
-  effectiveModel(): PrimeMenuItem[] { return this.model(); }
-  isActive(item: PrimeMenuItem): boolean { return this.effectiveModel().filter(entry => entry.visible !== false && !entry.separator && !entry.disabled).at(this.activeIndex()) === item; }
-  activate(item: PrimeMenuItem): void { if (this.disabled() || item.disabled || item.separator) return; item.command?.(); this.itemSelect.emit(item); if (this.popup()) this.hide(); }
-  show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); } }
-  hide(): void { if (this.visible()) { this.visible.set(false); this.onHide.emit(); } }
-  toggle(): void { this.visible() ? this.hide() : this.show(); }
-  onKeydown(event: KeyboardEvent): void { const items = this.effectiveModel().filter(item => !item.separator && !item.disabled); if (event.key === 'Escape') { event.preventDefault(); this.hide(); return; } if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); const delta = event.key === 'ArrowDown' ? 1 : -1; this.activeIndex.update(index => items.length ? (index + delta + items.length) % items.length : 0); return; } if (event.key === 'Home') { event.preventDefault(); this.activeIndex.set(0); return; } if (event.key === 'End') { event.preventDefault(); this.activeIndex.set(Math.max(0, items.length - 1)); return; } if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); const item = items[this.activeIndex()]; if (item) this.activate(item); } }
-}
-
-@Component({
-  selector: 'orc-tiered-menu', standalone: true,
-  template: `@if (!popup() || visible()) { <nav class="p-tieredmenu p-component orc-advanced-menu" [id]="id()" [class]="'p-tieredmenu p-component orc-advanced-menu ' + styleClass()" [style]="style()" [style.z-index]="popup() && autoZIndex() ? baseZIndex() + 1 : null" role="menu" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'tieredmenu'" [class.p-menu-overlay]="popup()" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)" (keydown)="onKeydown($event)">@for (item of effectiveItems(); track $index) { @if (item.visible !== false) { @if (item.separator) { <hr /> } @else { <button type="button" role="menuitem" [class.active]="isActiveItem(item)" [attr.tabindex]="isActiveItem(item) ? 0 : -1" [disabled]="item.disabled || disabled()" (click)="activate(item)">{{ item.icon }} {{ item.label }} @if (item.badge) { <span class="badge">{{ item.badge }}</span> } @if (item.items?.length) { <span aria-hidden="true">›</span> }</button> @if (openItem() === item && item.items?.length) { <div class="submenu" role="menu">@for (child of item.items; track $index) { @if (child.visible !== false) { <button type="button" role="menuitem" [disabled]="child.disabled || disabled()" (click)="activate(child)">{{ child.icon }} {{ child.label }}</button> } }</div> } } } }</nav> }`,
-  styles: [P2_SHARED_STYLES + `.orc-advanced-menu{position:relative;display:grid;min-width:12rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color)}.orc-advanced-menu button{display:flex;justify-content:space-between;gap:1.5rem;border:0;border-radius:.35rem;background:transparent;padding:.55rem .7rem;text-align:left}.orc-advanced-menu button:hover:not(:disabled){background:var(--orc-component-interactive-soft)}.orc-advanced-menu hr{width:100%;border:0;border-top:1px solid var(--orc-component-border)}.submenu{position:absolute;z-index:2;left:calc(100% - .25rem);top:2rem;display:grid;min-width:12rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color)}`],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class TieredMenuComponent {
-  readonly items = input<PrimeMenuItem[]>([]); readonly model = input<PrimeMenuItem[] | undefined>(undefined); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input(''); readonly appendTo = input<HTMLElement | string | null | undefined>(undefined); readonly breakpoint = input(''); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly autoDisplay = input(true, { transform: booleanAttribute }); readonly showTransitionOptions = input(''); readonly hideTransitionOptions = input(''); readonly ariaLabel = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly id = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly popup = input(false, { transform: booleanAttribute }); readonly tabindex = input(0); readonly visible = model(false); readonly openItem = signal<PrimeMenuItem | null>(null); readonly activeIndex = signal(0); readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = output<PrimeMenuItem>(); readonly onShow = output<void>(); readonly onHide = output<void>(); readonly onFocus = output<Event>(); readonly onBlur = output<Event>();
-  effectiveItems(): PrimeMenuItem[] { return this.model() ?? this.items(); }
-  isActiveItem(item: PrimeMenuItem): boolean { return this.effectiveItems().filter(entry => entry.visible !== false && !entry.separator && !entry.disabled).at(this.activeIndex()) === item; }
-  activate(item: PrimeMenuItem): void { if (item.visible === false || item.disabled || this.disabled()) return; if (item.items?.length) { this.openItem.set(this.openItem() === item ? null : item); return; } item.command?.(); this.itemSelect.emit(item); this.onItemClick.emit(item); }
-  show(): void { if (!this.visible()) { this.visible.set(true); this.onShow.emit(); } }
-  hide(): void { if (this.visible()) { this.visible.set(false); this.openItem.set(null); this.onHide.emit(); } }
-  toggle(): void { this.visible() ? this.hide() : this.show(); }
-  onKeydown(event: KeyboardEvent): void { const items = this.effectiveItems().filter(item => item.visible !== false && !item.separator && !item.disabled); const current = items[this.activeIndex()]; if (event.key === 'Escape') { event.preventDefault(); this.openItem() ? this.openItem.set(null) : this.hide(); return; } if (event.key === 'ArrowRight' && current?.items?.length) { event.preventDefault(); this.openItem.set(current); this.activeIndex.set(0); return; } if (event.key === 'ArrowLeft' && this.openItem()) { event.preventDefault(); this.openItem.set(null); return; } if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); const delta = event.key === 'ArrowDown' ? 1 : -1; this.activeIndex.update(index => items.length ? (index + delta + items.length) % items.length : 0); return; } if (event.key === 'Home') { event.preventDefault(); this.activeIndex.set(0); return; } if (event.key === 'End') { event.preventDefault(); this.activeIndex.set(Math.max(0, items.length - 1)); return; } if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); if (current) this.activate(current); } }
-}
-
-@Component({
-  selector: 'orc-panel-menu', standalone: true,
-  template: `<div class="p-panelmenu p-component orc-panel-menu" [class]="'p-panelmenu p-component orc-panel-menu ' + styleClass()" [style]="style()" [id]="id()" role="tree" [attr.aria-label]="ariaLabel()" [attr.tabindex]="tabindex()" [attr.data-pc-name]="'panelmenu'"><ng-container>@for (item of effectiveItems(); track $index) { @if (item.visible !== false) { <button type="button" role="treeitem" [class.active]="isActive(item)" [attr.tabindex]="isActive(item) ? 0 : -1" [attr.aria-expanded]="item.items?.length ? open().has(item) : null" [disabled]="item.disabled || disabled()" (click)="toggle(item)" (keydown)="onKeydown($event, $index)">{{ item.icon }} {{ item.label }} @if (item.badge) { <span class="badge">{{ item.badge }}</span> } @if (item.items?.length) { <span>{{ open().has(item) ? '−' : '+' }}</span> }</button> @if (open().has(item) && item.items?.length) { <div class="children">@for (child of item.items; track $index) { @if (child.visible !== false) { <button type="button" role="treeitem" [disabled]="child.disabled || disabled()" (click)="select(child)">{{ child.icon }} {{ child.label }}</button> } }</div> } } }</ng-container></div>`,
-  styles: [P2_SHARED_STYLES + `.orc-panel-menu{display:grid;width:100%;border:1px solid var(--orc-component-border);border-radius:.5rem;overflow:hidden}.orc-panel-menu>button,.children button{display:flex;justify-content:space-between;border:0;border-bottom:1px solid var(--orc-component-border);background:var(--orc-component-surface);padding:.65rem .8rem;text-align:left}.children{display:grid;padding-left:1rem;background:var(--orc-component-surface-subtle)}.children button{background:transparent}`],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class PanelMenuComponent {
-  readonly items = input<PrimeMenuItem[]>([]); readonly model = input<PrimeMenuItem[] | undefined>(undefined); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input(''); readonly id = input<string | undefined>(undefined); readonly transitionOptions = input(''); readonly tabindex = input(0); readonly ariaLabel = input<string | undefined>(undefined); readonly disabled = input(false, { transform: booleanAttribute }); readonly multiple = input(false, { transform: booleanAttribute }); readonly open = model<ReadonlySet<PrimeMenuItem>>(new Set()); readonly itemSelect = output<PrimeMenuItem>(); readonly onItemExpand = output<PrimeMenuItem>(); readonly onItemCollapse = output<PrimeMenuItem>(); readonly onNodeSelect = this.itemSelect; readonly onNodeExpand = this.onItemExpand; readonly onNodeCollapse = this.onItemCollapse;
+  readonly itemSelect = output<PrimeMenuItem>();
+  readonly onItemClick = output<PrimeMenuItem>();
+  readonly onShow = output<void>();
+  readonly onHide = output<void>();
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
   readonly activeIndex = signal(0);
-  effectiveItems(): PrimeMenuItem[] { return this.model() ?? this.items(); }
-  isActive(item: PrimeMenuItem): boolean { return this.effectiveItems().filter(entry => entry.visible !== false && !entry.disabled).at(this.activeIndex()) === item; }
-  onKeydown(event: KeyboardEvent, _index: number): void { const items = this.effectiveItems().filter(item => item.visible !== false && !item.disabled); if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); const delta = event.key === 'ArrowDown' ? 1 : -1; this.activeIndex.update(current => items.length ? (current + delta + items.length) % items.length : 0); } else if (event.key === 'Home') { event.preventDefault(); this.activeIndex.set(0); } else if (event.key === 'End') { event.preventDefault(); this.activeIndex.set(Math.max(0, items.length - 1)); } else if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); const item = items[this.activeIndex()]; if (item) this.toggle(item); } }
-  toggle(item: PrimeMenuItem): void { if (item.disabled || this.disabled()) return; if (!item.items?.length) return this.select(item); const next = new Set(this.open()); const expanded = next.has(item); if (expanded) { next.delete(item); this.onItemCollapse.emit(item); } else { if (!this.multiple()) next.clear(); next.add(item); this.onItemExpand.emit(item); } this.open.set(next); }
-  select(item: PrimeMenuItem): void { if (!item.disabled && !this.disabled()) { item.command?.(); this.itemSelect.emit(item); } }
+  readonly activeItem = signal<PrimeMenuItem | null>(null);
+  readonly openItems = signal<ReadonlySet<PrimeMenuItem>>(new Set());
+  readonly menuHost = viewChild<ElementRef<HTMLElement>>('menuHost');
+  private readonly injector = inject(Injector);
+  private readonly componentHost = inject(ElementRef<HTMLElement>);
+  private readonly itemIds = new WeakMap<PrimeMenuItem, string>();
+  private readonly itemsById = new Map<string, PrimeMenuItem>();
+  private restoreFocus: HTMLElement | null = null;
+  private handledVisible = false;
+  private restoreOnHide = true;
+  private outsideDocument: Document | null = null;
+  private outsidePointerHandler: ((event: PointerEvent) => void) | null = null;
+  private readonly instanceId = ++nextMenuId;
+  private nextItemId = 0;
+  constructor() {
+    effect(() => {
+      const visible = this.visible();
+      const popup = this.popup();
+      this.syncVisibility(visible);
+      if (visible && !popup) this.unbindOutsideDismissal();
+      else if (visible && popup) this.bindOutsideDismissal();
+    });
+  }
+  effectiveModel(): PrimeMenuItem[] {
+    return this.model() ?? this.items();
+  }
+  onFocusIn(event: FocusEvent): void {
+    const target = event.target as HTMLElement | null;
+    const id = target
+      ?.closest<HTMLElement>('[data-orc-menu-item]')
+      ?.getAttribute('data-orc-menu-item');
+    const item = id ? this.itemsById.get(id) : undefined;
+    if (item && !this.disabled() && !item.disabled) {
+      const context = this.menuContext(item);
+      if (context?.parent) this.activeItem.set(item);
+      else {
+        this.activeItem.set(null);
+        const index = this.navigableItems().indexOf(item);
+        if (index >= 0) this.activeIndex.set(index);
+      }
+    }
+    const host = event.currentTarget as HTMLElement | null;
+    const related = event.relatedTarget as Node | null;
+    if (!host || !related || !host.contains(related)) this.onFocus.emit(event);
+  }
+  onFocusOut(event: FocusEvent): void {
+    const host = event.currentTarget as HTMLElement | null;
+    const related = event.relatedTarget as Node | null;
+    if (!host || !related || !host.contains(related)) {
+      this.onBlur.emit(event);
+      if (this.popup() && this.visible() && related) this.hide(false);
+    }
+  }
+  navigableItems(): PrimeMenuItem[] {
+    return this.disabled()
+      ? []
+      : this.effectiveModel().filter(
+          (item) => item.visible !== false && !item.separator && !item.disabled,
+        );
+  }
+  visibleChildren(item: PrimeMenuItem): PrimeMenuItem[] {
+    return item.items?.filter((child) => child.visible !== false) ?? [];
+  }
+  hasVisibleChildren(item: PrimeMenuItem): boolean {
+    return this.visibleChildren(item).length > 0;
+  }
+  isLeafLink(item: PrimeMenuItem): boolean {
+    return !!item.url && !item.items?.length;
+  }
+  isExpanded(item: PrimeMenuItem): boolean {
+    return this.openItems().has(item);
+  }
+  submenuId(item: PrimeMenuItem): string {
+    return `${this.id() || `orc-menu-${this.instanceId}`}-${this.itemDomId(item)}-submenu`;
+  }
+  itemDomId(item: PrimeMenuItem): string {
+    let id = this.itemIds.get(item);
+    if (!id) {
+      id = `menu-item-${++this.nextItemId}`;
+      this.itemIds.set(item, id);
+    }
+    this.itemsById.set(id, item);
+    return id;
+  }
+  isActive(item: PrimeMenuItem): boolean {
+    return (
+      !this.disabled() &&
+      (this.activeItem() === item ||
+        (!this.activeItem() &&
+          this.navigableItems()[this.activeIndex()] === item))
+    );
+  }
+  private menuContext(
+    item: PrimeMenuItem,
+    items = this.effectiveModel(),
+    parent: PrimeMenuItem | null = null,
+  ): { parent: PrimeMenuItem | null; siblings: PrimeMenuItem[] } | null {
+    if (items.includes(item)) return { parent, siblings: items };
+    for (const candidate of items) {
+      const found =
+        candidate.items && this.menuContext(item, candidate.items, candidate);
+      if (found) return found;
+    }
+    return null;
+  }
+  private containsMenuItem(
+    root: PrimeMenuItem,
+    target: PrimeMenuItem,
+  ): boolean {
+    return !!root.items?.some(
+      (child) => child === target || this.containsMenuItem(child, target),
+    );
+  }
+  private toggleSubmenu(item: PrimeMenuItem, focusChild: boolean): void {
+    const next = new Set(this.openItems());
+    if (next.has(item)) {
+      next.delete(item);
+      for (const candidate of next)
+        if (this.containsMenuItem(item, candidate)) next.delete(candidate);
+    } else {
+      const context = this.menuContext(item);
+      for (const sibling of context?.siblings ?? [])
+        if (sibling !== item && next.has(sibling)) {
+          next.delete(sibling);
+          for (const candidate of next)
+            if (this.containsMenuItem(sibling, candidate))
+              next.delete(candidate);
+        }
+      next.add(item);
+    }
+    this.openItems.set(next);
+    if (focusChild && next.has(item))
+      afterNextRender(
+        () => {
+          if (!this.visible() && this.popup()) return;
+          const host = this.menuHost()?.nativeElement;
+          const submenu = Array.from(
+            host?.querySelectorAll<HTMLElement>('ul[role="menu"]') ?? [],
+          ).find((candidate) => candidate.id === this.submenuId(item));
+          const first = submenu?.querySelector<HTMLElement>(
+            ':scope > .menu-entry > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
+          );
+          if (first) this.focusMenuItem(first, false);
+        },
+        { injector: this.injector },
+      );
+  }
+  activate(item: PrimeMenuItem): void {
+    if (
+      this.disabled() ||
+      item.visible === false ||
+      item.disabled ||
+      item.separator
+    )
+      return;
+    if (this.hasVisibleChildren(item)) {
+      this.toggleSubmenu(item, true);
+      return;
+    }
+    const index = this.navigableItems().indexOf(item);
+    if (index >= 0) {
+      this.activeIndex.set(index);
+      this.activeItem.set(null);
+    } else this.activeItem.set(item);
+    item.command?.();
+    this.itemSelect.emit(item);
+    this.onItemClick.emit(item);
+    if (this.popup()) this.hide();
+  }
+  private syncVisibility(visible: boolean): void {
+    if (visible === this.handledVisible) return;
+    this.handledVisible = visible;
+    if (visible) {
+      this.restoreFocus = getOwnedActiveHTMLElement(this.ownerDocument());
+      this.activeItem.set(null);
+      this.openItems.set(new Set());
+      this.onShow.emit();
+      this.bindOutsideDismissal();
+      afterNextRender(
+        () => {
+          if (this.visible()) {
+            const host = this.menuHost()?.nativeElement;
+            if (host) this.focusActiveItem(host);
+          }
+        },
+        { injector: this.injector },
+      );
+    } else {
+      this.openItems.set(new Set());
+      this.onHide.emit();
+      this.unbindOutsideDismissal();
+      const restore = this.restoreOnHide ? this.restoreFocus : null;
+      this.restoreFocus = null;
+      this.restoreOnHide = true;
+      if (restore) queueMicrotask(() => restore.isConnected && restore.focus());
+    }
+  }
+  private bindOutsideDismissal(): void {
+    if (!this.popup() || this.outsidePointerHandler) return;
+    const ownerDocument = this.ownerDocument();
+    if (!ownerDocument) return;
+    this.outsideDocument = ownerDocument;
+    this.outsidePointerHandler = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+      const host = this.menuHost()?.nativeElement;
+      if (host?.contains(target) || this.restoreFocus?.contains(target)) return;
+      this.hide();
+    };
+    ownerDocument.addEventListener(
+      'pointerdown',
+      this.outsidePointerHandler,
+      true,
+    );
+  }
+  private unbindOutsideDismissal(): void {
+    if (this.outsideDocument && this.outsidePointerHandler)
+      this.outsideDocument.removeEventListener(
+        'pointerdown',
+        this.outsidePointerHandler,
+        true,
+      );
+    this.outsideDocument = null;
+    this.outsidePointerHandler = null;
+  }
+  private ownerDocument(): Document | null {
+    return (
+      this.menuHost()?.nativeElement.ownerDocument ??
+      this.componentHost.nativeElement.ownerDocument ??
+      null
+    );
+  }
+  show(): void {
+    if (!this.visible()) {
+      this.visible.set(true);
+      this.syncVisibility(true);
+    }
+  }
+  hide(restoreFocus = true): void {
+    if (this.visible()) {
+      this.restoreOnHide = restoreFocus;
+      this.visible.set(false);
+      this.syncVisibility(false);
+    }
+  }
+  toggle(): void {
+    this.visible() ? this.hide() : this.show();
+  }
+  ngOnDestroy(): void {
+    this.unbindOutsideDismissal();
+  }
+  onKeydown(event: KeyboardEvent, item?: PrimeMenuItem): void {
+    const target = event.target as HTMLElement | null;
+    const current = target?.closest<HTMLElement>('[role="menuitem"]');
+    const host =
+      (event.currentTarget as HTMLElement | null)?.closest<HTMLElement>(
+        'nav',
+      ) ?? (event.currentTarget as HTMLElement | null);
+    if (item && current) event.stopPropagation();
+    if (item && current) {
+      const submenu = current.closest('ul[role="menu"]');
+      const siblings = Array.from(
+        (submenu ?? host)?.querySelectorAll<HTMLElement>(
+          ':scope > .menu-entry > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
+        ) ?? [],
+      );
+      const currentIndex = siblings.indexOf(current);
+      if (
+        event.key === 'ArrowDown' ||
+        event.key === 'ArrowUp' ||
+        event.key === 'Home' ||
+        event.key === 'End'
+      ) {
+        event.preventDefault();
+        if (siblings.length) {
+          const nextIndex =
+            event.key === 'Home'
+              ? 0
+              : event.key === 'End'
+                ? siblings.length - 1
+                : (currentIndex +
+                    (event.key === 'ArrowDown' ? 1 : -1) +
+                    siblings.length) %
+                  siblings.length;
+          this.focusMenuItem(siblings[nextIndex], submenu === null);
+        }
+        return;
+      }
+      if (event.key === 'ArrowRight') {
+        const child = current.parentElement?.querySelector<HTMLElement>(
+          ':scope > ul[role="menu"] > .menu-entry > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
+        );
+        if (child) {
+          event.preventDefault();
+          const owner = current.parentElement?.querySelector<HTMLElement>(
+            ':scope > [role="menuitem"]',
+          );
+          const ownerItem =
+            owner &&
+            this.itemsById.get(owner.getAttribute('data-orc-menu-item') || '');
+          if (ownerItem && !this.isExpanded(ownerItem)) {
+            this.toggleSubmenu(ownerItem, false);
+            afterNextRender(() => this.focusMenuItem(child, false), {
+              injector: this.injector,
+            });
+          } else this.focusMenuItem(child, false);
+        }
+        return;
+      }
+      if (event.key === 'ArrowLeft') {
+        if (submenu) {
+          const parent = submenu.parentElement?.querySelector<HTMLElement>(
+            ':scope > [role="menuitem"]',
+          );
+          if (parent) {
+            event.preventDefault();
+            const parentItem = this.itemsById.get(
+              parent.getAttribute('data-orc-menu-item') || '',
+            );
+            if (parentItem) this.toggleSubmenu(parentItem, false);
+            this.focusMenuItem(parent, !parent.closest('ul[role="menu"]'));
+          }
+        } else if (item && this.isExpanded(item)) {
+          event.preventDefault();
+          this.toggleSubmenu(item, false);
+        }
+        return;
+      }
+      if (event.key === 'Enter' || event.key === ' ') {
+        if (event.key === 'Enter' && current.tagName === 'A') return;
+        event.preventDefault();
+        this.activate(item);
+        return;
+      }
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        const parent = submenu?.parentElement?.querySelector<HTMLElement>(
+          ':scope > [role="menuitem"]',
+        );
+        const parentItem =
+          parent &&
+          this.itemsById.get(parent.getAttribute('data-orc-menu-item') || '');
+        if (parentItem) {
+          this.toggleSubmenu(parentItem, false);
+          this.focusMenuItem(parent, !parent.closest('ul[role="menu"]'));
+        } else if (item && this.isExpanded(item))
+          this.toggleSubmenu(item, false);
+        else this.hide();
+        return;
+      }
+      return;
+    }
+    const items = this.navigableItems();
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.hide();
+      return;
+    }
+    if (item && this.hasVisibleChildren(item) && event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.toggleSubmenu(item, false);
+      return;
+    }
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const delta = event.key === 'ArrowDown' ? 1 : -1;
+      this.activeItem.set(null);
+      this.activeIndex.update((index) =>
+        items.length ? (index + delta + items.length) % items.length : 0,
+      );
+      if (host) this.focusActiveItem(host);
+      return;
+    }
+    if (event.key === 'Home') {
+      event.preventDefault();
+      this.activeItem.set(null);
+      this.activeIndex.set(0);
+      if (host) this.focusActiveItem(host);
+      return;
+    }
+    if (event.key === 'End') {
+      event.preventDefault();
+      this.activeItem.set(null);
+      this.activeIndex.set(Math.max(0, items.length - 1));
+      if (host) this.focusActiveItem(host);
+      return;
+    }
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      const currentItem = items[this.activeIndex()];
+      if (currentItem) this.activate(currentItem);
+    }
+  }
+  private focusMenuItem(element: HTMLElement, root: boolean): void {
+    const item = this.itemsById.get(
+      element.getAttribute('data-orc-menu-item') || '',
+    );
+    if (item) {
+      if (root) {
+        this.activeItem.set(null);
+        this.activeIndex.set(this.navigableItems().indexOf(item));
+      } else this.activeItem.set(item);
+    }
+    element.focus();
+  }
+  private focusActiveItem(host: HTMLElement): void {
+    host
+      .querySelectorAll<HTMLElement>(
+        ':scope > .menu-entry > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
+      )
+      [this.activeIndex()]?.focus();
+  }
 }
 
-@Component({
-  selector: 'orc-mega-menu', standalone: true,
-  template: `<nav class="p-megamenu p-component orc-mega-menu" [class]="'p-megamenu p-component orc-mega-menu ' + styleClass()" [style]="style()" [id]="id()" [attr.data-pc-name]="'megamenu'" [attr.aria-label]="ariaLabel()" [attr.aria-labelledby]="ariaLabelledBy()" [attr.tabindex]="tabindex()" [class.vertical]="orientation() === 'vertical'" role="menubar">@for (group of effectiveItems(); track $index) { @if (group.visible !== false) { <section><h3>{{ group.label }}</h3>@for (item of group.items || []; track $index) { @if (item.visible !== false) { <button type="button" role="menuitem" [disabled]="disabled() || item.disabled" (click)="select(item)">{{ item.icon }} {{ item.label }} @if (item.badge) { <span>{{ item.badge }}</span> }</button> } }</section> } }</nav>`,
-  styles: [P2_SHARED_STYLES + `.orc-mega-menu{display:flex;flex-wrap:wrap;gap:1.5rem;padding:1rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface)}.orc-mega-menu section{display:grid;align-content:start;min-width:10rem;gap:.25rem}.orc-mega-menu h3{margin:0 0 .35rem;font-size:.85rem}.orc-mega-menu button{border:0;background:transparent;padding:.35rem;text-align:left}`],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class MegaMenuComponent { readonly items = input<PrimeMenuItem[]>([]); readonly model = input<PrimeMenuItem[] | undefined>(undefined); readonly orientation = input<'horizontal' | 'vertical'>('horizontal'); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input(''); readonly id = input<string | undefined>(undefined); readonly ariaLabel = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly tabindex = input(0); readonly disabled = input(false, { transform: booleanAttribute }); readonly itemSelect = output<PrimeMenuItem>(); readonly onItemClick = this.itemSelect; readonly onFocus = output<Event>(); readonly onBlur = output<Event>(); effectiveItems(): PrimeMenuItem[] { return this.model() ?? this.items(); } select(item: PrimeMenuItem): void { if (!this.disabled() && item.visible !== false && !item.disabled) { item.command?.(); this.itemSelect.emit(item); } } }
+export { BlockUiComponent } from './p2-block-ui-component';
+export type { BlockUiTarget } from './p2-block-ui-component';
 
-@Component({
-  selector: 'orc-block-ui', standalone: true,
-  template: `@if (blocked()) { <div class="p-blockui p-component orc-block-ui" [class]="'p-blockui p-component orc-block-ui ' + styleClass()" [style]="style()" role="alert" [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null" [attr.aria-label]="message()" [attr.data-pc-name]="'blockui'"><span>{{ message() }}</span></div> }<ng-content />`,
-  styles: [P2_SHARED_STYLES + `.orc-block-ui{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:var(--orc-component-surface-overlay);backdrop-filter:blur(1px);color:var(--orc-component-text)}`],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class BlockUiComponent { readonly blocked = model(false); readonly target = input<HTMLElement | string | null>(null); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly style = input<Record<string, any> | null | undefined>(undefined); readonly styleClass = input(''); readonly message = input<string | undefined>(undefined); readonly onBlock = output<void>(); readonly onUnblock = output<void>(); block(): void { if (!this.blocked()) { this.blocked.set(true); this.onBlock.emit(); } } unblock(): void { if (this.blocked()) { this.blocked.set(false); this.onUnblock.emit(); } } }
+export {
+  ConfirmDialogComponent,
+  ConfirmationService,
+} from './p2-confirm-dialog-component';
+export type { ConfirmationRequest } from './p2-confirm-dialog-component';
 
-@Injectable({ providedIn: 'root' })
-export class ConfirmationService {
-  readonly request = signal<ConfirmationRequest | null>(null);
-  confirm(request: ConfirmationRequest): void { this.request.set(request); }
-  close(): void { this.request.set(null); }
-}
-export interface ConfirmationRequest { message: string; header?: string; icon?: string; acceptLabel?: string; rejectLabel?: string; acceptIcon?: string; rejectIcon?: string; acceptAriaLabel?: string; rejectAriaLabel?: string; acceptVisible?: boolean; rejectVisible?: boolean; acceptButtonStyleClass?: string; rejectButtonStyleClass?: string; key?: string; accept?: () => void; reject?: () => void; }
-
-@Component({
-  selector: 'orc-confirm-dialog', standalone: true,
-  template: `@if (request()) { <div class="p-confirm-dialog-mask p-component-overlay orc-confirm-backdrop" [class]="'p-confirm-dialog-mask p-component-overlay orc-confirm-backdrop ' + maskStyleClass()" [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null" (click)="dismissableMask() && reject()"><section class="p-confirm-dialog p-component orc-confirm" [class]="'p-confirm-dialog p-component orc-confirm ' + styleClass()" role="alertdialog" aria-modal="true" [attr.aria-label]="request()?.header || null" [attr.aria-labelledby]="ariaLabelledBy()" [attr.data-pc-name]="'confirmdialog'" (click)="$event.stopPropagation()" (keydown.escape)="onEscape()">@if (request()?.header || request()?.icon) { <h2>@if (request()?.icon) { <span aria-hidden="true">{{ request()?.icon }}</span> }{{ request()?.header }}</h2> }<p>{{ request()?.message }}</p><footer>@if (closable() && closeAriaLabel()) { <button type="button" class="close" (click)="close()" [attr.aria-label]="closeAriaLabel()">×</button> }@if (request()?.rejectVisible !== false && (request()?.rejectLabel || request()?.rejectIcon || request()?.rejectAriaLabel)) { <button type="button" [class]="request()?.rejectButtonStyleClass || ''" (click)="reject()" [attr.aria-label]="request()?.rejectAriaLabel || null">{{ request()?.rejectIcon }} {{ request()?.rejectLabel }}</button> }@if (request()?.acceptVisible !== false && (request()?.acceptLabel || request()?.acceptIcon || request()?.acceptAriaLabel)) { <button type="button" [class]="'accept ' + (request()?.acceptButtonStyleClass || '')" (click)="accept()" [attr.aria-label]="request()?.acceptAriaLabel || null">{{ request()?.acceptIcon }} {{ request()?.acceptLabel }}</button> }</footer></section></div> }`,
-  styles: [P2_SHARED_STYLES + `.orc-confirm-backdrop{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--orc-component-scrim)}.orc-confirm{width:min(28rem,calc(100% - 2rem));padding:1.25rem;border-radius:.75rem;background:var(--orc-component-surface);box-shadow:0 20px 40px var(--orc-component-shadow-color)}.orc-confirm h2{margin:0 0 .5rem}.orc-confirm p{color:var(--orc-component-text-secondary)}.orc-confirm footer{display:flex;justify-content:flex-end;gap:.5rem}.orc-confirm button{border:1px solid var(--orc-component-border-strong);border-radius:.4rem;background:var(--orc-component-surface);padding:.5rem .8rem}.orc-confirm .accept{border-color:var(--orc-component-interactive);background:var(--orc-component-interactive);color:var(--orc-component-on-interactive)}`],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class ConfirmDialogComponent {
-  readonly request: ConfirmationService['request'];
-  readonly closable = input(true, { transform: booleanAttribute }); readonly closeOnEscape = input(true, { transform: booleanAttribute }); readonly dismissableMask = input(true, { transform: booleanAttribute }); readonly blockScroll = input(true, { transform: booleanAttribute }); readonly rtl = input(false, { transform: booleanAttribute }); readonly autoZIndex = input(true, { transform: booleanAttribute }); readonly baseZIndex = input(0); readonly styleClass = input(''); readonly maskStyleClass = input(''); readonly closeAriaLabel = input<string | undefined>(undefined); readonly ariaLabelledBy = input<string | undefined>(undefined); readonly defaultFocus = input<'accept' | 'reject' | 'close' | 'none'>('accept'); readonly onHide = output<void>(); readonly onAccept = output<void>(); readonly onReject = output<void>();
-  constructor(private readonly service: ConfirmationService) { this.request = service.request; }
-  accept(): void { this.request()?.accept?.(); this.onAccept.emit(); this.service.close(); this.onHide.emit(); }
-  reject(): void { this.request()?.reject?.(); this.onReject.emit(); this.service.close(); this.onHide.emit(); }
-  close(): void { this.reject(); }
-  onEscape(): void { if (this.closeOnEscape()) this.reject(); }
-}
-
-@Component({
-  selector: 'orc-data-view', standalone: true,
-  template: `<section class="orc-data-view" [class]="'orc-data-view ' + styleClass()" [style]="style()" [attr.aria-label]="ariaLabel() || null">@if (header()) { <header>{{ header() }}</header> }@if (filterBy()) { <input [value]="filterValue()" (input)="filterValue.set($any($event.target).value)" [attr.aria-label]="filterAriaLabel() || null" /> }@if (paginator() && pageCount() > 1 && (paginatorPosition() === 'top' || paginatorPosition() === 'both')) { <nav class="paginator" [class]="paginatorStyleClass()" [attr.aria-label]="paginatorAriaLabel() || null"><button type="button" [disabled]="first() === 0" (click)="goToPage(first() - rows())">‹</button>@if (pageReport()) { <span>{{ pageReport() }}</span> }<button type="button" [disabled]="first() + rows() >= effectiveTotalRecords()" (click)="goToPage(first() + rows())">›</button></nav> }<div class="content" [class.list]="layout() === 'list'" [class]="layout() === 'list' ? listStyleClass() : gridStyleClass()">@if (loading() && loadingMessage()) { <p>{{ loadingMessage() }}</p> } @else { @for (item of pageItems(); track getItemKey(item, $index)) { <article>@if (itemTemplate()) { <ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item }" /> } @else { {{ itemLabel(item) }} }</article> } @empty { @if (emptyMessage()) { <p>{{ emptyMessage() }}</p> } } }</div>@if (paginator() && pageCount() > 1 && (paginatorPosition() === 'bottom' || paginatorPosition() === 'both')) { <nav class="paginator" [class]="paginatorStyleClass()" [attr.aria-label]="paginatorAriaLabel() || null"><button type="button" [disabled]="first() === 0" (click)="goToPage(first() - rows())">‹</button>@if (pageReport()) { <span>{{ pageReport() }}</span> }<button type="button" [disabled]="first() + rows() >= effectiveTotalRecords()" (click)="goToPage(first() + rows())">›</button></nav> }</section>`,
-  imports: [CommonModule],
-  styles: [P2_SHARED_STYLES + `.orc-data-view{display:block}.orc-data-view header{padding:.7rem;border-bottom:1px solid var(--orc-component-border);font-weight:700}.content{display:grid;grid-template-columns:repeat(auto-fill,minmax(12rem,1fr));gap:1rem}.content.list{display:grid;grid-template-columns:1fr}.content article{padding:.8rem;border:1px solid var(--orc-component-border);border-radius:.5rem}.content>p{color:var(--orc-component-text-muted)}`],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DataViewComponent<T = Record<string, unknown>> implements OnInit {
-  readonly value = input<T[]>([]); readonly layout = model<'list' | 'grid'>('grid'); readonly header = input(''); readonly emptyMessage = input<string | undefined>(undefined); readonly ariaLabel = input<string | undefined>(undefined); readonly itemTemplate = input<any>(null); readonly style = input<Record<string, string | number> | undefined>(undefined); readonly styleClass = input(''); readonly gridStyleClass = input(''); readonly listStyleClass = input(''); readonly trackBy = input<((index: number, item: T) => unknown) | undefined>(undefined);
-  readonly paginator = input(false, { transform: booleanAttribute }); readonly rows = input(10); readonly first = model(0); readonly totalRecords = input<number | undefined>(undefined); readonly pageLinks = input(5); readonly rowsPerPageOptions = input<number[] | undefined>(undefined); readonly paginatorPosition = input<'top' | 'bottom' | 'both'>('bottom'); readonly paginatorStyleClass = input(''); readonly alwaysShowPaginator = input(true, { transform: booleanAttribute }); readonly currentPageReportTemplate = input<string | undefined>(undefined); readonly showCurrentPageReport = input(false, { transform: booleanAttribute }); readonly showJumpToPageDropdown = input(false, { transform: booleanAttribute }); readonly showFirstLastIcon = input(false, { transform: booleanAttribute }); readonly showPageLinks = input(true, { transform: booleanAttribute }); readonly lazy = input(false, { transform: booleanAttribute }); readonly lazyLoadOnInit = input(false, { transform: booleanAttribute }); readonly loading = input(false, { transform: booleanAttribute }); readonly loadingIcon = input<string | undefined>(undefined); readonly loadingMessage = input<string | undefined>(undefined); readonly filterBy = input<string | undefined>(undefined); readonly filterAriaLabel = input<string | undefined>(undefined); readonly paginatorAriaLabel = input<string | undefined>(undefined); readonly filterLocale = input<string | undefined>(undefined); readonly filterValue = model(''); readonly dataKey = input<string | undefined>(undefined); readonly sortField = input<string | undefined>(undefined); readonly sortOrder = model<1 | -1>(1);
-  readonly onPage = output<{ first: number; rows: number }>(); readonly onLazyLoad = output<{ first: number; rows: number }>(); readonly onSort = output<{ sortField: string; sortOrder: 1 | -1 }>(); readonly onLayoutChange = output<'list' | 'grid'>(); readonly onChangeLayout = this.onLayoutChange;
-  readonly sortedItems = computed(() => { const field = this.sortField(); const items = [...this.value()]; if (!field) return items; const direction = this.sortOrder(); return items.sort((a, b) => { const left = (a as any)?.[field]; const right = (b as any)?.[field]; return String(left ?? '').localeCompare(String(right ?? ''), undefined, { numeric: true, sensitivity: 'base' }) * direction; }); });
-  readonly pageCount = computed(() => Math.max(1, Math.ceil((this.totalRecords() ?? this.filteredItems().length) / Math.max(1, this.rows()))));
-  readonly filteredItems = computed(() => { const query = this.filterValue().trim().toLocaleLowerCase(this.filterLocale() || undefined); if (!query) return this.sortedItems(); const field = this.filterBy(); return this.sortedItems().filter(item => field ? String((item as any)?.[field] ?? '').toLocaleLowerCase(this.filterLocale() || undefined).includes(query) : String(item ?? '').toLocaleLowerCase(this.filterLocale() || undefined).includes(query)); });
-  readonly pageItems = computed(() => this.paginator() ? this.filteredItems().slice(this.first(), this.first() + this.rows()) : this.filteredItems());
-  effectiveTotalRecords(): number { return this.totalRecords() ?? this.sortedItems().length; }
-  getItemKey(item: T, index: number): unknown { const trackBy = this.trackBy(); if (trackBy) return trackBy(index, item); const key = this.dataKey(); return key ? (item as any)?.[key] ?? index : index; }
-  itemLabel(item: T): string { return typeof item === 'object' ? JSON.stringify(item) : String(item ?? ''); }
-  pageReport(): string { const page = Math.floor(this.first() / Math.max(1, this.rows())) + 1; const template = this.currentPageReportTemplate(); if (!template) return ''; return template.replace('{currentPage}', String(page)).replace('{totalPages}', String(this.pageCount())).replace('{first}', String(this.first() + 1)).replace('{last}', String(Math.min(this.first() + this.rows(), this.effectiveTotalRecords()))).replace('{totalRecords}', String(this.effectiveTotalRecords())); }
-  ngOnInit(): void { if (this.lazy() && this.lazyLoadOnInit()) this.onLazyLoad.emit({ first: this.first(), rows: this.rows() }); }
-  setLayout(layout: 'list' | 'grid'): void { if (layout === this.layout()) return; this.layout.set(layout); this.onLayoutChange.emit(layout); }
-  goToPage(first: number): void { const next = Math.max(0, Math.min(Math.max(0, (this.pageCount() - 1) * this.rows()), first)); this.first.set(next); const payload = { first: next, rows: this.rows() }; this.onPage.emit(payload); if (this.lazy()) this.onLazyLoad.emit(payload); }
-}
+export { DataViewComponent } from './p2-data-view-component';

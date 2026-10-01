@@ -8,7 +8,8 @@
       <div class="section-eyebrow">Componentes · Overlay</div>
       <h1 class="section-title">Tooltip</h1>
       <p class="section-desc">
-        Dicas contextuais ao passar o mouse para fornecer informações adicionais.
+        Dicas contextuais ao passar o mouse para fornecer informações
+        adicionais.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -30,6 +31,7 @@
                   [tooltipShowDelay]="playgroundShowDelay()"
                   [tooltipHideDelay]="playgroundHideDelay()"
                   [tooltipDisabled]="playgroundDisabled()"
+                  [fitContent]="playgroundFitContent()"
                 >
                   Passe o mouse aqui (Tooltip)
                 </button>
@@ -43,7 +45,9 @@
             <div class="panel__body">
               <!-- Texto do Tooltip -->
               <div class="control-group">
-                <label class="control-label" for="tooltip-text-input">Texto do tooltip</label>
+                <label class="control-label" for="tooltip-text-input"
+                  >Texto do tooltip</label
+                >
                 <input
                   id="tooltip-text-input"
                   type="text"
@@ -57,10 +61,44 @@
               <div class="control-group">
                 <label class="control-label">Posicionamento (position)</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundPosition() === 'top'" (click)="playgroundPosition.set('top')">Top</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundPosition() === 'bottom'" (click)="playgroundPosition.set('bottom')">Bottom</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundPosition() === 'left'" (click)="playgroundPosition.set('left')">Left</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundPosition() === 'right'" (click)="playgroundPosition.set('right')">Right</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundPosition() === 'top'"
+                    (click)="playgroundPosition.set('top')"
+                  >
+                    Top
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'bottom'
+                    "
+                    (click)="playgroundPosition.set('bottom')"
+                  >
+                    Bottom
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'left'
+                    "
+                    (click)="playgroundPosition.set('left')"
+                  >
+                    Left
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'right'
+                    "
+                    (click)="playgroundPosition.set('right')"
+                  >
+                    Right
+                  </button>
                 </div>
               </div>
 
@@ -68,18 +106,55 @@
               <div class="control-group">
                 <label class="control-label">Tema visual (theme)</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTheme() === 'dark'" (click)="playgroundTheme.set('dark')">Darkmode</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTheme() === 'light'" (click)="playgroundTheme.set('light')">Lightmode</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundTheme() === 'dark'"
+                    (click)="playgroundTheme.set('dark')"
+                  >
+                    Darkmode
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundTheme() === 'light'"
+                    (click)="playgroundTheme.set('light')"
+                  >
+                    Lightmode
+                  </button>
                 </div>
               </div>
 
               <!-- Delays -->
               <div class="control-group">
-                <label class="control-label">Atraso de exibição ({{ playgroundShowDelay() }}ms)</label>
+                <label class="control-label"
+                  >Atraso de exibição ({{ playgroundShowDelay() }}ms)</label
+                >
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundShowDelay() === 0" (click)="playgroundShowDelay.set(0)">0ms</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundShowDelay() === 150" (click)="playgroundShowDelay.set(150)">150ms</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundShowDelay() === 300" (click)="playgroundShowDelay.set(300)">300ms</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundShowDelay() === 0"
+                    (click)="playgroundShowDelay.set(0)"
+                  >
+                    0ms
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundShowDelay() === 150"
+                    (click)="playgroundShowDelay.set(150)"
+                  >
+                    150ms
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundShowDelay() === 300"
+                    (click)="playgroundShowDelay.set(300)"
+                  >
+                    300ms
+                  </button>
                 </div>
               </div>
 
@@ -88,8 +163,24 @@
                 <label class="control-label">Opções</label>
                 <div class="checkbox-group">
                   <label class="checkbox-label">
-                    <input type="checkbox" [checked]="playgroundDisabled()" (change)="playgroundDisabled.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundDisabled()"
+                      (change)="
+                        playgroundDisabled.set($any($event.target).checked)
+                      "
+                    />
                     Desabilitado (disabled)
+                  </label>
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundFitContent()"
+                      (change)="
+                        playgroundFitContent.set($any($event.target).checked)
+                      "
+                    />
+                    Ajustar largura ao conteúdo (fitContent)
                   </label>
                 </div>
               </div>
@@ -110,54 +201,96 @@
           <!-- 4 Representações do Figma -->
           <div class="figma-tooltip-row">
             <div class="static-tooltip static-tooltip--dark">
-              <svg class="static-tooltip__arrow static-tooltip__arrow--left" viewBox="0 0 14 7" aria-hidden="true">
+              <svg
+                class="static-tooltip__arrow static-tooltip__arrow--left"
+                viewBox="0 0 14 7"
+                aria-hidden="true"
+              >
                 <path d="M0 0 L7 7 L14 0 Z" />
               </svg>
               <span>Tooltip darkmode</span>
             </div>
 
             <div class="static-tooltip static-tooltip--light">
-              <svg class="static-tooltip__arrow static-tooltip__arrow--left" viewBox="0 0 14 7" aria-hidden="true">
+              <svg
+                class="static-tooltip__arrow static-tooltip__arrow--left"
+                viewBox="0 0 14 7"
+                aria-hidden="true"
+              >
                 <path d="M0 0 L7 7 L14 0 Z" />
               </svg>
               <span>Tooltip lightmode</span>
             </div>
 
             <div class="static-tooltip static-tooltip--light">
-              <svg class="static-tooltip__arrow static-tooltip__arrow--bottom" viewBox="0 0 14 7" aria-hidden="true">
+              <svg
+                class="static-tooltip__arrow static-tooltip__arrow--bottom"
+                viewBox="0 0 14 7"
+                aria-hidden="true"
+              >
                 <path d="M0 0 L7 7 L14 0 Z" />
               </svg>
               <span>Tooltip lightmode</span>
             </div>
 
             <div class="static-tooltip static-tooltip--dark">
-              <svg class="static-tooltip__arrow static-tooltip__arrow--bottom" viewBox="0 0 14 7" aria-hidden="true">
+              <svg
+                class="static-tooltip__arrow static-tooltip__arrow--bottom"
+                viewBox="0 0 14 7"
+                aria-hidden="true"
+              >
                 <path d="M0 0 L7 7 L14 0 Z" />
               </svg>
               <span>Tooltip darkmode</span>
             </div>
           </div>
 
-          <div class="figma-block__label" style="margin-top: var(--space-4);">
+          <div class="figma-block__label" style="margin-top: var(--space-4)">
             <em>Exemplo de uso em barra de ferramentas:</em>
           </div>
 
           <!-- Toolbar com botões e Tooltip dinâmico -->
           <div class="figma-toolbar">
-            <button type="button" class="figma-toolbar__btn" [orcTooltip]="'Negrito'" [tooltipPosition]="'top'">
+            <button
+              type="button"
+              class="figma-toolbar__btn"
+              [orcTooltip]="'Negrito'"
+              [tooltipPosition]="'top'"
+            >
               <strong>B</strong>
             </button>
-            <button type="button" class="figma-toolbar__btn" [orcTooltip]="'Alinhar à esquerda'" [tooltipPosition]="'top'">
+            <button
+              type="button"
+              class="figma-toolbar__btn"
+              [orcTooltip]="'Alinhar à esquerda'"
+              [tooltipPosition]="'top'"
+            >
               ≡
             </button>
-            <button type="button" class="figma-toolbar__btn figma-toolbar__btn--active" [orcTooltip]="'Tooltip lightmode'" [tooltipTheme]="'light'" [tooltipPosition]="'right'">
+            <button
+              type="button"
+              class="figma-toolbar__btn figma-toolbar__btn--active"
+              [orcTooltip]="'Tooltip lightmode'"
+              [tooltipTheme]="'light'"
+              [tooltipPosition]="'right'"
+            >
               <u>U</u>
             </button>
-            <button type="button" class="figma-toolbar__btn" [orcTooltip]="'Itálico'" [tooltipPosition]="'top'">
+            <button
+              type="button"
+              class="figma-toolbar__btn"
+              [orcTooltip]="'Itálico'"
+              [tooltipPosition]="'top'"
+            >
               <em>I</em>
             </button>
             <div class="figma-toolbar__divider"></div>
-            <button type="button" class="figma-toolbar__btn" [orcTooltip]="'Alinhar ao centro'" [tooltipPosition]="'top'">
+            <button
+              type="button"
+              class="figma-toolbar__btn"
+              [orcTooltip]="'Alinhar ao centro'"
+              [tooltipPosition]="'top'"
+            >
               ☰
             </button>
           </div>
@@ -182,40 +315,81 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>uiTooltip</code> / <code>orcTooltip</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>uiTooltip</code> / <code>orcTooltip</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
                 <td>Texto informativo exibido dentro do tooltip.</td>
               </tr>
               <tr>
-                <td><code>tooltipPosition</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>tooltipPosition</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'top' | 'bottom' | 'left' | 'right'</code></td>
                 <td><code>'top'</code></td>
-                <td>Posição preferencial do tooltip em relação ao elemento de gatilho.</td>
+                <td>
+                  Posição preferencial do tooltip em relação ao elemento de
+                  gatilho.
+                </td>
               </tr>
               <tr>
-                <td><code>tooltipTheme</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>tooltipTheme</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'dark' | 'light'</code></td>
                 <td><code>'dark'</code></td>
-                <td>Tema visual do tooltip (darkmode com fundo preto ou lightmode com fundo cinza).</td>
+                <td>
+                  Tema visual do tooltip (darkmode com fundo preto ou lightmode
+                  com fundo cinza).
+                </td>
               </tr>
               <tr>
-                <td><code>tooltipShowDelay</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>tooltipShowDelay</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>number</code></td>
                 <td><code>150</code></td>
-                <td>Tempo de atraso em milissegundos antes de exibir o tooltip.</td>
+                <td>
+                  Tempo de atraso em milissegundos antes de exibir o tooltip.
+                </td>
               </tr>
               <tr>
-                <td><code>tooltipHideDelay</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>tooltipHideDelay</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>number</code></td>
                 <td><code>100</code></td>
-                <td>Tempo de atraso em milissegundos antes de ocultar o tooltip.</td>
+                <td>
+                  Tempo de atraso em milissegundos antes de ocultar o tooltip.
+                </td>
               </tr>
               <tr>
-                <td><code>tooltipDisabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>tooltipDisabled</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
                 <td>Desabilita a exibição do tooltip.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>fitContent</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
+                <td><code>boolean</code></td>
+                <td><code>true</code></td>
+                <td>
+                  Mantém textos curtos em uma linha; defina como
+                  <code>false</code> para permitir quebra de linha com largura
+                  máxima responsiva.
+                </td>
               </tr>
             </tbody>
           </table>

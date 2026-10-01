@@ -1,0 +1,164 @@
+
+> orc-ds-workspace@0.0.0 test:lib:ci
+> ng test orc-ds --watch=false --browsers=ChromeHeadlessCI --include=projects/orc-ds/form/form-shell-contract.spec.ts --include=projects/orc-ds/p2-layout-contract.spec.ts --include=projects/orc-ds/controls-repair.spec.ts --include=projects/orc-ds/chart-contract.spec.ts --include=projects/orc-ds/tree-component-contract.spec.ts --include=projects/orc-ds/popover/popover-behavior.spec.ts --include=projects/orc-ds/p2/inplace-behavior.spec.ts --include=projects/orc-ds/p2/terminal-behavior.spec.ts --include=projects/orc-ds/scrolltop/scroll-top.component.spec.ts --include=projects/orc-ds/p2-dom-realm-contract.spec.ts --include=projects/orc-ds/tags-input-contract.spec.ts --include=projects/orc-ds/tags-input-behavior.spec.ts --include=projects/orc-ds/otp-input/otp-input-contract.spec.ts --include=projects/orc-ds/tree-select-lifecycle-contract.spec.ts --include=projects/orc-ds/tree-select-contract.spec.ts --include=projects/orc-ds/tree-select-presentation-contract.spec.ts --include=projects/orc-ds/runtime-diagnostics.spec.ts
+
+❯ Building...
+✔ Building...
+Initial chunk files                         | Names                                    |  Raw size
+chunk-LW3JEQGG.js                           | -                                        |   2.27 MB | 
+polyfills.js                                | polyfills                                |   1.06 MB | 
+chunk-XUCBRJFL.js                           | -                                        | 210.69 kB | 
+chunk-POVZC2YC.js                           | -                                        | 191.21 kB | 
+chunk-DN3Q6IZE.js                           | -                                        | 184.43 kB | 
+spec-controls-repair.spec.js                | spec-controls-repair.spec                |  98.05 kB | 
+jasmine-cleanup-1.js                        | jasmine-cleanup-1                        |  71.38 kB | 
+chunk-7W7TU57U.js                           | -                                        |  45.53 kB | 
+chunk-YMVGVC2N.js                           | -                                        |  41.75 kB | 
+chunk-OTONLSPI.js                           | -                                        |  40.91 kB | 
+chunk-ATHU7D4J.js                           | -                                        |  35.86 kB | 
+chunk-PNDJT6GC.js                           | -                                        |  24.44 kB | 
+chunk-KTWE5J6A.js                           | -                                        |  23.47 kB | 
+test_main.js                                | test_main                                |  22.17 kB | 
+spec-tree-component-contract.spec.js        | spec-tree-component-contract.spec        |  21.23 kB | 
+chunk-2MHKYZ2C.js                           | -                                        |  20.73 kB | 
+chunk-ABTO5COO.js                           | -                                        |  19.41 kB | 
+chunk-ZGTMXKO6.js                           | -                                        |  18.75 kB | 
+spec-tree-select-contract.spec.js           | spec-tree-select-contract.spec           |  17.95 kB | 
+spec-chart-contract.spec.js                 | spec-chart-contract.spec                 |  15.55 kB | 
+chunk-PQH6TX6I.js                           | -                                        |  14.56 kB | 
+chunk-VQGSTJBG.js                           | -                                        |  12.54 kB | 
+spec-p2-inplace-behavior.spec.js            | spec-p2-inplace-behavior.spec            |  12.33 kB | 
+chunk-UIU6UBAB.js                           | -                                        |  12.11 kB | 
+spec-otp-input-otp-input-contract.spec.js   | spec-otp-input-otp-input-contract.spec   |  11.63 kB | 
+spec-tags-input-contract.spec.js            | spec-tags-input-contract.spec            |  11.23 kB | 
+spec-popover-popover-behavior.spec.js       | spec-popover-popover-behavior.spec       |  11.12 kB | 
+spec-scrolltop-scroll-top.component.spec.js | spec-scrolltop-scroll-top.component.spec |  11.06 kB | 
+spec-tags-input-behavior.spec.js            | spec-tags-input-behavior.spec            |   8.64 kB | 
+spec-p2-terminal-behavior.spec.js           | spec-p2-terminal-behavior.spec           |   4.72 kB | 
+spec-p2-layout-contract.spec.js             | spec-p2-layout-contract.spec             |   4.61 kB | 
+chunk-JKB3IFSZ.js                           | -                                        |   3.92 kB | 
+chunk-STWZ5CSQ.js                           | -                                        |   2.14 kB | 
+chunk-TUT3IZHF.js                           | -                                        |   1.61 kB | 
+spec-runtime-diagnostics.spec.js            | spec-runtime-diagnostics.spec            |   1.28 kB | 
+spec-tree-select-lifecycle-contract.spec.js | spec-tree-select-lifecycle-contract.spec |   1.18 kB | 
+jasmine-cleanup-0.js                        | jasmine-cleanup-0                        | 446 bytes | 
+
+                                            | Initial total                            |   4.55 MB
+
+Application bundle generation complete. [3.745 seconds] - 2026-09-24T02:36:14.995Z
+
+23 09 2026 23:36:15.179:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+23 09 2026 23:36:15.179:INFO [launcher]: Launching browsers ChromeHeadlessCI with concurrency unlimited
+23 09 2026 23:36:15.182:INFO [launcher]: Starting browser ChromeHeadless
+23 09 2026 23:36:15.747:INFO [Chrome Headless 153.0.0.0 (Mac OS 10.15.7)]: Connected on socket DFUVpHnlgOUzLfRLAAAB with id 7526102
+Chrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 0 of 108 SUCCESS (0 secs / 0 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 1 of 108 SUCCESS (0 secs / 0.034 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 2 of 108 SUCCESS (0 secs / 0.045 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 3 of 108 SUCCESS (0 secs / 0.048 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 4 of 108 SUCCESS (0 secs / 0.05 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 5 of 108 SUCCESS (0 secs / 0.052 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 6 of 108 SUCCESS (0 secs / 0.053 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 7 of 108 SUCCESS (0 secs / 0.054 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 8 of 108 SUCCESS (0 secs / 0.089 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 9 of 108 SUCCESS (0 secs / 0.091 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 10 of 108 SUCCESS (0 secs / 0.093 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 11 of 108 SUCCESS (0 secs / 0.096 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 12 of 108 SUCCESS (0 secs / 0.097 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 13 of 108 SUCCESS (0 secs / 0.099 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 14 of 108 SUCCESS (0 secs / 0.101 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 15 of 108 SUCCESS (0 secs / 0.102 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 16 of 108 SUCCESS (0 secs / 0.103 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 17 of 108 SUCCESS (0 secs / 0.105 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 18 of 108 SUCCESS (0 secs / 0.121 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 19 of 108 SUCCESS (0 secs / 0.123 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 20 of 108 SUCCESS (0 secs / 0.124 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 21 of 108 SUCCESS (0 secs / 0.127 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 22 of 108 SUCCESS (0 secs / 0.129 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 23 of 108 SUCCESS (0 secs / 0.132 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 24 of 108 SUCCESS (0 secs / 0.135 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 25 of 108 SUCCESS (0 secs / 0.136 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 26 of 108 SUCCESS (0 secs / 0.138 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 27 of 108 SUCCESS (0 secs / 0.143 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 28 of 108 SUCCESS (0 secs / 0.146 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 29 of 108 SUCCESS (0 secs / 0.147 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 30 of 108 SUCCESS (0 secs / 0.148 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 31 of 108 SUCCESS (0 secs / 0.15 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 32 of 108 SUCCESS (0 secs / 0.152 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 33 of 108 SUCCESS (0 secs / 0.153 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 34 of 108 SUCCESS (0 secs / 0.154 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 35 of 108 SUCCESS (0 secs / 0.155 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 36 of 108 SUCCESS (0 secs / 0.158 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 37 of 108 SUCCESS (0 secs / 0.159 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 38 of 108 SUCCESS (0 secs / 0.16 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 39 of 108 SUCCESS (0 secs / 0.16 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 40 of 108 SUCCESS (0 secs / 0.161 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 41 of 108 SUCCESS (0 secs / 0.164 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 42 of 108 SUCCESS (0 secs / 0.167 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 43 of 108 SUCCESS (0 secs / 0.169 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 44 of 108 SUCCESS (0 secs / 0.17 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 45 of 108 SUCCESS (0 secs / 0.179 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 46 of 108 SUCCESS (0 secs / 0.181 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 47 of 108 SUCCESS (0 secs / 0.184 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 48 of 108 SUCCESS (0 secs / 0.186 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 49 of 108 SUCCESS (0 secs / 0.188 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 50 of 108 SUCCESS (0 secs / 0.19 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 51 of 108 SUCCESS (0 secs / 0.191 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 52 of 108 SUCCESS (0 secs / 0.193 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 53 of 108 SUCCESS (0 secs / 0.195 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 54 of 108 SUCCESS (0 secs / 0.197 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 55 of 108 SUCCESS (0 secs / 0.205 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 56 of 108 SUCCESS (0 secs / 0.207 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 57 of 108 SUCCESS (0 secs / 0.209 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 58 of 108 SUCCESS (0 secs / 0.21 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 59 of 108 SUCCESS (0 secs / 0.211 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 60 of 108 SUCCESS (0 secs / 0.213 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 61 of 108 SUCCESS (0 secs / 0.215 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 62 of 108 SUCCESS (0 secs / 0.215 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 63 of 108 SUCCESS (0 secs / 0.215 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 64 of 108 SUCCESS (0 secs / 0.217 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 65 of 108 SUCCESS (0 secs / 0.218 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 66 of 108 SUCCESS (0 secs / 0.219 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 67 of 108 SUCCESS (0 secs / 0.22 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 68 of 108 SUCCESS (0 secs / 0.22 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 69 of 108 SUCCESS (0 secs / 0.224 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 70 of 108 SUCCESS (0 secs / 0.225 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 71 of 108 SUCCESS (0 secs / 0.226 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 72 of 108 SUCCESS (0 secs / 0.226 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 73 of 108 SUCCESS (0 secs / 0.227 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 74 of 108 SUCCESS (0 secs / 0.228 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 75 of 108 SUCCESS (0 secs / 0.23 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 76 of 108 SUCCESS (0 secs / 0.234 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 77 of 108 SUCCESS (0 secs / 0.241 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 78 of 108 SUCCESS (0 secs / 0.242 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 79 of 108 SUCCESS (0 secs / 0.243 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 80 of 108 SUCCESS (0 secs / 0.244 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 81 of 108 SUCCESS (0 secs / 0.245 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 82 of 108 SUCCESS (0 secs / 0.248 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 83 of 108 SUCCESS (0 secs / 0.249 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 84 of 108 SUCCESS (0 secs / 0.249 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 85 of 108 SUCCESS (0 secs / 0.25 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 86 of 108 SUCCESS (0 secs / 0.251 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 87 of 108 SUCCESS (0 secs / 0.252 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 88 of 108 SUCCESS (0 secs / 0.252 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 89 of 108 SUCCESS (0 secs / 0.253 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 90 of 108 SUCCESS (0 secs / 0.254 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 91 of 108 SUCCESS (0 secs / 0.255 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 92 of 108 SUCCESS (0 secs / 0.256 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 93 of 108 SUCCESS (0 secs / 0.264 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 94 of 108 SUCCESS (0 secs / 0.27 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 95 of 108 SUCCESS (0 secs / 0.271 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 96 of 108 SUCCESS (0 secs / 0.272 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 97 of 108 SUCCESS (0 secs / 0.273 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 98 of 108 SUCCESS (0 secs / 0.274 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 99 of 108 SUCCESS (0 secs / 0.274 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 100 of 108 SUCCESS (0 secs / 0.275 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 101 of 108 SUCCESS (0 secs / 0.276 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 102 of 108 SUCCESS (0 secs / 0.276 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 103 of 108 SUCCESS (0 secs / 0.276 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 104 of 108 SUCCESS (0 secs / 0.277 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 105 of 108 SUCCESS (0 secs / 0.277 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 106 of 108 SUCCESS (0 secs / 0.28 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 107 of 108 SUCCESS (0 secs / 0.28 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 108 of 108 SUCCESS (0 secs / 0.281 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 108 of 108 SUCCESS (0.32 secs / 0.281 secs)
+TOTAL: 108 SUCCESS

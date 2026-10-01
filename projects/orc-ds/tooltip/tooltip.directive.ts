@@ -11,7 +11,14 @@ import {
   Renderer2,
   booleanAttribute,
   numberAttribute,
+  effect,
+  untracked,
 } from '@angular/core';
+import {
+  overlayAttachmentTarget,
+  registerOverlay,
+} from '@ciag/orchestra/internal';
+import { DOCUMENT } from '@angular/common';
 import { TooltipComponent } from './tooltip.component';
 import { TooltipPosition, TooltipTheme } from './tooltip.types';
 
@@ -22,30 +29,48 @@ let nextUniqueId = 0;
   standalone: true,
 })
 export class TooltipDirective implements OnDestroy {
-  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly renderer = inject(Renderer2);
 
   // ── Inputs (Signals API) ──────────────────────────────────
-  readonly appTooltip = input<string | null | undefined>('', { alias: 'appTooltip' });
-  readonly uiTooltip = input<string | null | undefined>('', { alias: 'uiTooltip' });
-  readonly orcTooltip = input<string | null | undefined>('', { alias: 'orcTooltip' });
+  readonly appTooltip = input<string | null | undefined>('', {
+    alias: 'appTooltip',
+  });
+  readonly uiTooltip = input<string | null | undefined>('', {
+    alias: 'uiTooltip',
+  });
+  readonly orcTooltip = input<string | null | undefined>('', {
+    alias: 'orcTooltip',
+  });
 
   readonly tooltipPosition = input<TooltipPosition>('top');
   readonly tooltipTheme = input<TooltipTheme>('dark');
   readonly tooltipShowDelay = input<number>(150);
   readonly tooltipHideDelay = input<number>(100);
-  readonly showDelay = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
-  readonly hideDelay = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
+  readonly showDelay = input<number | undefined, unknown>(undefined, {
+    transform: numberAttribute,
+  });
+  readonly hideDelay = input<number | undefined, unknown>(undefined, {
+    transform: numberAttribute,
+  });
   readonly tooltipEvent = input<'hover' | 'focus' | 'both'>('both');
   readonly positionStyle = input<string | undefined>(undefined);
   readonly tooltipStyleClass = input<string | undefined>(undefined);
   readonly tooltipZIndex = input<string | undefined>(undefined);
   readonly escape = input(true, { transform: booleanAttribute });
-  readonly life = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
+  readonly life = input<number | undefined, unknown>(undefined, {
+    transform: numberAttribute,
+  });
   readonly fitContent = input(true, { transform: booleanAttribute });
   readonly content = input<string | undefined>(undefined);
-  readonly tooltipOptions = input<Record<string, unknown> | undefined>(undefined);
+  /**
+   * @deprecated This compatibility input is not applied. Use the individual
+   * TooltipDirective inputs to configure position, theme, delays, and state.
+   */
+  readonly tooltipOptions = input<Record<string, unknown> | undefined>(
+    undefined,
+  );
   readonly position = input<TooltipPosition | undefined>(undefined);
   readonly autoHide = input(true, { transform: booleanAttribute });
   readonly hideOnEscape = input(true, { transform: booleanAttribute });
@@ -55,39 +80,97 @@ export class TooltipDirective implements OnDestroy {
 
   // Texto efetivo do tooltip
   readonly tooltipText = computed(() => {
-    return this.content() || this.appTooltip() || this.uiTooltip() || this.orcTooltip() || '';
+    return (
+      this.content() ||
+      this.appTooltip() ||
+      this.uiTooltip() ||
+      this.orcTooltip() ||
+      ''
+    );
   });
-  readonly effectiveShowDelay = computed(() => this.showDelay() ?? this.tooltipShowDelay());
-  readonly effectiveHideDelay = computed(() => this.hideDelay() ?? this.tooltipHideDelay());
-  readonly effectivePosition = computed(() => this.position() ?? this.tooltipPosition());
+  readonly effectiveShowDelay = computed(
+    () => this.showDelay() ?? this.tooltipShowDelay(),
+  );
+  readonly effectiveHideDelay = computed(
+    () => this.hideDelay() ?? this.tooltipHideDelay(),
+  );
+  readonly effectivePosition = computed(
+    () => this.position() ?? this.tooltipPosition(),
+  );
 
   private componentRef: ComponentRef<TooltipComponent> | null = null;
   private showTimeoutId: ReturnType<typeof setTimeout> | null = null;
   private hideTimeoutId: ReturnType<typeof setTimeout> | null = null;
   private readonly tooltipId = `orc-tooltip-${++nextUniqueId}`;
-  private previousDescribedBy: string | null = null;
+  private readonly document = inject(DOCUMENT);
+  private hovered = false;
+  private focused = false;
+  private frame: number | null = null;
+  private lifetimeTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly fading = new Map<
+    ComponentRef<TooltipComponent>,
+    ReturnType<typeof setTimeout>
+  >();
+  private stopPositioning?: () => void;
+  private releaseLayer?: () => void;
+
+  /** The directive can be rendered into a same-origin iframe. */
+  private get ownerDocument(): Document {
+    return this.elementRef.nativeElement.ownerDocument ?? this.document;
+  }
+
+  constructor() {
+    effect(() => {
+      const disabled = this.tooltipDisabled();
+      const text = this.tooltipText();
+      const theme = this.tooltipTheme();
+      const position = this.effectivePosition();
+      const fitContent = this.fitContent();
+      untracked(() => {
+        if (disabled || !text) this.hideImmediately();
+        else if (this.componentRef) {
+          this.componentRef.instance.text.set(text);
+          this.componentRef.instance.theme.set(theme);
+          this.componentRef.instance.position.set(position);
+          this.componentRef.instance.fitContent.set(fitContent);
+          this.componentRef.changeDetectorRef.detectChanges();
+          this.updatePosition();
+        }
+      });
+    });
+  }
 
   @HostListener('mouseenter')
   onMouseEnter(): void {
     if (this.tooltipEvent() === 'focus') return;
+    this.hovered = true;
     this.scheduleShow();
   }
 
   @HostListener('mouseleave')
   onMouseLeave(): void {
-    if (this.tooltipEvent() === 'focus' || !this.autoHide()) return;
+    this.hovered = false;
+    if (this.tooltipEvent() === 'focus' || !this.autoHide() || this.focused)
+      return;
     this.scheduleHide();
   }
 
   @HostListener('focusin')
   onFocusIn(): void {
     if (this.tooltipEvent() === 'hover') return;
+    this.focused = true;
     this.scheduleShow();
   }
 
-  @HostListener('focusout')
-  onFocusOut(): void {
-    if (this.tooltipEvent() === 'hover') return;
+  @HostListener('focusout', ['$event'])
+  onFocusOut(event?: FocusEvent): void {
+    if (
+      event?.relatedTarget &&
+      this.elementRef.nativeElement.contains(event.relatedTarget as Node)
+    )
+      return;
+    this.focused = false;
+    if (this.tooltipEvent() === 'hover' || this.hovered) return;
     this.scheduleHide();
   }
 
@@ -101,6 +184,7 @@ export class TooltipDirective implements OnDestroy {
     if (this.tooltipDisabled() || !this.tooltipText()) return;
 
     this.clearHideTimeout();
+    this.clearShowTimeout();
     if (this.componentRef) return;
 
     const delay = this.effectiveShowDelay();
@@ -113,6 +197,7 @@ export class TooltipDirective implements OnDestroy {
 
   private scheduleHide(): void {
     this.clearShowTimeout();
+    this.clearHideTimeout();
     if (!this.componentRef) return;
 
     const delay = this.effectiveHideDelay();
@@ -124,7 +209,8 @@ export class TooltipDirective implements OnDestroy {
   }
 
   private show(): void {
-    if (this.componentRef || this.tooltipDisabled() || !this.tooltipText()) return;
+    if (this.componentRef || this.tooltipDisabled() || !this.tooltipText())
+      return;
 
     // Instancia o componente do tooltip
     this.componentRef = this.viewContainerRef.createComponent(TooltipComponent);
@@ -133,11 +219,25 @@ export class TooltipDirective implements OnDestroy {
     instance.text.set(this.tooltipText());
     instance.theme.set(this.tooltipTheme());
     instance.position.set(this.effectivePosition());
+    instance.fitContent.set(this.fitContent());
     instance.id.set(this.tooltipId);
-    instance.styleClass.set([this.styleClass(), this.tooltipStyleClass() || ''].filter(Boolean).join(' '));
+    instance.styleClass.set(
+      [this.styleClass(), this.tooltipStyleClass() || '']
+        .filter(Boolean)
+        .join(' '),
+    );
 
     const domElement = this.componentRef.location.nativeElement as HTMLElement;
-    this.renderer.appendChild(this.appendTo() === 'self' ? this.elementRef.nativeElement : document.body, domElement);
+    this.renderer.appendChild(
+      overlayAttachmentTarget(this.elementRef.nativeElement, this.appendTo()),
+      domElement,
+    );
+
+    this.releaseLayer = registerOverlay(domElement, {
+      interactive: false,
+      anchor: this.elementRef.nativeElement,
+      onParentClose: () => this.hideImmediately(),
+    });
 
     // The tooltip starts with empty signal values. Render the new inputs before
     // measuring it, otherwise positioning uses the empty shell's dimensions
@@ -146,24 +246,35 @@ export class TooltipDirective implements OnDestroy {
     this.componentRef.changeDetectorRef.detectChanges();
 
     // WCAG A11y
-    this.previousDescribedBy = this.elementRef.nativeElement.getAttribute('aria-describedby');
+    const describedBy =
+      this.elementRef.nativeElement.getAttribute('aria-describedby');
     this.renderer.setAttribute(
       this.elementRef.nativeElement,
       'aria-describedby',
-      [this.previousDescribedBy, this.tooltipId].filter(Boolean).join(' ')
+      [describedBy, this.tooltipId].filter(Boolean).join(' '),
     );
 
     // Posicionamento inteligente com verificação de colisão
     this.updatePosition();
-    if (this.tooltipZIndex()) this.renderer.setStyle(domElement, 'z-index', this.tooltipZIndex());
-    if (this.positionStyle()) this.renderer.setStyle(domElement, 'position', this.positionStyle());
+    if (this.tooltipZIndex())
+      this.renderer.setStyle(domElement, 'z-index', this.tooltipZIndex());
+    if (this.positionStyle())
+      this.renderer.setStyle(domElement, 'position', this.positionStyle());
 
     // Fade-in animado no próximo frame
-    requestAnimationFrame(() => {
+    const window = this.ownerDocument.defaultView;
+    if (!window) return;
+    this.startPositioning();
+    this.frame = window.requestAnimationFrame(() => {
+      this.frame = null;
       if (this.componentRef) {
         this.componentRef.instance.visible.set(true);
         const lifetime = this.life();
-        if (lifetime && lifetime > 0) this.hideTimeoutId = setTimeout(() => this.hideImmediately(), lifetime);
+        if (lifetime && lifetime > 0)
+          this.lifetimeTimer = setTimeout(
+            () => this.hideImmediately(),
+            lifetime,
+          );
       }
     });
   }
@@ -171,6 +282,7 @@ export class TooltipDirective implements OnDestroy {
   private hide(): void {
     if (!this.componentRef) return;
 
+    this.stopLiveResources();
     this.componentRef.instance.visible.set(false);
     const ref = this.componentRef;
     this.componentRef = null;
@@ -179,14 +291,22 @@ export class TooltipDirective implements OnDestroy {
     this.restoreDescribedBy();
 
     // Remove do DOM após a transição de fade-out
-    setTimeout(() => {
+    const timer = setTimeout(() => {
+      this.fading.delete(ref);
       ref.destroy();
     }, 150);
+    this.fading.set(ref, timer);
   }
 
   private hideImmediately(): void {
     this.clearShowTimeout();
     this.clearHideTimeout();
+    this.stopLiveResources();
+    for (const [ref, timer] of this.fading) {
+      clearTimeout(timer);
+      ref.destroy();
+    }
+    this.fading.clear();
     if (this.componentRef) {
       this.restoreDescribedBy();
       this.componentRef.destroy();
@@ -195,12 +315,37 @@ export class TooltipDirective implements OnDestroy {
   }
 
   private restoreDescribedBy(): void {
-    if (this.previousDescribedBy) {
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'aria-describedby', this.previousDescribedBy);
-    } else {
-      this.renderer.removeAttribute(this.elementRef.nativeElement, 'aria-describedby');
-    }
-    this.previousDescribedBy = null;
+    const host = this.elementRef.nativeElement;
+    const tokens = (host.getAttribute('aria-describedby') ?? '')
+      .split(/\s+/)
+      .filter((token) => token && token !== this.tooltipId);
+    if (tokens.length)
+      this.renderer.setAttribute(host, 'aria-describedby', tokens.join(' '));
+    else this.renderer.removeAttribute(host, 'aria-describedby');
+  }
+
+  private startPositioning(): void {
+    const window = this.ownerDocument.defaultView;
+    if (!window) return;
+    const update = () => this.updatePosition();
+    this.ownerDocument.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    this.stopPositioning = () => {
+      this.ownerDocument.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
+    };
+  }
+
+  private stopLiveResources(): void {
+    this.releaseLayer?.();
+    this.releaseLayer = undefined;
+    if (this.frame !== null)
+      this.ownerDocument.defaultView?.cancelAnimationFrame(this.frame);
+    this.frame = null;
+    if (this.lifetimeTimer !== null) clearTimeout(this.lifetimeTimer);
+    this.lifetimeTimer = null;
+    this.stopPositioning?.();
+    this.stopPositioning = undefined;
   }
 
   private updatePosition(): void {
@@ -218,6 +363,8 @@ export class TooltipDirective implements OnDestroy {
     const margin = 8;
     let pos = this.effectivePosition();
 
+    const window = this.ownerDocument.defaultView;
+    if (!window) return;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 

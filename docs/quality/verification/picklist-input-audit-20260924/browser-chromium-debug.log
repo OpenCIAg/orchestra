@@ -1,0 +1,66 @@
+[WebServer] (node:95991) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:95991) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:96014) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PickList draggable source {
+  draggable: true,
+  bounds: {
+    x: 35.59375,
+    y: 377.234375,
+    width: 248.8125,
+    height: 41.59375,
+    top: 377.234375,
+    right: 284.40625,
+    bottom: 418.828125,
+    left: 35.59375
+  }
+}
+PickList native drag trace [
+  'dragstart:Tree View',
+  'dragenter:Calendar',
+  'dragover:Calendar',
+  'drop:Calendar',
+  'dragend:Tree View'
+]
+  ✘  1 [chromium] › tests/browser/pick-list-interactions.spec.mjs:3:1 › PickList stacks its panes and keeps transfer controls reachable on mobile (5.8s)
+
+
+  1) [chromium] › tests/browser/pick-list-interactions.spec.mjs:3:1 › PickList stacks its panes and keeps transfer controls reachable on mobile 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('orc-pick-list .orc-pick-list').locator('.list-pane').nth(1).getByRole('option', { name: 'Data Table' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('orc-pick-list .orc-pick-list').locator('.list-pane').nth(1).getByRole('option', { name: 'Data Table' }) with timeout 5000ms
+      - waiting for locator('orc-pick-list .orc-pick-list').locator('.list-pane').nth(1).getByRole('option', { name: 'Data Table' })
+
+
+      74 |   await expect(
+      75 |     targetPane.getByRole("option", { name: "Data Table" }),
+    > 76 |   ).toBeVisible();
+         |     ^
+      77 | });
+      78 |
+        at /Users/matheuscastro/Workspaces/orc_ds/tests/browser/pick-list-interactions.spec.mjs:76:5
+
+    Error Context: test-results/pick-list-interactions-Pic-5d80c-ontrols-reachable-on-mobile-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/pick-list-interactions-Pic-5d80c-ontrols-reachable-on-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/pick-list-interactions-Pic-5d80c-ontrols-reachable-on-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/pick-list-interactions.spec.mjs:3:1 › PickList stacks its panes and keeps transfer controls reachable on mobile 

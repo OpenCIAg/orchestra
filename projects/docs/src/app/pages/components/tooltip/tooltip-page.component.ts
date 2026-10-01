@@ -31,4 +31,5 @@ export class TooltipPageComponent {
   readonly playgroundShowDelay = signal<number>(150);
   readonly playgroundHideDelay = signal<number>(100);
   readonly playgroundDisabled = signal<boolean>(false);
+  readonly playgroundFitContent = signal<boolean>(true);
 }

@@ -2,12 +2,30 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": [
-      "jasmine"
-    ]
+    "paths": {
+      "@ciag/orchestra/chart": ["../orc-ds/p2/p2-chart-editor-components.ts"],
+      "@ciag/orchestra/terminal": ["../orc-ds/p2/p2-terminal-component.ts"],
+      "@ciag/orchestra/p2": ["../orc-ds/p2/p2-doc-components.ts"],
+      "@ciag/orchestra/p2-doc-components": [
+        "../orc-ds/p2/p2-doc-components.ts"
+      ],
+      "@ciag/orchestra/p2-command-components": [
+        "../orc-ds/p2/p2-command-components.ts"
+      ],
+      "@ciag/orchestra/p2-menu-family-components": [
+        "../orc-ds/p2/p2-menu-family-components.ts"
+      ],
+      "@ciag/orchestra/empty-state": ["../orc-ds/empty-state/index.ts"],
+      "@ciag/orchestra/internal": ["../orc-ds/internal/index.ts"],
+      "@ciag/orchestra/overlay-panel": ["../orc-ds/overlay-panel/index.ts"],
+      "@ciag/orchestra/paginator": ["../orc-ds/paginator/index.ts"],
+      "@ciag/orchestra/popover": ["../orc-ds/popover/index.ts"],
+      "@ciag/orchestra/segmented-control": [
+        "../orc-ds/segmented-control/index.ts"
+      ],
+      "@ciag/orchestra/tag": ["../orc-ds/tag/index.ts"]
+    },
+    "types": ["jasmine"]
   },
-  "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

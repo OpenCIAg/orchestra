@@ -1,6 +1,6 @@
 {
   "name": "@ciag/orchestra",
-  "version": "22.1.0",
+  "version": "22.2.0",
   "description": "Enterprise Angular Component Framework and Design System",
   "keywords": [
     "angular",
@@ -53,9 +53,12 @@
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/forms": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0",
+    "@angular/router": "^22.0.0",
     "rxjs": "^7.8.0"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "dompurify": "^3.4.15"
   }
 }

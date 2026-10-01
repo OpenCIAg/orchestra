@@ -48,11 +48,11 @@
 // ── Modo Indeterminado ──────────────────────────────────────
 .orc-progress-circle--indeterminate {
   .orc-progress-circle__svg {
-    animation: orc-circle-rotate 1.6s linear infinite;
+    animation: orc-circle-rotate 2s linear infinite;
   }
 
   .orc-progress-circle__fill {
-    animation: orc-circle-dash 1.6s ease-in-out infinite;
+    animation: orc-circle-dash 2s ease-in-out infinite;
     transition: none;
   }
 }
@@ -78,6 +78,14 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .orc-progress-circle-host .orc-progress-circle__svg,
+  .orc-progress-circle-host .orc-progress-circle__fill {
+    animation: none;
+    transition: none;
+  }
+}
+
 // ── Conteúdo Centralizado (Label / Porcentagem) ──────────────
 .orc-progress-circle__content {
   position: absolute;
@@ -86,7 +94,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-family: var(--font-sans, "Poppins", sans-serif);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   color: var(--orc-font-main, #141414);

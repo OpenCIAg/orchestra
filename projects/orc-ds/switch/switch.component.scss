@@ -7,7 +7,7 @@
   align-items: flex-start;
   gap: var(--space-3, 0.75rem);
   user-select: none;
-  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-family: var(--font-sans, "Poppins", sans-serif);
   line-height: 1.428;
 
   // ── SIZES CONFIGURATION ───────────────────────────────────
@@ -68,7 +68,8 @@
     flex-shrink: 0;
 
     &:focus-visible {
-      outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      outline: 2px solid
+        var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
       outline-offset: 2px;
     }
   }
@@ -83,9 +84,10 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    transition: background-color var(--transition-base, 200ms ease),
-                border-color var(--transition-base, 200ms ease),
-                box-shadow var(--transition-base, 200ms ease);
+    transition:
+      background-color var(--transition-base, 200ms ease),
+      border-color var(--transition-base, 200ms ease),
+      box-shadow var(--transition-base, 200ms ease);
   }
 
   // ── SWITCH THUMB ──────────────────────────────────────────
@@ -98,8 +100,9 @@
     left: var(--switch-thumb-offset);
     box-shadow: var(--shadow-sm);
     transform: translateX(0);
-    transition: transform var(--transition-base, 200ms ease),
-                background-color var(--transition-base, 200ms ease);
+    transition:
+      transform var(--transition-base, 200ms ease),
+      background-color var(--transition-base, 200ms ease);
   }
 
   // ── CONTENT (LABEL & DESCRIPTIONS) ────────────────────────
@@ -114,8 +117,9 @@
     font-weight: 400;
     color: var(--orc-text, var(--orc-font-main, #141414));
     line-height: 1.428;
-    transition: color var(--transition-fast, 120ms ease),
-                font-weight var(--transition-fast, 120ms ease);
+    transition:
+      color var(--transition-fast, 120ms ease),
+      font-weight var(--transition-fast, 120ms ease);
   }
 
   &__description {
@@ -136,14 +140,20 @@
   // ── HOVER STATE ───────────────────────────────────────────
   &:hover:not(.orc-switch--disabled) {
     .orc-switch__track {
-      background-color: var(--orc-border-strong, var(--orc-secondary-bg, #bfbfbf));
+      background-color: var(
+        --orc-border-strong,
+        var(--orc-secondary-bg, #bfbfbf)
+      );
     }
   }
 
   // ── CHECKED STATE (Figma #1C6AED) ─────────────────────────
   &--checked {
     .orc-switch__track {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
 
     .orc-switch__thumb {
@@ -157,7 +167,10 @@
 
     &:hover:not(.orc-switch--disabled) {
       .orc-switch__track {
-        background-color: var(--orc-interactive-hover, #175cd3); // Darkened blue on hover
+        background-color: var(
+          --orc-interactive-hover,
+          #175cd3
+        ); // Darkened blue on hover
       }
     }
   }
@@ -189,11 +202,17 @@
     }
 
     .orc-switch__track {
-      background-color: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #ededed));
+      background-color: var(
+        --orc-surface-muted,
+        var(--orc-highlight-cinza-claro, #ededed)
+      );
     }
 
     &.orc-switch--checked .orc-switch__track {
-      background-color: var(--orc-text-secondary, var(--orc-font-secondary, #666666));
+      background-color: var(
+        --orc-text-secondary,
+        var(--orc-font-secondary, #666666)
+      );
     }
 
     .orc-switch__label,

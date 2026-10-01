@@ -1,0 +1,57 @@
+❯ Building...
+✔ Building...
+Initial chunk files               | Names                          |  Raw size
+chunk-CRNVQDUO.js                 | -                              |   2.50 MB |
+polyfills.js                      | polyfills                      |   1.06 MB |
+spec-table-table-behavior.spec.js | spec-table-table-behavior.spec | 367.58 kB |
+jasmine-cleanup-1.js              | jasmine-cleanup-1              |  71.38 kB |
+test_main.js                      | test_main                      |  22.10 kB |
+jasmine-cleanup-0.js              | jasmine-cleanup-0              | 446 bytes |
+
+                                  | Initial total                  |   4.02 MB
+
+Application bundle generation complete. [1.017 seconds] - 2026-09-23T14:30:11.460Z
+
+23 09 2026 11:30:11.543:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+23 09 2026 11:30:11.543:INFO [launcher]: Launching browsers ChromeHeadlessCI with concurrency unlimited
+23 09 2026 11:30:11.545:INFO [launcher]: Starting browser ChromeHeadless
+23 09 2026 11:30:12.013:INFO [Chrome Headless 153.0.0.0 (Mac OS 10.15.7)]: Connected on socket X7oe6Zt4ebKV4sCwAAAB with id 12832266
+Chrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 0 of 35[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 1 of 35[32m SUCCESS[39m (0 secs / 0.059 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 2 of 35[32m SUCCESS[39m (0 secs / 0.069 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 3 of 35[32m SUCCESS[39m (0 secs / 0.075 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 4 of 35[32m SUCCESS[39m (0 secs / 0.082 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 5 of 35[32m SUCCESS[39m (0 secs / 0.083 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 6 of 35[32m SUCCESS[39m (0 secs / 0.085 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 7 of 35[32m SUCCESS[39m (0 secs / 0.091 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 8 of 35[32m SUCCESS[39m (0 secs / 0.092 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 9 of 35[32m SUCCESS[39m (0 secs / 0.093 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 10 of 35[32m SUCCESS[39m (0 secs / 0.094 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 11 of 35[32m SUCCESS[39m (0 secs / 0.095 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 12 of 35[32m SUCCESS[39m (0 secs / 0.096 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 13 of 35[32m SUCCESS[39m (0 secs / 0.098 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 14 of 35[32m SUCCESS[39m (0 secs / 0.098 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 15 of 35[32m SUCCESS[39m (0 secs / 0.101 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 16 of 35[32m SUCCESS[39m (0 secs / 0.104 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 17 of 35[32m SUCCESS[39m (0 secs / 0.107 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 18 of 35[32m SUCCESS[39m (0 secs / 0.108 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 19 of 35[32m SUCCESS[39m (0 secs / 0.109 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 20 of 35[32m SUCCESS[39m (0 secs / 0.11 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 21 of 35[32m SUCCESS[39m (0 secs / 0.111 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 22 of 35[32m SUCCESS[39m (0 secs / 0.113 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 23 of 35[32m SUCCESS[39m (0 secs / 0.115 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 24 of 35[32m SUCCESS[39m (0 secs / 0.117 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 25 of 35[32m SUCCESS[39m (0 secs / 0.123 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 26 of 35[32m SUCCESS[39m (0 secs / 0.124 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 27 of 35[32m SUCCESS[39m (0 secs / 0.125 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 28 of 35[32m SUCCESS[39m (0 secs / 0.127 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 29 of 35[32m SUCCESS[39m (0 secs / 0.128 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 30 of 35[32m SUCCESS[39m (0 secs / 0.129 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 31 of 35[32m SUCCESS[39m (0 secs / 0.131 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 32 of 35[32m SUCCESS[39m (0 secs / 0.132 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 33 of 35[32m SUCCESS[39m (0 secs / 0.133 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 34 of 35[32m SUCCESS[39m (0 secs / 0.134 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 35 of 35[32m SUCCESS[39m (0 secs / 0.135 secs)
+[1A[2KChrome Headless 153.0.0.0 (Mac OS 10.15.7): Executed 35 of 35[32m SUCCESS[39m (0.145 secs / 0.135 secs)
+[32mTOTAL: 35 SUCCESS[39m
+23 09 2026 11:30:14.551:WARN [launcher]: ChromeHeadless was not killed in 2000 ms, sending SIGKILL.

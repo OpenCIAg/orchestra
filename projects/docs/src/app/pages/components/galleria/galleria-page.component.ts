@@ -1,0 +1,44 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { GalleriaComponent } from '@ciag/orchestra/p2';
+import type { GalleryImage } from '@ciag/orchestra/p2';
+import { FooterComponent } from '../../../shared/footer/footer.component';
+
+const svg = (color: string): string =>
+  `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="640" height="360"%3E%3Crect width="640" height="360" fill="${color}"/%3E%3C/svg%3E`;
+
+@Component({
+  selector: 'app-galleria-page',
+  standalone: true,
+  imports: [RouterModule, GalleriaComponent, FooterComponent],
+  templateUrl: './galleria-page.component.html',
+  styleUrl: './galleria-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class GalleriaPageComponent {
+  readonly images: GalleryImage[] = [
+    { src: svg('%231C6AED'), alt: 'Blue landscape', title: 'Blue landscape' },
+    { src: svg('%2316A34A'), alt: 'Green landscape', title: 'Green landscape' },
+    { src: svg('%23B45309'), alt: 'Amber landscape', title: 'Amber landscape' },
+  ];
+  readonly activeIndex = signal(0);
+  readonly visible = signal(true);
+  readonly fullScreen = signal(false);
+  readonly activeTitle = computed(
+    () => this.images[this.activeIndex()]?.title ?? 'No image selected',
+  );
+
+  openPreview(): void {
+    this.visible.set(true);
+    this.fullScreen.set(true);
+  }
+
+  recordImageChange(event: { index: number }): void {
+    this.activeIndex.set(event.index);
+  }
+}

@@ -10,8 +10,24 @@
   @if (loading()) {
     <span class="orc-icon-button__spinner" aria-hidden="true">
       <svg class="orc-icon-button__spinner-svg" viewBox="0 0 24 24" fill="none">
-        <circle class="orc-icon-button__spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
-        <circle class="orc-icon-button__spinner-head" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="80" stroke-dashoffset="60"></circle>
+        <circle
+          class="orc-icon-button__spinner-track"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="3"
+        ></circle>
+        <circle
+          class="orc-icon-button__spinner-head"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-dasharray="80"
+          stroke-dashoffset="60"
+        ></circle>
       </svg>
     </span>
   }
@@ -19,7 +35,10 @@
   <span class="orc-icon-button__icon-container">
     @if (safeIcon(); as iconData) {
       @if (iconData.isSvg) {
-        <span class="orc-icon-button__icon-svg-wrapper" [innerHTML]="iconData.content"></span>
+        <span
+          class="orc-icon-button__icon-svg-wrapper"
+          [innerHTML]="iconData.content"
+        ></span>
       } @else {
         <i [class]="iconData.content"></i>
       }

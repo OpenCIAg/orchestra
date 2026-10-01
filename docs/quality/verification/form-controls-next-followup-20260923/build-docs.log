@@ -1,0 +1,31 @@
+❯ Building...
+✔ Building...
+Initial chunk files   | Names                          |  Raw size | Estimated transfer size
+main-KLODMT5D.js      | main                           | 403.10 kB |               119.71 kB
+polyfills-RV3JTMEC.js | polyfills                      |  35.78 kB |                11.63 kB
+styles-6ZWX5USP.css   | styles                         |  12.87 kB |                 1.83 kB
+
+                      | Initial total                  | 451.75 kB |               133.17 kB
+
+Lazy chunk files      | Names                          |  Raw size | Estimated transfer size
+chunk-D3CpSs4n2.js    | icon-catalog-preview-component |   1.84 MB |               315.04 kB
+chunk-DHNWj6lm.js     | -                              | 473.25 kB |                54.80 kB
+chunk-B_PtyZK3.js     | component-doc-page-component   | 362.54 kB |                73.88 kB
+chunk-D49ug566.js     | table-page-component           |  70.06 kB |                16.38 kB
+chunk-D2ZXFbPz2.js    | progress-page-component        |  62.43 kB |                12.11 kB
+chunk-De1Gt6j4.js     | menu-family-preview-component  |  60.97 kB |                 9.71 kB
+chunk-DY15sDSw.js     | docs-component                 |  60.72 kB |                11.66 kB
+chunk-Bw2308hB.js     | select-page-component          |  54.37 kB |                12.43 kB
+chunk-DWmu9vqi.js     | -                              |  53.34 kB |                13.87 kB
+chunk-LhtlL7i6.js     | slider-page-component          |  51.58 kB |                11.73 kB
+chunk-GvjWCj3M2.js    | toast-page-component           |  51.31 kB |                10.95 kB
+chunk-CFwPOUPn.js     | -                              |  47.43 kB |                10.13 kB
+chunk-D7NXyaD-.js     | -                              |  46.07 kB |                11.16 kB
+chunk-C20LGW142.js    | tabs-page-component            |  44.43 kB |                 9.73 kB
+chunk-BXeQm_gX2.js    | input-page-component           |  41.14 kB |                 9.15 kB
+...and 39 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [7.202 seconds] - 2026-09-23T22:23:38.233Z
+
+Output location: /Users/matheuscastro/Workspaces/orc_ds/dist/docs
+

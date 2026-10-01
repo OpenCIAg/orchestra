@@ -1,0 +1,651 @@
+.changeset/accessibility-control-contracts.md 19ms
+.changeset/accessible-p2-states.md 2ms
+.changeset/bright-pumas-tell.md 2ms (unchanged)
+.changeset/bright-splitters-drag.md 1ms (unchanged)
+.changeset/color-picker-uploader-contracts.md 1ms
+.changeset/component-contract-quality.md 2ms
+.changeset/data-table-public-contracts.md 1ms
+.changeset/dataview-pagination-contracts.md 1ms
+.changeset/enterprise-component-contracts.md 2ms
+.changeset/enterprise-interaction-quality.md 5ms
+.changeset/form-field-contract.md 1ms
+.changeset/galleria-contract.md 1ms
+.changeset/input-audit-behavior-fixes.md 1ms (unchanged)
+.changeset/input-color-contract.md 1ms
+.changeset/input-mask-contract.md 1ms
+.changeset/layout-navigation-scroll-contracts.md 1ms
+.changeset/listbox-accessibility-contract.md 1ms
+.changeset/modal-service-lifecycle.md 1ms (unchanged)
+.changeset/multiselect-tieredmenu-contracts.md 1ms
+.changeset/native-form-validation-ui.md 1ms
+.changeset/overlay-target-contract.md 1ms
+.changeset/p2-date-input-contract.md 1ms
+.changeset/p2-menu-contract.md 1ms
+.changeset/public-binding-aliases.md 1ms (unchanged)
+.changeset/radio-contract-repair.md 1ms
+.changeset/scroll-top-live-inputs.md 1ms
+.changeset/select-filter-locale.md 1ms (unchanged)
+.changeset/select-toggle-contract.md 1ms
+.changeset/slider-contract.md 1ms
+.changeset/tab-stepper-controlled-state.md 1ms (unchanged)
+.changeset/table-csv-deep-equality.md 1ms (unchanged)
+.changeset/tags-input-suggestions.md 1ms
+.changeset/tooltip-fit-content.md 1ms (unchanged)
+.changeset/tree-hierarchy-contracts.md 1ms
+.changeset/tree-select-filter-contract.md 1ms
+.changeset/utility-directive-contracts.md 1ms
+.github/workflows/ci.yml 5ms (unchanged)
+.github/workflows/release.yml 3ms (unchanged)
+README.md 75ms (unchanged)
+angular.json 6ms
+docs/quality/audit-controls.md 23ms (unchanged)
+docs/quality/audit-display-docs.md 65ms (unchanged)
+docs/quality/audit-expansion.md 58ms (unchanged)
+docs/quality/autocomplete-followup.md 1ms (unchanged)
+docs/quality/behavior-coverage-ledger.md 88ms (unchanged)
+docs/quality/component-inventory.md 71ms (unchanged)
+docs/quality/core-ledger-revalidation.md 21ms
+docs/quality/directive-service-contract-ledger.md 21ms (unchanged)
+docs/quality/enterprise-audit.md 51ms (unchanged)
+docs/quality/image-contract-audit.md 4ms (unchanged)
+docs/quality/inventory.json 85ms
+docs/quality/library-scope-decisions.md 18ms (unchanged)
+docs/quality/navigation-state-audit.md 2ms (unchanged)
+docs/quality/next-contract-milestones.md 21ms (unchanged)
+docs/quality/public-binding-alias-audit.md 7ms
+docs/quality/table-contract-audit.md 13ms
+docs/quality/verification/action-buttons-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/autocomplete-input-audit-20260923/input-audit.md 7ms
+docs/quality/verification/browser-qa-sealed-batch.md 3ms (unchanged)
+docs/quality/verification/calendar-model-sync-followup-20260923/gate-summary.md 2ms (unchanged)
+docs/quality/verification/calendar-separation-followup-20260923/gate-summary.md 2ms (unchanged)
+docs/quality/verification/cascade-select-docs-browser-qa.md 1ms (unchanged)
+docs/quality/verification/chart-portal-followup-20260923/gate-summary.md 4ms (unchanged)
+docs/quality/verification/code-overlay-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/command-dock-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/component-input-followup-20260923/commands.json 0ms (unchanged)
+docs/quality/verification/component-input-followup-20260923/gate-summary.md 4ms
+docs/quality/verification/confirm-dialog-contract-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/confirm-popup-anchor-batch/gate-summary.md 1ms
+docs/quality/verification/confirmation-concurrency-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/data-table-input-followup-20260923/gate-summary.md 4ms
+docs/quality/verification/data-view-docs-batch/gate-summary.md 1ms
+docs/quality/verification/date-picker-contract-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/date-picker-contract-batch/input-contract.md 5ms
+docs/quality/verification/datepicker-input-audit-20260923/input-audit.md 11ms (unchanged)
+docs/quality/verification/defer-contract-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/discoverability-matrix-20260923-gate-summary.md 1ms (unchanged)
+docs/quality/verification/discoverability-matrix-20260923.md 32ms
+docs/quality/verification/drag-drop-contract-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/file-uploader-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/fileuploader-input-audit-20260923/focused-test-evidence.md 1ms (unchanged)
+docs/quality/verification/fileuploader-input-audit-20260923/input-audit.md 8ms
+docs/quality/verification/form-controls-next-followup-20260923/gate-summary.md 4ms (unchanged)
+docs/quality/verification/form-input-module-followup-20260923/gate-summary.md 4ms (unchanged)
+docs/quality/verification/galleria-docs-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/icon-catalog-deferred-20260923.md 2ms
+docs/quality/verification/image-card-slider-batch/gate-summary.md 2ms
+docs/quality/verification/image-card-slider-batch/image-browser-qa.md 3ms (unchanged)
+docs/quality/verification/image-card-slider-batch/verify-ssr-report.md 1ms
+docs/quality/verification/image-card-slider-batch/verify-ssr-result.json 30ms
+docs/quality/verification/input-color-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/input-gap-controls-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/integrated-20260923-source-freeze-10/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-11/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-12/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-13/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-14/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-15/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-16/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-17/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-18/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-19/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-20/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-21/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-22/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-23/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-24/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-25/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-26/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-27/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-28/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-29/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-30/gate-summary.md 3ms
+docs/quality/verification/integrated-20260923-source-freeze-31/gate-summary.md 5ms
+docs/quality/verification/integrated-20260923-source-freeze-4/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-5/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-6/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-7/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-8/gate-summary.md 2ms
+docs/quality/verification/integrated-20260923-source-freeze-9/gate-summary.md 3ms
+docs/quality/verification/integrated-treeselect-datepicker-final-20260923/documentation-integrity.mjs 15ms
+docs/quality/verification/integrated-treeselect-datepicker-final-20260923/gate-summary.md 3ms
+docs/quality/verification/integrated-treeselect-datepicker-followup-20260923/documentation-integrity.mjs 6ms
+docs/quality/verification/integrated-treeselect-datepicker-followup-20260923/gate-summary.md 3ms
+docs/quality/verification/layout-primitives-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/listbox-input-audit-20260923/input-audit.md 9ms
+docs/quality/verification/listbox-select-modal-followup-20260923/documentation-integrity.mjs 5ms
+docs/quality/verification/listbox-select-modal-followup-20260923/gate-summary.md 2ms
+docs/quality/verification/live-docs-browser-qa.md 2ms (unchanged)
+docs/quality/verification/mega-hover-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/menu-family-deferred-20260923.md 3ms (unchanged)
+docs/quality/verification/modal-input-audit-20260923/report.md 7ms
+docs/quality/verification/modal-service-batch/README.md 1ms (unchanged)
+docs/quality/verification/multiselect-input-audit-20260923/report.md 12ms (unchanged)
+docs/quality/verification/navigation-bindings-batch/browser-qa.md 1ms (unchanged)
+docs/quality/verification/navigation-bindings-batch/gate-plan.md 2ms (unchanged)
+docs/quality/verification/navigation-bindings-batch/gate-summary.md 3ms
+docs/quality/verification/navigation-bindings-batch/package-archive.json 1ms (unchanged)
+docs/quality/verification/navigation-bindings-batch/verify-public-binding-metadata.mjs 3ms
+docs/quality/verification/navigation-bindings-batch/verify-ssr-report.md 2ms
+docs/quality/verification/navigation-bindings-batch/verify-ssr-result.json 34ms
+docs/quality/verification/navigation-state-batch/gate-summary.md 3ms (unchanged)
+docs/quality/verification/navigation-toolbar-batch/gate-summary.md 5ms (unchanged)
+docs/quality/verification/number-input-audit-20260923/input-audit.md 9ms
+docs/quality/verification/order-list-docs-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/otp-contract-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/overlay-target-batch/README.md 1ms (unchanged)
+docs/quality/verification/p2-data-table-separation-followup-20260923/gate-summary.md 4ms (unchanged)
+docs/quality/verification/p2-date-input-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/p2-menu-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/p2-module-separation-followup-20260923/gate-summary.md 5ms
+docs/quality/verification/p2-splitter-separation-followup-20260923/documentation-integrity.mjs 10ms (unchanged)
+docs/quality/verification/p2-splitter-separation-followup-20260923/gate-summary.md 8ms
+docs/quality/verification/p2-splitter-separation-followup-20260923/modal-docs-browser-qa.md 2ms (unchanged)
+docs/quality/verification/p2-splitter-separation-followup-20260923/order-list-browser-qa.md 2ms (unchanged)
+docs/quality/verification/p2-splitter-separation-followup-20260923/pick-list-browser-qa.md 2ms (unchanged)
+docs/quality/verification/paginator-input-audit-20260923/focused-test-evidence.md 1ms (unchanged)
+docs/quality/verification/paginator-input-audit-20260923/input-audit.md 9ms
+docs/quality/verification/paginator-input-audit-20260923/tsconfig.spec.json 1ms (unchanged)
+docs/quality/verification/password-contract-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/picklist-docs-batch/browser-qa.md 3ms (unchanged)
+docs/quality/verification/picklist-docs-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/primeng-gap-controls-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/public-bindings-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/scroll-area-contract-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/select-composite-focus-followup-20260923/gate-summary.md 2ms (unchanged)
+docs/quality/verification/select-cva-blur-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/select-filter-locale-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/select-input-followup-20260923/gate-summary.md 1ms (unchanged)
+docs/quality/verification/select-input-followup-20260923/input-classification.md 2ms (unchanged)
+docs/quality/verification/select-toggle-batch/README.md 4ms (unchanged)
+docs/quality/verification/slider-contract-batch/gate-summary.md 1ms (unchanged)
+docs/quality/verification/split-button-extraction-batch/gate-summary.md 2ms
+docs/quality/verification/splitter-contract-batch/README.md 3ms (unchanged)
+docs/quality/verification/table-contract-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/tree-datatable-confirmation-followup-20260923/documentation-integrity.mjs 7ms
+docs/quality/verification/tree-datatable-confirmation-followup-20260923/gate-summary.md 4ms
+docs/quality/verification/tree-select-input-followup-20260923/gate-summary.md 4ms (unchanged)
+docs/quality/verification/tree-table-input-audit-20260923/input-audit.md 11ms
+docs/quality/verification/tree-tags-spacing-followup-20260923/gate-summary.md 4ms
+docs/quality/verification/utility-directives-batch/gate-summary.md 2ms (unchanged)
+docs/quality/verification/verify-ssr-report.md 2ms
+docs/quality/verification/verify-ssr-result.json 68ms
+image/image.component.html 18ms
+internal/overlay-attachment.spec.ts 4ms (unchanged)
+package-lock.json 26ms (unchanged)
+package.json 0ms (unchanged)
+projects/docs/public/llms.md 75ms (unchanged)
+projects/docs/src/app/app-routing.spec.ts 5ms (unchanged)
+projects/docs/src/app/app.routes.ts 6ms (unchanged)
+projects/docs/src/app/pages/components/accordion/accordion-page.component.html 20ms (unchanged)
+projects/docs/src/app/pages/components/alert/alert-page.component.html 20ms (unchanged)
+projects/docs/src/app/pages/components/badge/badge-page.component.html 23ms (unchanged)
+projects/docs/src/app/pages/components/badge/badge-page.component.ts 3ms (unchanged)
+projects/docs/src/app/pages/components/button/button-page.component.html 36ms (unchanged)
+projects/docs/src/app/pages/components/button/button-page.component.spec.ts 3ms
+projects/docs/src/app/pages/components/checkbox/checkbox-page.component.html 17ms (unchanged)
+projects/docs/src/app/pages/components/component-doc/component-doc-editor-page.component.spec.ts 3ms
+projects/docs/src/app/pages/components/component-doc/component-doc-page.component.html 99ms (unchanged)
+projects/docs/src/app/pages/components/component-doc/component-doc-page.component.scss 32ms (unchanged)
+projects/docs/src/app/pages/components/component-doc/component-doc-page.component.spec.ts 23ms
+projects/docs/src/app/pages/components/component-doc/component-doc-page.component.ts 62ms (unchanged)
+projects/docs/src/app/pages/components/component-doc/icon-catalog-preview.component.html 9ms
+projects/docs/src/app/pages/components/component-doc/icon-catalog-preview.component.scss 5ms
+projects/docs/src/app/pages/components/component-doc/icon-catalog-preview.component.ts 4ms
+projects/docs/src/app/pages/components/component-doc/menu-family-preview.component.html 6ms
+projects/docs/src/app/pages/components/component-doc/menu-family-preview.component.scss 8ms
+projects/docs/src/app/pages/components/component-doc/menu-family-preview.component.ts 4ms
+projects/docs/src/app/pages/components/file-uploader/file-uploader-page.component.html 13ms (unchanged)
+projects/docs/src/app/pages/components/file-uploader/file-uploader-page.component.spec.ts 3ms (unchanged)
+projects/docs/src/app/pages/components/file-uploader/file-uploader-page.component.ts 4ms (unchanged)
+projects/docs/src/app/pages/components/galleria/galleria-page.component.html 5ms
+projects/docs/src/app/pages/components/galleria/galleria-page.component.scss 5ms
+projects/docs/src/app/pages/components/galleria/galleria-page.component.spec.ts 3ms
+projects/docs/src/app/pages/components/galleria/galleria-page.component.ts 2ms
+projects/docs/src/app/pages/components/input/input-page.component.html 33ms (unchanged)
+projects/docs/src/app/pages/components/modal/modal-page.component.html 24ms (unchanged)
+projects/docs/src/app/pages/components/order-list/order-list-page.component.html 4ms
+projects/docs/src/app/pages/components/order-list/order-list-page.component.scss 5ms
+projects/docs/src/app/pages/components/order-list/order-list-page.component.spec.ts 4ms
+projects/docs/src/app/pages/components/order-list/order-list-page.component.ts 2ms
+projects/docs/src/app/pages/components/paginator/paginator-page.component.html 21ms (unchanged)
+projects/docs/src/app/pages/components/paginator/paginator-page.component.ts 4ms (unchanged)
+projects/docs/src/app/pages/components/pick-list/pick-list-page.component.html 6ms (unchanged)
+projects/docs/src/app/pages/components/pick-list/pick-list-page.component.scss 5ms
+projects/docs/src/app/pages/components/pick-list/pick-list-page.component.spec.ts 4ms (unchanged)
+projects/docs/src/app/pages/components/pick-list/pick-list-page.component.ts 2ms (unchanged)
+projects/docs/src/app/pages/components/progress/progress-page.component.html 52ms (unchanged)
+projects/docs/src/app/pages/components/progress/progress-page.component.spec.ts 2ms
+projects/docs/src/app/pages/components/progress/progress-page.component.ts 7ms (unchanged)
+projects/docs/src/app/pages/components/radio/radio-page.component.html 21ms (unchanged)
+projects/docs/src/app/pages/components/slider/slider-page.component.html 21ms (unchanged)
+projects/docs/src/app/pages/components/spinner/spinner-page.component.html 13ms (unchanged)
+projects/docs/src/app/pages/components/switch/switch-page.component.html 20ms (unchanged)
+projects/docs/src/app/pages/components/table/table-page.component.html 21ms (unchanged)
+projects/docs/src/app/pages/components/tabs/tabs-page.component.html 13ms (unchanged)
+projects/docs/src/app/pages/components/tooltip/tooltip-page.component.html 13ms (unchanged)
+projects/docs/src/app/pages/components/tooltip/tooltip-page.component.ts 1ms (unchanged)
+projects/docs/src/app/pages/docs/docs.component.html 30ms (unchanged)
+projects/docs/src/app/pages/docs/docs.component.ts 11ms (unchanged)
+projects/docs/src/app/pages/home/home.component.html 9ms (unchanged)
+projects/docs/src/app/pages/home/home.component.spec.ts 3ms (unchanged)
+projects/docs/src/app/pages/home/home.component.ts 4ms (unchanged)
+projects/docs/src/app/services/component-catalog.service.ts 18ms (unchanged)
+projects/docs/src/app/services/seo.service.ts 4ms (unchanged)
+projects/docs/src/app/shared/footer/footer.component.html 2ms (unchanged)
+projects/docs/src/app/shared/footer/footer.component.scss 3ms (unchanged)
+projects/docs/src/app/shared/footer/footer.component.ts 1ms (unchanged)
+projects/docs/src/index.html 2ms (unchanged)
+projects/docs/src/runtime-diagnostics.spec.ts 0ms (unchanged)
+projects/docs/tsconfig.app.json 0ms
+projects/docs/tsconfig.spec.json 0ms
+projects/orc-ds/accordion/accordion-behavior.spec.ts 8ms
+projects/orc-ds/accordion/accordion-item.component.html 5ms (unchanged)
+projects/orc-ds/accordion/accordion-item.component.scss 5ms (unchanged)
+projects/orc-ds/accordion/accordion-item.component.ts 4ms (unchanged)
+projects/orc-ds/accordion/accordion.component.html 2ms (unchanged)
+projects/orc-ds/accordion/accordion.component.ts 6ms (unchanged)
+projects/orc-ds/alert/alert-behavior.spec.ts 2ms
+projects/orc-ds/alert/alert.component.html 7ms (unchanged)
+projects/orc-ds/alert/alert.component.scss 6ms (unchanged)
+projects/orc-ds/alert/alert.component.ts 4ms (unchanged)
+projects/orc-ds/all-components-lifecycle.spec.ts 19ms
+projects/orc-ds/autocomplete/autocomplete.component.html 11ms (unchanged)
+projects/orc-ds/autocomplete/autocomplete.component.scss 5ms (unchanged)
+projects/orc-ds/autocomplete/autocomplete.component.spec.ts 26ms (unchanged)
+projects/orc-ds/autocomplete/autocomplete.component.ts 22ms (unchanged)
+projects/orc-ds/avatar/avatar-behavior.spec.ts 3ms
+projects/orc-ds/avatar/avatar-group-contract.spec.ts 4ms (unchanged)
+projects/orc-ds/avatar/avatar-group.component.html 5ms (unchanged)
+projects/orc-ds/avatar/avatar-group.component.scss 2ms (unchanged)
+projects/orc-ds/avatar/avatar-group.component.ts 2ms (unchanged)
+projects/orc-ds/avatar/avatar.component.html 7ms (unchanged)
+projects/orc-ds/avatar/avatar.component.ts 5ms (unchanged)
+projects/orc-ds/badge/badge-behavior.spec.ts 2ms
+projects/orc-ds/badge/badge.component.html 9ms (unchanged)
+projects/orc-ds/badge/badge.component.scss 10ms (unchanged)
+projects/orc-ds/badge/badge.component.ts 4ms (unchanged)
+projects/orc-ds/block-ui/index.ts 1ms (unchanged)
+projects/orc-ds/breadcrumb/breadcrumb-item.component.html 7ms (unchanged)
+projects/orc-ds/breadcrumb/breadcrumb-item.component.ts 2ms (unchanged)
+projects/orc-ds/breadcrumb/breadcrumb.component.html 9ms (unchanged)
+projects/orc-ds/breadcrumb/breadcrumb.component.scss 4ms (unchanged)
+projects/orc-ds/breadcrumb/breadcrumb.component.spec.ts 6ms (unchanged)
+projects/orc-ds/breadcrumb/breadcrumb.component.ts 4ms (unchanged)
+projects/orc-ds/button/button-behavior.spec.ts 4ms (unchanged)
+projects/orc-ds/button/button.component.html 5ms (unchanged)
+projects/orc-ds/button/button.component.scss 10ms (unchanged)
+projects/orc-ds/button/button.component.ts 5ms (unchanged)
+projects/orc-ds/button/button.types.ts 1ms (unchanged)
+projects/orc-ds/button/icon-button.component.html 2ms (unchanged)
+projects/orc-ds/button/icon-button.component.scss 8ms (unchanged)
+projects/orc-ds/button/icon-button.component.spec.ts 5ms (unchanged)
+projects/orc-ds/button/icon-button.component.ts 2ms (unchanged)
+projects/orc-ds/button/safe-icon.ts 2ms (unchanged)
+projects/orc-ds/card/card.component.html 4ms (unchanged)
+projects/orc-ds/card/card.component.scss 2ms (unchanged)
+projects/orc-ds/card/card.component.spec.ts 8ms
+projects/orc-ds/card/card.component.ts 3ms (unchanged)
+projects/orc-ds/carousel/carousel.component.html 7ms (unchanged)
+projects/orc-ds/carousel/carousel.component.spec.ts 9ms
+projects/orc-ds/carousel/carousel.component.ts 9ms (unchanged)
+projects/orc-ds/chart-contract.spec.ts 14ms (unchanged)
+projects/orc-ds/checkbox/checkbox.component.html 7ms (unchanged)
+projects/orc-ds/checkbox/checkbox.component.scss 6ms (unchanged)
+projects/orc-ds/checkbox/checkbox.component.spec.ts 6ms (unchanged)
+projects/orc-ds/checkbox/checkbox.component.ts 7ms (unchanged)
+projects/orc-ds/chip-contract.spec.ts 3ms
+projects/orc-ds/chip-input/chip-input-contract.spec.ts 7ms (unchanged)
+projects/orc-ds/chip-input/chip-input.component.ts 8ms (unchanged)
+projects/orc-ds/chip/chip.component.html 5ms (unchanged)
+projects/orc-ds/chip/chip.component.scss 3ms (unchanged)
+projects/orc-ds/chip/chip.component.ts 3ms (unchanged)
+projects/orc-ds/code-overlay-contract.spec.ts 9ms
+projects/orc-ds/collapsible/collapsible.component.html 3ms (unchanged)
+projects/orc-ds/collapsible/collapsible.component.spec.ts 8ms
+projects/orc-ds/collapsible/collapsible.component.ts 2ms (unchanged)
+projects/orc-ds/color-picker/color-picker-behavior.spec.ts 3ms
+projects/orc-ds/color-picker/color-picker.component.html 7ms (unchanged)
+projects/orc-ds/color-picker/color-picker.component.ts 8ms (unchanged)
+projects/orc-ds/command-dock-contract.spec.ts 6ms (unchanged)
+projects/orc-ds/component-aliases.spec.ts 2ms (unchanged)
+projects/orc-ds/confirm-dialog-contract.spec.ts 4ms (unchanged)
+projects/orc-ds/confirm-popup-behavior.spec.ts 6ms
+projects/orc-ds/confirmation-concurrency.spec.ts 2ms (unchanged)
+projects/orc-ds/controls-repair.spec.ts 5ms (unchanged)
+projects/orc-ds/data-view-pagination-contract.spec.ts 10ms
+projects/orc-ds/date-picker/date-picker-behavior.spec.ts 8ms (unchanged)
+projects/orc-ds/date-picker/date-picker-calendar.component.html 12ms (unchanged)
+projects/orc-ds/date-picker/date-picker-calendar.component.scss 4ms (unchanged)
+projects/orc-ds/date-picker/date-picker-calendar.component.ts 13ms
+projects/orc-ds/date-picker/date-picker-overlay.spec.ts 12ms (unchanged)
+projects/orc-ds/date-picker/date-picker.component.html 21ms (unchanged)
+projects/orc-ds/date-picker/date-picker.component.scss 9ms (unchanged)
+projects/orc-ds/date-picker/date-picker.component.spec.ts 20ms (unchanged)
+projects/orc-ds/date-picker/date-picker.component.ts 25ms (unchanged)
+projects/orc-ds/date-picker/date-value.ts 4ms (unchanged)
+projects/orc-ds/date-picker/ng-package.json 0ms (unchanged)
+projects/orc-ds/defer/defer.directive.spec.ts 6ms (unchanged)
+projects/orc-ds/defer/defer.directive.ts 2ms (unchanged)
+projects/orc-ds/divider/divider.component.html 2ms (unchanged)
+projects/orc-ds/divider/divider.component.scss 2ms (unchanged)
+projects/orc-ds/divider/divider.component.spec.ts 4ms (unchanged)
+projects/orc-ds/divider/divider.component.ts 1ms (unchanged)
+projects/orc-ds/drag-drop/drag-drop.directive.spec.ts 6ms
+projects/orc-ds/drag-drop/drag-drop.directive.ts 6ms (unchanged)
+projects/orc-ds/drawer/drawer-behavior.spec.ts 3ms (unchanged)
+projects/orc-ds/drawer/drawer-modal-isolation.spec.ts 6ms (unchanged)
+projects/orc-ds/drawer/drawer.component.html 3ms (unchanged)
+projects/orc-ds/drawer/drawer.component.scss 4ms (unchanged)
+projects/orc-ds/drawer/drawer.component.ts 4ms (unchanged)
+projects/orc-ds/dropdown/dropdown-behavior.spec.ts 3ms (unchanged)
+projects/orc-ds/dropdown/dropdown.component.html 10ms (unchanged)
+projects/orc-ds/dropdown/dropdown.component.scss 4ms (unchanged)
+projects/orc-ds/dropdown/dropdown.component.ts 11ms (unchanged)
+projects/orc-ds/editor-selection-contract.spec.ts 9ms
+projects/orc-ds/editor/index.ts 0ms (unchanged)
+projects/orc-ds/empty-state/empty-state.component.spec.ts 2ms (unchanged)
+projects/orc-ds/empty-state/empty-state.component.ts 4ms (unchanged)
+projects/orc-ds/file-uploader/file-item/file-item.component.html 7ms (unchanged)
+projects/orc-ds/file-uploader/file-item/file-item.component.scss 3ms (unchanged)
+projects/orc-ds/file-uploader/file-item/file-item.component.ts 3ms (unchanged)
+projects/orc-ds/file-uploader/file-uploader-behavior.spec.ts 18ms (unchanged)
+projects/orc-ds/file-uploader/file-uploader.component.html 10ms (unchanged)
+projects/orc-ds/file-uploader/file-uploader.component.scss 4ms (unchanged)
+projects/orc-ds/file-uploader/file-uploader.component.ts 14ms (unchanged)
+projects/orc-ds/focus-trap/focus-trap.directive.spec.ts 6ms
+projects/orc-ds/form-field/form-field.component.html 3ms (unchanged)
+projects/orc-ds/form-field/form-field.component.scss 1ms (unchanged)
+projects/orc-ds/form-field/form-field.component.ts 1ms (unchanged)
+projects/orc-ds/form-shell-contract.spec.ts 13ms (unchanged)
+projects/orc-ds/form/form.component.html 2ms (unchanged)
+projects/orc-ds/form/form.component.scss 1ms (unchanged)
+projects/orc-ds/form/form.component.ts 2ms (unchanged)
+projects/orc-ds/galleria-contract.spec.ts 8ms
+projects/orc-ds/image-compare-contract.spec.ts 2ms (unchanged)
+projects/orc-ds/image/image-behavior.spec.ts 11ms
+projects/orc-ds/image/image.component.html 9ms (unchanged)
+projects/orc-ds/image/image.component.scss 3ms (unchanged)
+projects/orc-ds/image/image.component.ts 5ms (unchanged)
+projects/orc-ds/input-mask-contract.spec.ts 10ms (unchanged)
+projects/orc-ds/input-repair.spec.ts 4ms
+projects/orc-ds/input/input.component.html 11ms (unchanged)
+projects/orc-ds/input/input.component.scss 8ms (unchanged)
+projects/orc-ds/input/input.component.ts 7ms (unchanged)
+projects/orc-ds/input/textarea.component.ts 5ms (unchanged)
+projects/orc-ds/interaction-repair.spec.ts 4ms
+projects/orc-ds/internal/anchored-popup.spec.ts 1ms (unchanged)
+projects/orc-ds/internal/anchored-popup.ts 4ms (unchanged)
+projects/orc-ds/internal/index.ts 1ms (unchanged)
+projects/orc-ds/internal/modal-isolation.spec.ts 6ms
+projects/orc-ds/internal/modal-isolation.ts 5ms (unchanged)
+projects/orc-ds/internal/ng-package.json 0ms (unchanged)
+projects/orc-ds/internal/overlay-attachment.spec.ts 1ms (unchanged)
+projects/orc-ds/internal/overlay-attachment.ts 2ms (unchanged)
+projects/orc-ds/internal/overlay-lifecycle.ts 5ms (unchanged)
+projects/orc-ds/internal/overlay-ownership.spec.ts 3ms (unchanged)
+projects/orc-ds/internal/overlay-position.ts 2ms (unchanged)
+projects/orc-ds/knob-contract.spec.ts 3ms (unchanged)
+projects/orc-ds/list/list-behavior.spec.ts 5ms
+projects/orc-ds/list/list.component.html 5ms (unchanged)
+projects/orc-ds/list/list.component.scss 2ms (unchanged)
+projects/orc-ds/list/list.component.ts 3ms (unchanged)
+projects/orc-ds/mega-hover-contract.spec.ts 7ms
+projects/orc-ds/modal/modal-keyboard-listener.spec.ts 1ms (unchanged)
+projects/orc-ds/modal/modal-lifecycle.spec.ts 4ms
+projects/orc-ds/modal/modal-popup-integration.spec.ts 7ms (unchanged)
+projects/orc-ds/modal/modal-ref.ts 2ms (unchanged)
+projects/orc-ds/modal/modal.component.html 5ms (unchanged)
+projects/orc-ds/modal/modal.component.scss 6ms (unchanged)
+projects/orc-ds/modal/modal.component.spec.ts 11ms (unchanged)
+projects/orc-ds/modal/modal.component.ts 10ms (unchanged)
+projects/orc-ds/modal/modal.service.spec.ts 17ms (unchanged)
+projects/orc-ds/modal/modal.service.ts 5ms (unchanged)
+projects/orc-ds/multi-select-contract.spec.ts 12ms (unchanged)
+projects/orc-ds/navigation-toolbar-contract.spec.ts 15ms
+projects/orc-ds/navigation/navigation-shell.component.ts 12ms (unchanged)
+projects/orc-ds/ng-package.json 0ms
+projects/orc-ds/number-input/number-input.component.html 11ms (unchanged)
+projects/orc-ds/number-input/number-input.component.scss 4ms (unchanged)
+projects/orc-ds/number-input/number-input.component.spec.ts 9ms (unchanged)
+projects/orc-ds/number-input/number-input.component.ts 9ms (unchanged)
+projects/orc-ds/order-list-contract.spec.ts 12ms (unchanged)
+projects/orc-ds/organization-chart-contract.spec.ts 6ms (unchanged)
+projects/orc-ds/otp-input/otp-input-contract.spec.ts 8ms (unchanged)
+projects/orc-ds/otp-input/otp-input.component.html 4ms (unchanged)
+projects/orc-ds/otp-input/otp-input.component.ts 7ms (unchanged)
+projects/orc-ds/otp-input/otp-slot.component.ts 3ms (unchanged)
+projects/orc-ds/otp-input/otp.types.ts 2ms (unchanged)
+projects/orc-ds/overlay-panel/index.ts 0ms (unchanged)
+projects/orc-ds/overlay-panel/ng-package.json 0ms (unchanged)
+projects/orc-ds/overlay-panel/overlay-panel-behavior.spec.ts 6ms
+projects/orc-ds/overlay-panel/overlay-panel-position.ts 0ms (unchanged)
+projects/orc-ds/overlay-panel/overlay-panel.component.html 4ms (unchanged)
+projects/orc-ds/overlay-panel/overlay-panel.component.scss 3ms (unchanged)
+projects/orc-ds/overlay-panel/overlay-panel.component.ts 11ms (unchanged)
+projects/orc-ds/overlay-target-contract.spec.ts 13ms (unchanged)
+projects/orc-ds/owner-document-hostlisteners.spec.ts 3ms
+projects/orc-ds/p2-date-input-contract.spec.ts 4ms (unchanged)
+projects/orc-ds/p2-expansion.spec.ts 67ms (unchanged)
+projects/orc-ds/p2-input-color-contract.spec.ts 4ms
+projects/orc-ds/p2-input-gap-controls-contract.spec.ts 5ms (unchanged)
+projects/orc-ds/p2-layout-contract.spec.ts 3ms (unchanged)
+projects/orc-ds/p2-layout-primitives-contract.spec.ts 5ms (unchanged)
+projects/orc-ds/p2-menu-contract.spec.ts 12ms
+projects/orc-ds/p2-overlay-action-buttons-contract.spec.ts 3ms (unchanged)
+projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts 9ms (unchanged)
+projects/orc-ds/p2-primeng-gap-layout-contract.spec.ts 8ms
+projects/orc-ds/p2-repair.spec.ts 9ms
+projects/orc-ds/p2/block-ui.spec.ts 9ms
+projects/orc-ds/p2/combobox-behavior.spec.ts 6ms (unchanged)
+projects/orc-ds/p2/data-table-behavior.spec.ts 15ms (unchanged)
+projects/orc-ds/p2/index.ts 1ms (unchanged)
+projects/orc-ds/p2/inplace-behavior.spec.ts 9ms (unchanged)
+projects/orc-ds/p2/listbox-behavior.spec.ts 9ms (unchanged)
+projects/orc-ds/p2/messages-behavior.spec.ts 5ms (unchanged)
+projects/orc-ds/p2/meter-group-contract.spec.ts 5ms
+projects/orc-ds/p2/p2-advanced-components.ts 47ms (unchanged)
+projects/orc-ds/p2/p2-advanced-contract.spec.ts 36ms
+projects/orc-ds/p2/p2-calendar-component.ts 16ms (unchanged)
+projects/orc-ds/p2/p2-cascade-select-component.ts 16ms
+projects/orc-ds/p2/p2-chart-editor-components.ts 25ms (unchanged)
+projects/orc-ds/p2/p2-combobox-component.ts 13ms (unchanged)
+projects/orc-ds/p2/p2-command-components.ts 8ms (unchanged)
+projects/orc-ds/p2/p2-confirm-popup.ts 11ms (unchanged)
+projects/orc-ds/p2/p2-data-components.ts 8ms (unchanged)
+projects/orc-ds/p2/p2-data-table-component.ts 22ms (unchanged)
+projects/orc-ds/p2/p2-data-view-component.ts 17ms
+projects/orc-ds/p2/p2-date-input-component.ts 7ms (unchanged)
+projects/orc-ds/p2/p2-date-utils.ts 1ms (unchanged)
+projects/orc-ds/p2/p2-doc-components.ts 1ms (unchanged)
+projects/orc-ds/p2/p2-dock-scroll-components.ts 8ms (unchanged)
+projects/orc-ds/p2/p2-dom-realm-contract.spec.ts 3ms
+projects/orc-ds/p2/p2-dom-target.ts 1ms (unchanged)
+projects/orc-ds/p2/p2-editor-component.ts 14ms
+projects/orc-ds/p2/p2-form-components.ts 2ms (unchanged)
+projects/orc-ds/p2/p2-form-gap-components.ts 25ms (unchanged)
+projects/orc-ds/p2/p2-galleria-component.ts 19ms (unchanged)
+projects/orc-ds/p2/p2-hierarchical-components.ts 0ms (unchanged)
+projects/orc-ds/p2/p2-image-compare-component.ts 5ms (unchanged)
+projects/orc-ds/p2/p2-input-gap-components.ts 9ms (unchanged)
+projects/orc-ds/p2/p2-input-more.ts 8ms (unchanged)
+projects/orc-ds/p2/p2-layout-components.ts 29ms (unchanged)
+projects/orc-ds/p2/p2-list-gallery-components.ts 0ms (unchanged)
+projects/orc-ds/p2/p2-listbox-component.ts 19ms (unchanged)
+projects/orc-ds/p2/p2-menu-family-components.ts 54ms
+projects/orc-ds/p2/p2-menubar-component.ts 22ms (unchanged)
+projects/orc-ds/p2/p2-message-components.ts 5ms (unchanged)
+projects/orc-ds/p2/p2-multi-select-component.ts 21ms (unchanged)
+projects/orc-ds/p2/p2-order-list-component.ts 16ms (unchanged)
+projects/orc-ds/p2/p2-org-knob-components.ts 16ms (unchanged)
+projects/orc-ds/p2/p2-overlay-components.ts 18ms (unchanged)
+projects/orc-ds/p2/p2-pick-list-component.ts 27ms (unchanged)
+projects/orc-ds/p2/p2-portal-component.ts 4ms (unchanged)
+projects/orc-ds/p2/p2-primeng-gap-components.ts 36ms (unchanged)
+projects/orc-ds/p2/p2-selection-components.ts 1ms (unchanged)
+projects/orc-ds/p2/p2-speed-dial-component.ts 12ms
+projects/orc-ds/p2/p2-split-button-component.ts 12ms
+projects/orc-ds/p2/p2-splitter-component.ts 11ms (unchanged)
+projects/orc-ds/p2/p2-tags-input-component.ts 18ms (unchanged)
+projects/orc-ds/p2/p2-terminal-component.ts 4ms (unchanged)
+projects/orc-ds/p2/p2-tree-component.html 1ms (unchanged)
+projects/orc-ds/p2/p2-tree-component.ts 10ms (unchanged)
+projects/orc-ds/p2/p2-tree-select-component.ts 33ms (unchanged)
+projects/orc-ds/p2/p2-tree-table-component.ts 32ms (unchanged)
+projects/orc-ds/p2/p2-utility-directives.ts 7ms (unchanged)
+projects/orc-ds/p2/p2-utility-more.ts 6ms (unchanged)
+projects/orc-ds/p2/p2-virtual-scroller-component.ts 6ms
+projects/orc-ds/p2/password-behavior.spec.ts 5ms
+projects/orc-ds/p2/pick-list-behavior.spec.ts 1ms (unchanged)
+projects/orc-ds/p2/terminal-behavior.spec.ts 3ms (unchanged)
+projects/orc-ds/p2/tree-filter.ts 2ms (unchanged)
+projects/orc-ds/p2/tree-select-presentation-contract.spec.ts 18ms (unchanged)
+projects/orc-ds/p2/tree-table-data-contract.spec.ts 8ms (unchanged)
+projects/orc-ds/package.json 0ms (unchanged)
+projects/orc-ds/paginator/paginator-behavior.spec.ts 18ms (unchanged)
+projects/orc-ds/paginator/paginator.component.html 13ms (unchanged)
+projects/orc-ds/paginator/paginator.component.scss 8ms (unchanged)
+projects/orc-ds/paginator/paginator.component.ts 12ms (unchanged)
+projects/orc-ds/popover/popover-behavior.spec.ts 9ms (unchanged)
+projects/orc-ds/popover/popover.component.ts 0ms (unchanged)
+projects/orc-ds/progress/progress-bar-behavior.spec.ts 4ms
+projects/orc-ds/progress/progress-bar.component.html 9ms (unchanged)
+projects/orc-ds/progress/progress-bar.component.scss 4ms (unchanged)
+projects/orc-ds/progress/progress-bar.component.ts 4ms (unchanged)
+projects/orc-ds/progress/progress-circle.component.html 6ms (unchanged)
+projects/orc-ds/progress/progress-circle.component.scss 3ms (unchanged)
+projects/orc-ds/progress/progress-circle.component.ts 4ms (unchanged)
+projects/orc-ds/progress/progress-spinner-behavior.spec.ts 1ms (unchanged)
+projects/orc-ds/progress/progress-spinner.component.ts 4ms (unchanged)
+projects/orc-ds/public-binding-behavior.spec.ts 33ms
+projects/orc-ds/radio/radio-button.component.scss 6ms (unchanged)
+projects/orc-ds/radio/radio-button.component.ts 4ms (unchanged)
+projects/orc-ds/radio/radio-contract.spec.ts 12ms
+projects/orc-ds/radio/radio-group.component.ts 4ms (unchanged)
+projects/orc-ds/radio/radio.types.ts 2ms (unchanged)
+projects/orc-ds/rating/rating-behavior.spec.ts 3ms
+projects/orc-ds/rating/rating.component.html 9ms (unchanged)
+projects/orc-ds/rating/rating.component.ts 7ms (unchanged)
+projects/orc-ds/runtime-diagnostics.spec.ts 0ms (unchanged)
+projects/orc-ds/scroll-area/scroll-area.component.html 2ms (unchanged)
+projects/orc-ds/scroll-area/scroll-area.component.scss 3ms (unchanged)
+projects/orc-ds/scroll-area/scroll-area.component.spec.ts 8ms
+projects/orc-ds/scroll-area/scroll-area.component.ts 4ms (unchanged)
+projects/orc-ds/scrolltop/scroll-top.component.spec.ts 6ms (unchanged)
+projects/orc-ds/segmented-control/segmented-control-behavior.spec.ts 3ms
+projects/orc-ds/segmented-control/segmented-control.component.html 3ms (unchanged)
+projects/orc-ds/segmented-control/segmented-control.component.scss 2ms (unchanged)
+projects/orc-ds/segmented-control/segmented-control.component.ts 4ms (unchanged)
+projects/orc-ds/select-button-behavior.spec.ts 4ms
+projects/orc-ds/select-toggle-contract.spec.ts 7ms (unchanged)
+projects/orc-ds/select/index.ts 0ms (unchanged)
+projects/orc-ds/select/option.component.html 2ms (unchanged)
+projects/orc-ds/select/option.component.scss 3ms (unchanged)
+projects/orc-ds/select/option.component.ts 3ms (unchanged)
+projects/orc-ds/select/select-input-contract.spec.ts 13ms (unchanged)
+projects/orc-ds/select/select-repair.spec.ts 16ms (unchanged)
+projects/orc-ds/select/select.component.html 18ms (unchanged)
+projects/orc-ds/select/select.component.scss 11ms (unchanged)
+projects/orc-ds/select/select.component.ts 23ms (unchanged)
+projects/orc-ds/select/select.tokens.ts 1ms (unchanged)
+projects/orc-ds/skeleton/skeleton.component.html 3ms (unchanged)
+projects/orc-ds/skeleton/skeleton.component.spec.ts 1ms (unchanged)
+projects/orc-ds/slider/slider.component.html 12ms (unchanged)
+projects/orc-ds/slider/slider.component.scss 7ms (unchanged)
+projects/orc-ds/slider/slider.component.spec.ts 5ms
+projects/orc-ds/slider/slider.component.ts 13ms (unchanged)
+projects/orc-ds/speed-dial-contract.spec.ts 8ms (unchanged)
+projects/orc-ds/spinner/spinner.component.html 5ms (unchanged)
+projects/orc-ds/spinner/spinner.component.scss 6ms (unchanged)
+projects/orc-ds/spinner/spinner.component.ts 2ms (unchanged)
+projects/orc-ds/splitter-contract.spec.ts 7ms (unchanged)
+projects/orc-ds/stepper/stepper.component.html 9ms (unchanged)
+projects/orc-ds/stepper/stepper.component.spec.ts 8ms (unchanged)
+projects/orc-ds/stepper/stepper.component.ts 6ms (unchanged)
+projects/orc-ds/styles/_component-base.scss 1ms (unchanged)
+projects/orc-ds/styles/_tokens.scss 2ms (unchanged)
+projects/orc-ds/styles/core.scss 0ms (unchanged)
+projects/orc-ds/styles/spacing-contract.spec.ts 6ms (unchanged)
+projects/orc-ds/styles/theme-contract.spec.ts 7ms (unchanged)
+projects/orc-ds/styles/themes/_dark.scss 3ms (unchanged)
+projects/orc-ds/styles/themes/_light.scss 2ms (unchanged)
+projects/orc-ds/styles/themes/_semantics.scss 2ms (unchanged)
+projects/orc-ds/switch/switch.component.html 8ms (unchanged)
+projects/orc-ds/switch/switch.component.ts 4ms (unchanged)
+projects/orc-ds/tab-menu/ng-package.json 0ms (unchanged)
+projects/orc-ds/tab-menu/tab-menu.component.spec.ts 5ms
+projects/orc-ds/tab-menu/tab-menu.component.ts 10ms (unchanged)
+projects/orc-ds/table/table-behavior.spec.ts 33ms (unchanged)
+projects/orc-ds/table/table-csv.ts 2ms (unchanged)
+projects/orc-ds/table/table-data.ts 2ms
+projects/orc-ds/table/table-selection.ts 3ms (unchanged)
+projects/orc-ds/table/table.component.html 18ms (unchanged)
+projects/orc-ds/table/table.component.scss 6ms (unchanged)
+projects/orc-ds/table/table.component.ts 25ms (unchanged)
+projects/orc-ds/tabs/tab-group.component.html 11ms (unchanged)
+projects/orc-ds/tabs/tab-group.component.scss 8ms (unchanged)
+projects/orc-ds/tabs/tab-group.component.spec.ts 16ms (unchanged)
+projects/orc-ds/tabs/tab-group.component.ts 9ms (unchanged)
+projects/orc-ds/tabs/tab.component.ts 2ms (unchanged)
+projects/orc-ds/tag/tag-behavior.spec.ts 2ms (unchanged)
+projects/orc-ds/tag/tag.component.scss 2ms (unchanged)
+projects/orc-ds/tag/tag.component.ts 4ms (unchanged)
+projects/orc-ds/tags-input-behavior.spec.ts 6ms
+projects/orc-ds/tags-input-contract.spec.ts 7ms (unchanged)
+projects/orc-ds/timeline/timeline.component.html 4ms (unchanged)
+projects/orc-ds/timeline/timeline.component.scss 5ms (unchanged)
+projects/orc-ds/timeline/timeline.component.ts 2ms (unchanged)
+projects/orc-ds/toast/toast-behavior.spec.ts 2ms (unchanged)
+projects/orc-ds/toast/toast-container.component.ts 2ms (unchanged)
+projects/orc-ds/toast/toast-service-behavior.spec.ts 3ms (unchanged)
+projects/orc-ds/toast/toast.component.html 7ms (unchanged)
+projects/orc-ds/toast/toast.component.ts 4ms (unchanged)
+projects/orc-ds/toast/toast.service.ts 5ms (unchanged)
+projects/orc-ds/toolbar/toolbar.component.ts 4ms (unchanged)
+projects/orc-ds/tooltip/tooltip-behavior.spec.ts 5ms
+projects/orc-ds/tooltip/tooltip.component.html 2ms (unchanged)
+projects/orc-ds/tooltip/tooltip.component.scss 3ms (unchanged)
+projects/orc-ds/tooltip/tooltip.component.spec.ts 1ms (unchanged)
+projects/orc-ds/tooltip/tooltip.component.ts 1ms (unchanged)
+projects/orc-ds/tooltip/tooltip.directive.ts 8ms (unchanged)
+projects/orc-ds/tooltip/tooltip.types.ts 1ms (unchanged)
+projects/orc-ds/tree-component-contract.spec.ts 14ms (unchanged)
+projects/orc-ds/tree-select-contract.spec.ts 13ms (unchanged)
+projects/orc-ds/tree-select-lifecycle-contract.spec.ts 1ms (unchanged)
+projects/orc-ds/tree-table-contract.spec.ts 13ms (unchanged)
+projects/orc-ds/tree-table/index.ts 0ms (unchanged)
+projects/orc-ds/tree-view/tree-view.component.html 6ms (unchanged)
+projects/orc-ds/tree-view/tree-view.component.scss 3ms (unchanged)
+projects/orc-ds/tree-view/tree-view.component.spec.ts 11ms (unchanged)
+projects/orc-ds/tree-view/tree-view.component.ts 11ms (unchanged)
+projects/orc-ds/typography-contract.spec.ts 2ms (unchanged)
+projects/orc-ds/utility-directives-contract.spec.ts 9ms
+projects/orc-ds/virtual-scroller-contract.spec.ts 4ms
+projects/template/src/app/pages/login/login-page.component.html 3ms (unchanged)
+tools/quality/browser-diagnostics.ts 2ms
+tools/quality/generate-lifecycle-tests.mjs 3ms
+tools/quality/inventory.mjs 9ms
+tools/quality/ssr-render-one.mjs 4ms (unchanged)
+tools/quality/ssr-worker-self-check.mjs 1ms (unchanged)
+tools/quality/test-focus-events.ts 2ms
+tools/quality/test-themes.mjs 1ms (unchanged)
+tools/quality/verify-package.mjs 5ms (unchanged)
+tools/quality/verify-ssr.mjs 8ms (unchanged)
+tools/release/verify-compatibility.mjs 2ms (unchanged)
+verification/overlay-target-batch/README.md 3ms (unchanged)
+[error] No files matching the pattern were found: "projects/orc-ds/file-uploader/file-item/file-item.component.d.ts".
+[error] No files matching the pattern were found: "projects/orc-ds/file-uploader/file-uploader.component.d.ts".
+[error] No files matching the pattern were found: "projects/orc-ds/file-uploader/file-uploader.types.d.ts".
+[error] No files matching the pattern were found: "projects/orc-ds/popover/popover.component.html".
+[error] No files matching the pattern were found: "projects/orc-ds/popover/popover.component.scss".

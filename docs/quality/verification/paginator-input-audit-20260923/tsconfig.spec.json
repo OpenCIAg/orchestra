@@ -1,0 +1,7 @@
+{
+  "extends": "../../../../projects/orc-ds/tsconfig.spec.json",
+  "include": [
+    "../../../../projects/orc-ds/paginator/paginator-behavior.spec.ts",
+    "../../../../projects/orc-ds/**/*.d.ts"
+  ]
+}

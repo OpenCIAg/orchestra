@@ -2,7 +2,7 @@
 
 This document is the machine-oriented companion to [`llms.txt`](./llms.txt). It describes the current workspace package `@ciag/orchestra` and is intentionally explicit: an agent should be able to choose a component, import it, compose it, and wire its state without guessing.
 
-> Version context: Angular 19+, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `0.1.0`.
+> Version context: Angular 19+, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `22.2.0`.
 
 ## 1. Operating rules for coding agents
 
@@ -33,7 +33,7 @@ Load the token layer before local application styles. The token layer supplies t
 
 ```scss
 /* src/styles.scss */
-@use '@ciag/orchestra/styles/index';
+@use "@ciag/orchestra/styles/index";
 
 /* local overrides belong after the library layer */
 ```
@@ -42,21 +42,21 @@ The theme follows system preference by default. A consumer may set `data-theme="
 
 Important tokens include:
 
-| Group | Tokens |
-| --- | --- |
-| Brand | `--orc-color-azul-eletrico`, `--orc-color-azul-royal`, `--orc-color-laranja`, `--orc-color-ciano`, `--orc-color-roxo-lavender`, `--orc-color-azul-navy` |
-| Surfaces | `--orc-bg`, `--orc-th`, `--orc-fill-input`, `--orc-fill-modal`, `--orc-highlight-cinza-claro`, `--orc-secondary-bg`, `--orc-border`, `--orc-opposite-bw` |
-| Text | `--orc-font-main`, `--orc-font-secondary`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-inverse` |
-| Semantics | `--color-accent`, `--color-accent-hover`, `--color-accent-fg`, `--color-success`, `--color-error`, `--color-warning`, `--color-info` |
-| Aliases | `--bg-app`, `--bg-subtle`, `--bg-muted`, `--bg-inverse`, `--border-default`, `--border-strong` |
-| Layout | `--space-1` through `--space-20`, `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-xl`, `--radius-full` |
+| Group     | Tokens                                                                                                                                                   |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Brand     | `--orc-color-azul-eletrico`, `--orc-color-azul-royal`, `--orc-color-laranja`, `--orc-color-ciano`, `--orc-color-roxo-lavender`, `--orc-color-azul-navy`  |
+| Surfaces  | `--orc-bg`, `--orc-th`, `--orc-fill-input`, `--orc-fill-modal`, `--orc-highlight-cinza-claro`, `--orc-secondary-bg`, `--orc-border`, `--orc-opposite-bw` |
+| Text      | `--orc-font-main`, `--orc-font-secondary`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-inverse`                                        |
+| Semantics | `--color-accent`, `--color-accent-hover`, `--color-accent-fg`, `--color-success`, `--color-error`, `--color-warning`, `--color-info`                     |
+| Aliases   | `--bg-app`, `--bg-subtle`, `--bg-muted`, `--bg-inverse`, `--border-default`, `--border-strong`                                                           |
+| Layout    | `--space-1` through `--space-20`, `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-xl`, `--radius-full`                                            |
 
 ### Minimal standalone component
 
 ```ts
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ButtonComponent } from '@ciag/orchestra/button';
-import { InputComponent } from '@ciag/orchestra/input';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ButtonComponent } from "@ciag/orchestra/button";
+import { InputComponent } from "@ciag/orchestra/input";
 
 @Component({
   standalone: true,
@@ -68,7 +68,7 @@ import { InputComponent } from '@ciag/orchestra/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectFormComponent {
-  readonly projectName = signal<string>('');
+  readonly projectName = signal<string>("");
 
   save(): void {
     // consume projectName() here
@@ -102,7 +102,7 @@ Boolean inputs use Angular boolean transforms. Both `[disabled]="isDisabled"` an
 - `orc-modal` supports `modal-header`, `modal-body`, and `modal-footer` attributes in projected content.
 - `orc-drawer` supports `drawer-title` and `drawer-actions` projected regions.
 - `orc-popover` uses `popover-trigger` for its trigger content.
-- `orc-form-field` wraps the actual input/control. It provides the label, helper, required, and error frame; do not put a second label around it.
+- `orc-form-field` provides a native `fieldset`/`legend` group with helper/error description. Give each projected input its own native label or accessible name; its visual `required` marker does not set native constraints.
 - `orc-input` and `orc-textarea` expose `[prefix]`/`[suffix]` slots in addition to `prefixText`/`suffixText` strings.
 - `orc-table` supports `orc-column` and the `orcCellDef` / `orcHeaderCellDef` template directives for custom cells.
 - `orc-toolbar` uses the `[orcToolbarItem]` directive on actionable children.
@@ -122,97 +122,97 @@ The library supplies semantic roles, keyboard behavior, focus-visible states, an
 
 The root public API exposes 89 secondary entry points. Alias entry points intentionally point to the canonical implementation so applications can migrate terminology without duplicating behavior.
 
-| Entry point | Primary selector(s) or export | Purpose |
-| --- | --- | --- |
-| `accordion` | `orc-accordion`, `orc-accordion-item` | Expandable content |
-| `alert` | `orc-alert` | Inline status and feedback |
-| `avatar` | `orc-avatar`, `orc-avatar-group` | Identity and presence |
-| `badge` | `orc-badge` | Compact status/count |
-| `breadcrumb` | `orc-breadcrumb`, `orc-breadcrumb-item` | Hierarchical navigation |
-| `button` | `orc-button`, `orc-icon-button` | Actions |
-| `card` | `orc-card`, `orc-card-header`, `orc-card-body`, `orc-card-footer` | Surface composition |
-| `checkbox` | `orc-checkbox` | Boolean/multi-select input |
-| `chip-input` | `orc-chip-input` | Tokenized text input |
-| `dropdown` | `orc-dropdown` | Contextual actions |
-| `file-uploader` | `orc-file-uploader`, `orc-file-item` | File selection and upload UI |
-| `input` | `orc-input`, `orc-textarea` | Text and form fields |
-| `modal` | `orc-modal` | Dialog overlay |
-| `otp-input` | `orc-otp-input`, `orc-otp-group`, `orc-otp-slot`, `orc-otp-separator` | One-time codes |
-| `paginator` | `orc-paginator` | Page navigation |
-| `progress` | `orc-progress-bar`, `orc-progress-circle` | Progress and loading |
-| `radio` | `orc-radio-group`, `orc-radio-button` | Single selection |
-| `rating` | `orc-rating` | Star/score input |
-| `select` | `orc-select`, `orc-option` | Select and option composition |
-| `skeleton` | `orc-skeleton` | Loading placeholder |
-| `slider` | `orc-slider` | Numeric/range input |
-| `spinner` | `orc-spinner` | Busy indicator |
-| `stepper` | `orc-stepper` | Sequential progress/navigation |
-| `switch` | `orc-switch` | Boolean toggle |
-| `table` | `orc-table`, `orc-column`, `[orcCellDef]`, `[orcHeaderCellDef]` | Tabular data |
-| `tabs` | `orc-tab-group`, `orc-tab` | Tab navigation |
-| `toast` | `orc-toast-container`, `orc-toast` | Notifications |
-| `tooltip` | `[orcTooltip]`, `orc-tooltip-overlay` | Short contextual help |
-| `dialog` | `DialogComponent` alias of `ModalComponent` | Modal terminology alias |
-| `menu` | `MenuComponent` | PrimeNG-style model/popup menu |
-| `pagination` | `PaginationComponent` alias of `PaginatorComponent` | Pagination terminology alias |
-| `drawer` | `orc-drawer` | Side/top/bottom panel |
-| `popover` | `orc-popover` | Contextual content |
-| `date-picker` | `orc-date-picker` | Date field with calendar popover |
-| `tree-view` | `orc-tree-view` | Expandable hierarchy |
-| `form-field` | `orc-form-field` | Label/control/help wrapper |
-| `list` | `orc-list` | Accessible list |
-| `autocomplete` | `orc-autocomplete` | Filtered option selection |
-| `carousel` | `orc-carousel` | Slides |
-| `chip` | `orc-chip` | Compact label/filter |
-| `collapsible` | `orc-collapsible` | Disclosure section |
-| `color-picker` | `orc-color-picker` | Hex/preset color selection |
-| `divider` | `orc-divider` | Visual/semantic separation |
-| `form` | `orc-form` | Native form wrapper |
-| `icon` | `orc-icon` | Named system icon |
-| `image` | `orc-image` | Image with fallback |
-| `number-input` | `orc-number-input` | Numeric field |
-| `scroll-area` | `orc-scroll-area` | Bounded scrolling |
-| `text-input` | `TextInputComponent` alias of `InputComponent` | Input terminology alias |
-| `timeline` | `orc-timeline` | Event sequence |
-| `toggle` | `ToggleComponent` alias of `SwitchComponent` | Toggle terminology alias |
-| `toolbar` | `orc-toolbar`, `[orcToolbarItem]` | Roving action group |
-| `button-group` | `orc-button-group` | Grouped actions |
-| `calendar` | `orc-calendar` | Month/date grid |
-| `code` | `orc-code` | Copyable code block |
-| `combobox` | `orc-combobox` | Generic searchable selection |
-| `file-upload` | `FileUploadComponent` alias of `FileUploaderComponent` | Upload terminology alias |
-| `grid` | `orc-grid` | Responsive columns |
-| `kbd` | `orc-kbd` | Keyboard shortcut label |
-| `link` | `orc-link` | Styled semantic link |
-| `menubar` | `orc-menubar` | Menu bar navigation |
-| `splitter` | `orc-splitter` | Resizable panels |
-| `tag` | `orc-tag` | Removable semantic tag |
-| `typography` | `orc-typography` | Typed text primitive |
-| `aspect-ratio` | `orc-aspect-ratio` | Ratio-constrained surface |
-| `container` | `orc-container` | Max-width/padding layout |
-| `floating-action-button` | `orc-floating-action-button` | Floating action |
-| `hover-card` | `orc-hover-card` | Hover/focus preview |
-| `portal` | `orc-portal` | Content target/portal primitive |
-| `segmented-control` | `orc-segmented-control` | Compact single selection |
-| `separator` | `orc-separator` | P2 separator alias |
-| `stack` | `orc-stack` | One-dimensional layout |
-| `visually-hidden` | `orc-visually-hidden` | Screen-reader-only content |
-| `box` | `orc-box` | Surface/layout primitive |
-| `close-button` | `orc-close-button` | Named close action |
-| `context-menu` | `orc-context-menu` | Right-click menu |
-| `data-table` | `orc-data-table` | Lightweight data table |
-| `date-input` | `orc-date-input` | P2 native date field |
-| `empty-state` | `orc-empty-state` | No-data message |
-| `flex` | `orc-flex` | Flex layout primitive |
-| `input-group` | `orc-input-group` | Prefix/suffix composition |
-| `listbox` | `orc-listbox` | Generic option list |
-| `multi-select` | `orc-multi-select` | Generic multiple selection |
-| `space` | `orc-space` | Explicit layout gap |
-| `speed-dial` | `orc-speed-dial` | Floating action group |
-| `tags-input` | `orc-tags-input` | P2 string tag field |
-| `text` | `orc-text` | P2 text primitive |
-| `tree-select` | `orc-tree-select` | Hierarchical selection |
-| `virtual-scroller` | `orc-virtual-scroller` | Bounded large-list viewport |
+| Entry point              | Primary selector(s) or export                                         | Purpose                          |
+| ------------------------ | --------------------------------------------------------------------- | -------------------------------- |
+| `accordion`              | `orc-accordion`, `orc-accordion-item`                                 | Expandable content               |
+| `alert`                  | `orc-alert`                                                           | Inline status and feedback       |
+| `avatar`                 | `orc-avatar`, `orc-avatar-group`                                      | Identity and presence            |
+| `badge`                  | `orc-badge`                                                           | Compact status/count             |
+| `breadcrumb`             | `orc-breadcrumb`, `orc-breadcrumb-item`                               | Hierarchical navigation          |
+| `button`                 | `orc-button`, `orc-icon-button`                                       | Actions                          |
+| `card`                   | `orc-card`, `orc-card-header`, `orc-card-body`, `orc-card-footer`     | Surface composition              |
+| `checkbox`               | `orc-checkbox`                                                        | Boolean/multi-select input       |
+| `chip-input`             | `orc-chip-input`                                                      | Tokenized text input             |
+| `dropdown`               | `orc-dropdown`                                                        | Contextual actions               |
+| `file-uploader`          | `orc-file-uploader`, `orc-file-item`                                  | File selection and upload UI     |
+| `input`                  | `orc-input`, `orc-textarea`                                           | Text and form fields             |
+| `modal`                  | `orc-modal`                                                           | Dialog overlay                   |
+| `otp-input`              | `orc-otp-input`, `orc-otp-group`, `orc-otp-slot`, `orc-otp-separator` | One-time codes                   |
+| `paginator`              | `orc-paginator`                                                       | Page navigation                  |
+| `progress`               | `orc-progress-bar`, `orc-progress-circle`                             | Progress and loading             |
+| `radio`                  | `orc-radio-group`, `orc-radio-button`                                 | Single selection                 |
+| `rating`                 | `orc-rating`                                                          | Star/score input                 |
+| `select`                 | `orc-select`, `orc-option`                                            | Select and option composition    |
+| `skeleton`               | `orc-skeleton`                                                        | Loading placeholder              |
+| `slider`                 | `orc-slider`                                                          | Numeric/range input              |
+| `spinner`                | `orc-spinner`                                                         | Busy indicator                   |
+| `stepper`                | `orc-stepper`                                                         | Sequential progress/navigation   |
+| `switch`                 | `orc-switch`                                                          | Boolean toggle                   |
+| `table`                  | `orc-table`, `orc-column`, `[orcCellDef]`, `[orcHeaderCellDef]`       | Tabular data                     |
+| `tabs`                   | `orc-tab-group`, `orc-tab`                                            | Tab navigation                   |
+| `toast`                  | `orc-toast-container`, `orc-toast`                                    | Notifications                    |
+| `tooltip`                | `[orcTooltip]`, `[appTooltip]`, `[uiTooltip]`                         | Short contextual help            |
+| `dialog`                 | `DialogComponent` alias of `ModalComponent`                           | Modal terminology alias          |
+| `menu`                   | `MenuComponent`                                                       | PrimeNG-style model/popup menu   |
+| `pagination`             | `PaginationComponent` alias of `PaginatorComponent`                   | Pagination terminology alias     |
+| `drawer`                 | `orc-drawer`                                                          | Side/top/bottom panel            |
+| `popover`                | `orc-popover`                                                         | Contextual content               |
+| `date-picker`            | `orc-date-picker`                                                     | Date field with calendar popover |
+| `tree-view`              | `orc-tree-view`                                                       | Expandable hierarchy             |
+| `form-field`             | `orc-form-field`                                                      | Label/control/help wrapper       |
+| `list`                   | `orc-list`                                                            | Accessible list                  |
+| `autocomplete`           | `orc-autocomplete`                                                    | Filtered option selection        |
+| `carousel`               | `orc-carousel`                                                        | Slides                           |
+| `chip`                   | `orc-chip`                                                            | Compact label/filter             |
+| `collapsible`            | `orc-collapsible`                                                     | Disclosure section               |
+| `color-picker`           | `orc-color-picker`                                                    | Hex/preset color selection       |
+| `divider`                | `orc-divider`                                                         | Visual/semantic separation       |
+| `form`                   | `orc-form`                                                            | Native form wrapper              |
+| `icon`                   | `orc-icon`                                                            | Named system icon                |
+| `image`                  | `orc-image`                                                           | Image with fallback              |
+| `number-input`           | `orc-number-input`                                                    | Numeric field                    |
+| `scroll-area`            | `orc-scroll-area`                                                     | Bounded scrolling                |
+| `text-input`             | `TextInputComponent` alias of `InputComponent`                        | Input terminology alias          |
+| `timeline`               | `orc-timeline`                                                        | Event sequence                   |
+| `toggle`                 | `ToggleComponent` alias of `SwitchComponent`                          | Toggle terminology alias         |
+| `toolbar`                | `orc-toolbar`, `[orcToolbarItem]`                                     | Roving action group              |
+| `button-group`           | `orc-button-group`                                                    | Grouped actions                  |
+| `calendar`               | `orc-calendar`                                                        | Month/date grid                  |
+| `code`                   | `orc-code`                                                            | Copyable code block              |
+| `combobox`               | `orc-combobox`                                                        | Generic searchable selection     |
+| `file-upload`            | `FileUploadComponent` alias of `FileUploaderComponent`                | Upload terminology alias         |
+| `grid`                   | `orc-grid`                                                            | Responsive columns               |
+| `kbd`                    | `orc-kbd`                                                             | Keyboard shortcut label          |
+| `link`                   | `orc-link`                                                            | Styled semantic link             |
+| `menubar`                | `orc-menubar`                                                         | Menu bar navigation              |
+| `splitter`               | `orc-splitter`                                                        | Resizable panels                 |
+| `tag`                    | `orc-tag`                                                             | Removable semantic tag           |
+| `typography`             | `orc-typography`                                                      | Typed text primitive             |
+| `aspect-ratio`           | `orc-aspect-ratio`                                                    | Ratio-constrained surface        |
+| `container`              | `orc-container`                                                       | Max-width/padding layout         |
+| `floating-action-button` | `orc-floating-action-button`                                          | Floating action                  |
+| `hover-card`             | `orc-hover-card`                                                      | Hover/focus preview              |
+| `portal`                 | `orc-portal`                                                          | Content target/portal primitive  |
+| `segmented-control`      | `orc-segmented-control`                                               | Compact single selection         |
+| `separator`              | `orc-separator`                                                       | P2 separator alias               |
+| `stack`                  | `orc-stack`                                                           | One-dimensional layout           |
+| `visually-hidden`        | `orc-visually-hidden`                                                 | Screen-reader-only content       |
+| `box`                    | `orc-box`                                                             | Surface/layout primitive         |
+| `close-button`           | `orc-close-button`                                                    | Named close action               |
+| `context-menu`           | `orc-context-menu`                                                    | Right-click menu                 |
+| `data-table`             | `orc-data-table`                                                      | Lightweight data table           |
+| `date-input`             | `orc-date-input`                                                      | P2 native date field             |
+| `empty-state`            | `orc-empty-state`                                                     | No-data message                  |
+| `flex`                   | `orc-flex`                                                            | Flex layout primitive            |
+| `input-group`            | `orc-input-group`                                                     | Prefix/suffix composition        |
+| `listbox`                | `orc-listbox`                                                         | Generic option list              |
+| `multi-select`           | `orc-multi-select`                                                    | Generic multiple selection       |
+| `space`                  | `orc-space`                                                           | Explicit layout gap              |
+| `speed-dial`             | `orc-speed-dial`                                                      | Floating action group            |
+| `tags-input`             | `orc-tags-input`                                                      | P2 string tag field              |
+| `text`                   | `orc-text`                                                            | P2 text primitive                |
+| `tree-select`            | `orc-tree-select`                                                     | Hierarchical selection           |
+| `virtual-scroller`       | `orc-virtual-scroller`                                                | Bounded large-list viewport      |
 
 ## 5. Detailed component reference
 
@@ -232,8 +232,7 @@ Use `orc-button` for a labeled action or navigation trigger. Use `orc-icon-butto
 - Content: button label is projected between tags. SVG strings may be passed to `iconLeft`/`iconRight`; the component sanitizes them for rendering.
 
 ```html
-<orc-button variant="primary" [loading]="saving" (click)="save()">Save</orc-button>
-<orc-icon-button icon="search" ariaLabel="Search" variant="ghost" />
+<orc-button variant="primary" [loading]="saving" (click)="save()">Save</orc-button> <orc-icon-button icon="search" ariaLabel="Search" variant="ghost" />
 ```
 
 #### `orc-alert` — `@ciag/orchestra/alert`
@@ -248,8 +247,8 @@ Compact status/count, not a replacement for a button. Inputs: `variant: soft | s
 
 - `orc-spinner` inputs: `size: sm | md | lg` (md), `customSize`, `variant: primary | secondary | neutral | white` (primary), `type: ring | star | dots` (ring), `text`, `textPosition: right | bottom` (right), `fullScreen` (false), `backdrop` (true), `ariaLabel` (`Carregando...`). Use full-screen only for an application-level blocking state.
 - `orc-skeleton` inputs: `variant: text | circular | rectangular` (text), `animation: shimmer | pulse | none` (shimmer), `width`, `height`, `borderRadius`, `ariaLabel` (`Carregando conteúdo...`). Match dimensions of the content being replaced.
-- `orc-progress-bar` inputs: `value` (0), `mode: determinate | indeterminate` (determinate), `variant: primary | neutral | success | warning | error | danger` (primary), `size: sm | md | lg | xl` (md), `label`, `showValue`, `valuePrefix`, `valueSuffix` (`%`), `rounded` (true), `segments` (0), `currentSegment` (0), `customHeight`, `customColor`, `customTrackColor`, `ariaLabel`, `ariaValueText`.
-- `orc-progress-circle` inputs: `value`, `mode`, `variant`, `size: ProgressSize | number`, `strokeWidth?`, `showValue`, `rounded`, `valuePrefix`, `valueSuffix`, `label`, `customColor`, `customTrackColor`, `ariaLabel`, `ariaValueText`. The defaults match the bar unless otherwise stated (`size=md`, value=0, determinate, rounded=true).
+- `orc-progress-bar` inputs: `value` (0), `mode: determinate | indeterminate` (determinate; indeterminate takes precedence), `variant: primary | neutral | success | warning | error | danger` (primary), `size: sm | md | lg | xl` (md; 4/8/12/16px), `label`, `showValue` (false), `unit` (`%`), `color`, `customColor`, `customTrackColor`, `styleClass`, `valueStyleClass`, `style`, `valuePrefix`, `valueSuffix` (`%`), `rounded` (true), `segments` (0; capped at 100), `currentSegment` (0; completed steps), `customHeight`, `markers`, `ariaLabel`, and `ariaValueText`. Finite values and marker positions clamp to their ranges.
+- `orc-progress-circle` has no outputs. Inputs: `value` (0; finite values clamp to 0–100), `mode: determinate | indeterminate` (determinate), `variant: primary | neutral | success | warning | error | danger` (primary), `size: sm | md | lg | xl | number` (md; preset sizes are 32/48/64/96px and numeric attributes are supported), `strokeWidth?: number | string` (proportional), `animation: spin | none` (spin), `animationDuration` (`2s`; controls indeterminate rotation and arc), `showValue` (false), `rounded` (true), `styleClass`, `style`, `fill` (`none`), `valuePrefix` (empty), `valueSuffix` (`%`), `label`, `customColor`, `customTrackColor`, `ariaLabel`, and `ariaValueText`. Indeterminate mode omits determinate range values; with `animation="none"` it shows a static partial arc. A blank `ariaLabel` uses the trimmed `label`, then `Progress`.
 - Progress variations: determinate vs indeterminate; semantic color; sm/md/lg/xl; segmented bar when `segments > 0`; custom colors only for a product-specific token not yet represented by the semantic variants.
 
 #### `orc-card` and card parts — `@ciag/orchestra/card`
@@ -276,15 +275,13 @@ Both implement `ControlValueAccessor` and expose a Signals model. Use `[(value)]
 - Variations: helper vs error (error wins), disabled vs readonly, clearable/search, masked/unmasked, prefix/suffix, character count, sm/md/lg. Do not pass `errorMessage` without `status="error"`.
 
 ```html
-<orc-input label="Email" type="email" [(value)]="email" required clearable
-  helperText="Use your work address." />
-<orc-textarea label="Description" [(value)]="description" [maxLength]="240" showCharCount />
+<orc-input label="Email" type="email" [(value)]="email" required clearable helperText="Use your work address." /> <orc-textarea label="Description" [(value)]="description" [maxLength]="240" showCharCount />
 ```
 
 #### `orc-form-field` and `orc-form` — `@ciag/orchestra/form-field`, `@ciag/orchestra/form`
 
-- `orc-form-field` inputs: `label`, `helperText`, `error`, `required`. It projects the actual control. Pass the error here when wrapping a native or third-party control so the field frame remains consistent.
-- `orc-form` inputs: `layout: 'stacked' | 'inline'` (stacked), `name`, `ariaLabel` (`Formulário`), `disabled`, `novalidate` (true). Outputs: `formSubmit: FormSubmitEvent`, `formReset: void`. It projects form controls and uses native validation when `novalidate` is false.
+- `orc-form-field` inputs: optional stable `id` base, `label`, `helperText`, `error`, `required`. It names and describes the projected group; each projected control still needs its own accessible name, and `required` is visual only. Supplying `id` makes the fieldset, legend, helper and error IDs deterministic across SSR/hydration.
+- `orc-form` inputs: `layout: 'stacked' | 'inline'` (stacked), `name`, `ariaLabel` (`Formulário`), `disabled`, `novalidate` (true). Outputs: `formSubmit: FormSubmitEvent`, `formReset: void`. Invalid submissions always emit `formSubmit` with `valid=false`; the default `novalidate=true` keeps browser validation UI closed, while false calls `reportValidity()` and shows native feedback. A `formnovalidate` submitter bypasses that feedback and still emits the current validity result. Its `submit()` method uses `requestSubmit()` and is a no-op when disabled; native `form.submit()` bypasses submit events and validation.
 
 #### `orc-checkbox`, `orc-radio-group`/`orc-radio-button`, and `orc-switch` — `@ciag/orchestra/checkbox`, `@ciag/orchestra/radio`, `@ciag/orchestra/switch`
 
@@ -296,13 +293,33 @@ Both implement `ControlValueAccessor` and expose a Signals model. Use `[(value)]
 
 #### `orc-select` and `orc-option` — `@ciag/orchestra/select`
 
-`orc-select` inputs: `id`, `name`, `placeholder` (`Selecione uma opção`), `label`, `helperText`, `errorMessage`, `status: default | error | success` (default), `multiple`, `searchable`, `searchPlaceholder` (`Buscar...`), `searchEmptyText` (`Nenhum resultado encontrado`), `disabled`, `readonly`, `required`, `clearable`, `options?: SelectOption[]`, `ariaLabel`, `ariaDescribedby`. Model: `value: any`. Outputs: `selectionChange: any`, `searchChange: string`, `opened`, `closed`, `blur`, `focus`. `SelectOption` supports `label`, `value`, optional `description`, `icon`, `avatarUrl`, `group`, and `disabled`. `orc-option` inputs: `id`, `label`, `description?`, `icon?`, `avatarUrl?`, `disabled`. Use the `options` input for data-driven lists or project `orc-option` children for composition.
+`orc-select` is a `ControlValueAccessor`. Its `value` model is a selected value in single mode and an array in `multiple` mode; the model starts as `undefined`. If `options` is `undefined`, use projected `orc-option` children; an empty `options` array selects data-driven mode. `SelectOption<T>` contains `label`, `value`, and optional `description`, `icon`, `avatarUrl`, `group`, and `disabled` fields.
+
+Supported inputs include `id`, `inputId`, `name`, `placeholder`, `label`, `helperText`, `errorMessage`, `status: default | error | success` (default `default`), `multiple` (false), `searchable` (false), `searchPlaceholder`, `searchEmptyText`, `disabled`, `readonly`, `required`, `clearable`, `options`, `optionLabel`, `optionValue`, `optionDisabled`, `filter`, `filterPlaceholder`, `filterLocale`, `filterBy`, `filterFields`, `filterMatchMode`, `emptyFilterMessage`, `emptyMessage`, `showClear`, `style`, `styleClass`, `panelStyle`, `panelStyleClass`, `appendTo`, `tabindex`, `variant: outlined | filled` (outlined), `size: small | large`, `fluid`, `loading`, `loadingIcon`, `loadingMessage`, `autofocus`, `dropdownIcon`, `lazy`, `virtualScroll`, `dataKey`, `autoZIndex`, `baseZIndex`, `focusOnHover`, `autoOptionFocus`, `maxlength`, `resetFilterOnHide`, `scrollHeight`, `ariaLabel`, `ariaLabelledBy`, `ariaFilterLabel`, `clearAriaLabel`, `removeOptionAriaLabel`, and `ariaDescribedby`. The default loading message is `Loading options`; a supplied `loadingIcon` is rendered as CSS classes. The default clear name is `Clear selection`, and each chip-removal button defaults to `Remove {option label}`.
+
+Set `filter` or `searchable` to enable the search field; when `filter` is omitted, `searchable` controls it. `filterBy` is a comma-separated list of data-option property names; `filterFields` is an array of property names. `filterLocale` is an `Intl` locale tag used for case-insensitive matching, and `filterMatchMode` defaults to `contains` and accepts `startsWith`, `endsWith`, `equals`, `notEquals`, `in`, `lt`, `lte`, or `gte` in addition. `optionLabel`, `optionValue`, and `optionDisabled` select properties from data options; `dataKey` compares selected objects by that property.
+
+The `name` input creates native hidden form fields for the selected value; multiple selection creates one field per selected option, and disabled controls submit no value. The value model emits `valueChange`; other outputs are `selectionChange`, `searchChange`, `opened`, `closed`, `focus`, `blur`, `onChange`, `onFilter`, `onShow`, `onHide`, `onClear`, `onOptionSelect`, `onOptionUnselect`, `onClick`, `onFocus`, `onBlur`, and `onLazyLoad`. `onChange` carries `{ originalEvent, value }`, `onFilter` carries `{ originalEvent, filter }`, and the option-select outputs carry `{ originalEvent, value }`. The trigger and portaled search panel form one focus boundary for CVA `updateOn: 'blur'`; internal focus changes do not mark touched or emit blur, and leaving the composite does so once. `lazy` and `virtualScroll` emit one initial `onLazyLoad` range when the panel opens; incremental loading and virtualized rendering are not implemented.
+
+Deprecated compatibility inputs with no behavior are `overlayOptions`, `autofocusFilter`, `editable`, `checkmark`, `optionGroupLabel`, `optionGroupChildren`, `autoDisplayFirst`, `group`, `virtualScrollItemSize`, `virtualScrollOptions`, `itemSize`, `selectOnFocus`, `showTransitionOptions`, `hideTransitionOptions`, `tooltip`, `tooltipPosition`, `tooltipPositionStyle`, and `tooltipStyleClass`. `orc-option` inputs are `id`, `label`, `value`, `description`, `icon`, `avatarUrl`, and `disabled`. Project plain text or presentational content inside an option; nested buttons and links have no supported listbox interaction model.
 
 #### `orc-autocomplete`, `orc-number-input`, and `orc-date-picker`
 
 - `orc-autocomplete` inputs: `id`, `name`, `label`, `placeholder` (`Comece a digitar...`), `helperText`, `errorMessage`, `options: AutocompleteOption[]`, `minChars` (0), `clearable` (true), `disabled`, `required`, `ariaLabel`. Model: `value: string | null` (null). Output: `optionSelected: AutocompleteOption`. An option contains `value`, `label`, and optional `description`/`disabled`. The emitted value is the option's value, not its visible label.
 - `orc-number-input` inputs: `id`, `name`, `label`, `placeholder`, `helperText`, `errorMessage`, `status: default | error | success` (default), `size: sm | md | lg` (md), `min?`, `max?`, `step` (1), `precision?`, `prefix`, `suffix`, `disabled`, `readonly`, `required`, `showControls` (true), `ariaLabel`. Model: `value: number | null` (null). Outputs: `valueChange`, `blur`. Values are clamped to min/max and formatted to precision for presentation.
-- `orc-date-picker` model: `value: string` (empty, ISO `yyyy-MM-dd`). Inputs include `label`, `min`, `max`, `helperText`, `error`, `required`, `disabled`, `showIcon`, `showButtonBar`, and `showClear`. It uses the Orchestra calendar in an anchored popover and is compatible with Angular forms; no native browser date picker is opened. `Today` and `Clear` are rendered in the popover footer. Pass ISO values, not localized display strings.
+- `orc-date-picker` is an Angular Forms control. Models are `value`, `viewDate: Date`, and `overlayVisible: boolean`. `dataType="string"` (default) uses strings; `dataType="date"` reads and writes `Date` objects. `selectionMode="single"` returns one value, while `multiple` and `range` return arrays. The default single-date string is ISO `yyyy-MM-dd`; with `showTime`, strings use `yyyy-MM-ddTHH:mm[:ss]`, and `timeOnly` uses `HH:mm[:ss]`. Use `dateFormat` and `locale` for input display and parsing; keep the model in the selected data type.
+
+  Inputs are `maxDateCount`, `hideOnDateTimeSelect`, `label`, `min`, `max`, `helperText`, `error`, `required`, `disabled`, `placeholder`, `dateFormat`, `selectionMode`, `showIcon`, `showButtonBar`, `showClear`, `inline`, `showTime`, `timeOnly`, `showSeconds`, `touchUI`, `showWeek`, `showOtherMonths`, `selectOtherMonths`, `readonlyInput`, `autofocus`, `hourFormat`, `firstDayOfWeek`, `numberOfMonths`, `minDate`, `maxDate`, `disabledDates`, `disabledDays`, `view`, `ariaLabel`, `ariaLabelledBy`, `name`, `inputId`, `tabindex`, `panelStyleClass`, `panelStyle`, `style`, `styleClass`, `inputStyle`, `inputStyleClass`, `dataType`, `defaultDate`, `showOnFocus`, `keepInvalid`, `appendTo`, `autoZIndex`, `baseZIndex`, `focusOnShow`, `focusTrap`, `fluid`, `variant`, `size`, `multipleSeparator`, `rangeSeparator`, `yearNavigator`, `monthNavigator`, `yearRange`, `stepHour`, `stepMinute`, `stepSecond`, `clearButtonStyleClass`, `todayButtonStyleClass`, `icon`, `iconAriaLabel`, `defaultViewDate`, `locale`, `panelAriaLabel`, `previousMonthLabel`, `nextMonthLabel`, `timePickerAriaLabel`, `previousHourLabel`, `nextHourLabel`, `previousMinuteLabel`, `nextMinuteLabel`, `previousSecondLabel`, `nextSecondLabel`, `toggleMeridiemLabel`, `todayLabel`, and `clearLabel`.
+
+  `view="date"|"month"|"year"` selects the calendar view. `monthNavigator`, `yearNavigator`, and `yearRange="start:end"` configure native month/year selectors. `variant` accepts `outlined|filled`; `size` accepts `small|large`. `Today` and `Clear` are available when the button bar is shown. The anchored popup closes on outside interaction and Escape, restores focus, and supports a bottom-sheet touch presentation. It does not open the native browser date picker. Outputs are `onFocus`, `onBlur`, `onClose`, `onSelect`, `onClear`, `onInput`, `onTodayClick`, `onClearClick`, `onShow`, `onViewDateChange`, `onMonthChange`, `onYearChange`, and `onClickOutside`.
+
+  `mask`, `iconDisplay`, `showTransitionOptions`, and `hideTransitionOptions` remain deprecated compatibility no-ops. `showIcon` renders a separate trigger button; use `dateFormat` for text parsing rather than `mask`. This is a source-backed property inventory; it does not imply that every combination of selection mode, locale, and time settings has an end-to-end test.
+
+```html
+<orc-date-picker label="Delivery date" [(value)]="deliveryDate" showIcon showButtonBar showClear required />
+
+<orc-date-picker label="Starts at" [(value)]="startsAt" dataType="date" showTime touchUI variant="filled" size="large" [stepMinute]="15" />
+```
 
 #### `orc-slider`, `orc-rating`, `orc-otp-input`, `orc-chip-input`, and file upload
 
@@ -329,10 +346,10 @@ Both implement `ControlValueAccessor` and expose a Signals model. Use `[(value)]
 
 #### `orc-modal`, `orc-drawer`, `orc-popover`, and `orc-dropdown`
 
-- `orc-modal` model: `isOpen: boolean` (false). Inputs: `size: sm | md | lg | xl | fullScreen | custom` (md), `status: neutral | danger` (neutral), `inline` (false), `closeOnBackdropClick` (true), `showCloseButton` (true), `ariaLabelledBy`, `ariaDescribedBy`, `zIndex` (1000). Output: `closed`. Escape is handled by the native dialog lifecycle; the previous active element is restored. Use `modal-header`, `modal-body`, and `modal-footer` slots.
+- `orc-modal` visibility models are `isOpen` and the PrimeNG-compatible `visible` (both default `false`; use only one for a given instance); `maximized` is also a two-way model. Inputs include `header`, `size: sm | md | lg | xl | fullScreen | custom` (md), `status: neutral | danger` (neutral), `position` (center), `modal` (true), `inline` (false), `closeOnEscape` (true), `closeOnBackdropClick` and `dismissableMask` (true), `showCloseButton` and `closable` (true), `maximizable` (false), `focusOnShow`, `focusTrap`, and `blockScroll` (true), `ariaLabel`, `ariaLabelledBy`, `ariaDescribedBy`, `role` (dialog), `id`, style/content-style inputs, and z-index inputs. Outputs are `closed`, `onShow`, `onHide`, and `onMaximize`. The native dialog's previous active element is restored on close. Use `modal-header`, `modal-body`, and `modal-footer` slots. Deprecated no-op compatibility inputs include dragging/resizing, attachment, breakpoint sizing, mask styling, custom viewport bounds, transition timing, and explicit RTL.
 - `orc-drawer` model: `open` (false). Inputs: `placement: left | right | top | bottom` (right), `label` (`Painel lateral`), `closeOnBackdrop` (true), `dismissible` (true). Output: `closed`. Use `drawer-title` and `drawer-actions` slots. A non-dismissible drawer must still expose a clear internal close action.
 - `orc-popover` model: `open` (false). Inputs: `placement: top | right | bottom | left` (bottom), `label` (`Conteúdo adicional`). Its trigger is projected with `[popover-trigger]`. It closes on Escape/outside interaction according to the implementation.
-- `orc-dropdown` inputs: `items: DropdownItem[]` (empty), `placement` (`bottom-start`); output `itemSelect: DropdownItem`. A `DropdownItem` has `label` and optional `id`, `icon`, `shortcut`, `danger`, `disabled`, `divider`, `action`, and recursive `children`. Keep the trigger a real button. `menu` is a separate PrimeNG-style model/popup menu entrypoint.
+- `orc-dropdown` inputs: `items: DropdownItem[]` (empty), `placement` (`bottom-start`); output `itemSelect: DropdownItem`. A `DropdownItem` has `label` and optional `id`, `icon`, `shortcut`, `danger`, `disabled`, `divider`, `action`, and deprecated `children`. Dropdown is a flat action menu: `children` is accepted for source compatibility but ignored, and its owning item remains actionable. Use `TieredMenuComponent` from `@ciag/orchestra/tieredmenu` for its supported submenu behavior (root items and one child level; deeper grandchildren are unsupported). Keep the trigger a real button. `menu` is a separate PrimeNG-style model/popup menu entrypoint.
 
 #### `orc-tooltip`, `orc-drawer`, and named navigation aliases
 
@@ -350,9 +367,9 @@ The tooltip API is a directive. Attach `[orcTooltip]`, `[appTooltip]`, or `[uiTo
 #### `orc-table`, `orc-data-table`, `orc-empty-state`, `orc-image`
 
 - `orc-table<T>` inputs: `data: T[]` (empty), `columnsConfig?: TableColumnConfig[]`, `rowKey` (`id`), `selectable` (false), model `selectedRows: T[]` (empty), model `sortColumn` (empty), model `sortDirection: asc | desc | none` (none), `striped` (false), `bordered` (true), `hoverable` (true), `loading` (false), `loadingRowsCount` (5), `emptyTitle` (`Nenhum dado encontrado`), `emptyMessage`, `paginated` (false), model `pageSize` (5), model `currentPage` (1), `totalItems?`, `pageSizeOptions` ([5, 10, 20, 50]). Outputs: `selectionChange: T[]`, `sortChange: TableSortEvent`, `rowClick: T`. A column config includes `key`, `header`, optional `sortable`, `width`, and `align: left | center | right`. Use `orc-column` plus the cell directives for custom templates.
-- `orc-data-table` is the P2 lightweight generic table. Inputs: `data: Record<string, unknown>[]`, `columns: DataTableColumn[]`, `rowKey` (`id`), `label` (`Data table`), `emptyText` (`No data`), `loading` (false), `selectable` (false), model `selected: Record<string, unknown>[]`. Outputs: `rowClick`, `selectionChange`, and `sortChange: { key, direction: ascending | descending }`. A data table column contains `key`, `label`, and optional `sortable`.
-- `orc-empty-state` inputs: `title` (`Nothing here yet`), `description` (`There is no content to show.`), `icon` (`∅`), `actionLabel` (empty). Output: `action: void`. Use the action only when a meaningful recovery or creation path exists.
-- `orc-image` inputs: `src`, `alt`, `fallbackSrc`, `fit: contain | cover | fill | none | scale-down` (cover), `width`, `height`, `loading: eager | lazy` (lazy), `radius: none | sm | md | lg | full` (md), `placeholder` (`Imagem indisponível`), `ariaLabel`. Outputs: `loaded: void`, `error: Event`. Always provide meaningful `alt`, or an empty alt only for decorative images.
+- `orc-data-table` is the P2 lightweight record-oriented table. Inputs: `data` (empty) or `value` (takes precedence when supplied), `columns`, `rowKey` (`id`), `dataKey`, `rows`, `totalRecords`, `lazy`, `lazyLoadOnInit`, `rowHover`, `stripedRows`, `showGridlines`, `size` (`small` or `large`), `selectionMode` (`single` or `multiple`), `styleClass`, `tableStyleClass`, `label`, `ariaLabel`, `emptyText`, `loading`, `selectable`, `filterable`, `filterPlaceholder`, `filterAriaLabel`, `selectAllAriaLabel`, `rowAriaLabel`, `loadingMessage`, `paginatorAriaLabel`, `previousPageAriaLabel`, `nextPageAriaLabel`, `paginator`, and `pageSize` (10). Models: `first` (0), `page` (0), `filter` (empty string), `sortField` (empty), `sortOrder` (0), and `selected` (empty; also exposed through `selection`). Outputs: `rowClick`, `selectionChange`, `sortChange`, `onSort`, `onPage`, `onLazyLoad`, `rowSelect`, `rowUnselect`, `onRowHover`, `onFilter`, and `onHeaderCheckboxToggle`. `sortMode="multiple"` and `metaKeySelection` are deprecated compatibility inputs; sorting is single-field and selection does not require modifier keys. A data table column contains `key`, `header`, and optional `sortable`.
+- `orc-empty-state` inputs: optional `title` and `description` (both omitted by default), `icon` (`∅`), `actionLabel` (empty), `ariaLabel`, and `actionAriaLabel`. The region name uses `ariaLabel`, then the trimmed title, then `Empty state`; blank titles/descriptions are omitted and a blank icon falls back to `∅`. Output: `action: void`. Use the action only when a meaningful recovery or creation path exists.
+- `orc-image` inputs: `src`, responsive `srcSet`/`sizes`, `alt`, `fallbackSrc`, `fit: contain | cover | fill | none | scale-down` (cover), `width`/`height` (empty; numeric values use px), `loading: eager | lazy` (lazy), `radius: none | sm | md | lg | full` (md), optional `placeholder` (undefined), `ariaLabel`, `preview` (false), `previewImageSrc`/`previewImageSrcSet`/`previewImageSizes`, `zoomOutAriaLabel`, `zoomInAriaLabel`, `rotateLeftAriaLabel`, `rotateRightAriaLabel`, `closePreviewAriaLabel`, `styleClass`, `imageClass`, and `imageStyle`. Outputs: `loaded: void`, `error: Event`, compatibility alias `onImageError: Event`, `onShow: void`, and `onHide: void`. Preview uses a named modal with zoom/rotation controls, focus containment, and focus restoration. Always provide meaningful `alt`, or an empty alt only for decorative images. `appendTo`, `showTransitionOptions`, and `hideTransitionOptions` are deprecated compatibility inputs with no effect.
 
 #### `orc-icon`, `orc-code`, `orc-kbd`, and `orc-badge`
 
@@ -416,17 +433,17 @@ export interface P2Option<T = string> {
 - `orc-calendar` — models `value` (empty) and `currentMonth` (current `yyyy-MM` month); inputs `min`, `max`, `disabled` (false), `ariaLabel` (`Calendar`); output `dateSelected: string`. Dates are ISO strings.
 - `orc-date-input` — model `value` (empty); inputs `label`, `name`, `min`, `max`, `helperText`, `error`, `required`, `disabled`, `readonly`. It implements `ControlValueAccessor`.
 - `orc-input-group` — inputs `label`, `prefix`, `suffix`; project the control in the group body.
-- `orc-listbox<T>` — inputs `options: P2Option<T>[]`, model `value: T | T[] | null`, `multiple` (false), `label`, `ariaLabel` (`Listbox`), `emptyText` (`No options`); output `optionSelected: P2Option<T>`.
+- `orc-listbox<T>` — inputs `options: P2Option<T>[]`, model `value: T | T[] | null`, `multiple` (false), `label`, `ariaLabel` (falls back to the visible label or `Listbox`), `ariaLabelledBy`, per-instance `id`, `filter`, `filterValue`, `filterPlaceholder`, `ariaFilterLabel` (defaults to `Filter options`), `emptyText`, `emptyFilterMessage`, `optionLabel`, `optionValue`, `optionDisabled`, `filterBy`, `filterFields`, `filterMatchMode`, `filterLocale`, `scrollHeight`, `disabled`, `readonly`, `tabindex`, `focusOnHover`, `style`, `styleClass`, `listStyle`, and `listStyleClass`; outputs include `optionSelected`, `onChange`, `onClick`, `onDblClick`, `onFilter`, `onFocus`, and `onBlur`. Compatibility no-ops `selectOnFocus`, `autoOptionFocus`, `searchMessage`, `selectionMessage`, `striped`, `checkbox`, `checkmark`, `highlightOnSelect`, `showToggleAll`, `group`, `lazy`, `virtualScroll`, `virtualScrollItemSize`, `virtualScrollOptions`, `optionGroupLabel`, `optionGroupChildren`, `onSelectAllChange`, `onLazyLoad`, and `onDrop` are deprecated and do not provide those features.
 - `orc-multi-select<T>` — inputs `options: P2Option<T>[]`, model `value: T[]` (empty), `label`, `placeholder` (`Select options`), `emptyText` (`No options`), `disabled`; model `open` (false); output `optionSelected: P2Option<T>`.
-- `orc-tags-input` — model `value: string[]` (empty); inputs `label`, `placeholder` (`Add a tag…`), `helperText`, `suggestions`, `maxTags?`, `disabled`; outputs `tagAdded: string`, `tagRemoved: string`. It implements `ControlValueAccessor`.
+- `orc-tags-input` — model `value: string[]` (empty); inputs `label`, `placeholder` (`Add a tag…`), `helperText`, `suggestions`, `maxTags?`/`max?` (collection limit), `maxLength?` (maximum draft/tag length), `disabled`, `allowDuplicate`, `caseSensitiveDuplication`, `addOnTab`, `addOnBlur`, `separator?: string | RegExp`, `showClear`, `removeAriaLabel`, `clearAriaLabel`, `inputId`, `ariaLabel`, `style`, and `styleClass`; outputs `tagAdded: string`, `tagRemoved: string`, `onAdd`, `onRemove`, `onFocus`, `onBlur`, `onChipClick`, and `onClear`. Enter adds a tag by default; `separator` adds configured string or regular-expression key separators. It implements `ControlValueAccessor`.
 - `orc-segmented-control<T>` — inputs `options: P2Option<T>[]`, model `value: T | null` (null), `label` (`Options`), `disabled`; output `valueChangeEvent: T`. Use when the set is short and mutually exclusive.
-- `orc-tree-select` — inputs `nodes: TreeSelectNode[]`, model `value: string | null`, `label`, `placeholder` (`Select an item`), `disabled`; model `open` (false); output `nodeSelect: TreeSelectNode`. `TreeSelectNode` extends `P2Option<string>` with optional `children: TreeSelectNode[]`.
+- `orc-tree-select` — inputs `nodes: TreeSelectNode[]`, `label`, `placeholder`, `disabled`, `readonly`, `inputId`, `ariaLabel`, `ariaLabelledBy`, `tabindex`, `fluid`, `variant` (`outlined` or `filled`), `size` (`small` or `large`), `style`, `styleClass`, `panelStyle`, `panelStyleClass`, `panelClass` (both panel classes are applied), `scrollHeight`, `filter`, `filterBy`, `filterMode`, `filterLocale`, `filterPlaceholder`, `filterAriaLabel`, `clearAriaLabel`, `expandAriaLabel`, `collapseAriaLabel`, `showClear`, `resetFilterOnHide`, `propagateSelectionDown`, `propagateSelectionUp`, `loading`, `emptyMessage`, and `selectionMode` (`single`, `multiple`, or `checkbox`). Multiple mode toggles selected nodes independently; checkbox mode applies the configurable parent/child propagation rules. Models: `value: string | string[] | null`, `open` (false), and `filterValue` (empty string). A filter with no nonblank `filterAriaLabel` uses the accessible name `Filter options`; whitespace-only trigger/action labels fall back to visible text or a useful default. Outputs: `nodeSelect`, `nodeUnselect`, `onChange`, `onShow`, `onHide`, `onClear`, `onFilter`, `onFocus`, `onBlur`, `onNodeExpand`, and `onNodeCollapse`. The compatibility inputs `display`, `appendTo`, `overlayOptions`, `filterInputAutoFocus`, `virtualScroll`, `virtualScrollItemSize`, `virtualScrollOptions`, `autofocus`, and `metaKeySelection` are deprecated no-ops. `TreeSelectNode` extends `P2Option<string>` with optional `children: TreeSelectNode[]`.
 
 #### Data, code, and collection components
 
 - `orc-code` — inputs `code`, `language` (`text`), `copyLabel` (`Copy`), `copiedLabel` (`Copied`); output `copiedEvent: string`.
 - `orc-data-table` — inputs/model/outputs are listed in the data display section. Use it for P2 records and `orc-table<T>` for the richer generic table API.
-- `orc-empty-state` — inputs `title`, `description`, `icon`, `actionLabel`; output `action`.
+- `orc-empty-state` — optional `title` and `description`, `icon` (`∅`), `actionLabel`, `ariaLabel`, and `actionAriaLabel`; output `action`.
 - `orc-virtual-scroller` — inputs `items: unknown[]`, `itemHeight` (40), `viewportHeight` (`240px`), `overscan` (4), `label` (`Scrollable list`), `itemLabelKey` (`label`); output `rangeChange: { start, end }`. Keep item height stable; it is the basis for range calculation.
 - `orc-tag` — inputs `label` (`Tag`), `variant: neutral | primary | success | warning | danger` (neutral), `removable`, `disabled`; output `removed: string`. Use `orc-chip` when selection is part of the interaction; use `orc-tag` for entity/status labels.
 - `orc-hover-card` — model `open` (false); input `label` (`Details`). Use for non-critical preview content on hover or focus, never for content that cannot be reached by keyboard focus.
@@ -437,23 +454,15 @@ export interface P2Option<T = string> {
 - `orc-close-button` — inputs `ariaLabel` (`Close`), `icon` (`×`), `size: sm | md | lg` (md), `disabled`; output `close: void`. Prefer it inside an overlay or dismissible feedback pattern.
 - `orc-context-menu` — input `items: ContextMenuItem[]`, model `open` (false); outputs `itemSelect: ContextMenuItem`, `opened: { x, y }`. `ContextMenuItem` extends `P2Option<string>` with optional `danger`, `shortcut`, `children`.
 - `orc-speed-dial` — input `actions: SpeedDialAction[]`, model `open` (false), `icon` (`+`), `openLabel` (`Open actions`), `closeLabel` (`Close actions`); output `actionSelect: SpeedDialAction`. Keep labels and ordering stable.
-- `orc-portal` — input `target: HTMLElement | null` (null). Use only when a composition explicitly needs to render in another target; overlays already own their portal/lifecycle behavior.
-- `orc-splitter` — inputs `panels: SplitterPanel[]`, `orientation: horizontal | vertical` (horizontal), `label` (`Resizable panels`); model `sizes: number[]`; output `sizesChange: number[]`. A `SplitterPanel` describes the panel id and sizing constraints used by the implementation.
+- `orc-portal` — input `target: HTMLElement | string | null` (null). An `HTMLElement` moves projected content directly; a string is a CSS selector resolved against the host's owner document. Until a valid selector matches, content stays inside the Portal host and moves when the target is later added. Invalid selectors and `null` keep content local. Use only when a composition explicitly needs another render target; overlays already own their portal/lifecycle behavior.
+- `orc-splitter` — inputs `panels: SplitterPanel[]`, `orientation: horizontal | vertical` (horizontal), `label` (`Resizable panels`); model `sizes: number[]`; outputs `sizesChange: number[]`, `onResizeStart: { index }`, `onResize: { index, sizes }`, `onResizeEnd: KeyboardEvent` for keyboard resizing, and `onPointerResizeEnd: PointerEvent` for pointer-up or cancellation. A SplitterPanel describes each panel id and sizing constraints.
 
 ## 6. Recommended recipes
 
 ### A labeled async action
 
 ```html
-<orc-button
-  type="submit"
-  variant="primary"
-  [loading]="isSaving()"
-  [disabled]="form.invalid"
-  (click)="save()"
->
-  Save changes
-</orc-button>
+<orc-button type="submit" variant="primary" [loading]="isSaving()" [disabled]="form.invalid" (click)="save()"> Save changes </orc-button>
 ```
 
 Do not use a generic `<button>` plus a hand-written spinner when `orc-button` can provide loading, disabled, focus, and icon behavior.
@@ -461,14 +470,7 @@ Do not use a generic `<button>` plus a hand-written spinner when `orc-button` ca
 ### A validated field
 
 ```html
-<orc-input
-  label="Workspace name"
-  [(value)]="workspaceName"
-  [status]="nameError() ? 'error' : 'default'"
-  [errorMessage]="nameError()"
-  helperText="Use a short, recognizable name."
-  required
-/> 
+<orc-input label="Workspace name" [(value)]="workspaceName" [status]="nameError() ? 'error' : 'default'" [errorMessage]="nameError()" helperText="Use a short, recognizable name." required />
 ```
 
 Only show the error copy when the control is invalid or has been touched. The component keeps helper/error ids and `aria-describedby` consistent.
@@ -483,23 +485,13 @@ readonly options = [
 ```
 
 ```html
-<orc-combobox
-  label="Team"
-  [options]="options"
-  [(value)]="team"
-  (optionSelected)="onTeamSelected($event)"
-/> 
+<orc-combobox label="Team" [options]="options" [(value)]="team" (optionSelected)="onTeamSelected($event)" />
 ```
 
 ### A modal with explicit semantics
 
 ```html
-<orc-modal
-  [(isOpen)]="isDeleteOpen"
-  status="danger"
-  size="sm"
-  ariaLabelledBy="delete-title"
->
+<orc-modal [(isOpen)]="isDeleteOpen" status="danger" size="sm" ariaLabelledBy="delete-title">
   <h2 modal-header id="delete-title">Delete project?</h2>
   <p modal-body>This action cannot be undone.</p>
   <div modal-footer>
@@ -528,18 +520,18 @@ readonly options = [
 
 ## 7. Anti-patterns and migration guidance
 
-| Avoid | Use instead |
-| --- | --- |
-| Generic button with custom loading markup | `orc-button [loading]` |
-| Native text input surrounded by ad-hoc label/error CSS | `orc-input` or `orc-form-field` |
-| A `<div>` that acts like a clickable card | `orc-card` plus a real `orc-button` |
-| Hand-written tabs and roving tabindex | `orc-tab-group` and `orc-tab` |
-| A generic red `<span>` for status | `orc-badge` or `orc-alert` with semantic status |
-| A custom spinner overlay | `orc-spinner` or `orc-progress-*` |
-| Stringifying generic options | Keep `T` in `orc-combobox<T>`, `orc-listbox<T>`, `orc-multi-select<T>`, or `orc-segmented-control<T>` |
-| Duplicating `ModalComponent` under a new name | Use `dialog` alias or extend the canonical modal API in the library |
-| Hard-coded `#1C6AED` or `16px` in app components | Use `--orc-color-azul-eletrico` and `--space-4` |
-| Removing focus styles to match a screenshot | Adjust the token while preserving a visible focus indicator |
+| Avoid                                                  | Use instead                                                                                           |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| Generic button with custom loading markup              | `orc-button [loading]`                                                                                |
+| Native text input surrounded by ad-hoc label/error CSS | `orc-input` or `orc-form-field`                                                                       |
+| A `<div>` that acts like a clickable card              | `orc-card` plus a real `orc-button`                                                                   |
+| Hand-written tabs and roving tabindex                  | `orc-tab-group` and `orc-tab`                                                                         |
+| A generic red `<span>` for status                      | `orc-badge` or `orc-alert` with semantic status                                                       |
+| A custom spinner overlay                               | `orc-spinner` or `orc-progress-*`                                                                     |
+| Stringifying generic options                           | Keep `T` in `orc-combobox<T>`, `orc-listbox<T>`, `orc-multi-select<T>`, or `orc-segmented-control<T>` |
+| Duplicating `ModalComponent` under a new name          | Use `dialog` alias or extend the canonical modal API in the library                                   |
+| Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-color-azul-eletrico` and `--space-4`                                                       |
+| Removing focus styles to match a screenshot            | Adjust the token while preserving a visible focus indicator                                           |
 
 When migrating from generic controls, keep the domain state in the consuming component and replace only the view/control boundary. The library does not require a global service for basic state; Signals are local and explicit.
 

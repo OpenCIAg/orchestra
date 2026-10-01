@@ -1,0 +1,6064 @@
+{
+  "packageName": "@ciag/orchestra",
+  "packageVersion": "22.1.0",
+  "packageArchiveSha256": "a9782e8341b1c9f1650a252d387e6d5b96ff0c61c5a3ba04a9b9035b77dbc910",
+  "fixtureValues": ["ariaLabel", "item", "fileData", "toast"],
+  "angularVersion": "22.1.2",
+  "distribution": "dist/orc-ds (sealed; no build performed by this verifier)",
+  "distributionMtime": "2026-09-13T17:54:49.878Z",
+  "totalComponents": 147,
+  "imported": 147,
+  "rendered": 147,
+  "instantiated": 147,
+  "matchedSelectors": 147,
+  "defaultLifecycle": 147,
+  "interactiveStateCoverage": 0,
+  "failures": [],
+  "lifecycleExceptions": [],
+  "timeouts": [],
+  "diagnostics": [],
+  "coverage": {
+    "inventoryComponents": 147,
+    "attempted": 147,
+    "imported": 147,
+    "rendered": 147,
+    "instantiated": 147,
+    "matchedSelectors": 147,
+    "defaultLifecycle": 147,
+    "interactiveStateCoverage": 0,
+    "failed": 0
+  },
+  "exclusions": [
+    "Directives, pipes, services, and providers are excluded because the inventory fixture contract covers declarations of kind Component only.",
+    "Components requiring application-specific providers, browser globals, or richer model state are attempted with the shared minimal server providers and reported individually when they fail."
+  ],
+  "components": [
+    {
+      "name": "AccordionItemComponent",
+      "selector": "orc-accordion-item",
+      "file": "projects/orc-ds/accordion/accordion-item.component.ts",
+      "entry": "accordion",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4312,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "AccordionComponent",
+      "selector": "orc-accordion",
+      "file": "projects/orc-ds/accordion/accordion.component.ts",
+      "entry": "accordion",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 781,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "AlertComponent",
+      "selector": "orc-alert",
+      "file": "projects/orc-ds/alert/alert.component.ts",
+      "entry": "alert",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 6199,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "AutocompleteComponent",
+      "selector": "orc-autocomplete",
+      "file": "projects/orc-ds/autocomplete/autocomplete.component.ts",
+      "entry": "autocomplete",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4575,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "AvatarGroupComponent",
+      "selector": "orc-avatar-group",
+      "file": "projects/orc-ds/avatar/avatar-group.component.ts",
+      "entry": "avatar",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2155,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "AvatarComponent",
+      "selector": "orc-avatar",
+      "file": "projects/orc-ds/avatar/avatar.component.ts",
+      "entry": "avatar",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5620,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "BadgeComponent",
+      "selector": "orc-badge",
+      "file": "projects/orc-ds/badge/badge.component.ts",
+      "entry": "badge",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 9482,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "BreadcrumbItemComponent",
+      "selector": "orc-breadcrumb-item",
+      "file": "projects/orc-ds/breadcrumb/breadcrumb-item.component.ts",
+      "entry": "breadcrumb",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2014,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "BreadcrumbComponent",
+      "selector": "orc-breadcrumb",
+      "file": "projects/orc-ds/breadcrumb/breadcrumb.component.ts",
+      "entry": "breadcrumb",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4051,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ButtonComponent",
+      "selector": "orc-button",
+      "file": "projects/orc-ds/button/button.component.ts",
+      "entry": "button",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 9531,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "IconButtonComponent",
+      "selector": "orc-icon-button",
+      "file": "projects/orc-ds/button/icon-button.component.ts",
+      "entry": "button",
+      "required": ["ariaLabel"],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 8064,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CardBodyComponent",
+      "selector": "orc-card-body",
+      "file": "projects/orc-ds/card/card-body.component.ts",
+      "entry": "card",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 514,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CardFooterComponent",
+      "selector": "orc-card-footer",
+      "file": "projects/orc-ds/card/card-footer.component.ts",
+      "entry": "card",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 516,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CardHeaderComponent",
+      "selector": "orc-card-header",
+      "file": "projects/orc-ds/card/card-header.component.ts",
+      "entry": "card",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 538,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CardComponent",
+      "selector": "orc-card",
+      "file": "projects/orc-ds/card/card.component.ts",
+      "entry": "card",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1818,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CarouselComponent",
+      "selector": "orc-carousel",
+      "file": "projects/orc-ds/carousel/carousel.component.ts",
+      "entry": "carousel",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3962,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CheckboxComponent",
+      "selector": "orc-checkbox",
+      "file": "projects/orc-ds/checkbox/checkbox.component.ts",
+      "entry": "checkbox",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 6030,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ChipInputComponent",
+      "selector": "orc-chip-input",
+      "file": "projects/orc-ds/chip-input/chip-input.component.ts",
+      "entry": "chip-input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 9717,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ChipComponent",
+      "selector": "orc-chip",
+      "file": "projects/orc-ds/chip/chip.component.ts",
+      "entry": "chip",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2898,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CollapsibleComponent",
+      "selector": "orc-collapsible",
+      "file": "projects/orc-ds/collapsible/collapsible.component.ts",
+      "entry": "collapsible",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2680,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ColorPickerComponent",
+      "selector": "orc-color-picker",
+      "file": "projects/orc-ds/color-picker/color-picker.component.ts",
+      "entry": "color-picker",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4783,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DatePickerCalendarComponent",
+      "selector": "orc-date-picker-calendar",
+      "file": "projects/orc-ds/date-picker/date-picker-calendar.component.ts",
+      "entry": "date-picker",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 14769,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DatePickerComponent",
+      "selector": "orc-date-picker",
+      "file": "projects/orc-ds/date-picker/date-picker.component.ts",
+      "entry": "date-picker",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 6431,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DividerComponent",
+      "selector": "orc-divider",
+      "file": "projects/orc-ds/divider/divider.component.ts",
+      "entry": "divider",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2111,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DrawerComponent",
+      "selector": "orc-drawer",
+      "file": "projects/orc-ds/drawer/drawer.component.ts",
+      "entry": "drawer",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2682,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DropdownComponent",
+      "selector": "orc-dropdown",
+      "file": "projects/orc-ds/dropdown/dropdown.component.ts",
+      "entry": "dropdown",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3382,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "EmptyStateComponent",
+      "selector": "orc-empty-state",
+      "file": "projects/orc-ds/empty-state/empty-state.component.ts",
+      "entry": "empty-state",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1289,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FileItemComponent",
+      "selector": "orc-file-item",
+      "file": "projects/orc-ds/file-uploader/file-item/file-item.component.ts",
+      "entry": "file-uploader",
+      "required": ["fileData"],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 12885,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FileUploaderComponent",
+      "selector": "orc-file-uploader",
+      "file": "projects/orc-ds/file-uploader/file-uploader.component.ts",
+      "entry": "file-uploader",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5974,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FormFieldComponent",
+      "selector": "orc-form-field",
+      "file": "projects/orc-ds/form-field/form-field.component.ts",
+      "entry": "form-field",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1072,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FormComponent",
+      "selector": "orc-form",
+      "file": "projects/orc-ds/form/form.component.ts",
+      "entry": "form",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 820,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "IconComponent",
+      "selector": "orc-icon",
+      "file": "projects/orc-ds/icon/icon.component.ts",
+      "entry": "icon",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1272,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ImageComponent",
+      "selector": "orc-image",
+      "file": "projects/orc-ds/image/image.component.ts",
+      "entry": "image",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3183,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "InputComponent",
+      "selector": "orc-input",
+      "file": "projects/orc-ds/input/input.component.ts",
+      "entry": "input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 7606,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TextareaComponent",
+      "selector": "orc-textarea",
+      "file": "projects/orc-ds/input/textarea.component.ts",
+      "entry": "input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5584,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ListComponent",
+      "selector": "orc-list",
+      "file": "projects/orc-ds/list/list.component.ts",
+      "entry": "list",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1508,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ModalComponent",
+      "selector": "orc-modal",
+      "file": "projects/orc-ds/modal/modal.component.ts",
+      "entry": "modal",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 16136,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "NavigationShellComponent",
+      "selector": "orc-navigation-shell",
+      "file": "projects/orc-ds/navigation/navigation-shell.component.ts",
+      "entry": "navigation",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1516,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "NavigationItemComponent",
+      "selector": "orc-navigation-item",
+      "file": "projects/orc-ds/navigation/navigation-shell.component.ts",
+      "entry": "navigation",
+      "required": ["item"],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1180,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "NumberInputComponent",
+      "selector": "orc-number-input",
+      "file": "projects/orc-ds/number-input/number-input.component.ts",
+      "entry": "number-input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3496,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OtpGroupComponent",
+      "selector": "orc-otp-group",
+      "file": "projects/orc-ds/otp-input/otp-group.component.ts",
+      "entry": "otp-input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 424,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OtpInputComponent",
+      "selector": "orc-otp-input",
+      "file": "projects/orc-ds/otp-input/otp-input.component.ts",
+      "entry": "otp-input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4672,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OtpSeparatorComponent",
+      "selector": "orc-otp-separator",
+      "file": "projects/orc-ds/otp-input/otp-separator.component.ts",
+      "entry": "otp-input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 895,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OtpSlotComponent",
+      "selector": "orc-otp-slot",
+      "file": "projects/orc-ds/otp-input/otp-slot.component.ts",
+      "entry": "otp-input",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1542,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OverlayPanelComponent",
+      "selector": "orc-overlay-panel",
+      "file": "projects/orc-ds/overlay-panel/overlay-panel.component.ts",
+      "entry": "overlay-panel",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2560,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "PopoverComponent",
+      "selector": "orc-popover",
+      "file": "projects/orc-ds/overlay-panel/overlay-panel.component.ts",
+      "entry": "overlay-panel",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2516,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "MenuComponent",
+      "selector": "orc-menu",
+      "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5261,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TieredMenuComponent",
+      "selector": "orc-tiered-menu",
+      "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5221,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "PanelMenuComponent",
+      "selector": "orc-panel-menu",
+      "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4807,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "MegaMenuComponent",
+      "selector": "orc-mega-menu",
+      "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4670,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "BlockUiComponent",
+      "selector": "orc-block-ui",
+      "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4225,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ConfirmDialogComponent",
+      "selector": "orc-confirm-dialog",
+      "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5088,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DataViewComponent",
+      "selector": "orc-data-view",
+      "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4818,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ChartComponent",
+      "selector": "orc-chart",
+      "file": "projects/orc-ds/p2/p2-chart-editor-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5458,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "EditorComponent",
+      "selector": "orc-editor",
+      "file": "projects/orc-ds/p2/p2-chart-editor-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5103,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CommandMenuComponent",
+      "selector": "orc-command-menu",
+      "file": "projects/orc-ds/p2/p2-command-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5605,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ConfirmPopupComponent",
+      "selector": "orc-confirm-popup",
+      "file": "projects/orc-ds/p2/p2-confirm-popup.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4738,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CodeComponent",
+      "selector": "orc-code",
+      "file": "projects/orc-ds/p2/p2-data-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4942,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "MenubarComponent",
+      "selector": "orc-menubar",
+      "file": "projects/orc-ds/p2/p2-data-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5299,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "HoverCardComponent",
+      "selector": "orc-hover-card",
+      "file": "projects/orc-ds/p2/p2-data-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4569,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DataTableComponent",
+      "selector": "orc-data-table",
+      "file": "projects/orc-ds/p2/p2-data-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5708,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "VirtualScrollerComponent",
+      "selector": "orc-virtual-scroller",
+      "file": "projects/orc-ds/p2/p2-data-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4586,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DockComponent",
+      "selector": "orc-dock",
+      "file": "projects/orc-ds/p2/p2-dock-scroll-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4995,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ScrollPanelComponent",
+      "selector": "orc-scroll-panel",
+      "file": "projects/orc-ds/p2/p2-dock-scroll-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4289,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CalendarComponent",
+      "selector": "orc-calendar",
+      "file": "projects/orc-ds/p2/p2-form-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 15986,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ComboboxComponent",
+      "selector": "orc-combobox",
+      "file": "projects/orc-ds/p2/p2-form-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 6038,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "DateInputComponent",
+      "selector": "orc-date-input",
+      "file": "projects/orc-ds/p2/p2-form-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4803,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "InputGroupComponent",
+      "selector": "orc-input-group",
+      "file": "projects/orc-ds/p2/p2-form-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5146,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ListboxComponent",
+      "selector": "orc-listbox",
+      "file": "projects/orc-ds/p2/p2-form-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5193,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "MultiSelectComponent",
+      "selector": "orc-multi-select",
+      "file": "projects/orc-ds/p2/p2-form-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5811,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TagsInputComponent",
+      "selector": "orc-tags-input",
+      "file": "projects/orc-ds/p2/p2-form-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5896,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SelectButtonComponent",
+      "selector": "orc-select-button",
+      "file": "projects/orc-ds/p2/p2-form-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4850,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ToggleButtonComponent",
+      "selector": "orc-toggle-button",
+      "file": "projects/orc-ds/p2/p2-form-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4525,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CascadeSelectComponent",
+      "selector": "orc-cascade-select",
+      "file": "projects/orc-ds/p2/p2-form-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5267,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TreeComponent",
+      "selector": "orc-tree",
+      "file": "projects/orc-ds/p2/p2-hierarchical-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4716,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TreeTableComponent",
+      "selector": "orc-tree-table",
+      "file": "projects/orc-ds/p2/p2-hierarchical-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5244,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "InputGroupAddonComponent",
+      "selector": "orc-input-group-addon",
+      "file": "projects/orc-ds/p2/p2-input-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4302,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "IconFieldComponent",
+      "selector": "orc-icon-field",
+      "file": "projects/orc-ds/p2/p2-input-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4451,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "IftaLabelComponent",
+      "selector": "orc-ifta-label",
+      "file": "projects/orc-ds/p2/p2-input-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4340,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "InplaceComponent",
+      "selector": "orc-inplace",
+      "file": "projects/orc-ds/p2/p2-input-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4355,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TerminalComponent",
+      "selector": "orc-terminal",
+      "file": "projects/orc-ds/p2/p2-input-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5018,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ImageCompareComponent",
+      "selector": "orc-image-compare",
+      "file": "projects/orc-ds/p2/p2-input-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4981,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "InputColorComponent",
+      "selector": "orc-input-color",
+      "file": "projects/orc-ds/p2/p2-input-more.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4690,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ButtonGroupComponent",
+      "selector": "orc-button-group",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4602,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "GridComponent",
+      "selector": "orc-grid",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4183,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "AspectRatioComponent",
+      "selector": "orc-aspect-ratio",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4173,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ContainerComponent",
+      "selector": "orc-container",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4239,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FlexComponent",
+      "selector": "orc-flex",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4186,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "StackComponent",
+      "selector": "orc-stack",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4175,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SpaceComponent",
+      "selector": "orc-space",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4121,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "BoxComponent",
+      "selector": "orc-box",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4116,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SeparatorComponent",
+      "selector": "orc-separator",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4279,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "VisuallyHiddenComponent",
+      "selector": "orc-visually-hidden",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4327,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TypographyComponent",
+      "selector": "orc-typography",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4648,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TextComponent",
+      "selector": "orc-text",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4471,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "KbdComponent",
+      "selector": "orc-kbd",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4405,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "LinkComponent",
+      "selector": "orc-link",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4380,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OrderListComponent",
+      "selector": "orc-order-list",
+      "file": "projects/orc-ds/p2/p2-list-gallery-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5504,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "PickListComponent",
+      "selector": "orc-pick-list",
+      "file": "projects/orc-ds/p2/p2-list-gallery-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5753,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "GalleriaComponent",
+      "selector": "orc-galleria",
+      "file": "projects/orc-ds/p2/p2-list-gallery-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 6440,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "MessagesComponent",
+      "selector": "orc-messages",
+      "file": "projects/orc-ds/p2/p2-message-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5362,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OrganizationChartComponent",
+      "selector": "orc-organization-chart",
+      "file": "projects/orc-ds/p2/p2-org-knob-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5262,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "KnobComponent",
+      "selector": "orc-knob",
+      "file": "projects/orc-ds/p2/p2-org-knob-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5533,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FloatingActionButtonComponent",
+      "selector": "orc-floating-action-button",
+      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4563,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "CloseButtonComponent",
+      "selector": "orc-close-button",
+      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4645,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuComponent",
+      "selector": "orc-context-menu",
+      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5053,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OverlayComponent",
+      "selector": "orc-overlay",
+      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4205,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SpeedDialComponent",
+      "selector": "orc-speed-dial",
+      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4790,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "PortalComponent",
+      "selector": "orc-portal",
+      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3963,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SplitterComponent",
+      "selector": "orc-splitter",
+      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4878,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "PanelComponent",
+      "selector": "orc-panel",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4866,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FieldsetComponent",
+      "selector": "orc-fieldset",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4777,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FloatLabelComponent",
+      "selector": "orc-float-label",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4727,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "FluidComponent",
+      "selector": "orc-fluid",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4137,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OverlayBadgeComponent",
+      "selector": "orc-overlay-badge",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4632,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "MeterGroupComponent",
+      "selector": "orc-meter-group",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4544,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "PasswordComponent",
+      "selector": "orc-password",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4647,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SplitButtonComponent",
+      "selector": "orc-split-button",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5163,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ScrollTopComponent",
+      "selector": "orc-scroll-top",
+      "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4285,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TreeSelectComponent",
+      "selector": "orc-tree-select",
+      "file": "projects/orc-ds/p2/p2-selection-components.ts",
+      "entry": "p2",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5732,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "PaginatorComponent",
+      "selector": "orc-paginator",
+      "file": "projects/orc-ds/paginator/paginator.component.ts",
+      "entry": "paginator",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 9174,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ProgressBarComponent",
+      "selector": "orc-progress-bar",
+      "file": "projects/orc-ds/progress/progress-bar.component.ts",
+      "entry": "progress",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 4760,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ProgressCircleComponent",
+      "selector": "orc-progress-circle",
+      "file": "projects/orc-ds/progress/progress-circle.component.ts",
+      "entry": "progress",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3491,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ProgressSpinnerComponent",
+      "selector": "orc-progress-spinner",
+      "file": "projects/orc-ds/progress/progress-spinner.component.ts",
+      "entry": "progress",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1477,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "RadioButtonComponent",
+      "selector": "orc-radio-button",
+      "file": "projects/orc-ds/radio/radio-button.component.ts",
+      "entry": "radio",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5220,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "RadioGroupComponent",
+      "selector": "orc-radio-group",
+      "file": "projects/orc-ds/radio/radio-group.component.ts",
+      "entry": "radio",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1735,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "RatingComponent",
+      "selector": "orc-rating",
+      "file": "projects/orc-ds/rating/rating.component.ts",
+      "entry": "rating",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 8346,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ScrollAreaComponent",
+      "selector": "orc-scroll-area",
+      "file": "projects/orc-ds/scroll-area/scroll-area.component.ts",
+      "entry": "scroll-area",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2407,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SegmentedControlComponent",
+      "selector": "orc-segmented-control",
+      "file": "projects/orc-ds/segmented-control/segmented-control.component.ts",
+      "entry": "segmented-control",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1584,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "OptionComponent",
+      "selector": "orc-option",
+      "file": "projects/orc-ds/select/option.component.ts",
+      "entry": "select",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2787,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SelectComponent",
+      "selector": "orc-select",
+      "file": "projects/orc-ds/select/select.component.ts",
+      "entry": "select",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 10630,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SkeletonComponent",
+      "selector": "orc-skeleton",
+      "file": "projects/orc-ds/skeleton/skeleton.component.ts",
+      "entry": "skeleton",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 2263,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SliderComponent",
+      "selector": "orc-slider",
+      "file": "projects/orc-ds/slider/slider.component.ts",
+      "entry": "slider",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 7016,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "LoadingSpinnerComponent",
+      "selector": "orc-spinner",
+      "file": "projects/orc-ds/spinner/spinner.component.ts",
+      "entry": "spinner",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 5608,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "StepperComponent",
+      "selector": "orc-stepper",
+      "file": "projects/orc-ds/stepper/stepper.component.ts",
+      "entry": "stepper",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 9336,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "SwitchComponent",
+      "selector": "orc-switch",
+      "file": "projects/orc-ds/switch/switch.component.ts",
+      "entry": "switch",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 6384,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TabMenuComponent",
+      "selector": "orc-tab-menu",
+      "file": "projects/orc-ds/tab-menu/tab-menu.component.ts",
+      "entry": "tab-menu",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1759,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TableComponent",
+      "selector": "orc-table",
+      "file": "projects/orc-ds/table/table.component.ts",
+      "entry": "table",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 7505,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TabGroupComponent",
+      "selector": "orc-tab-group",
+      "file": "projects/orc-ds/tabs/tab-group.component.ts",
+      "entry": "tabs",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 8018,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TabComponent",
+      "selector": "orc-tab",
+      "file": "projects/orc-ds/tabs/tab.component.ts",
+      "entry": "tabs",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 284,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TagComponent",
+      "selector": "orc-tag",
+      "file": "projects/orc-ds/tag/tag.component.ts",
+      "entry": "tag",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1469,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TimelineComponent",
+      "selector": "orc-timeline",
+      "file": "projects/orc-ds/timeline/timeline.component.ts",
+      "entry": "timeline",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3596,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ToastContainerComponent",
+      "selector": "orc-toast-container",
+      "file": "projects/orc-ds/toast/toast-container.component.ts",
+      "entry": "toast",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1917,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ToastComponent",
+      "selector": "orc-toast",
+      "file": "projects/orc-ds/toast/toast.component.ts",
+      "entry": "toast",
+      "required": ["toast"],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 8216,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "ToolbarComponent",
+      "selector": "orc-toolbar",
+      "file": "projects/orc-ds/toolbar/toolbar.component.ts",
+      "entry": "toolbar",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1333,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TooltipComponent",
+      "selector": "orc-tooltip-overlay",
+      "file": "projects/orc-ds/tooltip/tooltip.component.ts",
+      "entry": "tooltip",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 3291,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    },
+    {
+      "name": "TreeViewComponent",
+      "selector": "orc-tree-view",
+      "file": "projects/orc-ds/tree-view/tree-view.component.ts",
+      "entry": "tree-view",
+      "required": [],
+      "status": "rendered",
+      "phase": "render",
+      "imported": true,
+      "instantiated": true,
+      "matchedSelector": true,
+      "defaultLifecycle": true,
+      "htmlLength": 1560,
+      "diagnostics": [],
+      "abnormalExit": false,
+      "observedProgress": [
+        {
+          "phase": "import",
+          "imported": true
+        },
+        {
+          "phase": "instantiated",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "render-start",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true
+        },
+        {
+          "phase": "rendered",
+          "imported": true,
+          "instantiated": true,
+          "matchedSelector": true,
+          "defaultLifecycle": true
+        }
+      ]
+    }
+  ]
+}

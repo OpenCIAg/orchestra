@@ -1,6 +1,16 @@
 @if (formMode()) {
-  <div class="p-select p-component orc-dropdown-field" [class]="'p-select p-component orc-dropdown-field ' + styleClass()" [style]="style()" [class.is-disabled]="disabled() || cvaDisabled()" [attr.data-pc-name]="'select'">
-    @if (label()) { <label class="orc-dropdown-label" [for]="effectiveId()">{{ label() }}</label> }
+  <div
+    class="p-select p-component orc-dropdown-field"
+    [class]="'p-select p-component orc-dropdown-field ' + styleClass()"
+    [style]="style()"
+    [class.is-disabled]="disabled() || cvaDisabled()"
+    [attr.data-pc-name]="'select'"
+  >
+    @if (label()) {
+      <label class="orc-dropdown-label" [for]="effectiveId()">{{
+        label()
+      }}</label>
+    }
     <button
       type="button"
       class="p-select-label p-select-trigger orc-dropdown-trigger"
@@ -8,56 +18,108 @@
       [disabled]="disabled() || cvaDisabled()"
       [attr.aria-expanded]="isOpen()"
       aria-haspopup="listbox"
-      [attr.aria-controls]="effectiveId() + '-panel'"
+      [attr.aria-controls]="isOpen() ? effectiveId() + '-options' : null"
       (click)="toggle()"
+      (keydown)="onTriggerKeydown($event)"
       (focus)="onFocus.emit($event)"
       (blur)="onTouched(); onBlur.emit($event)"
     >
       <span>{{ selectedLabel() || placeholder() }}</span>
-      @if (showClear() && value() !== null && value() !== undefined) {
-        <span class="orc-dropdown-clear" role="button" tabindex="0" [attr.aria-label]="clearAriaLabel() || null" (click)="clearValue($event); $event.stopPropagation()">×</span>
-      } @else { <span aria-hidden="true">⌄</span> }
+      <span aria-hidden="true">⌄</span>
     </button>
+    @if (showClear() && value() !== null && value() !== undefined) {
+      <button
+        type="button"
+        class="orc-dropdown-clear"
+        [disabled]="disabled() || cvaDisabled() || loading()"
+        [attr.aria-label]="clearAriaLabel() || 'Clear selection'"
+        (click)="clearValue($event)"
+      >
+        ×
+      </button>
+    }
   </div>
 } @else {
   <ng-content></ng-content>
 }
 
 <ng-template #dropdownPanel>
-  <div class="p-select-overlay p-component orc-dropdown-menu" [id]="effectiveId() + '-panel'" [style.max-height]="scrollHeight()" role="menu">
+  <div
+    class="p-select-overlay p-component orc-dropdown-menu"
+    [id]="effectiveId() + '-panel'"
+    [style.max-height]="scrollHeight()"
+    [attr.role]="formMode() ? null : 'menu'"
+    [attr.aria-label]="formMode() ? null : label() || 'Actions'"
+    (keydown)="onPanelKeydown($event)"
+  >
     @if (formMode()) {
-      <div role="listbox" [attr.aria-label]="optionsAriaLabel() || null">
-        @if (filter()) {
-          <input class="p-select-filter" type="search" [attr.placeholder]="filterPlaceholder() || null" [value]="filterValue()" (input)="onFilterInput($event)" [attr.aria-label]="filterAriaLabel() || null" />
-        }
-        @if (loading() && loadingMessage()) { <div role="status">{{ loadingMessage() }}</div> }
-        @for (option of filteredOptions(); track optionValueOf(option)) {
-          <button type="button" role="option" class="orc-dropdown-item" [disabled]="isOptionDisabled(option)" [attr.aria-selected]="optionValueOf(option) === value()" (click)="selectOption(option, $event)" (keydown)="onItemKeydown($event)">{{ optionText(option) }}</button>
-        } @empty { @if (!loading() && emptyMessage()) { <div role="status">{{ emptyMessage() }}</div> } }
-      </div>
-    } @else { @for (item of items(); track item.id || item.label) {
-      @if (item.divider) {
-        <div class="orc-dropdown-divider" role="separator"></div>
-      } @else {
-        <button
-          type="button"
-          class="orc-dropdown-item"
-          [class.orc-dropdown-item--danger]="item.danger"
-          [class.orc-dropdown-item--disabled]="item.disabled"
-          [disabled]="item.disabled"
-          role="menuitem"
-          (click)="onItemClick(item, $event)"
-          (keydown)="onItemKeydown($event)"
-        >
-          @if (item.icon) {
-            <span class="orc-dropdown-item__icon" [innerHTML]="item.icon"></span>
-          }
-          <span class="orc-dropdown-item__label">{{ item.label }}</span>
-          @if (item.shortcut) {
-            <span class="orc-dropdown-item__shortcut">{{ item.shortcut }}</span>
-          }
-        </button>
+      @if (filter()) {
+        <input
+          class="p-select-filter"
+          type="search"
+          [attr.placeholder]="filterPlaceholder() || null"
+          [value]="filterValue()"
+          (input)="onFilterInput($event)"
+          [attr.aria-label]="filterAriaLabel() || 'Filter options'"
+        />
       }
-    } } 
+      @if (loading() && loadingMessage()) {
+        <div role="status">{{ loadingMessage() }}</div>
+      }
+      <div
+        role="listbox"
+        [id]="effectiveId() + '-options'"
+        [attr.aria-label]="optionsAriaLabel() || label() || 'Options'"
+        [attr.aria-busy]="loading()"
+      >
+        @for (option of filteredOptions(); track optionValueOf(option)) {
+          <button
+            type="button"
+            role="option"
+            class="orc-dropdown-item"
+            [disabled]="loading() || isOptionDisabled(option)"
+            [attr.aria-selected]="optionValueOf(option) === value()"
+            (click)="selectOption(option, $event)"
+            (keydown)="onItemKeydown($event)"
+          >
+            {{ optionText(option) }}
+          </button>
+        } @empty {
+          @if (!loading() && emptyMessage()) {
+            <div role="status">{{ emptyMessage() }}</div>
+          }
+        }
+      </div>
+    } @else {
+      @for (item of items(); track item.id || item.label) {
+        @if (item.divider) {
+          <div class="orc-dropdown-divider" role="separator"></div>
+        } @else {
+          <button
+            type="button"
+            class="orc-dropdown-item"
+            [class.orc-dropdown-item--danger]="item.danger"
+            [class.orc-dropdown-item--disabled]="item.disabled"
+            [disabled]="item.disabled"
+            role="menuitem"
+            (click)="onItemClick(item, $event)"
+            (keydown)="onItemKeydown($event)"
+          >
+            @if (item.icon) {
+              <span
+                class="orc-dropdown-item__icon"
+                [innerHTML]="item.icon"
+              ></span>
+            }
+            <span class="orc-dropdown-item__label">{{ item.label }}</span>
+            @if (item.shortcut) {
+              <span class="orc-dropdown-item__shortcut">{{
+                item.shortcut
+              }}</span>
+            }
+          </button>
+        }
+      }
+    }
   </div>
 </ng-template>

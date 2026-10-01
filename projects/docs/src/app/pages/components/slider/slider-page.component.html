@@ -8,11 +8,13 @@
       <div class="section-eyebrow">Componentes · Formulários e entradas</div>
       <h1 class="section-title">Slider</h1>
       <p class="section-desc">
-        Controle deslizante baseado nas especificações visuais do Figma DS Orchestra (Node <code>382:5039</code>).
-        Suporta <strong>valor único (Single Thumb)</strong> e <strong>intervalos (Dual Thumb Range)</strong>, integração
-        nativa
-        com <strong>ControlValueAccessor (Reactive Forms)</strong>, marcações de escala (ticks), tooltip flutuante e
-        acessibilidade WCAG completa por teclado e ponteiro.
+        Controle deslizante baseado nas especificações visuais do Figma DS
+        Orchestra (Node <code>382:5039</code>). Suporta
+        <strong>valor único (Single Thumb)</strong> e
+        <strong>intervalos (Dual Thumb Range)</strong>, integração nativa com
+        <strong>ControlValueAccessor (Reactive Forms)</strong>, marcações de
+        escala (ticks), tooltip flutuante e interação por teclado e ponteiro,
+        com rótulo e valor anunciados pelo controle.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -27,18 +29,38 @@
             </div>
             <div class="panel__body">
               <div class="preview-center-box">
-                <orc-slider [range]="isRange()" [min]="sliderMin()" [max]="sliderMax()" [step]="sliderStep()"
-                  [size]="sliderSize()" [disabled]="sliderDisabled()" [showTicks]="sliderShowTicks()"
-                  [showLabels]="sliderShowLabels()" [showTooltip]="sliderShowTooltip()" [label]="sliderLabel()"
-                  [helperText]="sliderHelperText()" [(value)]="sliderValue" />
+                <orc-slider
+                  [range]="isRange()"
+                  [min]="sliderMin()"
+                  [max]="sliderMax()"
+                  [step]="sliderStep()"
+                  [size]="sliderSize()"
+                  [disabled]="sliderDisabled()"
+                  [showTicks]="sliderShowTicks()"
+                  [showLabels]="sliderShowLabels()"
+                  [showTooltip]="sliderShowTooltip()"
+                  [label]="sliderLabel()"
+                  [helperText]="sliderHelperText()"
+                  [(value)]="sliderValue"
+                />
               </div>
 
               <!-- Readout do Valor em Tempo Real -->
               <div class="value-readout-card">
-                <span class="value-readout-label">Valor atual (two-way binding / signals):</span>
-                <code class="value-readout-code">{{ sliderValue() | json }}</code>
+                <span class="value-readout-label"
+                  >Valor atual (two-way binding / signals):</span
+                >
+                <code class="value-readout-code">{{
+                  sliderValue() | json
+                }}</code>
                 <span class="value-readout-sub">
-                  Modo: <strong>{{ isRange() ? 'Intervalo / range ([min, max])' : 'Valor único / number' }}</strong> | Step:
+                  Modo:
+                  <strong>{{
+                    isRange()
+                      ? "Intervalo / range ([min, max])"
+                      : "Valor único / number"
+                  }}</strong>
+                  | Step:
                   <code>{{ sliderStep() }}</code>
                 </span>
               </div>
@@ -51,14 +73,24 @@
             <div class="panel__body">
               <!-- Modo de Operação -->
               <div class="control-group">
-                <label class="control-label">Modo de operação (range vs single)</label>
+                <label class="control-label"
+                  >Modo de operação (range vs single)</label
+                >
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="!isRange()"
-                    (click)="toggleRangeMode(false)">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="!isRange()"
+                    (click)="toggleRangeMode(false)"
+                  >
                     Valor único (single)
                   </button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="isRange()"
-                    (click)="toggleRangeMode(true)">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="isRange()"
+                    (click)="toggleRangeMode(true)"
+                  >
                     Intervalo (range dual)
                   </button>
                 </div>
@@ -68,16 +100,28 @@
               <div class="control-group">
                 <label class="control-label">Tamanho (size)</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="sliderSize() === 'sm'"
-                    (click)="sliderSize.set('sm')">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="sliderSize() === 'sm'"
+                    (click)="sliderSize.set('sm')"
+                  >
                     Small (10px)
                   </button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="sliderSize() === 'md'"
-                    (click)="sliderSize.set('md')">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="sliderSize() === 'md'"
+                    (click)="sliderSize.set('md')"
+                  >
                     Medium (16px Figma)
                   </button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="sliderSize() === 'lg'"
-                    (click)="sliderSize.set('lg')">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="sliderSize() === 'lg'"
+                    (click)="sliderSize.set('lg')"
+                  >
                     Large (20px)
                   </button>
                 </div>
@@ -85,20 +129,36 @@
 
               <!-- Exibição de Tooltip -->
               <div class="control-group">
-                <label class="control-label">Exibição do tooltip flutuante</label>
+                <label class="control-label"
+                  >Exibição do tooltip flutuante</label
+                >
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="sliderShowTooltip() === 'auto'"
-                    (click)="sliderShowTooltip.set('auto')">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="sliderShowTooltip() === 'auto'"
+                    (click)="sliderShowTooltip.set('auto')"
+                  >
                     Auto (hover/drag)
                   </button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="sliderShowTooltip() === 'always'"
-                    (click)="sliderShowTooltip.set('always')">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      sliderShowTooltip() === 'always'
+                    "
+                    (click)="sliderShowTooltip.set('always')"
+                  >
                     Sempre visível
                   </button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="sliderShowTooltip() === 'never'"
-                    (click)="sliderShowTooltip.set('never')">
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      sliderShowTooltip() === 'never'
+                    "
+                    (click)="sliderShowTooltip.set('never')"
+                  >
                     Oculto
                   </button>
                 </div>
@@ -110,18 +170,30 @@
                 <div class="grid-3-cols">
                   <div>
                     <span class="micro-label">Mínimo</span>
-                    <input type="number" class="text-control-input" [value]="sliderMin()"
-                      (input)="sliderMin.set(+$any($event.target).value)" />
+                    <input
+                      type="number"
+                      class="text-control-input"
+                      [value]="sliderMin()"
+                      (input)="sliderMin.set(+$any($event.target).value)"
+                    />
                   </div>
                   <div>
                     <span class="micro-label">Máximo</span>
-                    <input type="number" class="text-control-input" [value]="sliderMax()"
-                      (input)="sliderMax.set(+$any($event.target).value)" />
+                    <input
+                      type="number"
+                      class="text-control-input"
+                      [value]="sliderMax()"
+                      (input)="sliderMax.set(+$any($event.target).value)"
+                    />
                   </div>
                   <div>
                     <span class="micro-label">Step (passo)</span>
-                    <input type="number" class="text-control-input" [value]="sliderStep()"
-                      (input)="sliderStep.set(+$any($event.target).value)" />
+                    <input
+                      type="number"
+                      class="text-control-input"
+                      [value]="sliderStep()"
+                      (input)="sliderStep.set(+$any($event.target).value)"
+                    />
                   </div>
                 </div>
               </div>
@@ -129,14 +201,24 @@
               <!-- Rótulo e Mensagem de Ajuda -->
               <div class="control-group">
                 <label class="control-label">Rótulo (label)</label>
-                <input type="text" class="text-control-input" [value]="sliderLabel()"
-                  (input)="sliderLabel.set($any($event.target).value)" />
+                <input
+                  type="text"
+                  class="text-control-input"
+                  [value]="sliderLabel()"
+                  (input)="sliderLabel.set($any($event.target).value)"
+                />
               </div>
 
               <div class="control-group">
-                <label class="control-label">Texto de ajuda (helper text)</label>
-                <input type="text" class="text-control-input" [value]="sliderHelperText()"
-                  (input)="sliderHelperText.set($any($event.target).value)" />
+                <label class="control-label"
+                  >Texto de ajuda (helper text)</label
+                >
+                <input
+                  type="text"
+                  class="text-control-input"
+                  [value]="sliderHelperText()"
+                  (input)="sliderHelperText.set($any($event.target).value)"
+                />
               </div>
 
               <!-- Toggles Booleanos -->
@@ -144,18 +226,31 @@
                 <label class="control-label">Opções visuais e estados</label>
                 <div class="checkbox-stack">
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="sliderShowLabels()"
-                      (change)="sliderShowLabels.set($any($event.target).checked)" />
+                    <input
+                      type="checkbox"
+                      [checked]="sliderShowLabels()"
+                      (change)="
+                        sliderShowLabels.set($any($event.target).checked)
+                      "
+                    />
                     <span>Exibir rótulos de extremidade (min/max)</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="sliderShowTicks()"
-                      (change)="sliderShowTicks.set($any($event.target).checked)" />
+                    <input
+                      type="checkbox"
+                      [checked]="sliderShowTicks()"
+                      (change)="
+                        sliderShowTicks.set($any($event.target).checked)
+                      "
+                    />
                     <span>Exibir marcações de passo (ticks)</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="sliderDisabled()"
-                      (change)="sliderDisabled.set($any($event.target).checked)" />
+                    <input
+                      type="checkbox"
+                      [checked]="sliderDisabled()"
+                      (change)="sliderDisabled.set($any($event.target).checked)"
+                    />
                     <span>Desativado (disabled)</span>
                   </label>
                 </div>
@@ -169,10 +264,12 @@
       <section class="section">
         <h2 class="section-subtitle">Componentes planos</h2>
         <p class="section-text">
-          Renderização conforme tokens oficiais da biblioteca Orchestra: Track de <code>16px</code> de altura com cantos
-          completamente arredondados (<code>border-radius: 200px</code>), preenchimento em <strong>Azul Elétrico
-            (<code>#1C6AED</code>)</strong>,
-          trilho inativo em <strong>Cinza Médio (<code>#D9D9D9</code>)</strong> e thumb circular branco com borda azul.
+          Renderização conforme tokens oficiais da biblioteca Orchestra: Track
+          de <code>16px</code> de altura com cantos completamente arredondados
+          (<code>border-radius: 200px</code>), preenchimento em
+          <strong>Azul Elétrico (<code>#1C6AED</code>)</strong>, trilho inativo
+          em <strong>Cinza Médio (<code>#D9D9D9</code>)</strong> e thumb
+          circular branco com borda azul.
         </p>
 
         <div class="figma-spec-grid">
@@ -188,7 +285,11 @@
           <div class="figma-spec-card">
             <div class="figma-spec-card__label">Tooltip ativo</div>
             <div class="figma-spec-card__content">
-              <orc-slider [value]="75" showTooltip="always" label="Slider com tooltip" />
+              <orc-slider
+                [value]="75"
+                showTooltip="always"
+                label="Slider com tooltip"
+              />
             </div>
           </div>
 
@@ -196,7 +297,11 @@
           <div class="figma-spec-card">
             <div class="figma-spec-card__label">Desativado (disabled)</div>
             <div class="figma-spec-card__content">
-              <orc-slider [value]="40" [disabled]="true" label="Slider bloqueado" />
+              <orc-slider
+                [value]="40"
+                [disabled]="true"
+                label="Slider bloqueado"
+              />
             </div>
           </div>
         </div>
@@ -204,31 +309,55 @@
 
       <!-- ── REACTIVE FORMS INTEGRATION ──────────────────────── -->
       <section class="section">
-        <h2 class="section-subtitle">Integração com formulários reativos (Reactive Forms)</h2>
+        <h2 class="section-subtitle">
+          Integração com formulários reativos (Reactive Forms)
+        </h2>
         <p class="section-text">
-          O componente implementa <code>ControlValueAccessor</code>, integrando-se perfeitamente com
-          <code>formControlName</code>,
+          O componente implementa <code>ControlValueAccessor</code>,
+          integrando-se perfeitamente com <code>formControlName</code>,
           validações síncronas e rastreamento de dirty/touched:
         </p>
 
         <div class="reactive-form-card">
           <form [formGroup]="demoForm" class="reactive-form-layout">
             <div class="form-row">
-              <orc-slider formControlName="brightness" label="Brilho da Tela" [min]="0" [max]="100" [showLabels]="true"
-                helperText="Mínimo permitido: 10%" />
+              <orc-slider
+                formControlName="brightness"
+                label="Brilho da Tela"
+                [min]="0"
+                [max]="100"
+                [showLabels]="true"
+                helperText="Mínimo permitido: 10%"
+              />
             </div>
 
             <div class="form-row">
-              <orc-slider formControlName="budgetRange" label="Orçamento Estimado" [range]="true" [min]="0" [max]="1000"
-                [step]="50" [valueFormatter]="currencyFormatter" [marks]="priceMarks"
-                helperText="Selecione o teto e piso do orçamento." />
+              <orc-slider
+                formControlName="budgetRange"
+                label="Orçamento Estimado"
+                [range]="true"
+                [min]="0"
+                [max]="1000"
+                [step]="50"
+                [valueFormatter]="currencyFormatter"
+                [marks]="priceMarks"
+                helperText="Selecione o teto e piso do orçamento."
+              />
             </div>
 
             <div class="form-actions">
-              <button type="button" class="btn-form-submit" [disabled]="demoForm.invalid">
+              <button
+                type="button"
+                class="btn-form-submit"
+                [disabled]="demoForm.invalid"
+              >
                 Salvar configurações
               </button>
-              <button type="button" class="btn-form-reset" (click)="resetForm()">
+              <button
+                type="button"
+                class="btn-form-reset"
+                (click)="resetForm()"
+              >
                 Restaurar padrões
               </button>
             </div>
@@ -236,10 +365,17 @@
 
           <div class="form-state-debugger">
             <div class="debugger-title">Estado do FormGroup (reativo)</div>
-            <pre class="debugger-json"><code>{{ demoForm.value | json }}</code></pre>
+            <pre
+              class="debugger-json"
+            ><code>{{ demoForm.value | json }}</code></pre>
             <div class="debugger-status">
-              <span>Status: <strong>{{ demoForm.status }}</strong></span>
-              <span>Touched: <strong>{{ demoForm.touched ? 'Sim' : 'Não' }}</strong></span>
+              <span
+                >Status: <strong>{{ demoForm.status }}</strong></span
+              >
+              <span
+                >Touched:
+                <strong>{{ demoForm.touched ? "Sim" : "Não" }}</strong></span
+              >
             </div>
           </div>
         </div>
@@ -250,7 +386,9 @@
         <h2 class="section-subtitle">Documentação da API</h2>
 
         <div class="api-doc-block">
-          <h3 class="api-component-title">&lt;orc-slider&gt; (SliderComponent)</h3>
+          <h3 class="api-component-title">
+            &lt;orc-slider&gt; (SliderComponent)
+          </h3>
           <div class="table-container">
             <table class="api-table">
               <thead>
@@ -266,13 +404,19 @@
                   <td><code>value</code></td>
                   <td><code>model&lt;number | [number, number]&gt;</code></td>
                   <td><code>0</code></td>
-                  <td>Valor atual ou intervalo numérico (Two-Way Binding <code>[(value)]</code>).</td>
+                  <td>
+                    Valor atual ou intervalo numérico (Two-Way Binding
+                    <code>[(value)]</code>).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>range</code></td>
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
-                  <td>Habilita o modo de intervalo com dois botões deslizantes (Dual Thumb).</td>
+                  <td>
+                    Habilita o modo de intervalo com dois botões deslizantes
+                    (Dual Thumb).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>min</code></td>
@@ -296,44 +440,70 @@
                   <td><code>size</code></td>
                   <td><code>'sm' | 'md' | 'lg'</code></td>
                   <td><code>'md'</code></td>
-                  <td>Tamanho da barra: <code>sm</code> (10px), <code>md</code> (16px - padrão Figma), <code>lg</code>
-                    (20px).</td>
+                  <td>
+                    Tamanho da barra: <code>sm</code> (10px),
+                    <code>md</code> (16px - padrão Figma),
+                    <code>lg</code> (20px).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>showTicks</code></td>
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
-                  <td>Renderiza pontos marcadores visuais ao longo da barra em cada passo (step).</td>
+                  <td>
+                    Renderiza pontos marcadores visuais ao longo da barra em
+                    cada passo (step).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>showLabels</code></td>
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
-                  <td>Exibe rótulos numéricos padrão nas extremidades (mínimo e máximo).</td>
+                  <td>
+                    Exibe rótulos numéricos padrão nas extremidades (mínimo e
+                    máximo).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>marks</code></td>
-                  <td><code>Record&lt;number, string&gt; | SliderMark[] | number[]</code></td>
+                  <td>
+                    <code
+                      >Record&lt;number, string&gt; | SliderMark[] |
+                      number[]</code
+                    >
+                  </td>
                   <td><code>undefined</code></td>
-                  <td>Objeto ou array de marcações e textos personalizados ao longo da barra.</td>
+                  <td>
+                    Objeto ou array de marcações e textos personalizados ao
+                    longo da barra.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>showTooltip</code></td>
                   <td><code>'auto' | 'always' | 'never'</code></td>
                   <td><code>'auto'</code></td>
-                  <td>Comportamento do tooltip flutuante sobre o thumb (auto: hover, focus e arraste).</td>
+                  <td>
+                    Comportamento do tooltip flutuante sobre o thumb (auto:
+                    hover, focus e arraste).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>valueFormatter</code></td>
                   <td><code>(val: number) =&gt; string</code></td>
                   <td><code>undefined</code></td>
-                  <td>Função customizada para formatar a exibição do valor no tooltip e cabeçalho.</td>
+                  <td>
+                    Função customizada para formatar a exibição do valor no
+                    tooltip e cabeçalho.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>label</code></td>
                   <td><code>string</code></td>
                   <td><code>''</code></td>
-                  <td>Rótulo descritivo superior associado semanticamente ao slider.</td>
+                  <td>
+                    Rótulo descritivo superior associado semanticamente ao
+                    slider.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>helperText</code></td>
@@ -345,19 +515,27 @@
                   <td><code>disabled</code></td>
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
-                  <td>Desativa o controle e impede interações por mouse, touch ou teclado.</td>
+                  <td>
+                    Desativa o controle e impede interações por mouse, touch ou
+                    teclado.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>sliderChange</code></td>
                   <td><code>output&lt;number | [number, number]&gt;</code></td>
                   <td>-</td>
-                  <td>Disparado ao finalizar o arraste ou soltar o botão do mouse.</td>
+                  <td>
+                    Disparado ao finalizar o arraste ou soltar o botão do mouse.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>sliderInput</code></td>
                   <td><code>output&lt;number | [number, number]&gt;</code></td>
                   <td>-</td>
-                  <td>Disparado em tempo real continuamente durante o arraste do cursor.</td>
+                  <td>
+                    Disparado em tempo real continuamente durante o arraste do
+                    cursor.
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -370,8 +548,12 @@
         <h2 class="section-subtitle">Exemplos de código</h2>
 
         <div class="code-block-wrapper">
-          <div class="code-block-header">Exemplo de uso com Angular Standalone & Reactive Forms</div>
-          <pre class="code-block"><code>import &#123; Component &#125; from '&#64;angular/core';
+          <div class="code-block-header">
+            Exemplo de uso com Angular Standalone & Reactive Forms
+          </div>
+          <pre
+            class="code-block"
+          ><code>import &#123; Component &#125; from '&#64;angular/core';
 import &#123; ReactiveFormsModule, FormControl, FormGroup &#125; from '&#64;angular/forms';
 import &#123; SliderComponent &#125; from '&#64;orc/ds';
 

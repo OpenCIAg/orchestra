@@ -8,7 +8,8 @@
       <div class="section-eyebrow">Componentes · Feedback</div>
       <h1 class="section-title">Spinner / Loading</h1>
       <p class="section-desc">
-        Indicadores visuais de carregamento e espera assíncrona com suporte a múltiplos tamanhos, estilos visuais e acessibilidade WCAG.
+        Indicadores visuais de carregamento e espera assíncrona com suporte a
+        múltiplos tamanhos, estilos visuais e texto para leitores de tela.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -19,7 +20,10 @@
           <div class="panel preview-panel">
             <div class="panel__header">Live preview</div>
             <div class="panel__body">
-              <div class="preview-box" [class.preview-box--dark]="playgroundVariant() === 'white'">
+              <div
+                class="preview-box"
+                [class.preview-box--dark]="playgroundVariant() === 'white'"
+              >
                 <orc-spinner
                   [size]="playgroundSize()"
                   [variant]="playgroundVariant()"
@@ -30,8 +34,12 @@
                 ></orc-spinner>
               </div>
 
-              <div *ngIf="playgroundFullScreen()" style="text-align: center;">
-                <button type="button" (click)="playgroundFullScreen.set(false)" style="padding: 6px 12px; font-size: 12px; cursor: pointer;">
+              <div *ngIf="playgroundFullScreen()" style="text-align: center">
+                <button
+                  type="button"
+                  (click)="playgroundFullScreen.set(false)"
+                  style="padding: 6px 12px; font-size: 12px; cursor: pointer"
+                >
                   Fechar overlay tela cheia
                 </button>
               </div>
@@ -46,9 +54,30 @@
               <div class="control-group">
                 <label class="control-label">Tamanho (size)</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'sm'" (click)="playgroundSize.set('sm')">SM (16px)</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'md'" (click)="playgroundSize.set('md')">MD (24px)</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'lg'" (click)="playgroundSize.set('lg')">LG (40px)</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'sm'"
+                    (click)="playgroundSize.set('sm')"
+                  >
+                    SM (16px)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'md'"
+                    (click)="playgroundSize.set('md')"
+                  >
+                    MD (24px)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'lg'"
+                    (click)="playgroundSize.set('lg')"
+                  >
+                    LG (40px)
+                  </button>
                 </div>
               </div>
 
@@ -56,9 +85,30 @@
               <div class="control-group">
                 <label class="control-label">Tipo (type)</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'ring'" (click)="playgroundType.set('ring')">Ring</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'star'" (click)="playgroundType.set('star')">Star</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'dots'" (click)="playgroundType.set('dots')">Dots</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'ring'"
+                    (click)="playgroundType.set('ring')"
+                  >
+                    Ring
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'star'"
+                    (click)="playgroundType.set('star')"
+                  >
+                    Star
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'dots'"
+                    (click)="playgroundType.set('dots')"
+                  >
+                    Dots
+                  </button>
                 </div>
               </div>
 
@@ -66,16 +116,54 @@
               <div class="control-group">
                 <label class="control-label">Variante (variant)</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'primary'" (click)="playgroundVariant.set('primary')">Primary</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'secondary'" (click)="playgroundVariant.set('secondary')">Secondary</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'neutral'" (click)="playgroundVariant.set('neutral')">Neutral</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'white'" (click)="playgroundVariant.set('white')">White</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'primary'
+                    "
+                    (click)="playgroundVariant.set('primary')"
+                  >
+                    Primary
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'secondary'
+                    "
+                    (click)="playgroundVariant.set('secondary')"
+                  >
+                    Secondary
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'neutral'
+                    "
+                    (click)="playgroundVariant.set('neutral')"
+                  >
+                    Neutral
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'white'
+                    "
+                    (click)="playgroundVariant.set('white')"
+                  >
+                    White
+                  </button>
                 </div>
               </div>
 
               <!-- Texto Opcional -->
               <div class="control-group">
-                <label class="control-label" for="spinner-text-input">Texto descritivo (text)</label>
+                <label class="control-label" for="spinner-text-input"
+                  >Texto descritivo (text)</label
+                >
                 <input
                   id="spinner-text-input"
                   type="text"
@@ -90,8 +178,26 @@
               <div class="control-group" *ngIf="playgroundText()">
                 <label class="control-label">Posição do texto</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTextPosition() === 'right'" (click)="playgroundTextPosition.set('right')">Right</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTextPosition() === 'bottom'" (click)="playgroundTextPosition.set('bottom')">Bottom</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundTextPosition() === 'right'
+                    "
+                    (click)="playgroundTextPosition.set('right')"
+                  >
+                    Right
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundTextPosition() === 'bottom'
+                    "
+                    (click)="playgroundTextPosition.set('bottom')"
+                  >
+                    Bottom
+                  </button>
                 </div>
               </div>
 
@@ -100,7 +206,13 @@
                 <label class="control-label">Overlay</label>
                 <div class="checkbox-group">
                   <label class="checkbox-label">
-                    <input type="checkbox" [checked]="playgroundFullScreen()" (change)="playgroundFullScreen.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundFullScreen()"
+                      (change)="
+                        playgroundFullScreen.set($any($event.target).checked)
+                      "
+                    />
                     Modo tela cheia (fullScreen)
                   </label>
                 </div>
@@ -116,37 +228,63 @@
 
         <div class="figma-block">
           <div class="figma-block__label">
-            <em>Estilos e tipos apresentados no Figma (Rollin - Full, Rollin - Small, Star e Dots):</em>
+            <em
+              >Estilos e tipos apresentados no Figma (Rollin - Full, Rollin -
+              Small, Star e Dots):</em
+            >
           </div>
 
           <div class="spinner-row">
             <!-- Rollin - Full (Azul elétrico) -->
             <div class="spinner-card-sample">
-              <orc-spinner type="ring" variant="primary" size="md"></orc-spinner>
-              <span class="spinner-card-sample__title">Rollin - Full (Primary)</span>
+              <orc-spinner
+                type="ring"
+                variant="primary"
+                size="md"
+              ></orc-spinner>
+              <span class="spinner-card-sample__title"
+                >Rollin - Full (Primary)</span
+              >
             </div>
 
             <!-- Rollin - Small (Neutro) -->
             <div class="spinner-card-sample">
-              <orc-spinner type="ring" variant="neutral" size="sm"></orc-spinner>
+              <orc-spinner
+                type="ring"
+                variant="neutral"
+                size="sm"
+              ></orc-spinner>
               <span class="spinner-card-sample__title">Rollin - Small</span>
             </div>
 
             <!-- Star / Radial -->
             <div class="spinner-card-sample">
-              <orc-spinner type="star" variant="neutral" size="md"></orc-spinner>
+              <orc-spinner
+                type="star"
+                variant="neutral"
+                size="md"
+              ></orc-spinner>
               <span class="spinner-card-sample__title">Star (Radial)</span>
             </div>
 
             <!-- Dots -->
             <div class="spinner-card-sample">
-              <orc-spinner type="dots" variant="neutral" size="md"></orc-spinner>
+              <orc-spinner
+                type="dots"
+                variant="neutral"
+                size="md"
+              ></orc-spinner>
               <span class="spinner-card-sample__title">Dots (Pulsing)</span>
             </div>
 
             <!-- Com texto inline -->
             <div class="spinner-card-sample">
-              <orc-spinner type="ring" variant="primary" size="sm" text="Salvando alterações..."></orc-spinner>
+              <orc-spinner
+                type="ring"
+                variant="primary"
+                size="sm"
+                text="Salvando alterações..."
+              ></orc-spinner>
               <span class="spinner-card-sample__title">Inline com texto</span>
             </div>
           </div>
@@ -169,58 +307,98 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>size</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'sm' | 'md' | 'lg'</code></td>
                 <td><code>'md'</code></td>
                 <td>Tamanho pré-definido (sm: 16px, md: 24px, lg: 40px).</td>
               </tr>
               <tr>
-                <td><code>customSize</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>customSize</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string | number</code></td>
                 <td><code>''</code></td>
-                <td>Dimensão customizada em pixels ou porcentagem (ex: <code>32</code> ou <code>'32px'</code>).</td>
+                <td>
+                  Dimensão customizada em pixels ou porcentagem (ex:
+                  <code>32</code> ou <code>'32px'</code>).
+                </td>
               </tr>
               <tr>
-                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
-                <td><code>'primary' | 'secondary' | 'neutral' | 'white'</code></td>
+                <td>
+                  <code>variant</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
+                <td>
+                  <code>'primary' | 'secondary' | 'neutral' | 'white'</code>
+                </td>
                 <td><code>'primary'</code></td>
                 <td>Variação cromática do indicador.</td>
               </tr>
               <tr>
-                <td><code>type</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>type</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'ring' | 'star' | 'dots'</code></td>
                 <td><code>'ring'</code></td>
                 <td>Estilo da animação do indicador.</td>
               </tr>
               <tr>
-                <td><code>text</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>text</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
                 <td>Texto descritivo opcional exibido junto ao spinner.</td>
               </tr>
               <tr>
-                <td><code>textPosition</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>textPosition</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'right' | 'bottom'</code></td>
                 <td><code>'right'</code></td>
                 <td>Posição do texto descritivo em relação ao indicador.</td>
               </tr>
               <tr>
-                <td><code>fullScreen</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>fullScreen</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
-                <td>Ativa o modo de bloqueio e carregamento em tela cheia com overlay.</td>
+                <td>
+                  Ativa o modo de bloqueio e carregamento em tela cheia com
+                  overlay.
+                </td>
               </tr>
               <tr>
-                <td><code>backdrop</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>backdrop</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>true</code></td>
-                <td>Exibe fundo semitransparente com desfoque no modo tela cheia.</td>
+                <td>
+                  Exibe fundo semitransparente com desfoque no modo tela cheia.
+                </td>
               </tr>
               <tr>
-                <td><code>ariaLabel</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>ariaLabel</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>'Carregando...'</code></td>
-                <td>Texto acessível lido por leitores de tela (WCAG).</td>
+                <td>
+                  Texto acessível anunciado por leitores de tela durante o
+                  carregamento.
+                </td>
               </tr>
             </tbody>
           </table>

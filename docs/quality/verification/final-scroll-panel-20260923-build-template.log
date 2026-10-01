@@ -1,0 +1,28 @@
+❯ Building...
+✔ Building...
+Initial chunk files   | Names                    |  Raw size | Estimated transfer size
+main-NIF63ZBL.js      | main                     | 341.22 kB |                90.37 kB
+polyfills-RV3JTMEC.js | polyfills                |  35.78 kB |                11.63 kB
+styles-LGULNILN.css   | styles                   |  13.67 kB |                 2.06 kB
+
+                      | Initial total            | 390.67 kB |               104.06 kB
+
+Lazy chunk files      | Names                    |  Raw size | Estimated transfer size
+chunk-2AVPLE9i.js     | crud-page-component      | 132.99 kB |                26.80 kB
+chunk-BjZ2maEh.js     | -                        |  93.73 kB |                22.63 kB
+chunk-CO-4pPUP.js     | settings-page-component  |  92.92 kB |                19.13 kB
+chunk-A3QEOHBl.js     | -                        |  66.70 kB |                15.70 kB
+chunk-D3kWT_hH.js     | dashboard-page-component |  47.69 kB |                10.98 kB
+chunk-CfrYJNZe.js     | -                        |  31.94 kB |                 7.66 kB
+chunk-D9Qp9b7y.js     | -                        |  30.32 kB |                 5.51 kB
+chunk-63tWuwk4.js     | main-layout-component    |  29.01 kB |                 6.07 kB
+chunk-DS7BJiNH.js     | login-page-component     |  19.88 kB |                 4.90 kB
+chunk-19e2doOk.js     | -                        |  17.23 kB |                 3.86 kB
+chunk-BJ423BFk.js     | -                        |  12.80 kB |                 2.93 kB
+chunk-CGX_YSv3.js     | -                        |  12.73 kB |                 2.94 kB
+chunk-CTTr7-qW.js     | -                        |  11.47 kB |                 3.05 kB
+
+Application bundle generation complete. [1.713 seconds] - 2026-09-23T01:55:24.855Z
+
+Output location: /Users/matheuscastro/Workspaces/orc_ds/dist/template
+

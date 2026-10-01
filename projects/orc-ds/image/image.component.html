@@ -1,39 +1,155 @@
 <figure
-  [class]="'orc-image orc-image--' + radius() + ' ' + styleClass()"
-  [style.width]="width() || null"
-  [style.height]="height() || null"
+  #imageContainer
+  tabindex="-1"
+  [class]="
+    'orc-image orc-image--' +
+    radius() +
+    (height() === '' ? ' orc-image--auto-height' : '') +
+    ' ' +
+    styleClass()
+  "
+  [style.width]="cssDimension(width())"
+  [style.height]="cssDimension(height())"
 >
   @if (renderedSrc()) {
-    <img
-      [src]="renderedSrc()"
-      [attr.alt]="alt() || null"
-      [loading]="loading()"
-      [srcset]="srcSet() || null"
-      [sizes]="sizes() || null"
-      decoding="async"
-      [class]="imageClass()"
-      [style]="imageStyle()"
-      [style.object-fit]="fit()"
-      [attr.aria-label]="ariaLabel() || null"
-      (load)="onLoad()"
-      (error)="onError($event)"
-      (click)="onImageClick()"
-    />
+    @if (preview()) {
+      <button
+        type="button"
+        class="orc-image__trigger"
+        [attr.aria-label]="previewTriggerLabel()"
+        (click)="onImageClick($event)"
+      >
+        <img
+          [src]="renderedSrc()"
+          [attr.alt]="alt()"
+          [loading]="loading()"
+          [attr.srcset]="renderedSrcSet() || null"
+          [attr.sizes]="renderedSizes() || null"
+          decoding="async"
+          [class]="imageClass()"
+          [style]="imageStyle()"
+          [style.object-fit]="fit()"
+          [attr.aria-label]="ariaLabel()?.trim() || null"
+          (load)="onLoad()"
+          (error)="onError($event)"
+        />
+      </button>
+    } @else {
+      <img
+        [src]="renderedSrc()"
+        [attr.alt]="alt()"
+        [loading]="loading()"
+        [attr.srcset]="renderedSrcSet() || null"
+        [attr.sizes]="renderedSizes() || null"
+        decoding="async"
+        [class]="imageClass()"
+        [style]="imageStyle()"
+        [style.object-fit]="fit()"
+        [attr.aria-label]="ariaLabel()?.trim() || null"
+        (load)="onLoad()"
+        (error)="onError($event)"
+      />
+    }
   } @else if (placeholder()) {
-    <div class="orc-image__placeholder" role="img" [attr.aria-label]="ariaLabel() || alt() || null">{{ placeholder() }}</div>
-  }
-  @if (previewVisible()) {
-    <div class="orc-image__preview-mask" role="dialog" aria-modal="true" (click)="closePreview()">
-      <div class="orc-image__preview-content" (click)="$event.stopPropagation()">
-        <div class="orc-image__preview-toolbar" role="toolbar">
-          <button type="button" [attr.aria-label]="zoomOutAriaLabel() || null" (click)="zoomOut()">−</button>
-          <button type="button" [attr.aria-label]="zoomInAriaLabel() || null" (click)="zoomIn()">+</button>
-          <button type="button" [attr.aria-label]="rotateLeftAriaLabel() || null" (click)="rotateLeft()">↶</button>
-          <button type="button" [attr.aria-label]="rotateRightAriaLabel() || null" (click)="rotateRight()">↷</button>
-          <button type="button" [attr.aria-label]="closePreviewAriaLabel() || null" (click)="closePreview()">×</button>
-        </div>
-        <img [src]="previewImageSrc() || renderedSrc()" [srcset]="previewImageSrcSet() || null" [sizes]="previewImageSizes() || null" [attr.alt]="alt() || null" [style.transform]="'scale(' + scale() + ') rotate(' + rotation() + 'deg)'" />
-      </div>
+    <div
+      class="orc-image__placeholder"
+      role="img"
+      [attr.aria-label]="
+        ariaLabel()?.trim() || alt().trim() || placeholder()?.trim() || null
+      "
+    >
+      {{ placeholder() }}
     </div>
+  }
+  @if (preview() && renderedSrc()) {
+    <orc-modal
+      [isOpen]="previewVisible()"
+      [showHeader]="false"
+      [showCloseButton]="false"
+      [closable]="false"
+      [ariaLabel]="accessibilityLabel(ariaLabel(), 'Image preview')"
+      size="custom"
+      [style]="{
+        width: 'min(100vw - 1rem, 1200px)',
+        maxWidth: 'calc(100vw - 1rem)',
+      }"
+      [contentStyle]="{ overflow: 'hidden', padding: '0' }"
+      (closed)="onPreviewModalClosed()"
+    >
+      @if (previewVisible()) {
+        <div
+          modal-body
+          class="orc-image__preview-content"
+          [style.width]="'min(100%, 1200px)'"
+        >
+          <div
+            class="orc-image__preview-toolbar"
+            role="group"
+            aria-label="Image preview controls"
+          >
+            <button
+              type="button"
+              [disabled]="scale() <= 0.5"
+              [attr.aria-label]="
+                accessibilityLabel(zoomOutAriaLabel(), 'Zoom out')
+              "
+              (click)="zoomOut()"
+            >
+              −
+            </button>
+            <button
+              type="button"
+              [disabled]="scale() >= 3"
+              [attr.aria-label]="
+                accessibilityLabel(zoomInAriaLabel(), 'Zoom in')
+              "
+              (click)="zoomIn()"
+            >
+              +
+            </button>
+            <button
+              type="button"
+              [attr.aria-label]="
+                accessibilityLabel(rotateLeftAriaLabel(), 'Rotate left')
+              "
+              (click)="rotateLeft()"
+            >
+              ↶
+            </button>
+            <button
+              type="button"
+              [attr.aria-label]="
+                accessibilityLabel(rotateRightAriaLabel(), 'Rotate right')
+              "
+              (click)="rotateRight()"
+            >
+              ↷
+            </button>
+            <button
+              type="button"
+              [attr.aria-label]="
+                accessibilityLabel(
+                  closePreviewAriaLabel(),
+                  'Close image preview'
+                )
+              "
+              (click)="closePreview()"
+            >
+              ×
+            </button>
+          </div>
+          <img
+            [src]="previewImageSrc() || renderedSrc()"
+            [attr.srcset]="previewImageSrcSet() || null"
+            [attr.sizes]="previewImageSizes() || null"
+            [attr.alt]="alt()"
+            [style.maxWidth]="'100%'"
+            [style.transform]="
+              'scale(' + scale() + ') rotate(' + rotation() + 'deg)'
+            "
+          />
+        </div>
+      }
+    </orc-modal>
   }
 </figure>

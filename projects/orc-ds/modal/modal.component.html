@@ -1,48 +1,79 @@
 <dialog
   #dialogRef
-  [id]="id() || null"
+  [attr.id]="id() || null"
   [class]="'p-dialog p-component ' + modalClassNames() + ' ' + styleClass()"
   [style]="style()"
   [style.z-index]="inline() ? 'auto' : effectiveZIndex()"
   (cancel)="onCancel($event)"
+  (close)="onNativeClose()"
+  tabindex="-1"
   (click)="onBackdropClick($event)"
   [attr.role]="role()"
   [attr.aria-modal]="inline() || !modal() ? null : 'true'"
-  [attr.aria-labelledby]="ariaLabelledBy() || null"
-  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-labelledby]="
+    ariaLabelledBy() ||
+    (!ariaLabel() && showHeader() && hasTitle() ? titleId : null)
+  "
+  [attr.aria-label]="
+    ariaLabelledBy()
+      ? null
+      : ariaLabel() || (!showHeader() || !hasTitle() ? 'Dialog' : null)
+  "
   [attr.aria-describedby]="ariaDescribedBy() || null"
-  [attr.open]="inline() ? '' : null"
 >
-  <div class="orc-modal__container" (click)="$event.stopPropagation()">
+  <div class="orc-modal__container">
     <!-- HEADER -->
-    <header class="orc-modal__header" [class.orc-modal__header--hidden]="!showHeader()">
-      <div class="orc-modal__header-content">
-        @if (header()) { <span>{{ header() }}</span> }
+    <header
+      class="orc-modal__header"
+      [class.orc-modal__header--hidden]="!showHeader()"
+    >
+      <div #headerContent [id]="titleId" class="orc-modal__header-content">
+        @if (header()) {
+          <span>{{ header() }}</span>
+        }
         <ng-content select="[modal-header]"></ng-content>
       </div>
-      
+
       @if (showCloseButton() && closable()) {
         <orc-button
           variant="ghost"
           size="sm"
           [iconOnly]="true"
+          [tabindex]="effectiveCloseTabindex()"
           (click)="onClose()"
-          [ariaLabel]="closeAriaLabel()"
+          [ariaLabel]="closeAriaLabel() || 'Close dialog'"
           class="orc-modal__close-btn"
         >
-          <svg iconLeft viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+          <span iconLeft class="orc-modal__close-icon" aria-hidden="true">
+            {{ closeIcon() }}
+          </span>
         </orc-button>
       }
-      @if (maximizable()) { <button type="button" class="orc-modal__maximize" (click)="toggleMaximize()" [attr.aria-label]="(maximized() ? restoreAriaLabel() : maximizeAriaLabel()) || null">{{ maximized() ? minimizeIcon() : maximizeIcon() }}</button> }
+      @if (maximizable()) {
+        <button
+          type="button"
+          class="orc-modal__maximize"
+          (click)="toggleMaximize()"
+          [attr.aria-label]="
+            maximized()
+              ? restoreAriaLabel() || 'Restore dialog'
+              : maximizeAriaLabel() || 'Maximize dialog'
+          "
+        >
+          {{ maximized() ? minimizeIcon() : maximizeIcon() }}
+        </button>
+      }
     </header>
 
     <!-- BODY -->
-    <main class="orc-modal__body" [class]="contentStyleClass()" [style]="contentStyle()">
+    <div
+      class="orc-modal__body"
+      [class]="contentStyleClass()"
+      [style]="contentStyle()"
+    >
       <ng-content select="[modal-body]"></ng-content>
-    </main>
+      <ng-content></ng-content>
+    </div>
 
     <!-- FOOTER -->
     <footer class="orc-modal__footer">
