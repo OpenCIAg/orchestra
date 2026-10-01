@@ -136,7 +136,7 @@ Still required: remaining overlay and control repairs; shared theme/spacing and 
 - Initial inventory: 151 component classes, 18 directives, four services, 221 secondary entry points. Several declarations are duplicate implementations, while many entry points are import aliases.
 - Read source, templates, styles, types, existing specs, package/build/release configuration, and the docs/template/demo applications before implementing repair batches. Generated icon metadata and binary media are data assets, not separate hand-written implementations.
 - Review ownership: core overlays/buttons/date picker/toasts/styles/build (primary); input controls (Luna); expansion/compatibility components (Luna); display/navigation/docs/apps (Luna). Findings are retained in the linked family audit files as the source pass completes.
-- Preserve the existing user change in `projects/docs/src/app/services/component-catalog.service.ts`, `.nvmrc`, the existing package archive, and `outputs/` artifacts.
+- Preserve the existing user change in `projects/docs/src/app/services/component-catalog.service.ts` and `.nvmrc`. The generation-process exhaust previously retained alongside them (`outputs/` artifact trees, the root package archive, and the spreadsheet trackers) was purged from the repository in the 2026-10 hygiene overhaul (OpenCIAg/orchestra#3), and ignore rules now block those artifact classes.
 
 ## Acceptance checks
 
