@@ -1,4 +1,10 @@
-import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  computed,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginatorComponent } from '@ciag/orchestra/paginator';
@@ -65,7 +71,9 @@ export class CrudPageComponent {
   readonly formStock = signal<number>(45);
   readonly formRating = signal<number>(4.5);
   readonly formTags = signal<string[]>(['Lançamento', 'Bestseller']);
-  readonly formDescription = signal<string>('Equipamento de alta precisão com suporte avançado.');
+  readonly formDescription = signal<string>(
+    'Equipamento de alta precisão com suporte avançado.',
+  );
 
   readonly categoryOptions: SelectOption[] = [
     { label: 'Todas as categorias', value: 'all' },
@@ -75,13 +83,76 @@ export class CrudPageComponent {
   ];
 
   readonly products = signal<ProductItem[]>([
-    { id: 'PRD-001', name: 'MacBook Pro M3 Max', category: 'Tecnologia', price: 24999, stock: 12, rating: 5, status: 'active', tags: ['Hardware', 'Premium'] },
-    { id: 'PRD-002', name: 'Monitor 4K Studio Display', category: 'Equipamentos', price: 11499, stock: 8, rating: 4, status: 'active', tags: ['Display'] },
-    { id: 'PRD-003', name: 'Licença Enterprise Cloud', category: 'Serviços', price: 4500, stock: 999, rating: 5, status: 'active', tags: ['SaaS', 'Cloud'] },
-    { id: 'PRD-004', name: 'Teclado Mecânico Ergonômico', category: 'Equipamentos', price: 1250, stock: 0, rating: 4, status: 'draft', tags: ['Periféricos'] },
-    { id: 'PRD-005', name: 'Servidor Rack 2U Dell', category: 'Tecnologia', price: 38900, stock: 3, rating: 5, status: 'active', tags: ['Infra'] },
-    { id: 'PRD-006', name: 'Consultoria de Arquitetura', category: 'Serviços', price: 15000, stock: 5, rating: 5, status: 'active', tags: ['Consulting'] },
-    { id: 'PRD-007', name: 'Hub USB-C Thunderbolt 4', category: 'Equipamentos', price: 890, stock: 35, rating: 3, status: 'archived', tags: ['Acessórios'] },
+    {
+      id: 'PRD-001',
+      name: 'MacBook Pro M3 Max',
+      category: 'Tecnologia',
+      price: 24999,
+      stock: 12,
+      rating: 5,
+      status: 'active',
+      tags: ['Hardware', 'Premium'],
+    },
+    {
+      id: 'PRD-002',
+      name: 'Monitor 4K Studio Display',
+      category: 'Equipamentos',
+      price: 11499,
+      stock: 8,
+      rating: 4,
+      status: 'active',
+      tags: ['Display'],
+    },
+    {
+      id: 'PRD-003',
+      name: 'Licença Enterprise Cloud',
+      category: 'Serviços',
+      price: 4500,
+      stock: 999,
+      rating: 5,
+      status: 'active',
+      tags: ['SaaS', 'Cloud'],
+    },
+    {
+      id: 'PRD-004',
+      name: 'Teclado Mecânico Ergonômico',
+      category: 'Equipamentos',
+      price: 1250,
+      stock: 0,
+      rating: 4,
+      status: 'draft',
+      tags: ['Periféricos'],
+    },
+    {
+      id: 'PRD-005',
+      name: 'Servidor Rack 2U Dell',
+      category: 'Tecnologia',
+      price: 38900,
+      stock: 3,
+      rating: 5,
+      status: 'active',
+      tags: ['Infra'],
+    },
+    {
+      id: 'PRD-006',
+      name: 'Consultoria de Arquitetura',
+      category: 'Serviços',
+      price: 15000,
+      stock: 5,
+      rating: 5,
+      status: 'active',
+      tags: ['Consulting'],
+    },
+    {
+      id: 'PRD-007',
+      name: 'Hub USB-C Thunderbolt 4',
+      category: 'Equipamentos',
+      price: 890,
+      stock: 35,
+      rating: 3,
+      status: 'archived',
+      tags: ['Acessórios'],
+    },
   ]);
 
   readonly filteredProducts = computed(() => {
@@ -90,7 +161,10 @@ export class CrudPageComponent {
     const stockOnly = this.onlyInStock();
 
     return this.products().filter((p) => {
-      const matchesQuery = !q || p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q);
+      const matchesQuery =
+        !q ||
+        p.name.toLowerCase().includes(q) ||
+        p.id.toLowerCase().includes(q);
       const matchesCategory = cat === 'all' || p.category === cat;
       const matchesStock = !stockOnly || p.stock > 0;
       return matchesQuery && matchesCategory && matchesStock;
@@ -143,7 +217,9 @@ export class CrudPageComponent {
         tags: this.formTags(),
       };
       this.products.update((list) => [newProduct, ...list]);
-      this.toastService.success(`Produto ${newProduct.name} cadastrado com sucesso!`);
+      this.toastService.success(
+        `Produto ${newProduct.name} cadastrado com sucesso!`,
+      );
     } else {
       this.products.update((list) =>
         list.map((p) =>
@@ -157,8 +233,8 @@ export class CrudPageComponent {
                 rating: this.formRating(),
                 tags: this.formTags(),
               }
-            : p
-        )
+            : p,
+        ),
       );
       this.toastService.success('Alterações salvas com sucesso!');
     }

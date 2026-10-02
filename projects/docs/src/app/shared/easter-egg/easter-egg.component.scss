@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background-color: #1C6AED;
+  background-color: #1c6aed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,15 +46,29 @@
 }
 
 @keyframes floatBaton {
-  0% { transform: rotate(-45deg) translateY(0px) scale(0.95); }
-  100% { transform: rotate(-45deg) translateY(-40px) scale(1.05); }
+  0% {
+    transform: rotate(-45deg) translateY(0px) scale(0.95);
+  }
+  100% {
+    transform: rotate(-45deg) translateY(-40px) scale(1.05);
+  }
 }
 
 @keyframes scrollUp {
-  0% { top: 150%; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: -50%; opacity: 0; }
+  0% {
+    top: 150%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: -50%;
+    opacity: 0;
+  }
 }
 
 .easter-egg-final {
@@ -71,8 +85,14 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .final-content {
@@ -125,5 +145,5 @@
   right: 40px;
   bottom: 40px;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }

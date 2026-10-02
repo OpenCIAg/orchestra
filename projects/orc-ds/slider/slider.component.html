@@ -97,7 +97,7 @@
         (mouseleave)="onThumbMouseLeave()"
       >
         <!-- Tooltip Flutuante -->
-        @if (shouldShowTooltip("start")) {
+        @if (shouldShowTooltip('start')) {
           <div class="orc-slider-tooltip" role="tooltip">
             {{ formattedStartValue() }}
           </div>
@@ -134,7 +134,7 @@
       (mouseleave)="onThumbMouseLeave()"
     >
       <!-- Tooltip Flutuante -->
-      @if (shouldShowTooltip("end")) {
+      @if (shouldShowTooltip('end')) {
         <div class="orc-slider-tooltip" role="tooltip">
           {{ formattedEndValue() }}
         </div>

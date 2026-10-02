@@ -1,18 +1,18 @@
-const rootConfig = require("../../../karma.conf.js");
+const rootConfig = require('../../../karma.conf.js');
 
 module.exports = function configureDatePickerNarrow(config) {
   rootConfig(config);
   config.set({
-    browsers: ["ChromeHeadlessNarrow"],
+    browsers: ['ChromeHeadlessNarrow'],
     client: {
       jasmine: { stopOnSpecFailure: true },
-      args: ["date-picker-narrow"],
+      args: ['date-picker-narrow'],
       clearContext: false,
     },
     customLaunchers: {
       ChromeHeadlessNarrow: {
-        base: "ChromeHeadless",
-        flags: ["--no-sandbox", "--disable-gpu", "--window-size=640,800"],
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu', '--window-size=640,800'],
       },
     },
     port: 9883,

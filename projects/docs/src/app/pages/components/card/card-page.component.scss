@@ -36,7 +36,9 @@
     font-size: 1.0625rem;
     letter-spacing: -0.02em;
 
-    img { border-radius: var(--radius-sm); }
+    img {
+      border-radius: var(--radius-sm);
+    }
   }
 
   .header__nav {
@@ -52,7 +54,9 @@
     text-decoration: none;
     transition: color var(--transition-fast);
 
-    &:hover { color: var(--text-primary); }
+    &:hover {
+      color: var(--text-primary);
+    }
 
     &--ghost {
       padding: 6px 12px;
@@ -60,7 +64,9 @@
       border-radius: var(--radius-md);
       color: var(--text-primary);
 
-      &:hover { background: var(--border-default); }
+      &:hover {
+        background: var(--border-default);
+      }
     }
   }
 }
@@ -90,7 +96,9 @@
   font-weight: 500;
   transition: opacity var(--transition-fast);
 
-  &:hover { opacity: 0.8; }
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .section-eyebrow {
@@ -244,7 +252,6 @@
   background-color: #141414; // Preto from Figma
   border-radius: var(--radius-full);
 }
-
 
 // Badge
 .badge {

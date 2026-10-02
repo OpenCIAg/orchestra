@@ -17,7 +17,7 @@
     aria-hidden="true"
   />
 
-  @if (mode() === "basic") {
+  @if (mode() === 'basic') {
     <button
       type="button"
       class="orc-file-uploader__basic-trigger"
@@ -35,7 +35,7 @@
           aria-hidden="true"
         ></span>
       }
-      {{ chooseLabel() || label() || "Choose files" }}
+      {{ chooseLabel() || label() || 'Choose files' }}
     </button>
   } @else {
     <div
@@ -79,7 +79,7 @@
         </div>
         <div class="orc-file-uploader__text">
           <span class="orc-file-uploader__label">{{
-            label() || chooseLabel() || "Choose files"
+            label() || chooseLabel() || 'Choose files'
           }}</span>
           @if (subLabel()) {
             <span class="orc-file-uploader__sublabel">{{ subLabel() }}</span>
@@ -124,7 +124,7 @@
                 aria-hidden="true"
               ></span>
             }
-            {{ uploadLabel() || "Upload" }}
+            {{ uploadLabel() || 'Upload' }}
           </button>
         }
         @if (showCancelButton()) {
@@ -141,7 +141,7 @@
                 aria-hidden="true"
               ></span>
             }
-            {{ cancelLabel() || "Cancel" }}
+            {{ cancelLabel() || 'Cancel' }}
           </button>
         }
       </div>

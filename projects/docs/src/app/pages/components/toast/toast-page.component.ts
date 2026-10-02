@@ -1,4 +1,9 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -29,7 +34,9 @@ export class ToastPageComponent {
 
   // ── Playground Signals ────────────────────────────────────
   readonly playgroundTitle = signal<string>('Notificação');
-  readonly playgroundMessage = signal<string>('Operação realizada com sucesso no sistema.');
+  readonly playgroundMessage = signal<string>(
+    'Operação realizada com sucesso no sistema.',
+  );
   readonly playgroundType = signal<ToastStatus>('success');
   readonly playgroundPosition = signal<ToastPosition>('top-right');
   readonly playgroundDuration = signal<number>(5000);
@@ -54,8 +61,10 @@ export class ToastPageComponent {
         ? {
             label: this.playgroundActionLabel(),
             icon: 'undo',
-            onClick: toast => {
-              this.toastService.info(`Ação "${this.playgroundActionLabel()}" executada para o toast ${toast.title || toast.id}!`);
+            onClick: (toast) => {
+              this.toastService.info(
+                `Ação "${this.playgroundActionLabel()}" executada para o toast ${toast.title || toast.id}!`,
+              );
             },
           }
         : undefined,

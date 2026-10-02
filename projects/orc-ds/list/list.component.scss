@@ -26,7 +26,7 @@
   border-bottom: 0;
 }
 .orc-list__item:hover:not(:disabled),
-.orc-list__item[aria-selected="true"] {
+.orc-list__item[aria-selected='true'] {
   background: var(--bg-muted);
 }
 .orc-list__item:focus-visible {

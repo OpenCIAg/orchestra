@@ -1,34 +1,34 @@
-import fs from "node:fs";
-import path from "node:path";
-import { execFileSync } from "node:child_process";
+import fs from 'node:fs';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
 const versions = JSON.parse(
-  fs.readFileSync(path.join(root, "compatibility/versions.json"), "utf8"),
+  fs.readFileSync(path.join(root, 'compatibility/versions.json'), 'utf8'),
 );
 const branch =
   process.env.RELEASE_BRANCH ||
-  execFileSync("git", ["branch", "--show-current"], {
-    encoding: "utf8",
+  execFileSync('git', ['branch', '--show-current'], {
+    encoding: 'utf8',
   }).trim();
 const target = versions[branch];
 
 if (!target) {
   throw new Error(
-    `Unsupported release branch '${branch}'. Expected one of ${Object.keys(versions).join(", ")}.`,
+    `Unsupported release branch '${branch}'. Expected one of ${Object.keys(versions).join(', ')}.`,
   );
 }
 
 const library = JSON.parse(
-  fs.readFileSync(path.join(root, "projects/orc-ds/package.json"), "utf8"),
+  fs.readFileSync(path.join(root, 'projects/orc-ds/package.json'), 'utf8'),
 );
 const angularPackages = [
-  "@angular/common",
-  "@angular/core",
-  "@angular/forms",
-  "@angular/cdk",
-  "@angular/platform-browser",
-  "@angular/router",
+  '@angular/common',
+  '@angular/core',
+  '@angular/forms',
+  '@angular/cdk',
+  '@angular/platform-browser',
+  '@angular/router',
 ];
 const mismatches = [];
 
@@ -41,7 +41,7 @@ for (const name of angularPackages) {
   const range = library.peerDependencies?.[name];
   if (range !== target.angularRange)
     mismatches.push(
-      `${name} peer range ${range ?? "<missing>"} !== ${target.angularRange}`,
+      `${name} peer range ${range ?? '<missing>'} !== ${target.angularRange}`,
     );
 }
 

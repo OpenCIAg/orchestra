@@ -17,7 +17,7 @@
   border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
   border-radius: var(--radius-md, 10px);
   box-shadow: var(--orc-shadow-overlay, var(--shadow-lg));
-  font-family: var(--font-sans, "Poppins", sans-serif);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
   box-sizing: border-box;
   overflow: hidden;
   outline: none;
@@ -127,7 +127,7 @@
     border-radius: var(--radius-sm, 8px);
     background-color: var(--orc-surface-raised, var(--orc-bg, #ffffff));
     color: var(--orc-text, var(--orc-font-main, #141414));
-    font-family: var(--font-sans, "Poppins", sans-serif);
+    font-family: var(--font-sans, 'Poppins', sans-serif);
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;

@@ -21,13 +21,13 @@ npm install @ciag/orchestra @angular/cdk
 Include Orchestra's multi-tier design tokens, CSS layers, and themes in your application's `styles.scss`:
 
 ```scss
-@use "@ciag/orchestra/styles/index";
+@use '@ciag/orchestra/styles/index';
 ```
 
 `styles/index` preserves Orchestra's legacy global reset for existing applications. New applications that own their CSS reset can load the tokens, themes, layers, and mixins without that global reset:
 
 ```scss
-@use "@ciag/orchestra/styles/core";
+@use '@ciag/orchestra/styles/core';
 ```
 
 Both style entries apply border-box sizing within component-owned `.orc-*` subtrees. The core entry leaves unrelated application boxes, typography, margins and padding alone. Theme boundaries can use `data-theme="light"`, `data-theme="dark"`, `.theme-light` or `.theme-dark`; an explicit data attribute takes precedence over a conflicting class, and explicit themes override the system preference. Nested themes resolve their own semantic colors and shadows.
@@ -62,13 +62,13 @@ Orchestra supports automatic system preference as well as manual theme toggling 
 Import directly from secondary entry points for maximum tree-shaking granularity, or from the root package:
 
 ```typescript
-import { Component } from "@angular/core";
-import { ButtonComponent } from "@ciag/orchestra/button";
-import { InputComponent } from "@ciag/orchestra/input";
-import { ModalComponent } from "@ciag/orchestra/modal";
+import { Component } from '@angular/core';
+import { ButtonComponent } from '@ciag/orchestra/button';
+import { InputComponent } from '@ciag/orchestra/input';
+import { ModalComponent } from '@ciag/orchestra/modal';
 
 @Component({
-  selector: "app-example",
+  selector: 'app-example',
   standalone: true,
   imports: [ButtonComponent, InputComponent, ModalComponent],
   template: `

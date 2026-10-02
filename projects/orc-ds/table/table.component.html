@@ -11,7 +11,7 @@
   [attr.data-pc-name]="'datatable'"
   [style]="style()"
 >
-  @if (paginatorPosition() === "top" || paginatorPosition() === "both") {
+  @if (paginatorPosition() === 'top' || paginatorPosition() === 'both') {
     <ng-container *ngTemplateOutlet="pagination" />
   }
   <div
@@ -39,7 +39,7 @@
           <!-- Coluna de Seleção em Massa -->
           @if (selectionEnabled()) {
             <th scope="col" class="orc-table__th orc-table__th--checkbox">
-              @if (selectionMode() !== "single") {
+              @if (selectionMode() !== 'single') {
                 <orc-checkbox
                   [checked]="isAllSelected()"
                   [indeterminate]="isSomeSelected()"
@@ -92,14 +92,14 @@
                     col.sortable() &&
                     (showInitialSortBadge() ||
                       (sorting().column === col.key() &&
-                        sorting().direction !== "none"))
+                        sorting().direction !== 'none'))
                   ) {
                     <span class="orc-table__sort-icon" aria-hidden="true">
                       @if (
                         sorting().column === col.key() &&
-                        sorting().direction !== "none"
+                        sorting().direction !== 'none'
                       ) {
-                        @if (sorting().direction === "asc") {
+                        @if (sorting().direction === 'asc') {
                           <!-- Seta Ascendente (SVG Figma) -->
                           <svg
                             viewBox="0 0 16 16"
@@ -111,7 +111,7 @@
                           >
                             <path d="M8 12V4M4 8l4-4 4 4" />
                           </svg>
-                        } @else if (sorting().direction === "desc") {
+                        } @else if (sorting().direction === 'desc') {
                           <!-- Seta Descendente (SVG Figma) -->
                           <svg
                             viewBox="0 0 16 16"
@@ -304,7 +304,7 @@
   </div>
 
   <!-- ── Rodapé com Paginação Integrada ───────────────────────── -->
-  @if (paginatorPosition() === "bottom" || paginatorPosition() === "both") {
+  @if (paginatorPosition() === 'bottom' || paginatorPosition() === 'both') {
     <ng-container *ngTemplateOutlet="pagination" />
   }
   <ng-template #pagination>

@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { CodeComponent } from '@ciag/orchestra/p2-doc-components';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 

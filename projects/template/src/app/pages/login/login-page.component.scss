@@ -5,8 +5,8 @@
 
 .login-hero {
   flex: 1;
-  background: linear-gradient(135deg, #0406AB 0%, #1C6AED 60%, #6A1CED 100%);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #0406ab 0%, #1c6aed 60%, #6a1ced 100%);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +104,11 @@
     width: 24px;
     height: 24px;
     border-radius: 6px;
-    background: linear-gradient(135deg, var(--orc-color-azul-eletrico), var(--orc-color-roxo-lavender));
+    background: linear-gradient(
+      135deg,
+      var(--orc-color-azul-eletrico),
+      var(--orc-color-roxo-lavender)
+    );
   }
 
   &__title {
@@ -149,7 +153,8 @@
   }
 }
 
-.forgot-link, .guest-link {
+.forgot-link,
+.guest-link {
   color: var(--orc-color-azul-eletrico);
   text-decoration: none;
   font-weight: 600;

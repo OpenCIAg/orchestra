@@ -1,7 +1,19 @@
-import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  computed,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { CheckboxComponent } from '@ciag/orchestra/checkbox';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 
@@ -27,8 +39,12 @@ export class CheckboxPageComponent {
   readonly playgroundDisabled = signal<boolean>(false);
   readonly playgroundError = signal<boolean>(false);
   readonly playgroundLabel = signal<string>('Opção de seleção');
-  readonly playgroundDescription = signal<string>('Descrição informativa ou texto de apoio para o usuário');
-  readonly playgroundErrorMessage = signal<string>('Você precisa marcar esta opção');
+  readonly playgroundDescription = signal<string>(
+    'Descrição informativa ou texto de apoio para o usuário',
+  );
+  readonly playgroundErrorMessage = signal<string>(
+    'Você precisa marcar esta opção',
+  );
 
   // ── Parent / Child Indeterminate Demo ─────────────────────
   readonly parentChildren = signal([
@@ -38,7 +54,7 @@ export class CheckboxPageComponent {
   ]);
 
   readonly allChildrenChecked = computed(() =>
-    this.parentChildren().every((c) => c.checked)
+    this.parentChildren().every((c) => c.checked),
   );
 
   readonly someChildrenChecked = computed(() => {
@@ -49,7 +65,7 @@ export class CheckboxPageComponent {
   onParentToggle(): void {
     const targetState = !this.allChildrenChecked();
     this.parentChildren.update((list) =>
-      list.map((item) => ({ ...item, checked: targetState }))
+      list.map((item) => ({ ...item, checked: targetState })),
     );
   }
 
@@ -101,7 +117,9 @@ export class CheckboxPageComponent {
     this.playgroundDisabled.set(false);
     this.playgroundError.set(false);
     this.playgroundLabel.set('Opção de seleção');
-    this.playgroundDescription.set('Descrição informativa ou texto de apoio para o usuário');
+    this.playgroundDescription.set(
+      'Descrição informativa ou texto de apoio para o usuário',
+    );
     this.playgroundErrorMessage.set('Você precisa marcar esta opção');
   }
 }

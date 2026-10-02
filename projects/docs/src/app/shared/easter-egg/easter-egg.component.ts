@@ -8,11 +8,11 @@ import { BATON_B64, CIAG_B64, SPOTIFY_B64 } from './images';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './easter-egg.component.html',
-  styleUrl: './easter-egg.component.scss'
+  styleUrl: './easter-egg.component.scss',
 })
 export class EasterEggComponent implements OnInit {
   private easterEggService = inject(EasterEggService);
-  
+
   isOpen = this.easterEggService.isOpen;
   showFinalScreen = signal(false);
 
@@ -30,14 +30,14 @@ export class EasterEggComponent implements OnInit {
   columns = 12;
   rows = 12;
   colors = ['#FFFFFF', '#1CEDB9', '#FF6A1C', '#0406AB'];
-  
+
   batons = Array.from({ length: this.columns * this.rows }, (_, i) => {
     const row = Math.floor(i / this.columns);
     const col = i % this.columns;
     return {
       id: i,
       // Diagonal pattern: shift color by 1 each row
-      color: this.colors[(col + row) % 4]
+      color: this.colors[(col + row) % 4],
     };
   });
 

@@ -1,10 +1,23 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ButtonComponent } from '@ciag/orchestra/button';
-import { CardComponent, CardHeaderComponent, CardBodyComponent, CardFooterComponent } from '@ciag/orchestra/card';
+import {
+  CardComponent,
+  CardHeaderComponent,
+  CardBodyComponent,
+  CardFooterComponent,
+} from '@ciag/orchestra/card';
 import { BadgeComponent } from '@ciag/orchestra/badge';
-import { ProgressBarComponent, ProgressCircleComponent } from '@ciag/orchestra/progress';
+import {
+  ProgressBarComponent,
+  ProgressCircleComponent,
+} from '@ciag/orchestra/progress';
 import { TabGroupComponent, TabComponent } from '@ciag/orchestra/tabs';
 import { AvatarComponent, AvatarGroupComponent } from '@ciag/orchestra/avatar';
 import { SkeletonComponent } from '@ciag/orchestra/skeleton';
@@ -45,7 +58,8 @@ export class DashboardPageComponent {
   readonly exportMenuItems: DropdownItem[] = [
     {
       label: 'Exportar PDF',
-      action: () => this.toastService.success('Relatório PDF exportado com sucesso!'),
+      action: () =>
+        this.toastService.success('Relatório PDF exportado com sucesso!'),
     },
     {
       label: 'Exportar Planilha Excel',
@@ -53,7 +67,10 @@ export class DashboardPageComponent {
     },
     {
       label: 'Compartilhar Link Seguro',
-      action: () => this.toastService.info('Link seguro copiado para a área de transferência.'),
+      action: () =>
+        this.toastService.info(
+          'Link seguro copiado para a área de transferência.',
+        ),
     },
   ];
 

@@ -54,7 +54,9 @@
   font-size: 0.8125rem;
   font-weight: 600;
   text-decoration: none;
-  transition: color var(--transition-fast), background var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast);
 }
 
 .site-header__link:hover,

@@ -1,8 +1,23 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SwitchComponent, SwitchLabelPosition, SwitchSize } from '@ciag/orchestra/switch';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  SwitchComponent,
+  SwitchLabelPosition,
+  SwitchSize,
+} from '@ciag/orchestra/switch';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 
 @Component({
@@ -28,8 +43,12 @@ export class SwitchPageComponent {
   readonly playgroundSize = signal<SwitchSize>('md');
   readonly playgroundLabelPosition = signal<SwitchLabelPosition>('end');
   readonly playgroundLabel = signal<string>('Notificações automáticas');
-  readonly playgroundDescription = signal<string>('Receba alertas instantâneos sobre novas transações');
-  readonly playgroundErrorMessage = signal<string>('Você deve ativar este serviço');
+  readonly playgroundDescription = signal<string>(
+    'Receba alertas instantâneos sobre novas transações',
+  );
+  readonly playgroundErrorMessage = signal<string>(
+    'Você deve ativar este serviço',
+  );
 
   // ── Reactive Forms Demo ───────────────────────────────────
   readonly form: FormGroup;
@@ -72,7 +91,9 @@ export class SwitchPageComponent {
     this.playgroundSize.set('md');
     this.playgroundLabelPosition.set('end');
     this.playgroundLabel.set('Notificações automáticas');
-    this.playgroundDescription.set('Receba alertas instantâneos sobre novas transações');
+    this.playgroundDescription.set(
+      'Receba alertas instantâneos sobre novas transações',
+    );
     this.playgroundErrorMessage.set('Você deve ativar este serviço');
   }
 }

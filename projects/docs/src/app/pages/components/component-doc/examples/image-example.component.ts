@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { ImageComponent } from '@ciag/orchestra/image';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 

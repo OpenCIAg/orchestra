@@ -37,7 +37,7 @@ export class AccordionPageComponent {
   readonly eventLogs = signal<string[]>([]);
 
   logEvent(msg: string): void {
-    this.eventLogs.update(logs => [
+    this.eventLogs.update((logs) => [
       `[${new Date().toLocaleTimeString()}] ${msg}`,
       ...logs.slice(0, 4),
     ]);

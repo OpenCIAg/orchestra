@@ -46,7 +46,8 @@ class LazyChildComponent implements OnInit {
 @Component({
   standalone: true,
   imports: [CollapsibleComponent, LazyChildComponent],
-  template: `<ng-template #content><orc-test-collapsible-lazy-child /></ng-template
+  template: `<ng-template #content
+      ><orc-test-collapsible-lazy-child /></ng-template
     ><orc-collapsible
       title="Deferred"
       [lazy]="true"

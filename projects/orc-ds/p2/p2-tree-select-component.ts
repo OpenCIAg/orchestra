@@ -539,7 +539,7 @@ export class TreeSelectComponent
       if (wasExpanded) next.delete(node.value);
       else next.add(node.value);
       if (wasExpanded) this.onNodeCollapse.emit(node);
-      else this.onNodeExpand.emit(node);;
+      else this.onNodeExpand.emit(node);
       return next;
     });
   }
