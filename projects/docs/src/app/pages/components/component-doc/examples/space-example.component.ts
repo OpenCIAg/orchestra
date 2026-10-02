@@ -8,7 +8,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   imports: [SpaceComponent],
   template: `
     <div class="example">
-      <span class="example__label">Consistent gap</span>
+      <span class="example__label">Espaçamento consistente</span>
       <orc-space size="1rem" wrap="true">
         <button class="doc-button" type="button">Primary</button>
         <button class="doc-button doc-button--secondary" type="button">

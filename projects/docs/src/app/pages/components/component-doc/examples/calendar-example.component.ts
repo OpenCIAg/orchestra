@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Controlled selection</span>
+        <span class="example__label">Seleção controlada</span>
         <orc-calendar
           ariaLabel="Calendário de entrega"
           [(value)]="value"
@@ -24,7 +24,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>value = {{ value() }}</code>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Boundaries</span>
+        <span class="example__label">Limites</span>
         <p>
           Datas fora do intervalo <code>2026-01-01</code> a
           <code>2026-12-31</code> ficam desabilitadas.

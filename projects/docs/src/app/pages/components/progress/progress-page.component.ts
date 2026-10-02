@@ -96,19 +96,19 @@ export class ProgressPageComponent implements OnDestroy {
   readonly iconSteps = signal<StepItem[]>([
     {
       id: 'personal',
-      title: 'Personal info',
+      title: 'Dados pessoais',
       subtitle: 'Lorem Ipsum is simply',
       icon: '👤',
     },
     {
       id: 'social',
-      title: 'Social accounts',
+      title: 'Contas sociais',
       subtitle: 'Lorem Ipsum is simply',
       icon: '🔗',
     },
     {
       id: 'payment',
-      title: 'Payment info',
+      title: 'Dados de pagamento',
       subtitle: 'Lorem Ipsum is simply',
       icon: '💳',
     },

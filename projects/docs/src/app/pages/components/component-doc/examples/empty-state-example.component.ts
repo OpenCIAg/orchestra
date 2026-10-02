@@ -8,7 +8,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   imports: [EmptyStateComponent],
   template: `
     <div class="example">
-      <span class="example__label">No content</span>
+      <span class="example__label">Sem conteúdo</span>
       <orc-empty-state
         title="Nenhum componente salvo"
         description="Crie seu primeiro componente para começar a montar a biblioteca."

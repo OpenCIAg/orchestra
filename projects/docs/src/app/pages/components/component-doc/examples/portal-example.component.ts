@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Projected content</span>
+        <span class="example__label">Conteúdo projetado</span>
         <orc-portal
           ><div class="state-note">
             <strong>Portal surface</strong

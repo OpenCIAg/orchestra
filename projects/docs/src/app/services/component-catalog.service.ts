@@ -3,6 +3,27 @@ import { ComponentEntry } from '../models/component-entry.model';
 import { CATALOG_ENTRIES, COMPONENT_USAGE_DOCS } from '../catalog';
 
 /**
+ * Category values double as filter identifiers, so they stay stable; only the
+ * display label is translated. Terms adopted by Brazilian design vocabulary
+ * (Layout, Overlay, Feedback) keep their loanword form.
+ */
+const CATEGORY_LABELS: Record<string, string> = {
+  All: 'Todos',
+  Inputs: 'Entradas',
+  Navigation: 'Navegação',
+  Feedback: 'Feedback',
+  'Data Display': 'Exibição de dados',
+  Overlay: 'Overlay',
+  Layout: 'Layout',
+  Typography: 'Tipografia',
+  Utility: 'Utilitários',
+};
+
+export function categoryLabel(category: string): string {
+  return CATEGORY_LABELS[category] ?? category;
+}
+
+/**
  * Loads the colocated per-component catalog modules (src/app/catalog). The
  * data spine is enforced by tools/quality/check-docs-coverage.mjs: every
  * inventoried component family must have a `<id>.catalog.ts` entry and a

@@ -47,7 +47,7 @@ describe('Galleria documentation', () => {
     expect(fixture.componentInstance.activeIndex()).toBe(2);
     expect(
       root.querySelector('[data-testid="gallery-status"]')?.textContent,
-    ).toContain('Amber landscape');
+    ).toContain('Paisagem âmbar');
 
     root
       .querySelector<HTMLButtonElement>(

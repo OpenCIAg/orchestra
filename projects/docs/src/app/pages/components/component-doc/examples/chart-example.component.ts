@@ -18,10 +18,12 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Rendered: bar, line, pie, doughnut</span>
+        <span class="example__label"
+          >Renderizados: barra, linha, pizza, rosca</span
+        >
         <div class="example-grid example-grid--two">
           <div>
-            <span class="example__label">Bar</span>
+            <span class="example__label">Barras</span>
             <orc-chart
               type="bar"
               [data]="chartData"
@@ -31,7 +33,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
             />
           </div>
           <div>
-            <span class="example__label">Line</span>
+            <span class="example__label">Linha</span>
             <orc-chart
               type="line"
               [data]="chartData"
@@ -41,7 +43,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
             />
           </div>
           <div>
-            <span class="example__label">Pie</span>
+            <span class="example__label">Pizza</span>
             <orc-chart
               type="pie"
               [data]="chartData"
@@ -51,7 +53,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
             />
           </div>
           <div>
-            <span class="example__label">Doughnut</span>
+            <span class="example__label">Rosca</span>
             <orc-chart
               type="doughnut"
               [data]="chartData"
@@ -63,7 +65,9 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </div>
       </div>
       <div class="example">
-        <span class="example__label">Compatibility values · unsupported</span>
+        <span class="example__label"
+          >Valores de compatibilidade · não suportados</span
+        >
         <p class="example__caption">
           Estes valores continuam aceitos por <code>ChartType</code>, mas
           atualmente exibem o status abaixo sem renderizar um gráfico.
@@ -83,7 +87,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </div>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Selection + keyboard</span>
+        <span class="example__label">Seleção + teclado</span>
         <p>
           Foque um ponto e use setas, <code>Home</code> ou <code>End</code> para
           mover a seleção; use <code>Enter</code> ou <code>Space</code> para

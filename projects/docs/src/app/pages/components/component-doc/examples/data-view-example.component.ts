@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Controlled local collection</span>
+        <span class="example__label">Coleção local controlada</span>
         <div class="popover-row">
           <button
             class="doc-button doc-button--secondary"
@@ -77,7 +77,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </div>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Lazy/server boundary</span>
+        <span class="example__label">Lazy / servidor</span>
         <p>
           O exemplo usa processamento local. Com <code>lazy</code>, trate
           <code>onLazyLoad</code>, atualize <code>value</code>/<code

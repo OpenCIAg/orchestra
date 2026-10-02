@@ -19,7 +19,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Controlled hierarchy</span>
+        <span class="example__label">Hierarquia controlada</span>
         <orc-tree
           [nodes]="nodes"
           [(selected)]="selected"
@@ -34,7 +34,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>selected = {{ selected() | json }}</code>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Keyboard + selection</span>
+        <span class="example__label">Teclado + seleção</span>
         <p>
           {{
             message() || 'Use setas para navegar e Enter/Space para selecionar.'

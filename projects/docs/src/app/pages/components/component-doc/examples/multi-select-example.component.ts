@@ -18,7 +18,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Multiple selection</span>
+        <span class="example__label">Seleção múltipla</span>
         <orc-multi-select
           label="Tecnologias"
           placeholder="Selecione tecnologias"

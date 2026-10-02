@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Right drawer</span>
+        <span class="example__label">Gaveta à direita</span>
         <button class="doc-button" type="button" (click)="open.set(true)">
           Abrir painel
         </button>

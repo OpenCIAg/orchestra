@@ -14,7 +14,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Semantic links</span>
+        <span class="example__label">Links semânticos</span>
         <div class="popover-row">
           <orc-link
             href="#preview"

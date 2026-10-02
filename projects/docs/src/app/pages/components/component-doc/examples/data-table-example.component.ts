@@ -18,7 +18,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Sortable + selectable</span>
+        <span class="example__label">Ordenável + selecionável</span>
         <orc-data-table
           [data]="rows"
           [columns]="columns"

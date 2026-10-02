@@ -77,7 +77,7 @@ describe('Editor documentation', () => {
     const root = fixture.nativeElement as HTMLElement;
     const surface = root.querySelector('orc-editor .surface') as HTMLElement;
 
-    expect(surface.innerHTML).toContain('Safe content');
+    expect(surface.innerHTML).toContain('Conteúdo seguro');
     expect(
       root.querySelector('[data-testid="editor-text-state"]')?.textContent,
     ).toContain('Nenhuma alteração');

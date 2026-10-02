@@ -14,7 +14,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Attached actions</span>
+        <span class="example__label">Ações anexadas</span>
         <orc-button-group label="Ações do projeto" [attached]="true">
           <button
             class="doc-button"
@@ -40,7 +40,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </orc-button-group>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Orientation</span>
+        <span class="example__label">Orientação</span>
         <p>
           Use <code>orientation="vertical"</code> para grupos em toolbars
           estreitas.

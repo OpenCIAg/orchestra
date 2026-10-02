@@ -19,7 +19,7 @@
         <div class="playground-grid">
           <!-- Preview Panel -->
           <div class="panel preview-panel">
-            <div class="panel__header">Live preview</div>
+            <div class="panel__header">Prévia ao vivo</div>
             <div class="panel__body">
               <div class="preview-box">
                 <orc-tab-group
@@ -180,7 +180,7 @@
 
         <!-- Default -->
         <div class="figma-block">
-          <div class="figma-block__label">Default</div>
+          <div class="figma-block__label">Padrão</div>
           <orc-tab-group [(selectedIndex)]="demoIndexDefault" variant="line">
             <orc-tab label="Default">
               <div class="tab-demo-content">
@@ -204,17 +204,17 @@
         <div class="figma-block" style="margin-top: var(--space-6)">
           <div class="figma-block__label">Com icons</div>
           <orc-tab-group [(selectedIndex)]="demoIndexIcons" variant="line">
-            <orc-tab label="Icon" icon="home">
+            <orc-tab label="Ícone" icon="home">
               <div class="tab-demo-content">
                 Conteúdo da aba com ícone Home.
               </div>
             </orc-tab>
-            <orc-tab label="Icon" icon="settings">
+            <orc-tab label="Ícone" icon="settings">
               <div class="tab-demo-content">
                 Conteúdo da aba com ícone Settings.
               </div>
             </orc-tab>
-            <orc-tab label="Icon" icon="warning">
+            <orc-tab label="Ícone" icon="warning">
               <div class="tab-demo-content">
                 Conteúdo da aba com ícone Warning.
               </div>
@@ -226,13 +226,13 @@
         <div class="figma-block" style="margin-top: var(--space-6)">
           <div class="figma-block__label">Desabilitado</div>
           <orc-tab-group [(selectedIndex)]="demoIndexDisabled" variant="line">
-            <orc-tab label="Icon" icon="home">
+            <orc-tab label="Ícone" icon="home">
               <div class="tab-demo-content">Conteúdo da aba ativa.</div>
             </orc-tab>
-            <orc-tab label="Icon" icon="settings" [disabled]="true">
+            <orc-tab label="Ícone" icon="settings" [disabled]="true">
               <div class="tab-demo-content">Aba desabilitada.</div>
             </orc-tab>
-            <orc-tab label="Icon" [disabled]="true">
+            <orc-tab label="Ícone" [disabled]="true">
               <div class="tab-demo-content">Aba desabilitada.</div>
             </orc-tab>
           </orc-tab-group>

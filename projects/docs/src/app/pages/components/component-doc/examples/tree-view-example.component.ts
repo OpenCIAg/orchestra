@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Expandable hierarchy</span>
+        <span class="example__label">Hierarquia expansível</span>
         <orc-tree-view
           [nodes]="nodes"
           label="Arquivos"
@@ -24,7 +24,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>selected = {{ selectedId() || 'none' }}</code>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Keyboard</span>
+        <span class="example__label">Teclado</span>
         <p>
           Foque um nó e use <code>←</code>, <code>→</code>, Enter ou Space para
           explorar a árvore.

@@ -100,7 +100,7 @@ describe('Data-driven documentation renderer', () => {
     const { fixture, root } = await renderDoc('date-picker');
 
     const text = root.textContent ?? '';
-    expect(text).toContain('Quick start');
+    expect(text).toContain('Início rápido');
     expect(text).toContain('label="Data de entrega"');
     expect(text).toContain('Estados cobertos');
     expect(text).toContain('Prefira limites explícitos');
@@ -165,7 +165,7 @@ describe('Chart documentation', () => {
     expect(text).toContain('ChartData');
     expect(text).toContain('onDataSelect');
     expect(text).toContain('ariaLabelledBy');
-    expect(text).toContain('Compatibility values');
+    expect(text).toContain('Valores de compatibilidade');
     for (const type of ['scatter', 'bubble', 'polarArea', 'radar']) {
       expect(text).toContain(type);
       expect(text).toContain(`Unsupported chart type: ${type}`);

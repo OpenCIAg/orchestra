@@ -14,7 +14,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Primary action</span>
+        <span class="example__label">Ação primária</span>
         <orc-floating-action-button
           [extended]="true"
           label="Novo componente"

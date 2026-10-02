@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Large list + overscan</span>
+        <span class="example__label">Lista longa + overscan</span>
         <orc-virtual-scroller
           [items]="items"
           itemLabelKey="label"

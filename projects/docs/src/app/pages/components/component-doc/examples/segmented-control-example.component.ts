@@ -18,7 +18,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">View filter</span>
+        <span class="example__label">Filtro de visualização</span>
         <orc-segmented-control
           [options]="options"
           label="Filtro de visualização"

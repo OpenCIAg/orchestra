@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Single selection</span
+        <span class="example__label">Seleção única</span
         ><orc-listbox
           label="Projetos"
           ariaLabel="Projetos disponíveis"
@@ -24,7 +24,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         /><code>value = {{ value() || 'null' }}</code>
       </div>
       <div class="example">
-        <span class="example__label">Empty state</span
+        <span class="example__label">Estado vazio</span
         ><orc-listbox
           label="Sem resultados"
           [options]="[]"

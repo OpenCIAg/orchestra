@@ -41,7 +41,7 @@ export class BadgePageComponent {
     'Design System',
     'Angular 18',
     'Signals API',
-    'Keyboard focus',
+    'Foco por teclado',
   ]);
 
   removeTag(tagToRemove: string): void {
@@ -53,7 +53,7 @@ export class BadgePageComponent {
       'Design System',
       'Angular 18',
       'Signals API',
-      'Keyboard focus',
+      'Foco por teclado',
     ]);
   }
 }

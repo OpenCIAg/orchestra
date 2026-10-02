@@ -57,7 +57,7 @@ const IMAGE_SRC =
         />
       </div>
       <div class="example">
-        <span class="example__label">Preview</span
+        <span class="example__label">Prévia</span
         ><orc-image
           [src]="src"
           alt="Composição abstrata azul do Orchestra"

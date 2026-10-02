@@ -16,7 +16,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Safe formatted content</span>
+        <span class="example__label">Conteúdo formatado com segurança</span>
         <orc-editor
           [(value)]="content"
           [actions]="actions"
@@ -29,14 +29,14 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
       </div>
       <div class="example-grid example-grid--two">
         <div class="example example--muted">
-          <span class="example__label">CVA / model state</span>
+          <span class="example__label">CVA / estado do model</span>
           <code>value = {{ content() }}</code>
           <p>
             {{ initialized() ? 'Inicializado via onInit.' : 'Inicializando…' }}
           </p>
         </div>
         <div class="example example--muted">
-          <span class="example__label">Text change</span>
+          <span class="example__label">Mudança de texto</span>
           <p data-testid="editor-text-state">
             {{ textChange() }}
           </p>
@@ -54,7 +54,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
 export class EditorExampleComponent implements OnInit {
   readonly stateChange = output<Record<string, unknown>>();
   readonly content = signal(
-    '<p><strong>Safe content</strong> for the project brief.</p>',
+    '<p><strong>Conteúdo seguro</strong> para o briefing do projeto.</p>',
   );
   readonly textChange = signal('Nenhuma alteração de texto ainda.');
   readonly initialized = signal(false);

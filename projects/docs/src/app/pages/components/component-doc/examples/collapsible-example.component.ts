@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Open + controlled</span>
+        <span class="example__label">Aberto + controlado</span>
         <orc-collapsible
           title="Detalhes de implementação"
           summary="aria-expanded"
@@ -38,7 +38,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
           >
         </div>
         <div class="example">
-          <span class="example__label">Disabled</span
+          <span class="example__label">Desabilitado</span
           ><orc-collapsible title="Bloqueado" [disabled]="true"
             ><p class="collapsible-copy">
               Este conteúdo não pode ser alternado.

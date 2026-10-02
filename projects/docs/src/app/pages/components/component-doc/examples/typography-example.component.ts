@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example-stack example">
-        <span class="example__label">Type scale</span>
+        <span class="example__label">Escala tipográfica</span>
         <orc-typography
           as="h2"
           size="xl"
@@ -18,10 +18,10 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
           >Heading XL</orc-typography
         >
         <orc-typography as="p" size="md"
-          >Body text with a predictable line-height and weight.</orc-typography
+          >Texto corrido com line-height e peso previsíveis.</orc-typography
         >
         <orc-typography as="span" size="sm" color="var(--text-secondary)"
-          >Supporting text</orc-typography
+          >Texto de apoio</orc-typography
         >
       </div>
       <p class="example__caption">

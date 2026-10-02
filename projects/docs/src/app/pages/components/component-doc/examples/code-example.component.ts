@@ -16,7 +16,7 @@ const CODE_EXAMPLE = `const selected = signal('angular');
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">TypeScript + copy</span>
+        <span class="example__label">TypeScript + cópia</span>
         <orc-code
           [code]="code"
           language="typescript"

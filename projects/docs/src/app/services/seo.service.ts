@@ -28,7 +28,7 @@ export class SeoService {
   private update(): void {
     const route = this.getDeepestRoute(this.router.routerState.snapshot.root);
     const pageTitle =
-      route.title || 'Orchestra Design System — Angular Components';
+      route.title || 'Orchestra Design System — Componentes Angular';
     const description =
       (route.data['description'] as string) ||
       'Orchestra é um design system Angular com componentes standalone, Signals, semântica ARIA, foco visível e navegação por teclado, tokens e APIs TypeScript estritas.';

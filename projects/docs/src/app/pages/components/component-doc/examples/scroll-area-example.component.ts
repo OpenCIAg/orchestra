@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Vertical viewport</span>
+        <span class="example__label">Janela vertical</span>
         <orc-scroll-area
           maxHeight="150px"
           label="Notas roláveis"
@@ -36,7 +36,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>{{ message() }}</code>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Horizontal / both</span>
+        <span class="example__label">Horizontal / ambos</span>
         <p>
           Combine <code>orientation="horizontal"</code> ou
           <code>"both"</code> com maxWidth e maxHeight.

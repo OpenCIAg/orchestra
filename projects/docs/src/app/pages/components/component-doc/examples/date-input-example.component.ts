@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Native date</span
+        <span class="example__label">Data nativa</span
         ><orc-date-input
           label="Data de entrega"
           [(value)]="value"
@@ -24,7 +24,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         /><code>value = {{ value() }}</code>
       </div>
       <div class="example">
-        <span class="example__label">Error state</span
+        <span class="example__label">Estado de erro</span
         ><orc-date-input
           label="Data inválida"
           value="2026-01-01"

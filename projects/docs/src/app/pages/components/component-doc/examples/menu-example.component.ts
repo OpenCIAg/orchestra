@@ -16,7 +16,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Popup menu</span>
+        <span class="example__label">Menu popup</span>
         <button
           class="doc-button"
           type="button"
@@ -36,14 +36,14 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
       </div>
       <div class="example-grid example-grid--two">
         <div class="example example--muted">
-          <span class="example__label">Nested items</span>
+          <span class="example__label">Itens aninhados</span>
           <p>
             Itens com <code>items</code> abrem submenus;
             <code>separator</code> divide grupos de ações.
           </p>
         </div>
         <div class="example example--muted">
-          <span class="example__label">Active focus</span>
+          <span class="example__label">Foco ativo</span>
           <p>
             Setas, Home, End e Escape movem o foco ativo e fecham o popup quando
             necessário.

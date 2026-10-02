@@ -18,7 +18,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Hierarchical selection</span>
+        <span class="example__label">Seleção hierárquica</span>
         <orc-tree-select
           label="Destino"
           placeholder="Selecione uma área"

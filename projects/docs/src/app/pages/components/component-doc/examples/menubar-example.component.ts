@@ -17,7 +17,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Arrow-key navigation</span>
+        <span class="example__label">Navegação por setas</span>
         <orc-menubar
           [items]="items"
           label="Navegação do projeto"

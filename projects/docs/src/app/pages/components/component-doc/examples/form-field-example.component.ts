@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Default</span>
+        <span class="example__label">Padrão</span>
         <orc-form-field id="doc-project-field" label="Identificação do projeto">
           <label for="doc-project-name">Nome do projeto</label>
           <input
@@ -39,7 +39,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </orc-form-field>
       </div>
       <div class="example">
-        <span class="example__label">Error</span>
+        <span class="example__label">Erro</span>
         <orc-form-field
           id="doc-domain-field"
           label="Configuração de domínio"
@@ -57,7 +57,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </orc-form-field>
       </div>
       <div class="example">
-        <span class="example__label">Projected control</span>
+        <span class="example__label">Controle projetado</span>
         <orc-form-field id="doc-comment-field" label="Observação do projeto">
           <label for="doc-project-comment">Comentário</label>
           <textarea

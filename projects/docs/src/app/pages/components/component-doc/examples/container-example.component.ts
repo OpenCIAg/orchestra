@@ -8,7 +8,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   imports: [ContainerComponent],
   template: `
     <div class="example">
-      <span class="example__label">Constrained content</span>
+      <span class="example__label">Conteúdo com largura limitada</span>
       <orc-container maxWidth="28rem" padding="0">
         <div class="state-note">
           <strong>maxWidth = 28rem</strong
