@@ -1,14 +1,13 @@
 <div
   [attr.id]="id() || null"
-  class="p-datatable p-component orc-table-container"
+  class="orc-table-container"
   [class.orc-table-container--bordered]="bordered()"
   [class.orc-table-container--striped]="striped() || stripedRows()"
   [class.orc-table-container--hoverable]="hoverable() || rowHover()"
   [class.orc-table-container--gridlines]="showGridlines()"
   [class.orc-table-container--small]="size() === 'small'"
   [class.orc-table-container--large]="size() === 'large'"
-  [class]="'p-datatable p-component orc-table-container ' + styleClass()"
-  [attr.data-pc-name]="'datatable'"
+  [class]="'orc-table-container ' + styleClass()"
   [style]="style()"
 >
   @if (paginatorPosition() === 'top' || paginatorPosition() === 'both') {

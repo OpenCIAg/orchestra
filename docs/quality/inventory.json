@@ -10033,7 +10033,7 @@
       "kind": "Component",
       "selector": "orc-data-table",
       "file": "projects/orc-ds/p2/p2-data-table-component.ts",
-      "line": 22,
+      "line": 35,
       "inputs": [
         {
           "name": "data",
@@ -18587,7 +18587,7 @@
       "kind": "Component",
       "selector": "orc-table",
       "file": "projects/orc-ds/table/table.component.ts",
-      "line": 63,
+      "line": 68,
       "inputs": [
         {
           "name": "data",
@@ -22926,7 +22926,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './tree-filter';\nexport * from './dom-target';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './dom-target';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -23932,6 +23932,7 @@
     "projects/orc-ds/internal/overlay-ownership.spec.ts",
     "projects/orc-ds/internal/overlay-position.ts",
     "projects/orc-ds/internal/p2-shared.ts",
+    "projects/orc-ds/internal/table-engine.ts",
     "projects/orc-ds/internal/tree-filter.ts",
     "projects/orc-ds/kbd/index.ts",
     "projects/orc-ds/kbd/ng-package.json",
