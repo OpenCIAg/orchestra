@@ -20,7 +20,7 @@ Use these as the audit's current map and source of prior decisions:
 - [Behavior coverage ledger](behavior-coverage-ledger.md)
 - [Control audit](audit-controls.md)
 - [Expansion and P2 audit](audit-expansion.md)
-- [Display/documentation audit](audit-display-docs.md)
+- Display/documentation audit: audit-display-docs.md (defective duplicate of audit-expansion.md, removed; surviving findings folded there)
 - [Directive and service contract ledger](directive-service-contract-ledger.md)
 - [Library scope and redundancy decisions](library-scope-decisions.md)
 - [Current integrated gate summary](verification/enterprise-component-followup-20260924/gate-summary.md)
