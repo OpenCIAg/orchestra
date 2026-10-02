@@ -43,7 +43,8 @@
     "verify:package:minimum": "node tools/quality/verify-package.mjs --minimum-angular",
     "verify:ssr": "node tools/quality/verify-ssr.mjs",
     "score:compatibility": "node tools/release/score-compatibility.mjs",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "changeset:version": "node tools/release/version-packages.mjs"
   },
   "dependencies": {
     "@angular/cdk": "^22.1.2",
