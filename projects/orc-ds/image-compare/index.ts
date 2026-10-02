@@ -1,1 +1,1 @@
-export { ImageCompareComponent } from '@ciag/orchestra/p2';
+export { ImageCompareComponent } from './image-compare.component';

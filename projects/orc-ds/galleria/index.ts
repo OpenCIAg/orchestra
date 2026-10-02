@@ -1,2 +1,2 @@
-export { GalleriaComponent } from '@ciag/orchestra/p2';
-export type { GalleryImage } from '@ciag/orchestra/p2';
+export { GalleriaComponent } from './galleria.component';
+export type { GalleryImage } from './galleria.component';

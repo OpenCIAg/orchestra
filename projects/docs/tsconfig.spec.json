@@ -4,7 +4,7 @@
     "outDir": "../../out-tsc/spec",
     "paths": {
       "@ciag/orchestra/chart": ["../orc-ds/p2/p2-chart-editor-components.ts"],
-      "@ciag/orchestra/terminal": ["../orc-ds/p2/p2-terminal-component.ts"],
+      "@ciag/orchestra/terminal": ["../orc-ds/terminal/index.ts"],
       "@ciag/orchestra/p2": ["../orc-ds/p2/p2-doc-components.ts"],
       "@ciag/orchestra/p2-doc-components": [
         "../orc-ds/p2/p2-doc-components.ts"

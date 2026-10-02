@@ -1,1 +1,1 @@
-export { CodeComponent } from '@ciag/orchestra/p2';
+export { CodeComponent } from './code.component';

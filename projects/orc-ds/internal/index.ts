@@ -7,4 +7,5 @@ export * from './cva-control';
 export * from './menu-keyboard';
 export * from './menu-item';
 export * from './p2-shared';
+export * from './tree-filter';
 export * from './dom-target';

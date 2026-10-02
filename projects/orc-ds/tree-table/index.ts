@@ -1,6 +1,6 @@
-export { TreeTableComponent } from '@ciag/orchestra/p2';
+export { TreeTableComponent } from './tree-table.component';
 export type {
-  HierarchyNode,
   TreeTableColumn,
   TreeTableSortEvent,
-} from '@ciag/orchestra/p2';
+} from './tree-table.component';
+export type { HierarchyNode } from '@ciag/orchestra/tree';

@@ -1,2 +1,2 @@
-export { OrganizationChartComponent } from '@ciag/orchestra/p2';
-export type { OrganizationNode } from '@ciag/orchestra/p2';
+export { OrganizationChartComponent } from './organization-chart.component';
+export type { OrganizationNode } from './organization-chart.component';
