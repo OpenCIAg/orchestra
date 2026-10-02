@@ -236,7 +236,7 @@
       "
     >
       <option *ngFor="let opt of effectivePageSizeOptions()" [value]="opt">
-        @if (itemsPerPageLabel() !== "") {
+        @if (itemsPerPageLabel() !== '') {
           {{ opt }} /
           {{
             resolveLabel(itemsPerPageLabel(), defaultLabels().itemsPerPageShort)

@@ -1,4 +1,4 @@
-@use "./semantics";
+@use './semantics';
 
 @mixin values {
   color-scheme: dark;
@@ -48,15 +48,15 @@
 
 @layer orchestra.tokens {
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]):not([data-theme="dark"]):not(
+    :root:not([data-theme='light']):not([data-theme='dark']):not(
         .theme-light
       ):not(.theme-dark) {
       @include values;
     }
   }
 
-  [data-theme="dark"],
-  .theme-dark:not([data-theme="light"]) {
+  [data-theme='dark'],
+  .theme-dark:not([data-theme='light']) {
     @include values;
   }
 }

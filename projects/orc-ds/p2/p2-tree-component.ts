@@ -219,11 +219,14 @@ export class TreeComponent<T = Record<string, unknown>> {
     const wasOpen = this.expanded().has(node.key);
     this.expanded.update((current) => {
       const next = new Set(current);
-      wasOpen ? next.delete(node.key) : next.add(node.key);
+      if (wasOpen) next.delete(node.key);
+      else next.add(node.key);
       return next;
     });
-    wasOpen ? this.nodeCollapse.emit(node) : this.nodeExpand.emit(node);
-    wasOpen ? this.onNodeCollapse.emit(node) : this.onNodeExpand.emit(node);
+    if (wasOpen) this.nodeCollapse.emit(node);
+    else this.nodeExpand.emit(node);
+    if (wasOpen) this.onNodeCollapse.emit(node);
+    else this.onNodeExpand.emit(node);
   }
   isSelected(key: string): boolean {
     const selected = this.selected();
@@ -232,7 +235,7 @@ export class TreeComponent<T = Record<string, unknown>> {
   checkboxState(node: HierarchyNode<T>): TreeCheckboxState {
     return this.checkboxStateByKey().get(node.key) ?? false;
   }
-  select(node: HierarchyNode<T>, event?: Event): void {
+  select(node: HierarchyNode<T>, _event?: Event): void {
     if (node.disabled) return;
     const current = this.selected();
     let next: string | string[] | null;

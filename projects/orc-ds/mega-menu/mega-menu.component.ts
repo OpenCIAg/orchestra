@@ -18,23 +18,6 @@ export type { PrimeMenuItem };
 
 const MEGA_ITEMS = '[data-mega-item]:not(:disabled):not([data-mega-disabled])';
 
-function getOwnedActiveHTMLElement(
-  ownerDocument: Document | null,
-): HTMLElement | null {
-  const active = ownerDocument?.activeElement ?? null;
-  const HTMLElementConstructor = ownerDocument?.defaultView?.HTMLElement;
-  if (
-    !ownerDocument ||
-    !active ||
-    !HTMLElementConstructor ||
-    !(active instanceof HTMLElementConstructor) ||
-    active === ownerDocument.body
-  ) {
-    return null;
-  }
-  return active;
-}
-
 @Component({
   selector: 'orc-mega-menu',
   standalone: true,

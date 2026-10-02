@@ -1,80 +1,80 @@
-import assert from "node:assert/strict";
-import { test } from "node:test";
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import {
   buildComponentApi,
   parseBindingDeclaration,
   renderFamilyModule,
   renderRegistryModule,
-} from "./component-api-lib.mjs";
+} from './component-api-lib.mjs';
 
-test("parseBindingDeclaration extracts an explicit type and default", () => {
+test('parseBindingDeclaration extracts an explicit type and default', () => {
   assert.deepEqual(
     parseBindingDeclaration(
       "readonly variant = input<ButtonVariant>('primary');",
     ),
-    { type: "ButtonVariant", defaultValue: "'primary'", required: false },
+    { type: 'ButtonVariant', defaultValue: "'primary'", required: false },
   );
 });
 
-test("parseBindingDeclaration keeps union types intact", () => {
+test('parseBindingDeclaration keeps union types intact', () => {
   assert.deepEqual(
     parseBindingDeclaration(
-      "readonly severity = input<ButtonVariant | undefined>(undefined);",
+      'readonly severity = input<ButtonVariant | undefined>(undefined);',
     ),
     {
-      type: "ButtonVariant | undefined",
-      defaultValue: "undefined",
+      type: 'ButtonVariant | undefined',
+      defaultValue: 'undefined',
       required: false,
     },
   );
 });
 
-test("parseBindingDeclaration uses only the first type argument", () => {
+test('parseBindingDeclaration uses only the first type argument', () => {
   // input<boolean, unknown> declares the transform input type separately.
   const parsed = parseBindingDeclaration(
-    "readonly disabled = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
+    'readonly disabled = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });',
   );
-  assert.equal(parsed.type, "boolean");
-  assert.equal(parsed.defaultValue, "false");
+  assert.equal(parsed.type, 'boolean');
+  assert.equal(parsed.defaultValue, 'false');
 });
 
-test("parseBindingDeclaration infers primitive types from the default", () => {
+test('parseBindingDeclaration infers primitive types from the default', () => {
   assert.equal(
-    parseBindingDeclaration("readonly closable = input(false);").type,
-    "boolean",
+    parseBindingDeclaration('readonly closable = input(false);').type,
+    'boolean',
   );
   assert.equal(
-    parseBindingDeclaration("readonly cache = input(true);").type,
-    "boolean",
+    parseBindingDeclaration('readonly cache = input(true);').type,
+    'boolean',
   );
   assert.equal(
     parseBindingDeclaration("readonly icon = input('');").type,
-    "string",
+    'string',
   );
   assert.equal(
-    parseBindingDeclaration("readonly value = input(0);").type,
-    "number",
+    parseBindingDeclaration('readonly value = input(0);').type,
+    'number',
   );
 });
 
-test("parseBindingDeclaration handles models and required inputs", () => {
+test('parseBindingDeclaration handles models and required inputs', () => {
   assert.deepEqual(
-    parseBindingDeclaration("readonly selected = model<string[]>([]);"),
-    { type: "string[]", defaultValue: "[]", required: false },
+    parseBindingDeclaration('readonly selected = model<string[]>([]);'),
+    { type: 'string[]', defaultValue: '[]', required: false },
   );
   assert.equal(
     parseBindingDeclaration(
-      "readonly columns = input.required<DataTableColumn[]>();",
+      'readonly columns = input.required<DataTableColumn[]>();',
     ).required,
     true,
   );
 });
 
-test("parseBindingDeclaration documents outputs without a default", () => {
+test('parseBindingDeclaration documents outputs without a default', () => {
   assert.deepEqual(
-    parseBindingDeclaration("readonly removed = output<string>();"),
+    parseBindingDeclaration('readonly removed = output<string>();'),
     {
-      type: "string",
+      type: 'string',
       defaultValue: null,
       required: false,
     },
@@ -87,67 +87,67 @@ test("parseBindingDeclaration documents outputs without a default", () => {
     null,
   );
   assert.deepEqual(
-    parseBindingDeclaration("readonly onRemove = output<{ value: string }>();"),
-    { type: "{ value: string }", defaultValue: null, required: false },
+    parseBindingDeclaration('readonly onRemove = output<{ value: string }>();'),
+    { type: '{ value: string }', defaultValue: null, required: false },
   );
 });
 
 const fixtureInventory = {
   declarations: [
     {
-      name: "TagComponent",
-      kind: "Component",
-      selector: "orc-tag",
-      file: "projects/orc-ds/tag/tag.component.ts",
+      name: 'TagComponent',
+      kind: 'Component',
+      selector: 'orc-tag',
+      file: 'projects/orc-ds/tag/tag.component.ts',
       line: 18,
       inputs: [
         {
-          name: "label",
-          publicName: "label",
-          kind: "signal",
+          name: 'label',
+          publicName: 'label',
+          kind: 'signal',
           required: false,
-          declaration: "readonly label = input<string | undefined>(undefined);",
-          description: "Texto exibido pela tag.",
+          declaration: 'readonly label = input<string | undefined>(undefined);',
+          description: 'Texto exibido pela tag.',
         },
         {
-          name: "virtualScroll",
-          publicName: "virtualScroll",
-          kind: "signal",
+          name: 'virtualScroll',
+          publicName: 'virtualScroll',
+          kind: 'signal',
           required: false,
-          declaration: "readonly virtualScroll = input(false);",
+          declaration: 'readonly virtualScroll = input(false);',
           deprecated: true,
           description:
-            "Compatibility input only; virtual scrolling is not implemented.",
+            'Compatibility input only; virtual scrolling is not implemented.',
         },
         {
-          name: "removable",
-          publicName: "removable",
-          kind: "model",
+          name: 'removable',
+          publicName: 'removable',
+          kind: 'model',
           required: false,
-          declaration: "readonly removable = model(false);",
+          declaration: 'readonly removable = model(false);',
         },
       ],
       outputs: [
         {
-          name: "removed",
-          kind: "output",
-          declaration: "readonly removed = output<string>();",
+          name: 'removed',
+          kind: 'output',
+          declaration: 'readonly removed = output<string>();',
         },
       ],
     },
     {
-      name: "KnobComponent",
-      kind: "Component",
-      selector: "orc-knob",
-      file: "projects/orc-ds/p2/p2-org-knob-components.ts",
+      name: 'KnobComponent',
+      kind: 'Component',
+      selector: 'orc-knob',
+      file: 'projects/orc-ds/p2/p2-org-knob-components.ts',
       line: 40,
       inputs: [
         {
-          name: "value",
-          publicName: "value",
-          kind: "model",
+          name: 'value',
+          publicName: 'value',
+          kind: 'model',
           required: false,
-          declaration: "readonly value = model<number>(0);",
+          declaration: 'readonly value = model<number>(0);',
         },
       ],
       outputs: [],
@@ -155,31 +155,31 @@ const fixtureInventory = {
   ],
 };
 
-test("buildComponentApi groups families and drops deprecated bindings", () => {
+test('buildComponentApi groups families and drops deprecated bindings', () => {
   const api = buildComponentApi(fixtureInventory);
-  assert.deepEqual(Object.keys(api), ["knob", "tag"]);
+  assert.deepEqual(Object.keys(api), ['knob', 'tag']);
 
   const tag = api.tag;
   assert.equal(tag.length, 1);
-  assert.equal(tag[0].component, "TagComponent");
-  assert.equal(tag[0].selector, "orc-tag");
+  assert.equal(tag[0].component, 'TagComponent');
+  assert.equal(tag[0].selector, 'orc-tag');
   assert.deepEqual(
     tag[0].entries.map((entry) => `${entry.kind}:${entry.name}`),
-    ["input:label", "model:removable", "output:removed"],
+    ['input:label', 'model:removable', 'output:removed'],
   );
   const label = tag[0].entries[0];
-  assert.equal(label.type, "string | undefined");
-  assert.equal(label.defaultValue, "undefined");
-  assert.equal(label.description, "Texto exibido pela tag.");
+  assert.equal(label.type, 'string | undefined');
+  assert.equal(label.defaultValue, 'undefined');
+  assert.equal(label.description, 'Texto exibido pela tag.');
   assert.equal(
-    tag[0].entries.some((entry) => entry.name === "virtualScroll"),
+    tag[0].entries.some((entry) => entry.name === 'virtualScroll'),
     false,
   );
 });
 
-test("renderFamilyModule emits a typed, prettier-stable module", async () => {
+test('renderFamilyModule emits a typed, prettier-stable module', async () => {
   const api = buildComponentApi(fixtureInventory);
-  const source = renderFamilyModule("tag", api.tag);
+  const source = renderFamilyModule('tag', api.tag);
   assert.match(source, /Generated by tools\/docs\/generate-component-api\.mjs/);
   assert.match(
     source,
@@ -190,19 +190,19 @@ test("renderFamilyModule emits a typed, prettier-stable module", async () => {
   // Deprecated bindings were dropped by buildComponentApi.
   assert.doesNotMatch(source, /virtualScroll/);
 
-  const prettier = await import("prettier");
+  const prettier = await import('prettier');
   // Mirrors the repo style the generator applies (.editorconfig quote_type =
   // single for *.ts; the prettier CLI picks this up, the programmatic API
   // does not).
   const formatted = await prettier.format(source, {
-    filepath: "tag.generated.ts",
+    filepath: 'tag.generated.ts',
     singleQuote: true,
   });
   assert.equal(source, formatted);
 });
 
-test("renderRegistryModule lazy-loads every family and quotes kebab-case ids", () => {
-  const source = renderRegistryModule(["knob", "foo-bar"]);
+test('renderRegistryModule lazy-loads every family and quotes kebab-case ids', () => {
+  const source = renderRegistryModule(['knob', 'foo-bar']);
   assert.match(source, /ComponentApiLoader/);
   assert.match(
     source,

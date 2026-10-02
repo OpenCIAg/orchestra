@@ -1,9 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  signal,
-  computed,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -168,20 +163,84 @@ export class TablePageComponent {
   }
 
   deleteRow(id: number): void {
-    this.mockUsers.update(list => list.filter(u => u.id !== id));
-    this.selectedRows.update(list => list.filter(u => u.id !== id));
+    this.mockUsers.update((list) => list.filter((u) => u.id !== id));
+    this.selectedRows.update((list) => list.filter((u) => u.id !== id));
   }
 
   resetData(): void {
     this.mockUsers.set([
-      { id: 1, name: 'Orquestra Tech', email: 'contato@orchestra.dev', role: 'Desenvolvimento', status: 'success', statusLabel: 'Sucesso', createdAt: '01/08/2026' },
-      { id: 2, name: 'Design System', email: 'design@orchestra.dev', role: 'UI/UX Design', status: 'warning', statusLabel: 'Aviso', createdAt: '02/08/2026' },
-      { id: 3, name: 'API Gateway', email: 'infra@orchestra.dev', role: 'Infraestrutura', status: 'info', statusLabel: 'Novo', createdAt: '03/08/2026' },
-      { id: 4, name: 'Auth Service', email: 'security@orchestra.dev', role: 'Segurança', status: 'active', statusLabel: 'Ativo', createdAt: '04/08/2026' },
-      { id: 5, name: 'Analytics Pipeline', email: 'data@orchestra.dev', role: 'Data Science', status: 'error', statusLabel: 'Erro', createdAt: '05/08/2026' },
-      { id: 6, name: 'Billing Gateway', email: 'finance@orchestra.dev', role: 'Financeiro', status: 'neutral', statusLabel: 'Inativo', createdAt: '06/08/2026' },
-      { id: 7, name: 'Notification Hub', email: 'alerts@orchestra.dev', role: 'Comunicações', status: 'success', statusLabel: 'Sucesso', createdAt: '07/08/2026' },
-      { id: 8, name: 'Storage Cluster', email: 'storage@orchestra.dev', role: 'Infraestrutura', status: 'active', statusLabel: 'Ativo', createdAt: '08/08/2026' },
+      {
+        id: 1,
+        name: 'Orquestra Tech',
+        email: 'contato@orchestra.dev',
+        role: 'Desenvolvimento',
+        status: 'success',
+        statusLabel: 'Sucesso',
+        createdAt: '01/08/2026',
+      },
+      {
+        id: 2,
+        name: 'Design System',
+        email: 'design@orchestra.dev',
+        role: 'UI/UX Design',
+        status: 'warning',
+        statusLabel: 'Aviso',
+        createdAt: '02/08/2026',
+      },
+      {
+        id: 3,
+        name: 'API Gateway',
+        email: 'infra@orchestra.dev',
+        role: 'Infraestrutura',
+        status: 'info',
+        statusLabel: 'Novo',
+        createdAt: '03/08/2026',
+      },
+      {
+        id: 4,
+        name: 'Auth Service',
+        email: 'security@orchestra.dev',
+        role: 'Segurança',
+        status: 'active',
+        statusLabel: 'Ativo',
+        createdAt: '04/08/2026',
+      },
+      {
+        id: 5,
+        name: 'Analytics Pipeline',
+        email: 'data@orchestra.dev',
+        role: 'Data Science',
+        status: 'error',
+        statusLabel: 'Erro',
+        createdAt: '05/08/2026',
+      },
+      {
+        id: 6,
+        name: 'Billing Gateway',
+        email: 'finance@orchestra.dev',
+        role: 'Financeiro',
+        status: 'neutral',
+        statusLabel: 'Inativo',
+        createdAt: '06/08/2026',
+      },
+      {
+        id: 7,
+        name: 'Notification Hub',
+        email: 'alerts@orchestra.dev',
+        role: 'Comunicações',
+        status: 'success',
+        statusLabel: 'Sucesso',
+        createdAt: '07/08/2026',
+      },
+      {
+        id: 8,
+        name: 'Storage Cluster',
+        email: 'storage@orchestra.dev',
+        role: 'Infraestrutura',
+        status: 'active',
+        statusLabel: 'Ativo',
+        createdAt: '08/08/2026',
+      },
     ]);
     this.selectedRows.set([]);
   }

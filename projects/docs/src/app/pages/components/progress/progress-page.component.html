@@ -26,23 +26,23 @@
             <div class="panel__header">
               Preview ·
               @switch (activeTab()) {
-                @case ("bar") {
+                @case ('bar') {
                   ProgressBarComponent
                 }
-                @case ("circle") {
+                @case ('circle') {
                   ProgressCircleComponent
                 }
-                @case ("segmented") {
+                @case ('segmented') {
                   Barra Segmentada (Etapas)
                 }
-                @case ("stepper") {
+                @case ('stepper') {
                   StepperComponent
                 }
               }
             </div>
             <div class="panel__body">
               <!-- BAR -->
-              @if (activeTab() === "bar") {
+              @if (activeTab() === 'bar') {
                 <div class="preview-box">
                   <div class="preview-bar-wrapper">
                     <orc-progress-bar
@@ -74,7 +74,7 @@
               }
 
               <!-- CIRCLE -->
-              @if (activeTab() === "circle") {
+              @if (activeTab() === 'circle') {
                 <div class="preview-box">
                   <div class="preview-circle-wrapper">
                     <orc-progress-circle
@@ -106,7 +106,7 @@
               }
 
               <!-- SEGMENTED -->
-              @if (activeTab() === "segmented") {
+              @if (activeTab() === 'segmented') {
                 <div class="preview-box">
                   <div class="preview-bar-wrapper">
                     <orc-progress-bar
@@ -148,7 +148,7 @@
               }
 
               <!-- STEPPER -->
-              @if (activeTab() === "stepper") {
+              @if (activeTab() === 'stepper') {
                 <div class="preview-box preview-box--stepper">
                   <div
                     class="preview-stepper-wrapper"
@@ -246,7 +246,7 @@
               </div>
 
               <!-- CONTROLES BAR -->
-              @if (activeTab() === "bar") {
+              @if (activeTab() === 'bar') {
                 <div class="control-group">
                   <label class="control-label">Modo de operação</label>
                   <div class="segmented-control">
@@ -271,7 +271,7 @@
                   </div>
                 </div>
 
-                @if (barMode() === "determinate") {
+                @if (barMode() === 'determinate') {
                   <div class="control-group">
                     <label class="control-label"
                       >Valor ({{ barValue() }}%)</label
@@ -397,7 +397,7 @@
               }
 
               <!-- CONTROLES CIRCLE -->
-              @if (activeTab() === "circle") {
+              @if (activeTab() === 'circle') {
                 <div class="control-group">
                   <label class="control-label">Modo</label>
                   <div class="segmented-control">
@@ -424,7 +424,7 @@
                   </div>
                 </div>
 
-                @if (circleMode() === "determinate") {
+                @if (circleMode() === 'determinate') {
                   <div class="control-group">
                     <label class="control-label"
                       >Valor ({{ circleValue() }}%)</label
@@ -561,7 +561,7 @@
               }
 
               <!-- CONTROLES SEGMENTED -->
-              @if (activeTab() === "segmented") {
+              @if (activeTab() === 'segmented') {
                 <div class="control-group">
                   <label class="control-label"
                     >Total de etapas ({{ segTotal() }})</label
@@ -654,7 +654,7 @@
               }
 
               <!-- CONTROLES STEPPER -->
-              @if (activeTab() === "stepper") {
+              @if (activeTab() === 'stepper') {
                 <div class="control-group">
                   <label class="control-label">Orientação do fluxo</label>
                   <div class="segmented-control">
@@ -681,7 +681,7 @@
                   </div>
                 </div>
 
-                @if (stepperOrientation() === "horizontal") {
+                @if (stepperOrientation() === 'horizontal') {
                   <div class="control-group">
                     <label class="control-label">Estilo dos marcadores</label>
                     <div class="segmented-control">
@@ -707,7 +707,7 @@
                   </div>
                 }
 
-                @if (stepperOrientation() === "vertical") {
+                @if (stepperOrientation() === 'vertical') {
                   <div class="control-group">
                     <label class="control-label"
                       >Progresso do passo ativo ({{

@@ -27,7 +27,7 @@
   outline: 2px solid var(--orc-color-azul-eletrico);
   outline-offset: -2px;
 }
-.orc-tree__item[aria-disabled="true"] {
+.orc-tree__item[aria-disabled='true'] {
   opacity: 0.5;
   cursor: not-allowed;
 }

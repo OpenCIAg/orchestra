@@ -2,7 +2,6 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  effect,
   input,
   model,
   output,
@@ -383,7 +382,8 @@ export class PanelMenuComponent {
     } else if (event.key === 'Enter' || event.key === ' ') {
       if (event.key === 'Enter' && target?.tagName === 'A') return;
       event.preventDefault();
-      current.parent ? this.select(current.item) : this.toggle(current.item);
+      if (current.parent) this.select(current.item);
+      else this.toggle(current.item);
     }
   }
   private currentTreeIndex(entries: PanelTreeEntry[]): number {

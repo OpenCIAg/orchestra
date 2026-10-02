@@ -1,9 +1,9 @@
-@use "./semantics";
+@use './semantics';
 
 @layer orchestra.tokens {
   :root,
-  [data-theme="light"],
-  .theme-light:not([data-theme="dark"]) {
+  [data-theme='light'],
+  .theme-light:not([data-theme='dark']) {
     color-scheme: light;
     --orc-bg: #ffffff;
     --orc-font-main: #141414;

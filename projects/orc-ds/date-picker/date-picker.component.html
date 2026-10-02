@@ -197,7 +197,7 @@
                 +
               </button>
               <span aria-live="polite" aria-atomic="true">{{
-                timeParts().minute | number: "2.0-0"
+                timeParts().minute | number: '2.0-0'
               }}</span>
               <button
                 type="button"
@@ -224,7 +224,7 @@
                   +
                 </button>
                 <span aria-live="polite" aria-atomic="true">{{
-                  timeParts().second | number: "2.0-0"
+                  timeParts().second | number: '2.0-0'
                 }}</span>
                 <button
                   type="button"
@@ -236,7 +236,7 @@
                 </button>
               </div>
             }
-            @if (hourFormat() === "12") {
+            @if (hourFormat() === '12') {
               <button
                 type="button"
                 [attr.aria-label]="toggleMeridiemLabel() || 'Toggle AM/PM'"
@@ -261,7 +261,7 @@
                 (click)="today()"
                 [disabled]="disabled() || cvaDisabled()"
               >
-                {{ todayLabel() || "Today" }}
+                {{ todayLabel() || 'Today' }}
               </button>
             }
             @if (showClear()) {
@@ -274,7 +274,7 @@
                 [disabled]="disabled() || cvaDisabled() || !inputValue()"
                 (click)="clear()"
               >
-                {{ clearLabel() || "Clear" }}
+                {{ clearLabel() || 'Clear' }}
               </button>
             }
           </footer>

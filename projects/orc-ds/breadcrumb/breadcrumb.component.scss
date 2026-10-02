@@ -5,7 +5,7 @@
 .orc-breadcrumb {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-sans, "Poppins", sans-serif);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
 
   &__list {
     display: inline-flex;
@@ -149,7 +149,7 @@
   // ── SEPARADOR AUTOMÁTICO PARA PROJEÇÃO DECLARATIVA ────────
   ::ng-deep orc-breadcrumb-item + orc-breadcrumb-item {
     &::before {
-      content: "";
+      content: '';
       display: inline-block;
       width: 14px;
       height: 14px;

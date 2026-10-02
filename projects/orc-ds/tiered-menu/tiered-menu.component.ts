@@ -492,7 +492,8 @@ export class TieredMenuComponent implements OnDestroy {
     this.unbindOutsideDismissal();
   }
   toggle(): void {
-    this.visible() ? this.hide() : this.show();
+    if (this.visible()) this.hide();
+    else this.show();
   }
   onKeydown(event: KeyboardEvent): void {
     if (this.disabled()) return;
@@ -546,7 +547,8 @@ export class TieredMenuComponent implements OnDestroy {
     const current = items[this.activeIndex()];
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.openItem() ? this.closeSubmenu(host) : this.hide();
+      if (this.openItem()) this.closeSubmenu(host);
+      else this.hide();
       return;
     }
     if (

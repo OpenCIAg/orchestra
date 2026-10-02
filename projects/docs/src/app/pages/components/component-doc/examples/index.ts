@@ -1,6 +1,4 @@
 import { Type } from '@angular/core';
-import { MenuFamilyPreviewComponent } from '../menu-family-preview.component';
-import { IconCatalogPreviewComponent } from '../icon-catalog-preview.component';
 
 /**
  * Registry of authored live examples for the generic documentation page.

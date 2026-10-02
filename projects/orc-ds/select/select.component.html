@@ -172,7 +172,7 @@
     aria-atomic="true"
   >
     @if (isOpen() && loading()) {
-      {{ loadingMessage() || "Loading options" }}
+      {{ loadingMessage() || 'Loading options' }}
     } @else if (isOpen() && !hasVisibleOptions()) {
       {{ emptyStateMessage() }}
     }
@@ -229,7 +229,7 @@
           @if (loadingIcon()) {
             <i [class]="loadingIcon()"></i>
           }
-          <span>{{ loadingMessage() || "Loading options" }}</span>
+          <span>{{ loadingMessage() || 'Loading options' }}</span>
         </div>
       } @else {
         @if (isDataMode()) {

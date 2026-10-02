@@ -369,7 +369,8 @@ export class CascadeSelectComponent implements ControlValueAccessor {
     if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
     const next = !this.open();
     this.open.set(next);
-    next ? this.onShow.emit() : this.onHide.emit();
+    if (next) this.onShow.emit();
+    else this.onHide.emit();
   }
   clear(): void {
     if (this.disabled() || this.cvaDisabled() || this.readonly()) return;

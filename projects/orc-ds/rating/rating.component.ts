@@ -216,7 +216,7 @@ export class RatingComponent implements ControlValueAccessor, AfterViewInit {
     if (this.effectiveDisabled() || this.readonly()) return;
 
     const step = this.allowHalf() && !this.numeric() ? 0.5 : 1;
-    let current = this.value();
+    const current = this.value();
 
     switch (event.key) {
       case 'ArrowRight':

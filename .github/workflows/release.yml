@@ -30,9 +30,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.22.3
-          cache: "npm"
-          registry-url: "https://registry.npmjs.org"
+          node-version-file: .nvmrc
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Use npm trusted publishing client
         run: npm install --global npm@11.5.1

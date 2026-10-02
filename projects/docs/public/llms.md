@@ -33,7 +33,7 @@ Load the token layer before local application styles. The token layer supplies t
 
 ```scss
 /* src/styles.scss */
-@use "@ciag/orchestra/styles/index";
+@use '@ciag/orchestra/styles/index';
 
 /* local overrides belong after the library layer */
 ```
@@ -54,9 +54,9 @@ Important tokens include:
 ### Minimal standalone component
 
 ```ts
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
-import { ButtonComponent } from "@ciag/orchestra/button";
-import { InputComponent } from "@ciag/orchestra/input";
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ButtonComponent } from '@ciag/orchestra/button';
+import { InputComponent } from '@ciag/orchestra/input';
 
 @Component({
   standalone: true,
@@ -68,7 +68,7 @@ import { InputComponent } from "@ciag/orchestra/input";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectFormComponent {
-  readonly projectName = signal<string>("");
+  readonly projectName = signal<string>('');
 
   save(): void {
     // consume projectName() here

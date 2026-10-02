@@ -67,13 +67,13 @@
       ›
     </button>
   </header>
-  @if (view() === "date") {
+  @if (view() === 'date') {
     <table class="days" role="grid" [attr.aria-labelledby]="titleId">
       <thead>
         <tr class="weekdays">
           @if (showWeek()) {
             <th scope="col" class="week-heading">
-              {{ weekLabel() || "Week" }}
+              {{ weekLabel() || 'Week' }}
             </th>
           }
           @for (day of weekdayLabels(); track $index) {

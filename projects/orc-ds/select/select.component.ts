@@ -613,7 +613,8 @@ export class SelectComponent
   // ── Overlay & Panel Methods ───────────────────────────────
   togglePanel(): void {
     if (this.effectiveDisabled() || this.readonly()) return;
-    this.isOpen() ? this.closePanel() : this.openPanel();
+    if (this.isOpen()) this.closePanel();
+    else this.openPanel();
   }
 
   openPanel(): void {

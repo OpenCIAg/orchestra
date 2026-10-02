@@ -1,7 +1,17 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { OtpInputComponent } from '@ciag/orchestra/otp-input';
 import { OtpSlotComponent } from '@ciag/orchestra/otp-input';
 import { OtpSeparatorComponent } from '@ciag/orchestra/otp-input';

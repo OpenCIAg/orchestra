@@ -116,7 +116,11 @@
   }
 
   &--highlight {
-    background: linear-gradient(180deg, var(--orc-color-azul-eletrico), var(--orc-color-azul-royal));
+    background: linear-gradient(
+      180deg,
+      var(--orc-color-azul-eletrico),
+      var(--orc-color-azul-royal)
+    );
   }
 }
 
@@ -159,9 +163,15 @@
     margin-top: 5px;
     flex-shrink: 0;
 
-    &--success { background-color: var(--color-success); }
-    &--warning { background-color: var(--color-warning); }
-    &--info { background-color: var(--color-info); }
+    &--success {
+      background-color: var(--color-success);
+    }
+    &--warning {
+      background-color: var(--color-warning);
+    }
+    &--info {
+      background-color: var(--color-info);
+    }
   }
 
   &__body {

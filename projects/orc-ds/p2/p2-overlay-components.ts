@@ -2,18 +2,10 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  computed,
-  ElementRef,
-  Injector,
   input,
   model,
   output,
-  signal,
-  inject,
   effect,
-  OnDestroy,
-  AfterViewInit,
-  afterNextRender,
 } from '@angular/core';
 import { P2_SHARED_STYLES } from './p2-shared';
 
@@ -168,7 +160,8 @@ export class OverlayComponent {
     }
   }
   toggle(): void {
-    this.visible() ? this.hide() : this.show();
+    if (this.visible()) this.hide();
+    else this.show();
   }
   onEscape(): void {
     this.hide();

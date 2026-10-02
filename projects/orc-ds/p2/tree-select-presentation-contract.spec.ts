@@ -300,7 +300,6 @@ describe('TreeSelect presentation and loading contract', () => {
 
   it('applies variant and size classes to the trigger presentation', () => {
     const fixture = TestBed.createComponent(TreeSelectComponent);
-    const component = fixture.componentInstance;
     fixture.componentRef.setInput('variant', 'filled');
     fixture.componentRef.setInput('size', 'small');
     fixture.detectChanges();

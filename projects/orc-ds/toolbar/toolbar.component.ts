@@ -29,7 +29,7 @@ export class ToolbarItemDirective implements OnChanges {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly stateChange = output<void>();
 
-  constructor(readonly elementRef: ElementRef<HTMLElement>) {}
+  readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   ngOnChanges(_changes: SimpleChanges): void {
     if (this.disabled()) {

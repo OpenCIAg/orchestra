@@ -154,7 +154,7 @@ describe('ScrollPanelComponent keyboard contract', () => {
     expect(panel.getAttribute('role')).toBe('region');
     expect(panel.getAttribute('aria-label')).toBe('Search results');
     const scrollBy = spyOn(panel, 'scrollBy').and.stub();
-    const scrollTo = spyOn(panel, 'scrollTo').and.stub();
+    spyOn(panel, 'scrollTo').and.stub();
 
     const noOverflow = new KeyboardEvent('keydown', {
       key: 'ArrowDown',

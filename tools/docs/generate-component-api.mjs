@@ -14,31 +14,31 @@
  *   node tools/docs/generate-component-api.mjs          # regenerate
  *   node tools/docs/generate-component-api.mjs --check  # fail on drift
  */
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import prettier from "prettier";
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import prettier from 'prettier';
 import {
   buildComponentApi,
   renderFamilyModule,
   renderRegistryModule,
-} from "./component-api-lib.mjs";
+} from './component-api-lib.mjs';
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  "../..",
+  '../..',
 );
-const inventoryPath = path.join(root, "docs/quality/inventory.json");
-const generatedDir = path.join(root, "projects/docs/src/app/generated");
-const familiesDir = path.join(generatedDir, "component-api");
+const inventoryPath = path.join(root, 'docs/quality/inventory.json');
+const generatedDir = path.join(root, 'projects/docs/src/app/generated');
+const familiesDir = path.join(generatedDir, 'component-api');
 const registryPath = path.join(
   generatedDir,
-  "component-api.registry.generated.ts",
+  'component-api.registry.generated.ts',
 );
 
-const check = process.argv.includes("--check");
+const check = process.argv.includes('--check');
 
-const inventory = JSON.parse(fs.readFileSync(inventoryPath, "utf8"));
+const inventory = JSON.parse(fs.readFileSync(inventoryPath, 'utf8'));
 const api = buildComponentApi(inventory);
 const families = Object.keys(api);
 
@@ -73,14 +73,14 @@ if (check) {
   const stale = [];
   for (const [outputPath, formatted] of outputs) {
     const current = fs.existsSync(outputPath)
-      ? fs.readFileSync(outputPath, "utf8")
+      ? fs.readFileSync(outputPath, 'utf8')
       : null;
     if (current !== formatted) stale.push(path.relative(root, outputPath));
   }
   const onDisk = fs.existsSync(familiesDir)
     ? fs
         .readdirSync(familiesDir)
-        .filter((name) => name.endsWith(".generated.ts"))
+        .filter((name) => name.endsWith('.generated.ts'))
         .map((name) => path.join(familiesDir, name))
     : [];
   for (const file of onDisk) {
@@ -108,7 +108,7 @@ for (const [outputPath, formatted] of outputs) {
 for (const file of fs.existsSync(familiesDir)
   ? fs
       .readdirSync(familiesDir)
-      .filter((name) => name.endsWith(".generated.ts"))
+      .filter((name) => name.endsWith('.generated.ts'))
       .map((name) => path.join(familiesDir, name))
   : []) {
   if (!outputs.has(file)) fs.unlinkSync(file);

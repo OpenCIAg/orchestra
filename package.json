@@ -2,6 +2,11 @@
   "name": "orc-ds-workspace",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
+    "npm": ">=10.9.8"
+  },
+  "packageManager": "npm@10.9.8",
   "workspaces": [
     "dist/orc-ds"
   ],
@@ -20,7 +25,9 @@
     "test:themes:ci": "node tools/quality/test-themes.mjs",
     "test:docs": "ng test docs --watch=false --browsers=ChromeHeadless",
     "test:browser:interactions": "playwright test --config=playwright.config.mjs",
-    "format:check": "prettier --check \"projects/orc-ds/**/*.{ts,html,scss,json}\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
     "pack:lib": "npm pack ./dist/orc-ds",
     "verify:compatibility": "node tools/release/verify-compatibility.mjs",
     "verify:inventory": "node tools/quality/inventory.mjs --check",
@@ -59,7 +66,11 @@
     "@changesets/cli": "^3.0.0",
     "@playwright/test": "^1.63.0",
     "@types/jasmine": "~5.1.0",
+    "angular-eslint": "22.5.0",
     "axe-core": "^4.13.0",
+    "eslint": "9.39.5",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.13.0",
     "jasmine-axe": "^1.1.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
@@ -70,6 +81,7 @@
     "ng-packagr": "^22.1.1",
     "prettier": "^3.9.6",
     "sass": "^1.104.0",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "typescript-eslint": "8.71.0"
   }
 }

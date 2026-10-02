@@ -21,7 +21,7 @@ import { BadgeComponent } from '@ciag/orchestra/badge';
     CardFooterComponent,
     FooterComponent,
     AvatarComponent,
-    BadgeComponent
+    BadgeComponent,
   ],
   templateUrl: './card-page.component.html',
   styleUrl: './card-page.component.scss',
@@ -33,6 +33,6 @@ export class CardPageComponent {
   readonly clickCount = signal<number>(0);
 
   onCardClick(): void {
-    this.clickCount.update(c => c + 1);
+    this.clickCount.update((c) => c + 1);
   }
 }

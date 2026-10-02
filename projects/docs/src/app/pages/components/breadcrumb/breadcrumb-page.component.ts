@@ -55,7 +55,9 @@ export class BreadcrumbPageComponent {
   ];
 
   onItemClick(event: { item: BreadcrumbItemData; index: number }): void {
-    this.clickedItem.set(`Clicou em: "${event.item.label}" (posição ${event.index + 1})`);
+    this.clickedItem.set(
+      `Clicou em: "${event.item.label}" (posição ${event.index + 1})`,
+    );
     setTimeout(() => this.clickedItem.set(null), 3000);
   }
 }

@@ -5,8 +5,6 @@ import {
   ElementRef,
   input,
   signal,
-  output,
-  viewChild,
   viewChildren,
 } from '@angular/core';
 import { P2_SHARED_VARS } from '@ciag/orchestra/internal';

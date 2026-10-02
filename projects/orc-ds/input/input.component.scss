@@ -8,7 +8,7 @@
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  font-family: var(--font-sans, "Poppins", sans-serif);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
 
   &--disabled {
     cursor: not-allowed;
@@ -172,18 +172,18 @@
   }
 
   // Remove setas padrão de type="number"
-  &[type="number"]::-webkit-inner-spin-button,
-  &[type="number"]::-webkit-outer-spin-button {
+  &[type='number']::-webkit-inner-spin-button,
+  &[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-  &[type="number"] {
+  &[type='number'] {
     -moz-appearance: textfield;
   }
 
   // Remove botão padrão de limpar do input search no Webkit
-  &[type="search"]::-webkit-search-cancel-button,
-  &[type="search"]::-webkit-search-decoration {
+  &[type='search']::-webkit-search-cancel-button,
+  &[type='search']::-webkit-search-decoration {
     -webkit-appearance: none;
   }
 }

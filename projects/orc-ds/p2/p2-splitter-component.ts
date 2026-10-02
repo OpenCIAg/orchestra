@@ -3,6 +3,7 @@ import {
   Component,
   ContentChildren,
   Directive,
+  inject,
   input,
   model,
   output,
@@ -16,7 +17,7 @@ import { P2_SHARED_STYLES, P2Orientation } from './p2-shared';
 @Directive({ selector: '[orcSplitterPanel]', standalone: true })
 export class SplitterPanelContentDirective {
   readonly orcSplitterPanel = input<string>('');
-  constructor(readonly templateRef: TemplateRef<unknown>) {}
+  readonly templateRef = inject<TemplateRef<unknown>>(TemplateRef);
 }
 
 export interface SplitterPanel {

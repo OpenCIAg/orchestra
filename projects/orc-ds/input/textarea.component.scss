@@ -8,7 +8,7 @@
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  font-family: var(--font-sans, "Poppins", sans-serif);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
 
   &--disabled {
     cursor: not-allowed;

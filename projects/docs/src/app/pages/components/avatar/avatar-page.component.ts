@@ -39,7 +39,7 @@ export class AvatarPageComponent {
   readonly playgroundName = signal<string>('Mariana Silva');
   readonly playgroundInitials = signal<string>('MS');
   readonly playgroundSrc = signal<string>(
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
   );
 
   // ── Avatar Group Sample List ──────────────────────────────
@@ -79,7 +79,7 @@ export class AvatarPageComponent {
     this.playgroundMode.set(mode);
     if (mode === 'image') {
       this.playgroundSrc.set(
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
       );
     } else {
       this.playgroundSrc.set('');
@@ -96,7 +96,7 @@ export class AvatarPageComponent {
     this.playgroundName.set('Mariana Silva');
     this.playgroundInitials.set('MS');
     this.playgroundSrc.set(
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
     );
   }
 }

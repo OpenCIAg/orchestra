@@ -8,9 +8,10 @@
       <div class="section-eyebrow">Componentes · Feedback</div>
       <h1 class="section-title">Toast / Notifications</h1>
       <p class="section-desc">
-        Notificações contextuais flutuantes e temporárias disparadas programaticamente via <code>ToastService</code>.
-        Suporta múltiplos tipos de status, auto-dismiss com pausa ao passar o mouse (hover), ações personalizadas e
-        posicionamento dinâmico.
+        Notificações contextuais flutuantes e temporárias disparadas
+        programaticamente via <code>ToastService</code>. Suporta múltiplos tipos
+        de status, auto-dismiss com pausa ao passar o mouse (hover), ações
+        personalizadas e posicionamento dinâmico.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -22,7 +23,8 @@
             <div class="panel__header">Preview estático & disparo</div>
             <div class="panel__body">
               <div class="preview-box">
-                <orc-toast [toast]="{
+                <orc-toast
+                  [toast]="{
                     id: 'playground-preview',
                     type: playgroundType(),
                     title: playgroundTitle(),
@@ -34,18 +36,25 @@
                     position: playgroundPosition(),
                     pauseOnHover: true,
                     createdAt: 0,
-                    action: playgroundHasAction() ? { label: playgroundActionLabel(), onClick: null! } : undefined
-                  }" />
+                    action: playgroundHasAction()
+                      ? { label: playgroundActionLabel(), onClick: null! }
+                      : undefined,
+                  }"
+                />
               </div>
 
               <div class="preview-actions">
-                <button type="button" class="btn-primary-trigger" (click)="triggerPlaygroundToast()">
+                <button
+                  type="button"
+                  class="btn-primary-trigger"
+                  (click)="triggerPlaygroundToast()"
+                >
                   Disparar toast
                 </button>
                 @if (toastService.activeCount() > 0) {
-                <button type="button" class="btn-clear" (click)="clearAll()">
-                  Limpar Todos ({{ toastService.activeCount() }})
-                </button>
+                  <button type="button" class="btn-clear" (click)="clearAll()">
+                    Limpar Todos ({{ toastService.activeCount() }})
+                  </button>
                 }
               </div>
             </div>
@@ -58,34 +67,81 @@
               <!-- Title Input -->
               <div class="control-group">
                 <label class="control-label">Título</label>
-                <input type="text" class="text-input" [value]="playgroundTitle()"
-                  (input)="playgroundTitle.set($any($event.target).value)" placeholder="Título do toast...">
+                <input
+                  type="text"
+                  class="text-input"
+                  [value]="playgroundTitle()"
+                  (input)="playgroundTitle.set($any($event.target).value)"
+                  placeholder="Título do toast..."
+                />
               </div>
 
               <!-- Message Input -->
               <div class="control-group">
                 <label class="control-label">Mensagem</label>
-                <input type="text" class="text-input" [value]="playgroundMessage()"
-                  (input)="playgroundMessage.set($any($event.target).value)" placeholder="Mensagem do toast...">
+                <input
+                  type="text"
+                  class="text-input"
+                  [value]="playgroundMessage()"
+                  (input)="playgroundMessage.set($any($event.target).value)"
+                  placeholder="Mensagem do toast..."
+                />
               </div>
 
               <!-- Type / Status Selection -->
               <div class="control-group">
                 <label class="control-label">Tipo / Status</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'success'"
-                    (click)="playgroundType.set('success')">Success</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'info'"
-                    (click)="playgroundType.set('info')">Info</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'warning'"
-                    (click)="playgroundType.set('warning')">Warning</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'error'"
-                    (click)="playgroundType.set('error')">Error</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundType() === 'loading'"
-                    (click)="playgroundType.set('loading')">Loading</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundType() === 'notification'"
-                    (click)="playgroundType.set('notification')">Notif.</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'success'"
+                    (click)="playgroundType.set('success')"
+                  >
+                    Success
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'info'"
+                    (click)="playgroundType.set('info')"
+                  >
+                    Info
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'warning'"
+                    (click)="playgroundType.set('warning')"
+                  >
+                    Warning
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'error'"
+                    (click)="playgroundType.set('error')"
+                  >
+                    Error
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundType() === 'loading'"
+                    (click)="playgroundType.set('loading')"
+                  >
+                    Loading
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundType() === 'notification'
+                    "
+                    (click)="playgroundType.set('notification')"
+                  >
+                    Notif.
+                  </button>
                 </div>
               </div>
 
@@ -93,32 +149,82 @@
               <div class="control-group">
                 <label class="control-label">Posição na Tela</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundPosition() === 'top-right'"
-                    (click)="playgroundPosition.set('top-right')">Top Right</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundPosition() === 'top-center'"
-                    (click)="playgroundPosition.set('top-center')">Top Center</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundPosition() === 'top-left'"
-                    (click)="playgroundPosition.set('top-left')">Top Left</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundPosition() === 'bottom-right'"
-                    (click)="playgroundPosition.set('bottom-right')">Bottom Right</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundPosition() === 'bottom-center'"
-                    (click)="playgroundPosition.set('bottom-center')">Bottom Center</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundPosition() === 'bottom-left'"
-                    (click)="playgroundPosition.set('bottom-left')">Bottom Left</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'top-right'
+                    "
+                    (click)="playgroundPosition.set('top-right')"
+                  >
+                    Top Right
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'top-center'
+                    "
+                    (click)="playgroundPosition.set('top-center')"
+                  >
+                    Top Center
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'top-left'
+                    "
+                    (click)="playgroundPosition.set('top-left')"
+                  >
+                    Top Left
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'bottom-right'
+                    "
+                    (click)="playgroundPosition.set('bottom-right')"
+                  >
+                    Bottom Right
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'bottom-center'
+                    "
+                    (click)="playgroundPosition.set('bottom-center')"
+                  >
+                    Bottom Center
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundPosition() === 'bottom-left'
+                    "
+                    (click)="playgroundPosition.set('bottom-left')"
+                  >
+                    Bottom Left
+                  </button>
                 </div>
               </div>
 
               <!-- Duration Input -->
               <div class="control-group">
-                <label class="control-label">Duração em ms (0 = Sem auto-dismiss)</label>
-                <input type="number" class="text-input" [value]="playgroundDuration()"
-                  (input)="playgroundDuration.set($any($event.target).value)" step="500" min="0">
+                <label class="control-label"
+                  >Duração em ms (0 = Sem auto-dismiss)</label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  [value]="playgroundDuration()"
+                  (input)="playgroundDuration.set($any($event.target).value)"
+                  step="500"
+                  min="0"
+                />
               </div>
 
               <!-- Toggles -->
@@ -126,34 +232,62 @@
                 <label class="control-label">Opções</label>
                 <div class="checkbox-row">
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundShowIcon()"
-                      (change)="playgroundShowIcon.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundShowIcon()"
+                      (change)="
+                        playgroundShowIcon.set($any($event.target).checked)
+                      "
+                    />
                     <span>Exibir ícone</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundShowProgressBar()"
-                      (change)="playgroundShowProgressBar.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundShowProgressBar()"
+                      (change)="
+                        playgroundShowProgressBar.set(
+                          $any($event.target).checked
+                        )
+                      "
+                    />
                     <span>Barra de progresso</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundDismissible()"
-                      (change)="playgroundDismissible.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundDismissible()"
+                      (change)="
+                        playgroundDismissible.set($any($event.target).checked)
+                      "
+                    />
                     <span>Botão fechar (X)</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundHasAction()"
-                      (change)="playgroundHasAction.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundHasAction()"
+                      (change)="
+                        playgroundHasAction.set($any($event.target).checked)
+                      "
+                    />
                     <span>Incluir Ação</span>
                   </label>
                 </div>
               </div>
 
               @if (playgroundHasAction()) {
-              <div class="control-group">
-                <label class="control-label">Rótulo do Botão de Ação</label>
-                <input type="text" class="text-input" [value]="playgroundActionLabel()"
-                  (input)="playgroundActionLabel.set($any($event.target).value)">
-              </div>
+                <div class="control-group">
+                  <label class="control-label">Rótulo do Botão de Ação</label>
+                  <input
+                    type="text"
+                    class="text-input"
+                    [value]="playgroundActionLabel()"
+                    (input)="
+                      playgroundActionLabel.set($any($event.target).value)
+                    "
+                  />
+                </div>
               }
             </div>
           </div>
@@ -164,8 +298,8 @@
       <section class="section">
         <h2 class="section-subtitle">Componentes planos</h2>
         <p class="section-text">
-          Todos os 8 modelos especificados no design system. Clique no botão de teste ao lado de cada um para dispará-lo
-          diretamente no canto da tela.
+          Todos os 8 modelos especificados no design system. Clique no botão de
+          teste ao lado de cada um para dispará-lo diretamente no canto da tela.
         </p>
 
         <div class="figma-grid">
@@ -175,9 +309,16 @@
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Notificações</span>
-                <button type="button" class="btn-test" (click)="triggerNotification()">Disparar</button>
+                <button
+                  type="button"
+                  class="btn-test"
+                  (click)="triggerNotification()"
+                >
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-notif',
                   type: 'notification',
                   title: 'Notificações',
@@ -187,17 +328,25 @@
                   showIcon: true,
                   position: 'top-right',
                   pauseOnHover: true,
-                  createdAt: 0
-                }" />
+                  createdAt: 0,
+                }"
+              />
             </div>
 
             <!-- 2. Mais informações -->
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Mais informações (Ação)</span>
-                <button type="button" class="btn-test" (click)="triggerLearnMore()">Disparar</button>
+                <button
+                  type="button"
+                  class="btn-test"
+                  (click)="triggerLearnMore()"
+                >
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-learn',
                   type: 'info',
                   title: 'Mais informações',
@@ -208,17 +357,25 @@
                   position: 'top-right',
                   pauseOnHover: true,
                   createdAt: 0,
-                  action: { label: 'Saiba mais', onClick: null! }
-                }" />
+                  action: { label: 'Saiba mais', onClick: null! },
+                }"
+              />
             </div>
 
             <!-- 3. Carregando -->
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Carregando (Spinner)</span>
-                <button type="button" class="btn-test" (click)="triggerLoading()">Disparar</button>
+                <button
+                  type="button"
+                  class="btn-test"
+                  (click)="triggerLoading()"
+                >
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-loading',
                   type: 'loading',
                   title: 'Carregando',
@@ -228,17 +385,25 @@
                   showIcon: true,
                   position: 'top-right',
                   pauseOnHover: true,
-                  createdAt: 0
-                }" />
+                  createdAt: 0,
+                }"
+              />
             </div>
 
             <!-- 4. Ações canceláveis -->
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Ações canceláveis (Desfazer)</span>
-                <button type="button" class="btn-test" (click)="triggerUndoAction()">Disparar</button>
+                <button
+                  type="button"
+                  class="btn-test"
+                  (click)="triggerUndoAction()"
+                >
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-undo',
                   type: 'info',
                   title: 'Ações canceláveis',
@@ -249,8 +414,9 @@
                   position: 'top-right',
                   pauseOnHover: true,
                   createdAt: 0,
-                  action: { label: 'Desfazer', icon: 'undo', onClick: null! }
-                }" />
+                  action: { label: 'Desfazer', icon: 'undo', onClick: null! },
+                }"
+              />
             </div>
           </div>
 
@@ -260,9 +426,16 @@
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Sucesso</span>
-                <button type="button" class="btn-test" (click)="triggerSuccess()">Disparar</button>
+                <button
+                  type="button"
+                  class="btn-test"
+                  (click)="triggerSuccess()"
+                >
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-success',
                   type: 'success',
                   title: 'Sucesso',
@@ -272,17 +445,21 @@
                   showIcon: true,
                   position: 'top-right',
                   pauseOnHover: true,
-                  createdAt: 0
-                }" />
+                  createdAt: 0,
+                }"
+              />
             </div>
 
             <!-- 6. Infos -->
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Infos</span>
-                <button type="button" class="btn-test" (click)="triggerInfo()">Disparar</button>
+                <button type="button" class="btn-test" (click)="triggerInfo()">
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-info',
                   type: 'info',
                   title: 'Infos',
@@ -292,17 +469,21 @@
                   showIcon: true,
                   position: 'top-right',
                   pauseOnHover: true,
-                  createdAt: 0
-                }" />
+                  createdAt: 0,
+                }"
+              />
             </div>
 
             <!-- 7. Erro -->
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Erro</span>
-                <button type="button" class="btn-test" (click)="triggerError()">Disparar</button>
+                <button type="button" class="btn-test" (click)="triggerError()">
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-error',
                   type: 'error',
                   title: 'Erro',
@@ -312,17 +493,25 @@
                   showIcon: true,
                   position: 'top-right',
                   pauseOnHover: true,
-                  createdAt: 0
-                }" />
+                  createdAt: 0,
+                }"
+              />
             </div>
 
             <!-- 8. Atenção -->
             <div class="figma-item">
               <div class="figma-item__header">
                 <span class="item-label">Atenção</span>
-                <button type="button" class="btn-test" (click)="triggerWarning()">Disparar</button>
+                <button
+                  type="button"
+                  class="btn-test"
+                  (click)="triggerWarning()"
+                >
+                  Disparar
+                </button>
               </div>
-              <orc-toast [toast]="{
+              <orc-toast
+                [toast]="{
                   id: 'figma-warn',
                   type: 'warning',
                   title: 'Atenção',
@@ -332,8 +521,9 @@
                   showIcon: true,
                   position: 'top-right',
                   pauseOnHover: true,
-                  createdAt: 0
-                }" />
+                  createdAt: 0,
+                }"
+              />
             </div>
           </div>
         </div>
@@ -390,7 +580,12 @@
             <tbody>
               <tr>
                 <td><code>type</code></td>
-                <td><code>'success' | 'info' | 'warning' | 'error' | 'loading' | 'notification'</code></td>
+                <td>
+                  <code
+                    >'success' | 'info' | 'warning' | 'error' | 'loading' |
+                    'notification'</code
+                  >
+                </td>
                 <td><code>'info'</code></td>
                 <td>Tipo de notificação e ícone semântico correspondente.</td>
               </tr>
@@ -409,7 +604,10 @@
               <tr>
                 <td><code>position</code></td>
                 <td>
-                  <code>'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center'</code>
+                  <code
+                    >'top-right' | 'top-left' | 'top-center' | 'bottom-right' |
+                    'bottom-left' | 'bottom-center'</code
+                  >
                 </td>
                 <td><code>'top-right'</code></td>
                 <td>Posição na viewport onde o toast será empilhado.</td>
@@ -418,19 +616,27 @@
                 <td><code>duration</code></td>
                 <td><code>number</code></td>
                 <td><code>5000</code></td>
-                <td>Tempo em milissegundos para auto-dismiss (0 para desativar).</td>
+                <td>
+                  Tempo em milissegundos para auto-dismiss (0 para desativar).
+                </td>
               </tr>
               <tr>
                 <td><code>showProgressBar</code></td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
-                <td>Exibe a barra de progresso visual de tempo restante na base do toast.</td>
+                <td>
+                  Exibe a barra de progresso visual de tempo restante na base do
+                  toast.
+                </td>
               </tr>
               <tr>
                 <td><code>pauseOnHover</code></td>
                 <td><code>boolean</code></td>
                 <td><code>true</code></td>
-                <td>Pausa o contador de tempo quando o ponteiro estiver sobre o toast.</td>
+                <td>
+                  Pausa o contador de tempo quando o ponteiro estiver sobre o
+                  toast.
+                </td>
               </tr>
               <tr>
                 <td><code>dismissible</code></td>
@@ -440,7 +646,12 @@
               </tr>
               <tr>
                 <td><code>action</code></td>
-                <td><code>&#123; label: string, icon?: string, onClick: Function &#125;</code></td>
+                <td>
+                  <code
+                    >&#123; label: string, icon?: string, onClick: Function
+                    &#125;</code
+                  >
+                </td>
                 <td><code>undefined</code></td>
                 <td>Botão de ação interativa incorporado no toast.</td>
               </tr>

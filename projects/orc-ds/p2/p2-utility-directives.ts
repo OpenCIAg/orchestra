@@ -25,10 +25,8 @@ export class RippleDirective implements OnDestroy {
     overflowPriority: string;
   } | null = null;
   private addedHostClass = false;
-  constructor(
-    private readonly host: ElementRef<HTMLElement>,
-    private readonly renderer: Renderer2,
-  ) {}
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
   @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
     if (this.disabled()) return;
     const element = this.host.nativeElement;
@@ -200,10 +198,8 @@ export class StyleClassDirective implements OnChanges, OnDestroy {
   private outsideClickCleanup: (() => void) | null = null;
   private appliedTarget: Element | null = null;
   private readonly appliedClasses = new Set<string>();
-  constructor(
-    private readonly host: ElementRef<HTMLElement>,
-    private readonly renderer: Renderer2,
-  ) {}
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
   ngOnChanges(): void {
     this.applyState();
     this.syncOutsideListener();

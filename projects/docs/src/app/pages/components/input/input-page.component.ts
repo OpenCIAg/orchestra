@@ -1,10 +1,12 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  signal,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   InputComponent,
@@ -39,7 +41,9 @@ export class InputPageComponent {
   readonly inputStatus = signal<InputStatus>('default');
   readonly inputLabel = signal<string>('Nome completo');
   readonly inputPlaceholder = signal<string>('Digite algo...');
-  readonly inputHelperText = signal<string>('Informe seu nome como consta no documento.');
+  readonly inputHelperText = signal<string>(
+    'Informe seu nome como consta no documento.',
+  );
   readonly inputErrorMessage = signal<string>('Este campo é obrigatório.');
   readonly inputDisabled = signal<boolean>(false);
   readonly inputReadonly = signal<boolean>(false);
@@ -59,7 +63,9 @@ export class InputPageComponent {
   readonly textareaLabel = signal<string>('Descrição detalhada');
   readonly textareaPlaceholder = signal<string>('Digite algo...');
   readonly textareaHelperText = signal<string>('Máximo de 200 caracteres.');
-  readonly textareaErrorMessage = signal<string>('A descrição não pode ficar vazia.');
+  readonly textareaErrorMessage = signal<string>(
+    'A descrição não pode ficar vazia.',
+  );
   readonly textareaDisabled = signal<boolean>(false);
   readonly textareaReadonly = signal<boolean>(false);
   readonly textareaRequired = signal<boolean>(false);
@@ -68,12 +74,17 @@ export class InputPageComponent {
   readonly textareaRows = signal<number>(4);
   readonly textareaResize = signal<TextareaResize>('vertical');
   readonly textareaAutoResize = signal<boolean>(false);
-  readonly textareaValue = signal<string>('Componente de texto multilinha flexível e acessível.');
+  readonly textareaValue = signal<string>(
+    'Componente de texto multilinha flexível e acessível.',
+  );
 
   // ── Formulário Reativo (Reactive Forms Integration) ──────
   readonly demoForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
     cpf: new FormControl('', [Validators.required]),
     bio: new FormControl('', [Validators.required, Validators.maxLength(150)]),
   });

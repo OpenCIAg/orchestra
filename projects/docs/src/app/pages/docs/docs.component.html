@@ -627,7 +627,7 @@
                   : 'var(--font-mono)'
               "
             >
-              @if (selectedFont() === "poppins") {
+              @if (selectedFont() === 'poppins') {
                 <span
                   style="
                     font-size: 1.75rem;
@@ -651,16 +651,16 @@
             <div class="asset-card__body">
               <h3 class="asset-card__name">
                 {{
-                  selectedFont() === "poppins"
-                    ? "Fonte Poppins"
-                    : "Fonte JetBrains Mono"
+                  selectedFont() === 'poppins'
+                    ? 'Fonte Poppins'
+                    : 'Fonte JetBrains Mono'
                 }}
               </h3>
               <p class="asset-card__desc">
                 {{
-                  selectedFont() === "poppins"
-                    ? "Tipografia oficial da UI (Sans-serif). Pesos 400, 500, 600, 700 e 800."
-                    : "Tipografia monoespaçada para código, tokens, dados e métricas."
+                  selectedFont() === 'poppins'
+                    ? 'Tipografia oficial da UI (Sans-serif). Pesos 400, 500, 600, 700 e 800.'
+                    : 'Tipografia monoespaçada para código, tokens, dados e métricas.'
                 }}
               </p>
               <div class="asset-card__meta">
@@ -731,7 +731,7 @@
               [variant]="tokensCopied() ? 'secondary' : 'outline'"
               (click)="copyTokens()"
             >
-              {{ tokensCopied() ? "✓ Copiado" : "Copiar tokens" }}
+              {{ tokensCopied() ? '✓ Copiado' : 'Copiar tokens' }}
             </orc-button>
           </div>
           <pre class="code-block__body"><code>{{ tokensCode }}</code></pre>

@@ -5,14 +5,14 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login-page.component').then(
-        (m) => m.LoginPageComponent
+        (m) => m.LoginPageComponent,
       ),
   },
   {
     path: '',
     loadComponent: () =>
       import('./layout/main-layout.component').then(
-        (m) => m.MainLayoutComponent
+        (m) => m.MainLayoutComponent,
       ),
     children: [
       {
@@ -24,21 +24,21 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./pages/dashboard/dashboard-page.component').then(
-            (m) => m.DashboardPageComponent
+            (m) => m.DashboardPageComponent,
           ),
       },
       {
         path: 'crud',
         loadComponent: () =>
           import('./pages/crud/crud-page.component').then(
-            (m) => m.CrudPageComponent
+            (m) => m.CrudPageComponent,
           ),
       },
       {
         path: 'settings',
         loadComponent: () =>
           import('./pages/settings/settings-page.component').then(
-            (m) => m.SettingsPageComponent
+            (m) => m.SettingsPageComponent,
           ),
       },
     ],

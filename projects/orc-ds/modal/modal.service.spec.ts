@@ -1,10 +1,11 @@
 import {
   ApplicationRef,
   Component,
-  Inject,
   Injectable,
   Input,
+  inject,
   input,
+  OnDestroy,
   Type,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -27,13 +28,9 @@ class ServiceModalHost {
   open = true;
   @Input() label = 'default';
   readonly title = input('default-title');
-  readonly dataName: string;
-
-  constructor(
-    @Inject(ORC_MODAL_DATA) data: { name: string; destroy?: () => void },
-  ) {
-    this.dataName = data.name;
-  }
+  readonly dataName = inject<{ name: string; destroy?: () => void }>(
+    ORC_MODAL_DATA,
+  ).name;
 }
 
 @Component({
@@ -62,7 +59,7 @@ class FailingInputHost {
 }
 
 @Injectable()
-class ThrowingDestroyDependency {
+class ThrowingDestroyDependency implements OnDestroy {
   static destroyCalls = 0;
 
   ngOnDestroy(): void {
@@ -88,10 +85,8 @@ class DestroyableModalData {
   template: '<span>teardown probe</span>',
 })
 class ThrowingDestroyHost {
-  constructor(
-    _dependency: ThrowingDestroyDependency,
-    @Inject(ORC_MODAL_DATA) _data: DestroyableModalData,
-  ) {}
+  private readonly dependency = inject(ThrowingDestroyDependency);
+  private readonly data = inject<DestroyableModalData>(ORC_MODAL_DATA);
 }
 
 describe('ModalService dynamic lifecycle', () => {

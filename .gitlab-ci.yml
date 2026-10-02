@@ -12,7 +12,7 @@ default:
       - .npm/
 
 variables:
-  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  npm_config_cache: '$CI_PROJECT_DIR/.npm'
 
 build_docs:
   stage: validate
@@ -27,7 +27,7 @@ build_docs:
     - npm run build:lib
     - npm run build:docs
   artifacts:
-    name: "docs-$CI_COMMIT_SHORT_SHA"
+    name: 'docs-$CI_COMMIT_SHORT_SHA'
     expire_in: 7 days
     paths:
       - dist/docs/browser/

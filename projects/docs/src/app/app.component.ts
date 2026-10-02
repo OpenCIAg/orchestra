@@ -9,7 +9,12 @@ import { SeoService } from './services/seo.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, EasterEggComponent, ThemeToggleComponent, SiteHeaderComponent],
+  imports: [
+    RouterOutlet,
+    EasterEggComponent,
+    ThemeToggleComponent,
+    SiteHeaderComponent,
+  ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

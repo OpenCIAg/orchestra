@@ -8,9 +8,7 @@
  * deriveFamilyId so catalog entries, routes, and API tables always agree on
  * what a "component family" is.
  */
-import { deriveFamilyId } from "../quality/docs-coverage-lib.mjs";
-
-const BINDING_KINDS = new Set(["input", "model", "output"]);
+import { deriveFamilyId } from '../quality/docs-coverage-lib.mjs';
 
 /**
  * Reads one `input`/`model`/`output` declaration string from the inventory
@@ -20,7 +18,7 @@ const BINDING_KINDS = new Set(["input", "model", "output"]);
  * the binding is a required input.
  */
 export function parseBindingDeclaration(declaration) {
-  const text = declaration.trim().replace(/^@Input\([^)]*\)\s*/, "");
+  const text = declaration.trim().replace(/^@Input\([^)]*\)\s*/, '');
   const callMatch = text.match(
     /(?:^|\s)(input|model|output)(\.required)?\s*(?=[<(])/,
   );
@@ -30,18 +28,18 @@ export function parseBindingDeclaration(declaration) {
   scanner.skip(/\s/);
   scanner.expect(callMatch[1]);
   scanner.skip(/\s/);
-  if (callMatch[2]) scanner.expect(".required");
+  if (callMatch[2]) scanner.expect('.required');
   scanner.skip(/\s/);
 
   let type = null;
-  if (scanner.peek() === "<") {
-    type = firstTypeArgument(scanner.readBalanced("<", ">"));
+  if (scanner.peek() === '<') {
+    type = firstTypeArgument(scanner.readBalanced('<', '>'));
   }
 
   let defaultValue = null;
   scanner.skip(/\s/);
-  if (scanner.peek() === "(") {
-    const args = splitArguments(scanner.readBalanced("(", ")"));
+  if (scanner.peek() === '(') {
+    const args = splitArguments(scanner.readBalanced('(', ')'));
     const first = args[0];
     if (first !== undefined && !/^\{/.test(first.trim())) {
       defaultValue = normalizeSourceText(first);
@@ -92,7 +90,7 @@ class CharScanner {
     let depth = 0;
     while (this.index < this.text.length) {
       const char = this.text[this.index];
-      if (char === "'" || char === '"' || char === "`") {
+      if (char === "'" || char === '"' || char === '`') {
         this.index = skipString(this.text, this.index, char);
         continue;
       }
@@ -116,7 +114,7 @@ class CharScanner {
 function skipString(text, start, quote) {
   let index = start + 1;
   while (index < text.length) {
-    if (text[index] === "\\") {
+    if (text[index] === '\\') {
       index += 2;
       continue;
     }
@@ -129,23 +127,23 @@ function skipString(text, start, quote) {
 function splitArguments(inner) {
   const args = [];
   let depth = 0;
-  let current = "";
+  let current = '';
   let index = 0;
   while (index < inner.length) {
     const char = inner[index];
-    if (char === "'" || char === '"' || char === "`") {
+    if (char === "'" || char === '"' || char === '`') {
       const end = skipString(inner, index, char);
       current += inner.slice(index, end);
       index = end;
       continue;
     }
-    if (char === "(" || char === "{" || char === "[" || char === "<")
+    if (char === '(' || char === '{' || char === '[' || char === '<')
       depth += 1;
-    if (char === ")" || char === "}" || char === "]" || char === ">")
+    if (char === ')' || char === '}' || char === ']' || char === '>')
       depth -= 1;
-    if (char === "," && depth === 0) {
+    if (char === ',' && depth === 0) {
       args.push(current);
-      current = "";
+      current = '';
       index += 1;
       continue;
     }
@@ -162,19 +160,19 @@ function firstTypeArgument(typeArguments) {
 }
 
 function normalizeSourceText(source) {
-  return source.replace(/\s+/g, " ").trim();
+  return source.replace(/\s+/g, ' ').trim();
 }
 
 function inferPrimitiveType(defaultValue) {
   if (defaultValue === null) return null;
-  if (defaultValue === "true" || defaultValue === "false") return "boolean";
+  if (defaultValue === 'true' || defaultValue === 'false') return 'boolean';
   if (/^-?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(defaultValue))
-    return "number";
-  if (/^(['"]).*\1$/.test(defaultValue)) return "string";
+    return 'number';
+  if (/^(['"]).*\1$/.test(defaultValue)) return 'string';
   return null;
 }
 
-const INPUT_KINDS = { signal: "input", model: "model", decorator: "input" };
+const INPUT_KINDS = { signal: 'input', model: 'model', decorator: 'input' };
 
 /**
  * Groups an inventory's component declarations into families keyed by the
@@ -184,13 +182,13 @@ const INPUT_KINDS = { signal: "input", model: "model", decorator: "input" };
 export function buildComponentApi(inventory) {
   const families = new Map();
   for (const declaration of inventory.declarations) {
-    if (declaration.kind !== "Component") continue;
+    if (declaration.kind !== 'Component') continue;
     const family = deriveFamilyId(declaration);
     const entries = [];
     for (const member of declaration.inputs ?? []) {
       if (member.deprecated) continue;
       const parsed =
-        member.kind === "decorator"
+        member.kind === 'decorator'
           ? {
               ...parseBindingDeclaration(member.declaration),
               type:
@@ -199,7 +197,7 @@ export function buildComponentApi(inventory) {
             }
           : parseBindingDeclaration(member.declaration);
       entries.push({
-        kind: INPUT_KINDS[member.kind] ?? "input",
+        kind: INPUT_KINDS[member.kind] ?? 'input',
         name: member.publicName ?? member.name,
         type: parsed.type,
         defaultValue: parsed.defaultValue,
@@ -211,7 +209,7 @@ export function buildComponentApi(inventory) {
       if (member.deprecated) continue;
       const parsed = parseBindingDeclaration(member.declaration);
       entries.push({
-        kind: "output",
+        kind: 'output',
         name: member.publicName ?? member.name,
         type: parsed.type,
         defaultValue: null,
@@ -239,22 +237,22 @@ export function buildComponentApi(inventory) {
 
 function quoteString(value) {
   const escaped = value
-    .replace(/\\/g, "\\\\")
+    .replace(/\\/g, '\\\\')
     .replace(/'/g, "\\'")
-    .replace(/\r/g, "\\r")
-    .replace(/\n/g, "\\n");
+    .replace(/\r/g, '\\r')
+    .replace(/\n/g, '\\n');
   return `'${escaped}'`;
 }
 
 function renderEntry(entry, indent) {
-  const pad = " ".repeat(indent);
+  const pad = ' '.repeat(indent);
   const lines = [
     `${pad}{`,
     `${pad}  kind: ${quoteString(entry.kind)},`,
     `${pad}  name: ${quoteString(entry.name)},`,
-    `${pad}  type: ${entry.type === null ? "null" : quoteString(entry.type)},`,
+    `${pad}  type: ${entry.type === null ? 'null' : quoteString(entry.type)},`,
     `${pad}  defaultValue: ${
-      entry.defaultValue === null ? "null" : quoteString(entry.defaultValue)
+      entry.defaultValue === null ? 'null' : quoteString(entry.defaultValue)
     },`,
     `${pad}  required: ${entry.required},`,
   ];
@@ -262,16 +260,16 @@ function renderEntry(entry, indent) {
     lines.push(`${pad}  description: ${quoteString(entry.description)},`);
   }
   lines.push(`${pad}},`);
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 function renderMember(member, indent) {
-  const pad = " ".repeat(indent);
+  const pad = ' '.repeat(indent);
   const lines = [
     `${pad}{`,
     `${pad}  component: ${quoteString(member.component)},`,
     `${pad}  selector: ${
-      member.selector === null ? "null" : quoteString(member.selector)
+      member.selector === null ? 'null' : quoteString(member.selector)
     },`,
   ];
   if (member.entries.length) {
@@ -284,7 +282,7 @@ function renderMember(member, indent) {
     lines.push(`${pad}  entries: [],`);
   }
   lines.push(`${pad}},`);
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 /**
@@ -297,19 +295,19 @@ function renderMember(member, indent) {
  */
 export function renderFamilyModule(family, members) {
   const lines = [
-    "// Generated by tools/docs/generate-component-api.mjs from docs/quality/inventory.json.",
-    "// DO NOT EDIT BY HAND — run `npm run docs:generate-api` to regenerate.",
-    "",
+    '// Generated by tools/docs/generate-component-api.mjs from docs/quality/inventory.json.',
+    '// DO NOT EDIT BY HAND — run `npm run docs:generate-api` to regenerate.',
+    '',
     "import type { ComponentApiMember } from '../../models/component-api.model';",
-    "",
-    "export const COMPONENT_API: Readonly<ComponentApiMember[]> = [",
+    '',
+    'export const COMPONENT_API: Readonly<ComponentApiMember[]> = [',
   ];
   for (const member of members) {
     lines.push(renderMember(member, 2));
   }
-  lines.push("];");
-  lines.push("");
-  return lines.join("\n");
+  lines.push('];');
+  lines.push('');
+  return lines.join('\n');
 }
 
 /**
@@ -319,14 +317,14 @@ export function renderFamilyModule(family, members) {
  */
 export function renderRegistryModule(families) {
   const lines = [
-    "// Generated by tools/docs/generate-component-api.mjs from docs/quality/inventory.json.",
-    "// DO NOT EDIT BY HAND — run `npm run docs:generate-api` to regenerate.",
-    "",
+    '// Generated by tools/docs/generate-component-api.mjs from docs/quality/inventory.json.',
+    '// DO NOT EDIT BY HAND — run `npm run docs:generate-api` to regenerate.',
+    '',
     "import type { ComponentApiLoader } from '../models/component-api.model';",
-    "",
-    "export const COMPONENT_API_LOADERS: Readonly<",
-    "  Record<string, ComponentApiLoader>",
-    "> = {",
+    '',
+    'export const COMPONENT_API_LOADERS: Readonly<',
+    '  Record<string, ComponentApiLoader>',
+    '> = {',
   ];
   for (const family of families) {
     // Prettier unquotes property names that are valid identifiers and keeps
@@ -338,7 +336,7 @@ export function renderRegistryModule(families) {
       `  ${key}: () => import('./component-api/${family}.generated').then((m) => m.COMPONENT_API),`,
     );
   }
-  lines.push("};");
-  lines.push("");
-  return lines.join("\n");
+  lines.push('};');
+  lines.push('');
+  return lines.join('\n');
 }

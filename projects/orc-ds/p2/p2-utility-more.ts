@@ -3,10 +3,12 @@ import {
   Directive,
   ElementRef,
   HostListener,
+  OnChanges,
   OnDestroy,
   Renderer2,
   RendererStyleFlags2,
   booleanAttribute,
+  inject,
   input,
   output,
 } from '@angular/core';
@@ -20,10 +22,8 @@ export class AnimateOnScrollDirective implements AfterViewInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
   private destroyed = false;
   private completed = false;
-  constructor(
-    private readonly element: ElementRef<HTMLElement>,
-    private readonly renderer: Renderer2,
-  ) {}
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
   ngAfterViewInit(): void {
     const threshold = this.threshold();
     if (!Number.isFinite(threshold) || threshold < 0 || threshold > 1)
@@ -70,7 +70,7 @@ export class FocusTrapDirective implements AfterViewInit, OnDestroy {
   private destroyed = false;
   private hostTabIndexAdded = false;
 
-  constructor(private readonly element: ElementRef<HTMLElement>) {}
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
 
   ngAfterViewInit(): void {
     if (!this.disabled() && this.autoFocus()) {
@@ -183,15 +183,13 @@ export class FocusTrapDirective implements AfterViewInit, OnDestroy {
 }
 
 @Directive({ selector: '[orcUseStyle]', standalone: true })
-export class UseStyleDirective implements OnDestroy {
+export class UseStyleDirective implements OnChanges, OnDestroy {
   readonly styles = input<Record<string, string | number>>(
     {},
     { alias: 'orcUseStyle' },
   );
-  constructor(
-    private readonly element: ElementRef<HTMLElement>,
-    private readonly renderer: Renderer2,
-  ) {}
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
   private readonly original = new Map<
     string,
     { value: string; priority: string }

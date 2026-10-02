@@ -9,7 +9,7 @@ import { CvaControl } from './cva-control';
 
 /** Minimal concrete control exercising the base through the forms API. */
 @Component({
-  selector: 'test-cva-control',
+  selector: 'orc-test-cva-control',
   standalone: true,
   template:
     '<input [value]="value()" [disabled]="effectiveDisabled()" (input)="onInput($event)" (blur)="markTouched()" />',
@@ -41,10 +41,10 @@ class TestControlComponent extends CvaControl {
 }
 
 @Component({
-  selector: 'test-cva-host',
+  selector: 'orc-test-cva-host',
   standalone: true,
   imports: [ReactiveFormsModule, TestControlComponent],
-  template: '<test-cva-control [formControl]="control" />',
+  template: '<orc-test-cva-control [formControl]="control" />',
 })
 class TestHostComponent {
   readonly control = new FormControl('start', { nonNullable: true });

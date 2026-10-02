@@ -342,7 +342,6 @@ describe('P2 expansion components', () => {
 
   it('renders DatePicker month and year views', () => {
     const fixture = TestBed.createComponent(DatePickerCalendarComponent);
-    const component = fixture.componentInstance;
     fixture.componentRef.setInput('currentMonth', '2025-01');
     fixture.componentRef.setInput('view', 'month');
     fixture.detectChanges();

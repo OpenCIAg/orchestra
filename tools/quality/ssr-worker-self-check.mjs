@@ -2,8 +2,8 @@ const mode = process.argv[2];
 
 console.log(
   `SSR_RESULT ${JSON.stringify({
-    status: "rendered",
-    phase: "render",
+    status: 'rendered',
+    phase: 'render',
     imported: true,
     instantiated: true,
     matchedSelector: true,
@@ -11,9 +11,9 @@ console.log(
   })}`,
 );
 
-if (mode === "nonzero") {
+if (mode === 'nonzero') {
   process.exitCode = 7;
-} else if (mode === "timeout") {
+} else if (mode === 'timeout') {
   setInterval(() => {}, 1_000);
 } else {
   throw new Error(`Unknown self-check mode: ${mode}`);

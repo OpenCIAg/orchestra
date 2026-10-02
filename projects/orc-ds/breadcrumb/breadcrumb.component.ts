@@ -116,7 +116,7 @@ export class BreadcrumbComponent {
   onItemClicked(
     item: ProcessedBreadcrumbItem,
     index: number,
-    event: MouseEvent,
+    _event: MouseEvent,
   ): void {
     const payload = { item: item as BreadcrumbItemData, index };
     this.itemClick.emit(payload);

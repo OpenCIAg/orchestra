@@ -416,7 +416,8 @@ export class GalleriaComponent implements OnDestroy {
     this.stopSlideShow();
   }
   toggle(): void {
-    this.visible() ? this.hide() : this.show();
+    if (this.visible()) this.hide();
+    else this.show();
   }
   goTo(index: number): void {
     const image = this.images()[index];

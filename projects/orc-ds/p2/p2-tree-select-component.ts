@@ -536,10 +536,10 @@ export class TreeSelectComponent
     this.expanded.update((current) => {
       const next = new Set(current);
       const wasExpanded = next.has(node.value);
-      wasExpanded ? next.delete(node.value) : next.add(node.value);
-      wasExpanded
-        ? this.onNodeCollapse.emit(node)
-        : this.onNodeExpand.emit(node);
+      if (wasExpanded) next.delete(node.value);
+      else next.add(node.value);
+      if (wasExpanded) this.onNodeCollapse.emit(node);
+      else this.onNodeExpand.emit(node);
       return next;
     });
   }

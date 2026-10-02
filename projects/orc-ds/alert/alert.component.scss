@@ -25,7 +25,7 @@
   min-height: 68px; // Altura padrão conforme Figma Node 382:5250
   padding: 13px 17px; // Padding exato do Figma (px-[17px] py-[13px])
   border-radius: var(--radius-md, 10px); // rounded-[10px]
-  font-family: var(--font-sans, "Poppins", sans-serif);
+  font-family: var(--font-sans, 'Poppins', sans-serif);
   gap: 12px;
   box-sizing: border-box;
   transition:

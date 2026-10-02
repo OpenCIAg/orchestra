@@ -42,11 +42,11 @@
                 <span class="panel__hint">Estado real do componente</span>
               </div>
               <div class="panel__body preview-surface">
-                @if (exampleLoad() === "loading") {
+                @if (exampleLoad() === 'loading') {
                   <div class="empty-preview" aria-live="polite">
                     <p>Carregando exemplo…</p>
                   </div>
-                } @else if (exampleLoad() === "none") {
+                } @else if (exampleLoad() === 'none') {
                   <div class="empty-preview" aria-live="polite">
                     <span class="empty-preview__icon">✦</span>
                     <p>
@@ -170,12 +170,12 @@
                               }
                             </td>
                             <td>
-                              <code>{{ row.type ?? "—" }}</code>
+                              <code>{{ row.type ?? '—' }}</code>
                             </td>
                             <td>
-                              <code>{{ row.defaultValue ?? "—" }}</code>
+                              <code>{{ row.defaultValue ?? '—' }}</code>
                             </td>
-                            <td>{{ row.description ?? "" }}</td>
+                            <td>{{ row.description ?? '' }}</td>
                           </tr>
                         }
                       </tbody>
@@ -193,8 +193,8 @@
               <p>
                 {{
                   apiMissing()
-                    ? "Referência de API indisponível para esta família."
-                    : "Carregando referência de API…"
+                    ? 'Referência de API indisponível para esta família.'
+                    : 'Carregando referência de API…'
                 }}
               </p>
             </div>

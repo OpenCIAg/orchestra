@@ -25,7 +25,9 @@ type EqualTypes<Left, Right> =
     ? true
     : false;
 type Assert<Type extends true> = Type;
-type TreeSelectNodeExportIdentity = [
+// Deliberate compile-time export identity assertion; never read at runtime,
+// but the two branches must both compile.
+export type TreeSelectNodeExportIdentity = [
   Assert<EqualTypes<TreeSelectNode, FocusedTreeSelectNode>>,
   Assert<EqualTypes<TreeSelectNode, P2TreeSelectNode>>,
   Assert<EqualTypes<TreeSelectNode, SecondaryTreeSelectNode>>,

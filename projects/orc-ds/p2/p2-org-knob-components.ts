@@ -127,7 +127,8 @@ export class OrganizationChartComponent {
     if (!this.collapsible() || !node.children?.length || node.disabled) return;
     const next = new Set(this.expanded());
     const open = next.has(node.key);
-    open ? next.delete(node.key) : next.add(node.key);
+    if (open) next.delete(node.key);
+    else next.add(node.key);
     this.expanded.set(next);
     (open ? this.nodeCollapse : this.nodeExpand).emit(node);
   }
@@ -146,7 +147,8 @@ export class OrganizationChartComponent {
                 ? [current]
                 : [];
             const index = values.indexOf(node.key);
-            index >= 0 ? values.splice(index, 1) : values.push(node.key);
+            if (index >= 0) values.splice(index, 1);
+            else values.push(node.key);
             return values;
           })();
     this.selected.set(next);

@@ -129,7 +129,8 @@
   max-width: 860px;
   margin: 0;
 
-  code, strong {
+  code,
+  strong {
     color: var(--text-primary);
   }
 
@@ -571,7 +572,8 @@
   text-align: left;
   font-size: 0.875rem;
 
-  th, td {
+  th,
+  td {
     padding: var(--space-3) var(--space-5);
     border-bottom: 1px solid var(--border-default);
   }
@@ -599,4 +601,3 @@
     border: 1px solid var(--border-default);
   }
 }
-

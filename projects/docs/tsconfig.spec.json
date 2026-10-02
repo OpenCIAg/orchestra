@@ -23,7 +23,16 @@
       "@ciag/orchestra/segmented-control": [
         "../orc-ds/segmented-control/index.ts"
       ],
-      "@ciag/orchestra/tag": ["../orc-ds/tag/index.ts"]
+      "@ciag/orchestra/tag": ["../orc-ds/tag/index.ts"],
+      "@ciag/orchestra/tiered-menu": ["../orc-ds/tiered-menu/index.ts"],
+      "@ciag/orchestra/panel-menu": ["../orc-ds/panel-menu/index.ts"],
+      "@ciag/orchestra/mega-menu": ["../orc-ds/mega-menu/index.ts"],
+      "@ciag/orchestra/menubar": ["../orc-ds/menubar/index.ts"],
+      "@ciag/orchestra/context-menu": ["../orc-ds/context-menu/index.ts"],
+      "@ciag/orchestra/speed-dial": ["../orc-ds/speed-dial/index.ts"],
+      "@ciag/orchestra/dock": ["../orc-ds/dock/index.ts"],
+      "@ciag/orchestra/confirm-popup": ["../orc-ds/confirm-popup/index.ts"],
+      "@ciag/orchestra/split-button": ["../orc-ds/split-button/index.ts"]
     },
     "types": ["jasmine"]
   },

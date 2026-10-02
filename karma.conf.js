@@ -1,18 +1,18 @@
 module.exports = function (config) {
   config.set({
-    basePath: "",
+    basePath: '',
     port: Number(process.env.ORC_KARMA_PORT) || 9876,
-    frameworks: ["jasmine"],
+    frameworks: ['jasmine'],
     plugins: [
-      require("karma-jasmine"),
-      require("karma-chrome-launcher"),
-      require("karma-jasmine-html-reporter"),
-      require("karma-coverage"),
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage'),
     ],
     client: {
       jasmine: {
         seed: process.env.ORC_JASMINE_SEED || undefined,
-        stopOnSpecFailure: process.env.ORC_JASMINE_FAIL_FAST === "1",
+        stopOnSpecFailure: process.env.ORC_JASMINE_FAIL_FAST === '1',
       },
       args: process.env.ORC_TEST_COLOR_SCHEME
         ? [process.env.ORC_TEST_COLOR_SCHEME]
@@ -23,31 +23,31 @@ module.exports = function (config) {
       suppressAll: true,
     },
     coverageReporter: {
-      dir: require("path").join(__dirname, "./coverage"),
-      subdir: ".",
-      reporters: [{ type: "html" }, { type: "text-summary" }],
+      dir: require('path').join(__dirname, './coverage'),
+      subdir: '.',
+      reporters: [{ type: 'html' }, { type: 'text-summary' }],
     },
-    reporters: ["progress", "kjhtml"],
-    browsers: ["ChromeHeadless"],
+    reporters: ['progress', 'kjhtml'],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeHeadlessCI: {
-        base: "ChromeHeadless",
-        flags: ["--no-sandbox", "--disable-gpu"],
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu'],
       },
       ChromeHeadlessLightCI: {
-        base: "ChromeHeadless",
+        base: 'ChromeHeadless',
         flags: [
-          "--no-sandbox",
-          "--disable-gpu",
-          "--blink-settings=preferredColorScheme=1",
+          '--no-sandbox',
+          '--disable-gpu',
+          '--blink-settings=preferredColorScheme=1',
         ],
       },
       ChromeHeadlessDarkCI: {
-        base: "ChromeHeadless",
+        base: 'ChromeHeadless',
         flags: [
-          "--no-sandbox",
-          "--disable-gpu",
-          "--blink-settings=preferredColorScheme=0",
+          '--no-sandbox',
+          '--disable-gpu',
+          '--blink-settings=preferredColorScheme=0',
         ],
       },
     },
