@@ -241,9 +241,7 @@ describe('ContextMenu and Portal target contracts', () => {
     );
     const outside = foreignDocument.createElement('button');
     foreignDocument.body.appendChild(outside);
-    outside.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
+    outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     expect(contextFixture.componentInstance.open()).toBeFalse();
     contextFixture.destroy();
 

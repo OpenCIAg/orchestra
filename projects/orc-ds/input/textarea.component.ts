@@ -36,10 +36,7 @@ let nextTextareaUniqueId = 0;
     },
   ],
 })
-export class TextareaComponent
-  extends CvaControl
-  implements AfterViewInit
-{
+export class TextareaComponent extends CvaControl implements AfterViewInit {
   private readonly uniqueId = `orc-textarea-${++nextTextareaUniqueId}`;
 
   // ── Native Textarea Element Reference ─────────────────────

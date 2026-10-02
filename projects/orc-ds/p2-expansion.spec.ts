@@ -1728,9 +1728,7 @@ describe('P2 expansion components', () => {
     component.onKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
     expect(selected.map((item) => item.value)).toEqual(['open']);
     component.show();
-    document.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
+    document.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     expect(component.visible()).toBeFalse();
     component.toggle();
     expect(component.visible()).toBeTrue();

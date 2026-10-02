@@ -29,8 +29,7 @@ const TIERED_ROOT_ITEMS =
   ':scope > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])';
 const TIERED_CHILD_ITEMS =
   '[role="menuitem"]:not(:disabled):not([aria-disabled="true"])';
-const MEGA_ITEMS =
-  '[data-mega-item]:not(:disabled):not([data-mega-disabled])';
+const MEGA_ITEMS = '[data-mega-item]:not(:disabled):not([data-mega-disabled])';
 
 function getOwnedActiveHTMLElement(
   ownerDocument: Document | null,
@@ -418,8 +417,7 @@ export class TieredMenuComponent implements OnDestroy {
   }
   private focusChildItem(host: HTMLElement | null): void {
     const submenu =
-      host?.querySelector<HTMLElement>('.submenu:not(.submenu-hidden)') ??
-      null;
+      host?.querySelector<HTMLElement>('.submenu:not(.submenu-hidden)') ?? null;
     const child = menuFocusTargets(submenu, TIERED_CHILD_ITEMS)[
       this.childActiveIndex()
     ];
@@ -464,10 +462,7 @@ export class TieredMenuComponent implements OnDestroy {
     if (!ownerDocument) return;
     this.releaseOutsideDismissal = listenForOutsideInteraction(
       ownerDocument,
-      () => [
-        this.tieredHost()?.nativeElement ?? null,
-        this.restoreFocus,
-      ],
+      () => [this.tieredHost()?.nativeElement ?? null, this.restoreFocus],
       () => this.hide(),
     );
   }
@@ -573,7 +568,9 @@ export class TieredMenuComponent implements OnDestroy {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       const delta = event.key === 'ArrowDown' ? 1 : -1;
-      this.activeIndex.update((index) => stepMenuIndex(index, delta, items.length));
+      this.activeIndex.update((index) =>
+        stepMenuIndex(index, delta, items.length),
+      );
       if (host) this.focusActiveItem(host);
       return;
     }

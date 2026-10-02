@@ -92,9 +92,7 @@ describe('menu family shared dismissal and roving focus', () => {
 
   it('keeps the ContextMenu open for a pointerdown on the menu itself', () => {
     const fixture = TestBed.createComponent(ContextMenuComponent);
-    fixture.componentRef.setInput('items', [
-      { label: 'Open', value: 'open' },
-    ]);
+    fixture.componentRef.setInput('items', [{ label: 'Open', value: 'open' }]);
     fixture.detectChanges();
     fixture.componentInstance.show();
     fixture.detectChanges();
