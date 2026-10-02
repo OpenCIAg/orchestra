@@ -1,0 +1,1 @@
+`orc-data-table` is the P2 lightweight record-oriented table; use `orc-table<T>` for the richer generic table API. A data table column contains `key`, `header`, and optional `sortable`. `sortMode="multiple"` and `metaKeySelection` are deprecated compatibility inputs; sorting is single-field and selection does not require modifier keys.

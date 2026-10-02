@@ -16,7 +16,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   imports: [SpeedDialComponent],
   template: `
     <div class="example example--centered">
-      <span class="example__label">Secondary actions</span>
+      <span class="example__label">Ações secundárias</span>
       <orc-speed-dial
         [actions]="actions"
         openLabel="Abrir ações"

@@ -1,1 +1,1 @@
-export { OrderListComponent } from '@ciag/orchestra/p2';
+export { OrderListComponent } from './order-list.component';

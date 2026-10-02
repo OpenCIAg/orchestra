@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Default + presets</span>
+        <span class="example__label">Padrão + predefinições</span>
         <orc-color-picker
           label="Cor de destaque"
           [(value)]="accent"
@@ -26,7 +26,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </div>
       </div>
       <div class="example">
-        <span class="example__label">No text input</span>
+        <span class="example__label">Sem campo de texto</span>
         <orc-color-picker
           label="Apenas swatch"
           value="#FF6A1C"
@@ -42,7 +42,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         />
       </div>
       <div class="example">
-        <span class="example__label">Disabled</span>
+        <span class="example__label">Desabilitado</span>
         <orc-color-picker
           label="Token protegido"
           value="#0406AB"

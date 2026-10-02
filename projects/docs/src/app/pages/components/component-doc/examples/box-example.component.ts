@@ -8,7 +8,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   imports: [BoxComponent, TextComponent],
   template: `
     <div class="example">
-      <span class="example__label">Surface primitive</span>
+      <span class="example__label">Primitiva de superfície</span>
       <orc-box padding="1rem" background="#eff6ff" radius=".75rem">
         <orc-text size="lg"
           >Box com padding, fundo e raio controlados.</orc-text

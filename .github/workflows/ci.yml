@@ -30,6 +30,9 @@ jobs:
       - name: Lint the workspace
         run: npm run lint
 
+      - name: Test release tooling
+        run: npm run test:tools
+
       - name: Verify Angular compatibility line
         run: npm run verify:compatibility
 

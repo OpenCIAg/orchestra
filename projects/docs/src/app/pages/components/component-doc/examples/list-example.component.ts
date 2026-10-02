@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Single selection</span>
+        <span class="example__label">Seleção única</span>
         <orc-list
           [items]="items()"
           selection="single"
@@ -25,7 +25,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>selected = {{ selectedId() || 'none' }}</code>
       </div>
       <div class="example">
-        <span class="example__label">Empty state</span>
+        <span class="example__label">Estado vazio</span>
         <orc-list
           [items]="emptyList"
           selection="multiple"

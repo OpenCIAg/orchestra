@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Placement</span>
+        <span class="example__label">Posicionamento</span>
         <div class="popover-row">
           <orc-popover placement="bottom" label="Detalhes abaixo">
             <button popover-trigger class="doc-button" type="button">
@@ -40,7 +40,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </div>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Controlled state</span>
+        <span class="example__label">Estado controlado</span>
         <p>
           Use <code>[(open)]</code> quando o fluxo precisar abrir ou fechar o
           popover por código.

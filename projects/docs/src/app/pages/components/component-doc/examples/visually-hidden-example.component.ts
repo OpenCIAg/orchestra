@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Assistive text</span>
+        <span class="example__label">Texto assistivo</span>
         <button
           class="doc-button"
           type="button"

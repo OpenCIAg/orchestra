@@ -18,7 +18,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Controlled hierarchy</span>
+        <span class="example__label">Hierarquia controlada</span>
         <orc-cascade-select
           [options]="options"
           [(value)]="value"

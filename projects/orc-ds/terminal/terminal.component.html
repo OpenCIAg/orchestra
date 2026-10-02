@@ -1,0 +1,36 @@
+<section
+  class="orc-terminal"
+  [class]="'orc-terminal ' + styleClass()"
+  [attr.aria-label]="ariaLabel()?.trim() || 'Terminal'"
+>
+  @if (welcomeMessage()) {
+    <p class="welcome">{{ welcomeMessage() }}</p>
+  }
+  <div
+    #historyViewport
+    class="history"
+    role="log"
+    aria-live="polite"
+    aria-relevant="additions text"
+    aria-label="Terminal history"
+  >
+    @for (line of history(); track $index) {
+      <div>
+        <span class="prompt">{{ prompt() }}</span
+        >{{ line.command }}
+        @if (line.output) {
+          <pre>{{ line.output }}</pre>
+        }
+      </div>
+    }
+  </div>
+  <form (submit)="submit($event)">
+    <span class="prompt">{{ prompt() }}</span
+    ><input
+      [value]="command()"
+      (input)="command.set($any($event.target).value)"
+      autocomplete="off"
+      [attr.aria-label]="commandAriaLabel()?.trim() || 'Terminal command'"
+    />
+  </form>
+</section>

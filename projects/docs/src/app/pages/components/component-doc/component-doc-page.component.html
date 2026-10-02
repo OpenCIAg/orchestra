@@ -9,7 +9,7 @@
         <section class="hero">
           <div class="hero__meta">
             <div class="section-eyebrow">
-              {{ entry.category }} · API reference
+              {{ categoryLabel(entry.category) }} · Referência de API
             </div>
             <span class="status" [class]="'status status--' + entry.status">{{
               statusLabel()
@@ -38,7 +38,7 @@
           <div class="playground-grid">
             <div class="panel panel--preview">
               <div class="panel__header">
-                <span>Preview</span>
+                <span>Prévia</span>
                 <span class="panel__hint">Estado real do componente</span>
               </div>
               <div class="panel__body preview-surface">
@@ -65,7 +65,7 @@
 
             <aside class="panel panel--inspector" aria-label="Estado atual">
               <div class="panel__header">
-                <span>Live state</span>
+                <span>Estado ao vivo</span>
                 <span class="panel__hint">Somente leitura</span>
               </div>
               <div class="panel__body inspector-body">
@@ -81,10 +81,12 @@
                 }
                 <div class="inspector-list">
                   <div>
-                    <span>Package</span><code>{{ packagePath() }}</code>
+                    <span>Pacote</span><code>{{ packagePath() }}</code>
                   </div>
-                  <div><span>Change detection</span><code>OnPush</code></div>
-                  <div><span>Import</span><code>standalone</code></div>
+                  <div>
+                    <span>Detecção de mudanças</span><code>OnPush</code>
+                  </div>
+                  <div><span>Importação</span><code>standalone</code></div>
                 </div>
               </div>
             </aside>
@@ -203,7 +205,7 @@
 
         <section class="usage-block" id="usage">
           <div>
-            <span class="section-eyebrow">Quick start</span>
+            <span class="section-eyebrow">Início rápido</span>
             <h2 class="section-subtitle">Uso</h2>
             <p class="section-text">
               Importe o standalone component e conecte o estado ao seu

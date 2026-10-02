@@ -12,7 +12,10 @@ import { RouterModule } from '@angular/router';
 import { BadgeStatus, BadgeComponent } from '@ciag/orchestra/badge';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { KbdComponent } from '@ciag/orchestra/kbd';
-import { ComponentCatalogService } from '../../services/component-catalog.service';
+import {
+  ComponentCatalogService,
+  categoryLabel,
+} from '../../services/component-catalog.service';
 import { ComponentEntry } from '../../models/component-entry.model';
 import { FooterComponent } from '../../shared/footer/footer.component';
 
@@ -40,6 +43,8 @@ export class HomeComponent {
   protected readonly hoveredId = signal<string | null>(null);
 
   protected readonly categories = this.catalog.allCategories;
+
+  protected readonly categoryLabel = categoryLabel;
   protected readonly results = this.catalog.filteredComponents;
 
   protected readonly hasQuery = computed(

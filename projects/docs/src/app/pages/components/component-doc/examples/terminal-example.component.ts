@@ -15,13 +15,13 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Controlled prompt + history</span>
+        <span class="example__label">Prompt e histórico controlados</span>
         <orc-terminal
           prompt="ops> "
           welcomeMessage="Demo console · commands are handled by this page only."
           [(command)]="command"
           [(history)]="history"
-          ariaLabel="Demo operations console"
+          ariaLabel="Console de operações de demonstração"
           commandAriaLabel="Demo command"
           (commandRun)="onCommandRun($event)"
         />
@@ -34,7 +34,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </p>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Consumer executes commands</span>
+        <span class="example__label">O consumidor executa comandos</span>
         <p>
           Enter appends the submitted command and emits
           <code>commandRun</code>. The component does not run a shell command;

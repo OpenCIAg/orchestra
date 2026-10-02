@@ -1,0 +1,1 @@
+Use `orc-card-header`, `orc-card-body`, and `orc-card-footer` for stable composition. The three parts have no public inputs or outputs and only project content. A clickable card is not a substitute for a button: place the primary action in a real `orc-button` when the user must act.

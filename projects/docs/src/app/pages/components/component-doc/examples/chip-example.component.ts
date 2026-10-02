@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Variants</span>
+        <span class="example__label">Variantes</span>
         <div class="chip-row">
           <orc-chip label="Neutral" />
           <orc-chip label="Primary" variant="primary" />
@@ -26,7 +26,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
       </div>
       <div class="example-grid example-grid--three">
         <div class="example">
-          <span class="example__label">Selectable</span>
+          <span class="example__label">Selecionável</span>
           <orc-chip
             label="Filtro ativo"
             variant="primary"
@@ -36,7 +36,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
           <code>selected = {{ chipSelected() }}</code>
         </div>
         <div class="example">
-          <span class="example__label">Removable</span>
+          <span class="example__label">Removível</span>
           <orc-chip
             label="Angular"
             value="angular"
@@ -48,7 +48,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
           }
         </div>
         <div class="example">
-          <span class="example__label">Disabled</span>
+          <span class="example__label">Desabilitado</span>
           <orc-chip
             label="Indisponível"
             variant="neutral"

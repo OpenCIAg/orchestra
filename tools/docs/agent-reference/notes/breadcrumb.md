@@ -1,0 +1,1 @@
+A `BreadcrumbItemData` contains `label` plus optional `routerLink`, `href`, `active`, `disabled`, and `icon`. The compound `orc-breadcrumb-item` exposes the same item inputs and `itemClick: MouseEvent`.

@@ -41,7 +41,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         </orc-toolbar>
       </div>
       <div class="example">
-        <span class="example__label">Disabled item</span>
+        <span class="example__label">Item desabilitado</span>
         <orc-toolbar label="Ações com item desabilitado">
           <button
             type="button"

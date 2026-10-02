@@ -18,7 +18,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Panel sizes</span>
+        <span class="example__label">Tamanhos dos painéis</span>
         <orc-splitter
           [panels]="panels"
           [(sizes)]="sizes"

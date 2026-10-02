@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Prefix</span
+        <span class="example__label">Prefixo</span
         ><orc-input-group prefix="https://"
           ><input
             class="native-control"
@@ -18,11 +18,11 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         /></orc-input-group>
       </div>
       <div class="example">
-        <span class="example__label">Suffix</span
+        <span class="example__label">Sufixo</span
         ><orc-input-group suffix=".com"
           ><input
             class="native-control"
-            aria-label="Domain"
+            aria-label="Domínio"
             placeholder="example"
         /></orc-input-group>
       </div>

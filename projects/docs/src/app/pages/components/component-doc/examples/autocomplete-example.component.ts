@@ -18,7 +18,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Default</span>
+        <span class="example__label">Padrão</span>
         <orc-autocomplete
           label="Cidade"
           placeholder="Digite uma cidade"
@@ -38,7 +38,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         />
       </div>
       <div class="example">
-        <span class="example__label">Error</span>
+        <span class="example__label">Erro</span>
         <orc-autocomplete
           label="Responsável"
           [options]="cities"
@@ -47,7 +47,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         />
       </div>
       <div class="example">
-        <span class="example__label">Disabled</span>
+        <span class="example__label">Desabilitado</span>
         <orc-autocomplete
           label="Campo bloqueado"
           [options]="cities"

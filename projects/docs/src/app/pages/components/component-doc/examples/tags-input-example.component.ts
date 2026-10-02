@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Tags + suggestions</span>
+        <span class="example__label">Tags + sugestões</span>
         <orc-tags-input
           label="Tecnologias"
           [(value)]="tags"
@@ -29,15 +29,15 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>tags = {{ tags().join(', ') }}</code>
       </div>
       <div class="example" data-testid="tags-input-tab-example">
-        <span class="example__label">Opt-in add on Tab</span>
+        <span class="example__label">Adicionar com Tab (opcional)</span>
         <orc-tags-input
-          label="Technologies (Tab commit)"
+          label="Tecnologias (confirma com Tab)"
           [(value)]="tabTags"
           [addOnTab]="true"
-          placeholder="Type, then press Tab"
+          placeholder="Digite e pressione Tab"
         />
         <orc-tags-input
-          label="Next control"
+          label="Próximo controle"
           data-testid="tags-input-tab-next"
         />
       </div>

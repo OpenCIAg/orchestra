@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Default · loop + indicators</span>
+        <span class="example__label">Padrão · loop + indicadores</span>
         <orc-carousel
           [items]="slides"
           [(activeIndex)]="activeIndex"
@@ -25,7 +25,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
       </div>
       <div class="example-grid example-grid--two">
         <div class="example example--muted">
-          <span class="example__label">No loop</span>
+          <span class="example__label">Sem loop</span>
           <p>
             Use <code>[loop]="false"</code> para manter os limites de navegação.
           </p>

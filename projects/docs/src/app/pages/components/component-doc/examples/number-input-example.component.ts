@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-grid example-grid--two">
       <div class="example">
-        <span class="example__label">Default · bounded</span>
+        <span class="example__label">Padrão · com limites</span>
         <orc-number-input
           label="Itens por página"
           [(value)]="quantity"
@@ -26,7 +26,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>value = {{ quantity() }}</code>
       </div>
       <div class="example">
-        <span class="example__label">Success + prefix</span>
+        <span class="example__label">Sucesso + prefixo</span>
         <orc-number-input
           label="Orçamento"
           [value]="1250"
@@ -36,7 +36,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         />
       </div>
       <div class="example">
-        <span class="example__label">Error</span>
+        <span class="example__label">Erro</span>
         <orc-number-input
           label="Quantidade inválida"
           [value]="0"
@@ -46,7 +46,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         />
       </div>
       <div class="example">
-        <span class="example__label">Readonly + no controls</span>
+        <span class="example__label">Somente leitura + sem controles</span>
         <orc-number-input
           label="Somente leitura"
           [value]="42"

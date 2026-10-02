@@ -19,7 +19,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Sortable treegrid</span>
+        <span class="example__label">Treegrid ordenável</span>
         <orc-tree-table
           [value]="nodes"
           [columns]="columns"
@@ -37,7 +37,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>selected rows = {{ selected().size }}</code>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Filter, sort, page</span>
+        <span class="example__label">Filtro, ordenação, página</span>
         <p>
           {{
             message() ||

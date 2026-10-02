@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Keyboard hint</span>
+        <span class="example__label">Dica de teclado</span>
         <div class="chip-row">
           <orc-kbd [keys]="['⌘', 'K']" ariaLabel="Command K" /><orc-kbd
             keys="Esc"

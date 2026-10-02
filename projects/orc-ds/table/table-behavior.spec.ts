@@ -1270,4 +1270,60 @@ describe('Table browser behavior', () => {
     });
     expect(expanded.calls.count()).toBe(2);
   });
+
+  it('renders the compatibility value collection over data when both are bound', () => {
+    const table = create({
+      data: rows,
+      value: rows.slice(0, 2),
+    });
+    expect(table.effectiveData()).toEqual(rows.slice(0, 2));
+    expect(cells()).toEqual(['Zulu', 'Alpha']);
+  });
+
+  it('filters by configured column keys when no global filter fields are set', () => {
+    create({ filterable: true });
+    const table = fixture.componentInstance;
+    table.applyFilter('Zulu');
+    fixture.detectChanges();
+    expect(cells()).toEqual(['Zulu']);
+
+    // `allowed` is real row data but not a configured column key.
+    table.applyFilter('true');
+    fixture.detectChanges();
+    expect(cells()).toEqual([]);
+  });
+
+  it('falls back to the row’s own keys when no filter fields can be inferred', () => {
+    const table = create({ columnsConfig: [], filterable: true });
+    table.applyFilter('1');
+    fixture.detectChanges();
+    expect(table.filteredData()).toEqual([rows[0]]);
+
+    table.applyFilter('true');
+    fixture.detectChanges();
+    expect(table.filteredData()).toHaveSize(5);
+  });
+
+  it('sorts numbers numerically and keeps missing values last in both directions', () => {
+    create({
+      data: [
+        { id: 1, profile: { name: 'ten' }, num: 10 },
+        { id: 2, profile: { name: 'nine' }, num: 9 },
+        { id: 3, profile: { name: 'none' }, num: null },
+      ] as unknown as Row[],
+      columnsConfig: [{ key: 'num', header: 'Num', sortable: true }],
+      sortColumn: 'num',
+      sortDirection: 'asc',
+    });
+    expect(cells()).toEqual(['9', '10', '']);
+
+    fixture.componentRef.setInput('sortDirection', 'desc');
+    fixture.detectChanges();
+    expect(cells()).toEqual(['10', '9', '']);
+  });
+
+  it('prefers dataKey over rowKey for row identity', () => {
+    const table = create({ rowKey: 'sku', dataKey: 'code' });
+    expect(table.getRowId({ code: 'code-1', sku: 'sku-1' })).toBe('code-1');
+  });
 });

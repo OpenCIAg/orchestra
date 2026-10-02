@@ -8,10 +8,10 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   imports: [FlexComponent],
   template: `
     <div class="example">
-      <span class="example__label">Space between</span>
+      <span class="example__label">Espaço entre</span>
       <orc-flex justify="space-between" align="center" gap=".75rem">
         <div class="state-note"><strong>Left</strong><span>Start</span></div>
-        <div class="state-note"><strong>Center</strong><span>Middle</span></div>
+        <div class="state-note"><strong>Center</strong><span>Meio</span></div>
         <div class="state-note"><strong>Right</strong><span>End</span></div>
       </orc-flex>
     </div>

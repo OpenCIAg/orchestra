@@ -20,20 +20,20 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./pages/home/home.component').then((m) => m.HomeComponent),
-    title: 'Components — Orchestra Design System',
+    title: 'Componentes — Orchestra Design System',
     data: {
       description:
-        'Browse Orchestra Angular components with live examples, variants, accessibility states, and TypeScript APIs.',
+        'Explore os componentes Angular da Orchestra com exemplos ao vivo, variantes, estados de acessibilidade e APIs TypeScript.',
     },
   },
   {
     path: 'docs',
     loadComponent: () =>
       import('./pages/docs/docs.component').then((m) => m.DocsComponent),
-    title: 'Documentation — Orchestra Design System',
+    title: 'Documentação — Orchestra Design System',
     data: {
       description:
-        'Read the Orchestra Design System documentation for tokens, typography, accessibility, brand principles, and component usage.',
+        'Documentação do Orchestra Design System: tokens, tipografia, acessibilidade, princípios de marca e uso dos componentes.',
     },
   },
   {
@@ -146,7 +146,7 @@ export const routes: Routes = [
       import('./pages/components/spinner/spinner-page.component').then(
         (m) => m.SpinnerPageComponent,
       ),
-    title: 'Spinner / Loading — Orchestra',
+    title: 'Spinner / Carregamento — Orchestra',
   },
   {
     path: 'components/skeleton',
@@ -170,7 +170,7 @@ export const routes: Routes = [
       import('./pages/components/toast/toast-page.component').then(
         (m) => m.ToastPageComponent,
       ),
-    title: 'Toast / Notifications — Orchestra',
+    title: 'Toast / Notificações — Orchestra',
   },
   {
     path: 'components/progress',
@@ -263,7 +263,7 @@ export const routes: Routes = [
       import('./pages/components/modal/modal-page.component').then(
         (m) => m.ModalPageComponent,
       ),
-    title: 'Modal / Dialog — Orchestra',
+    title: 'Modal / Diálogo — Orchestra',
   },
   {
     path: 'components/file-uploader',
@@ -279,7 +279,7 @@ export const routes: Routes = [
       import('./pages/components/component-doc/component-doc-page.component').then(
         (m) => m.ComponentDocPageComponent,
       ),
-    title: 'Component API — Orchestra',
+    title: 'API do Componente — Orchestra',
   },
   {
     path: '**',

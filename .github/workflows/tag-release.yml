@@ -1,0 +1,164 @@
+name: Tag release
+
+# Release artifacts (ticket #8 — governed tags and GitHub Releases).
+#
+# The ONLY workflow permitted `contents: write`; release.yml stays
+# read-only plus id-token (npm OIDC publishing needs nothing else).
+#
+# Triggers:
+# - main pushes run the publish guard (tools/release/publish-guard.mjs — #6's
+#   verdict logic, unmodified). Only a governed release commit — the Version-PR
+#   merge with the version changed and zero pending changesets — reaches the
+#   artifact steps. The job then waits for the version to appear on the npm
+#   registry (release.yml publishes concurrently), creates the annotated
+#   `v<version>` tag at the release commit, and opens the GitHub Release with
+#   the version's changelog section as its notes. If the publish never lands,
+#   the job fails instead of minting a tagged-but-never-published phantom.
+# - v* tag pushes backfill the old-line mapping: a tag that routes to a
+#   backport line (v19–v22 per compatibility/versions.json) gets a GitHub
+#   Release whose notes come from the tagged tree's changelog, or a fallback
+#   note when that era predates changelog sections. Tags marking commits on
+#   the current line (including the ones this workflow creates from main) are
+#   ignored here — the main-push job owns their artifacts; release.yml skips
+#   their publish path for the same reason (publish-guard taggedCommitOnCurrentLine).
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+# Serialize per ref: a queued older run must not tag a stale commit or race
+# an existing GitHub Release.
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+
+jobs:
+  tag-current-release:
+    name: Tag and release the governed main release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # The guard compares HEAD~1 and resolves the current line for the
+          # verdict; tagging needs the release commit at HEAD.
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Guard the release trigger
+        run: node tools/release/publish-guard.mjs
+
+      - name: Resolve release version
+        if: env.ORCHESTRA_PUBLISH == 'publish'
+        run: echo "RELEASE_VERSION=$(node -p "require('./projects/orc-ds/package.json').version")" >> "$GITHUB_ENV"
+
+      - name: Wait for the npm publish to land
+        if: env.ORCHESTRA_PUBLISH == 'publish'
+        run: |
+          for attempt in $(seq 1 40); do
+            if npm view "@ciag/orchestra@${RELEASE_VERSION}" version >/dev/null 2>&1; then
+              echo "@ciag/orchestra@${RELEASE_VERSION} is on the registry."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::release.yml did not publish ${RELEASE_VERSION} within 10 minutes; refusing to tag an unpublished version."
+          exit 1
+
+      - name: Create the release tag
+        if: env.ORCHESTRA_PUBLISH == 'publish'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${RELEASE_VERSION}" -m "Release @ciag/orchestra ${RELEASE_VERSION}"
+          git push origin "refs/tags/v${RELEASE_VERSION}"
+
+      - name: Create the GitHub Release
+        if: env.ORCHESTRA_PUBLISH == 'publish'
+        run: |
+          node tools/release/release-notes.mjs "${RELEASE_VERSION}" > "$RUNNER_TEMP/notes.md"
+          gh release create "v${RELEASE_VERSION}" \
+            --target "$GITHUB_SHA" \
+            --title "@ciag/orchestra ${RELEASE_VERSION}" \
+            --notes-file "$RUNNER_TEMP/notes.md"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  tag-old-line-release:
+    name: Attach release notes to a backport tag
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout the tagged tree
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          # Full history so the current-line skip can resolve origin/main and
+          # the guard facts stay available if this job grows them.
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Skip tags that mark a current-line commit
+        run: |
+          if git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "Tag ${GITHUB_REF_NAME} marks a commit on main; the main-push job owns its artifacts."
+            exit 0
+          fi
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+          echo "BACKPORT_TAG=1" >> "$GITHUB_ENV"
+
+      - name: Wait for the npm publish to land
+        if: env.BACKPORT_TAG == '1'
+        run: |
+          for attempt in $(seq 1 40); do
+            if npm view "@ciag/orchestra@${RELEASE_VERSION}" version >/dev/null 2>&1; then
+              echo "@ciag/orchestra@${RELEASE_VERSION} is on the registry."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::release.yml did not publish ${RELEASE_VERSION} within 10 minutes; refusing to attach notes to an unpublished version."
+          exit 1
+
+      - name: Write the release notes
+        if: env.BACKPORT_TAG == '1'
+        run: |
+          if node tools/release/release-notes.mjs "${RELEASE_VERSION}" > "$RUNNER_TEMP/notes.md" 2>/dev/null; then
+            echo "Notes extracted from the tagged tree's changelog."
+          else
+            cat > "$RUNNER_TEMP/notes.md" <<NOTES
+          Release \`@ciag/orchestra@${RELEASE_VERSION}\` on a backport line.
+
+          The tagged tree carries no changelog section for this version — it
+          predates the changelog backfill (ticket #8). See the repository
+          changelog and RELEASE.md ("Historical notes") for context.
+          NOTES
+            echo "No changelog section; wrote the fallback note."
+          fi
+
+      - name: Create the GitHub Release
+        if: env.BACKPORT_TAG == '1'
+        run: |
+          if gh release view "v${RELEASE_VERSION}" --json id >/dev/null 2>&1; then
+            echo "Release v${RELEASE_VERSION} already exists."
+            exit 0
+          fi
+          gh release create "v${RELEASE_VERSION}" \
+            --target "$GITHUB_SHA" \
+            --title "@ciag/orchestra ${RELEASE_VERSION}" \
+            --notes-file "$RUNNER_TEMP/notes.md"
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -57,7 +57,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
       </div>
       <div class="example-grid example-grid--two">
         <div class="example">
-          <span class="example__label">Error</span>
+          <span class="example__label">Erro</span>
           <orc-date-picker
             label="Data inválida"
             error="Informe uma data futura."
@@ -65,7 +65,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
           />
         </div>
         <div class="example">
-          <span class="example__label">Disabled</span>
+          <span class="example__label">Desabilitado</span>
           <orc-date-picker
             label="Data bloqueada"
             value="2026-08-17"

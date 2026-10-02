@@ -15,7 +15,10 @@ import { JsonPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FooterComponent } from '../../../shared/footer/footer.component';
-import { ComponentCatalogService } from '../../../services/component-catalog.service';
+import {
+  ComponentCatalogService,
+  categoryLabel,
+} from '../../../services/component-catalog.service';
 import { COMPONENT_API_LOADERS } from '../../../generated/component-api.registry.generated';
 import { COMPONENT_EXAMPLES } from './examples';
 import type { ComponentApiMember } from '../../../models/component-api.model';
@@ -32,10 +35,10 @@ interface ExampleInstanceState {
 }
 
 const STATUS_LABELS: Record<ComponentEntry['status'], string> = {
-  stable: 'Stable',
+  stable: 'Estável',
   beta: 'Beta',
   experimental: 'Experimental',
-  deprecated: 'Deprecated',
+  deprecated: 'Descontinuado',
 };
 
 /**
@@ -99,6 +102,8 @@ export class ComponentDocPageComponent {
   readonly statusLabel = computed(() =>
     this.entry() ? STATUS_LABELS[this.entry()!.status] : '',
   );
+
+  readonly categoryLabel = categoryLabel;
 
   readonly usageSnippet = computed<string | null>(() => {
     const authored = this.usageDoc()?.usage;

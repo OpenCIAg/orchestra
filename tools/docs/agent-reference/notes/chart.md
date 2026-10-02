@@ -1,0 +1,1 @@
+Semantic add-on: unsupported `ChartType` values (`scatter`, `bubble`, `polarArea`, `radar`) remain accepted for source compatibility and render a status message instead of a chart. Keyboard selection moves between rendered points with arrows, `Home`, and `End`; `Enter` or `Space` emits `onDataSelect`.

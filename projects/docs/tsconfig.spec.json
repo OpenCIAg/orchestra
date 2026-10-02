@@ -4,7 +4,7 @@
     "outDir": "../../out-tsc/spec",
     "paths": {
       "@ciag/orchestra/chart": ["../orc-ds/p2/p2-chart-editor-components.ts"],
-      "@ciag/orchestra/terminal": ["../orc-ds/p2/p2-terminal-component.ts"],
+      "@ciag/orchestra/terminal": ["../orc-ds/terminal/index.ts"],
       "@ciag/orchestra/p2": ["../orc-ds/p2/p2-doc-components.ts"],
       "@ciag/orchestra/p2-doc-components": [
         "../orc-ds/p2/p2-doc-components.ts"
@@ -16,6 +16,18 @@
         "../orc-ds/p2/p2-menu-family-components.ts"
       ],
       "@ciag/orchestra/empty-state": ["../orc-ds/empty-state/index.ts"],
+      "@ciag/orchestra/code": ["../orc-ds/code/index.ts"],
+      "@ciag/orchestra/data-view": ["../orc-ds/data-view/index.ts"],
+      "@ciag/orchestra/galleria": ["../orc-ds/galleria/index.ts"],
+      "@ciag/orchestra/hover-card": ["../orc-ds/hover-card/index.ts"],
+      "@ciag/orchestra/order-list": ["../orc-ds/order-list/index.ts"],
+      "@ciag/orchestra/pick-list": ["../orc-ds/pick-list/index.ts"],
+      "@ciag/orchestra/tree": ["../orc-ds/tree/index.ts"],
+      "@ciag/orchestra/tree-select": ["../orc-ds/tree-select/index.ts"],
+      "@ciag/orchestra/tree-table": ["../orc-ds/tree-table/index.ts"],
+      "@ciag/orchestra/virtual-scroller": [
+        "../orc-ds/virtual-scroller/index.ts"
+      ],
       "@ciag/orchestra/internal": ["../orc-ds/internal/index.ts"],
       "@ciag/orchestra/overlay-panel": ["../orc-ds/overlay-panel/index.ts"],
       "@ciag/orchestra/paginator": ["../orc-ds/paginator/index.ts"],

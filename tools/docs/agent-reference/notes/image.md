@@ -1,0 +1,1 @@
+Preview uses a named modal with zoom/rotation controls, focus containment, and focus restoration. Always provide meaningful `alt`, or an empty alt only for decorative images. `appendTo`, `showTransitionOptions`, and `hideTransitionOptions` are deprecated compatibility inputs with no effect.

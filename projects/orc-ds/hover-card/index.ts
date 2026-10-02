@@ -1,1 +1,1 @@
-export { HoverCardComponent } from '@ciag/orchestra/p2';
+export { HoverCardComponent } from './hover-card.component';

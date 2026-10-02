@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Drag and drop</span>
+        <span class="example__label">Arrastar e soltar</span>
         <orc-file-uploader
           accept="image/*,.pdf"
           [multiple]="true"

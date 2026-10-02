@@ -1,0 +1,79 @@
+.orc-tree-table {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid var(--orc-component-border);
+  border-radius: 0.5rem;
+  background: var(--orc-component-surface);
+}
+.orc-tree-table table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--orc-component-text);
+  table-layout: fixed;
+}
+.orc-tree-table th,
+.orc-tree-table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--orc-component-border);
+  text-align: left;
+}
+.orc-tree-table th {
+  background: var(--orc-component-surface-subtle);
+}
+.orc-tree-table.gridlines th,
+.orc-tree-table.gridlines td {
+  border-inline-end: 1px solid var(--orc-component-border);
+}
+.orc-tree-table.row-hover tbody tr:hover {
+  background: var(--orc-component-interactive-soft);
+}
+.orc-tree-table.auto-layout table {
+  table-layout: auto;
+}
+.row-selection {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.toggle {
+  width: 1.5rem;
+  border: 0;
+  background: transparent;
+}
+.tree-table-filter,
+.tree-table-paginator,
+.rows-per-page {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tree-table-filter {
+  padding: 0.65rem 0.75rem;
+}
+.tree-table-filter input {
+  max-width: 20rem;
+}
+.sort-control {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.sort-control:focus-visible,
+.tree-table-paginator button:focus-visible {
+  outline: 2px solid var(--orc-focus-ring, var(--orc-component-interactive));
+  outline-offset: 2px;
+}
+.tree-table-paginator {
+  justify-content: flex-end;
+  padding: 0.65rem 0.75rem;
+  flex-wrap: wrap;
+}
+.page-report {
+  min-width: 8rem;
+  text-align: center;
+}

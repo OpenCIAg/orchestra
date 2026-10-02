@@ -1,0 +1,1 @@
+The region name uses `ariaLabel`, then the trimmed title, then `Empty state`; blank titles/descriptions are omitted and a blank icon falls back to `∅`. Use the action only when a meaningful recovery or creation path exists.

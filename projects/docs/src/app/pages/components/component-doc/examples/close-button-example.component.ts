@@ -14,7 +14,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Dismiss action</span>
+        <span class="example__label">Ação de descarte</span>
         <div class="state-note">
           <strong>Mensagem</strong
           ><span>Feche este aviso com o botão acessível.</span

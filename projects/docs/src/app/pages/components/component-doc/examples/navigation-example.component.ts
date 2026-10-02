@@ -19,7 +19,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Responsive navigation shell</span>
+        <span class="example__label">Navegação responsiva</span>
         <button
           class="doc-button"
           type="button"
@@ -47,12 +47,12 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
       </div>
       <div class="example-grid example-grid--two">
         <div class="example example--muted">
-          <span class="example__label">Controlled state</span>
+          <span class="example__label">Estado controlado</span>
           <code>open = {{ open() }}</code>
           <code>active = {{ activeId() }}</code>
         </div>
         <div class="example example--muted">
-          <span class="example__label">Interaction</span>
+          <span class="example__label">Interação</span>
           <p>
             {{ message() || 'Selecione um item ou use Escape.' }}
           </p>

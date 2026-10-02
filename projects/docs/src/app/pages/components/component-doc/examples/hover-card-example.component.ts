@@ -8,7 +8,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   imports: [HoverCardComponent],
   template: `
     <div class="example example--centered">
-      <span class="example__label">Hover or focus</span>
+      <span class="example__label">Hover ou foco</span>
       <orc-hover-card label="Detalhes do componente">
         <button hover-card-trigger class="doc-button" type="button">
           Passe o mouse ou foque

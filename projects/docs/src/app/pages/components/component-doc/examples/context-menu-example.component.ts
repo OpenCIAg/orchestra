@@ -17,7 +17,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Context actions</span>
+        <span class="example__label">Ações de contexto</span>
         <orc-context-menu [items]="items" (itemSelect)="onItemSelect($event)"
           ><span>Botão direito aqui</span></orc-context-menu
         >

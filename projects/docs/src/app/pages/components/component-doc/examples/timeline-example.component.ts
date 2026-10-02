@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">All item statuses</span>
+        <span class="example__label">Todos os status de item</span>
         <orc-timeline
           [items]="items"
           ariaLabel="Etapas do componente"

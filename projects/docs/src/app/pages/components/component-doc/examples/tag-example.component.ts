@@ -14,7 +14,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Variants</span>
+        <span class="example__label">Variantes</span>
         <div class="chip-row">
           <orc-tag label="Neutral" /><orc-tag
             label="Primary"

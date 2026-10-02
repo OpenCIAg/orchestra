@@ -9,7 +9,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example-stack example">
-        <span class="example__label">Text tones</span>
+        <span class="example__label">Tons de texto</span>
         <orc-text size="lg">Texto principal</orc-text>
         <orc-text size="md" [muted]="true">Texto secundário</orc-text>
         <orc-text size="sm" [muted]="true">Metadados e apoio</orc-text>

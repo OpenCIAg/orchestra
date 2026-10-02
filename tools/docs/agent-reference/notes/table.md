@@ -1,0 +1,1 @@
+A column config includes `key`, `header`, optional `sortable`, `width`, and `align: left | center | right`. Use `orc-column` plus the `orcCellDef`/`orcHeaderCellDef` cell directives for custom templates.

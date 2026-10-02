@@ -16,7 +16,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Controlled tab navigation</span>
+        <span class="example__label">Navegação de abas controlada</span>
         <orc-tab-menu
           [model]="items"
           [(activeItem)]="activeItem"
@@ -26,7 +26,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
         <code>activeItem = {{ activeItem()?.label || items[0].label }}</code>
       </div>
       <div class="example example--muted">
-        <span class="example__label">Keyboard + output</span>
+        <span class="example__label">Teclado + output</span>
         <p>
           {{ message() || 'Use ← →, Home, End ou ative uma seção.' }}
         </p>

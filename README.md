@@ -2,7 +2,9 @@
 
 Enterprise Angular Component Framework and Design System built with Angular 19+, native Signals, ARIA semantics, visible focus, keyboard navigation, and tree-shakeable secondary entry points.
 
-Package versions follow `Angular major.Orchestra major.Orchestra minor`. For example, `19.1.0` is Orchestra 1.0 for Angular 19.
+Package versions follow strict semver with the Angular major as the semver major: `22.y.z`. Breaking changes land only at Angular-major boundaries (next: `23.0.0`).
+
+The canonical documentation home is <https://orchestra.ciag.org.br> (component catalog, design guide, and the machine-readable [`llms.txt`](https://orchestra.ciag.org.br/llms.txt) / [`llms.md`](https://orchestra.ciag.org.br/llms.md) agent reference). The GitHub Pages deployment mirrors the same artifact.
 
 ---
 
@@ -152,7 +154,7 @@ npm run build
 npm run test:lib
 
 # Create a changeset for release
-npx changeset
+npm run changeset
 
 # Pack tarball for local inspection
 npm run pack:lib
@@ -161,6 +163,19 @@ npm run pack:lib
 npm run verify:package
 npm run verify:package:minimum
 ```
+
+---
+
+## Versioning & Releases
+
+Versions are `22.y.z`: the Angular major is the semver major, and `npm install @ciag/orchestra@^22.3.0` receives every backward-compatible release of the Angular 22 line. Breaking changes land only at Angular-major boundaries — the next one is `23.0.0`. This is the one-time **generation collapse**: the retired `Angular major.Orchestra major.Orchestra minor` scheme carried breaking Orchestra generations in the semver minor slot (so `^22.1.0` consumers received breaking `22.2.0` automatically); since `22.3.0` a minor bump is backward-compatible by contract.
+
+Releases run through changesets:
+
+1. Every consumer- or contributor-visible change lands a changeset file (`.changeset/*.md`, via `npm run changeset`) committed with its work.
+2. CI maintains a **Version PR** (`.github/workflows/version-pr.yml`) that consumes the pending changesets into the version bump and the generated changelog section.
+3. Merging the Version PR produces the governed release commit; the guarded release workflow (`.github/workflows/release.yml`) verifies the package distribution and publishes it to npm under the `latest` dist-tag.
+4. Old release lines (`v19`–`v22`) are Angular-locked backport streams: their releases are patch tags (`vNN.x.y`), published under the matching `angularNN` dist-tag.
 
 ---
 

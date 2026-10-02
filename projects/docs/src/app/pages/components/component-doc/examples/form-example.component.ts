@@ -15,7 +15,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Stacked + native validation</span>
+        <span class="example__label">Empilhado + validação nativa</span>
         <orc-form
           ariaLabel="Cadastro de projeto"
           (formSubmit)="onFormSubmit($event)"

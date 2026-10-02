@@ -22,15 +22,16 @@ const svg = (color: string): string =>
 })
 export class GalleriaPageComponent {
   readonly images: GalleryImage[] = [
-    { src: svg('%231C6AED'), alt: 'Blue landscape', title: 'Blue landscape' },
-    { src: svg('%2316A34A'), alt: 'Green landscape', title: 'Green landscape' },
-    { src: svg('%23B45309'), alt: 'Amber landscape', title: 'Amber landscape' },
+    { src: svg('%231C6AED'), alt: 'Paisagem azul', title: 'Paisagem azul' },
+    { src: svg('%2316A34A'), alt: 'Paisagem verde', title: 'Paisagem verde' },
+    { src: svg('%23B45309'), alt: 'Paisagem âmbar', title: 'Paisagem âmbar' },
   ];
   readonly activeIndex = signal(0);
   readonly visible = signal(true);
   readonly fullScreen = signal(false);
   readonly activeTitle = computed(
-    () => this.images[this.activeIndex()]?.title ?? 'No image selected',
+    () =>
+      this.images[this.activeIndex()]?.title ?? 'Nenhuma imagem selecionada',
   );
 
   openPreview(): void {

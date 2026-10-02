@@ -6,6 +6,7 @@
     "styleIncludePaths": ["./styles"]
   },
   "assets": [
+    "./README.md",
     "./styles/**/*.scss",
     "./styles/**/*.css",
     "./THIRD_PARTY_NOTICES.md",

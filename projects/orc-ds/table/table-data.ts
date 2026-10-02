@@ -1,29 +1,3 @@
-/** Resolve a configured field consistently for cells, sorting, filtering and IDs. */
-export function tableField(row: unknown, field: string): unknown {
-  if (row === null || typeof row !== 'object') return undefined;
-  const record = row as Record<string, unknown>;
-  if (Object.prototype.hasOwnProperty.call(record, field)) return record[field];
-  return field
-    .split('.')
-    .reduce<unknown>(
-      (value, key) =>
-        value !== null && typeof value === 'object'
-          ? (value as Record<string, unknown>)[key]
-          : undefined,
-      row,
-    );
-}
-
-export function positiveTableInteger(value: unknown, fallback: number): number {
-  const number = Number(value);
-  return Number.isFinite(number) && number >= 1 ? Math.floor(number) : fallback;
-}
-
-export function tableOffset(value: unknown): number {
-  const number = Number(value);
-  return Number.isFinite(number) ? Math.max(0, Math.floor(number)) : 0;
-}
-
 /** Nested interactive controls keep their own click and keyboard activation. */
 const tableInteractiveRoles = new Set([
   'button',

@@ -1,0 +1,20 @@
+.orc-p2-hover-card {
+  position: relative;
+  display: inline-block;
+}
+.trigger {
+  display: inline-block;
+}
+.content {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: min(20rem, 80vw);
+  padding: 0.75rem;
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.65rem;
+  background: var(--orc-component-surface);
+  box-shadow: 0 12px 28px var(--orc-component-shadow-color);
+  color: var(--orc-component-text);
+}

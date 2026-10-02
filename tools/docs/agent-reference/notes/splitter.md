@@ -1,0 +1,1 @@
+`onResizeEnd` carries a `KeyboardEvent` for keyboard resizing and `onPointerResizeEnd` a `PointerEvent` for pointer-up or cancellation. A `SplitterPanel` describes each panel id and sizing constraints.

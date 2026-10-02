@@ -9,16 +9,16 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack divider-demo">
       <div class="example">
-        <span class="example__label">Solid + label</span
+        <span class="example__label">Sólido + rótulo</span
         ><orc-divider label="Ou" [decorative]="false" />
       </div>
       <div class="example-grid example-grid--two">
         <div class="example">
-          <span class="example__label">Dashed</span
+          <span class="example__label">Tracejado</span
           ><orc-divider variant="dashed" />
         </div>
         <div class="example">
-          <span class="example__label">Dotted + inset</span
+          <span class="example__label">Pontilhado + recuado</span
           ><orc-divider variant="dotted" [inset]="true" />
         </div>
       </div>

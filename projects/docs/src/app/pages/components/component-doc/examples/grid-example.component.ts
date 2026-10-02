@@ -9,16 +9,16 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example">
-        <span class="example__label">Responsive columns</span>
+        <span class="example__label">Colunas responsivas</span>
         <orc-grid [columns]="3" gap=".75rem" label="Cards de métricas">
           <div class="state-note">
             <strong>Coverage</strong><span>92%</span>
           </div>
           <div class="state-note">
-            <strong>Components</strong><span>42 P2</span>
+            <strong>Componentes</strong><span>42 P2</span>
           </div>
           <div class="state-note">
-            <strong>Tests</strong><span>Passing</span>
+            <strong>Testes</strong><span>Aprovados</span>
           </div>
         </orc-grid>
       </div>

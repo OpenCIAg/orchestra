@@ -14,7 +14,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   template: `
     <div class="example-stack">
       <div class="example example--centered">
-        <span class="example__label">Positioned actions</span>
+        <span class="example__label">Ações posicionadas</span>
         <orc-dropdown #dropdown [items]="items" placement="bottom-start">
           <button class="doc-button" type="button" (click)="dropdown.toggle()">
             Ações <span aria-hidden="true">⌄</span>
