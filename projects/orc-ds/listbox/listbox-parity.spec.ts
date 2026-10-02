@@ -142,6 +142,95 @@ describe('Listbox behavior parity', () => {
     expect(fixture.componentInstance.filteredOptions()[0].value).toBe('b');
   });
 
+  it('resolves option label/value fields, string and function disabled rules, and scalar options', () => {
+    const fixture = TestBed.createComponent(ListboxComponent<any>);
+    fixture.componentRef.setInput('options', [
+      { code: 1, caption: 'One', locked: true },
+      { code: 2, caption: 'Two', locked: false },
+      { code: 3, caption: 'Three', locked: false },
+    ]);
+    fixture.componentRef.setInput('optionLabel', 'caption');
+    fixture.componentRef.setInput('optionValue', 'code');
+    fixture.componentRef.setInput('optionDisabled', 'locked');
+    fixture.detectChanges();
+
+    let options = Array.from(
+      fixture.nativeElement.querySelectorAll(
+        'li[role="option"]',
+      ) as NodeListOf<HTMLElement>,
+    );
+    expect(options.map((option) => option.textContent?.trim())).toEqual([
+      'One',
+      'Two',
+      'Three',
+    ]);
+    expect(options[0].getAttribute('aria-disabled')).toBe('true');
+    options[0].click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBeNull();
+
+    // The disabled rule also accepts a predicate function.
+    fixture.componentRef.setInput('optionDisabled', (option: any) =>
+      option.caption.startsWith('Two'),
+    );
+    fixture.detectChanges();
+    options = Array.from(
+      fixture.nativeElement.querySelectorAll(
+        'li[role="option"]',
+      ) as NodeListOf<HTMLElement>,
+    );
+    expect(options[0].getAttribute('aria-disabled')).toBeNull();
+    expect(options[1].getAttribute('aria-disabled')).toBe('true');
+
+    options[2].click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe(3);
+
+    // Scalar entries resolve to themselves as both label and value.
+    const scalarFixture = TestBed.createComponent(ListboxComponent<string>);
+    scalarFixture.componentRef.setInput('options', ['Solo', 'Duo']);
+    scalarFixture.detectChanges();
+    const scalarOptions = Array.from(
+      scalarFixture.nativeElement.querySelectorAll(
+        'li[role="option"]',
+      ) as NodeListOf<HTMLElement>,
+    );
+    expect(scalarOptions.map((option) => option.textContent?.trim())).toEqual([
+      'Solo',
+      'Duo',
+    ]);
+    scalarOptions[0].click();
+    scalarFixture.detectChanges();
+    expect(scalarFixture.componentInstance.value()).toBe('Solo');
+  });
+
+  it('matches object values by dataKey in single and multiple selection', () => {
+    const fixture = TestBed.createComponent(ListboxComponent<any>);
+    fixture.componentRef.setInput('options', [
+      { value: { id: 7 }, label: 'Seven' },
+    ]);
+    fixture.componentRef.setInput('dataKey', 'id');
+    fixture.componentInstance.writeValue({ id: 7 });
+    fixture.detectChanges();
+    expect(
+      fixture.componentInstance.isSelected(fixture.componentInstance.options()[0]),
+    ).toBeTrue();
+    expect(
+      fixture.nativeElement
+        .querySelector('li[role="option"]')
+        ?.getAttribute('aria-selected'),
+    ).toBe('true');
+
+    fixture.componentRef.setInput('multiple', true);
+    fixture.componentInstance.writeValue([{ id: 7 }]);
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    expect(component.isSelected(component.options()[0])).toBeTrue();
+    // Selecting it again removes the matched entry despite the new object identity.
+    component.select(component.options()[0]);
+    expect(component.value()).toEqual([]);
+  });
+
   it('registers through the forms API and keeps a null writeValue empty', () => {
     const fixture = create();
     const changes: unknown[] = [];
