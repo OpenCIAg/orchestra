@@ -1,11 +1,24 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { validateTopology } from './topology-lib.mjs';
 
 const root = process.cwd();
 const versions = JSON.parse(
   fs.readFileSync(path.join(root, 'compatibility/versions.json'), 'utf8'),
 );
+
+// The publishing topology is a contract (ticket #6): exactly one branch may own
+// publishing for a package major, backport lines publish from tags only, and
+// the frozen lines are restricted to patch releases. Assert it before anything
+// else so a topology typo fails every gate, not just the release.
+const topologyErrors = validateTopology(versions);
+if (topologyErrors.length) {
+  console.error('Release topology check failed (compatibility/versions.json):');
+  for (const error of topologyErrors) console.error(`- ${error}`);
+  process.exit(1);
+}
+
 const branch =
   process.env.RELEASE_BRANCH ||
   execFileSync('git', ['branch', '--show-current'], {
@@ -52,5 +65,6 @@ if (mismatches.length) {
 }
 
 console.log(
-  `Compatibility OK: ${branch} / Angular ${target.angular} / PrimeNG ${target.primeNg} / @ciag/orchestra ${library.version}`,
+  `Compatibility OK: ${branch} / Angular ${target.angular} / PrimeNG ${target.primeNg} / ` +
+    `role ${target.role} (${target.publish}) / @ciag/orchestra ${library.version}`,
 );
