@@ -35,12 +35,17 @@ import {
   CellDefDirective,
   HeaderCellDefDirective,
 } from './table-cell-def.directive';
+import { isTableControlEvent } from './table-data';
 import {
-  tableField,
+  createTableEnginePipeline,
+  nextTableSortDirection,
   positiveTableInteger,
+  tableField,
   tableOffset,
-  isTableControlEvent,
-} from './table-data';
+  tableTrimmedLabel,
+  tableValueComparator,
+  TableEnginePipeline,
+} from '@ciag/orchestra/internal';
 import { buildTableCsv } from './table-csv';
 import { tableDeepSelectionKey } from './table-selection';
 
@@ -339,7 +344,35 @@ export class TableComponent<T = any> implements OnInit {
   readonly footerTemplate = contentChild(TableFooterDirective);
   readonly rowExpansionTemplate = contentChild(TableRowExpansionDirective);
   readonly expandedRows = model<T[]>([]);
-  readonly effectiveData = computed(() => this.value() ?? this.data());
+  /**
+   * The shared table engine runs the source → filter → sort → page pipeline
+   * for this table; the generic contract resolves fields by dot path.
+   */
+  private readonly engine: TableEnginePipeline<T> =
+    createTableEnginePipeline<T>({
+      data: () => this.data(),
+      value: () => this.value(),
+      remote: () => this.remoteData(),
+      query: () => this.filter(),
+      locale: () => this.filterLocale(),
+      fields: () => {
+        const configured = this.globalFilterFields();
+        return configured.length
+          ? configured
+          : this.effectiveColumns().map((column) => column.key());
+      },
+      resolve: tableField,
+      sort: () => {
+        const state = this.sorting();
+        return { field: state.column, direction: state.direction };
+      },
+      customSort: () => this.customSort(),
+      compare: (a, b) => this.rowComparator()(a, b),
+      paginated: () => this.effectivePaginated(),
+      first: () => this.displayFirst(),
+      pageSize: () => this.effectivePageSize(),
+    });
+  readonly effectiveData = this.engine.source;
   readonly effectivePageSize = linkedSignal({
     source: () => ({ rows: this.rowsInput(), size: this.pageSize() }),
     computation: (source, previous): number =>
@@ -372,17 +405,20 @@ export class TableComponent<T = any> implements OnInit {
   readonly effectivePaginated = computed(
     () => this.paginated() || this.paginator(),
   );
-  readonly effectiveFilterPlaceholder = computed(
-    () => this.filterPlaceholder()?.trim() || null,
+  readonly effectiveFilterPlaceholder = computed(() =>
+    tableTrimmedLabel(this.filterPlaceholder(), null),
   );
-  readonly effectiveFilterAriaLabel = computed(
-    () => this.filterAriaLabel()?.trim() || 'Filter rows',
+  readonly effectiveFilterAriaLabel = computed(() =>
+    tableTrimmedLabel(this.filterAriaLabel(), 'Filter rows'),
   );
-  readonly effectiveSelectAllAriaLabel = computed(
-    () => this.selectAllAriaLabel()?.trim() || 'Select all rows',
+  readonly effectiveSelectAllAriaLabel = computed(() =>
+    tableTrimmedLabel(this.selectAllAriaLabel(), 'Select all rows'),
   );
-  readonly effectiveRowAriaLabel = computed(
-    () => this.rowAriaLabel()?.trim() || null,
+  readonly effectiveRowAriaLabel = computed(() =>
+    tableTrimmedLabel(this.rowAriaLabel(), null),
+  );
+  readonly effectiveAriaLabel = computed(() =>
+    tableTrimmedLabel(this.ariaLabel(), 'Data table'),
   );
   readonly selectionEnabled = computed(
     () => this.selectable() || !!this.selectionMode(),
@@ -410,23 +446,7 @@ export class TableComponent<T = any> implements OnInit {
       : this.filteredData().length;
   });
 
-  /** Dados ordenados localmente */
-  readonly filteredData = computed(() => {
-    if (this.remoteData()) return this.effectiveData();
-    const query = this.filter().trim().toLocaleLowerCase(this.filterLocale());
-    if (!query) return this.effectiveData();
-    const configured = this.globalFilterFields();
-    const fields = configured.length
-      ? configured
-      : this.effectiveColumns().map((column) => column.key());
-    return this.effectiveData().filter((row) =>
-      (fields.length ? fields : Object.keys(row ?? {})).some((key) =>
-        String(tableField(row, key) ?? '')
-          .toLocaleLowerCase(this.filterLocale())
-          .includes(query),
-      ),
-    );
-  });
+  readonly filteredData = this.engine.filtered;
 
   private readonly collator = computed(
     () =>
@@ -436,38 +456,11 @@ export class TableComponent<T = any> implements OnInit {
       }),
   );
 
-  readonly sortedData = computed(() => {
-    if (this.remoteData() || this.customSort()) return this.filteredData();
-    const raw = this.filteredData();
-    const { column: col, direction: dir } = this.sorting();
+  private readonly rowComparator = computed(() =>
+    tableValueComparator(this.collator()),
+  );
 
-    if (!col || dir === 'none') {
-      return raw;
-    }
-
-    const collator = this.collator();
-    return [...raw].sort((a, b) => {
-      const valA = tableField(a, col);
-      const valB = tableField(b, col);
-
-      if (valA === valB) return 0;
-      if (valA === null || valA === undefined) return 1;
-      if (valB === null || valB === undefined) return -1;
-
-      let comparison = 0;
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        comparison = collator.compare(valA, valB);
-      } else if (typeof valA === 'number' && typeof valB === 'number') {
-        comparison = valA - valB;
-      } else if (valA instanceof Date && valB instanceof Date) {
-        comparison = valA.getTime() - valB.getTime();
-      } else {
-        comparison = collator.compare(String(valA), String(valB));
-      }
-
-      return dir === 'asc' ? comparison : -comparison;
-    });
-  });
+  readonly sortedData = this.engine.sorted;
 
   readonly displayFirst = computed(() =>
     this.remoteData()
@@ -485,15 +478,7 @@ export class TableComponent<T = any> implements OnInit {
   );
 
   /** Dados exibidos na página atual */
-  readonly displayData = computed(() => {
-    const sorted = this.sortedData();
-    if (this.remoteData() || !this.effectivePaginated()) {
-      return sorted;
-    }
-    const size = this.effectivePageSize();
-    const start = this.displayFirst();
-    return sorted.slice(start, start + size);
-  });
+  readonly displayData = this.engine.display;
 
   readonly selectableRows = computed(() =>
     (this.selectionPageOnly() ? this.displayData() : this.sortedData()).filter(
@@ -628,14 +613,15 @@ export class TableComponent<T = any> implements OnInit {
     if (!isSortable || (originalEvent && isTableControlEvent(originalEvent)))
       return;
 
-    let newDirection: SortDirection =
-      this.defaultSortOrder() < 0 ? 'desc' : 'asc';
-    if (this.sorting().column === columnKey) {
-      const currentDir = this.sorting().direction;
-      if (currentDir === 'asc') newDirection = 'desc';
-      else if (currentDir === 'desc') newDirection = 'none';
-      else newDirection = 'asc';
-    }
+    const current = this.sorting();
+    const newDirection: SortDirection = nextTableSortDirection(
+      current.direction,
+      current.column === columnKey,
+      {
+        defaultDescending: this.defaultSortOrder() < 0,
+        cycleThroughNone: true,
+      },
+    );
 
     this.sortColumn.set(newDirection === 'none' ? '' : columnKey);
     this.sortDirection.set(newDirection);
