@@ -292,7 +292,7 @@ describe('TagsInput documentation', () => {
 
 describe('Menu documentation', () => {
   it('documents the standalone menu contract and renders the orc-menu example', async () => {
-    const { fixture, root } = await renderDoc('menu');
+    const { root } = await renderDoc('menu');
     const text = root.textContent ?? '';
 
     expect(root.querySelector('h1')?.textContent).toContain('Menu');

@@ -7,7 +7,6 @@ import {
   ToastStatus,
   ToastPosition,
   ToastComponent,
-  ToastContainerComponent,
 } from '@ciag/orchestra/toast';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 

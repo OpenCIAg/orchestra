@@ -161,7 +161,8 @@ export class TreeViewComponent implements OnDestroy {
       !!activeItem && this.isDescendant(node, activeItem.node.id);
     this.expanded.update((current) => {
       const next = new Set(current);
-      wasExpanded ? next.delete(node.id) : next.add(node.id);
+      if (wasExpanded) next.delete(node.id);
+      else next.add(node.id);
       return next;
     });
     if (nodeIndex >= 0) {

@@ -373,7 +373,6 @@ describe('DataView local and lazy pagination contracts', () => {
     const fixture = TestBed.createComponent(
       DataViewComponent<{ name: string }>,
     );
-    const component = fixture.componentInstance;
     fixture.componentRef.setInput('value', []);
     fixture.componentRef.setInput('header', 'Projects');
     fixture.componentRef.setInput('ariaLabel', '   ');

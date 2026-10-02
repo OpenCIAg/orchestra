@@ -148,10 +148,10 @@ export class HoverCardComponent implements AfterViewInit {
   readonly label = input<string | undefined>(undefined);
   readonly id = input<string | undefined>(undefined);
 
-  constructor(
-    private readonly host: ElementRef<HTMLElement>,
-    private readonly renderer: Renderer2,
-  ) {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
+
+  constructor() {
     effect(() => {
       this.open();
       this.id();

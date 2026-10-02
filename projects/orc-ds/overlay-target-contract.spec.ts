@@ -25,7 +25,7 @@ class PortalTargetHost {
 }
 
 @Component({
-  selector: 'portal-lifecycle-child',
+  selector: 'orc-portal-lifecycle-child',
   standalone: true,
   template: `<span class="portal-child-label">{{ label() }}</span>`,
 })
@@ -47,7 +47,7 @@ class PortalLifecycleChildComponent implements OnDestroy {
     <div class="portal-lifecycle-target-b"></div>
     <orc-portal [target]="target()">
       @if (show()) {
-        <portal-lifecycle-child [label]="label()" />
+        <orc-portal-lifecycle-child [label]="label()" />
       }
     </orc-portal>
   `,
@@ -328,13 +328,13 @@ describe('ContextMenu and Portal target contracts', () => {
     const targetB = fixture.nativeElement.querySelector(
       '.portal-lifecycle-target-b',
     ) as HTMLElement;
-    let child = host.querySelector('portal-lifecycle-child') as HTMLElement;
+    let child = host.querySelector('orc-portal-lifecycle-child') as HTMLElement;
     expect(child).not.toBeNull();
 
     fixture.componentInstance.target.set('.portal-lifecycle-target-a');
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(targetA.querySelector('portal-lifecycle-child')).toBe(child);
+    expect(targetA.querySelector('orc-portal-lifecycle-child')).toBe(child);
     expect(PortalLifecycleChildComponent.destroyCount).toBe(0);
 
     fixture.componentInstance.label.set('Updated while portaled');
@@ -344,20 +344,20 @@ describe('ContextMenu and Portal target contracts', () => {
     fixture.componentInstance.target.set('.portal-lifecycle-target-b');
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(targetA.querySelector('portal-lifecycle-child')).toBeNull();
-    expect(targetB.querySelector('portal-lifecycle-child')).toBe(child);
+    expect(targetA.querySelector('orc-portal-lifecycle-child')).toBeNull();
+    expect(targetB.querySelector('orc-portal-lifecycle-child')).toBe(child);
     expect(PortalLifecycleChildComponent.destroyCount).toBe(0);
 
     fixture.componentInstance.show.set(false);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(targetB.querySelector('portal-lifecycle-child')).toBeNull();
+    expect(targetB.querySelector('orc-portal-lifecycle-child')).toBeNull();
     expect(PortalLifecycleChildComponent.destroyCount).toBe(1);
 
     fixture.componentInstance.show.set(true);
     fixture.detectChanges();
     await fixture.whenStable();
-    child = targetB.querySelector('portal-lifecycle-child') as HTMLElement;
+    child = targetB.querySelector('orc-portal-lifecycle-child') as HTMLElement;
     expect(child).not.toBeNull();
     fixture.destroy();
 

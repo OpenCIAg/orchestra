@@ -4,7 +4,6 @@ import {
   Component,
   afterNextRender,
   computed,
-  effect,
   ElementRef,
   forwardRef,
   inject,
@@ -251,7 +250,8 @@ export class OrderListComponent<T = unknown>
           ? [this.selected() as T]
           : [];
       const position = current.indexOf(item);
-      position >= 0 ? current.splice(position, 1) : current.push(item);
+      if (position >= 0) current.splice(position, 1);
+      else current.push(item);
       this.selected.set(current);
     } else {
       this.selected.set(item);

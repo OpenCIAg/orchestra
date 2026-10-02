@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -66,7 +66,9 @@ export class CheckboxPageComponent {
   readonly formSubmitted = signal<boolean>(false);
   readonly formResult = signal<any>(null);
 
-  constructor(private fb: FormBuilder) {
+  private readonly fb = inject(FormBuilder);
+
+  constructor() {
     this.form = this.fb.group({
       acceptTerms: [false, [Validators.requiredTrue]],
       newsletter: [true],

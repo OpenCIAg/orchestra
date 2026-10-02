@@ -179,8 +179,10 @@ export class ConfirmDialogComponent implements OnDestroy {
   private wasOpen = false;
   private releaseScrollLock?: () => void;
   private lockedDocument?: Document;
-  constructor(private readonly service: ConfirmationService) {
-    this.request = service.request;
+  private readonly service = inject(ConfirmationService);
+
+  constructor() {
+    this.request = this.service.request;
     effect(() => {
       const request = this.request();
       this.syncScrollLock(request);

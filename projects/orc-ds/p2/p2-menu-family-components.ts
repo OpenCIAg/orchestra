@@ -494,7 +494,8 @@ export class TieredMenuComponent implements OnDestroy {
     this.unbindOutsideDismissal();
   }
   toggle(): void {
-    this.visible() ? this.hide() : this.show();
+    if (this.visible()) this.hide();
+    else this.show();
   }
   onKeydown(event: KeyboardEvent): void {
     if (this.disabled()) return;
@@ -548,7 +549,8 @@ export class TieredMenuComponent implements OnDestroy {
     const current = items[this.activeIndex()];
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.openItem() ? this.closeSubmenu(host) : this.hide();
+      if (this.openItem()) this.closeSubmenu(host);
+      else this.hide();
       return;
     }
     if (
@@ -967,7 +969,8 @@ export class PanelMenuComponent {
     } else if (event.key === 'Enter' || event.key === ' ') {
       if (event.key === 'Enter' && target?.tagName === 'A') return;
       event.preventDefault();
-      current.parent ? this.select(current.item) : this.toggle(current.item);
+      if (current.parent) this.select(current.item);
+      else this.toggle(current.item);
     }
   }
   private currentTreeIndex(entries: PanelTreeEntry[]): number {

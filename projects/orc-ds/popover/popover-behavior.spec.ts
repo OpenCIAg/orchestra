@@ -168,7 +168,7 @@ describe('Popover trigger, attachment and lifecycle', () => {
 
   it('traps modal focus and releases scroll and detached nodes on destruction', () => {
     const before = document.body.style.overflow;
-    const { fixture, component, trigger, panel } = setup();
+    const { fixture, trigger, panel } = setup();
     fixture.componentInstance.appendTo.set('body');
     fixture.componentInstance.modal.set(true);
     trigger.click();
@@ -246,7 +246,7 @@ describe('Popover trigger, attachment and lifecycle', () => {
   });
 
   it('restores controlled attributes on a surviving projected trigger during destruction', () => {
-    const { fixture, trigger, component } = setup();
+    const { fixture, trigger } = setup();
     trigger.click();
     fixture.detectChanges();
     TestBed.tick();

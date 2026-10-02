@@ -452,7 +452,6 @@ describe('ModalComponent', () => {
     }
 
     let hostFixture: ComponentFixture<HostModalComponent>;
-    let hostComponent: HostModalComponent;
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
@@ -460,7 +459,6 @@ describe('ModalComponent', () => {
       }).compileComponents();
 
       hostFixture = TestBed.createComponent(HostModalComponent);
-      hostComponent = hostFixture.componentInstance;
       hostFixture.detectChanges();
     });
 

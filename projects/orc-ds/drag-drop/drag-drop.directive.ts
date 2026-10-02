@@ -6,6 +6,7 @@ import {
   HostListener,
   booleanAttribute,
   effect,
+  inject,
   input,
   output,
 } from '@angular/core';
@@ -56,7 +57,9 @@ export class DraggableDirective implements AfterViewInit {
   readonly onDragEnd = output<DragEvent>();
   readonly onDrag = output<DragEvent>();
 
-  constructor(private readonly element: ElementRef<HTMLElement>) {
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  constructor() {
     effect(() => {
       this.element.nativeElement.draggable = !this.isDisabled();
     });
@@ -119,7 +122,9 @@ export class DroppableDirective implements AfterViewInit {
   readonly onDragLeave = output<DragEvent>();
   readonly onDrop = output<DragEvent>();
   private active = false;
-  constructor(private readonly element: ElementRef<HTMLElement>) {
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  constructor() {
     effect(() => {
       const disabled = this.isDisabled();
       this.element.nativeElement.setAttribute(

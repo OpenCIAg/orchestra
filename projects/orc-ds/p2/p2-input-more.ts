@@ -8,6 +8,7 @@ import {
   ElementRef,
   forwardRef,
   HostListener,
+  inject,
   input,
   model,
   OnDestroy,
@@ -122,7 +123,7 @@ export class InputColorComponent implements ControlValueAccessor {
 export class AutoFocusDirective implements AfterViewInit, OnDestroy {
   readonly disabled = input(false, { transform: booleanAttribute });
   private destroyed = false;
-  constructor(private readonly element: ElementRef<HTMLElement>) {}
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
   ngAfterViewInit(): void {
     if (this.disabled()) return;
     queueMicrotask(() => {

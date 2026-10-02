@@ -12,7 +12,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2_SHARED_STYLES } from './p2-shared';
 import { isIsoDate } from './p2-date-utils';
 
@@ -476,7 +475,8 @@ export class CalendarComponent {
           ? [current]
           : [];
       const index = values.findIndex((value) => value.slice(0, 10) === day.iso);
-      index >= 0 ? values.splice(index, 1) : values.push(selectedValue);
+      if (index >= 0) values.splice(index, 1);
+      else values.push(selectedValue);
       next = values;
     } else if (this.selectionMode() === 'range') {
       const current = this.value();

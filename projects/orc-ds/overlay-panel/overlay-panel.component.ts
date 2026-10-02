@@ -133,7 +133,8 @@ export class OverlayPanelComponent implements OnDestroy {
   }
 
   toggle(event?: Event, target?: HTMLElement): void {
-    this.open() ? this.close() : this.show(event, target);
+    if (this.open()) this.close();
+    else this.show(event, target);
   }
   show(event?: Event, target?: HTMLElement): void {
     const currentTarget = event?.currentTarget as HTMLElement | null;

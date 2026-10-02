@@ -672,7 +672,8 @@ export class TreeTableComponent<T = Record<string, unknown>> implements OnInit {
     this.expanded.update((current) => {
       const next = new Set(current);
       const open = next.has(node.key);
-      open ? next.delete(node.key) : next.add(node.key);
+      if (open) next.delete(node.key);
+      else next.add(node.key);
       (open ? this.nodeCollapse : this.nodeExpand).emit(node);
       (open ? this.rowCollapse : this.rowExpand).emit(node);
       return next;

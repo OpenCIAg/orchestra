@@ -25,7 +25,7 @@ type EqualTypes<Left, Right> =
     ? true
     : false;
 type Assert<Type extends true> = Type;
-type TreeSelectNodeExportIdentity = [
+type TreeSelectNodeExportIdentity = [ // eslint-disable-line @typescript-eslint/no-unused-vars -- deliberate compile-time export identity assertion
   Assert<EqualTypes<TreeSelectNode, FocusedTreeSelectNode>>,
   Assert<EqualTypes<TreeSelectNode, P2TreeSelectNode>>,
   Assert<EqualTypes<TreeSelectNode, SecondaryTreeSelectNode>>,

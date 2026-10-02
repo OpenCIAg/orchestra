@@ -6,6 +6,7 @@ import {
   OnDestroy,
   TemplateRef,
   ViewContainerRef,
+  inject,
   output,
 } from '@angular/core';
 
@@ -17,11 +18,9 @@ export class DeferDirective implements AfterViewInit, OnDestroy {
   private loaded = false;
   private destroyed = false;
 
-  constructor(
-    private readonly template: TemplateRef<unknown>,
-    private readonly container: ViewContainerRef,
-    private readonly host: ElementRef<Node>,
-  ) {}
+  private readonly template = inject<TemplateRef<unknown>>(TemplateRef);
+  private readonly container = inject(ViewContainerRef);
+  private readonly host = inject<ElementRef<Node>>(ElementRef);
 
   ngAfterViewInit(): void {
     const anchor = this.host.nativeElement;

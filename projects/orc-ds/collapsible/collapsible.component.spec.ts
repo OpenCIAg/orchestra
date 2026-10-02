@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CollapsibleComponent } from './collapsible.component';
 
@@ -30,7 +30,7 @@ let lazyChildConstructed = 0;
 let lazyChildInitialized = 0;
 
 @Component({
-  selector: 'test-collapsible-lazy-child',
+  selector: 'orc-test-collapsible-lazy-child',
   standalone: true,
   template: '<span class="lazy-child">lazy child</span>',
 })
@@ -46,7 +46,7 @@ class LazyChildComponent implements OnInit {
 @Component({
   standalone: true,
   imports: [CollapsibleComponent, LazyChildComponent],
-  template: `<ng-template #content><test-collapsible-lazy-child /></ng-template
+  template: `<ng-template #content><orc-test-collapsible-lazy-child /></ng-template
     ><orc-collapsible
       title="Deferred"
       [lazy]="true"

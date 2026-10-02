@@ -10,8 +10,6 @@
  */
 import { deriveFamilyId } from "../quality/docs-coverage-lib.mjs";
 
-const BINDING_KINDS = new Set(["input", "model", "output"]);
-
 /**
  * Reads one `input`/`model`/`output` declaration string from the inventory
  * and extracts the documented facets: declared type (first type argument or

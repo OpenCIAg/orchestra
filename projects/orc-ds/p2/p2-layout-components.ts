@@ -7,7 +7,7 @@ import {
   numberAttribute,
   output,
 } from '@angular/core';
-import { P2_SHARED_STYLES, P2Size, P2Orientation } from './p2-shared';
+import { P2_SHARED_STYLES, P2Orientation } from './p2-shared';
 
 @Component({
   selector: 'orc-button-group',

@@ -11,6 +11,7 @@ import {
   ViewEncapsulation,
   computed,
   forwardRef,
+  inject,
   input,
   model,
   output,
@@ -213,7 +214,7 @@ export class FloatLabelComponent implements AfterViewInit {
   readonly styleClass = input('');
   readonly focused = signal(false);
   readonly filled = signal(false);
-  constructor(private readonly host: ElementRef<HTMLElement>) {}
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   ngAfterViewInit(): void {
     this.syncFilled();
   }
@@ -674,7 +675,7 @@ export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
   private buttonFocused = false;
   private boundScrollTarget: 'window' | 'parent' | null = null;
   private initialized = false;
-  constructor(private readonly host: ElementRef<HTMLElement>) {}
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   ngAfterViewInit(): void {
     this.initialized = true;
     this.ownerWindow = this.host.nativeElement.ownerDocument.defaultView;

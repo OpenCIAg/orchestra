@@ -2,7 +2,6 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  computed,
   ElementRef,
   Injector,
   input,
@@ -270,7 +269,8 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     }
   }
   toggle(event?: MouseEvent): void {
-    this.open() ? this.hide() : this.show(event);
+    if (this.open()) this.hide();
+    else this.show(event);
   }
   activate(item: ContextMenuItem): void {
     if (item.disabled) return;
@@ -493,7 +493,8 @@ export class OverlayComponent {
     }
   }
   toggle(): void {
-    this.visible() ? this.hide() : this.show();
+    if (this.visible()) this.hide();
+    else this.show();
   }
   onEscape(): void {
     this.hide();

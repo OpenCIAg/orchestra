@@ -459,7 +459,8 @@ export class MenuComponent implements OnDestroy {
     }
   }
   toggle(): void {
-    this.visible() ? this.hide() : this.show();
+    if (this.visible()) this.hide();
+    else this.show();
   }
   ngOnDestroy(): void {
     this.unbindOutsideDismissal();

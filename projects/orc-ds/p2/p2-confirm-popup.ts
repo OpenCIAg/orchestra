@@ -7,6 +7,7 @@ import {
   ElementRef,
   Injectable,
   Injector,
+  OnDestroy,
   effect,
   inject,
   signal,
@@ -94,7 +95,7 @@ let nextConfirmationPopupId = 0;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmPopupComponent {
+export class ConfirmPopupComponent implements OnDestroy {
   readonly headerId = `orc-confirm-popup-header-${++nextConfirmationPopupId}`;
   readonly messageId = `orc-confirm-popup-message-${nextConfirmationPopupId}`;
   readonly request: ConfirmPopupService['request'];
@@ -124,8 +125,10 @@ export class ConfirmPopupComponent {
   private positionListener: (() => void) | null = null;
   private positionWindow: Window | null = null;
   private popupResizeObserver: ResizeObserver | null = null;
-  constructor(private readonly service: ConfirmPopupService) {
-    this.request = service.request;
+  private readonly service = inject(ConfirmPopupService);
+
+  constructor() {
+    this.request = this.service.request;
     effect(() => {
       const request = this.request();
       const opened = !!request && !this.wasOpen;

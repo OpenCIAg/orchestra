@@ -208,7 +208,7 @@ export class InputComponent extends CvaControl {
   // ── Handlers de Eventos ───────────────────────────────────
   protected onInput(event: Event): void {
     const target = event.target as HTMLInputElement;
-    let rawVal = target.value;
+    const rawVal = target.value;
 
     if (this.mask()) {
       const mask = this.mask();

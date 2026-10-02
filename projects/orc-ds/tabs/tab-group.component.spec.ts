@@ -313,8 +313,6 @@ describe('TabGroupComponent browser behavior', () => {
 
   it('preserves active tab identity and chooses an enabled neighbor after close', async () => {
     const fixture = create();
-    const component = fixture.debugElement.children[0]
-      .componentInstance as TabGroupComponent;
     fixture.componentInstance.secondDisabled.set(true);
     fixture.detectChanges();
     const closeButtons = () =>

@@ -23,10 +23,10 @@ export class ModalService {
   private readonly openRefs = new Set<ModalRef<unknown, unknown>>();
   private readonly unregisterApplicationDestroy: () => void;
 
-  constructor(
-    private appRef: ApplicationRef,
-    private injector: EnvironmentInjector,
-  ) {
+  private readonly appRef = inject(ApplicationRef);
+  private readonly injector = inject(EnvironmentInjector);
+
+  constructor() {
     this.unregisterApplicationDestroy = this.appRef.onDestroy(() =>
       this.closeAll(),
     );

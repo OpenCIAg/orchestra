@@ -484,7 +484,8 @@ export class PickListComponent<
     value: T['value'],
   ): Set<T['value']> {
     const next = new Set(values);
-    next.has(value) ? next.delete(value) : next.add(value);
+    if (next.has(value)) next.delete(value);
+    else next.add(value);
     return next;
   }
 
@@ -676,7 +677,8 @@ export class PickListComponent<
     const enabled = items.filter((candidate) => !candidate.disabled);
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      source ? this.toggleSource(item, event) : this.toggleTarget(item, event);
+      if (source) this.toggleSource(item, event);
+      else this.toggleTarget(item, event);
       return;
     }
     if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;

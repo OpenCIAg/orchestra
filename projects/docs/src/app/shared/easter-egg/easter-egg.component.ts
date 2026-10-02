@@ -10,7 +10,7 @@ import { BATON_B64, CIAG_B64, SPOTIFY_B64 } from './images';
   templateUrl: './easter-egg.component.html',
   styleUrl: './easter-egg.component.scss'
 })
-export class EasterEggComponent {
+export class EasterEggComponent implements OnInit {
   private easterEggService = inject(EasterEggService);
   
   isOpen = this.easterEggService.isOpen;

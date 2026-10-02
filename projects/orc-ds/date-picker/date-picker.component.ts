@@ -626,7 +626,8 @@ export class DatePickerComponent implements ControlValueAccessor {
         current.length >= this.maxDateCount()!
       )
         return;
-      index >= 0 ? current.splice(index, 1) : current.push(selected);
+      if (index >= 0) current.splice(index, 1);
+      else current.push(selected);
       next = current;
     } else if (mode === 'range') {
       const current = Array.isArray(this.value()) ? [...this.value()] : [];
