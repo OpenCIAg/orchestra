@@ -11,6 +11,19 @@ import {
   output,
   signal,
 } from '@angular/core';
+import {
+  createTableEnginePipeline,
+  nextTableSortDirection,
+  tableClampPage,
+  tableOffset,
+  tablePageCount,
+  tableProperty,
+  tableSortRows,
+  tableTextComparator,
+  tableTrimmedLabel,
+  TableRowIdentityMap,
+  TableEnginePipeline,
+} from '@ciag/orchestra/internal';
 import { P2_SHARED_STYLES } from './p2-shared';
 
 export interface DataTableColumn {
@@ -227,30 +240,32 @@ export class DataTableComponent implements OnInit {
   readonly pageSize = input(10);
   readonly page = model(0);
   readonly selected = model<Record<string, unknown>[]>([]);
-  readonly effectiveLabel = computed(() => this.label()?.trim() || null);
-  readonly effectiveAriaLabel = computed(
-    () => this.ariaLabel()?.trim() || 'Data table',
+  readonly effectiveLabel = computed(() =>
+    tableTrimmedLabel(this.label(), null),
+  );
+  readonly effectiveAriaLabel = computed(() =>
+    tableTrimmedLabel(this.ariaLabel(), 'Data table'),
   );
   readonly effectiveTableAriaLabel = computed(() =>
     this.effectiveLabel() ? null : this.effectiveAriaLabel(),
   );
-  readonly effectiveFilterAriaLabel = computed(
-    () => this.filterAriaLabel()?.trim() || 'Filter table',
+  readonly effectiveFilterAriaLabel = computed(() =>
+    tableTrimmedLabel(this.filterAriaLabel(), 'Filter table'),
   );
-  readonly effectiveSelectAllAriaLabel = computed(
-    () => this.selectAllAriaLabel()?.trim() || 'Select all rows',
+  readonly effectiveSelectAllAriaLabel = computed(() =>
+    tableTrimmedLabel(this.selectAllAriaLabel(), 'Select all rows'),
   );
-  readonly effectiveRowAriaLabel = computed(
-    () => this.rowAriaLabel()?.trim() || null,
+  readonly effectiveRowAriaLabel = computed(() =>
+    tableTrimmedLabel(this.rowAriaLabel(), null),
   );
-  readonly effectivePaginatorAriaLabel = computed(
-    () => this.paginatorAriaLabel()?.trim() || 'Pagination',
+  readonly effectivePaginatorAriaLabel = computed(() =>
+    tableTrimmedLabel(this.paginatorAriaLabel(), 'Pagination'),
   );
-  readonly effectivePreviousPageAriaLabel = computed(
-    () => this.previousPageAriaLabel()?.trim() || 'Previous page',
+  readonly effectivePreviousPageAriaLabel = computed(() =>
+    tableTrimmedLabel(this.previousPageAriaLabel(), 'Previous page'),
   );
-  readonly effectiveNextPageAriaLabel = computed(
-    () => this.nextPageAriaLabel()?.trim() || 'Next page',
+  readonly effectiveNextPageAriaLabel = computed(() =>
+    tableTrimmedLabel(this.nextPageAriaLabel(), 'Next page'),
   );
   @Input('selection') set selectionAlias(value: Record<string, unknown>[]) {
     this.selected.set(value ?? []);
@@ -278,14 +293,39 @@ export class DataTableComponent implements OnInit {
   readonly onFilter = output<{ value: string }>();
   readonly onHeaderCheckboxToggle = output<{ checked: boolean }>();
 
+  private readonly rowComparator = tableTextComparator();
+  /**
+   * The shared table engine runs the filter → sort → page pipeline for this
+   * table; the record contract resolves cells by direct property lookup and
+   * sorts through numeric-aware text collation.
+   */
+  private readonly engine: TableEnginePipeline<Record<string, unknown>> =
+    createTableEnginePipeline<Record<string, unknown>>({
+      data: () => this.data(),
+      value: () => this.value(),
+      query: () => this.filter(),
+      fields: () => [],
+      resolve: tableProperty,
+      sort: () => ({
+        field: this.sortField() || this.sortKey(),
+        direction:
+          this.sortOrder() < 0 || this.sortDirection() === 'descending'
+            ? 'desc'
+            : 'asc',
+      }),
+      compare: this.rowComparator,
+      paginated: () => !!this.paginator() && !this.lazy(),
+      first: () => this.currentPage() * this.effectivePageSize(),
+      pageSize: () => this.effectivePageSize(),
+    });
   /**
    * Rows without a configured key still need a stable identity for
-   * Angular's `@for` tracking and for selection membership. A WeakMap keeps
-   * that identity attached to the row object without serializing mutable row
-   * contents or retaining rows after the table no longer references them.
+   * Angular's `@for` tracking and for selection membership; the shared
+   * identity map keeps it attached to the row object.
    */
-  private readonly objectRowIds = new WeakMap<object, string>();
-  private nextObjectRowId = 0;
+  private readonly rowIdentities = new TableRowIdentityMap(
+    'orc-data-table-row',
+  );
   private lastSyncedFirst = 0;
   private lastSyncedPage = 0;
   private lastSyncedPageSize = 10;
@@ -294,9 +334,7 @@ export class DataTableComponent implements OnInit {
   constructor() {
     effect(() => {
       const rawFirst = Number(this.first());
-      const first = Number.isFinite(rawFirst)
-        ? Math.max(0, Math.floor(rawFirst))
-        : 0;
+      const first = tableOffset(rawFirst);
       if (rawFirst !== first) this.first.set(first);
       const rawPage = Number(this.page());
       const page = this.currentPage();
@@ -341,34 +379,19 @@ export class DataTableComponent implements OnInit {
     this.rowClick.emit(row);
   }
 
-  readonly rows = computed(() => {
-    const key = this.sortField() || this.sortKey();
-    const direction =
-      this.sortOrder() < 0 ? 'descending' : this.sortDirection();
-    const result = [...(this.value() ?? this.data())];
-    if (!key) return result;
-    return result.sort((a, b) => {
-      const left = a[key];
-      const right = b[key];
-      const compare = String(left ?? '').localeCompare(
-        String(right ?? ''),
-        undefined,
-        { numeric: true, sensitivity: 'base' },
-      );
-      return direction === 'ascending' ? compare : -compare;
-    });
-  });
-  readonly filteredRows = computed(() => {
-    const query = this.filter().trim().toLocaleLowerCase();
-    if (!query) return this.rows();
-    return this.rows().filter((row) =>
-      Object.values(row).some((value) =>
-        String(value ?? '')
-          .toLocaleLowerCase()
-          .includes(query),
-      ),
-    );
-  });
+  /** Sorted source rows; the record contract sorts before filtering. */
+  readonly rows = computed(() =>
+    tableSortRows(
+      this.engine.source(),
+      this.sortField() || this.sortKey(),
+      this.sortOrder() < 0 || this.sortDirection() === 'descending'
+        ? 'desc'
+        : 'asc',
+      tableProperty,
+      this.rowComparator,
+    ),
+  );
+  readonly filteredRows = this.engine.sorted;
   readonly effectivePageSize = computed(() => {
     const configured = Number(this.rowsInput() ?? this.pageSize());
     return Number.isFinite(configured)
@@ -376,31 +399,17 @@ export class DataTableComponent implements OnInit {
       : 10;
   });
   readonly pageCount = computed(() =>
-    Math.max(
-      1,
-      Math.ceil(this.effectiveTotalRecords() / this.effectivePageSize()),
-    ),
+    tablePageCount(this.effectiveTotalRecords(), this.effectivePageSize()),
   );
-  readonly currentPage = computed(() => {
-    const value = Number(this.page());
-    const normalized = Number.isFinite(value)
-      ? Math.max(0, Math.floor(value))
-      : 0;
-    return Math.min(normalized, Math.max(0, this.pageCount() - 1));
-  });
-  readonly pageRows = computed(() => {
-    const rows = this.filteredRows();
-    if (!this.paginator() || this.lazy()) return rows;
-    const start = this.currentPage() * this.effectivePageSize();
-    return rows.slice(start, start + this.effectivePageSize());
-  });
+  readonly currentPage = computed(() =>
+    tableClampPage(tableOffset(this.page()), this.pageCount()),
+  );
+  readonly pageRows = this.engine.display;
   ariaSort(key: string): 'ascending' | 'descending' | null {
     if ((this.sortField() || this.sortKey()) !== key) return null;
-    return this.sortOrder() < 0
+    return this.sortOrder() < 0 || this.sortDirection() === 'descending'
       ? 'descending'
-      : this.sortOrder() > 0
-        ? 'ascending'
-        : this.sortDirection();
+      : 'ascending';
   }
   effectiveTotalRecords(): number {
     const total = this.lazy()
@@ -422,19 +431,12 @@ export class DataTableComponent implements OnInit {
   );
 
   getRowId(row: Record<string, unknown>): string {
-    const key = this.dataKey() || this.rowKey();
-    const value = row[key];
+    const value = tableProperty(row, this.dataKey() || this.rowKey());
     if (value !== null && value !== undefined) return String(value);
-
-    const existing = this.objectRowIds.get(row);
-    if (existing) return existing;
-
-    const identity = `\u0000orc-data-table-row:${++this.nextObjectRowId}`;
-    this.objectRowIds.set(row, identity);
-    return identity;
+    return this.rowIdentities.identity(row);
   }
   getCell(row: Record<string, unknown>, key: string): unknown {
-    return row[key] ?? '';
+    return tableProperty(row, key) ?? '';
   }
   isSelected(row: Record<string, unknown>): boolean {
     return this.selected().some(
@@ -481,40 +483,32 @@ export class DataTableComponent implements OnInit {
   sortBy(column: DataTableColumn): void {
     if (!column.sortable) return;
     const activeSortKey = this.sortField() || this.sortKey();
-    const currentDirection =
-      this.sortOrder() < 0
-        ? 'descending'
-        : this.sortOrder() > 0
-          ? 'ascending'
-          : this.sortDirection();
-    const direction =
-      activeSortKey === column.key && currentDirection === 'ascending'
-        ? 'descending'
-        : 'ascending';
+    const currentDirection: 'asc' | 'desc' =
+      this.sortOrder() < 0 || this.sortDirection() === 'descending'
+        ? 'desc'
+        : 'asc';
+    const ascending =
+      nextTableSortDirection(currentDirection, activeSortKey === column.key, {
+        cycleThroughNone: false,
+      }) === 'asc';
     this.sortKey.set(column.key);
     this.sortField.set(column.key);
-    this.sortOrder.set(direction === 'ascending' ? 1 : -1);
-    this.sortDirection.set(direction);
+    this.sortOrder.set(ascending ? 1 : -1);
+    this.sortDirection.set(ascending ? 'ascending' : 'descending');
     if (this.paginator()) {
       this.page.set(0);
       this.first.set(0);
     }
     const event: { key: string; direction: 'ascending' | 'descending' } = {
       key: column.key,
-      direction,
+      direction: ascending ? 'ascending' : 'descending',
     };
     this.sortChange.emit(event);
     this.onSort.emit(event);
   }
   goToPage(page: number): void {
     const size = this.effectivePageSize();
-    const next = Math.max(
-      0,
-      Math.min(
-        Math.max(0, this.pageCount() - 1),
-        Math.floor(Number.isFinite(page) ? page : 0),
-      ),
-    );
+    const next = tableClampPage(tableOffset(page), this.pageCount());
     this.page.set(next);
     this.first.set(next * size);
     this.onPage.emit({ first: this.first(), rows: size });

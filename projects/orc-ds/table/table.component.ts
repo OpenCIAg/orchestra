@@ -368,6 +368,7 @@ export class TableComponent<T = any> implements OnInit {
       },
       customSort: () => this.customSort(),
       compare: (a, b) => this.rowComparator()(a, b),
+      missingLast: true,
       paginated: () => this.effectivePaginated(),
       first: () => this.displayFirst(),
       pageSize: () => this.effectivePageSize(),

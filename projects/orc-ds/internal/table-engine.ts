@@ -119,15 +119,13 @@ export function tableFilterRows<T>(
 /**
  * Type-aware comparator for the generic contract: strings through the locale
  * collator, numbers and dates natively, everything else through its string
- * form, with missing values sorting after present ones in both directions.
+ * form. Missing-value anchoring belongs to the sort application.
  */
 export function tableValueComparator(
   collator: Intl.Collator,
 ): (a: unknown, b: unknown) => number {
   return (a, b) => {
     if (a === b) return 0;
-    if (a === null || a === undefined) return 1;
-    if (b === null || b === undefined) return -1;
     if (typeof a === 'string' && typeof b === 'string') {
       return collator.compare(a, b);
     }
@@ -153,22 +151,30 @@ export function tableTextComparator(
   return (a, b) => collator.compare(String(a ?? ''), String(b ?? ''));
 }
 
-/** Sort a copy of the rows; inactive state returns the input untouched. */
+/**
+ * Sort a copy of the rows; inactive state returns the input untouched. With
+ * `missingLast` (the generic contract) missing values sort after present
+ * ones in both directions; otherwise (the record contract) missing cells
+ * take their string form and flip with the direction.
+ */
 export function tableSortRows<T>(
   rows: readonly T[],
   field: string,
   direction: TableEngineSortDirection,
   resolve: TableEngineFieldResolver<T>,
   compare: (a: unknown, b: unknown) => number,
+  options: { missingLast?: boolean } = {},
 ): T[] {
   if (!field || direction === 'none') return rows as T[];
   const sorted = rows.slice();
   sorted.sort((a, b) => {
     const valueA = resolve(a, field);
     const valueB = resolve(b, field);
-    if (valueA === valueB) return 0;
-    if (valueA === null || valueA === undefined) return 1;
-    if (valueB === null || valueB === undefined) return -1;
+    if (options.missingLast) {
+      if (valueA === valueB) return 0;
+      if (valueA === null || valueA === undefined) return 1;
+      if (valueB === null || valueB === undefined) return -1;
+    }
     const comparison = compare(valueA, valueB);
     return direction === 'asc' ? comparison : -comparison;
   });
@@ -232,6 +238,8 @@ export interface TableEnginePipelineConfig<T> {
   /** Consumer-owned sorting skips the local sort stage entirely. */
   customSort?: () => boolean;
   compare?: (a: unknown, b: unknown) => number;
+  /** Anchor missing sort values after present ones in both directions. */
+  missingLast?: boolean;
   paginated?: () => boolean;
   first?: () => number;
   pageSize?: () => number;
@@ -276,6 +284,7 @@ export function createTableEnginePipeline<T>(
       state.direction,
       config.resolve,
       config.compare ?? tableTextComparator(config.locale?.()),
+      { missingLast: config.missingLast },
     );
   });
   const display = computed(() => {
