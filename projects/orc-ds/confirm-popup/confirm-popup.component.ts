@@ -12,7 +12,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 
 export interface PopupConfirmation {
   message: string;
@@ -89,7 +89,7 @@ let nextConfirmationPopupId = 0;
     </aside>
   }`,
   styles: [
-    P2_SHARED_STYLES +
+    P2_SHARED_VARS +
       `.popup{position:fixed;z-index:100;box-sizing:border-box;width:max-content;max-width:calc(100vw - 1rem);max-height:calc(100vh - 1rem);overflow:auto;padding:.8rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 25px var(--orc-component-shadow-color)}.popup p{max-width:18rem;margin:.45rem 0;color:var(--orc-component-text-secondary)}.popup button{margin-left:.35rem;border:1px solid var(--orc-component-border-strong);border-radius:.3rem;background:var(--orc-component-surface);padding:.35rem .6rem}.popup .accept{border-color:var(--orc-component-interactive);background:var(--orc-component-interactive);color:var(--orc-component-on-interactive)}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

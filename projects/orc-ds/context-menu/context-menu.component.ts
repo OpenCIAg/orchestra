@@ -15,7 +15,7 @@ import {
   signal,
 } from '@angular/core';
 import {
-  P2_SHARED_STYLES,
+  P2_SHARED_VARS,
   listenForOutsideInteraction,
   menuFocusTargets,
   stepMenuIndex,
@@ -42,10 +42,8 @@ export interface ContextMenuItem extends P2Option<string> {
     <ng-content />
     @if (open()) {
       <div
-        class="p-contextmenu p-component orc-p2-context-menu"
-        [class]="
-          'p-contextmenu p-component orc-p2-context-menu ' + styleClass()
-        "
+        class="orc-p2-context-menu"
+        [class]="'orc-p2-context-menu ' + styleClass()"
         [style]="style()"
         [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null"
         [attr.id]="id()"
@@ -53,7 +51,6 @@ export interface ContextMenuItem extends P2Option<string> {
         [attr.aria-label]="ariaLabel() || null"
         [attr.aria-labelledby]="ariaLabelledBy()"
         [attr.tabindex]="tabindex()"
-        [attr.data-pc-name]="'contextmenu'"
         [style.left.px]="position().x"
         [style.top.px]="position().y"
         (keydown)="onKeydown($event)"
@@ -83,7 +80,7 @@ export interface ContextMenuItem extends P2Option<string> {
     }
   </div>`,
   styles: [
-    P2_SHARED_STYLES +
+    P2_SHARED_VARS +
       `.orc-p2-context-menu-host { position: relative; min-height: 2rem; } .orc-p2-context-menu { position: fixed; z-index: 10; display: grid; min-width: 12rem; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .55rem; background: var(--orc-component-surface); box-shadow: 0 12px 28px var(--orc-component-shadow-color); } .orc-p2-context-menu button { display: flex; justify-content: space-between; border: 0; border-radius: .35rem; background: transparent; padding: .55rem .7rem; text-align: left; } .orc-p2-context-menu button:hover, .orc-p2-context-menu button.active { background: var(--orc-component-interactive-soft); } .orc-p2-context-menu button.danger { color: var(--orc-component-danger); } small { color: var(--orc-component-text-muted); }`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

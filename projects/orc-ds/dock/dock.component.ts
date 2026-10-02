@@ -9,7 +9,7 @@ import {
   viewChild,
   viewChildren,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
 export type { P2Option };
@@ -47,7 +47,7 @@ export interface DockItem extends P2Option<string> {
     </nav>
   `,
   styles: [
-    P2_SHARED_STYLES +
+    P2_SHARED_VARS +
       `.orc-dock{position:fixed;z-index:20;left:50%;display:flex;gap:.4rem;max-width:calc(100vw - 2rem);overflow-x:auto;transform:translateX(-50%);padding:.5rem;border:1px solid var(--orc-component-border);border-radius:.7rem;background:var(--orc-component-surface);box-shadow:0 10px 25px var(--orc-component-shadow-color)}.orc-dock.top{top:1rem}.orc-dock.bottom{bottom:1rem}.orc-dock button{display:grid;flex:0 0 auto;justify-items:center;gap:.15rem;min-width:3rem;border:0;border-radius:.45rem;background:transparent;padding:.35rem}.orc-dock button:hover:not(:disabled){background:var(--orc-component-interactive-soft);color:var(--orc-component-interactive)}.orc-dock span{font-size:1.3rem}.orc-dock small{font-size:.65rem}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

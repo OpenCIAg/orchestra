@@ -12,7 +12,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
 export type { P2Option };
@@ -92,8 +92,8 @@ type SpeedDialDirection =
     </div>
   </div>`,
   styles: [
-    P2_SHARED_STYLES +
-      `.orc-p2-speed-dial-host{position:relative;display:inline-block;isolation:isolate;direction:inherit}.orc-p2-speed-dial{--orc-speed-dial-button-size:2.6rem;position:relative;z-index:1;display:inline-grid;width:var(--orc-speed-dial-button-size);height:var(--orc-speed-dial-button-size);place-items:center;direction:inherit}.orc-p2-speed-dial__mask{position:fixed;z-index:0;inset:0;background:var(--orc-component-scrim);cursor:default}.actions{position:absolute;z-index:1;inset:0;pointer-events:none}.actions.open{pointer-events:auto}.actions .action,.trigger{display:grid;place-items:center;width:var(--orc-speed-dial-button-size);height:var(--orc-speed-dial-button-size);border:0;border-radius:999px;background:var(--orc-component-surface-subtle);color:var(--orc-component-text);font:inherit}.actions .action{position:absolute;inset:50% auto auto 50%;margin:0;transform-origin:center;white-space:nowrap;transition:transform 180ms cubic-bezier(.4,0,.2,1),opacity 180ms ease,background-color 120ms ease,color 120ms ease;will-change:transform,opacity}.actions .action:hover:not(:disabled),.actions .action:focus-visible{background:var(--orc-component-interactive-soft);color:var(--orc-component-interactive)}.trigger{position:relative;z-index:2;background:var(--orc-component-interactive);color:var(--orc-component-on-interactive);font-size:1.3rem;transition:transform 180ms ease,background-color 120ms ease}.trigger:hover:not(:disabled){background:var(--orc-component-interactive-hover)}.orc-p2-speed-dial.p-speeddial-open .trigger{transform:rotate(45deg)}.orc-p2-speed-dial.p-speeddial-open .actions .action{opacity:1}.orc-p2-speed-dial:not(.p-speeddial-open) .actions .action{opacity:0;pointer-events:none}.orc-p2-speed-dial.p-disabled{opacity:.7}.orc-p2-speed-dial__mask + .orc-p2-speed-dial{z-index:1}@media (max-width:30rem){.orc-p2-speed-dial{--orc-speed-dial-button-size:2.35rem}}@media (prefers-reduced-motion:reduce){.actions .action,.trigger{transition:none!important}}`,
+    P2_SHARED_VARS +
+      `.orc-p2-speed-dial-host{position:relative;display:inline-block;isolation:isolate;direction:inherit}.orc-p2-speed-dial{--orc-speed-dial-button-size:2.6rem;position:relative;z-index:1;display:inline-grid;width:var(--orc-speed-dial-button-size);height:var(--orc-speed-dial-button-size);place-items:center;direction:inherit}.orc-p2-speed-dial__mask{position:fixed;z-index:0;inset:0;background:var(--orc-component-scrim);cursor:default}.actions{position:absolute;z-index:1;inset:0;pointer-events:none}.actions.open{pointer-events:auto}.actions .action,.trigger{display:grid;place-items:center;width:var(--orc-speed-dial-button-size);height:var(--orc-speed-dial-button-size);border:0;border-radius:999px;background:var(--orc-component-surface-subtle);color:var(--orc-component-text);font:inherit}.actions .action{position:absolute;inset:50% auto auto 50%;margin:0;transform-origin:center;white-space:nowrap;transition:transform 180ms cubic-bezier(.4,0,.2,1),opacity 180ms ease,background-color 120ms ease,color 120ms ease;will-change:transform,opacity}.actions .action:hover:not(:disabled),.actions .action:focus-visible{background:var(--orc-component-interactive-soft);color:var(--orc-component-interactive)}.trigger{position:relative;z-index:2;background:var(--orc-component-interactive);color:var(--orc-component-on-interactive);font-size:1.3rem;transition:transform 180ms ease,background-color 120ms ease}.trigger:hover:not(:disabled){background:var(--orc-component-interactive-hover)}.orc-p2-speed-dial.orc-p2-speed-dial--open .trigger{transform:rotate(45deg)}.orc-p2-speed-dial.orc-p2-speed-dial--open .actions .action{opacity:1}.orc-p2-speed-dial:not(.orc-p2-speed-dial--open) .actions .action{opacity:0;pointer-events:none}.orc-p2-speed-dial.orc-p2-speed-dial--disabled{opacity:.7}.orc-p2-speed-dial__mask + .orc-p2-speed-dial{z-index:1}@media (max-width:30rem){.orc-p2-speed-dial{--orc-speed-dial-button-size:2.35rem}}@media (prefers-reduced-motion:reduce){.actions .action,.trigger{transition:none!important}}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -144,11 +144,10 @@ export class SpeedDialComponent implements AfterViewInit, OnDestroy {
   readonly rootClasses = computed(() =>
     [
       'orc-p2-speed-dial',
-      'p-component',
-      `p-speeddial-${this.type()}`,
-      `p-speeddial-direction-${this.direction()}`,
-      this.open() ? 'p-speeddial-open' : '',
-      this.disabled() ? 'p-disabled' : '',
+      `orc-p2-speed-dial--${this.type()}`,
+      `orc-p2-speed-dial--direction-${this.direction()}`,
+      this.open() ? 'orc-p2-speed-dial--open' : '',
+      this.disabled() ? 'orc-p2-speed-dial--disabled' : '',
       this.styleClass(),
     ]
       .filter(Boolean)

@@ -10,8 +10,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
-import type { P2Option } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS, type P2Option } from '@ciag/orchestra/internal';
 import {
   crossedFocusBoundary,
   menuFocusTargets,
@@ -33,9 +32,9 @@ let menubarInstanceId = 0;
   standalone: true,
   template: `
     <nav
-      class="p-menubar p-component orc-p2-menubar"
+      class="orc-p2-menubar"
       [attr.id]="id()"
-      [class]="'p-menubar p-component orc-p2-menubar ' + styleClass()"
+      [class]="'orc-p2-menubar ' + styleClass()"
       [style]="style()"
       [style.z-index]="autoZIndex() ? baseZIndex() + 1 : null"
       role="menubar"
@@ -44,7 +43,6 @@ let menubarInstanceId = 0;
       [attr.aria-labelledby]="ariaLabelledBy()"
       [attr.aria-disabled]="disabled() ? 'true' : null"
       tabindex="-1"
-      [attr.data-pc-name]="'menubar'"
       (keydown)="onKeydown($event)"
       (focusin)="onFocusIn($event)"
       (focusout)="onFocusOut($event)"
@@ -125,7 +123,7 @@ let menubarInstanceId = 0;
     </nav>
   `,
   styles: [
-    P2_SHARED_STYLES +
+    P2_SHARED_VARS +
       `
     .orc-p2-menubar { display: flex; gap: .2rem; align-items: center; padding: .25rem; border: 1px solid var(--orc-component-border); border-radius: .6rem; background: var(--orc-component-surface); }
     .menu-item { position: relative; }

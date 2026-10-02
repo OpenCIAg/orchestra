@@ -58,9 +58,9 @@ describe('SpeedDialComponent contract', () => {
     const itemButtons = Array.from(
       fixture.nativeElement.querySelectorAll('.actions .action'),
     ) as HTMLButtonElement[];
-    expect(root.classList.contains('p-speeddial-linear')).toBeTrue();
+    expect(root.classList.contains('orc-p2-speed-dial--linear')).toBeTrue();
     expect(
-      root.classList.contains('p-speeddial-direction-up-right'),
+      root.classList.contains('orc-p2-speed-dial--direction-up-right'),
     ).toBeTrue();
     expect(root.classList.contains('speed-dial-custom')).toBeTrue();
     expect(trigger.classList.contains('trigger-custom')).toBeTrue();
@@ -127,7 +127,7 @@ describe('SpeedDialComponent contract', () => {
     let first = fixture.nativeElement.querySelector(
       '.actions .action',
     ) as HTMLButtonElement;
-    expect(root.classList.contains('p-speeddial-circle')).toBeTrue();
+    expect(root.classList.contains('orc-p2-speed-dial--circle')).toBeTrue();
     expect(first.style.transform).toContain('60px, 0px');
 
     fixture.componentRef.setInput('type', 'semi-circle');
@@ -139,7 +139,9 @@ describe('SpeedDialComponent contract', () => {
     first = fixture.nativeElement.querySelector(
       '.actions .action',
     ) as HTMLButtonElement;
-    expect(root.classList.contains('p-speeddial-semi-circle')).toBeTrue();
+    expect(
+      root.classList.contains('orc-p2-speed-dial--semi-circle'),
+    ).toBeTrue();
     expect(first.style.transform).toContain('60px, 0px');
 
     fixture.componentRef.setInput('type', 'quarter-circle');
@@ -151,7 +153,9 @@ describe('SpeedDialComponent contract', () => {
     first = fixture.nativeElement.querySelector(
       '.actions .action',
     ) as HTMLButtonElement;
-    expect(root.classList.contains('p-speeddial-quarter-circle')).toBeTrue();
+    expect(
+      root.classList.contains('orc-p2-speed-dial--quarter-circle'),
+    ).toBeTrue();
     expect(first.style.transform).toContain('-60px, 0px');
   });
 

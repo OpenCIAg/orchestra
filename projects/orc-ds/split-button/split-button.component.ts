@@ -10,21 +10,20 @@ import {
   model,
   output,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-split-button',
   standalone: true,
   template: `<div
-    class="p-splitbutton p-component orc-p2-split"
+    class="orc-p2-split"
     [class]="
-      'p-splitbutton p-component orc-p2-split ' +
+      'orc-p2-split ' +
       styleClass() +
       (size() ? ' size-' + size() : '') +
       (severity() ? ' severity-' + severity() : '')
     "
     [style]="style()"
-    [attr.data-pc-name]="'splitbutton'"
     (focusout)="onFocusOut($event)"
   >
     <button
@@ -96,7 +95,7 @@ import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
     }
   </div>`,
   styles: [
-    P2_SHARED_STYLES +
+    P2_SHARED_VARS +
       `.orc-p2-split{position:relative;display:inline-flex}.orc-p2-split>button{border:1px solid var(--orc-component-interactive);padding:.55rem .8rem;background:var(--orc-component-interactive);color:var(--orc-component-on-interactive)}.orc-p2-split__primary{display:inline-flex;align-items:center;gap:.4rem}.orc-p2-split__primary.icon-right{flex-direction:row-reverse}.orc-p2-split.size-small>button{font-size:.875rem;padding:.4rem .6rem}.orc-p2-split.size-large>button{font-size:1.125rem;padding:.7rem .9rem}.orc-p2-split.severity-secondary>button{border-color:var(--orc-component-border-strong);background:var(--orc-component-surface-subtle);color:var(--orc-component-text)}.orc-p2-split.severity-success>button{border-color:var(--orc-component-status-success-fg);background:var(--orc-component-status-success-bg);color:var(--orc-component-status-success-fg)}.orc-p2-split.severity-info>button{border-color:var(--orc-component-status-info-fg);background:var(--orc-component-status-info-bg);color:var(--orc-component-status-info-fg)}.orc-p2-split.severity-warning>button,.orc-p2-split.severity-warn>button{border-color:var(--orc-component-status-warning-fg);background:var(--orc-component-status-warning-bg);color:var(--orc-component-status-warning-fg)}.orc-p2-split.severity-danger>button{border-color:var(--orc-component-status-danger-fg);background:var(--orc-component-status-danger-bg);color:var(--orc-component-status-danger-fg)}.orc-p2-split>.arrow{border-left-color:var(--orc-component-interactive-hover);border-radius:0 .4rem .4rem 0}.orc-p2-split>button:first-child{border-radius:.4rem 0 0 .4rem}.orc-p2-split__menu{position:absolute;z-index:3;top:calc(100% + .25rem);inset-inline-end:0;min-width:10rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.4rem;background:var(--orc-component-surface);box-shadow:0 8px 20px var(--orc-component-shadow-color)}.orc-p2-split__menu [role=menuitem]{display:flex;align-items:center;gap:.4rem;width:100%;border:0;border-radius:.25rem;background:transparent;color:var(--orc-component-text);text-align:start}.orc-p2-split__menu [role=menuitem]:hover:not(:disabled),.orc-p2-split__menu [role=menuitem]:focus-visible{background:var(--orc-component-interactive-soft);color:var(--orc-component-interactive)}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

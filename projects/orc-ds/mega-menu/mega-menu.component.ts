@@ -9,7 +9,7 @@ import {
 import {
   crossedFocusBoundary,
   focusMenuTarget,
-  P2_SHARED_STYLES,
+  P2_SHARED_VARS,
   stepMenuIndex,
 } from '@ciag/orchestra/internal';
 import type { PrimeMenuItem } from '@ciag/orchestra/internal';
@@ -39,11 +39,10 @@ function getOwnedActiveHTMLElement(
   selector: 'orc-mega-menu',
   standalone: true,
   template: `<nav
-    class="p-megamenu p-component orc-mega-menu"
-    [class]="'p-megamenu p-component orc-mega-menu ' + styleClass()"
+    class="orc-mega-menu"
+    [class]="'orc-mega-menu ' + styleClass()"
     [style]="style()"
     [attr.id]="id()"
-    [attr.data-pc-name]="'megamenu'"
     [attr.aria-label]="ariaLabel()"
     [attr.aria-labelledby]="ariaLabelledBy()"
     [attr.aria-orientation]="orientation()"
@@ -127,7 +126,7 @@ function getOwnedActiveHTMLElement(
     }
   </nav>`,
   styles: [
-    P2_SHARED_STYLES +
+    P2_SHARED_VARS +
       `.orc-mega-menu{display:flex;flex-wrap:wrap;gap:1.5rem;padding:1rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface)}.orc-mega-menu.vertical{flex-direction:column;align-items:stretch}.orc-mega-menu section{display:grid;align-content:start;min-width:10rem;gap:.25rem}.orc-mega-menu.vertical section{width:100%}.orc-mega-menu h3{margin:0 0 .35rem;font-size:.85rem}.orc-mega-menu [data-mega-item]{display:flex;align-items:center;gap:.5rem;width:100%;border:0;border-radius:.35rem;background:transparent;color:inherit;padding:.4rem;text-align:start;text-decoration:none}.orc-mega-menu [data-mega-item]:hover:not(:disabled):not([aria-disabled="true"]){background:var(--orc-component-interactive-soft)}.orc-mega-menu [data-mega-item]:focus-visible{outline:2px solid var(--orc-component-interactive);outline-offset:2px}.orc-mega-menu .item-label{flex:1}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
