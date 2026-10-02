@@ -1,6 +1,0 @@
-
-> orc-ds-workspace@0.0.0 format:check
-> prettier --check "projects/orc-ds/**/*.{ts,html,scss,json}"
-
-Checking formatting...
-All matched files use Prettier code style!

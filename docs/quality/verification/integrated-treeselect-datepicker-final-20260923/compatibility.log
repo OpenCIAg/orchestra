@@ -1,7 +1,0 @@
-
-> orc-ds-workspace@0.0.0 verify:compatibility
-> node tools/release/verify-compatibility.mjs
-
-Compatibility OK: main / Angular 22 / PrimeNG 22.0.0 / @ciag/orchestra 22.1.0
-
-GATE_EXIT_CODE=0

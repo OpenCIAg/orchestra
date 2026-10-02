@@ -1,9 +1,0 @@
-Radio contract focused validation
-Date: 2026-09-22
-
-Runner (temporary radio-only tsconfig removed after validation):
-NG_BUILD_MAX_WORKERS=2 /Users/matheuscastro/.nvm/versions/node/v24.16.0/bin/node ./node_modules/@angular/cli/bin/ng.js test orc-ds --watch=false --browsers=ChromeHeadlessCI --ts-config=projects/orc-ds/tsconfig.radio-contract.tmp.json --include='projects/orc-ds/radio/radio-contract.spec.ts'
-
-Result: 11 total, 11 passed, 0 failed. ChromeHeadless 153.0.0.0; Karma localhost:9876.
-
-The normal project tsconfig runner remains blocked by unrelated modal compilation errors in projects/orc-ds/modal (ComponentRef.destroyed and generic close() typings). No modal files were changed in this milestone.
