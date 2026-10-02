@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { ElementRef } from '@angular/core';
+import { Component, ElementRef, Injector } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FocusTrapDirective } from '../p2/p2-utility-more';
 
@@ -29,9 +28,15 @@ function createTrap(markup = ''): {
   const host = document.createElement('div');
   host.innerHTML = markup;
   document.body.append(host);
-  const directive = TestBed.runInInjectionContext(
-    () => new FocusTrapDirective(new ElementRef(host)),
-  );
+  // The directive pulls its host through inject(); supply the mock element
+  // through a dedicated injector created around the directive (the class
+  // itself must be registered as a provider to be instantiable).
+  const directive = Injector.create({
+    providers: [
+      FocusTrapDirective,
+      { provide: ElementRef, useValue: new ElementRef(host) },
+    ],
+  }).get(FocusTrapDirective);
   return { host, directive };
 }
 

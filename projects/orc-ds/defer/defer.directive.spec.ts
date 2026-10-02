@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  Injector,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -132,9 +133,17 @@ describe('DeferDirective', () => {
       .and.returnValue({ destroy: jasmine.createSpy('destroy') });
     const template = {} as TemplateRef<unknown>;
     const container = { createEmbeddedView } as unknown as ViewContainerRef;
-    const directive = TestBed.runInInjectionContext(
-      () => new DeferDirective(template, container, new ElementRef(comment)),
-    );
+    // The directive pulls its anchors through inject(); supply the mocks
+    // through a dedicated injector created around the directive (the class
+    // itself must be registered as a provider to be instantiable).
+    const directive = Injector.create({
+      providers: [
+        DeferDirective,
+        { provide: TemplateRef, useValue: template },
+        { provide: ViewContainerRef, useValue: container },
+        { provide: ElementRef, useValue: new ElementRef(comment) },
+      ],
+    }).get(DeferDirective);
     const loaded = jasmine.createSpy('loaded');
     directive.onLoad.subscribe(loaded);
 
@@ -176,14 +185,17 @@ describe('DeferDirective', () => {
       .and.returnValue({
         destroy: jasmine.createSpy('destroy'),
       });
-    const directive = TestBed.runInInjectionContext(
-      () =>
-        new DeferDirective(
-          {} as TemplateRef<unknown>,
-          { createEmbeddedView } as unknown as ViewContainerRef,
-          new ElementRef(target),
-        ),
-    );
+    const directive = Injector.create({
+      providers: [
+        DeferDirective,
+        { provide: TemplateRef, useValue: {} as TemplateRef<unknown> },
+        {
+          provide: ViewContainerRef,
+          useValue: { createEmbeddedView } as unknown as ViewContainerRef,
+        },
+        { provide: ElementRef, useValue: new ElementRef(target) },
+      ],
+    }).get(DeferDirective);
 
     directive.ngAfterViewInit();
 
