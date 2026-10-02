@@ -1,2 +1,2 @@
-export { ContextMenuComponent } from '@ciag/orchestra/p2';
-export type { ContextMenuItem } from '@ciag/orchestra/p2';
+export { ContextMenuComponent } from './context-menu.component';
+export type { ContextMenuItem } from './context-menu.component';
