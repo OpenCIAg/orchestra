@@ -572,6 +572,117 @@ describe('DataTable row identity', () => {
     expect(next.getAttribute('aria-label')).toBe('Next page');
   });
 
+  it('filters across every record key, not only the configured columns', () => {
+    const fixture = create(
+      [
+        { id: 1, label: 'Alpha', note: 'visible' },
+        { id: 2, label: 'Beta', note: 'hidden' },
+      ],
+      { filterable: true },
+    );
+    fixture.componentRef.setInput('columns', [
+      { key: 'label', header: 'Label' },
+    ]);
+    fixture.detectChanges();
+    const table = fixture.componentInstance;
+    expect(table.filteredRows().map((row) => row['id'])).toEqual([1, 2]);
+
+    table.setFilter('hidden');
+    expect(table.filteredRows().map((row) => row['id'])).toEqual([2]);
+
+    table.setFilter('beta');
+    expect(table.filteredRows().map((row) => row['id'])).toEqual([2]);
+  });
+
+  it('resolves record cells by direct property lookup without dot-path traversal', () => {
+    const fixture = create([{ id: 1, 'a.b': 'literal', a: { b: 'nested' } }], {
+      filterable: true,
+    });
+    fixture.componentRef.setInput('columns', [{ key: 'a.b', header: 'Path' }]);
+    fixture.detectChanges();
+    const table = fixture.componentInstance;
+
+    expect(table.getCell({ 'a.b': 'literal', a: { b: 'nested' } }, 'a.b')).toBe(
+      'literal',
+    );
+    expect(table.filteredRows()).toEqual([
+      { id: 1, 'a.b': 'literal', a: { b: 'nested' } },
+    ]);
+
+    table.setFilter('nested');
+    expect(table.filteredRows()).toEqual([]);
+    table.setFilter('literal');
+    expect(table.filteredRows()).toHaveSize(1);
+  });
+
+  it('sorts record values through numeric-aware text collation and empty-string fallbacks', () => {
+    const fixture = create([
+      { id: 1, size: 10 },
+      { id: 2, size: 9 },
+      { id: 3, size: undefined },
+    ]);
+    fixture.componentRef.setInput('columns', [
+      { key: 'size', header: 'Size', sortable: true },
+    ]);
+    fixture.componentRef.setInput('sortField', 'size');
+    fixture.componentRef.setInput('sortOrder', 1);
+    fixture.detectChanges();
+    const table = fixture.componentInstance;
+
+    expect(table.rows().map((row) => row['id'])).toEqual([3, 2, 1]);
+    expect(table.rows()[0]['size']).toBeUndefined();
+
+    fixture.componentRef.setInput('sortOrder', -1);
+    fixture.detectChanges();
+    expect(table.rows().map((row) => row['id'])).toEqual([1, 2, 3]);
+  });
+
+  it('emits one lazy query on init and still filters and sorts a loaded lazy window', () => {
+    const fixture = TestBed.createComponent(DataTableComponent);
+    fixture.componentRef.setInput('data', [
+      { id: 1, label: 'Keep' },
+      { id: 2, label: 'Drop' },
+    ]);
+    fixture.componentRef.setInput('columns', [
+      { key: 'label', header: 'Label' },
+    ]);
+    fixture.componentRef.setInput('lazy', true);
+    fixture.componentRef.setInput('lazyLoadOnInit', true);
+    fixture.componentRef.setInput('paginator', true);
+    fixture.componentRef.setInput('rows', 10);
+    fixture.componentRef.setInput('totalRecords', 50);
+    const table = fixture.componentInstance;
+    const requests: Array<{ first: number; rows: number }> = [];
+    table.onLazyLoad.subscribe((event) => requests.push(event));
+    fixture.detectChanges();
+
+    expect(requests).toEqual([{ first: 0, rows: 10 }]);
+    expect(table.effectiveTotalRecords()).toBe(50);
+
+    table.setFilter('keep');
+    fixture.detectChanges();
+    expect(table.filteredRows().map((row) => row['id'])).toEqual([1]);
+    expect(table.pageRows().map((row) => row['id'])).toEqual([1]);
+  });
+
+  it('prefers dataKey over rowKey for row identity', () => {
+    const fixture = create([{ sku: 'sku-A', code: 'code-1', label: 'First' }], {
+      rowKey: 'sku',
+      dataKey: 'code',
+    });
+    const table = fixture.componentInstance;
+    expect(table.getRowId({ sku: 'sku-A', code: 'code-1' })).toBe('code-1');
+  });
+
+  it('renders the compatibility value collection over data when both are bound', () => {
+    const fixture = create([{ id: 1, label: 'From data' }], {
+      value: [{ id: 9, label: 'From value' }],
+    });
+    expect(
+      fixture.nativeElement.querySelector('tbody tr')?.textContent?.trim(),
+    ).toContain('From value');
+  });
+
   it('toggles an initially ascending controlled sort to descending on click', () => {
     const fixture = create(
       [
