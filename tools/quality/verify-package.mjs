@@ -54,6 +54,15 @@ try {
     ),
   );
   const archive = path.join(work, packed[0].filename);
+  // The published package ships its README (ticket #8): ng-packagr copies it
+  // via ng-package assets; npm packs it from the distribution root.
+  const archiveFiles = new Set(
+    execFileSync('tar', ['-tf', archive], { encoding: 'utf8' }).split('\n'),
+  );
+  if (!archiveFiles.has('package/README.md'))
+    throw new Error(
+      'Packed package is missing README.md; check projects/orc-ds/ng-package.json assets.',
+    );
   const consumer = path.join(work, 'consumer');
   mkdirSync(consumer);
   const rootLockfilePath = path.resolve('package-lock.json');
