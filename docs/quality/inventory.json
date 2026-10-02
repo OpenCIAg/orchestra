@@ -24938,6 +24938,9 @@
     "tools/release/topology-lib.mjs",
     "tools/release/topology.test.mjs",
     "tools/release/verify-compatibility.mjs",
+    "tools/release/version-packages-lib.mjs",
+    "tools/release/version-packages.mjs",
+    "tools/release/version-packages.test.mjs",
     "compatibility/primeng-v19.md",
     "compatibility/versions.json"
   ],
