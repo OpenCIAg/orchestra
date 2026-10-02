@@ -12,103 +12,16 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 import { PaginatorComponent } from '@ciag/orchestra/paginator';
 
 @Component({
   selector: 'orc-data-view',
   standalone: true,
-  template: `<section
-      class="orc-data-view"
-      [class]="'orc-data-view ' + styleClass()"
-      [style]="style()"
-      [attr.aria-label]="resolvedAriaLabel()"
-      [attr.aria-busy]="loading() ? 'true' : null"
-    >
-      @if (header().trim()) {
-        <header>{{ header() }}</header>
-      }
-      @if (filterBy()) {
-        <input
-          type="search"
-          [value]="filterValue()"
-          (input)="onFilterInput($event)"
-          [attr.aria-label]="resolvedFilterAriaLabel()"
-        />
-      }
-      @if (
-        shouldRenderPaginator() &&
-        (paginatorPosition() === 'top' || paginatorPosition() === 'both')
-      ) {
-        <ng-container *ngTemplateOutlet="pagination" />
-      }
-      <div
-        class="content"
-        [class.list]="layout() === 'list'"
-        [class]="layout() === 'list' ? listStyleClass() : gridStyleClass()"
-      >
-        @if (loading()) {
-          <p class="loading-state" role="status" aria-live="polite">
-            @if (loadingIcon()) {
-              <i
-                class="loading-icon"
-                [class]="'loading-icon ' + loadingIcon()"
-                aria-hidden="true"
-              ></i>
-            }
-            <span>{{ resolvedLoadingMessage() }}</span>
-          </p>
-        } @else {
-          @for (item of pageItems(); track getItemKey(item, $index)) {
-            <article>
-              @if (itemTemplate()) {
-                <ng-container
-                  [ngTemplateOutlet]="itemTemplate()"
-                  [ngTemplateOutletContext]="{ $implicit: item }"
-                />
-              } @else {
-                {{ itemLabel(item) }}
-              }
-            </article>
-          } @empty {
-            @if (resolvedEmptyMessage()) {
-              <p role="status" aria-live="polite">
-                {{ resolvedEmptyMessage() }}
-              </p>
-            }
-          }
-        }
-      </div>
-      @if (
-        shouldRenderPaginator() &&
-        (paginatorPosition() === 'bottom' || paginatorPosition() === 'both')
-      ) {
-        <ng-container *ngTemplateOutlet="pagination" />
-      }
-    </section>
-    <ng-template #pagination
-      ><orc-paginator
-        [totalRecords]="effectiveTotalRecords()"
-        [rows]="effectivePageSize()"
-        [first]="first()"
-        [rowsPerPageOptions]="effectiveRowsPerPageOptions()"
-        [showPageSizeSelector]="effectiveRowsPerPageOptions().length > 0"
-        [alwaysShow]="alwaysShowPaginator()"
-        [pageLinkSize]="normalizedPageLinks()"
-        [styleClass]="paginatorStyleClass()"
-        [showCurrentPageReport]="showCurrentPageReport()"
-        [currentPageReportTemplate]="currentPageReportTemplate()"
-        [showJumpToPageDropdown]="showJumpToPageDropdown()"
-        [showFirstLastIcon]="showFirstLastIcon()"
-        [showPageLinks]="showPageLinks()"
-        [ariaLabel]="resolvedPaginatorAriaLabel()"
-        (pageChange)="onPaginatorPageChange($event)"
-    /></ng-template>`,
+  templateUrl: './data-view.component.html',
   imports: [CommonModule, PaginatorComponent],
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-data-view{display:block}.orc-data-view header{padding:.7rem;border-bottom:1px solid var(--orc-component-border);font-weight:700}.content{display:grid;grid-template-columns:repeat(auto-fill,minmax(12rem,1fr));gap:1rem}.content.list{display:grid;grid-template-columns:1fr}.content article{padding:.8rem;border:1px solid var(--orc-component-border);border-radius:.5rem}.content>p{color:var(--orc-component-text-muted)}.loading-state{display:flex;align-items:center;justify-content:center;gap:.5rem;min-height:4rem;margin:0;color:var(--orc-component-text-secondary)}.loading-icon{display:inline-block;min-width:1em;min-height:1em}`,
-  ],
+  styles: [P2_SHARED_VARS],
+  styleUrl: './data-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewComponent<T = Record<string, unknown>> implements OnInit {

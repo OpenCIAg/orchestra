@@ -11,7 +11,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 import { filterTreeNodes } from '@ciag/orchestra/internal';
 
 export interface HierarchyNode<T = Record<string, unknown>> {
@@ -37,14 +37,12 @@ let nextTreeId = 0;
   standalone: true,
   templateUrl: './tree.component.html',
   styles: [
-    P2_SHARED_STYLES +
+    P2_SHARED_VARS +
       `.orc-tree{width:100%;overflow:auto;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);color:var(--orc-component-text)}.tree-items{outline:none}.tree-items:focus-visible .tree-row.active{outline:2px solid var(--orc-component-interactive);outline-offset:-2px}.tree-row{display:flex;align-items:center;min-height:2.25rem}.tree-row.selected{background:var(--orc-component-interactive-soft)}.tree-row.disabled{opacity:.55}.toggle,.label{border:0;background:transparent}.toggle{width:1.5rem}.label{display:flex;align-items:center;gap:.5rem;flex:1;padding:.4rem;text-align:left}.tree-checkbox{display:inline-grid;flex:none;width:1rem;height:1rem;place-items:center;border:1px solid var(--orc-component-border-strong);border-radius:.2rem;color:var(--orc-component-on-interactive);font-size:.75rem;line-height:1}.tree-checkbox.checked{border-color:var(--orc-component-interactive);background:var(--orc-component-interactive)}.tree-checkbox.mixed{border-color:var(--orc-component-interactive);background:var(--orc-component-interactive-soft);color:var(--orc-component-interactive)}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'p-tree p-component',
     '[attr.id]': 'id() || null',
-    '[attr.data-pc-name]': "'tree'",
   },
 })
 export class TreeComponent<T = Record<string, unknown>> {

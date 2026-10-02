@@ -14,7 +14,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 import { filterTreeNodes } from '@ciag/orchestra/internal';
 import type { HierarchyNode } from '@ciag/orchestra/tree';
 
@@ -37,187 +37,12 @@ export interface TreeTableSortEvent {
 @Component({
   selector: 'orc-tree-table',
   standalone: true,
-  template: `<div
-    class="orc-tree-table"
-    [class]="'orc-tree-table ' + styleClass()"
-    [class.row-hover]="rowHover()"
-    [class.gridlines]="showGridlines()"
-    [class.auto-layout]="autoLayout()"
-    [style]="style()"
-    [style.max-height]="scrollable() ? scrollHeight() : null"
-    [attr.aria-busy]="loading()"
-  >
-    @if (filterable()) {
-      <label class="tree-table-filter">
-        <span>{{ filterLabel() }}</span>
-        <input
-          type="search"
-          [value]="filterValue()"
-          [attr.aria-label]="filterAriaLabel() || filterLabel()"
-          (input)="onFilterInput($event)"
-        />
-      </label>
-    }
-    <table
-      [class]="tableStyleClass()"
-      [style]="tableStyle()"
-      role="treegrid"
-      [attr.aria-label]="ariaLabel() || label() || null"
-      [attr.aria-labelledby]="ariaLabelledBy() || null"
-      [attr.aria-multiselectable]="selectionMode() !== 'single'"
-    >
-      <thead>
-        <tr>
-          <th scope="col">{{ treeColumnHeader() || 'Name' }}</th>
-          @for (column of columns(); track column.key) {
-            <th scope="col" [attr.aria-sort]="sortAriaValue(column.key)">
-              @if (column.sortable !== false) {
-                <button
-                  type="button"
-                  class="sort-control"
-                  [attr.aria-label]="sortButtonLabel(column)"
-                  (click)="toggleSort(column.key, $event)"
-                >
-                  {{ column.header }}
-                  <span aria-hidden="true">{{
-                    sortIndicator(column.key)
-                  }}</span>
-                </button>
-              } @else {
-                {{ column.header }}
-              }
-            </th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of displayNodes(); track item.node.key) {
-          <tr
-            role="row"
-            [attr.tabindex]="rowTabIndex(item)"
-            (focus)="focusedRow.set(item.node)"
-            [attr.aria-level]="item.level"
-            [attr.aria-expanded]="
-              item.node.children?.length ? isExpandedForView(item) : null
-            "
-            [attr.aria-selected]="selected().has(item.node.key)"
-            [class.selected]="selected().has(item.node.key)"
-          >
-            <td [style.padding-left.rem]="0.5 + item.level * 1.1">
-              <button
-                type="button"
-                class="toggle"
-                [disabled]="
-                  !item.node.children?.length || !!filterValue().trim()
-                "
-                [attr.aria-expanded]="
-                  item.node.children?.length ? isExpandedForView(item) : null
-                "
-                [attr.aria-label]="
-                  (isExpandedForView(item)
-                    ? collapseAriaLabel()
-                    : expandAriaLabel()) ||
-                  (isExpandedForView(item) ? 'Collapse ' : 'Expand ') +
-                    item.node.label
-                "
-                (click)="toggle(item)"
-              >
-                {{
-                  item.node.children?.length
-                    ? isExpandedForView(item)
-                      ? '▾'
-                      : '▸'
-                    : '·'
-                }}</button
-              ><label class="row-selection">
-                @if (selectionMode() === 'single') {
-                  <input
-                    type="radio"
-                    [attr.name]="selectionName"
-                    [checked]="selected().has(item.node.key)"
-                    [disabled]="item.node.disabled"
-                    (change)="select(item, true)"
-                  />
-                } @else {
-                  <input
-                    type="checkbox"
-                    [checked]="selected().has(item.node.key)"
-                    [disabled]="item.node.disabled"
-                    (change)="select(item, $any($event.target).checked)"
-                  />
-                }
-                <span>{{ item.node.label }}</span></label
-              >
-            </td>
-            @for (column of columns(); track column.key) {
-              <td>{{ cellValue(item.node, column.key) }}</td>
-            }
-          </tr>
-        } @empty {
-          @if (emptyText()) {
-            <tr>
-              <td [attr.colspan]="columns().length + 1">{{ emptyText() }}</td>
-            </tr>
-          }
-        }
-      </tbody>
-    </table>
-    @if (paginator()) {
-      <nav
-        class="tree-table-paginator"
-        [attr.aria-label]="paginatorAriaLabel()"
-      >
-        @if (pageSizeOptions().length) {
-          <label class="rows-per-page">
-            <span>{{ rowsPerPageLabel() }}</span>
-            <select [value]="pageSize()" (change)="onRowsPerPageChange($event)">
-              @for (option of pageSizeOptions(); track option) {
-                <option [value]="option">{{ option }}</option>
-              }
-            </select>
-          </label>
-        }
-        <button
-          type="button"
-          [disabled]="effectiveFirst() <= 0"
-          (click)="goToFirstPage()"
-        >
-          {{ firstPageLabel() }}
-        </button>
-        <button
-          type="button"
-          [disabled]="effectiveFirst() <= 0"
-          (click)="goToPreviousPage()"
-        >
-          {{ previousPageLabel() }}
-        </button>
-        <span class="page-report" aria-live="polite">{{ pageReport() }}</span>
-        <button
-          type="button"
-          [disabled]="effectiveFirst() + pageSize() >= totalRoots()"
-          (click)="goToNextPage()"
-        >
-          {{ nextPageLabel() }}
-        </button>
-        <button
-          type="button"
-          [disabled]="effectiveFirst() + pageSize() >= totalRoots()"
-          (click)="goToLastPage()"
-        >
-          {{ lastPageLabel() }}
-        </button>
-      </nav>
-    }
-  </div>`,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-tree-table{width:100%;overflow:auto;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface)}.orc-tree-table table{width:100%;border-collapse:collapse;color:var(--orc-component-text);table-layout:fixed}.orc-tree-table th,.orc-tree-table td{padding:.65rem .75rem;border-bottom:1px solid var(--orc-component-border);text-align:left}.orc-tree-table th{background:var(--orc-component-surface-subtle)}.orc-tree-table.gridlines th,.orc-tree-table.gridlines td{border-inline-end:1px solid var(--orc-component-border)}.orc-tree-table.row-hover tbody tr:hover{background:var(--orc-component-interactive-soft)}.orc-tree-table.auto-layout table{table-layout:auto}.row-selection{display:inline-flex;align-items:center;gap:.4rem}.toggle{width:1.5rem;border:0;background:transparent}.tree-table-filter,.tree-table-paginator,.rows-per-page{display:flex;align-items:center;gap:.5rem}.tree-table-filter{padding:.65rem .75rem}.tree-table-filter input{max-width:20rem}.sort-control{border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;padding:0;text-align:left;cursor:pointer}.sort-control:focus-visible,.tree-table-paginator button:focus-visible{outline:2px solid var(--orc-focus-ring,var(--orc-component-interactive));outline-offset:2px}.tree-table-paginator{justify-content:flex-end;padding:.65rem .75rem;flex-wrap:wrap}.page-report{min-width:8rem;text-align:center}`,
-  ],
+  templateUrl: './tree-table.component.html',
+  styles: [P2_SHARED_VARS],
+  styleUrl: './tree-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'p-treetable p-component',
     '[attr.id]': 'id() || null',
-    '[attr.data-pc-name]': "'treetable'",
   },
 })
 export class TreeTableComponent<T = Record<string, unknown>> implements OnInit {

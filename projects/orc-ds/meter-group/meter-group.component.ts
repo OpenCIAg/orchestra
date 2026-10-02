@@ -4,7 +4,7 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 export interface MeterItem {
   value: number;
   label?: string;
@@ -13,53 +13,9 @@ export interface MeterItem {
 @Component({
   selector: 'orc-meter-group',
   standalone: true,
-  template: `<div
-    class="p-metergroup p-component orc-p2-meter"
-    [class]="
-      'p-metergroup p-component orc-p2-meter orientation-' +
-      orientation() +
-      ' label-orientation-' +
-      labelOrientation() +
-      ' ' +
-      styleClass()
-    "
-    [style]="style()"
-    [attr.data-pc-name]="'metergroup'"
-  >
-    @if (label() && labelPosition() === 'start') {
-      <small class="orc-p2-meter__label"
-        >{{ label() }} {{ ariaValue() }}/{{ normalizedMax() }}</small
-      >
-    }
-    <div
-      class="orc-p2-meter__track"
-      role="meter"
-      [attr.aria-label]="ariaLabel() || label() || 'Meter'"
-      [attr.aria-valuemin]="normalizedMin()"
-      [attr.aria-valuemax]="normalizedMax()"
-      [attr.aria-valuenow]="ariaValue()"
-    >
-      @for (item of effectiveValues(); track $index) {
-        <span
-          [style.width.%]="
-            orientation() === 'horizontal' ? percent(item) : null
-          "
-          [style.height.%]="orientation() === 'vertical' ? percent(item) : null"
-          [style.background]="item.color || color()"
-          [attr.title]="item.label || null"
-        ></span>
-      }
-    </div>
-    @if (label() && labelPosition() === 'end') {
-      <small class="orc-p2-meter__label"
-        >{{ label() }} {{ ariaValue() }}/{{ normalizedMax() }}</small
-      >
-    }
-  </div>`,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-p2-meter{display:grid;gap:.35rem;width:100%;align-items:stretch}.orc-p2-meter__label{min-width:0}.orc-p2-meter__track{display:flex;flex-direction:row;width:100%;height:.65rem;min-width:0;overflow:hidden;border-radius:999px;background:var(--orc-component-surface-subtle)}.orc-p2-meter__track span{display:block;flex:0 0 auto;min-width:0;min-height:0}/* Keep a definite default extent so percentage segment heights resolve; callers can override it through style.height. */.orc-p2-meter.orientation-vertical{display:inline-flex;flex-direction:column;width:auto;height:8rem;min-width:.65rem;min-height:8rem;align-items:center}.orc-p2-meter.orientation-vertical .orc-p2-meter__track{flex:0 0 auto;flex-direction:column;width:.65rem;height:100%;min-height:8rem}.orc-p2-meter.label-orientation-vertical .orc-p2-meter__label{writing-mode:vertical-rl;text-orientation:mixed}.orc-p2-meter.label-orientation-horizontal .orc-p2-meter__label{writing-mode:horizontal-tb;text-orientation:mixed}`,
-  ],
+  templateUrl: './meter-group.component.html',
+  styles: [P2_SHARED_VARS],
+  styleUrl: './meter-group.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterGroupComponent {

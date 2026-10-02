@@ -27,7 +27,7 @@ describe('TreeSelect presentation and loading contract', () => {
       '.trigger',
     ) as HTMLButtonElement;
     expect(root.classList.contains('department-tree')).toBeTrue();
-    expect(root.classList.contains('p-treeselect-fluid')).toBeTrue();
+    expect(root.classList.contains('orc-p2-tree-select--fluid')).toBeTrue();
     expect(root.style.width).toBe('24rem');
     expect(label.htmlFor).toBe('department-picker');
     expect(trigger.id).toBe('department-picker');

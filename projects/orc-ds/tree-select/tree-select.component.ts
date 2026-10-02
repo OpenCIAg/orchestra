@@ -17,8 +17,8 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CvaControl, P2_SHARED_VARS } from '@ciag/orchestra/internal';
 import { filterTreeNodes } from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
@@ -37,194 +37,9 @@ interface VisibleTreeSelectNode {
 @Component({
   selector: 'orc-tree-select',
   standalone: true,
-  template: `
-    <div
-      class="p-treeselect p-component orc-p2-tree-select"
-      [class]="'p-treeselect p-component orc-p2-tree-select ' + styleClass()"
-      [class.orc-p2-tree-select--small]="size() === 'small'"
-      [class.orc-p2-tree-select--large]="size() === 'large'"
-      [class.orc-p2-tree-select--filled]="variant() === 'filled'"
-      [class.orc-p2-tree-select--outlined]="variant() === 'outlined'"
-      [style]="style()"
-      [class.p-treeselect-fluid]="fluid()"
-      [attr.data-pc-name]="'treeselect'"
-      [attr.aria-busy]="loading() ? 'true' : null"
-      (keydown)="onKeydown($event)"
-      (focusin)="onHostFocusIn($event)"
-      (focusout)="onHostFocusOut($event)"
-    >
-      @if (effectiveLabel()) {
-        <label [for]="effectiveId()">{{ effectiveLabel() }}</label>
-      }
-      <button
-        type="button"
-        class="p-treeselect-label p-treeselect-trigger trigger"
-        [disabled]="disabled() || cvaDisabled()"
-        [attr.id]="effectiveId()"
-        [attr.tabindex]="tabindex()"
-        [attr.aria-label]="effectiveAriaLabel()"
-        [attr.aria-labelledby]="effectiveAriaLabelledBy()"
-        [attr.aria-expanded]="open()"
-        [attr.aria-controls]="effectiveId() + '-panel'"
-        [attr.aria-readonly]="readonly()"
-        (click)="toggleOpen()"
-      >
-        {{ selectedLabel() || placeholder() }} <span aria-hidden="true">⌄</span>
-      </button>
-      @if (showClear() && value() !== null && !readonly()) {
-        <button
-          type="button"
-          [disabled]="disabled() || cvaDisabled()"
-          (click)="clear($event)"
-          [attr.aria-label]="effectiveClearAriaLabel()"
-        >
-          ×
-        </button>
-      }
-      @if (open()) {
-        @if (filter()) {
-          <input
-            [value]="filterValue()"
-            [disabled]="isTreeControlDisabled()"
-            [attr.placeholder]="filterPlaceholder() || null"
-            (input)="onFilterInput($event)"
-            [attr.aria-label]="effectiveFilterAriaLabel()"
-          />
-        }
-        @if (loading()) {
-          <div
-            class="p-treeselect-panel p-component tree tree-state"
-            [class]="
-              'p-treeselect-panel p-component tree tree-state ' + panelClasses()
-            "
-            [style]="panelStyle()"
-            [style.max-height]="scrollHeight()"
-            [id]="effectiveId() + '-panel'"
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            Loading options
-          </div>
-        } @else if (filteredVisibleNodes().length) {
-          <ul
-            class="p-treeselect-panel p-component tree"
-            [class]="'p-treeselect-panel p-component tree ' + panelClasses()"
-            [style]="panelStyle()"
-            [style.max-height]="scrollHeight()"
-            [id]="effectiveId() + '-panel'"
-            role="tree"
-            [attr.tabindex]="0"
-            [attr.aria-labelledby]="treeLabelledBy()"
-            [attr.aria-label]="treeAriaLabel()"
-            [attr.aria-activedescendant]="activeTreeOptionId()"
-            [attr.aria-disabled]="isTreeInteractionDisabled() ? 'true' : null"
-            (focusin)="onTreeFocusIn($event)"
-          >
-            @for (item of filteredVisibleNodes(); track item.node.value) {
-              <li
-                role="treeitem"
-                [id]="treeOptionId($index)"
-                [attr.aria-level]="item.level"
-                [attr.aria-expanded]="
-                  item.node.children?.length
-                    ? isExpandedForView(item.node)
-                    : null
-                "
-                [attr.aria-disabled]="
-                  isTreeItemDisabled(item.node) ? 'true' : null
-                "
-                [style.padding-left.rem]="item.level * 0.9"
-                [attr.aria-selected]="
-                  selectionMode() === 'checkbox'
-                    ? null
-                    : isNodeSelected(item.node)
-                "
-                [attr.aria-checked]="
-                  selectionMode() === 'checkbox'
-                    ? nodeCheckState(item.node)
-                    : null
-                "
-                [class.selected]="
-                  selectionMode() === 'checkbox'
-                    ? nodeCheckState(item.node) === true
-                    : isNodeSelected(item.node)
-                "
-                [class.partial]="nodeCheckState(item.node) === 'mixed'"
-                [class.active]="resolvedActiveTreeIndex() === $index"
-                [class.disabled]="isTreeItemDisabled(item.node)"
-              >
-                @if (item.node.children?.length) {
-                  <button
-                    type="button"
-                    class="expand"
-                    tabindex="-1"
-                    [disabled]="
-                      !!filterValue().trim() || isTreeItemDisabled(item.node)
-                    "
-                    [attr.aria-label]="
-                      (isExpandedForView(item.node)
-                        ? effectiveCollapseAriaLabel()
-                        : effectiveExpandAriaLabel()) +
-                      ' ' +
-                      item.node.label
-                    "
-                    (click)="onTreeToggleClick(item.node, $index)"
-                  >
-                    {{ isExpandedForView(item.node) ? '▾' : '▸' }}
-                  </button>
-                } @else {
-                  <span class="expand-placeholder"></span>
-                }
-                <button
-                  type="button"
-                  class="item"
-                  tabindex="-1"
-                  [disabled]="isTreeItemDisabled(item.node)"
-                  (click)="onTreeItemClick(item.node, $index, $event)"
-                >
-                  @if (selectionMode() === 'checkbox') {
-                    <span aria-hidden="true">{{
-                      nodeCheckState(item.node) === 'mixed'
-                        ? '◩'
-                        : nodeCheckState(item.node)
-                          ? '☑'
-                          : '☐'
-                    }}</span>
-                  }
-                  {{ item.node.label }}
-                </button>
-              </li>
-            }
-          </ul>
-        } @else {
-          <div
-            class="p-treeselect-panel p-component tree tree-state"
-            [class]="
-              'p-treeselect-panel p-component tree tree-state ' + panelClasses()
-            "
-            [style]="panelStyle()"
-            [style.max-height]="scrollHeight()"
-            [id]="effectiveId() + '-panel'"
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            {{
-              emptyMessage() ||
-                (filterValue().trim()
-                  ? 'No results found'
-                  : 'No options available')
-            }}
-          </div>
-        }
-      }
-    </div>
-  `,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-p2-tree-select { position: relative; display: grid; gap: .35rem; color: var(--orc-component-text); } label { font-size: .875rem; font-weight: 600; } .trigger { display: flex; justify-content: space-between; min-height: 2.5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-control); color: var(--orc-component-text); padding: .5rem .7rem; text-align: left; } .tree { position: absolute; z-index: 3; top: 4.2rem; right: 0; left: 0; max-height: 16rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-surface-raised); color: var(--orc-component-text); box-shadow: var(--orc-component-overlay-shadow); list-style: none; } .tree-state { display: flex; align-items: center; min-height: 2.5rem; padding: .5rem .75rem; color: var(--orc-component-text-muted); } li { display: flex; align-items: center; min-height: 2rem; } li.selected, li.partial { background: var(--orc-component-interactive-soft); } li.disabled { color: var(--orc-component-text-muted); } .expand, .expand-placeholder { flex: 0 0 1.4rem; width: 1.4rem; border: 0; background: transparent; text-align: center; } .item { flex: 1; border: 0; background: transparent; color: inherit; padding: .35rem; text-align: left; } .orc-p2-tree-select--small .trigger { min-height: 2rem; padding: .35rem .5rem; font-size: .875rem; } .orc-p2-tree-select--small .tree li { min-height: 1.75rem; } .orc-p2-tree-select--small .tree .item { padding: .25rem; font-size: .875rem; } .orc-p2-tree-select--large .trigger { min-height: 3rem; padding: .75rem .9rem; font-size: 1.125rem; } .orc-p2-tree-select--large .tree li { min-height: 2.5rem; } .orc-p2-tree-select--large .tree .item { padding: .6rem; font-size: 1.125rem; } .orc-p2-tree-select--filled .trigger { border-color: var(--orc-component-border); background: var(--orc-component-interactive-soft); } .orc-p2-tree-select--outlined .trigger { border-color: var(--orc-component-border-strong); background: var(--orc-component-control); }`,
-  ],
+  templateUrl: './tree-select.component.html',
+  styles: [P2_SHARED_VARS],
+  styleUrl: './tree-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -235,7 +50,8 @@ interface VisibleTreeSelectNode {
   ],
 })
 export class TreeSelectComponent
-  implements ControlValueAccessor, AfterViewInit, OnDestroy
+  extends CvaControl
+  implements AfterViewInit, OnDestroy
 {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
@@ -337,9 +153,9 @@ export class TreeSelectComponent
   readonly onNodeExpand = output<TreeSelectNode>();
   readonly onNodeCollapse = output<TreeSelectNode>();
   readonly nodeUnselect = output<TreeSelectNode>();
-  protected readonly cvaDisabled = signal(false);
-  private onModelChange: (value: string | string[] | null) => void = () => {};
-  private onModelTouched: () => void = () => {};
+  protected isSelfDisabled(): boolean {
+    return this.disabled();
+  }
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
   readonly effectiveLabel = computed(() => this.label()?.trim() || null);
   readonly effectiveAriaLabel = computed(
@@ -441,15 +257,6 @@ export class TreeSelectComponent
   writeValue(value: string | string[] | null): void {
     this.value.set(value);
   }
-  registerOnChange(fn: (value: string | string[] | null) => void): void {
-    this.onModelChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onModelTouched = fn;
-  }
-  setDisabledState(value: boolean): void {
-    this.cvaDisabled.set(value);
-  }
   selectedLabel(): string {
     const value = this.value();
     const values = Array.isArray(value) ? value : value === null ? [] : [value];
@@ -491,7 +298,7 @@ export class TreeSelectComponent
     )
       return;
     this.closePanel();
-    this.onModelTouched();
+    this.cvaOnTouched();
   }
   onHostFocusIn(event: FocusEvent): void {
     if (this.controlFocused) return;
@@ -508,7 +315,7 @@ export class TreeSelectComponent
         return;
       this.controlFocused = false;
       if (this.open()) this.closePanel();
-      this.onModelTouched();
+      this.cvaOnTouched();
       this.onBlur.emit(event);
     });
   }
@@ -579,7 +386,7 @@ export class TreeSelectComponent
     const mode = this.selectionMode();
     if (mode === 'single') {
       this.value.set(node.value);
-      this.onModelChange(node.value);
+      this.cvaOnChange(node.value);
       this.nodeSelect.emit(node);
       this.onChange.emit({ originalEvent, value: node.value });
       this.closePanel(true);
@@ -613,7 +420,7 @@ export class TreeSelectComponent
         }
       }
       this.value.set(next);
-      this.onModelChange(next);
+      this.cvaOnChange(next);
       (selected ? this.nodeUnselect : this.nodeSelect).emit(node);
       this.onChange.emit({ originalEvent, value: next });
     }
@@ -646,8 +453,8 @@ export class TreeSelectComponent
     if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
     const originalEvent = event ?? new Event('clear');
     this.value.set(null);
-    this.onModelChange(null);
-    this.onModelTouched();
+    this.cvaOnChange(null);
+    this.cvaOnTouched();
     this.onChange.emit({ originalEvent, value: null });
     this.onClear.emit(originalEvent);
   }

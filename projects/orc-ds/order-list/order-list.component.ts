@@ -14,94 +14,15 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CvaControl, P2_SHARED_VARS } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-order-list',
   standalone: true,
-  template: `
-    <section
-      class="p-orderlist p-component orc-order-list"
-      [class]="'p-orderlist p-component orc-order-list ' + styleClass()"
-      [style]="style()"
-      [attr.aria-label]="label() || null"
-      [attr.aria-labelledby]="ariaLabelledBy()"
-      [attr.aria-disabled]="effectiveDisabled()"
-      [attr.tabindex]="effectiveDisabled() ? -1 : tabindex()"
-      [attr.data-pc-name]="'orderlist'"
-      (focusin)="onCompositeFocusIn($event)"
-      (focusout)="onCompositeFocusOut($event)"
-    >
-      <header>
-        {{ header() }}
-        <span>
-          @if (moveUpLabel()) {
-            <button
-              type="button"
-              [disabled]="effectiveDisabled() || !canMove(-1)"
-              (click)="move(-1)"
-              [attr.aria-label]="moveUpLabel()"
-            >
-              ↑
-            </button>
-          }
-          @if (moveDownLabel()) {
-            <button
-              type="button"
-              [disabled]="effectiveDisabled() || !canMove(1)"
-              (click)="move(1)"
-              [attr.aria-label]="moveDownLabel()"
-            >
-              ↓
-            </button>
-          }
-        </span>
-      </header>
-      @if (filterBy()) {
-        <input
-          [value]="filter()"
-          [disabled]="effectiveDisabled()"
-          [attr.placeholder]="filterPlaceholder() || null"
-          [attr.aria-label]="ariaFilterLabel() || null"
-          (input)="setFilter($any($event.target).value)"
-        />
-      }
-      <ol
-        role="listbox"
-        [style]="listStyle()"
-        [attr.aria-labelledby]="ariaLabelledBy()"
-        [attr.aria-label]="label() || header() || null"
-        [attr.aria-multiselectable]="selectionMode() === 'multiple'"
-      >
-        @for (item of filteredValue(); track $index; let index = $index) {
-          <li
-            role="option"
-            [attr.tabindex]="optionTabIndex(index)"
-            [attr.aria-selected]="selectedItems().has(item)"
-            [attr.aria-disabled]="
-              effectiveDisabled() || itemDisabled(item) ? 'true' : null
-            "
-            [class.selected]="selectedItems().has(item)"
-            (click)="selectFiltered(index)"
-            (mousedown)="onOptionMouseDown($event, index)"
-            (focus)="onOptionFocus(index)"
-            (keydown)="onOptionKeydown($event, index)"
-          >
-            {{ itemLabel(item) }}
-          </li>
-        } @empty {
-          @if (emptyText()) {
-            <li class="empty">{{ emptyText() }}</li>
-          }
-        }
-      </ol>
-    </section>
-  `,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-order-list{border:1px solid var(--orc-component-border);border-radius:.5rem;overflow:hidden;background:var(--orc-component-surface)}.orc-order-list header{display:flex;justify-content:space-between;padding:.65rem .8rem;background:var(--orc-component-surface-subtle);font-weight:700}.orc-order-list header button{margin-left:.2rem;border:1px solid var(--orc-component-border-strong);border-radius:.3rem;background:var(--orc-component-surface)}.orc-order-list ol{min-height:8rem;margin:0;padding:.35rem;list-style:none}.orc-order-list li{padding:.55rem .65rem;border-radius:.35rem;cursor:pointer}.orc-order-list li:focus,.orc-order-list li:focus-visible{outline:2px solid var(--orc-component-interactive);outline-offset:2px}.orc-order-list li.selected{background:var(--orc-component-interactive-soft);color:var(--orc-component-interactive-hover)}.orc-order-list .empty{color:var(--orc-component-text-muted)}`,
-  ],
+  templateUrl: './order-list.component.html',
+  styles: [P2_SHARED_VARS],
+  styleUrl: './order-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -112,7 +33,8 @@ import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
   ],
 })
 export class OrderListComponent<T = unknown>
-  implements ControlValueAccessor, OnDestroy
+  extends CvaControl
+  implements OnDestroy
 {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly injector = inject(Injector);
@@ -140,10 +62,6 @@ export class OrderListComponent<T = unknown>
   /** @deprecated Compatibility input; multiple selection uses direct toggles and ignores modifier keys. */
   readonly metaKeySelection = input(true, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly cvaDisabled = signal(false);
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled(),
-  );
   readonly selectionMode = input<'single' | 'multiple'>('single');
   readonly selectedIndex = model(-1);
   readonly selected = model<T | T[] | null>(null, { alias: 'selection' });
@@ -154,9 +72,11 @@ export class OrderListComponent<T = unknown>
   readonly onFocus = output<Event>();
   readonly onBlur = output<Event>();
 
-  private onModelChange: (value: T[]) => void = () => {};
-  private onModelTouched: () => void = () => {};
   private touchedPending = false;
+
+  protected isSelfDisabled(): boolean {
+    return this.disabled();
+  }
 
   readonly filteredEntries = computed(() => {
     const query = this.filter()
@@ -323,7 +243,7 @@ export class OrderListComponent<T = unknown>
     [next[index], next[index + delta]] = [next[index + delta], next[index]];
     this.value.set(next);
     this.selectedIndex.set(index + delta);
-    this.onModelChange(next);
+    this.cvaOnChange(next);
     this.deferTouchedUntilFocusLeaves();
     this.valueChangeEvent.emit(next);
     const event = {
@@ -338,18 +258,6 @@ export class OrderListComponent<T = unknown>
     const next = Array.isArray(value) ? [...value] : [];
     this.value.set(next);
     if (this.selectedIndex() >= next.length) this.selectedIndex.set(-1);
-  }
-
-  registerOnChange(fn: (value: T[]) => void): void {
-    this.onModelChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onModelTouched = fn;
-  }
-
-  setDisabledState(disabled: boolean): void {
-    this.cvaDisabled.set(disabled);
   }
 
   onCompositeFocusIn(event: FocusEvent): void {
@@ -381,7 +289,7 @@ export class OrderListComponent<T = unknown>
   private flushTouched(): void {
     if (!this.touchedPending) return;
     this.touchedPending = false;
-    this.onModelTouched();
+    this.cvaOnTouched();
   }
 
   private focusOption(event: KeyboardEvent, index: number): void {

@@ -1,0 +1,182 @@
+<section
+  class="orc-galleria"
+  [class.orc-galleria--fullscreen]="fullScreen() && visible()"
+  [class]="
+    'orc-galleria orc-galleria--thumbs-' +
+    thumbnailsPosition() +
+    ' orc-galleria--indicators-' +
+    indicatorsPosition() +
+    ' ' +
+    containerClass()
+  "
+  [style]="containerStyle()"
+  [style.z-index]="fullScreen() && visible() ? baseZIndex() + 1000 : null"
+  [attr.role]="fullScreen() ? 'dialog' : null"
+  [attr.aria-modal]="fullScreen() && visible() ? 'true' : null"
+  [attr.aria-label]="label()?.trim() || null"
+  [attr.aria-roledescription]="roleDescription()?.trim() || null"
+  [attr.aria-hidden]="visible() ? null : 'true'"
+  [attr.tabindex]="visible() ? 0 : -1"
+  (mouseenter)="hovered.set(true)"
+  (mouseleave)="hovered.set(false)"
+  (keydown)="onKeydown($event)"
+>
+  @if (visible()) {
+    @if (fullScreen()) {
+      <button
+        type="button"
+        class="orc-galleria__close"
+        #fullscreenClose
+        [attr.aria-label]="closeLabel()?.trim() || 'Close gallery'"
+        (click)="hide()"
+      >
+        ×
+      </button>
+    }
+    @if (fullScreen()) {
+      <div
+        class="orc-galleria__mask"
+        [class]="maskClass()"
+        (click)="hide()"
+      ></div>
+    }
+    <div class="orc-galleria__content">
+      @if (activeImage(); as image) {
+        <figure>
+          <img [src]="image.src" [attr.alt]="image.alt ?? image.title ?? ''" />
+          @if (showIndicators() && showIndicatorsOnItem()) {
+            <div
+              class="orc-galleria__indicators orc-galleria__indicators--item"
+              role="tablist"
+              aria-label="Gallery indicators"
+            >
+              @for (image of images(); track $index) {
+                <button
+                  type="button"
+                  role="tab"
+                  [attr.aria-label]="'Go to image ' + ($index + 1)"
+                  [attr.aria-selected]="
+                    $index === clampedActiveIndex() ? 'true' : 'false'
+                  "
+                  [attr.tabindex]="$index === clampedActiveIndex() ? 0 : -1"
+                  (mouseenter)="changeItemOnIndicatorHover() && goTo($index)"
+                  (click)="goTo($index)"
+                  (keydown)="onIndicatorKeydown($event, $index)"
+                ></button>
+              }
+            </div>
+          }
+          @if (image.title) {
+            <figcaption>{{ image.title }}</figcaption>
+          }
+        </figure>
+      }
+      @if (showThumbnails()) {
+        <div class="orc-galleria__thumbnail-track">
+          @if (showThumbnailNavigators()) {
+            <button
+              type="button"
+              class="orc-galleria__thumbnail-nav"
+              aria-label="Previous thumbnails"
+              (click)="scrollThumbnails(thumbnailViewport, -1)"
+            >
+              {{
+                thumbnailsPosition() === 'left' ||
+                thumbnailsPosition() === 'right'
+                  ? '↑'
+                  : '‹'
+              }}
+            </button>
+          }
+          <div
+            #thumbnailViewport
+            class="thumbs"
+            role="list"
+            [attr.aria-label]="thumbnailLabel()?.trim() || 'Gallery thumbnails'"
+          >
+            @for (image of images(); track $index) {
+              <button
+                type="button"
+                [class.active]="$index === clampedActiveIndex()"
+                [attr.aria-current]="
+                  $index === clampedActiveIndex() ? 'true' : null
+                "
+                [attr.aria-label]="
+                  thumbnailLabel()?.trim()
+                    ? thumbnailLabel()?.trim() + ' ' + ($index + 1)
+                    : image.alt || 'Image ' + ($index + 1)
+                "
+                (mouseenter)="changeItemOnIndicatorHover() && goTo($index)"
+                (click)="selectImageFromClick($index)"
+              >
+                <img
+                  [src]="image.thumbnail || image.src"
+                  [attr.alt]="image.alt ?? ''"
+                />
+              </button>
+            }
+          </div>
+          @if (showThumbnailNavigators()) {
+            <button
+              type="button"
+              class="orc-galleria__thumbnail-nav"
+              aria-label="Next thumbnails"
+              (click)="scrollThumbnails(thumbnailViewport, 1)"
+            >
+              {{
+                thumbnailsPosition() === 'left' ||
+                thumbnailsPosition() === 'right'
+                  ? '↓'
+                  : '›'
+              }}
+            </button>
+          }
+        </div>
+      }
+      <nav aria-label="Gallery controls">
+        @if (showNavigators()) {
+          <button
+            type="button"
+            (click)="previousFromClick()"
+            [disabled]="!canPrevious()"
+            [attr.aria-label]="previousLabel()?.trim() || 'Previous image'"
+          >
+            ‹
+          </button>
+        }
+        @if (showIndicators() && !showIndicatorsOnItem()) {
+          <div
+            class="orc-galleria__indicators"
+            role="tablist"
+            aria-label="Gallery indicators"
+          >
+            @for (image of images(); track $index) {
+              <button
+                type="button"
+                role="tab"
+                [attr.aria-label]="'Go to image ' + ($index + 1)"
+                [attr.aria-selected]="
+                  $index === clampedActiveIndex() ? 'true' : 'false'
+                "
+                [attr.tabindex]="$index === clampedActiveIndex() ? 0 : -1"
+                (mouseenter)="changeItemOnIndicatorHover() && goTo($index)"
+                (click)="selectImageFromClick($index)"
+                (keydown)="onIndicatorKeydown($event, $index)"
+              ></button>
+            }
+          </div>
+        }
+        @if (showNavigators()) {
+          <button
+            type="button"
+            (click)="nextFromClick()"
+            [disabled]="!canNext()"
+            [attr.aria-label]="nextLabel()?.trim() || 'Next image'"
+          >
+            ›
+          </button>
+        }
+      </nav>
+    </div>
+  }
+</section>

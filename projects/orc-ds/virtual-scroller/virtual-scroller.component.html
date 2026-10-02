@@ -1,0 +1,29 @@
+<div class="orc-p2-virtual-scroller-shell">
+  @if (loading() && loadingMessage()) {
+    <div class="loading-status" role="status" aria-live="polite">
+      {{ loadingMessage() }}
+    </div>
+  }
+  <div
+    class="orc-p2-virtual-scroller"
+    role="list"
+    [attr.aria-label]="label()"
+    [attr.aria-busy]="loading()"
+    [style.height]="viewportHeight()"
+    (scroll)="onScroll($event)"
+  >
+    <div [style.height.px]="topSpacer()"></div>
+    @for (item of visibleItems(); track $index) {
+      <div
+        role="listitem"
+        class="item"
+        [style.height.px]="effectiveItemHeight()"
+        [attr.aria-setsize]="items().length"
+        [attr.aria-posinset]="startIndex() + $index + 1"
+      >
+        {{ itemLabel(item) }}
+      </div>
+    }
+    <div [style.height.px]="bottomSpacer()"></div>
+  </div>
+</div>

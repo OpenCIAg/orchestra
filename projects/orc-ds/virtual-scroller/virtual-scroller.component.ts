@@ -7,44 +7,14 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-virtual-scroller, orc-scroller',
   standalone: true,
-  template: `<div class="orc-p2-virtual-scroller-shell">
-    @if (loading() && loadingMessage()) {
-      <div class="loading-status" role="status" aria-live="polite">
-        {{ loadingMessage() }}
-      </div>
-    }
-    <div
-      class="orc-p2-virtual-scroller"
-      role="list"
-      [attr.aria-label]="label()"
-      [attr.aria-busy]="loading()"
-      [style.height]="viewportHeight()"
-      (scroll)="onScroll($event)"
-    >
-      <div [style.height.px]="topSpacer()"></div>
-      @for (item of visibleItems(); track $index) {
-        <div
-          role="listitem"
-          class="item"
-          [style.height.px]="effectiveItemHeight()"
-          [attr.aria-setsize]="items().length"
-          [attr.aria-posinset]="startIndex() + $index + 1"
-        >
-          {{ itemLabel(item) }}
-        </div>
-      }
-      <div [style.height.px]="bottomSpacer()"></div>
-    </div>
-  </div>`,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-p2-virtual-scroller-shell{display:block}.orc-p2-virtual-scroller { overflow: auto; border: 1px solid var(--orc-component-border-strong); border-radius: .6rem; background: var(--orc-component-surface); color: var(--orc-component-text); } .loading-status { padding: .5rem .75rem; color: var(--orc-component-text-secondary); } .item { box-sizing: border-box; display: flex; align-items: center; padding: 0 .75rem; border-bottom: 1px solid var(--orc-component-border); }`,
-  ],
+  templateUrl: './virtual-scroller.component.html',
+  styles: [P2_SHARED_VARS],
+  styleUrl: './virtual-scroller.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VirtualScrollerComponent {
