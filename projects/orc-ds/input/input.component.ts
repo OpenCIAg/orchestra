@@ -14,7 +14,8 @@ import {
   numberAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CvaControl } from '@ciag/orchestra/internal';
 import { InputSize, InputStatus, InputType } from './input.types';
 import { applyMask, cleanMask } from './input-mask.util';
 
@@ -35,7 +36,7 @@ let nextInputUniqueId = 0;
     },
   ],
 })
-export class InputComponent implements ControlValueAccessor {
+export class InputComponent extends CvaControl {
   private readonly uniqueId = `orc-input-${++nextInputUniqueId}`;
 
   // ── Native Input Element Reference ────────────────────────
@@ -103,7 +104,6 @@ export class InputComponent implements ControlValueAccessor {
   // ── Estado Interno ────────────────────────────────────────
   protected readonly isFocused = signal<boolean>(false);
   protected readonly isPasswordVisible = signal<boolean>(false);
-  protected readonly cvaDisabled = signal<boolean>(false);
   /**
    * Keeps browser editing state independent from the public model input.
    * Angular may re-apply a parent model value during the same input event;
@@ -120,10 +120,6 @@ export class InputComponent implements ControlValueAccessor {
   );
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
-
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled(),
-  );
 
   readonly currentType = computed(() => {
     if (this.type() === 'password') {
@@ -190,10 +186,11 @@ export class InputComponent implements ControlValueAccessor {
   );
 
   // ── ControlValueAccessor ──────────────────────────────────
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
 
-  writeValue(value: any): void {
+  override writeValue(value: any): void {
     const val = value ?? '';
     if (this.mask() && val) {
       const masked = applyMask(String(val), this.mask());
@@ -206,18 +203,6 @@ export class InputComponent implements ControlValueAccessor {
       this.viewValue.set(val);
       this.value.set(val);
     }
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.cvaDisabled.set(isDisabled);
   }
 
   // ── Handlers de Eventos ───────────────────────────────────
@@ -244,7 +229,7 @@ export class InputComponent implements ControlValueAccessor {
         : maskedVal;
       this.viewValue.set(emittedVal);
       this.value.set(emittedVal);
-      this.onChange(emittedVal);
+      this.cvaOnChange(emittedVal);
       this.inputChange.emit(emittedVal);
       const nextSelectionStart = this.caretForRawOffset(rawStart, maskedVal);
       const nextSelectionEnd = this.caretForRawOffset(rawEnd, maskedVal);
@@ -267,7 +252,7 @@ export class InputComponent implements ControlValueAccessor {
 
     this.viewValue.set(val);
     this.value.set(val);
-    this.onChange(val);
+    this.cvaOnChange(val);
     this.inputChange.emit(val);
   }
 
@@ -278,7 +263,7 @@ export class InputComponent implements ControlValueAccessor {
 
   protected onBlur(event: FocusEvent): void {
     this.isFocused.set(false);
-    this.onTouched();
+    this.cvaOnTouched();
     this.blur.emit(event);
   }
 
@@ -287,8 +272,8 @@ export class InputComponent implements ControlValueAccessor {
     event.stopPropagation();
     this.viewValue.set('');
     this.value.set('');
-    this.onChange('');
-    this.onTouched();
+    this.cvaOnChange('');
+    this.cvaOnTouched();
     this.inputChange.emit('');
     this.clear.emit();
     this.focusNative();
