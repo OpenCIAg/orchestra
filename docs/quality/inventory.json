@@ -2722,6 +2722,191 @@
       ]
     },
     {
+      "name": "ConfirmPopupService",
+      "kind": "Injectable",
+      "selector": "",
+      "file": "projects/orc-ds/confirm-popup/confirm-popup.component.ts",
+      "line": 33,
+      "inputs": [],
+      "outputs": [],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/confirm-popup-behavior.spec.ts",
+        "projects/orc-ds/confirm-popup/confirm-popup-parity.spec.ts",
+        "projects/orc-ds/confirmation-concurrency.spec.ts",
+        "projects/orc-ds/p2-repair.spec.ts"
+      ]
+    },
+    {
+      "name": "ConfirmPopupComponent",
+      "kind": "Component",
+      "selector": "orc-confirm-popup",
+      "file": "projects/orc-ds/confirm-popup/confirm-popup.component.ts",
+      "line": 51,
+      "inputs": [],
+      "outputs": [],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/confirm-popup-behavior.spec.ts",
+        "projects/orc-ds/confirm-popup/confirm-popup-parity.spec.ts",
+        "projects/orc-ds/confirmation-concurrency.spec.ts",
+        "projects/orc-ds/p2-repair.spec.ts"
+      ]
+    },
+    {
+      "name": "ContextMenuComponent",
+      "kind": "Component",
+      "selector": "orc-context-menu",
+      "file": "projects/orc-ds/context-menu/context-menu.component.ts",
+      "line": 35,
+      "inputs": [
+        {
+          "name": "items",
+          "publicName": "items",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly items = input<ContextMenuItem[]>([]);"
+        },
+        {
+          "name": "model",
+          "publicName": "model",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly model = input<ContextMenuItem[] | undefined>(undefined);"
+        },
+        {
+          "name": "open",
+          "publicName": "open",
+          "kind": "model",
+          "required": false,
+          "declaration": "readonly open = model(false);"
+        },
+        {
+          "name": "popup",
+          "publicName": "popup",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly popup = input(true, { transform: booleanAttribute });",
+          "deprecated": true,
+          "description": "Compatibility-only input; this component exposes only its contextual popup behavior."
+        },
+        {
+          "name": "target",
+          "publicName": "target",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly target = input<HTMLElement | string | undefined>(undefined);"
+        },
+        {
+          "name": "style",
+          "publicName": "style",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
+        },
+        {
+          "name": "styleClass",
+          "publicName": "styleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly styleClass = input('');"
+        },
+        {
+          "name": "appendTo",
+          "publicName": "appendTo",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly appendTo = input<HTMLElement | string | null | undefined>(undefined);",
+          "deprecated": true,
+          "description": "Compatibility-only input; the menu remains in its declared host."
+        },
+        {
+          "name": "autoZIndex",
+          "publicName": "autoZIndex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly autoZIndex = input(true, { transform: booleanAttribute });"
+        },
+        {
+          "name": "baseZIndex",
+          "publicName": "baseZIndex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly baseZIndex = input(0);"
+        },
+        {
+          "name": "id",
+          "publicName": "id",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly id = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "breakpoint",
+          "publicName": "breakpoint",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly breakpoint = input('');",
+          "deprecated": true,
+          "description": "Responsive breakpoint mode is not implemented."
+        },
+        {
+          "name": "tabindex",
+          "publicName": "tabindex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly tabindex = input(0);"
+        },
+        {
+          "name": "ariaLabel",
+          "publicName": "ariaLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "ariaLabelledBy",
+          "publicName": "ariaLabelledBy",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "itemSelect",
+          "kind": "output",
+          "declaration": "readonly itemSelect = output<ContextMenuItem>();"
+        },
+        {
+          "name": "opened",
+          "kind": "output",
+          "declaration": "readonly opened = output<{ x: number; y: number }>();"
+        },
+        {
+          "name": "onShow",
+          "kind": "output",
+          "declaration": "readonly onShow = output<void>();"
+        },
+        {
+          "name": "onHide",
+          "kind": "output",
+          "declaration": "readonly onHide = output<void>();"
+        }
+      ],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/context-menu/context-menu-parity.spec.ts",
+        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
+        "projects/orc-ds/overlay-target-contract.spec.ts",
+        "projects/orc-ds/owner-document-hostlisteners.spec.ts",
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/p2-repair.spec.ts"
+      ]
+    },
+    {
       "name": "DatePickerCalendarComponent",
       "kind": "Component",
       "selector": "orc-date-picker-calendar",
@@ -3638,7 +3823,7 @@
       "kind": "Directive",
       "selector": "[orcDefer], [pDefer]",
       "file": "projects/orc-ds/defer/defer.directive.ts",
-      "line": 13,
+      "line": 12,
       "inputs": [],
       "outputs": [
         {
@@ -3709,11 +3894,47 @@
       ]
     },
     {
+      "name": "DockComponent",
+      "kind": "Component",
+      "selector": "orc-dock",
+      "file": "projects/orc-ds/dock/dock.component.ts",
+      "line": 21,
+      "inputs": [
+        {
+          "name": "items",
+          "publicName": "items",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly items = input<DockItem[]>([]);"
+        },
+        {
+          "name": "position",
+          "publicName": "position",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly position = input<'top' | 'bottom'>('bottom');"
+        },
+        {
+          "name": "label",
+          "publicName": "label",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly label = input<string | undefined>(undefined);"
+        }
+      ],
+      "outputs": [],
+      "testReferences": [
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/command-dock-contract.spec.ts",
+        "projects/orc-ds/dock/dock-parity.spec.ts"
+      ]
+    },
+    {
       "name": "DraggableDirective",
       "kind": "Directive",
       "selector": "[orcDraggable], [pDraggable]",
       "file": "projects/orc-ds/drag-drop/drag-drop.directive.ts",
-      "line": 38,
+      "line": 37,
       "inputs": [
         {
           "name": "scope",
@@ -3787,7 +4008,7 @@
       "kind": "Directive",
       "selector": "[orcDroppable], [pDroppable]",
       "file": "projects/orc-ds/drag-drop/drag-drop.directive.ts",
-      "line": 104,
+      "line": 101,
       "inputs": [
         {
           "name": "scope",
@@ -5807,6 +6028,236 @@
       ]
     },
     {
+      "name": "MegaMenuComponent",
+      "kind": "Component",
+      "selector": "orc-mega-menu",
+      "file": "projects/orc-ds/mega-menu/mega-menu.component.ts",
+      "line": 38,
+      "inputs": [
+        {
+          "name": "items",
+          "publicName": "items",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly items = input<PrimeMenuItem[]>([]);"
+        },
+        {
+          "name": "model",
+          "publicName": "model",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly model = input<PrimeMenuItem[] | undefined>(undefined);"
+        },
+        {
+          "name": "orientation",
+          "publicName": "orientation",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly orientation = input<'horizontal' | 'vertical'>('horizontal');"
+        },
+        {
+          "name": "style",
+          "publicName": "style",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
+        },
+        {
+          "name": "styleClass",
+          "publicName": "styleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly styleClass = input('');"
+        },
+        {
+          "name": "id",
+          "publicName": "id",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly id = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "ariaLabel",
+          "publicName": "ariaLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "ariaLabelledBy",
+          "publicName": "ariaLabelledBy",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "tabindex",
+          "publicName": "tabindex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly tabindex = input(0);"
+        },
+        {
+          "name": "disabled",
+          "publicName": "disabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "itemSelect",
+          "kind": "output",
+          "declaration": "readonly itemSelect = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onItemClick",
+          "kind": "output",
+          "declaration": "readonly onItemClick = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onFocus",
+          "kind": "output",
+          "declaration": "readonly onFocus = output<Event>();"
+        },
+        {
+          "name": "onBlur",
+          "kind": "output",
+          "declaration": "readonly onBlur = output<Event>();"
+        }
+      ],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/mega-hover-contract.spec.ts",
+        "projects/orc-ds/mega-menu/mega-menu-parity.spec.ts",
+        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
+        "projects/orc-ds/public-binding-behavior.spec.ts"
+      ]
+    },
+    {
+      "name": "MenubarComponent",
+      "kind": "Component",
+      "selector": "orc-menubar",
+      "file": "projects/orc-ds/menubar/menubar.component.ts",
+      "line": 30,
+      "inputs": [
+        {
+          "name": "items",
+          "publicName": "items",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly items = input<MenubarItem[]>([]);"
+        },
+        {
+          "name": "model",
+          "publicName": "model",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly model = input<MenubarItem[] | undefined>(undefined);"
+        },
+        {
+          "name": "label",
+          "publicName": "label",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly label = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "style",
+          "publicName": "style",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
+        },
+        {
+          "name": "id",
+          "publicName": "id",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly id = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "ariaLabelledBy",
+          "publicName": "ariaLabelledBy",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "styleClass",
+          "publicName": "styleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly styleClass = input('');"
+        },
+        {
+          "name": "tabindex",
+          "publicName": "tabindex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly tabindex = input(0);"
+        },
+        {
+          "name": "disabled",
+          "publicName": "disabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "autoZIndex",
+          "publicName": "autoZIndex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly autoZIndex = input(true, { transform: booleanAttribute });"
+        },
+        {
+          "name": "baseZIndex",
+          "publicName": "baseZIndex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly baseZIndex = input(0);"
+        },
+        {
+          "name": "loop",
+          "publicName": "loop",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly loop = input(true, { transform: booleanAttribute });"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "itemSelect",
+          "kind": "output",
+          "declaration": "readonly itemSelect = output<MenubarItem>();"
+        },
+        {
+          "name": "onFocus",
+          "kind": "output",
+          "declaration": "readonly onFocus = output<Event>();"
+        },
+        {
+          "name": "onBlur",
+          "kind": "output",
+          "declaration": "readonly onBlur = output<Event>();"
+        },
+        {
+          "name": "menuKeydown",
+          "kind": "output",
+          "declaration": "readonly menuKeydown = output<KeyboardEvent>();"
+        }
+      ],
+      "testReferences": [
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/menubar/menubar-parity.spec.ts",
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/p2-menu-contract.spec.ts"
+      ]
+    },
+    {
       "name": "ModalComponent",
       "kind": "Component",
       "selector": "orc-modal, orc-dialog, orc-dynamic-dialog",
@@ -7156,7 +7607,7 @@
       "kind": "Component",
       "selector": "orc-popover",
       "file": "projects/orc-ds/overlay-panel/overlay-panel.component.ts",
-      "line": 434,
+      "line": 433,
       "inputs": [
         {
           "name": "visible",
@@ -7364,7 +7815,7 @@
       "kind": "Component",
       "selector": "orc-menu",
       "file": "projects/orc-ds/p2/p2-advanced-components.ts",
-      "line": 54,
+      "line": 42,
       "inputs": [
         {
           "name": "model",
@@ -8435,37 +8886,6 @@
       ]
     },
     {
-      "name": "ConfirmPopupService",
-      "kind": "Injectable",
-      "selector": "",
-      "file": "projects/orc-ds/p2/p2-confirm-popup.ts",
-      "line": 34,
-      "inputs": [],
-      "outputs": [],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/confirm-popup-behavior.spec.ts",
-        "projects/orc-ds/confirmation-concurrency.spec.ts",
-        "projects/orc-ds/p2-repair.spec.ts"
-      ]
-    },
-    {
-      "name": "ConfirmPopupComponent",
-      "kind": "Component",
-      "selector": "orc-confirm-popup",
-      "file": "projects/orc-ds/p2/p2-confirm-popup.ts",
-      "line": 52,
-      "inputs": [],
-      "outputs": [],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/confirm-popup-behavior.spec.ts",
-        "projects/orc-ds/confirmation-concurrency.spec.ts",
-        "projects/orc-ds/p2-repair.spec.ts"
-      ]
-    },
-    {
       "name": "CodeComponent",
       "kind": "Component",
       "selector": "orc-code",
@@ -9377,47 +9797,11 @@
       ]
     },
     {
-      "name": "DockComponent",
-      "kind": "Component",
-      "selector": "orc-dock",
-      "file": "projects/orc-ds/p2/p2-dock-scroll-components.ts",
-      "line": 18,
-      "inputs": [
-        {
-          "name": "items",
-          "publicName": "items",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly items = input<DockItem[]>([]);"
-        },
-        {
-          "name": "position",
-          "publicName": "position",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly position = input<'top' | 'bottom'>('bottom');"
-        },
-        {
-          "name": "label",
-          "publicName": "label",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly label = input<string | undefined>(undefined);"
-        }
-      ],
-      "outputs": [],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/command-dock-contract.spec.ts"
-      ]
-    },
-    {
       "name": "ScrollPanelComponent",
       "kind": "Component",
       "selector": "orc-scroll-panel",
       "file": "projects/orc-ds/p2/p2-dock-scroll-components.ts",
-      "line": 123,
+      "line": 14,
       "inputs": [
         {
           "name": "height",
@@ -10690,7 +11074,7 @@
       "kind": "Component",
       "selector": "orc-input-color",
       "file": "projects/orc-ds/p2/p2-input-more.ts",
-      "line": 23,
+      "line": 22,
       "inputs": [
         {
           "name": "value",
@@ -10732,7 +11116,7 @@
       "kind": "Directive",
       "selector": "[orcAutoFocus]",
       "file": "projects/orc-ds/p2/p2-input-more.ts",
-      "line": 122,
+      "line": 121,
       "inputs": [
         {
           "name": "disabled",
@@ -11722,548 +12106,6 @@
       ]
     },
     {
-      "name": "TieredMenuComponent",
-      "kind": "Component",
-      "selector": "orc-tiered-menu",
-      "file": "projects/orc-ds/p2/p2-menu-family-components.ts",
-      "line": 53,
-      "inputs": [
-        {
-          "name": "items",
-          "publicName": "items",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly items = input<PrimeMenuItem[]>([]);",
-          "description": "Root items and one child level are rendered; recursive grandchildren remain unsupported."
-        },
-        {
-          "name": "model",
-          "publicName": "model",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly model = input<PrimeMenuItem[] | undefined>(undefined);"
-        },
-        {
-          "name": "style",
-          "publicName": "style",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
-        },
-        {
-          "name": "styleClass",
-          "publicName": "styleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly styleClass = input('');"
-        },
-        {
-          "name": "appendTo",
-          "publicName": "appendTo",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly appendTo = input<HTMLElement | string | null | undefined>(undefined);",
-          "deprecated": true,
-          "description": "Compatibility-only input; TieredMenu renders in its own host and ignores attachment requests."
-        },
-        {
-          "name": "breakpoint",
-          "publicName": "breakpoint",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly breakpoint = input('');",
-          "deprecated": true,
-          "description": "Compatibility-only input; responsive breakpoint handling is not implemented."
-        },
-        {
-          "name": "autoZIndex",
-          "publicName": "autoZIndex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly autoZIndex = input(true, { transform: booleanAttribute });"
-        },
-        {
-          "name": "baseZIndex",
-          "publicName": "baseZIndex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly baseZIndex = input(0);"
-        },
-        {
-          "name": "autoDisplay",
-          "publicName": "autoDisplay",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly autoDisplay = input(true, { transform: booleanAttribute });",
-          "deprecated": true,
-          "description": "Compatibility-only input; TieredMenu always follows explicit visibility state."
-        },
-        {
-          "name": "showTransitionOptions",
-          "publicName": "showTransitionOptions",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly showTransitionOptions = input('');",
-          "deprecated": true,
-          "description": "Compatibility-only input; TieredMenu does not animate visibility transitions."
-        },
-        {
-          "name": "hideTransitionOptions",
-          "publicName": "hideTransitionOptions",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly hideTransitionOptions = input('');",
-          "deprecated": true,
-          "description": "Compatibility-only input; TieredMenu does not animate visibility transitions."
-        },
-        {
-          "name": "ariaLabel",
-          "publicName": "ariaLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "ariaLabelledBy",
-          "publicName": "ariaLabelledBy",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "id",
-          "publicName": "id",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly id = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "disabled",
-          "publicName": "disabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "popup",
-          "publicName": "popup",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly popup = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "tabindex",
-          "publicName": "tabindex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly tabindex = input(0);"
-        },
-        {
-          "name": "visible",
-          "publicName": "visible",
-          "kind": "model",
-          "required": false,
-          "declaration": "readonly visible = model(false);"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "itemSelect",
-          "kind": "output",
-          "declaration": "readonly itemSelect = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onItemClick",
-          "kind": "output",
-          "declaration": "readonly onItemClick = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onShow",
-          "kind": "output",
-          "declaration": "readonly onShow = output<void>();"
-        },
-        {
-          "name": "onHide",
-          "kind": "output",
-          "declaration": "readonly onHide = output<void>();"
-        },
-        {
-          "name": "onFocus",
-          "kind": "output",
-          "declaration": "readonly onFocus = output<Event>();"
-        },
-        {
-          "name": "onBlur",
-          "kind": "output",
-          "declaration": "readonly onBlur = output<Event>();"
-        }
-      ],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/p2/p2-advanced-contract.spec.ts"
-      ]
-    },
-    {
-      "name": "PanelMenuComponent",
-      "kind": "Component",
-      "selector": "orc-panel-menu",
-      "file": "projects/orc-ds/p2/p2-menu-family-components.ts",
-      "line": 607,
-      "inputs": [
-        {
-          "name": "items",
-          "publicName": "items",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly items = input<PrimeMenuItem[]>([]);",
-          "description": "Root items and one child level are rendered; recursive grandchildren remain unsupported."
-        },
-        {
-          "name": "model",
-          "publicName": "model",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly model = input<PrimeMenuItem[] | undefined>(undefined);"
-        },
-        {
-          "name": "style",
-          "publicName": "style",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
-        },
-        {
-          "name": "styleClass",
-          "publicName": "styleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly styleClass = input('');"
-        },
-        {
-          "name": "id",
-          "publicName": "id",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly id = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "transitionOptions",
-          "publicName": "transitionOptions",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly transitionOptions = input('');",
-          "deprecated": true,
-          "description": "Compatibility-only input; PanelMenu does not animate expansion transitions."
-        },
-        {
-          "name": "tabindex",
-          "publicName": "tabindex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly tabindex = input(0);"
-        },
-        {
-          "name": "ariaLabel",
-          "publicName": "ariaLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "disabled",
-          "publicName": "disabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "multiple",
-          "publicName": "multiple",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly multiple = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "open",
-          "publicName": "open",
-          "kind": "model",
-          "required": false,
-          "declaration": "readonly open = model<ReadonlySet<PrimeMenuItem>>(new Set());"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "itemSelect",
-          "kind": "output",
-          "declaration": "readonly itemSelect = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onItemExpand",
-          "kind": "output",
-          "declaration": "readonly onItemExpand = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onItemCollapse",
-          "kind": "output",
-          "declaration": "readonly onItemCollapse = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onNodeSelect",
-          "kind": "output",
-          "declaration": "readonly onNodeSelect = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onNodeExpand",
-          "kind": "output",
-          "declaration": "readonly onNodeExpand = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onNodeCollapse",
-          "kind": "output",
-          "declaration": "readonly onNodeCollapse = output<PrimeMenuItem>();"
-        }
-      ],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/p2/p2-advanced-contract.spec.ts",
-        "projects/orc-ds/public-binding-behavior.spec.ts"
-      ]
-    },
-    {
-      "name": "MegaMenuComponent",
-      "kind": "Component",
-      "selector": "orc-mega-menu",
-      "file": "projects/orc-ds/p2/p2-menu-family-components.ts",
-      "line": 1071,
-      "inputs": [
-        {
-          "name": "items",
-          "publicName": "items",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly items = input<PrimeMenuItem[]>([]);"
-        },
-        {
-          "name": "model",
-          "publicName": "model",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly model = input<PrimeMenuItem[] | undefined>(undefined);"
-        },
-        {
-          "name": "orientation",
-          "publicName": "orientation",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly orientation = input<'horizontal' | 'vertical'>('horizontal');"
-        },
-        {
-          "name": "style",
-          "publicName": "style",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
-        },
-        {
-          "name": "styleClass",
-          "publicName": "styleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly styleClass = input('');"
-        },
-        {
-          "name": "id",
-          "publicName": "id",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly id = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "ariaLabel",
-          "publicName": "ariaLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "ariaLabelledBy",
-          "publicName": "ariaLabelledBy",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "tabindex",
-          "publicName": "tabindex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly tabindex = input(0);"
-        },
-        {
-          "name": "disabled",
-          "publicName": "disabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "itemSelect",
-          "kind": "output",
-          "declaration": "readonly itemSelect = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onItemClick",
-          "kind": "output",
-          "declaration": "readonly onItemClick = output<PrimeMenuItem>();"
-        },
-        {
-          "name": "onFocus",
-          "kind": "output",
-          "declaration": "readonly onFocus = output<Event>();"
-        },
-        {
-          "name": "onBlur",
-          "kind": "output",
-          "declaration": "readonly onBlur = output<Event>();"
-        }
-      ],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/mega-hover-contract.spec.ts",
-        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
-        "projects/orc-ds/public-binding-behavior.spec.ts"
-      ]
-    },
-    {
-      "name": "MenubarComponent",
-      "kind": "Component",
-      "selector": "orc-menubar",
-      "file": "projects/orc-ds/p2/p2-menubar-component.ts",
-      "line": 30,
-      "inputs": [
-        {
-          "name": "items",
-          "publicName": "items",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly items = input<MenubarItem[]>([]);"
-        },
-        {
-          "name": "model",
-          "publicName": "model",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly model = input<MenubarItem[] | undefined>(undefined);"
-        },
-        {
-          "name": "label",
-          "publicName": "label",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly label = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "style",
-          "publicName": "style",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
-        },
-        {
-          "name": "id",
-          "publicName": "id",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly id = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "ariaLabelledBy",
-          "publicName": "ariaLabelledBy",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "styleClass",
-          "publicName": "styleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly styleClass = input('');"
-        },
-        {
-          "name": "tabindex",
-          "publicName": "tabindex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly tabindex = input(0);"
-        },
-        {
-          "name": "disabled",
-          "publicName": "disabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "autoZIndex",
-          "publicName": "autoZIndex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly autoZIndex = input(true, { transform: booleanAttribute });"
-        },
-        {
-          "name": "baseZIndex",
-          "publicName": "baseZIndex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly baseZIndex = input(0);"
-        },
-        {
-          "name": "loop",
-          "publicName": "loop",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly loop = input(true, { transform: booleanAttribute });"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "itemSelect",
-          "kind": "output",
-          "declaration": "readonly itemSelect = output<MenubarItem>();"
-        },
-        {
-          "name": "onFocus",
-          "kind": "output",
-          "declaration": "readonly onFocus = output<Event>();"
-        },
-        {
-          "name": "onBlur",
-          "kind": "output",
-          "declaration": "readonly onBlur = output<Event>();"
-        },
-        {
-          "name": "menuKeydown",
-          "kind": "output",
-          "declaration": "readonly menuKeydown = output<KeyboardEvent>();"
-        }
-      ],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/p2-menu-contract.spec.ts"
-      ]
-    },
-    {
       "name": "MessagesComponent",
       "kind": "Component",
       "selector": "orc-messages",
@@ -12958,7 +12800,7 @@
       "kind": "Component",
       "selector": "orc-order-list",
       "file": "projects/orc-ds/p2/p2-order-list-component.ts",
-      "line": 20,
+      "line": 21,
       "inputs": [
         {
           "name": "value",
@@ -13255,7 +13097,7 @@
       "kind": "Component",
       "selector": "orc-knob",
       "file": "projects/orc-ds/p2/p2-org-knob-components.ts",
-      "line": 162,
+      "line": 160,
       "inputs": [
         {
           "name": "value",
@@ -13390,7 +13232,7 @@
       "kind": "Component",
       "selector": "orc-floating-action-button",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 25,
+      "line": 20,
       "inputs": [
         {
           "name": "label",
@@ -13453,7 +13295,7 @@
       "kind": "Component",
       "selector": "orc-close-button",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 63,
+      "line": 58,
       "inputs": [
         {
           "name": "ariaLabel",
@@ -13498,162 +13340,11 @@
       ]
     },
     {
-      "name": "ContextMenuComponent",
-      "kind": "Component",
-      "selector": "orc-context-menu",
-      "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 97,
-      "inputs": [
-        {
-          "name": "items",
-          "publicName": "items",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly items = input<ContextMenuItem[]>([]);"
-        },
-        {
-          "name": "model",
-          "publicName": "model",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly model = input<ContextMenuItem[] | undefined>(undefined);"
-        },
-        {
-          "name": "open",
-          "publicName": "open",
-          "kind": "model",
-          "required": false,
-          "declaration": "readonly open = model(false);"
-        },
-        {
-          "name": "popup",
-          "publicName": "popup",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly popup = input(true, { transform: booleanAttribute });",
-          "deprecated": true,
-          "description": "Compatibility-only input; this component exposes only its contextual popup behavior."
-        },
-        {
-          "name": "target",
-          "publicName": "target",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly target = input<HTMLElement | string | undefined>(undefined);"
-        },
-        {
-          "name": "style",
-          "publicName": "style",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
-        },
-        {
-          "name": "styleClass",
-          "publicName": "styleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly styleClass = input('');"
-        },
-        {
-          "name": "appendTo",
-          "publicName": "appendTo",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly appendTo = input<HTMLElement | string | null | undefined>(undefined);",
-          "deprecated": true,
-          "description": "Compatibility-only input; the menu remains in its declared host."
-        },
-        {
-          "name": "autoZIndex",
-          "publicName": "autoZIndex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly autoZIndex = input(true, { transform: booleanAttribute });"
-        },
-        {
-          "name": "baseZIndex",
-          "publicName": "baseZIndex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly baseZIndex = input(0);"
-        },
-        {
-          "name": "id",
-          "publicName": "id",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly id = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "breakpoint",
-          "publicName": "breakpoint",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly breakpoint = input('');",
-          "deprecated": true,
-          "description": "Responsive breakpoint mode is not implemented."
-        },
-        {
-          "name": "tabindex",
-          "publicName": "tabindex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly tabindex = input(0);"
-        },
-        {
-          "name": "ariaLabel",
-          "publicName": "ariaLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "ariaLabelledBy",
-          "publicName": "ariaLabelledBy",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "itemSelect",
-          "kind": "output",
-          "declaration": "readonly itemSelect = output<ContextMenuItem>();"
-        },
-        {
-          "name": "opened",
-          "kind": "output",
-          "declaration": "readonly opened = output<{ x: number; y: number }>();"
-        },
-        {
-          "name": "onShow",
-          "kind": "output",
-          "declaration": "readonly onShow = output<void>();"
-        },
-        {
-          "name": "onHide",
-          "kind": "output",
-          "declaration": "readonly onHide = output<void>();"
-        }
-      ],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
-        "projects/orc-ds/overlay-target-contract.spec.ts",
-        "projects/orc-ds/owner-document-hostlisteners.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/p2-repair.spec.ts"
-      ]
-    },
-    {
       "name": "OverlayComponent",
       "kind": "Component",
       "selector": "orc-overlay",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 420,
+      "line": 95,
       "inputs": [
         {
           "name": "visible",
@@ -14080,7 +13771,7 @@
       "kind": "Component",
       "selector": "orc-panel",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 23,
+      "line": 22,
       "inputs": [
         {
           "name": "header",
@@ -14181,7 +13872,7 @@
       "kind": "Component",
       "selector": "orc-fieldset",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 114,
+      "line": 113,
       "inputs": [
         {
           "name": "legend",
@@ -14264,7 +13955,7 @@
       "kind": "Component",
       "selector": "orc-float-label",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 187,
+      "line": 186,
       "inputs": [
         {
           "name": "variant",
@@ -14294,7 +13985,7 @@
       "kind": "Component",
       "selector": "orc-fluid",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 239,
+      "line": 238,
       "inputs": [
         {
           "name": "styleClass",
@@ -14316,7 +14007,7 @@
       "kind": "Component",
       "selector": "orc-overlay-badge",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 258,
+      "line": 257,
       "inputs": [
         {
           "name": "value",
@@ -14345,7 +14036,7 @@
       "kind": "Component",
       "selector": "orc-meter-group",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 288,
+      "line": 287,
       "inputs": [
         {
           "name": "values",
@@ -14445,7 +14136,7 @@
       "kind": "Component",
       "selector": "orc-password, orc-input-password",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 413,
+      "line": 412,
       "inputs": [
         {
           "name": "value",
@@ -14735,7 +14426,7 @@
       "kind": "Component",
       "selector": "orc-scroll-top",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 632,
+      "line": 631,
       "inputs": [
         {
           "name": "threshold",
@@ -14834,376 +14525,11 @@
       ]
     },
     {
-      "name": "SpeedDialComponent",
-      "kind": "Component",
-      "selector": "orc-speed-dial",
-      "file": "projects/orc-ds/p2/p2-speed-dial-component.ts",
-      "line": 31,
-      "inputs": [
-        {
-          "name": "actions",
-          "publicName": "actions",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly actions = input<SpeedDialAction[]>([]);"
-        },
-        {
-          "name": "model",
-          "publicName": "model",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly model = input<SpeedDialAction[] | null>(null);"
-        },
-        {
-          "name": "direction",
-          "publicName": "direction",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly direction = input<SpeedDialDirection>('up');"
-        },
-        {
-          "name": "type",
-          "publicName": "type",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>(\n    'linear',\n  );"
-        },
-        {
-          "name": "radius",
-          "publicName": "radius",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly radius = input(0);"
-        },
-        {
-          "name": "transitionDelay",
-          "publicName": "transitionDelay",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly transitionDelay = input(0);"
-        },
-        {
-          "name": "mask",
-          "publicName": "mask",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly mask = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "disabled",
-          "publicName": "disabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "hideOnClickOutside",
-          "publicName": "hideOnClickOutside",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly hideOnClickOutside = input(true, { transform: booleanAttribute });"
-        },
-        {
-          "name": "styleClass",
-          "publicName": "styleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly styleClass = input('');"
-        },
-        {
-          "name": "buttonClass",
-          "publicName": "buttonClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly buttonClass = input('');"
-        },
-        {
-          "name": "ariaLabel",
-          "publicName": "ariaLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "open",
-          "publicName": "open",
-          "kind": "model",
-          "required": false,
-          "declaration": "readonly open = model(false);"
-        },
-        {
-          "name": "icon",
-          "publicName": "icon",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly icon = input('+');"
-        },
-        {
-          "name": "openLabel",
-          "publicName": "openLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly openLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "closeLabel",
-          "publicName": "closeLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly closeLabel = input<string | undefined>(undefined);"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "actionSelect",
-          "kind": "output",
-          "declaration": "readonly actionSelect = output<SpeedDialAction>();"
-        },
-        {
-          "name": "visibleChange",
-          "kind": "output",
-          "declaration": "readonly visibleChange = output<boolean>();"
-        },
-        {
-          "name": "onVisibleChange",
-          "kind": "output",
-          "declaration": "readonly onVisibleChange = output<boolean>();"
-        },
-        {
-          "name": "onShow",
-          "kind": "output",
-          "declaration": "readonly onShow = output<Event>();"
-        },
-        {
-          "name": "onHide",
-          "kind": "output",
-          "declaration": "readonly onHide = output<Event>();"
-        },
-        {
-          "name": "onClick",
-          "kind": "output",
-          "declaration": "readonly onClick = output<MouseEvent>();"
-        }
-      ],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/owner-document-hostlisteners.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/public-binding-behavior.spec.ts",
-        "projects/orc-ds/speed-dial-contract.spec.ts"
-      ]
-    },
-    {
-      "name": "SplitButtonComponent",
-      "kind": "Component",
-      "selector": "orc-split-button",
-      "file": "projects/orc-ds/p2/p2-split-button-component.ts",
-      "line": 16,
-      "inputs": [
-        {
-          "name": "model",
-          "publicName": "model",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly model = input<\n    Array<{\n      label: string;\n      icon?: string;\n      disabled?: boolean;\n      visible?: boolean;\n      command?: () => void;\n    }>\n  >([]);"
-        },
-        {
-          "name": "label",
-          "publicName": "label",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly label = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "ariaLabel",
-          "publicName": "ariaLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "icon",
-          "publicName": "icon",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly icon = input('');"
-        },
-        {
-          "name": "iconPos",
-          "publicName": "iconPos",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly iconPos = input<'left' | 'right'>('left');"
-        },
-        {
-          "name": "style",
-          "publicName": "style",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
-        },
-        {
-          "name": "styleClass",
-          "publicName": "styleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly styleClass = input('');"
-        },
-        {
-          "name": "menuStyle",
-          "publicName": "menuStyle",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly menuStyle = input<Record<string, any> | null | undefined>(undefined);"
-        },
-        {
-          "name": "menuStyleClass",
-          "publicName": "menuStyleClass",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly menuStyleClass = input('');"
-        },
-        {
-          "name": "appendTo",
-          "publicName": "appendTo",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly appendTo = input<unknown>(undefined);",
-          "deprecated": true,
-          "description": "Compatibility-only input; SplitButton renders its menu in place and does not portal to an append target."
-        },
-        {
-          "name": "expandAriaLabel",
-          "publicName": "expandAriaLabel",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly expandAriaLabel = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "tooltip",
-          "publicName": "tooltip",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly tooltip = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "disabled",
-          "publicName": "disabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "buttonDisabled",
-          "publicName": "buttonDisabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly buttonDisabled = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "menuButtonDisabled",
-          "publicName": "menuButtonDisabled",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly menuButtonDisabled = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "loading",
-          "publicName": "loading",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly loading = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "closeOnEscape",
-          "publicName": "closeOnEscape",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly closeOnEscape = input(true, { transform: booleanAttribute });"
-        },
-        {
-          "name": "size",
-          "publicName": "size",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
-        },
-        {
-          "name": "severity",
-          "publicName": "severity",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly severity = input<string | undefined>(undefined);"
-        },
-        {
-          "name": "autofocus",
-          "publicName": "autofocus",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly autofocus = input(false, { transform: booleanAttribute });"
-        },
-        {
-          "name": "tabindex",
-          "publicName": "tabindex",
-          "kind": "signal",
-          "required": false,
-          "declaration": "readonly tabindex = input(0);"
-        },
-        {
-          "name": "open",
-          "publicName": "open",
-          "kind": "model",
-          "required": false,
-          "declaration": "readonly open = model(false);"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "primaryClick",
-          "kind": "output",
-          "declaration": "readonly primaryClick = output<Event>();"
-        },
-        {
-          "name": "onClick",
-          "kind": "output",
-          "declaration": "readonly onClick = output<Event>();"
-        },
-        {
-          "name": "dropdownClick",
-          "kind": "output",
-          "declaration": "readonly dropdownClick = output<Event>();"
-        },
-        {
-          "name": "onDropdownClick",
-          "kind": "output",
-          "declaration": "readonly onDropdownClick = output<Event>();"
-        },
-        {
-          "name": "onMenuShow",
-          "kind": "output",
-          "declaration": "readonly onMenuShow = output<void>();"
-        },
-        {
-          "name": "onMenuHide",
-          "kind": "output",
-          "declaration": "readonly onMenuHide = output<void>();"
-        }
-      ],
-      "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
-        "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/owner-document-hostlisteners.spec.ts",
-        "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts",
-        "projects/orc-ds/public-binding-behavior.spec.ts"
-      ]
-    },
-    {
       "name": "SplitterPanelContentDirective",
       "kind": "Directive",
       "selector": "[orcSplitterPanel]",
       "file": "projects/orc-ds/p2/p2-splitter-component.ts",
-      "line": 17,
+      "line": 16,
       "inputs": [
         {
           "name": "orcSplitterPanel",
@@ -15224,7 +14550,7 @@
       "kind": "Component",
       "selector": "orc-splitter",
       "file": "projects/orc-ds/p2/p2-splitter-component.ts",
-      "line": 30,
+      "line": 29,
       "inputs": [
         {
           "name": "panels",
@@ -17140,7 +16466,7 @@
       "kind": "Directive",
       "selector": "[orcStyleClass]",
       "file": "projects/orc-ds/p2/p2-utility-directives.ts",
-      "line": 189,
+      "line": 191,
       "inputs": [
         {
           "name": "targetClass",
@@ -17189,7 +16515,7 @@
       "kind": "Directive",
       "selector": "[orcAnimateOnScroll]",
       "file": "projects/orc-ds/p2/p2-utility-more.ts",
-      "line": 16,
+      "line": 14,
       "inputs": [
         {
           "name": "animationClass",
@@ -17731,6 +17057,135 @@
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/paginator/paginator-behavior.spec.ts",
         "projects/orc-ds/table/table-behavior.spec.ts"
+      ]
+    },
+    {
+      "name": "PanelMenuComponent",
+      "kind": "Component",
+      "selector": "orc-panel-menu",
+      "file": "projects/orc-ds/panel-menu/panel-menu.component.ts",
+      "line": 22,
+      "inputs": [
+        {
+          "name": "items",
+          "publicName": "items",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly items = input<PrimeMenuItem[]>([]);",
+          "description": "Root items and one child level are rendered; recursive grandchildren remain unsupported."
+        },
+        {
+          "name": "model",
+          "publicName": "model",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly model = input<PrimeMenuItem[] | undefined>(undefined);"
+        },
+        {
+          "name": "style",
+          "publicName": "style",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
+        },
+        {
+          "name": "styleClass",
+          "publicName": "styleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly styleClass = input('');"
+        },
+        {
+          "name": "id",
+          "publicName": "id",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly id = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "transitionOptions",
+          "publicName": "transitionOptions",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly transitionOptions = input('');",
+          "deprecated": true,
+          "description": "Compatibility-only input; PanelMenu does not animate expansion transitions."
+        },
+        {
+          "name": "tabindex",
+          "publicName": "tabindex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly tabindex = input(0);"
+        },
+        {
+          "name": "ariaLabel",
+          "publicName": "ariaLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "disabled",
+          "publicName": "disabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "multiple",
+          "publicName": "multiple",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly multiple = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "open",
+          "publicName": "open",
+          "kind": "model",
+          "required": false,
+          "declaration": "readonly open = model<ReadonlySet<PrimeMenuItem>>(new Set());"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "itemSelect",
+          "kind": "output",
+          "declaration": "readonly itemSelect = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onItemExpand",
+          "kind": "output",
+          "declaration": "readonly onItemExpand = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onItemCollapse",
+          "kind": "output",
+          "declaration": "readonly onItemCollapse = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onNodeSelect",
+          "kind": "output",
+          "declaration": "readonly onNodeSelect = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onNodeExpand",
+          "kind": "output",
+          "declaration": "readonly onNodeExpand = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onNodeCollapse",
+          "kind": "output",
+          "declaration": "readonly onNodeCollapse = output<PrimeMenuItem>();"
+        }
+      ],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/p2/p2-advanced-contract.spec.ts",
+        "projects/orc-ds/panel-menu/panel-menu-parity.spec.ts",
+        "projects/orc-ds/public-binding-behavior.spec.ts"
       ]
     },
     {
@@ -19815,6 +19270,168 @@
       ]
     },
     {
+      "name": "SpeedDialComponent",
+      "kind": "Component",
+      "selector": "orc-speed-dial",
+      "file": "projects/orc-ds/speed-dial/speed-dial.component.ts",
+      "line": 34,
+      "inputs": [
+        {
+          "name": "actions",
+          "publicName": "actions",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly actions = input<SpeedDialAction[]>([]);"
+        },
+        {
+          "name": "model",
+          "publicName": "model",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly model = input<SpeedDialAction[] | null>(null);"
+        },
+        {
+          "name": "direction",
+          "publicName": "direction",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly direction = input<SpeedDialDirection>('up');"
+        },
+        {
+          "name": "type",
+          "publicName": "type",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>(\n    'linear',\n  );"
+        },
+        {
+          "name": "radius",
+          "publicName": "radius",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly radius = input(0);"
+        },
+        {
+          "name": "transitionDelay",
+          "publicName": "transitionDelay",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly transitionDelay = input(0);"
+        },
+        {
+          "name": "mask",
+          "publicName": "mask",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly mask = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "disabled",
+          "publicName": "disabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "hideOnClickOutside",
+          "publicName": "hideOnClickOutside",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly hideOnClickOutside = input(true, { transform: booleanAttribute });"
+        },
+        {
+          "name": "styleClass",
+          "publicName": "styleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly styleClass = input('');"
+        },
+        {
+          "name": "buttonClass",
+          "publicName": "buttonClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly buttonClass = input('');"
+        },
+        {
+          "name": "ariaLabel",
+          "publicName": "ariaLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "open",
+          "publicName": "open",
+          "kind": "model",
+          "required": false,
+          "declaration": "readonly open = model(false);"
+        },
+        {
+          "name": "icon",
+          "publicName": "icon",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly icon = input('+');"
+        },
+        {
+          "name": "openLabel",
+          "publicName": "openLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly openLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "closeLabel",
+          "publicName": "closeLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly closeLabel = input<string | undefined>(undefined);"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "actionSelect",
+          "kind": "output",
+          "declaration": "readonly actionSelect = output<SpeedDialAction>();"
+        },
+        {
+          "name": "visibleChange",
+          "kind": "output",
+          "declaration": "readonly visibleChange = output<boolean>();"
+        },
+        {
+          "name": "onVisibleChange",
+          "kind": "output",
+          "declaration": "readonly onVisibleChange = output<boolean>();"
+        },
+        {
+          "name": "onShow",
+          "kind": "output",
+          "declaration": "readonly onShow = output<Event>();"
+        },
+        {
+          "name": "onHide",
+          "kind": "output",
+          "declaration": "readonly onHide = output<Event>();"
+        },
+        {
+          "name": "onClick",
+          "kind": "output",
+          "declaration": "readonly onClick = output<MouseEvent>();"
+        }
+      ],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/owner-document-hostlisteners.spec.ts",
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/public-binding-behavior.spec.ts",
+        "projects/orc-ds/speed-dial-contract.spec.ts",
+        "projects/orc-ds/speed-dial/speed-dial-parity.spec.ts"
+      ]
+    },
+    {
       "name": "LoadingSpinnerComponent",
       "kind": "Component",
       "selector": "orc-spinner",
@@ -19924,6 +19541,211 @@
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/navigation-toolbar-contract.spec.ts"
+      ]
+    },
+    {
+      "name": "SplitButtonComponent",
+      "kind": "Component",
+      "selector": "orc-split-button",
+      "file": "projects/orc-ds/split-button/split-button.component.ts",
+      "line": 15,
+      "inputs": [
+        {
+          "name": "model",
+          "publicName": "model",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly model = input<\n    Array<{\n      label: string;\n      icon?: string;\n      disabled?: boolean;\n      visible?: boolean;\n      command?: () => void;\n    }>\n  >([]);"
+        },
+        {
+          "name": "label",
+          "publicName": "label",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly label = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "ariaLabel",
+          "publicName": "ariaLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "icon",
+          "publicName": "icon",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly icon = input('');"
+        },
+        {
+          "name": "iconPos",
+          "publicName": "iconPos",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly iconPos = input<'left' | 'right'>('left');"
+        },
+        {
+          "name": "style",
+          "publicName": "style",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
+        },
+        {
+          "name": "styleClass",
+          "publicName": "styleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly styleClass = input('');"
+        },
+        {
+          "name": "menuStyle",
+          "publicName": "menuStyle",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly menuStyle = input<Record<string, any> | null | undefined>(undefined);"
+        },
+        {
+          "name": "menuStyleClass",
+          "publicName": "menuStyleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly menuStyleClass = input('');"
+        },
+        {
+          "name": "appendTo",
+          "publicName": "appendTo",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly appendTo = input<unknown>(undefined);",
+          "deprecated": true,
+          "description": "Compatibility-only input; SplitButton renders its menu in place and does not portal to an append target."
+        },
+        {
+          "name": "expandAriaLabel",
+          "publicName": "expandAriaLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly expandAriaLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "tooltip",
+          "publicName": "tooltip",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly tooltip = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "disabled",
+          "publicName": "disabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "buttonDisabled",
+          "publicName": "buttonDisabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly buttonDisabled = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "menuButtonDisabled",
+          "publicName": "menuButtonDisabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly menuButtonDisabled = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "loading",
+          "publicName": "loading",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly loading = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "closeOnEscape",
+          "publicName": "closeOnEscape",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly closeOnEscape = input(true, { transform: booleanAttribute });"
+        },
+        {
+          "name": "size",
+          "publicName": "size",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+        },
+        {
+          "name": "severity",
+          "publicName": "severity",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly severity = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "autofocus",
+          "publicName": "autofocus",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly autofocus = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "tabindex",
+          "publicName": "tabindex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly tabindex = input(0);"
+        },
+        {
+          "name": "open",
+          "publicName": "open",
+          "kind": "model",
+          "required": false,
+          "declaration": "readonly open = model(false);"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "primaryClick",
+          "kind": "output",
+          "declaration": "readonly primaryClick = output<Event>();"
+        },
+        {
+          "name": "onClick",
+          "kind": "output",
+          "declaration": "readonly onClick = output<Event>();"
+        },
+        {
+          "name": "dropdownClick",
+          "kind": "output",
+          "declaration": "readonly dropdownClick = output<Event>();"
+        },
+        {
+          "name": "onDropdownClick",
+          "kind": "output",
+          "declaration": "readonly onDropdownClick = output<Event>();"
+        },
+        {
+          "name": "onMenuShow",
+          "kind": "output",
+          "declaration": "readonly onMenuShow = output<void>();"
+        },
+        {
+          "name": "onMenuHide",
+          "kind": "output",
+          "declaration": "readonly onMenuHide = output<void>();"
+        }
+      ],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/owner-document-hostlisteners.spec.ts",
+        "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts",
+        "projects/orc-ds/public-binding-behavior.spec.ts",
+        "projects/orc-ds/split-button/split-button-parity.spec.ts"
       ]
     },
     {
@@ -21795,6 +21617,192 @@
       ]
     },
     {
+      "name": "TieredMenuComponent",
+      "kind": "Component",
+      "selector": "orc-tiered-menu",
+      "file": "projects/orc-ds/tiered-menu/tiered-menu.component.ts",
+      "line": 53,
+      "inputs": [
+        {
+          "name": "items",
+          "publicName": "items",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly items = input<PrimeMenuItem[]>([]);",
+          "description": "Root items and one child level are rendered; recursive grandchildren remain unsupported."
+        },
+        {
+          "name": "model",
+          "publicName": "model",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly model = input<PrimeMenuItem[] | undefined>(undefined);"
+        },
+        {
+          "name": "style",
+          "publicName": "style",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly style = input<Record<string, any> | null | undefined>(undefined);"
+        },
+        {
+          "name": "styleClass",
+          "publicName": "styleClass",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly styleClass = input('');"
+        },
+        {
+          "name": "appendTo",
+          "publicName": "appendTo",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly appendTo = input<HTMLElement | string | null | undefined>(undefined);",
+          "deprecated": true,
+          "description": "Compatibility-only input; TieredMenu renders in its own host and ignores attachment requests."
+        },
+        {
+          "name": "breakpoint",
+          "publicName": "breakpoint",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly breakpoint = input('');",
+          "deprecated": true,
+          "description": "Compatibility-only input; responsive breakpoint handling is not implemented."
+        },
+        {
+          "name": "autoZIndex",
+          "publicName": "autoZIndex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly autoZIndex = input(true, { transform: booleanAttribute });"
+        },
+        {
+          "name": "baseZIndex",
+          "publicName": "baseZIndex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly baseZIndex = input(0);"
+        },
+        {
+          "name": "autoDisplay",
+          "publicName": "autoDisplay",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly autoDisplay = input(true, { transform: booleanAttribute });",
+          "deprecated": true,
+          "description": "Compatibility-only input; TieredMenu always follows explicit visibility state."
+        },
+        {
+          "name": "showTransitionOptions",
+          "publicName": "showTransitionOptions",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly showTransitionOptions = input('');",
+          "deprecated": true,
+          "description": "Compatibility-only input; TieredMenu does not animate visibility transitions."
+        },
+        {
+          "name": "hideTransitionOptions",
+          "publicName": "hideTransitionOptions",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly hideTransitionOptions = input('');",
+          "deprecated": true,
+          "description": "Compatibility-only input; TieredMenu does not animate visibility transitions."
+        },
+        {
+          "name": "ariaLabel",
+          "publicName": "ariaLabel",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "ariaLabelledBy",
+          "publicName": "ariaLabelledBy",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly ariaLabelledBy = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "id",
+          "publicName": "id",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly id = input<string | undefined>(undefined);"
+        },
+        {
+          "name": "disabled",
+          "publicName": "disabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "popup",
+          "publicName": "popup",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly popup = input(false, { transform: booleanAttribute });"
+        },
+        {
+          "name": "tabindex",
+          "publicName": "tabindex",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly tabindex = input(0);"
+        },
+        {
+          "name": "visible",
+          "publicName": "visible",
+          "kind": "model",
+          "required": false,
+          "declaration": "readonly visible = model(false);"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "itemSelect",
+          "kind": "output",
+          "declaration": "readonly itemSelect = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onItemClick",
+          "kind": "output",
+          "declaration": "readonly onItemClick = output<PrimeMenuItem>();"
+        },
+        {
+          "name": "onShow",
+          "kind": "output",
+          "declaration": "readonly onShow = output<void>();"
+        },
+        {
+          "name": "onHide",
+          "kind": "output",
+          "declaration": "readonly onHide = output<void>();"
+        },
+        {
+          "name": "onFocus",
+          "kind": "output",
+          "declaration": "readonly onFocus = output<Event>();"
+        },
+        {
+          "name": "onBlur",
+          "kind": "output",
+          "declaration": "readonly onBlur = output<Event>();"
+        }
+      ],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/p2/p2-advanced-contract.spec.ts",
+        "projects/orc-ds/tiered-menu/tiered-menu-parity.spec.ts"
+      ]
+    },
+    {
       "name": "TimelineComponent",
       "kind": "Component",
       "selector": "orc-timeline",
@@ -22539,7 +22547,7 @@
     {
       "name": "@ciag/orchestra/confirm-popup",
       "file": "projects/orc-ds/confirm-popup/index.ts",
-      "exports": "export { ConfirmPopupComponent, ConfirmPopupService } from '@ciag/orchestra/p2';\nexport type { PopupConfirmation } from '@ciag/orchestra/p2';"
+      "exports": "export {\n  ConfirmPopupComponent,\n  ConfirmPopupService,\n} from './confirm-popup.component';\nexport type { PopupConfirmation } from './confirm-popup.component';"
     },
     {
       "name": "@ciag/orchestra/confirmdialog",
@@ -22559,7 +22567,7 @@
     {
       "name": "@ciag/orchestra/context-menu",
       "file": "projects/orc-ds/context-menu/index.ts",
-      "exports": "export { ContextMenuComponent } from '@ciag/orchestra/p2';\nexport type { ContextMenuItem } from '@ciag/orchestra/p2';"
+      "exports": "export { ContextMenuComponent } from './context-menu.component';\nexport type { ContextMenuItem } from './context-menu.component';"
     },
     {
       "name": "@ciag/orchestra/contextmenu",
@@ -22614,7 +22622,7 @@
     {
       "name": "@ciag/orchestra/dock",
       "file": "projects/orc-ds/dock/index.ts",
-      "exports": "export { DockComponent } from '@ciag/orchestra/p2';\nexport type { DockItem } from '@ciag/orchestra/p2';"
+      "exports": "export { DockComponent } from './dock.component';\nexport type { DockItem } from './dock.component';"
     },
     {
       "name": "@ciag/orchestra/drag-drop",
@@ -22904,7 +22912,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './dom-target';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -22949,7 +22957,7 @@
     {
       "name": "@ciag/orchestra/mega-menu",
       "file": "projects/orc-ds/mega-menu/index.ts",
-      "exports": "export { MegaMenuComponent } from '@ciag/orchestra/p2';\nexport type { PrimeMenuItem } from '@ciag/orchestra/p2';"
+      "exports": "export { MegaMenuComponent } from './mega-menu.component';\nexport type { PrimeMenuItem } from './mega-menu.component';"
     },
     {
       "name": "@ciag/orchestra/megamenu",
@@ -22964,7 +22972,7 @@
     {
       "name": "@ciag/orchestra/menubar",
       "file": "projects/orc-ds/menubar/index.ts",
-      "exports": "export { MenubarComponent } from '@ciag/orchestra/p2';\nexport type { MenubarItem } from '@ciag/orchestra/p2';"
+      "exports": "export { MenubarComponent } from './menubar.component';\nexport type { MenubarItem } from './menubar.component';"
     },
     {
       "name": "@ciag/orchestra/message",
@@ -23079,7 +23087,7 @@
     {
       "name": "@ciag/orchestra/panel-menu",
       "file": "projects/orc-ds/panel-menu/index.ts",
-      "exports": "export { PanelMenuComponent } from '@ciag/orchestra/p2';\nexport type { PrimeMenuItem } from '@ciag/orchestra/p2';"
+      "exports": "export { PanelMenuComponent } from './panel-menu.component';\nexport type { PrimeMenuItem } from './panel-menu.component';"
     },
     {
       "name": "@ciag/orchestra/panel",
@@ -23244,7 +23252,7 @@
     {
       "name": "@ciag/orchestra/speed-dial",
       "file": "projects/orc-ds/speed-dial/index.ts",
-      "exports": "export { SpeedDialComponent } from '@ciag/orchestra/p2';\nexport type { SpeedDialAction } from '@ciag/orchestra/p2';"
+      "exports": "export { SpeedDialComponent } from './speed-dial.component';\nexport type { SpeedDialAction } from './speed-dial.component';"
     },
     {
       "name": "@ciag/orchestra/speeddial",
@@ -23259,7 +23267,7 @@
     {
       "name": "@ciag/orchestra/split-button",
       "file": "projects/orc-ds/split-button/index.ts",
-      "exports": "export { SplitButtonComponent } from '@ciag/orchestra/p2';"
+      "exports": "export { SplitButtonComponent } from './split-button.component';"
     },
     {
       "name": "@ciag/orchestra/splitbutton",
@@ -23359,7 +23367,7 @@
     {
       "name": "@ciag/orchestra/tiered-menu",
       "file": "projects/orc-ds/tiered-menu/index.ts",
-      "exports": "export { TieredMenuComponent } from '@ciag/orchestra/p2';\nexport type { PrimeMenuItem } from '@ciag/orchestra/p2';"
+      "exports": "export { TieredMenuComponent } from './tiered-menu.component';\nexport type { PrimeMenuItem } from './tiered-menu.component';"
     },
     {
       "name": "@ciag/orchestra/tieredmenu",
@@ -23644,6 +23652,8 @@
     "projects/orc-ds/confirm-dialog/index.ts",
     "projects/orc-ds/confirm-dialog/ng-package.json",
     "projects/orc-ds/confirm-popup-behavior.spec.ts",
+    "projects/orc-ds/confirm-popup/confirm-popup-parity.spec.ts",
+    "projects/orc-ds/confirm-popup/confirm-popup.component.ts",
     "projects/orc-ds/confirm-popup/index.ts",
     "projects/orc-ds/confirm-popup/ng-package.json",
     "projects/orc-ds/confirmation-concurrency.spec.ts",
@@ -23653,6 +23663,8 @@
     "projects/orc-ds/confirmpopup/ng-package.json",
     "projects/orc-ds/container/index.ts",
     "projects/orc-ds/container/ng-package.json",
+    "projects/orc-ds/context-menu/context-menu-parity.spec.ts",
+    "projects/orc-ds/context-menu/context-menu.component.ts",
     "projects/orc-ds/context-menu/index.ts",
     "projects/orc-ds/context-menu/ng-package.json",
     "projects/orc-ds/contextmenu/index.ts",
@@ -23693,6 +23705,8 @@
     "projects/orc-ds/divider/divider.component.ts",
     "projects/orc-ds/divider/index.ts",
     "projects/orc-ds/divider/ng-package.json",
+    "projects/orc-ds/dock/dock-parity.spec.ts",
+    "projects/orc-ds/dock/dock.component.ts",
     "projects/orc-ds/dock/index.ts",
     "projects/orc-ds/dock/ng-package.json",
     "projects/orc-ds/drag-drop/drag-drop.directive.spec.ts",
@@ -23869,7 +23883,9 @@
     "projects/orc-ds/internal/anchored-popup.ts",
     "projects/orc-ds/internal/cva-control.spec.ts",
     "projects/orc-ds/internal/cva-control.ts",
+    "projects/orc-ds/internal/dom-target.ts",
     "projects/orc-ds/internal/index.ts",
+    "projects/orc-ds/internal/menu-item.ts",
     "projects/orc-ds/internal/menu-keyboard.spec.ts",
     "projects/orc-ds/internal/menu-keyboard.ts",
     "projects/orc-ds/internal/modal-isolation.spec.ts",
@@ -23880,6 +23896,7 @@
     "projects/orc-ds/internal/overlay-lifecycle.ts",
     "projects/orc-ds/internal/overlay-ownership.spec.ts",
     "projects/orc-ds/internal/overlay-position.ts",
+    "projects/orc-ds/internal/p2-shared.ts",
     "projects/orc-ds/kbd/index.ts",
     "projects/orc-ds/kbd/ng-package.json",
     "projects/orc-ds/key-filter/index.ts",
@@ -23903,6 +23920,8 @@
     "projects/orc-ds/listbox/ng-package.json",
     "projects/orc-ds/mega-hover-contract.spec.ts",
     "projects/orc-ds/mega-menu/index.ts",
+    "projects/orc-ds/mega-menu/mega-menu-parity.spec.ts",
+    "projects/orc-ds/mega-menu/mega-menu.component.ts",
     "projects/orc-ds/mega-menu/ng-package.json",
     "projects/orc-ds/megamenu/index.ts",
     "projects/orc-ds/megamenu/ng-package.json",
@@ -23910,6 +23929,8 @@
     "projects/orc-ds/menu/index.ts",
     "projects/orc-ds/menu/ng-package.json",
     "projects/orc-ds/menubar/index.ts",
+    "projects/orc-ds/menubar/menubar-parity.spec.ts",
+    "projects/orc-ds/menubar/menubar.component.ts",
     "projects/orc-ds/menubar/ng-package.json",
     "projects/orc-ds/message/index.ts",
     "projects/orc-ds/message/ng-package.json",
@@ -24027,7 +24048,6 @@
     "projects/orc-ds/p2/p2-doc-components.ts",
     "projects/orc-ds/p2/p2-dock-scroll-components.ts",
     "projects/orc-ds/p2/p2-dom-realm-contract.spec.ts",
-    "projects/orc-ds/p2/p2-dom-target.ts",
     "projects/orc-ds/p2/p2-editor-component.ts",
     "projects/orc-ds/p2/p2-form-components.ts",
     "projects/orc-ds/p2/p2-form-gap-components.ts",
@@ -24082,6 +24102,8 @@
     "projects/orc-ds/paginator/paginator.types.ts",
     "projects/orc-ds/panel-menu/index.ts",
     "projects/orc-ds/panel-menu/ng-package.json",
+    "projects/orc-ds/panel-menu/panel-menu-parity.spec.ts",
+    "projects/orc-ds/panel-menu/panel-menu.component.ts",
     "projects/orc-ds/panel/index.ts",
     "projects/orc-ds/panel/ng-package.json",
     "projects/orc-ds/panelmenu/index.ts",
@@ -24209,6 +24231,8 @@
     "projects/orc-ds/speed-dial-contract.spec.ts",
     "projects/orc-ds/speed-dial/index.ts",
     "projects/orc-ds/speed-dial/ng-package.json",
+    "projects/orc-ds/speed-dial/speed-dial-parity.spec.ts",
+    "projects/orc-ds/speed-dial/speed-dial.component.ts",
     "projects/orc-ds/speeddial/index.ts",
     "projects/orc-ds/speeddial/ng-package.json",
     "projects/orc-ds/spinner/index.ts",
@@ -24219,6 +24243,8 @@
     "projects/orc-ds/spinner/spinner.types.ts",
     "projects/orc-ds/split-button/index.ts",
     "projects/orc-ds/split-button/ng-package.json",
+    "projects/orc-ds/split-button/split-button-parity.spec.ts",
+    "projects/orc-ds/split-button/split-button.component.ts",
     "projects/orc-ds/splitbutton/index.ts",
     "projects/orc-ds/splitbutton/ng-package.json",
     "projects/orc-ds/splitter-contract.spec.ts",
@@ -24308,6 +24334,8 @@
     "projects/orc-ds/textarea/ng-package.json",
     "projects/orc-ds/tiered-menu/index.ts",
     "projects/orc-ds/tiered-menu/ng-package.json",
+    "projects/orc-ds/tiered-menu/tiered-menu-parity.spec.ts",
+    "projects/orc-ds/tiered-menu/tiered-menu.component.ts",
     "projects/orc-ds/tieredmenu/index.ts",
     "projects/orc-ds/tieredmenu/ng-package.json",
     "projects/orc-ds/timeline/index.ts",

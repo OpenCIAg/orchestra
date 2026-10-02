@@ -1,2 +1,2 @@
-export { SpeedDialComponent } from '@ciag/orchestra/p2';
-export type { SpeedDialAction } from '@ciag/orchestra/p2';
+export { SpeedDialComponent } from './speed-dial.component';
+export type { SpeedDialAction } from './speed-dial.component';

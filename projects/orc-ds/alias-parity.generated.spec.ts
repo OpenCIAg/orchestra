@@ -3,7 +3,7 @@
 // (reference identity, not name equality) as its canonical declaration, and
 // every import used below compiles in the spec build. Regenerate with:
 //   npm run generate:alias-parity
-// Alias entry points: 163. Value exports asserted: 195. Type exports resolved: 66.
+// Alias entry points: 154. Value exports asserted: 185. Type exports resolved: 58.
 import { AnimateOnScrollDirective as animate_on_scroll__AnimateOnScrollDirective } from '@ciag/orchestra/animate-on-scroll';
 import { AnimateOnScrollDirective as canonical__p2_p2_utility_more__AnimateOnScrollDirective } from './p2/p2-utility-more';
 import { AnimateOnScrollDirective as animateonscroll__AnimateOnScrollDirective } from '@ciag/orchestra/animateonscroll';
@@ -48,19 +48,16 @@ import { ConfirmationService as confirm_dialog__ConfirmationService } from '@cia
 import { ConfirmationService as canonical__p2_p2_confirm_dialog_component__ConfirmationService } from './p2/p2-confirm-dialog-component';
 import { ConfirmDialogComponent as confirm_dialog__ConfirmDialogComponent } from '@ciag/orchestra/confirm-dialog';
 import { ConfirmDialogComponent as canonical__p2_p2_confirm_dialog_component__ConfirmDialogComponent } from './p2/p2-confirm-dialog-component';
-import { ConfirmPopupComponent as confirm_popup__ConfirmPopupComponent } from '@ciag/orchestra/confirm-popup';
-import { ConfirmPopupComponent as canonical__p2_p2_confirm_popup__ConfirmPopupComponent } from './p2/p2-confirm-popup';
-import { ConfirmPopupService as confirm_popup__ConfirmPopupService } from '@ciag/orchestra/confirm-popup';
-import { ConfirmPopupService as canonical__p2_p2_confirm_popup__ConfirmPopupService } from './p2/p2-confirm-popup';
 import { ConfirmationService as confirmdialog__ConfirmationService } from '@ciag/orchestra/confirmdialog';
 import { ConfirmDialogComponent as confirmdialog__ConfirmDialogComponent } from '@ciag/orchestra/confirmdialog';
 import { ConfirmPopupComponent as confirmpopup__ConfirmPopupComponent } from '@ciag/orchestra/confirmpopup';
+import { ConfirmPopupComponent as canonical__confirm_popup_confirm_popup_component__ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
 import { ConfirmPopupService as confirmpopup__ConfirmPopupService } from '@ciag/orchestra/confirmpopup';
+import { ConfirmPopupService as canonical__confirm_popup_confirm_popup_component__ConfirmPopupService } from './confirm-popup/confirm-popup.component';
 import { ContainerComponent as container__ContainerComponent } from '@ciag/orchestra/container';
 import { ContainerComponent as canonical__p2_p2_layout_components__ContainerComponent } from './p2/p2-layout-components';
-import { ContextMenuComponent as context_menu__ContextMenuComponent } from '@ciag/orchestra/context-menu';
-import { ContextMenuComponent as canonical__p2_p2_overlay_components__ContextMenuComponent } from './p2/p2-overlay-components';
 import { ContextMenuComponent as contextmenu__ContextMenuComponent } from '@ciag/orchestra/contextmenu';
+import { ContextMenuComponent as canonical__context_menu_context_menu_component__ContextMenuComponent } from './context-menu/context-menu.component';
 import { DataTableComponent as data_table__DataTableComponent } from '@ciag/orchestra/data-table';
 import { DataTableComponent as canonical__p2_p2_data_table_component__DataTableComponent } from './p2/p2-data-table-component';
 import { DataViewComponent as data_view__DataViewComponent } from '@ciag/orchestra/data-view';
@@ -78,8 +75,6 @@ import { DialogRef as dialog__DialogRef } from '@ciag/orchestra/dialog';
 import { ModalRef as canonical__modal_modal_ref__ModalRef } from './modal/modal-ref';
 import { DialogService as dialog__DialogService } from '@ciag/orchestra/dialog';
 import { ModalService as canonical__modal_modal_service__ModalService } from './modal/modal.service';
-import { DockComponent as dock__DockComponent } from '@ciag/orchestra/dock';
-import { DockComponent as canonical__p2_p2_dock_scroll_components__DockComponent } from './p2/p2-dock-scroll-components';
 import { DraggableDirective as dragdrop__DraggableDirective } from '@ciag/orchestra/dragdrop';
 import { DraggableDirective as canonical__drag_drop_drag_drop_directive__DraggableDirective } from './drag-drop/drag-drop.directive';
 import { DroppableDirective as dragdrop__DroppableDirective } from '@ciag/orchestra/dragdrop';
@@ -179,13 +174,10 @@ import { LinkComponent as link__LinkComponent } from '@ciag/orchestra/link';
 import { LinkComponent as canonical__p2_p2_layout_components__LinkComponent } from './p2/p2-layout-components';
 import { ListboxComponent as listbox__ListboxComponent } from '@ciag/orchestra/listbox';
 import { ListboxComponent as canonical__p2_p2_listbox_component__ListboxComponent } from './p2/p2-listbox-component';
-import { MegaMenuComponent as mega_menu__MegaMenuComponent } from '@ciag/orchestra/mega-menu';
-import { MegaMenuComponent as canonical__p2_p2_menu_family_components__MegaMenuComponent } from './p2/p2-menu-family-components';
 import { MegaMenuComponent as megamenu__MegaMenuComponent } from '@ciag/orchestra/megamenu';
+import { MegaMenuComponent as canonical__mega_menu_mega_menu_component__MegaMenuComponent } from './mega-menu/mega-menu.component';
 import { MenuComponent as menu__MenuComponent } from '@ciag/orchestra/menu';
 import { MenuComponent as canonical__p2_p2_advanced_components__MenuComponent } from './p2/p2-advanced-components';
-import { MenubarComponent as menubar__MenubarComponent } from '@ciag/orchestra/menubar';
-import { MenubarComponent as canonical__p2_p2_menubar_component__MenubarComponent } from './p2/p2-menubar-component';
 import { MessageComponent as message__MessageComponent } from '@ciag/orchestra/message';
 import { AlertComponent as canonical__alert_alert_component__AlertComponent } from './alert/alert.component';
 import { MessagesComponent as message__MessagesComponent } from '@ciag/orchestra/message';
@@ -215,9 +207,8 @@ import { PaginationComponent as pagination__PaginationComponent } from '@ciag/or
 import { PaginatorComponent as canonical__paginator_paginator_component__PaginatorComponent } from './paginator/paginator.component';
 import { PanelComponent as panel__PanelComponent } from '@ciag/orchestra/panel';
 import { PanelComponent as canonical__p2_p2_primeng_gap_components__PanelComponent } from './p2/p2-primeng-gap-components';
-import { PanelMenuComponent as panel_menu__PanelMenuComponent } from '@ciag/orchestra/panel-menu';
-import { PanelMenuComponent as canonical__p2_p2_menu_family_components__PanelMenuComponent } from './p2/p2-menu-family-components';
 import { PanelMenuComponent as panelmenu__PanelMenuComponent } from '@ciag/orchestra/panelmenu';
+import { PanelMenuComponent as canonical__panel_menu_panel_menu_component__PanelMenuComponent } from './panel-menu/panel-menu.component';
 import { PasswordComponent as password__PasswordComponent } from '@ciag/orchestra/password';
 import { PickListComponent as pick_list__PickListComponent } from '@ciag/orchestra/pick-list';
 import { PickListComponent as canonical__p2_p2_pick_list_component__PickListComponent } from './p2/p2-pick-list-component';
@@ -256,12 +247,10 @@ import { SidebarComponent as sidebar__SidebarComponent } from '@ciag/orchestra/s
 import { DrawerComponent as canonical__drawer_drawer_component__DrawerComponent } from './drawer/drawer.component';
 import { SpaceComponent as space__SpaceComponent } from '@ciag/orchestra/space';
 import { SpaceComponent as canonical__p2_p2_layout_components__SpaceComponent } from './p2/p2-layout-components';
-import { SpeedDialComponent as speed_dial__SpeedDialComponent } from '@ciag/orchestra/speed-dial';
-import { SpeedDialComponent as canonical__p2_p2_speed_dial_component__SpeedDialComponent } from './p2/p2-speed-dial-component';
 import { SpeedDialComponent as speeddial__SpeedDialComponent } from '@ciag/orchestra/speeddial';
-import { SplitButtonComponent as split_button__SplitButtonComponent } from '@ciag/orchestra/split-button';
-import { SplitButtonComponent as canonical__p2_p2_split_button_component__SplitButtonComponent } from './p2/p2-split-button-component';
+import { SpeedDialComponent as canonical__speed_dial_speed_dial_component__SpeedDialComponent } from './speed-dial/speed-dial.component';
 import { SplitButtonComponent as splitbutton__SplitButtonComponent } from '@ciag/orchestra/splitbutton';
+import { SplitButtonComponent as canonical__split_button_split_button_component__SplitButtonComponent } from './split-button/split-button.component';
 import { SplitterComponent as splitter__SplitterComponent } from '@ciag/orchestra/splitter';
 import { SplitterComponent as canonical__p2_p2_splitter_component__SplitterComponent } from './p2/p2-splitter-component';
 import { StackComponent as stack__StackComponent } from '@ciag/orchestra/stack';
@@ -283,9 +272,8 @@ import { TerminalComponent as canonical__p2_p2_terminal_component__TerminalCompo
 import { TextComponent as text__TextComponent } from '@ciag/orchestra/text';
 import { TextComponent as canonical__p2_p2_layout_components__TextComponent } from './p2/p2-layout-components';
 import { Textarea as textarea__Textarea } from '@ciag/orchestra/textarea';
-import { TieredMenuComponent as tiered_menu__TieredMenuComponent } from '@ciag/orchestra/tiered-menu';
-import { TieredMenuComponent as canonical__p2_p2_menu_family_components__TieredMenuComponent } from './p2/p2-menu-family-components';
 import { TieredMenuComponent as tieredmenu__TieredMenuComponent } from '@ciag/orchestra/tieredmenu';
+import { TieredMenuComponent as canonical__tiered_menu_tiered_menu_component__TieredMenuComponent } from './tiered-menu/tiered-menu.component';
 import { ToggleButtonComponent as toggle_button__ToggleButtonComponent } from '@ciag/orchestra/toggle-button';
 import { ToggleButtonComponent as canonical__p2_p2_form_gap_components__ToggleButtonComponent } from './p2/p2-form-gap-components';
 import { ToggleSwitch as toggle_switch__ToggleSwitch } from '@ciag/orchestra/toggle-switch';
@@ -331,22 +319,18 @@ import type { ColorPickerFormat as canonical__color_picker_color_picker_componen
 import type { ColorPickerSize as colorpicker__ColorPickerSize } from '@ciag/orchestra/colorpicker';
 import type { ColorPickerSize as canonical__color_picker_color_picker_component__ColorPickerSize } from './color-picker/color-picker.component';
 import type { ComboboxOption as combobox__ComboboxOption } from '@ciag/orchestra/combobox';
-import type { P2Option as canonical__p2_p2_shared__P2Option } from './p2/p2-shared';
+import type { P2Option as canonical__internal_p2_shared__P2Option } from './internal/p2-shared';
 import type { CommandItem as command_menu__CommandItem } from '@ciag/orchestra/command-menu';
 import type { CommandItem as canonical__p2_p2_command_components__CommandItem } from './p2/p2-command-components';
 import type { ConfirmationRequest as confirm_dialog__ConfirmationRequest } from '@ciag/orchestra/confirm-dialog';
 import type { ConfirmationRequest as canonical__p2_p2_confirm_dialog_component__ConfirmationRequest } from './p2/p2-confirm-dialog-component';
-import type { PopupConfirmation as confirm_popup__PopupConfirmation } from '@ciag/orchestra/confirm-popup';
-import type { PopupConfirmation as canonical__p2_p2_confirm_popup__PopupConfirmation } from './p2/p2-confirm-popup';
 import type { ConfirmationRequest as confirmdialog__ConfirmationRequest } from '@ciag/orchestra/confirmdialog';
 import type { PopupConfirmation as confirmpopup__PopupConfirmation } from '@ciag/orchestra/confirmpopup';
-import type { ContextMenuItem as context_menu__ContextMenuItem } from '@ciag/orchestra/context-menu';
-import type { ContextMenuItem as canonical__p2_p2_overlay_components__ContextMenuItem } from './p2/p2-overlay-components';
+import type { PopupConfirmation as canonical__confirm_popup_confirm_popup_component__PopupConfirmation } from './confirm-popup/confirm-popup.component';
 import type { ContextMenuItem as contextmenu__ContextMenuItem } from '@ciag/orchestra/contextmenu';
+import type { ContextMenuItem as canonical__context_menu_context_menu_component__ContextMenuItem } from './context-menu/context-menu.component';
 import type { DataTableColumn as data_table__DataTableColumn } from '@ciag/orchestra/data-table';
 import type { DataTableColumn as canonical__p2_p2_data_table_component__DataTableColumn } from './p2/p2-data-table-component';
-import type { DockItem as dock__DockItem } from '@ciag/orchestra/dock';
-import type { DockItem as canonical__p2_p2_dock_scroll_components__DockItem } from './p2/p2-dock-scroll-components';
 import type { EditorAction as editor__EditorAction } from '@ciag/orchestra/editor';
 import type { EditorAction as canonical__p2_p2_editor_component__EditorAction } from './p2/p2-editor-component';
 import type { GalleryImage as galleria__GalleryImage } from '@ciag/orchestra/galleria';
@@ -358,12 +342,9 @@ import type { SwitchLabelPosition as canonical__switch_switch_types__SwitchLabel
 import type { SwitchSize as inputswitch__SwitchSize } from '@ciag/orchestra/inputswitch';
 import type { SwitchSize as canonical__switch_switch_types__SwitchSize } from './switch/switch.types';
 import type { ListboxOption as listbox__ListboxOption } from '@ciag/orchestra/listbox';
-import type { PrimeMenuItem as mega_menu__PrimeMenuItem } from '@ciag/orchestra/mega-menu';
-import type { PrimeMenuItem as canonical__p2_p2_advanced_components__PrimeMenuItem } from './p2/p2-advanced-components';
 import type { PrimeMenuItem as megamenu__PrimeMenuItem } from '@ciag/orchestra/megamenu';
+import type { PrimeMenuItem as canonical__internal_menu_item__PrimeMenuItem } from './internal/menu-item';
 import type { MenuItem as menu__MenuItem } from '@ciag/orchestra/menu';
-import type { MenubarItem as menubar__MenubarItem } from '@ciag/orchestra/menubar';
-import type { MenubarItem as canonical__p2_p2_menubar_component__MenubarItem } from './p2/p2-menubar-component';
 import type { MessageItem as message__MessageItem } from '@ciag/orchestra/message';
 import type { P2Message as canonical__p2_p2_message_components__P2Message } from './p2/p2-message-components';
 import type { MessageItem as messages__MessageItem } from '@ciag/orchestra/messages';
@@ -377,15 +358,13 @@ import type { OrganizationNode as canonical__p2_p2_org_knob_components__Organiza
 import type { OrganizationNode as organizationchart__OrganizationNode } from '@ciag/orchestra/organizationchart';
 import type { PaginationPageEvent as pagination__PaginationPageEvent } from '@ciag/orchestra/pagination';
 import type { PageChangeEvent as canonical__paginator_paginator_types__PageChangeEvent } from './paginator/paginator.types';
-import type { PrimeMenuItem as panel_menu__PrimeMenuItem } from '@ciag/orchestra/panel-menu';
 import type { PrimeMenuItem as panelmenu__PrimeMenuItem } from '@ciag/orchestra/panelmenu';
 import type { P2Option as pick_list__P2Option } from '@ciag/orchestra/pick-list';
 import type { P2Option as picklist__P2Option } from '@ciag/orchestra/picklist';
 import type { SidebarPosition as sidebar__SidebarPosition } from '@ciag/orchestra/sidebar';
 import type { DrawerPlacement as canonical__drawer_drawer_component__DrawerPlacement } from './drawer/drawer.component';
-import type { SpeedDialAction as speed_dial__SpeedDialAction } from '@ciag/orchestra/speed-dial';
-import type { SpeedDialAction as canonical__p2_p2_speed_dial_component__SpeedDialAction } from './p2/p2-speed-dial-component';
 import type { SpeedDialAction as speeddial__SpeedDialAction } from '@ciag/orchestra/speeddial';
+import type { SpeedDialAction as canonical__speed_dial_speed_dial_component__SpeedDialAction } from './speed-dial/speed-dial.component';
 import type { SplitterPanel as splitter__SplitterPanel } from '@ciag/orchestra/splitter';
 import type { SplitterPanel as canonical__p2_p2_splitter_component__SplitterPanel } from './p2/p2-splitter-component';
 import type { TabMenuItem as tabmenu__TabMenuItem } from '@ciag/orchestra/tabmenu';
@@ -400,7 +379,6 @@ import type { TabVariant as tabview__TabVariant } from '@ciag/orchestra/tabview'
 import type { TabVariant as canonical__tabs_tabs_types__TabVariant } from './tabs/tabs.types';
 import type { TerminalLine as terminal__TerminalLine } from '@ciag/orchestra/terminal';
 import type { TerminalLine as canonical__p2_p2_terminal_component__TerminalLine } from './p2/p2-terminal-component';
-import type { PrimeMenuItem as tiered_menu__PrimeMenuItem } from '@ciag/orchestra/tiered-menu';
 import type { PrimeMenuItem as tieredmenu__PrimeMenuItem } from '@ciag/orchestra/tieredmenu';
 import type { HierarchyNode as tree__HierarchyNode } from '@ciag/orchestra/tree';
 import type { HierarchyNode as canonical__p2_p2_tree_component__HierarchyNode } from './p2/p2-tree-component';
@@ -562,7 +540,7 @@ describe('Alias entry points (generated identity sweep)', () => {
       );
   });
 
-  // combobox.ComboboxOption === ./p2/p2-shared#P2Option (type-only, checked at generation time)
+  // combobox.ComboboxOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
 
   it('@ciag/orchestra/combobox re-exports the canonical declarations', () => {
     expect(combobox__ComboboxComponent)
@@ -595,17 +573,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_confirm_dialog_component__ConfirmDialogComponent);
   });
 
-  // confirm-popup.PopupConfirmation === ./p2/p2-confirm-popup#PopupConfirmation (type-only, checked at generation time)
-
-  it('@ciag/orchestra/confirm-popup re-exports the canonical declarations', () => {
-    expect(confirm_popup__ConfirmPopupComponent)
-      .withContext('confirm-popup#ConfirmPopupComponent')
-      .toBe(canonical__p2_p2_confirm_popup__ConfirmPopupComponent);
-    expect(confirm_popup__ConfirmPopupService)
-      .withContext('confirm-popup#ConfirmPopupService')
-      .toBe(canonical__p2_p2_confirm_popup__ConfirmPopupService);
-  });
-
   // confirmdialog.ConfirmationRequest === ./p2/p2-confirm-dialog-component#ConfirmationRequest (type-only, checked at generation time)
 
   it('@ciag/orchestra/confirmdialog re-exports the canonical declarations', () => {
@@ -617,15 +584,19 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_confirm_dialog_component__ConfirmDialogComponent);
   });
 
-  // confirmpopup.PopupConfirmation === ./p2/p2-confirm-popup#PopupConfirmation (type-only, checked at generation time)
+  // confirmpopup.PopupConfirmation === ./confirm-popup/confirm-popup.component#PopupConfirmation (type-only, checked at generation time)
 
   it('@ciag/orchestra/confirmpopup re-exports the canonical declarations', () => {
     expect(confirmpopup__ConfirmPopupComponent)
       .withContext('confirmpopup#ConfirmPopupComponent')
-      .toBe(canonical__p2_p2_confirm_popup__ConfirmPopupComponent);
+      .toBe(
+        canonical__confirm_popup_confirm_popup_component__ConfirmPopupComponent,
+      );
     expect(confirmpopup__ConfirmPopupService)
       .withContext('confirmpopup#ConfirmPopupService')
-      .toBe(canonical__p2_p2_confirm_popup__ConfirmPopupService);
+      .toBe(
+        canonical__confirm_popup_confirm_popup_component__ConfirmPopupService,
+      );
   });
 
   it('@ciag/orchestra/container re-exports the canonical declarations', () => {
@@ -634,20 +605,14 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_layout_components__ContainerComponent);
   });
 
-  // context-menu.ContextMenuItem === ./p2/p2-overlay-components#ContextMenuItem (type-only, checked at generation time)
-
-  it('@ciag/orchestra/context-menu re-exports the canonical declarations', () => {
-    expect(context_menu__ContextMenuComponent)
-      .withContext('context-menu#ContextMenuComponent')
-      .toBe(canonical__p2_p2_overlay_components__ContextMenuComponent);
-  });
-
-  // contextmenu.ContextMenuItem === ./p2/p2-overlay-components#ContextMenuItem (type-only, checked at generation time)
+  // contextmenu.ContextMenuItem === ./context-menu/context-menu.component#ContextMenuItem (type-only, checked at generation time)
 
   it('@ciag/orchestra/contextmenu re-exports the canonical declarations', () => {
     expect(contextmenu__ContextMenuComponent)
       .withContext('contextmenu#ContextMenuComponent')
-      .toBe(canonical__p2_p2_overlay_components__ContextMenuComponent);
+      .toBe(
+        canonical__context_menu_context_menu_component__ContextMenuComponent,
+      );
   });
 
   // data-table.DataTableColumn === ./p2/p2-data-table-component#DataTableColumn (type-only, checked at generation time)
@@ -698,14 +663,6 @@ describe('Alias entry points (generated identity sweep)', () => {
     expect(dialog__DialogService)
       .withContext('dialog#DialogService')
       .toBe(canonical__modal_modal_service__ModalService);
-  });
-
-  // dock.DockItem === ./p2/p2-dock-scroll-components#DockItem (type-only, checked at generation time)
-
-  it('@ciag/orchestra/dock re-exports the canonical declarations', () => {
-    expect(dock__DockComponent)
-      .withContext('dock#DockComponent')
-      .toBe(canonical__p2_p2_dock_scroll_components__DockComponent);
   });
 
   it('@ciag/orchestra/dragdrop re-exports the canonical declarations', () => {
@@ -1088,7 +1045,7 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_layout_components__LinkComponent);
   });
 
-  // listbox.ListboxOption === ./p2/p2-shared#P2Option (type-only, checked at generation time)
+  // listbox.ListboxOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
 
   it('@ciag/orchestra/listbox re-exports the canonical declarations', () => {
     expect(listbox__ListboxComponent)
@@ -1096,36 +1053,20 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_listbox_component__ListboxComponent);
   });
 
-  // mega-menu.PrimeMenuItem === ./p2/p2-advanced-components#PrimeMenuItem (type-only, checked at generation time)
-
-  it('@ciag/orchestra/mega-menu re-exports the canonical declarations', () => {
-    expect(mega_menu__MegaMenuComponent)
-      .withContext('mega-menu#MegaMenuComponent')
-      .toBe(canonical__p2_p2_menu_family_components__MegaMenuComponent);
-  });
-
-  // megamenu.PrimeMenuItem === ./p2/p2-advanced-components#PrimeMenuItem (type-only, checked at generation time)
+  // megamenu.PrimeMenuItem === ./internal/menu-item#PrimeMenuItem (type-only, checked at generation time)
 
   it('@ciag/orchestra/megamenu re-exports the canonical declarations', () => {
     expect(megamenu__MegaMenuComponent)
       .withContext('megamenu#MegaMenuComponent')
-      .toBe(canonical__p2_p2_menu_family_components__MegaMenuComponent);
+      .toBe(canonical__mega_menu_mega_menu_component__MegaMenuComponent);
   });
 
-  // menu.MenuItem === ./p2/p2-advanced-components#PrimeMenuItem (type-only, checked at generation time)
+  // menu.MenuItem === ./internal/menu-item#PrimeMenuItem (type-only, checked at generation time)
 
   it('@ciag/orchestra/menu re-exports the canonical declarations', () => {
     expect(menu__MenuComponent)
       .withContext('menu#MenuComponent')
       .toBe(canonical__p2_p2_advanced_components__MenuComponent);
-  });
-
-  // menubar.MenubarItem === ./p2/p2-menubar-component#MenubarItem (type-only, checked at generation time)
-
-  it('@ciag/orchestra/menubar re-exports the canonical declarations', () => {
-    expect(menubar__MenubarComponent)
-      .withContext('menubar#MenubarComponent')
-      .toBe(canonical__p2_p2_menubar_component__MenubarComponent);
   });
 
   // message.MessageItem === ./p2/p2-message-components#P2Message (type-only, checked at generation time)
@@ -1166,7 +1107,7 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_primeng_gap_components__MeterGroupComponent);
   });
 
-  // multi-select.MultiSelectOption === ./p2/p2-shared#P2Option (type-only, checked at generation time)
+  // multi-select.MultiSelectOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
 
   it('@ciag/orchestra/multi-select re-exports the canonical declarations', () => {
     expect(multi_select__MultiSelectComponent)
@@ -1174,7 +1115,7 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_multi_select_component__MultiSelectComponent);
   });
 
-  // multiselect.MultiSelectOption === ./p2/p2-shared#P2Option (type-only, checked at generation time)
+  // multiselect.MultiSelectOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
 
   it('@ciag/orchestra/multiselect re-exports the canonical declarations', () => {
     expect(multiselect__MultiSelectComponent)
@@ -1250,20 +1191,12 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_primeng_gap_components__PanelComponent);
   });
 
-  // panel-menu.PrimeMenuItem === ./p2/p2-advanced-components#PrimeMenuItem (type-only, checked at generation time)
-
-  it('@ciag/orchestra/panel-menu re-exports the canonical declarations', () => {
-    expect(panel_menu__PanelMenuComponent)
-      .withContext('panel-menu#PanelMenuComponent')
-      .toBe(canonical__p2_p2_menu_family_components__PanelMenuComponent);
-  });
-
-  // panelmenu.PrimeMenuItem === ./p2/p2-advanced-components#PrimeMenuItem (type-only, checked at generation time)
+  // panelmenu.PrimeMenuItem === ./internal/menu-item#PrimeMenuItem (type-only, checked at generation time)
 
   it('@ciag/orchestra/panelmenu re-exports the canonical declarations', () => {
     expect(panelmenu__PanelMenuComponent)
       .withContext('panelmenu#PanelMenuComponent')
-      .toBe(canonical__p2_p2_menu_family_components__PanelMenuComponent);
+      .toBe(canonical__panel_menu_panel_menu_component__PanelMenuComponent);
   });
 
   it('@ciag/orchestra/password re-exports the canonical declarations', () => {
@@ -1272,7 +1205,7 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_primeng_gap_components__PasswordComponent);
   });
 
-  // pick-list.P2Option === ./p2/p2-shared#P2Option (type-only, checked at generation time)
+  // pick-list.P2Option === ./internal/p2-shared#P2Option (type-only, checked at generation time)
 
   it('@ciag/orchestra/pick-list re-exports the canonical declarations', () => {
     expect(pick_list__PickListComponent)
@@ -1280,7 +1213,7 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_pick_list_component__PickListComponent);
   });
 
-  // picklist.P2Option === ./p2/p2-shared#P2Option (type-only, checked at generation time)
+  // picklist.P2Option === ./internal/p2-shared#P2Option (type-only, checked at generation time)
 
   it('@ciag/orchestra/picklist re-exports the canonical declarations', () => {
     expect(picklist__PickListComponent)
@@ -1420,32 +1353,20 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_layout_components__SpaceComponent);
   });
 
-  // speed-dial.SpeedDialAction === ./p2/p2-speed-dial-component#SpeedDialAction (type-only, checked at generation time)
-
-  it('@ciag/orchestra/speed-dial re-exports the canonical declarations', () => {
-    expect(speed_dial__SpeedDialComponent)
-      .withContext('speed-dial#SpeedDialComponent')
-      .toBe(canonical__p2_p2_speed_dial_component__SpeedDialComponent);
-  });
-
-  // speeddial.SpeedDialAction === ./p2/p2-speed-dial-component#SpeedDialAction (type-only, checked at generation time)
+  // speeddial.SpeedDialAction === ./speed-dial/speed-dial.component#SpeedDialAction (type-only, checked at generation time)
 
   it('@ciag/orchestra/speeddial re-exports the canonical declarations', () => {
     expect(speeddial__SpeedDialComponent)
       .withContext('speeddial#SpeedDialComponent')
-      .toBe(canonical__p2_p2_speed_dial_component__SpeedDialComponent);
-  });
-
-  it('@ciag/orchestra/split-button re-exports the canonical declarations', () => {
-    expect(split_button__SplitButtonComponent)
-      .withContext('split-button#SplitButtonComponent')
-      .toBe(canonical__p2_p2_split_button_component__SplitButtonComponent);
+      .toBe(canonical__speed_dial_speed_dial_component__SpeedDialComponent);
   });
 
   it('@ciag/orchestra/splitbutton re-exports the canonical declarations', () => {
     expect(splitbutton__SplitButtonComponent)
       .withContext('splitbutton#SplitButtonComponent')
-      .toBe(canonical__p2_p2_split_button_component__SplitButtonComponent);
+      .toBe(
+        canonical__split_button_split_button_component__SplitButtonComponent,
+      );
   });
 
   // splitter.SplitterPanel === ./p2/p2-splitter-component#SplitterPanel (type-only, checked at generation time)
@@ -1531,20 +1452,12 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__input_textarea_component__TextareaComponent);
   });
 
-  // tiered-menu.PrimeMenuItem === ./p2/p2-advanced-components#PrimeMenuItem (type-only, checked at generation time)
-
-  it('@ciag/orchestra/tiered-menu re-exports the canonical declarations', () => {
-    expect(tiered_menu__TieredMenuComponent)
-      .withContext('tiered-menu#TieredMenuComponent')
-      .toBe(canonical__p2_p2_menu_family_components__TieredMenuComponent);
-  });
-
-  // tieredmenu.PrimeMenuItem === ./p2/p2-advanced-components#PrimeMenuItem (type-only, checked at generation time)
+  // tieredmenu.PrimeMenuItem === ./internal/menu-item#PrimeMenuItem (type-only, checked at generation time)
 
   it('@ciag/orchestra/tieredmenu re-exports the canonical declarations', () => {
     expect(tieredmenu__TieredMenuComponent)
       .withContext('tieredmenu#TieredMenuComponent')
-      .toBe(canonical__p2_p2_menu_family_components__TieredMenuComponent);
+      .toBe(canonical__tiered_menu_tiered_menu_component__TieredMenuComponent);
   });
 
   it('@ciag/orchestra/toggle-button re-exports the canonical declarations', () => {

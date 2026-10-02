@@ -16,21 +16,9 @@ import {
   viewChild,
 } from '@angular/core';
 import { P2_SHARED_STYLES } from './p2-shared';
+import type { PrimeMenuItem } from '@ciag/orchestra/internal';
 
-export interface PrimeMenuItem {
-  /** Menu destinations apply to leaf items; items with children remain disclosure buttons. */
-  label: string;
-  value?: string;
-  icon?: string;
-  disabled?: boolean;
-  visible?: boolean;
-  url?: string;
-  target?: string;
-  badge?: string;
-  separator?: boolean;
-  items?: PrimeMenuItem[];
-  command?: () => void;
-}
+export type { PrimeMenuItem } from '@ciag/orchestra/internal';
 
 let nextMenuId = 0;
 

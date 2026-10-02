@@ -1,1 +1,1 @@
-export { SplitButtonComponent } from '@ciag/orchestra/p2';
+export { SplitButtonComponent } from './split-button.component';
