@@ -6,6 +6,7 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  inject,
   input,
   model,
   output,
@@ -147,10 +148,8 @@ export class SplitButtonComponent implements AfterViewInit, OnDestroy {
     if (event.key === 'Escape') this.onEscape();
   };
 
-  constructor(
-    private readonly host: ElementRef<HTMLElement>,
-    private readonly changeDetector: ChangeDetectorRef,
-  ) {}
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
   ngAfterViewInit(): void {
     const ownerDocument = this.host.nativeElement.ownerDocument;

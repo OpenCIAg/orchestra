@@ -158,7 +158,8 @@ export class SpeedDialComponent implements AfterViewInit, OnDestroy {
   }
   toggleButton(event: MouseEvent): void {
     this.onClick.emit(event);
-    this.open() ? this.hide(event) : this.show(event);
+    if (this.open()) this.hide(event);
+    else this.show(event);
   }
   show(event?: Event): void {
     if (this.disabled()) return;
