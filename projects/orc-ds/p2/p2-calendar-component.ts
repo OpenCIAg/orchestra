@@ -12,6 +12,7 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2_SHARED_STYLES } from './p2-shared';
 import { isIsoDate } from './p2-date-utils';
 
