@@ -13,6 +13,11 @@ name: Release
 #   publish under angular19–angular21; v22.* is the frozen Angular-22 backport
 #   line and accepts patch releases only (publish: patch-tag). A tag no branch
 #   claims, or a tag that disagrees with the package version, fails the run.
+#   A tag marking a commit on the current line — the v<version> tag
+#   tag-release.yml (#8) creates from the governed main push — skips this
+#   publish path (publish-guard taggedCommitOnCurrentLine): the branch-push
+#   above already owns that release, and the tag must not be judged against
+#   the frozen line's patch-only invariant while the package major is 22.
 # - Plain pushes to v19–v22 are not a trigger here; ci.yml validates them.
 #
 # Guard order on every publish path (tools/release/publish-guard.mjs, unit

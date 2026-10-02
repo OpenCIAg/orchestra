@@ -282,6 +282,60 @@ test('a tag on a commit that does not change the version attempts no publish', (
   assert.equal(plan.action, 'skip');
 });
 
+test('a tag marking a current-line release commit skips the old-line path (ticket #8)', () => {
+  // tag-release.yml tags the governed main release; during the package-major
+  // 22 era that tag (v22.3.0) falls inside the v22 backport glob but must not
+  // be judged by the frozen line's patch-only invariant.
+  const plan = resolveReleasePlan({
+    event: 'tag-push',
+    branch: null,
+    tagName: 'v22.3.0',
+    version: '22.3.0',
+    previousVersion: '22.2.1',
+    pendingChangesets: 0,
+    registry,
+    topology,
+    taggedCommitOnCurrentLine: true,
+  });
+  assert.equal(plan.action, 'skip');
+  assert.match(plan.reason, /current line/);
+  assert.equal(plan.distTag, null);
+});
+
+test('a current-line release tag whose version disagrees still fails', () => {
+  const plan = resolveReleasePlan({
+    event: 'tag-push',
+    branch: null,
+    tagName: 'v22.9.9',
+    version: '22.2.0',
+    previousVersion: '22.1.1',
+    pendingChangesets: 0,
+    registry,
+    topology,
+    taggedCommitOnCurrentLine: true,
+  });
+  assert.equal(plan.action, 'fail');
+  assert.match(plan.reason, /disagree/);
+});
+
+test('an undeterminable current-line fact keeps the old-line behavior', () => {
+  // Fail closed toward the backport checks: when the caller cannot resolve
+  // the current branch, a backport tag must still be judged as one.
+  const plan = resolveReleasePlan({
+    event: 'tag-push',
+    branch: null,
+    tagName: 'v22.3.0',
+    version: '22.3.0',
+    previousVersion: '22.2.1',
+    pendingChangesets: 0,
+    registry,
+    topology,
+    taggedCommitOnCurrentLine: null,
+  });
+  assert.equal(plan.action, 'fail');
+  assert.match(plan.reason, /patch/);
+});
+
 test('a backport tag colliding with a published version fails', () => {
   const plan = resolveReleasePlan({
     event: 'tag-push',

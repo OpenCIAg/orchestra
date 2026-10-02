@@ -56,6 +56,11 @@ export function resolveEventContext({
  * @param {{ versions: Record<string, unknown>, distTags: Record<string, string> } | null} input.registry
  *   npm packument snapshot, or null when the registry could not be reached
  * @param {Record<string, object>} input.topology parsed compatibility/versions.json
+ * @param {boolean|null} [input.taggedCommitOnCurrentLine] whether the tagged
+ *   commit is reachable from the current line's branch (ticket #8). Null when
+ *   the caller could not determine it; the old-line checks then apply as
+ *   before. True + a matching package version means the tag marks the current
+ *   line's governed release (created by tag-release.yml), not a backport tag.
  * @returns {{ action: 'publish'|'skip'|'fail', reason: string, distTag: string|null, warnings: string[] }}
  */
 export function resolveReleasePlan(input) {
@@ -68,6 +73,7 @@ export function resolveReleasePlan(input) {
     pendingChangesets = 0,
     registry,
     topology,
+    taggedCommitOnCurrentLine = null,
   } = input;
   const skip = (reason) => ({
     action: 'skip',
@@ -154,6 +160,21 @@ export function resolveReleasePlan(input) {
     if (tagVersion !== version) {
       return fail(
         `Tag '${tagName}' disagrees with the package version ${version} at the tagged commit.`,
+      );
+    }
+    if (taggedCommitOnCurrentLine) {
+      // Ticket #8: the current line's release tags are created by
+      // tag-release.yml on the governed main push; the publish already ran
+      // (or runs concurrently) on the branch-push path. Without this skip, a
+      // main release tag inside the vNN.* tagGlob space (e.g. v22.* while the
+      // package major is 22) would be judged as a backport tag and fail the
+      // frozen-line invariants on every current-line release.
+      const currentBranch = Object.entries(topology).find(
+        ([, entry]) => entry.role === 'current',
+      )?.[0];
+      return skip(
+        `Tag '${tagName}' marks a release commit on the current line ('${currentBranch ?? 'main'}'); ` +
+          'the tag/Release workflow owns its artifacts and the old-line publish path does not apply.',
       );
     }
     if (version === previousVersion) {

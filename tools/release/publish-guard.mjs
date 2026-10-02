@@ -104,6 +104,39 @@ function countPendingChangesets() {
     .filter((name) => name.endsWith('.md') && name !== 'README.md').length;
 }
 
+/**
+ * Whether the tag-push commit sits on the current release line (ticket #8).
+ * On a tag-push checkout HEAD is the tagged commit; the current line is the
+ * single branch whose topology role is 'current'. Null when no such branch is
+ * declared or none of its refs can be resolved locally — the guard then keeps
+ * the previous behavior instead of guessing.
+ */
+function taggedCommitOnCurrentLine(topology) {
+  const currentBranch = Object.entries(topology).find(
+    ([, entry]) => entry.role === 'current',
+  )?.[0];
+  if (!currentBranch) return null;
+  let sha;
+  try {
+    sha = execFileSync('git', ['rev-parse', '--verify', 'HEAD'], {
+      encoding: 'utf8',
+    }).trim();
+  } catch {
+    return null;
+  }
+  for (const ref of [`origin/${currentBranch}`, currentBranch]) {
+    try {
+      execFileSync('git', ['merge-base', '--is-ancestor', sha, ref]);
+      return true;
+    } catch (error) {
+      // merge-base exits 1 for "not an ancestor"; anything else means the ref
+      // itself could not be resolved and the next candidate is tried.
+      if (error.status !== 1) continue;
+    }
+  }
+  return false;
+}
+
 async function fetchRegistryPackument(registryUrl) {
   try {
     const response = await fetch(`${registryUrl}/${PACKAGE_SPEC}`, {
@@ -230,6 +263,8 @@ async function main() {
     pendingChangesets,
     registry,
     topology,
+    taggedCommitOnCurrentLine:
+      context.event === 'tag-push' ? taggedCommitOnCurrentLine(topology) : null,
   });
 
   if (args.probeVersion) {
