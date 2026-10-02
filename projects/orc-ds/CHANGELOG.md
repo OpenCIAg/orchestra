@@ -75,6 +75,124 @@
 - Do not propagate checkbox selection through disabled Tree branches, and hide the empty state while the tree is loading.
 - Restore consumer styles during utility directive cleanup, make ripple feedback visible while respecting reduced motion, constrain outside-click handling to open StyleClass instances, reject stale animation callbacks, and expose the expected `[orcUseStyle]` input binding.
 
+<!--
+  Sections below this comment were backfilled (ticket #8, 2026-10) from git and
+  npm archaeology; see RELEASE.md "Historical notes" for the irregularities this
+  history carries. New releases are prepended above by the changesets flow.
+-->
+
+## 22.2.1
+
+- Version-only re-release of the 22.2.0 content from the frozen Angular 22 backport line, so the `angular22` dist-tag points at the line's own publication after 22.2.0 claimed `latest` on main (4b9d289).
+
+## 22.1.1
+
+- Published to the `angular22` dist-tag nineteen seconds after 22.1.0 on the same day. No commit recording this bump survives in any branch or tag (the v22 line's history was rewritten around this release), so its content cannot be reconstructed from git.
+
+## 22.1.0
+
+- Replaced the generated SVG icon catalog with a Google Material Symbols font-backed `orc-icon` on the current line (a446a80; the version bump was folded into the feature commit).
+
+## 22.0.2
+
+- Closed Orchestra public API gaps across the library — exported entry-point surface, type declarations, and alias parity (8e2c71a, 116 files). Ported to the old lines as 19.1.1 and 20.0.1.
+
+## 22.0.1
+
+- Version-only bump publishing the Angular 22 mainline under the `latest` dist-tag (614e485).
+
+## 22.0.0
+
+- First release of the Angular 22 mainline: established the library layout, the per-Angular-major compatibility release tracks, and the shared component foundation (395357b).
+
+## 21.2.0 (tagged, never published)
+
+- A local `v21.2.0` tag points at a release-preparation commit ("chore(release): prepare orchestra 21.2.0") that a history rewrite orphaned. The version was never published to npm; the tag is a deletion candidate (see RELEASE.md).
+
+## 21.1.1
+
+- Kept the MultiSelect filter inside its popup panel (02f5f79).
+
+## 21.1.0
+
+- Replaced the generated SVG icon catalog with a Google Material Symbols font-backed `orc-icon` on the Angular 21 line (b7dc0e8).
+
+## 21.0.13
+
+- Made ChipInput accessibility announcements opt-in (f5442b1; release bump 1189b71).
+
+## 21.0.12
+
+- Removed implicit component copy behavior and aligned button content (637e923; release bump f207294).
+
+## 21.0.11
+
+- Omitted undefined optional Date Picker input attributes so empty filters no longer display an `undefined` placeholder (f60c9c5).
+
+## 21.0.10
+
+- Rendered the Date Picker as a single custom calendar popover instead of the browser's native picker (84e2a6a).
+
+## 21.0.9
+
+- Restored Modal size and state classes (c7d97ab).
+
+## 21.0.8
+
+- Reserved Date Picker control width (8210779).
+
+## 21.0.7
+
+- Preserved Date Picker input width (f8113aa).
+
+## 21.0.6
+
+- Styled Date Picker control actions (f36c374).
+
+## 21.0.5
+
+- Rendered configured DataTable columns (dabbc21).
+
+## 21.0.4
+
+- Supported projected icon content safely (1523d56).
+
+## 21.0.3
+
+- Rendered projected icons and table filters (2e3c30a).
+
+## 21.0.2
+
+- Stabilized input, option, and button events (ae74a79).
+
+## 21.0.1
+
+- First patch of the Angular 21 line after the initial port (ea59361).
+
+## 21.0.0
+
+- Ported the validated library to Angular 21 to open the Angular 21 release line (d5f7921).
+
+## 20.2.0 (tagged, never published)
+
+- A local `v20.2.0` tag points at a release-preparation commit ("chore(release): prepare orchestra 20.2.0") that a history rewrite orphaned. The version was never published to npm; the tag is a deletion candidate (see RELEASE.md).
+
+## 20.1.0
+
+- Replaced the generated SVG icon catalog with a Google Material Symbols font-backed `orc-icon` on the Angular 20 line (db802df).
+
+## 20.0.1
+
+- Closed Orchestra public API gaps and preserved the modal close-result API on the Angular 20 line (de048f4, 32719be; release bump 97435e8).
+
+## 20.0.0
+
+- Established the Angular 20 release line: set the package version and aligned the Angular peer range for Angular 20 (c4d2dbb, f9ac52b).
+
+## 19.3.0
+
+- Replaced the generated SVG icon catalog with a Google Material Symbols font-backed `orc-icon` on the Angular 19 line (fc0a31d; release bump ef39f38).
+
 ## 19.2.0
 
 ### Minor Changes
@@ -84,3 +202,15 @@
 ### Patch Changes
 
 - 030cdb3: Add PrimeNG-aligned menu, confirmation (dialog and popup), data-view, tree/tree-table, chart, editor, order/pick lists, gallery, select/cascade/toggle controls, organization chart, knob, ripple/style-class directives, progress aliases, color/password/number/text/tags inputs, autofocus, dock/scroll-panel/sidebar/dialog/fieldset/input-icon, command-menu, avatar-group, animate-on-scroll, focus-trap, use-style, scroller, message, label, steps, datepicker, and compare entry points, input directives, terminal, image comparison, and data-table filtering/pagination APIs.
+
+## 19.1.1
+
+- Closed Orchestra public API gaps and preserved the modal close-result API on the Angular 19 line, released as a patch version below 19.2.0 (503be25, e0a68ca; release bump efd4f07).
+
+## 19.1.0
+
+- First release of the Angular 19 compatibility line (63206e9).
+
+## 0.1.0
+
+- Initial publication of `@ciag/orchestra` to npm. This version predates the preserved repository layout — `projects/orc-ds` was created at 22.0.0 — so no source snapshot for it survives in git history.

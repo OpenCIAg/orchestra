@@ -31,6 +31,7 @@
     "lint": "eslint .",
     "pack:lib": "npm pack ./dist/orc-ds",
     "verify:compatibility": "node tools/release/verify-compatibility.mjs",
+    "verify:changelog-coverage": "node tools/release/verify-changelog-coverage.mjs",
     "verify:inventory": "node tools/quality/inventory.mjs --check",
     "generate:alias-parity": "node tools/quality/generate-alias-parity.mjs",
     "verify:alias-parity": "node tools/quality/generate-alias-parity.mjs --check",
