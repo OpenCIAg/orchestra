@@ -1,30 +1,51 @@
 name: Release
 
+# Release contract (ticket #6 — governed publishing, single-owner streams).
+#
+# Triggers:
+# - main pushes run the guards. The job publishes ONLY when the push carries a
+#   governed release commit — the Version-PR merge produced by the changesets
+#   flow (ticket #7): projects/orc-ds/package.json version differs from the
+#   previous commit AND every .changeset/*.md proposal is consumed. Any other
+#   main push exits the job successfully without publishing.
+# - tag pushes (v*) publish the old lines. The tag routes through the tagGlob
+#   declared per branch in compatibility/versions.json: v19.*/v20.*/v21.*
+#   publish under angular19–angular21; v22.* is the frozen Angular-22 backport
+#   line and accepts patch releases only (publish: patch-tag). A tag no branch
+#   claims, or a tag that disagrees with the package version, fails the run.
+# - Plain pushes to v19–v22 are not a trigger here; ci.yml validates them.
+#
+# Guard order on every publish path (tools/release/publish-guard.mjs, unit
+# tests under tools/release/*.test.mjs): version changed vs the previous
+# commit → trigger governed → version not already on the registry (collision)
+# → only then build and publish. The guard exports ORCHESTRA_PUBLISH and
+# ORCHESTRA_DIST_TAG; the publish step is skipped unless both say so.
+
 on:
   push:
     branches:
       - main
-      - v19
-      - v20
-      - v21
-      - v22
+    tags:
+      - 'v*'
 
-# Do not let a stale release run block a validated release indefinitely.
-concurrency: ${{ github.workflow }}-${{ github.ref }}-${{ github.run_id }}
+# Serialize releases per ref instead of racing them: a queued older run cannot
+# interleave a publish (and a stale duplicate would fail the collision guard).
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Release to NPM
+    name: Guarded release to NPM
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
       id-token: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # The guard compares HEAD~1 and reads the other release branches'
+          # versions for the dist-tag reconciliation plan.
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -40,31 +61,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify Angular compatibility line
+      - name: Verify Angular compatibility line and publishing topology
         run: npm run verify:compatibility
 
-      - name: Run tests
-        run: |
-          set -o pipefail
-          if ! npm run test:lib:ci 2>&1 | tee test-output.log; then
-            details=$(tail -n 25 test-output.log | tr '\n' ' ')
-            echo "::error title=Library tests::${details:0:6000}"
-            exit 1
-          fi
-        shell: bash
-
-      - name: Upload test diagnostics
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ github.ref_name }}-release-test-output
-          path: test-output.log
+      - name: Guard the release trigger and registry state
+        run: node tools/release/publish-guard.mjs
 
       - name: Build library
         run: npm run build:lib
-
-      - name: Verify light and dark browser themes
-        run: npm run test:themes:ci
 
       - name: Validate package distribution
         run: |
@@ -72,6 +76,7 @@ jobs:
           npm run verify:package:minimum
 
       - name: Publish package
+        if: env.ORCHESTRA_PUBLISH == 'publish'
         run: npm publish ./dist/orc-ds --access public --tag "$NPM_TAG"
         env:
-          NPM_TAG: ${{ github.ref_name == 'main' && 'latest' || github.ref_name == 'v19' && 'angular19' || github.ref_name == 'v20' && 'angular20' || github.ref_name == 'v21' && 'angular21' || 'angular22' }}
+          NPM_TAG: ${{ env.ORCHESTRA_DIST_TAG }}
