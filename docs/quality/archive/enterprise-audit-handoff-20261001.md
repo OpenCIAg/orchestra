@@ -15,15 +15,15 @@ The source-derived inventory currently records **147 components, 19 directives, 
 
 Use these as the audit's current map and source of prior decisions:
 
-- [Enterprise audit plan and milestones](enterprise-audit.md)
-- [Component inventory](component-inventory.md)
-- [Behavior coverage ledger](behavior-coverage-ledger.md)
-- [Control audit](audit-controls.md)
-- [Expansion and P2 audit](audit-expansion.md)
+- [Enterprise audit plan and milestones](../enterprise-audit.md)
+- [Component inventory](../component-inventory.md)
+- [Behavior coverage ledger](../behavior-coverage-ledger.md)
+- [Control audit](../audit-controls.md)
+- [Expansion and P2 audit](../audit-expansion.md)
 - Display/documentation audit: audit-display-docs.md (defective duplicate of audit-expansion.md, removed; surviving findings folded there)
-- [Directive and service contract ledger](directive-service-contract-ledger.md)
-- [Library scope and redundancy decisions](library-scope-decisions.md)
-- [Current integrated gate summary](verification/enterprise-component-followup-20260924/gate-summary.md)
+- [Directive and service contract ledger](../directive-service-contract-ledger.md)
+- [Library scope and redundancy decisions](../library-scope-decisions.md)
+- [Current integrated gate summary](../verification/enterprise-component-followup-20260924/gate-summary.md)
 
 The current gate summary still contains the earlier **1,461/1,461** and **33/33** counts. It must not be represented as the latest verified result; reconcile it only after rerunning the affected checks against the current source.
 
@@ -65,11 +65,11 @@ The evidence does **not** justify deleting a whole component or public entry poi
 
 - `TooltipComponent` is explicitly internal/deprecated, has no public Angular inputs, and is instantiated by `TooltipDirective`. Consider removing its barrel export only after downstream imports have been reviewed.
 - `TextInputComponent` and `ToggleComponent` are identity aliases for the canonical Input and Switch implementations; they add no unique runtime behavior.
-- There are 69 alias-only secondary `index.ts` entry points. Removing them would risk breaking package imports and would not materially reduce runtime bundles. The reviewed paths are cataloged in [audit-expansion.md](audit-expansion.md).
+- There are 69 alias-only secondary `index.ts` entry points. Removing them would risk breaking package imports and would not materially reduce runtime bundles. The reviewed paths are cataloged in [audit-expansion.md](../audit-expansion.md).
 - `OverlayComponent` has inert/deprecated positioning options and no docs route, but it still has live visibility, projected content, show/hide/toggle, output, style, and Escape behavior. It is a low-value compatibility wrapper, not a useless component.
 - Small primitives such as InputGroupAddon, IftaLabel, Box, Grid, Flex, Stack, Space, AspectRatio, Separator, VisuallyHidden, Text, Typography, ButtonGroup, Dock, and ScrollPanel have modest implementations but supply shared semantics or styling; short source alone is not evidence for removal.
 
-See [library-scope-decisions.md](library-scope-decisions.md) for canonical ownership, alias, and deprecation rationale. Local repository search cannot establish public usage outside this checkout.
+See [library-scope-decisions.md](../library-scope-decisions.md) for canonical ownership, alias, and deprecation rationale. Local repository search cannot establish public usage outside this checkout.
 
 ## Recommended continuation sequence
 
