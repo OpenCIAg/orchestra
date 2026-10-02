@@ -1,4 +1,9 @@
-import { focusMenuTarget, menuFocusTargets, stepMenuIndex } from './menu-keyboard';
+import {
+  crossedFocusBoundary,
+  focusMenuTarget,
+  menuFocusTargets,
+  stepMenuIndex,
+} from './menu-keyboard';
 
 describe('menu roving-focus helpers', () => {
   function menuHost(): HTMLElement {
@@ -76,6 +81,41 @@ describe('menu roving-focus helpers', () => {
     it('pins empty menus to zero', () => {
       expect(stepMenuIndex(2, 1, 0)).toBe(0);
       expect(stepMenuIndex(2, 1, 0, false)).toBe(0);
+    });
+  });
+
+  describe('crossedFocusBoundary', () => {
+    function boundaryEvent(
+      host: HTMLElement,
+      related: Node | null,
+    ): FocusEvent {
+      return {
+        currentTarget: host,
+        relatedTarget: related,
+      } as unknown as FocusEvent;
+    }
+
+    it('is true while focus stays unknown or outside the composite', () => {
+      const host = menuHost();
+      try {
+        expect(crossedFocusBoundary(boundaryEvent(host, null))).toBe(true);
+        const outside = document.createElement('button');
+        document.body.appendChild(outside);
+        expect(crossedFocusBoundary(boundaryEvent(host, outside))).toBe(true);
+        outside.remove();
+      } finally {
+        host.remove();
+      }
+    });
+
+    it('is false while focus moves inside the composite', () => {
+      const host = menuHost();
+      try {
+        const inside = host.querySelector('button') as HTMLElement;
+        expect(crossedFocusBoundary(boundaryEvent(host, inside))).toBe(false);
+      } finally {
+        host.remove();
+      }
     });
   });
 });

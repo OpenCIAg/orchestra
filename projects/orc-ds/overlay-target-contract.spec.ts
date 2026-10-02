@@ -192,7 +192,9 @@ describe('ContextMenu and Portal target contracts', () => {
       contextFixture.nativeElement.querySelectorAll('[role="menuitem"]'),
     ) as HTMLButtonElement[];
     expect(document.activeElement).toBe(menuItems[0]);
-    menuItems[0].dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    menuItems[0].dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true }),
+    );
     expect(contextFixture.componentInstance.open()).toBeTrue();
     menuItems[0].dispatchEvent(
       new KeyboardEvent('keydown', {
@@ -224,7 +226,9 @@ describe('ContextMenu and Portal target contracts', () => {
         clientY: 14,
       }),
     );
-    contextTarget.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    contextTarget.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true }),
+    );
     expect(contextFixture.componentInstance.open()).toBeFalse();
 
     contextTarget.dispatchEvent(
@@ -237,7 +241,9 @@ describe('ContextMenu and Portal target contracts', () => {
     );
     const outside = foreignDocument.createElement('button');
     foreignDocument.body.appendChild(outside);
-    outside.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    outside.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true }),
+    );
     expect(contextFixture.componentInstance.open()).toBeFalse();
     contextFixture.destroy();
 

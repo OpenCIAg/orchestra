@@ -42,3 +42,15 @@ export function stepMenuIndex(
   if (wrap) return (index + delta + count) % count;
   return Math.max(0, Math.min(count - 1, index + delta));
 }
+
+/**
+ * True when a focusin/focusout moved focus across the menu composite's
+ * boundary — including the cases where the destination cannot be
+ * determined (relatedTarget null or missing host). Menus use this to
+ * emit focus/blur and dismiss submenus exactly once per crossing.
+ */
+export function crossedFocusBoundary(event: FocusEvent): boolean {
+  const host = event.currentTarget as HTMLElement | null;
+  const related = event.relatedTarget as Node | null;
+  return !host || !related || !host.contains(related);
+}

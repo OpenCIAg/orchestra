@@ -16,6 +16,21 @@ import {
 } from '@angular/core';
 import { P2_SHARED_STYLES } from './p2-shared';
 import type { PrimeMenuItem } from './p2-advanced-components';
+import {
+  crossedFocusBoundary,
+  focusMenuTarget,
+  listenForOutsideInteraction,
+  menuFocusTargets,
+  stepMenuIndex,
+} from '@ciag/orchestra/internal';
+
+/** Enabled roving-focus targets for the menu family DOM contract. */
+const TIERED_ROOT_ITEMS =
+  ':scope > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])';
+const TIERED_CHILD_ITEMS =
+  '[role="menuitem"]:not(:disabled):not([aria-disabled="true"])';
+const MEGA_ITEMS =
+  '[data-mega-item]:not(:disabled):not([data-mega-disabled])';
 
 function getOwnedActiveHTMLElement(
   ownerDocument: Document | null,
@@ -254,8 +269,7 @@ export class TieredMenuComponent implements OnDestroy {
   private handledVisible = false;
   private restoreFocus: HTMLElement | null = null;
   private restoreOnHide = true;
-  private outsideDocument: Document | null = null;
-  private outsidePointerHandler: ((event: PointerEvent) => void) | null = null;
+  private releaseOutsideDismissal: (() => void) | null = null;
   constructor() {
     effect(() => {
       const visible = this.visible();
@@ -266,9 +280,8 @@ export class TieredMenuComponent implements OnDestroy {
     });
   }
   onFocusOut(event: FocusEvent): void {
-    const host = event.currentTarget as HTMLElement | null;
     const related = event.relatedTarget as Node | null;
-    if (!host || !related || !host.contains(related)) {
+    if (crossedFocusBoundary(event)) {
       this.onBlur.emit(event);
       if (this.popup() && this.visible() && related) this.hide(false);
     }
@@ -278,11 +291,9 @@ export class TieredMenuComponent implements OnDestroy {
     const target = event.target as HTMLElement | null;
     const submenu = target?.closest<HTMLElement>('.submenu');
     if (submenu && target?.matches('[role="menuitem"]')) {
-      const index = Array.from(
-        submenu.querySelectorAll<HTMLElement>(
-          '[role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
-        ),
-      ).indexOf(target);
+      const index = menuFocusTargets(submenu, TIERED_CHILD_ITEMS).indexOf(
+        target,
+      );
       if (index >= 0) {
         this.childActiveIndex.set(index);
         this.childFocusActive.set(true);
@@ -292,18 +303,13 @@ export class TieredMenuComponent implements OnDestroy {
       target?.parentElement === host &&
       target.matches('[role="menuitem"]')
     ) {
-      const index = Array.from(
-        host.querySelectorAll<HTMLElement>(
-          ':scope > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
-        ),
-      ).indexOf(target);
+      const index = menuFocusTargets(host, TIERED_ROOT_ITEMS).indexOf(target);
       if (index >= 0) {
         this.activeIndex.set(index);
         this.childFocusActive.set(false);
       }
     }
-    const related = event.relatedTarget as Node | null;
-    if (!host || !related || !host.contains(related)) this.onFocus.emit(event);
+    if (crossedFocusBoundary(event)) this.onFocus.emit(event);
   }
   effectiveItems(): PrimeMenuItem[] {
     return this.model() ?? this.items();
@@ -408,19 +414,15 @@ export class TieredMenuComponent implements OnDestroy {
     host: HTMLElement | null,
     index = this.activeIndex(),
   ): void {
-    host
-      ?.querySelectorAll<HTMLElement>(
-        ':scope > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
-      )
-      [index]?.focus();
+    focusMenuTarget(host, TIERED_ROOT_ITEMS, index);
   }
   private focusChildItem(host: HTMLElement | null): void {
-    const submenu = host?.querySelector<HTMLElement>(
-      '.submenu:not(.submenu-hidden)',
-    );
-    const child = submenu?.querySelectorAll<HTMLElement>(
-      '[role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
-    )[this.childActiveIndex()];
+    const submenu =
+      host?.querySelector<HTMLElement>('.submenu:not(.submenu-hidden)') ??
+      null;
+    const child = menuFocusTargets(submenu, TIERED_CHILD_ITEMS)[
+      this.childActiveIndex()
+    ];
     if (child) {
       this.childFocusActive.set(true);
       child.focus();
@@ -457,31 +459,21 @@ export class TieredMenuComponent implements OnDestroy {
     }
   }
   private bindOutsideDismissal(): void {
-    if (!this.popup() || this.outsidePointerHandler) return;
+    if (!this.popup() || this.releaseOutsideDismissal) return;
     const ownerDocument = this.ownerDocument();
     if (!ownerDocument) return;
-    this.outsideDocument = ownerDocument;
-    this.outsidePointerHandler = (event: PointerEvent) => {
-      const target = event.target as Node | null;
-      const host = this.tieredHost()?.nativeElement;
-      if (host?.contains(target) || this.restoreFocus?.contains(target)) return;
-      this.hide();
-    };
-    ownerDocument.addEventListener(
-      'pointerdown',
-      this.outsidePointerHandler,
-      true,
+    this.releaseOutsideDismissal = listenForOutsideInteraction(
+      ownerDocument,
+      () => [
+        this.tieredHost()?.nativeElement ?? null,
+        this.restoreFocus,
+      ],
+      () => this.hide(),
     );
   }
   private unbindOutsideDismissal(): void {
-    if (this.outsideDocument && this.outsidePointerHandler)
-      this.outsideDocument.removeEventListener(
-        'pointerdown',
-        this.outsidePointerHandler,
-        true,
-      );
-    this.outsideDocument = null;
-    this.outsidePointerHandler = null;
+    this.releaseOutsideDismissal?.();
+    this.releaseOutsideDismissal = null;
   }
   private ownerDocument(): Document | null {
     return (
@@ -519,10 +511,9 @@ export class TieredMenuComponent implements OnDestroy {
     );
     if (submenu && this.openItem()) {
       const children = this.childItems(this.openItem());
-      const currentChildIndex = Array.from(
-        submenu.querySelectorAll<HTMLElement>(
-          '[role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
-        ),
+      const currentChildIndex = menuFocusTargets(
+        submenu,
+        TIERED_CHILD_ITEMS,
       ).indexOf(target as HTMLElement);
       if (currentChildIndex >= 0) this.childActiveIndex.set(currentChildIndex);
       const currentChild = children[this.childActiveIndex()];
@@ -539,9 +530,7 @@ export class TieredMenuComponent implements OnDestroy {
         else {
           const delta = event.key === 'ArrowDown' ? 1 : -1;
           this.childActiveIndex.update((index) =>
-            children.length
-              ? (index + delta + children.length) % children.length
-              : 0,
+            stepMenuIndex(index, delta, children.length),
           );
         }
         this.focusChildItem(host);
@@ -584,9 +573,7 @@ export class TieredMenuComponent implements OnDestroy {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       const delta = event.key === 'ArrowDown' ? 1 : -1;
-      this.activeIndex.update((index) =>
-        items.length ? (index + delta + items.length) % items.length : 0,
-      );
+      this.activeIndex.update((index) => stepMenuIndex(index, delta, items.length));
       if (host) this.focusActiveItem(host);
       return;
     }
@@ -608,11 +595,7 @@ export class TieredMenuComponent implements OnDestroy {
     }
   }
   private focusActiveItem(host: HTMLElement): void {
-    host
-      .querySelectorAll<HTMLElement>(
-        ':scope > [role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
-      )
-      [this.activeIndex()]?.focus();
+    focusMenuTarget(host, TIERED_ROOT_ITEMS, this.activeIndex());
   }
 }
 
@@ -1221,23 +1204,15 @@ export class MegaMenuComponent {
   }
 
   onFocusIn(event: FocusEvent): void {
-    const host = event.currentTarget as HTMLElement | null;
-    const related = event.relatedTarget as Node | null;
-    if (!host || !related || !host.contains(related)) this.onFocus.emit(event);
+    if (crossedFocusBoundary(event)) this.onFocus.emit(event);
   }
 
   onFocusOut(event: FocusEvent): void {
-    const host = event.currentTarget as HTMLElement | null;
-    const related = event.relatedTarget as Node | null;
-    if (!host || !related || !host.contains(related)) this.onBlur.emit(event);
+    if (crossedFocusBoundary(event)) this.onBlur.emit(event);
   }
 
   private focusActive(host: HTMLElement): void {
-    host
-      .querySelectorAll<HTMLElement>(
-        '[data-mega-item]:not(:disabled):not([data-mega-disabled])',
-      )
-      [this.activeIndex()]?.focus();
+    focusMenuTarget(host, MEGA_ITEMS, this.activeIndex());
   }
 
   onKeydown(event: KeyboardEvent): void {
@@ -1252,8 +1227,8 @@ export class MegaMenuComponent {
     if (event.key === forwardKey || event.key === backwardKey) {
       event.preventDefault();
       const delta = event.key === forwardKey ? 1 : -1;
-      this.activeIndex.update(
-        (index) => (index + delta + items.length) % items.length,
+      this.activeIndex.update((index) =>
+        stepMenuIndex(index, delta, items.length),
       );
       if (host) this.focusActive(host);
     } else if (event.key === 'Home' || event.key === 'End') {
