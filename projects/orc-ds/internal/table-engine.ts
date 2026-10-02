@@ -78,6 +78,14 @@ export function tablePageSlice<T>(
 /** Trim a naming input and fall back when it is blank; `null` means unset. */
 export function tableTrimmedLabel(
   value: string | null | undefined,
+  fallback: string,
+): string;
+export function tableTrimmedLabel(
+  value: string | null | undefined,
+  fallback: null,
+): string | null;
+export function tableTrimmedLabel(
+  value: string | null | undefined,
   fallback: string | null,
 ): string | null {
   return value?.trim() || fallback;
