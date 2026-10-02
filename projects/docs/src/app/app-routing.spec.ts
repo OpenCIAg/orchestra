@@ -53,6 +53,14 @@ describe('Documentation routes', () => {
     const harness = await RouterTestingHarness.create(chartEntry!.route);
     const root = harness.routeNativeElement as HTMLElement;
     expect(root.querySelector('h1')?.textContent).toContain('Chart');
+    // The chart example loads in its own lazy chunk; wait for it to paint.
+    for (let i = 0; i < 100; i++) {
+      harness.fixture.detectChanges();
+      if (root.querySelectorAll('orc-chart svg[role="group"]').length === 4) {
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
     expect(root.querySelectorAll('orc-chart svg[role="group"]')).toHaveSize(4);
     expect(root.querySelectorAll('orc-chart [role="status"]')).toHaveSize(4);
     harness.fixture.destroy();
@@ -72,6 +80,12 @@ describe('Documentation routes', () => {
     expect(
       harness.routeNativeElement?.querySelector('h1')?.textContent,
     ).toContain('Date Picker');
+    // The date-picker example loads in its own lazy chunk; wait for it.
+    for (let i = 0; i < 100; i++) {
+      harness.fixture.detectChanges();
+      if (harness.routeNativeElement?.querySelector('orc-date-picker')) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
     expect(
       harness.routeNativeElement?.querySelector('orc-date-picker'),
     ).not.toBeNull();
