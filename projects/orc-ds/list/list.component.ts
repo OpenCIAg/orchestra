@@ -8,6 +8,12 @@ import {
   signal,
   viewChildren,
 } from '@angular/core';
+import {
+  listPickerEnabledIndexes,
+  listPickerEquality,
+  stepListPickerActive,
+  toggleListPickerValue,
+} from '@ciag/orchestra/internal';
 
 export interface ListItem {
   id: string;
@@ -71,42 +77,40 @@ export class ListComponent {
     if (this.isSelectable()) {
       const hasExplicitSelection =
         this.selectedIds().length > 0 || this.selectionTouched();
-      const selected = new Set(
-        hasExplicitSelection
-          ? this.selectedIds()
-          : this.items()
-              .filter((candidate) => candidate.selected)
-              .map((candidate) => candidate.id),
-      );
+      const current = hasExplicitSelection
+        ? this.selectedIds()
+        : this.items()
+            .filter((candidate) => candidate.selected)
+            .map((candidate) => candidate.id);
       this.selectionTouched.set(true);
 
+      const equality = listPickerEquality(undefined, 'extract');
       if (this.selection() === 'single') {
-        selected.clear();
-        selected.add(item.id);
-      } else if (selected.has(item.id)) {
-        selected.delete(item.id);
+        this.selectedIds.set([item.id]);
       } else {
-        selected.add(item.id);
+        const toggle = toggleListPickerValue(current, item.id, equality);
+        if (toggle) this.selectedIds.set(toggle.next);
       }
-
-      this.selectedIds.set([...selected]);
     }
 
     this.itemSelect.emit(item);
   }
 
   onKeydown(event: KeyboardEvent, index: number): void {
-    const enabled = this.items()
-      .map((item, itemIndex) => (item.disabled ? -1 : itemIndex))
-      .filter((itemIndex) => itemIndex >= 0);
+    const items = this.items();
+    const enabled = listPickerEnabledIndexes(
+      items.length,
+      (itemIndex) => !!items[itemIndex].disabled,
+    );
     if (!enabled.length) return;
 
-    const current = enabled.indexOf(index);
-    let target = -1;
-    if (event.key === 'ArrowDown') {
-      target = enabled[(current + 1) % enabled.length];
-    } else if (event.key === 'ArrowUp') {
-      target = enabled[(current - 1 + enabled.length) % enabled.length];
+    let target: number | null = null;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      target = stepListPickerActive(
+        index,
+        event.key === 'ArrowDown' ? 1 : -1,
+        enabled,
+      );
     } else if (event.key === 'Home') {
       target = enabled[0];
     } else if (event.key === 'End') {
@@ -114,9 +118,11 @@ export class ListComponent {
     } else {
       return;
     }
+    if (target === null) return;
 
     event.preventDefault();
     this.activeIndex.set(target);
-    queueMicrotask(() => this.listItems()[target]?.nativeElement.focus());
+    const destination = target;
+    queueMicrotask(() => this.listItems()[destination]?.nativeElement.focus());
   }
 }
