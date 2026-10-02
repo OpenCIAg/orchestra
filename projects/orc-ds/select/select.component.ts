@@ -22,12 +22,13 @@ import {
 } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import {
+  CvaControl,
   isTopOverlay,
   listenForOutsideInteraction,
   overlayAttachmentTarget,
   registerOverlay,
 } from '@ciag/orchestra/internal';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   Overlay,
   OverlayConfig,
@@ -60,7 +61,8 @@ let nextSelectUniqueId = 0;
   ],
 })
 export class SelectComponent
-  implements ControlValueAccessor, AfterViewInit, OnDestroy
+  extends CvaControl
+  implements AfterViewInit, OnDestroy
 {
   private readonly uniqueId = `orc-select-${++nextSelectUniqueId}`;
   private hostEl = inject(ElementRef);
@@ -240,7 +242,6 @@ export class SelectComponent
   readonly isOpen = signal<boolean>(false);
   readonly isFocused = signal<boolean>(false);
   readonly searchTerm = signal<string>('');
-  protected readonly cvaDisabled = signal<boolean>(false);
   readonly activeOptionIndex = signal<number>(-1);
 
   // ── Computeds ──────────────────────────────────────────────
@@ -264,10 +265,6 @@ export class SelectComponent
   readonly labelId = computed(() => `${this.effectiveId()}-label`);
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
-
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled(),
-  );
 
   readonly isInvalid = computed(
     () => this.status() === 'error' || !!this.errorMessage(),
@@ -550,10 +547,12 @@ export class SelectComponent
   readonly hasValue = computed(() => this.selectedItems().length > 0);
 
   // ── ControlValueAccessor Implementation ───────────────────
-  private onModelChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
 
   constructor() {
+    super();
     // Synchronize selection state to projected components whenever value or projected options change
     effect(() => {
       const val = this.value();
@@ -607,20 +606,8 @@ export class SelectComponent
     this.closePanel();
   }
 
-  writeValue(value: any): void {
+  override writeValue(value: any): void {
     this.value.set(value);
-  }
-
-  registerOnChange(fn: any): void {
-    this.onModelChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.cvaDisabled.set(isDisabled);
   }
 
   // ── Overlay & Panel Methods ───────────────────────────────
@@ -762,7 +749,7 @@ export class SelectComponent
         current.push(val);
       }
       this.value.set(current);
-      this.onModelChange(current);
+      this.cvaOnChange(current);
       this.selectionChange.emit(current);
       const event = originalEvent ?? new Event('change');
       this.onChange.emit({ originalEvent: event, value: current });
@@ -772,7 +759,7 @@ export class SelectComponent
       });
     } else {
       this.value.set(val);
-      this.onModelChange(val);
+      this.cvaOnChange(val);
       this.selectionChange.emit(val);
       const event = originalEvent ?? new Event('change');
       this.onChange.emit({ originalEvent: event, value: val });
@@ -792,7 +779,7 @@ export class SelectComponent
         (v) => !this.sameOptionValue(v, itemValue),
       );
       this.value.set(updated);
-      this.onModelChange(updated);
+      this.cvaOnChange(updated);
       this.selectionChange.emit(updated);
       this.onChange.emit({ originalEvent: event, value: updated });
       this.onOptionUnselect.emit({ originalEvent: event, value: itemValue });
@@ -808,7 +795,7 @@ export class SelectComponent
 
     const clearedVal = this.multiple() ? [] : undefined;
     this.value.set(clearedVal);
-    this.onModelChange(clearedVal);
+    this.cvaOnChange(clearedVal);
     this.selectionChange.emit(clearedVal);
     this.onChange.emit({ originalEvent: event, value: clearedVal });
     this.onClear.emit(event);
@@ -981,7 +968,7 @@ export class SelectComponent
   private finishCompositeBlur(event: FocusEvent): void {
     if (!this.isFocused()) return;
     this.isFocused.set(false);
-    this.onTouched();
+    this.cvaOnTouched();
     this.blur.emit(event);
     this.onBlur.emit(event);
     if (this.isOpen()) this.closePanel();
@@ -1015,7 +1002,7 @@ export class SelectComponent
         );
       } else {
         this.isFocused.set(false);
-        this.onTouched();
+        this.cvaOnTouched();
         this.closePanel();
       }
     } else {

@@ -13,7 +13,8 @@ import {
   effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CvaControl } from '@ciag/orchestra/internal';
 import { CheckboxAriaChecked, CheckboxChangeEvent } from './checkbox.types';
 
 let nextCheckboxUniqueId = 0;
@@ -33,7 +34,7 @@ let nextCheckboxUniqueId = 0;
     },
   ],
 })
-export class CheckboxComponent implements ControlValueAccessor {
+export class CheckboxComponent extends CvaControl {
   // Inputs (Signals API)
   readonly id = input<string>('');
   readonly name = input<string>('');
@@ -76,7 +77,6 @@ export class CheckboxComponent implements ControlValueAccessor {
   readonly uniqueId = `orc-checkbox-${++nextCheckboxUniqueId}`;
 
   // Estado interno para ControlValueAccessor
-  private readonly cvaDisabled = signal<boolean>(false);
   private readonly cvaValue = signal<any>(false);
 
   // Identificadores e estados derivados (Signals)
@@ -87,7 +87,8 @@ export class CheckboxComponent implements ControlValueAccessor {
   readonly descriptionId = computed(() => `${this.effectiveId()}-desc`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
 
-  readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
+  /** Historical Orchestra name for the shared effective-disabled state. */
+  readonly isDisabled = this.effectiveDisabled;
   readonly isError = computed(() => this.error() || !!this.errorMessage());
 
   // Acessibilidade WCAG: aria-checked com suporte a "mixed" para indeterminate
@@ -109,11 +110,8 @@ export class CheckboxComponent implements ControlValueAccessor {
     return !!this.label() || !!this.description() || !!this.errorMessage();
   });
 
-  // Callbacks do ControlValueAccessor
-  private onModelChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
-
   constructor() {
+    super();
     effect(() => {
       const native = this.inputElement()?.nativeElement;
       if (native) native.indeterminate = this.indeterminate();
@@ -121,7 +119,11 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   // ── ControlValueAccessor Implementation ───────────────────
-  writeValue(val: any): void {
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
+
+  override writeValue(val: any): void {
     this.cvaValue.set(val);
     this.checked.set(
       this.binary()
@@ -130,18 +132,6 @@ export class CheckboxComponent implements ControlValueAccessor {
           ? val.some((item) => item === this.value())
           : Boolean(val),
     );
-  }
-
-  registerOnChange(fn: (value: boolean) => void): void {
-    this.onModelChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.cvaDisabled.set(isDisabled);
   }
 
   // ── Event Handlers ────────────────────────────────────────
@@ -177,8 +167,8 @@ export class CheckboxComponent implements ControlValueAccessor {
     const newChecked = this.checked();
     const emittedValue = this.nextModelValue(newChecked);
     this.cvaValue.set(emittedValue);
-    this.onModelChange(emittedValue);
-    this.onTouched();
+    this.cvaOnChange(emittedValue);
+    this.cvaOnTouched();
 
     const eventValue = {
       checked: newChecked,
@@ -190,7 +180,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   handleBlur(event?: Event): void {
-    this.onTouched();
+    this.cvaOnTouched();
     if (event) this.onBlur.emit(event);
   }
 
@@ -208,7 +198,7 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   /* legacy method retained for callers that used the old boolean-only API */
   onLegacyBlur(): void {
-    this.onTouched();
+    this.cvaOnTouched();
   }
 
   // ── Public API Methods ────────────────────────────────────
@@ -225,8 +215,8 @@ export class CheckboxComponent implements ControlValueAccessor {
     const newChecked = this.checked();
     const emittedValue = this.nextModelValue(this.checked());
     this.cvaValue.set(emittedValue);
-    this.onModelChange(emittedValue);
-    this.onTouched();
+    this.cvaOnChange(emittedValue);
+    this.cvaOnTouched();
 
     const eventValue = {
       checked: newChecked,

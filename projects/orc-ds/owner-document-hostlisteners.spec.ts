@@ -77,7 +77,7 @@ describe('owner-document global interaction listeners', () => {
     context.detectChanges();
     context.componentInstance.open.set(true);
     contextRealm.document.dispatchEvent(
-      new MouseEvent('mousedown', { bubbles: true }),
+      new PointerEvent('pointerdown', { bubbles: true }),
     );
     expect(context.componentInstance.open()).toBeFalse();
 

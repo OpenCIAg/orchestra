@@ -344,6 +344,7 @@
       ],
       "testReferences": [
         "projects/orc-ds/alert/alert-behavior.spec.ts",
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
       ]
@@ -674,6 +675,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/avatar/avatar-group-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -1702,10 +1704,11 @@
     },
     {
       "name": "CheckboxComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-checkbox",
       "file": "projects/orc-ds/checkbox/checkbox.component.ts",
-      "line": 21,
+      "line": 22,
       "inputs": [
         {
           "name": "id",
@@ -1881,7 +1884,8 @@
         "projects/orc-ds/checkbox/checkbox.component.spec.ts",
         "projects/orc-ds/controls-repair.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "ChipInputComponent",
@@ -2420,6 +2424,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/color-picker/color-picker-behavior.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
@@ -3241,6 +3246,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/date-picker/date-picker-behavior.spec.ts",
         "projects/orc-ds/date-picker/date-picker-overlay.spec.ts",
@@ -3368,6 +3374,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/drag-drop/drag-drop.directive.spec.ts",
         "projects/orc-ds/interaction-repair.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -3417,6 +3424,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/drag-drop/drag-drop.directive.spec.ts",
         "projects/orc-ds/interaction-repair.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -3550,6 +3558,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/drawer/drawer-behavior.spec.ts",
         "projects/orc-ds/drawer/drawer-modal-isolation.spec.ts",
@@ -4202,6 +4211,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/file-uploader/file-uploader-behavior.spec.ts",
         "projects/orc-ds/interaction-repair.spec.ts",
@@ -4252,6 +4262,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/controls-repair.spec.ts",
         "projects/orc-ds/form-shell-contract.spec.ts",
@@ -4587,10 +4598,11 @@
     },
     {
       "name": "InputComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-input, orc-input-text",
       "file": "projects/orc-ds/input/input.component.ts",
-      "line": 23,
+      "line": 24,
       "inputs": [
         {
           "name": "id",
@@ -4853,20 +4865,23 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/form-shell-contract.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
         "projects/orc-ds/input/input.component.spec.ts",
         "projects/orc-ds/p1-core.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "TextareaComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-textarea, orc-input-textarea",
       "file": "projects/orc-ds/input/textarea.component.ts",
-      "line": 23,
+      "line": 24,
       "inputs": [
         {
           "name": "id",
@@ -5066,11 +5081,13 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
         "projects/orc-ds/input/textarea.component.spec.ts",
         "projects/orc-ds/p1-core.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "ListComponent",
@@ -5487,6 +5504,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/date-picker/date-picker-overlay.spec.ts",
         "projects/orc-ds/image/image-behavior.spec.ts",
@@ -5504,7 +5522,10 @@
       "file": "projects/orc-ds/modal/modal.service.ts",
       "line": 19,
       "inputs": [],
-      "testReferences": ["projects/orc-ds/modal/modal.service.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/modal/modal.service.spec.ts"
+      ]
     },
     {
       "name": "NavigationShellComponent",
@@ -5577,6 +5598,7 @@
     },
     {
       "name": "NumberInputComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-number-input, orc-input-number",
       "file": "projects/orc-ds/number-input/number-input.component.ts",
@@ -5969,11 +5991,13 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
         "projects/orc-ds/number-input/number-input.component.spec.ts",
         "projects/orc-ds/p1-core.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "OtpGroupComponent",
@@ -6091,6 +6115,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/controls-repair.spec.ts",
         "projects/orc-ds/otp-input/otp-input-contract.spec.ts"
@@ -6327,6 +6352,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/drawer/drawer-modal-isolation.spec.ts",
         "projects/orc-ds/modal/modal-keyboard-listener.spec.ts",
@@ -6665,6 +6691,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-menu-contract.spec.ts",
@@ -6731,6 +6758,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/block-ui.spec.ts"
@@ -6906,6 +6934,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-date-input-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -7102,6 +7131,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/p2-dom-realm-contract.spec.ts"
@@ -7179,6 +7209,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/chart-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -7277,6 +7308,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/combobox-behavior.spec.ts"
@@ -7340,6 +7372,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/command-dock-contract.spec.ts"
       ]
@@ -7352,6 +7385,7 @@
       "line": 20,
       "inputs": [],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/confirm-dialog-contract.spec.ts",
         "projects/orc-ds/confirmation-concurrency.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -7451,6 +7485,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/confirm-dialog-contract.spec.ts",
         "projects/orc-ds/confirmation-concurrency.spec.ts",
@@ -7466,6 +7501,7 @@
       "line": 33,
       "inputs": [],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/confirm-popup-behavior.spec.ts",
         "projects/orc-ds/confirmation-concurrency.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts"
@@ -7479,6 +7515,7 @@
       "line": 51,
       "inputs": [],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/confirm-popup-behavior.spec.ts",
         "projects/orc-ds/confirmation-concurrency.spec.ts",
@@ -7529,6 +7566,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/code-overlay-contract.spec.ts"
       ]
@@ -7563,6 +7601,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/mega-hover-contract.spec.ts"
       ]
@@ -7863,6 +7902,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/data-table-behavior.spec.ts"
@@ -8143,6 +8183,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/data-view-pagination-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -8284,6 +8325,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-date-input-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -8319,6 +8361,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/command-dock-contract.spec.ts"
       ]
@@ -8381,6 +8424,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/command-dock-contract.spec.ts"
       ]
@@ -8471,6 +8515,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/editor-selection-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -8506,6 +8551,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-input-gap-controls-contract.spec.ts"
       ]
@@ -8638,6 +8684,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2/p2-dom-realm-contract.spec.ts",
         "projects/orc-ds/select-button-behavior.spec.ts",
@@ -8765,6 +8812,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/select-toggle-contract.spec.ts"
@@ -8792,7 +8840,10 @@
           "declaration": "readonly validateOnly = input(false, {\n    transform: booleanAttribute,\n    alias: 'pValidateOnly',\n  });"
         }
       ],
-      "testReferences": ["projects/orc-ds/input-mask-contract.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/input-mask-contract.spec.ts"
+      ]
     },
     {
       "name": "InputMaskDirective",
@@ -8984,7 +9035,10 @@
           "declaration": "readonly keepBuffer = input(false, { transform: booleanAttribute });"
         }
       ],
-      "testReferences": ["projects/orc-ds/input-mask-contract.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/input-mask-contract.spec.ts"
+      ]
     },
     {
       "name": "GalleriaComponent",
@@ -9212,6 +9266,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/galleria-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -9289,6 +9344,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/image-compare-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -9352,6 +9408,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/inplace-behavior.spec.ts"
@@ -9365,6 +9422,7 @@
       "line": 4,
       "inputs": [],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-input-gap-controls-contract.spec.ts"
       ]
@@ -9385,6 +9443,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-input-gap-controls-contract.spec.ts"
       ]
@@ -9397,6 +9456,7 @@
       "line": 33,
       "inputs": [],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-input-gap-controls-contract.spec.ts"
       ]
@@ -9431,6 +9491,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-input-color-contract.spec.ts"
       ]
@@ -9450,7 +9511,10 @@
           "declaration": "readonly disabled = input(false, { transform: booleanAttribute });"
         }
       ],
-      "testReferences": ["projects/orc-ds/utility-directives-contract.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/utility-directives-contract.spec.ts"
+      ]
     },
     {
       "name": "ButtonGroupComponent",
@@ -9482,6 +9546,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9530,6 +9595,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9557,6 +9623,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9591,6 +9658,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9639,6 +9707,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9680,6 +9749,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9714,6 +9784,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9762,6 +9833,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9789,6 +9861,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9801,6 +9874,7 @@
       "line": 238,
       "inputs": [],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9849,6 +9923,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
         "projects/orc-ds/typography-contract.spec.ts"
@@ -9884,6 +9959,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
       ]
@@ -9911,6 +9987,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-contract.spec.ts"
       ]
@@ -9959,6 +10036,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-layout-contract.spec.ts"
       ]
@@ -10294,6 +10372,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
@@ -10305,7 +10384,7 @@
       "kind": "Component",
       "selector": "orc-tiered-menu",
       "file": "projects/orc-ds/p2/p2-menu-family-components.ts",
-      "line": 39,
+      "line": 53,
       "inputs": [
         {
           "name": "items",
@@ -10435,7 +10514,9 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/p2-advanced-contract.spec.ts"
       ]
@@ -10445,7 +10526,7 @@
       "kind": "Component",
       "selector": "orc-panel-menu",
       "file": "projects/orc-ds/p2/p2-menu-family-components.ts",
-      "line": 625,
+      "line": 605,
       "inputs": [
         {
           "name": "items",
@@ -10526,6 +10607,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/p2-advanced-contract.spec.ts",
@@ -10537,7 +10619,7 @@
       "kind": "Component",
       "selector": "orc-mega-menu",
       "file": "projects/orc-ds/p2/p2-menu-family-components.ts",
-      "line": 1088,
+      "line": 1068,
       "inputs": [
         {
           "name": "items",
@@ -10611,8 +10693,10 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/mega-hover-contract.spec.ts",
+        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
         "projects/orc-ds/public-binding-behavior.spec.ts"
       ]
     },
@@ -10621,7 +10705,7 @@
       "kind": "Component",
       "selector": "orc-menubar",
       "file": "projects/orc-ds/p2/p2-menubar-component.ts",
-      "line": 25,
+      "line": 30,
       "inputs": [
         {
           "name": "items",
@@ -10709,6 +10793,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-menu-contract.spec.ts"
@@ -10765,6 +10850,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/messages-behavior.spec.ts"
@@ -11276,6 +11362,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/multi-select-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -11445,6 +11532,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/order-list-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -11509,6 +11597,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/organization-chart-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -11621,6 +11710,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/knob-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -11631,7 +11721,7 @@
       "kind": "Component",
       "selector": "orc-floating-action-button",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 21,
+      "line": 26,
       "inputs": [
         {
           "name": "label",
@@ -11677,6 +11767,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-overlay-action-buttons-contract.spec.ts"
       ]
@@ -11686,7 +11777,7 @@
       "kind": "Component",
       "selector": "orc-close-button",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 59,
+      "line": 64,
       "inputs": [
         {
           "name": "ariaLabel",
@@ -11718,6 +11809,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-overlay-action-buttons-contract.spec.ts"
       ]
@@ -11727,7 +11819,7 @@
       "kind": "Component",
       "selector": "orc-context-menu",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 93,
+      "line": 98,
       "inputs": [
         {
           "name": "items",
@@ -11836,7 +11928,9 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
         "projects/orc-ds/overlay-target-contract.spec.ts",
         "projects/orc-ds/owner-document-hostlisteners.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -11848,7 +11942,7 @@
       "kind": "Component",
       "selector": "orc-overlay",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 405,
+      "line": 420,
       "inputs": [
         {
           "name": "visible",
@@ -11936,6 +12030,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/code-overlay-contract.spec.ts"
       ]
@@ -12166,6 +12261,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/pick-list-behavior.spec.ts",
@@ -12189,6 +12285,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/overlay-target-contract.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts"
@@ -12273,6 +12370,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-primeng-gap-layout-contract.spec.ts"
@@ -12343,6 +12441,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-primeng-gap-layout-contract.spec.ts"
@@ -12371,6 +12470,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-primeng-gap-layout-contract.spec.ts"
@@ -12392,6 +12492,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts"
       ]
@@ -12419,6 +12520,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts"
       ]
@@ -12516,6 +12618,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/meter-group-contract.spec.ts"
@@ -12782,6 +12885,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts",
         "projects/orc-ds/p2/password-behavior.spec.ts"
@@ -12873,6 +12977,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
         "projects/orc-ds/scrolltop/scroll-top.component.spec.ts"
@@ -12999,6 +13104,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/owner-document-hostlisteners.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -13169,6 +13275,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/owner-document-hostlisteners.spec.ts",
         "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts",
@@ -13239,6 +13346,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
@@ -13401,6 +13509,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/tags-input-behavior.spec.ts",
@@ -13465,6 +13574,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/terminal-behavior.spec.ts",
@@ -13753,6 +13863,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/public-binding-behavior.spec.ts",
@@ -14090,6 +14201,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/owner-document-hostlisteners.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -14640,6 +14752,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/tree-table-data-contract.spec.ts",
@@ -14669,7 +14782,10 @@
           "declaration": "readonly color = input('currentColor');"
         }
       ],
-      "testReferences": ["projects/orc-ds/utility-directives-contract.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/utility-directives-contract.spec.ts"
+      ]
     },
     {
       "name": "StyleClassDirective",
@@ -14714,7 +14830,10 @@
           "declaration": "readonly hideOnOutsideClick = input(false, { transform: booleanAttribute });"
         }
       ],
-      "testReferences": ["projects/orc-ds/utility-directives-contract.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/utility-directives-contract.spec.ts"
+      ]
     },
     {
       "name": "AnimateOnScrollDirective",
@@ -14745,7 +14864,10 @@
           "declaration": "readonly threshold = input(0.1);"
         }
       ],
-      "testReferences": ["projects/orc-ds/utility-directives-contract.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/utility-directives-contract.spec.ts"
+      ]
     },
     {
       "name": "FocusTrapDirective",
@@ -14770,6 +14892,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/focus-trap/focus-trap.directive.spec.ts"
       ]
     },
@@ -14788,7 +14911,10 @@
           "declaration": "readonly styles = input<Record<string, string | number>>(\n    {},\n    { alias: 'orcUseStyle' },\n  );"
         }
       ],
-      "testReferences": ["projects/orc-ds/utility-directives-contract.spec.ts"]
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/utility-directives-contract.spec.ts"
+      ]
     },
     {
       "name": "VirtualScrollerComponent",
@@ -14862,6 +14988,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/virtual-scroller-contract.spec.ts"
@@ -15184,6 +15311,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/paginator/paginator-behavior.spec.ts",
@@ -15353,6 +15481,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/progress/progress-bar-behavior.spec.ts"
@@ -15577,6 +15706,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/progress/progress-spinner-behavior.spec.ts"
@@ -15696,6 +15826,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/radio/radio-contract.spec.ts"
       ]
@@ -16129,10 +16260,11 @@
     },
     {
       "name": "SelectComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-select",
       "file": "projects/orc-ds/select/select.component.ts",
-      "line": 46,
+      "line": 47,
       "inputs": [
         {
           "name": "id",
@@ -16688,7 +16820,8 @@
         "projects/orc-ds/select/select-input-contract.spec.ts",
         "projects/orc-ds/select/select-repair.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "SkeletonComponent",
@@ -17231,6 +17364,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/stepper/stepper.component.spec.ts"
@@ -17413,6 +17547,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/controls-repair.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
@@ -17483,6 +17618,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/tab-menu/tab-menu.component.spec.ts"
@@ -18439,6 +18575,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/tabs/tab-group.component.spec.ts"
@@ -18558,6 +18695,7 @@
         }
       ],
       "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/tabs/tab-group.component.spec.ts"
@@ -19699,7 +19837,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -20282,6 +20420,7 @@
     "projects/orc-ds/alert/alert.types.ts",
     "projects/orc-ds/alert/index.ts",
     "projects/orc-ds/alert/ng-package.json",
+    "projects/orc-ds/alias-parity.generated.spec.ts",
     "projects/orc-ds/all-components-lifecycle.spec.ts",
     "projects/orc-ds/animate-on-scroll/index.ts",
     "projects/orc-ds/animate-on-scroll/ng-package.json",
@@ -20661,7 +20800,11 @@
     "projects/orc-ds/interaction-repair.spec.ts",
     "projects/orc-ds/internal/anchored-popup.spec.ts",
     "projects/orc-ds/internal/anchored-popup.ts",
+    "projects/orc-ds/internal/cva-control.spec.ts",
+    "projects/orc-ds/internal/cva-control.ts",
     "projects/orc-ds/internal/index.ts",
+    "projects/orc-ds/internal/menu-keyboard.spec.ts",
+    "projects/orc-ds/internal/menu-keyboard.ts",
     "projects/orc-ds/internal/modal-isolation.spec.ts",
     "projects/orc-ds/internal/modal-isolation.ts",
     "projects/orc-ds/internal/ng-package.json",
@@ -20696,6 +20839,7 @@
     "projects/orc-ds/mega-menu/ng-package.json",
     "projects/orc-ds/megamenu/index.ts",
     "projects/orc-ds/megamenu/ng-package.json",
+    "projects/orc-ds/menu-family-dismissal-keyboard.spec.ts",
     "projects/orc-ds/menu/index.ts",
     "projects/orc-ds/menu/ng-package.json",
     "projects/orc-ds/menubar/index.ts",
@@ -21351,6 +21495,7 @@
     "orchestra-demo/src/styles.scss",
     "tools/material-symbols/generate.mjs",
     "tools/quality/browser-diagnostics.ts",
+    "tools/quality/generate-alias-parity.mjs",
     "tools/quality/generate-lifecycle-tests.mjs",
     "tools/quality/inventory.mjs",
     "tools/quality/ssr-render-one.mjs",

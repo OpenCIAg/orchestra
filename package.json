@@ -24,6 +24,8 @@
     "pack:lib": "npm pack ./dist/orc-ds",
     "verify:compatibility": "node tools/release/verify-compatibility.mjs",
     "verify:inventory": "node tools/quality/inventory.mjs --check",
+    "generate:alias-parity": "node tools/quality/generate-alias-parity.mjs",
+    "verify:alias-parity": "node tools/quality/generate-alias-parity.mjs --check",
     "verify:docs-integrity": "node tools/quality/verify-documentation-integrity.mjs",
     "verify:docs": "npm run verify:inventory && npm run verify:docs-integrity",
     "verify:package": "node tools/quality/verify-package.mjs",
