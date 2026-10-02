@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.22.3
+          node-version-file: .nvmrc
           cache: "npm"
 
       - name: Install dependencies
@@ -26,6 +26,9 @@ jobs:
 
       - name: Check library formatting
         run: npm run format:check
+
+      - name: Lint the workspace
+        run: npm run lint
 
       - name: Verify Angular compatibility line
         run: npm run verify:compatibility
