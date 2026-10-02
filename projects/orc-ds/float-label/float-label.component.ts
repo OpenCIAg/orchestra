@@ -1,9 +1,9 @@
 import {
   AfterViewInit,
-  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  inject,
   input,
   signal,
   ViewEncapsulation,
@@ -24,7 +24,7 @@ export class FloatLabelComponent implements AfterViewInit {
   readonly styleClass = input('');
   readonly focused = signal(false);
   readonly filled = signal(false);
-  constructor(private readonly host: ElementRef<HTMLElement>) {}
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   ngAfterViewInit(): void {
     this.syncFilled();
   }

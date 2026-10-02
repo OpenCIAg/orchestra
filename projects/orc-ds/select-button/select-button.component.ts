@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostListener,
   forwardRef,
   inject,
   input,
@@ -29,7 +28,9 @@ import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
     },
   ],
 })
-export class SelectButtonComponent<T = unknown> implements ControlValueAccessor {
+export class SelectButtonComponent<
+  T = unknown,
+> implements ControlValueAccessor {
   private readonly host = inject(ElementRef<HTMLElement>);
   readonly options = input<any[]>([]);
   readonly value = model<T | T[] | null>(null);
@@ -145,4 +146,3 @@ export class SelectButtonComponent<T = unknown> implements ControlValueAccessor 
     }
   }
 }
-

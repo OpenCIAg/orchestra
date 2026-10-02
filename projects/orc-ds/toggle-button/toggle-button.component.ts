@@ -76,4 +76,3 @@ export class ToggleButtonComponent implements ControlValueAccessor {
       this.onChange.emit({ originalEvent: event, checked: this.checked() });
   }
 }
-

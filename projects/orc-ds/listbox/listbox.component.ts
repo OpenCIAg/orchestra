@@ -8,7 +8,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
 import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
 
 @Component({
@@ -290,7 +290,11 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
       const index = current.findIndex((item) =>
         this.sameValue(item, candidate),
       );
-      index >= 0 ? current.splice(index, 1) : current.push(candidate);
+      if (index >= 0) {
+        current.splice(index, 1);
+      } else {
+        current.push(candidate);
+      }
       next = current as T[];
     } else next = candidate;
     const originalEvent = event ?? new Event('change');

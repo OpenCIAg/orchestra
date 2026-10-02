@@ -1,46 +1,44 @@
-    <label
-      class="p-datepicker p-component orc-p2-date-input"
-      [class]="'p-datepicker p-component orc-p2-date-input ' + styleClass()"
-      [style]="style()"
-      [class.p-datepicker-fluid]="fluid()"
-      [attr.data-pc-name]="'datepicker'"
-    >
-      @if (label()) {
-        <span [id]="effectiveId() + '-label'"
-          >{{ label() }}
-          @if (required()) {
-            <sup>*</sup>
-          }
-        </span>
+<label
+  class="p-datepicker p-component orc-p2-date-input"
+  [class]="'p-datepicker p-component orc-p2-date-input ' + styleClass()"
+  [style]="style()"
+  [class.p-datepicker-fluid]="fluid()"
+  [attr.data-pc-name]="'datepicker'"
+>
+  @if (label()) {
+    <span [id]="effectiveId() + '-label'"
+      >{{ label() }}
+      @if (required()) {
+        <sup>*</sup>
       }
-      <input
-        class="p-inputtext p-component"
-        [id]="effectiveId()"
-        [name]="name()"
-        type="date"
-        [value]="value()"
-        [min]="min() || null"
-        [max]="max() || null"
-        [required]="required()"
-        [disabled]="effectiveDisabled()"
-        [readonly]="readonly()"
-        [autofocus]="autofocus()"
-        [attr.tabindex]="tabindex()"
-        [attr.aria-label]="ariaLabel() || null"
-        [attr.aria-labelledby]="
-          ariaLabelledBy() || (label() ? effectiveId() + '-label' : null)
-        "
-        [attr.aria-describedby]="
-          helperText() ? effectiveId() + '-helper' : null
-        "
-        [attr.aria-invalid]="!!error()"
-        (input)="onInput($event)"
-        (blur)="onTouched()"
-      />
-      @if (error()) {
-        <small class="error" role="alert">{{ error() }}</small>
-      }
-      @if (!error() && helperText()) {
-        <small [id]="effectiveId() + '-helper'">{{ helperText() }}</small>
-      }
-    </label>
+    </span>
+  }
+  <input
+    class="p-inputtext p-component"
+    [id]="effectiveId()"
+    [name]="name()"
+    type="date"
+    [value]="value()"
+    [min]="min() || null"
+    [max]="max() || null"
+    [required]="required()"
+    [disabled]="effectiveDisabled()"
+    [readonly]="readonly()"
+    [autofocus]="autofocus()"
+    [attr.tabindex]="tabindex()"
+    [attr.aria-label]="ariaLabel() || null"
+    [attr.aria-labelledby]="
+      ariaLabelledBy() || (label() ? effectiveId() + '-label' : null)
+    "
+    [attr.aria-describedby]="helperText() ? effectiveId() + '-helper' : null"
+    [attr.aria-invalid]="!!error()"
+    (input)="onInput($event)"
+    (blur)="onTouched()"
+  />
+  @if (error()) {
+    <small class="error" role="alert">{{ error() }}</small>
+  }
+  @if (!error() && helperText()) {
+    <small [id]="effectiveId() + '-helper'">{{ helperText() }}</small>
+  }
+</label>

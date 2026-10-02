@@ -1,39 +1,39 @@
-    <section
-      class="orc-editor"
-      [class]="styleClass()"
-      [class.readonly]="readonly() || cvaDisabled()"
-    >
-      <div
-        class="toolbar"
-        role="toolbar"
-        [attr.aria-label]="(ariaLabel() || 'Text editor') + ' formatting'"
+<section
+  class="orc-editor"
+  [class]="styleClass()"
+  [class.readonly]="readonly() || cvaDisabled()"
+>
+  <div
+    class="toolbar"
+    role="toolbar"
+    [attr.aria-label]="(ariaLabel() || 'Text editor') + ' formatting'"
+  >
+    @for (action of actions(); track action.command) {
+      <button
+        type="button"
+        [disabled]="readonly() || cvaDisabled()"
+        (mousedown)="preserveToolbarSelection($event)"
+        (click)="exec(action.command)"
+        [attr.aria-label]="action.label || action.command"
       >
-        @for (action of actions(); track action.command) {
-          <button
-            type="button"
-            [disabled]="readonly() || cvaDisabled()"
-            (mousedown)="preserveToolbarSelection($event)"
-            (click)="exec(action.command)"
-            [attr.aria-label]="action.label || action.command"
-          >
-            {{ action.icon }}
-          </button>
-        }
-      </div>
-      <div
-        #surface
-        class="surface"
-        role="textbox"
-        aria-multiline="true"
-        [attr.aria-label]="ariaLabel() || 'Text editor'"
-        [attr.aria-readonly]="readonly() ? 'true' : null"
-        [attr.aria-disabled]="cvaDisabled() ? 'true' : null"
-        [attr.contenteditable]="readonly() || cvaDisabled() ? 'false' : 'true'"
-        [attr.data-placeholder]="placeholder() || null"
-        [innerHTML]="value()"
-        (input)="onInput($event)"
-        (keyup)="emitSelectionChange($event)"
-        (mouseup)="emitSelectionChange($event)"
-        (blur)="handleBlur()"
-      ></div>
-    </section>
+        {{ action.icon }}
+      </button>
+    }
+  </div>
+  <div
+    #surface
+    class="surface"
+    role="textbox"
+    aria-multiline="true"
+    [attr.aria-label]="ariaLabel() || 'Text editor'"
+    [attr.aria-readonly]="readonly() ? 'true' : null"
+    [attr.aria-disabled]="cvaDisabled() ? 'true' : null"
+    [attr.contenteditable]="readonly() || cvaDisabled() ? 'false' : 'true'"
+    [attr.data-placeholder]="placeholder() || null"
+    [innerHTML]="value()"
+    (input)="onInput($event)"
+    (keyup)="emitSelectionChange($event)"
+    (mouseup)="emitSelectionChange($event)"
+    (blur)="handleBlur()"
+  ></div>
+</section>

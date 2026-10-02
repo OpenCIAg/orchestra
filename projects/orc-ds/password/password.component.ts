@@ -21,10 +21,7 @@ import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
   styleUrl: './password.component.scss',
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'p-password p-component',
-    '[attr.data-pc-name]': "'password'",
-  },
+  host: {},
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

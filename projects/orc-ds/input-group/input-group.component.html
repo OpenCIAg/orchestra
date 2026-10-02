@@ -1,9 +1,9 @@
 <div
-    class="orc-p2-input-group"
-    [attr.role]="label().trim() ? 'group' : null"
-    [attr.aria-label]="label().trim() || null"
-  >
-    <span class="prefix" [class.empty]="!prefix()">{{ prefix() }}</span>
-    <div class="control"><ng-content /></div>
-    <span class="suffix" [class.empty]="!suffix()">{{ suffix() }}</span>
-  </div>
+  class="orc-p2-input-group"
+  [attr.role]="label().trim() ? 'group' : null"
+  [attr.aria-label]="label().trim() || null"
+>
+  <span class="prefix" [class.empty]="!prefix()">{{ prefix() }}</span>
+  <div class="control"><ng-content /></div>
+  <span class="suffix" [class.empty]="!suffix()">{{ suffix() }}</span>
+</div>

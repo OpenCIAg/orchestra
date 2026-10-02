@@ -136,7 +136,7 @@ describe('MultiSelect behavior parity', () => {
     );
     fixture.componentRef.setInput('selectAllLabel', 'Select all');
     fixture.componentRef.setInput('clearAllLabel', 'Clear all');
-    const options = openPanel(fixture);
+    openPanel(fixture);
     const toggleAll = Array.from(
       fixture.nativeElement.querySelectorAll(
         'button',

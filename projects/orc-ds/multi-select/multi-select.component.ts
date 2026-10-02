@@ -308,7 +308,11 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
       if (this.resetFilterOnHide()) this.filterValue.set('');
       this.activeIndex.set(-1);
     }
-    this.open() ? this.onPanelShow.emit() : this.onPanelHide.emit();
+    if (this.open()) {
+      this.onPanelShow.emit();
+    } else {
+      this.onPanelHide.emit();
+    }
   }
   onKeydown(event: KeyboardEvent): void {
     if (this.disabled() || this.cvaDisabled() || this.readonly()) return;

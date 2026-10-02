@@ -1,4 +1,3 @@
-import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
 import { KnobComponent } from '@ciag/orchestra/p2';
 

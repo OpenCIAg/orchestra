@@ -2,6 +2,7 @@ import {
   booleanAttribute,
   Directive,
   ElementRef,
+  inject,
   HostBinding,
   HostListener,
   forwardRef,
@@ -73,7 +74,7 @@ export class InputMaskDirective implements ControlValueAccessor {
   private onModelTouched: () => void = () => {};
   private cvaDisabled = false;
   private composing = false;
-  constructor(private readonly host: ElementRef<HTMLInputElement>) {}
+  private readonly host = inject<ElementRef<HTMLInputElement>>(ElementRef);
   @HostBinding('attr.id') get hostId(): string | null {
     return this.inputId() ?? null;
   }

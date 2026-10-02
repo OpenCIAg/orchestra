@@ -1,5 +1,4 @@
 import { Component, signal, viewChild } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
 import { InputMaskDirective, KeyFilterDirective } from '@ciag/orchestra/p2';

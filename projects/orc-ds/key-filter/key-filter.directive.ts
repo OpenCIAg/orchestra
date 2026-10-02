@@ -1,4 +1,10 @@
-import { booleanAttribute, Directive, HostListener, input, output } from '@angular/core';
+import {
+  booleanAttribute,
+  Directive,
+  HostListener,
+  input,
+  output,
+} from '@angular/core';
 
 @Directive({ selector: '[orcKeyFilter],[pKeyFilter]', standalone: true })
 export class KeyFilterDirective {
@@ -45,4 +51,3 @@ export class KeyFilterDirective {
     this.ngModelChange.emit(value);
   }
 }
-

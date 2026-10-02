@@ -1,66 +1,64 @@
-    <div
-      class="p-listbox p-component orc-p2-listbox-wrap"
-      [class]="'p-listbox p-component orc-p2-listbox-wrap ' + styleClass()"
-      [style]="style()"
-      [attr.data-pc-name]="'listbox'"
-    >
-      @if (label()) {
-        <label [attr.id]="effectiveId() + '-label'">{{ label() }}</label>
-      }
-      @if (filter()) {
-        <input
-          [value]="filterValue()"
-          [attr.placeholder]="filterPlaceholder() || null"
-          (input)="onFilterInput($event)"
-          [attr.aria-label]="effectiveFilterAriaLabel()"
-        />
-      }
-      <ul
-        class="p-listbox-list orc-p2-listbox"
-        [attr.id]="effectiveId()"
-        [class]="'p-listbox-list orc-p2-listbox ' + listStyleClass()"
-        [style]="listStyle()"
-        [style.max-height]="scrollHeight()"
-        role="listbox"
-        [attr.aria-label]="effectiveAriaLabel()"
-        [attr.aria-labelledby]="effectiveAriaLabelledBy()"
-        [attr.aria-multiselectable]="multiple()"
-        [attr.tabindex]="tabindex()"
-        [attr.aria-activedescendant]="activeOptionId()"
-        [attr.aria-disabled]="disabled() || cvaDisabled()"
-        (keydown)="onKeydown($event)"
-        (focus)="onFocus.emit($event)"
-        (blur)="onBlur.emit($event); onModelTouched()"
+<div
+  class="p-listbox p-component orc-p2-listbox-wrap"
+  [class]="'p-listbox p-component orc-p2-listbox-wrap ' + styleClass()"
+  [style]="style()"
+  [attr.data-pc-name]="'listbox'"
+>
+  @if (label()) {
+    <label [attr.id]="effectiveId() + '-label'">{{ label() }}</label>
+  }
+  @if (filter()) {
+    <input
+      [value]="filterValue()"
+      [attr.placeholder]="filterPlaceholder() || null"
+      (input)="onFilterInput($event)"
+      [attr.aria-label]="effectiveFilterAriaLabel()"
+    />
+  }
+  <ul
+    class="p-listbox-list orc-p2-listbox"
+    [attr.id]="effectiveId()"
+    [class]="'p-listbox-list orc-p2-listbox ' + listStyleClass()"
+    [style]="listStyle()"
+    [style.max-height]="scrollHeight()"
+    role="listbox"
+    [attr.aria-label]="effectiveAriaLabel()"
+    [attr.aria-labelledby]="effectiveAriaLabelledBy()"
+    [attr.aria-multiselectable]="multiple()"
+    [attr.tabindex]="tabindex()"
+    [attr.aria-activedescendant]="activeOptionId()"
+    [attr.aria-disabled]="disabled() || cvaDisabled()"
+    (keydown)="onKeydown($event)"
+    (focus)="onFocus.emit($event)"
+    (blur)="onBlur.emit($event); onModelTouched()"
+  >
+    @for (option of filteredOptions(); track getOptionValue(option)) {
+      <li
+        class="p-listbox-option"
+        [id]="optionId($index)"
+        role="option"
+        [attr.aria-selected]="isSelected(option)"
+        [attr.aria-disabled]="isOptionDisabled(option) ? 'true' : null"
+        [class.is-selected]="isSelected(option)"
+        [class.is-active]="activeOptionIndex() === $index"
+        [class.is-disabled]="isOptionDisabled(option)"
+        (mouseenter)="
+          focusOnHover() && !isOptionDisabled(option) && activeIndex.set($index)
+        "
+        (click)="select(option, $event)"
+        (dblclick)="onDblClick.emit({ originalEvent: $event, option })"
       >
-        @for (option of filteredOptions(); track getOptionValue(option)) {
-          <li
-            class="p-listbox-option"
-            [id]="optionId($index)"
-            role="option"
-            [attr.aria-selected]="isSelected(option)"
-            [attr.aria-disabled]="isOptionDisabled(option) ? 'true' : null"
-            [class.is-selected]="isSelected(option)"
-            [class.is-active]="activeOptionIndex() === $index"
-            [class.is-disabled]="isOptionDisabled(option)"
-            (mouseenter)="
-              focusOnHover() &&
-                !isOptionDisabled(option) &&
-                activeIndex.set($index)
-            "
-            (click)="select(option, $event)"
-            (dblclick)="onDblClick.emit({ originalEvent: $event, option })"
-          >
-            <span>{{ getOptionLabel(option) }}</span>
-            @if (option.description) {
-              <small>{{ option.description }}</small>
-            }
-          </li>
-        } @empty {
-          @if (filterValue() ? emptyFilterMessage() : emptyText()) {
-            <li class="empty">
-              {{ filterValue() ? emptyFilterMessage() : emptyText() }}
-            </li>
-          }
+        <span>{{ getOptionLabel(option) }}</span>
+        @if (option.description) {
+          <small>{{ option.description }}</small>
         }
-      </ul>
-    </div>
+      </li>
+    } @empty {
+      @if (filterValue() ? emptyFilterMessage() : emptyText()) {
+        <li class="empty">
+          {{ filterValue() ? emptyFilterMessage() : emptyText() }}
+        </li>
+      }
+    }
+  </ul>
+</div>
