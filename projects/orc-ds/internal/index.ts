@@ -5,3 +5,6 @@ export * from './overlay-position';
 export * from './anchored-popup';
 export * from './cva-control';
 export * from './menu-keyboard';
+export * from './menu-item';
+export * from './p2-shared';
+export * from './dom-target';

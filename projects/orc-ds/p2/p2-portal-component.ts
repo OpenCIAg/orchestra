@@ -11,7 +11,7 @@ import {
   input,
 } from '@angular/core';
 import { P2_SHARED_STYLES } from './p2-shared';
-import { isElementTarget } from './p2-dom-target';
+import { isElementTarget } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-portal',
