@@ -1,0 +1,106 @@
+<section
+  class="p-datepicker p-component orc-p2-calendar"
+  [class]="'p-datepicker p-component orc-p2-calendar ' + styleClass()"
+  [style]="style()"
+  [attr.data-pc-name]="'calendar'"
+  [attr.data-pc-section]="'root'"
+  [attr.aria-label]="ariaLabel() || null"
+  (focusout)="onFocusOut($event)"
+>
+  <header class="orc-p2-calendar__header">
+    <button
+      type="button"
+      [attr.aria-label]="previousMonthLabel() || 'Previous month'"
+      [disabled]="isDisabled()"
+      (click)="previousMonth()"
+    >
+      ‹
+    </button>
+    <strong aria-live="polite" aria-atomic="true">{{ monthLabel() }}</strong>
+    <button
+      type="button"
+      [attr.aria-label]="nextMonthLabel() || 'Next month'"
+      [disabled]="isDisabled()"
+      (click)="nextMonth()"
+    >
+      ›
+    </button>
+  </header>
+  <div
+    class="p-datepicker-calendar orc-p2-calendar__grid"
+    [id]="effectiveId() + '-grid'"
+    role="grid"
+    [attr.tabindex]="activeDate() ? -1 : 0"
+    [attr.aria-label]="monthLabel()"
+  >
+    <div class="orc-p2-calendar__weekdays" role="row">
+      @for (weekday of weekdays(); track weekday) {
+        <span role="columnheader">{{ weekday }}</span>
+      }
+    </div>
+    @for (week of weeks(); track week[0].iso) {
+      <div class="orc-p2-calendar__week" role="row">
+        @for (day of week; track day.iso) {
+          <div
+            class="orc-p2-calendar__cell"
+            role="gridcell"
+            [attr.aria-selected]="isSelected(day.iso)"
+          >
+            @if (showOtherMonths() || day.inCurrentMonth) {
+              <button
+                type="button"
+                class="p-datepicker-day p-datepicker-calendar-container orc-p2-calendar__day"
+                [class.orc-p2-calendar__day--outside]="!day.inCurrentMonth"
+                [class.orc-p2-calendar__day--today]="day.today"
+                [class.orc-p2-calendar__day--selected]="isSelected(day.iso)"
+                [disabled]="day.disabled"
+                [attr.data-date]="day.iso"
+                [attr.aria-current]="day.today ? 'date' : null"
+                [attr.aria-label]="day.iso"
+                [tabIndex]="activeDate() === day.iso ? 0 : -1"
+                (click)="selectDay(day)"
+                (keydown)="onDayKeydown($event, day)"
+              >
+                {{ day.day }}
+              </button>
+            } @else {
+              <span
+                class="orc-p2-calendar__placeholder"
+                aria-hidden="true"
+              ></span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+  @if (showTime()) {
+    <label class="orc-p2-calendar__time"
+      >Time
+      <input
+        type="time"
+        [value]="timeValue()"
+        [disabled]="isDisabled()"
+        (input)="onTimeInput($event)"
+      />
+    </label>
+  }
+  @if (showButtonBar() && (todayLabel() || clearLabel())) {
+    <footer class="p-datepicker-buttonbar orc-p2-calendar__buttonbar">
+      @if (todayLabel()) {
+        <button
+          type="button"
+          [disabled]="isDisabled() || !isTodaySelectable()"
+          (click)="today()"
+        >
+          {{ todayLabel() }}
+        </button>
+      }
+      @if (clearLabel()) {
+        <button type="button" [disabled]="isDisabled()" (click)="clear()">
+          {{ clearLabel() }}
+        </button>
+      }
+    </footer>
+  }
+</section>

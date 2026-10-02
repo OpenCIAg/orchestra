@@ -147,7 +147,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `button`                 | `orc-button`, `orc-icon-button`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/button)                 |
 | `button-group`           | alias of `p2` (`ButtonGroupComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/button-group)           |
 | `buttongroup`            | alias of `button-group`                                                                 | —                                                                                   |
-| `calendar`               | alias of `p2` (`CalendarComponent`)                                                     | [interactive docs](https://orchestra.ciag.org.br/components/calendar)               |
+| `calendar`               | `orc-calendar`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/calendar)               |
 | `card`                   | `orc-card-body`, `orc-card-footer`, `orc-card-header`, `orc-card`                       | [interactive docs](https://orchestra.ciag.org.br/components/card)                   |
 | `carousel`               | `orc-carousel`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/carousel)               |
 | `cascade-select`         | alias of `p2` (`CascadeSelectComponent`)                                                | [interactive docs](https://orchestra.ciag.org.br/components/cascade-select)         |
@@ -162,7 +162,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `collapsible`            | `orc-collapsible`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/collapsible)            |
 | `color-picker`           | `orc-color-picker`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/color-picker)           |
 | `colorpicker`            | alias of `color-picker`                                                                 | —                                                                                   |
-| `combobox`               | alias of `p2` (`ComboboxComponent`)                                                     | [interactive docs](https://orchestra.ciag.org.br/components/combobox)               |
+| `combobox`               | `orc-combobox`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/combobox)               |
 | `command-menu`           | alias of `p2` (`CommandMenuComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/command-menu)           |
 | `compare`                | alias of `p2` (`CompareComponent`)                                                      | —                                                                                   |
 | `confirm-dialog`         | alias of `p2` (`ConfirmDialogComponent`, `ConfirmationService`)                         | [interactive docs](https://orchestra.ciag.org.br/components/confirm-dialog)         |
@@ -175,7 +175,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `data-table`             | alias of `p2` (`DataTableComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/data-table)             |
 | `data-view`              | `orc-data-view`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/data-view)              |
 | `dataview`               | alias of `data-view`                                                                    | —                                                                                   |
-| `date-input`             | alias of `p2` (`DateInputComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/date-input)             |
+| `date-input`             | `orc-date-input`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/date-input)             |
 | `date-picker`            | `orc-date-picker-calendar`, `orc-date-picker`                                           | [interactive docs](https://orchestra.ciag.org.br/components/date-picker)            |
 | `datepicker`             | alias of `date-picker` (`DatepickerComponent`, `DatePicker`)                            | —                                                                                   |
 | `defer`                  | `DeferDirective`                                                                        | —                                                                                   |
@@ -188,14 +188,14 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `dropdown`               | `orc-dropdown`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/dropdown)               |
 | `dynamic-dialog`         | alias of `modal` (`DynamicDialogComponent`, `DynamicDialogService`, `DynamicDialogRef`) | —                                                                                   |
 | `dynamicdialog`          | alias of `dynamic-dialog`                                                               | —                                                                                   |
-| `editor`                 | alias of `p2` (`EditorComponent`)                                                       | [interactive docs](https://orchestra.ciag.org.br/components/editor)                 |
+| `editor`                 | `orc-editor`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/editor)                 |
 | `empty-state`            | `orc-empty-state`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/empty-state)            |
 | `fieldset`               | alias of `p2` (`FieldsetComponent`)                                                     | [interactive docs](https://orchestra.ciag.org.br/components/fieldset)               |
 | `file-upload`            | alias of `file-uploader` (`FileUploadComponent`, `FileUpload`)                          | —                                                                                   |
 | `file-uploader`          | `orc-file-item`, `orc-file-uploader`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/file-uploader)          |
 | `fileupload`             | alias of `file-upload`                                                                  | —                                                                                   |
 | `flex`                   | alias of `p2` (`FlexComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/flex)                   |
-| `float-label`            | alias of `p2` (`FloatLabelComponent`)                                                   | [interactive docs](https://orchestra.ciag.org.br/components/float-label)            |
+| `float-label`            | `orc-float-label`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/float-label)            |
 | `floating-action-button` | alias of `p2` (`FloatingActionButtonComponent`)                                         | [interactive docs](https://orchestra.ciag.org.br/components/floating-action-button) |
 | `floatlabel`             | alias of `float-label`                                                                  | —                                                                                   |
 | `fluid`                  | alias of `p2` (`FluidComponent`)                                                        | [interactive docs](https://orchestra.ciag.org.br/components/fluid)                  |
@@ -208,10 +208,10 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `grid`                   | alias of `p2` (`GridComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/grid)                   |
 | `hover-card`             | `orc-hover-card`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/hover-card)             |
 | `icon`                   | `orc-icon`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/icon)                   |
-| `icon-field`             | alias of `p2` (`IconFieldComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/icon-field)             |
+| `icon-field`             | `orc-icon-field`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/icon-field)             |
 | `iconfield`              | alias of `icon-field`                                                                   | —                                                                                   |
 | `icons`                  | —                                                                                       | —                                                                                   |
-| `ifta-label`             | alias of `p2` (`IftaLabelComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/ifta-label)             |
+| `ifta-label`             | `orc-ifta-label`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/ifta-label)             |
 | `iftalabel`              | alias of `ifta-label`                                                                   | —                                                                                   |
 | `image`                  | `orc-image`                                                                             | [interactive docs](https://orchestra.ciag.org.br/components/image)                  |
 | `image-compare`          | `orc-image-compare`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/image-compare)          |
@@ -220,10 +220,10 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `input`                  | `orc-input`, `orc-textarea`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/input)                  |
 | `input-chips`            | alias of `p2` (`InputChipsComponent`)                                                   | —                                                                                   |
 | `input-color`            | alias of `p2` (`InputColorComponent`)                                                   | [interactive docs](https://orchestra.ciag.org.br/components/input-color)            |
-| `input-group`            | alias of `p2` (`InputGroupComponent`)                                                   | [interactive docs](https://orchestra.ciag.org.br/components/input-group)            |
-| `input-group-addon`      | alias of `p2` (`InputGroupAddonComponent`)                                              | [interactive docs](https://orchestra.ciag.org.br/components/input-group)            |
+| `input-group`            | `orc-input-group`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/input-group)            |
+| `input-group-addon`      | `orc-input-group-addon`                                                                 | [interactive docs](https://orchestra.ciag.org.br/components/input-group)            |
 | `input-icon`             | alias of `p2` (`InputIconComponent`)                                                    | —                                                                                   |
-| `input-mask`             | alias of `p2` (`InputMaskDirective`)                                                    | —                                                                                   |
+| `input-mask`             | `InputMaskDirective`                                                                    | —                                                                                   |
 | `input-number`           | alias of `number-input` (`InputNumberComponent`, `InputNumber`)                         | —                                                                                   |
 | `input-otp`              | alias of `otp-input` (`InputOtpComponent`, `InputOtp`)                                  | —                                                                                   |
 | `input-password`         | alias of `p2` (`InputPasswordComponent`, `InputPassword`)                               | —                                                                                   |
@@ -241,13 +241,13 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `inputtextarea`          | alias of `input-textarea`                                                               | —                                                                                   |
 | `internal`               | —                                                                                       | —                                                                                   |
 | `kbd`                    | alias of `p2` (`KbdComponent`)                                                          | [interactive docs](https://orchestra.ciag.org.br/components/kbd)                    |
-| `key-filter`             | alias of `p2` (`KeyFilterDirective`)                                                    | —                                                                                   |
+| `key-filter`             | `KeyFilterDirective`                                                                    | —                                                                                   |
 | `keyfilter`              | alias of `key-filter`                                                                   | —                                                                                   |
-| `knob`                   | alias of `p2` (`KnobComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/knob)                   |
+| `knob`                   | `orc-knob`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/knob)                   |
 | `label`                  | alias of `form-field` (`LabelComponent`)                                                | —                                                                                   |
 | `link`                   | alias of `p2` (`LinkComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/link)                   |
 | `list`                   | `orc-list`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/list)                   |
-| `listbox`                | alias of `p2` (`ListboxComponent`)                                                      | [interactive docs](https://orchestra.ciag.org.br/components/listbox)                |
+| `listbox`                | `orc-listbox`                                                                           | [interactive docs](https://orchestra.ciag.org.br/components/listbox)                |
 | `mega-menu`              | `orc-mega-menu`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/mega-menu)              |
 | `megamenu`               | alias of `mega-menu`                                                                    | —                                                                                   |
 | `menu`                   | alias of `p2` (`MenuComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/menu)                   |
@@ -257,7 +257,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `meter-group`            | `orc-meter-group`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/meter-group)            |
 | `metergroup`             | alias of `meter-group`                                                                  | —                                                                                   |
 | `modal`                  | `orc-modal`                                                                             | [interactive docs](https://orchestra.ciag.org.br/components/modal)                  |
-| `multi-select`           | alias of `p2` (`MultiSelectComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/multi-select)           |
+| `multi-select`           | `orc-multi-select`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/multi-select)           |
 | `multiselect`            | alias of `multi-select`                                                                 | —                                                                                   |
 | `navigation`             | `orc-navigation-shell`, `orc-navigation-item`                                           | [interactive docs](https://orchestra.ciag.org.br/components/navigation)             |
 | `number-input`           | `orc-number-input`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/number-input)           |
@@ -277,7 +277,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `panel`                  | alias of `p2` (`PanelComponent`)                                                        | [interactive docs](https://orchestra.ciag.org.br/components/panel)                  |
 | `panel-menu`             | `orc-panel-menu`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/panel-menu)             |
 | `panelmenu`              | alias of `panel-menu`                                                                   | —                                                                                   |
-| `password`               | alias of `p2` (`PasswordComponent`)                                                     | [interactive docs](https://orchestra.ciag.org.br/components/password)               |
+| `password`               | `orc-password`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/password)               |
 | `pick-list`              | `orc-pick-list`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/pick-list)              |
 | `picklist`               | alias of `pick-list`                                                                    | —                                                                                   |
 | `popover`                | —                                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/popover)                |
@@ -300,7 +300,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `scrolltop`              | alias of `scroll-top`                                                                   | —                                                                                   |
 | `segmented-control`      | `orc-segmented-control`                                                                 | [interactive docs](https://orchestra.ciag.org.br/components/segmented-control)      |
 | `select`                 | `orc-option`, `orc-select`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/select)                 |
-| `select-button`          | alias of `p2` (`SelectButtonComponent`)                                                 | [interactive docs](https://orchestra.ciag.org.br/components/select-button)          |
+| `select-button`          | `orc-select-button`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/select-button)          |
 | `selectbutton`           | alias of `select-button`                                                                | —                                                                                   |
 | `separator`              | alias of `p2` (`SeparatorComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/separator)              |
 | `sidebar`                | alias of `drawer` (`SidebarComponent`)                                                  | —                                                                                   |
@@ -325,7 +325,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `tabs`                   | `orc-tab-group`, `orc-tab`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/tabs)                   |
 | `tabview`                | alias of `tabs`                                                                         | —                                                                                   |
 | `tag`                    | `orc-tag`                                                                               | [interactive docs](https://orchestra.ciag.org.br/components/tag)                    |
-| `tags-input`             | alias of `p2` (`TagsInputComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/tags-input)             |
+| `tags-input`             | `orc-tags-input`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/tags-input)             |
 | `terminal`               | `orc-terminal`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/terminal)               |
 | `text`                   | alias of `p2` (`TextComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/text)                   |
 | `text-input`             | —                                                                                       | —                                                                                   |
@@ -335,7 +335,7 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `timeline`               | `orc-timeline`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/timeline)               |
 | `toast`                  | `orc-toast-container`, `orc-toast`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/toast)                  |
 | `toggle`                 | —                                                                                       | —                                                                                   |
-| `toggle-button`          | alias of `p2` (`ToggleButtonComponent`)                                                 | [interactive docs](https://orchestra.ciag.org.br/components/toggle-button)          |
+| `toggle-button`          | `orc-toggle-button`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/toggle-button)          |
 | `toggle-switch`          | alias of `switch` (`ToggleSwitchComponent`, `ToggleSwitch`)                             | —                                                                                   |
 | `togglebutton`           | alias of `toggle-button`                                                                | —                                                                                   |
 | `toggleswitch`           | alias of `toggle-switch`                                                                | —                                                                                   |

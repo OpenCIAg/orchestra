@@ -1,0 +1,28 @@
+.orc-select-button {
+  display: inline-flex;
+  gap: 0;
+}
+.orc-select-button button {
+  border: 1px solid var(--orc-component-border-strong);
+  background: var(--orc-component-surface);
+  padding: 0.55rem 0.8rem;
+}
+.orc-select-button--small button {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.875rem;
+}
+.orc-select-button--large button {
+  padding: 0.7rem 1rem;
+  font-size: 1.125rem;
+}
+.orc-select-button button:first-child {
+  border-radius: 0.4rem 0 0 0.4rem;
+}
+.orc-select-button button:last-child {
+  border-radius: 0 0.4rem 0.4rem 0;
+}
+.orc-select-button button.selected {
+  border-color: var(--orc-component-interactive);
+  background: var(--orc-component-interactive);
+  color: var(--orc-component-on-interactive);
+}

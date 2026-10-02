@@ -10,3 +10,6 @@ export * from './p2-shared';
 export * from './tree-filter';
 export * from './table-engine';
 export * from './dom-target';
+export * from './tree-filter';
+export * from './table-engine';
+export * from './date-utils';

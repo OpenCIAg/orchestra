@@ -3,7 +3,7 @@
 // (reference identity, not name equality) as its canonical declaration, and
 // every import used below compiles in the spec build. Regenerate with:
 //   npm run generate:alias-parity
-// Alias entry points: 140. Value exports asserted: 171. Type exports resolved: 48.
+// Alias entry points: 122. Value exports asserted: 153. Type exports resolved: 43.
 import { AnimateOnScrollDirective as animate_on_scroll__AnimateOnScrollDirective } from '@ciag/orchestra/animate-on-scroll';
 import { AnimateOnScrollDirective as canonical__p2_p2_utility_more__AnimateOnScrollDirective } from './p2/p2-utility-more';
 import { AnimateOnScrollDirective as animateonscroll__AnimateOnScrollDirective } from '@ciag/orchestra/animateonscroll';
@@ -22,22 +22,18 @@ import { BoxComponent as canonical__p2_p2_layout_components__BoxComponent } from
 import { ButtonGroupComponent as button_group__ButtonGroupComponent } from '@ciag/orchestra/button-group';
 import { ButtonGroupComponent as canonical__p2_p2_layout_components__ButtonGroupComponent } from './p2/p2-layout-components';
 import { ButtonGroupComponent as buttongroup__ButtonGroupComponent } from '@ciag/orchestra/buttongroup';
-import { CalendarComponent as calendar__CalendarComponent } from '@ciag/orchestra/calendar';
-import { CalendarComponent as canonical__p2_p2_calendar_component__CalendarComponent } from './p2/p2-calendar-component';
 import { CascadeSelectComponent as cascade_select__CascadeSelectComponent } from '@ciag/orchestra/cascade-select';
 import { CascadeSelectComponent as canonical__p2_p2_cascade_select_component__CascadeSelectComponent } from './p2/p2-cascade-select-component';
 import { CascadeSelectComponent as cascadeselect__CascadeSelectComponent } from '@ciag/orchestra/cascadeselect';
 import { ChartComponent as chart__ChartComponent } from '@ciag/orchestra/chart';
 import { ChartComponent as canonical__p2_p2_chart_editor_components__ChartComponent } from './p2/p2-chart-editor-components';
 import { ChipsComponent as chips__ChipsComponent } from '@ciag/orchestra/chips';
-import { TagsInputComponent as canonical__p2_p2_tags_input_component__TagsInputComponent } from './p2/p2-tags-input-component';
+import { TagsInputComponent as canonical__tags_input_tags_input_component__TagsInputComponent } from './tags-input/tags-input.component';
 import { CloseButtonComponent as close_button__CloseButtonComponent } from '@ciag/orchestra/close-button';
 import { CloseButtonComponent as canonical__p2_p2_overlay_components__CloseButtonComponent } from './p2/p2-overlay-components';
 import { ColorPicker as colorpicker__ColorPicker } from '@ciag/orchestra/colorpicker';
 import { ColorPickerComponent as canonical__color_picker_color_picker_component__ColorPickerComponent } from './color-picker/color-picker.component';
 import { ColorPickerComponent as colorpicker__ColorPickerComponent } from '@ciag/orchestra/colorpicker';
-import { ComboboxComponent as combobox__ComboboxComponent } from '@ciag/orchestra/combobox';
-import { ComboboxComponent as canonical__p2_p2_combobox_component__ComboboxComponent } from './p2/p2-combobox-component';
 import { CommandMenuComponent as command_menu__CommandMenuComponent } from '@ciag/orchestra/command-menu';
 import { CommandMenuComponent as canonical__p2_p2_command_components__CommandMenuComponent } from './p2/p2-command-components';
 import { CompareComponent as compare__CompareComponent } from '@ciag/orchestra/compare';
@@ -60,8 +56,6 @@ import { DataTableComponent as data_table__DataTableComponent } from '@ciag/orch
 import { DataTableComponent as canonical__p2_p2_data_table_component__DataTableComponent } from './p2/p2-data-table-component';
 import { DataViewComponent as dataview__DataViewComponent } from '@ciag/orchestra/dataview';
 import { DataViewComponent as canonical__data_view_data_view_component__DataViewComponent } from './data-view/data-view.component';
-import { DateInputComponent as date_input__DateInputComponent } from '@ciag/orchestra/date-input';
-import { DateInputComponent as canonical__p2_p2_date_input_component__DateInputComponent } from './p2/p2-date-input-component';
 import { DatePicker as datepicker__DatePicker } from '@ciag/orchestra/datepicker';
 import { DatePickerComponent as canonical__date_picker_date_picker_component__DatePickerComponent } from './date-picker/date-picker.component';
 import { DatepickerComponent as datepicker__DatepickerComponent } from '@ciag/orchestra/datepicker';
@@ -82,8 +76,6 @@ import { DynamicDialogService as dynamic_dialog__DynamicDialogService } from '@c
 import { DynamicDialogComponent as dynamicdialog__DynamicDialogComponent } from '@ciag/orchestra/dynamicdialog';
 import { DynamicDialogRef as dynamicdialog__DynamicDialogRef } from '@ciag/orchestra/dynamicdialog';
 import { DynamicDialogService as dynamicdialog__DynamicDialogService } from '@ciag/orchestra/dynamicdialog';
-import { EditorComponent as editor__EditorComponent } from '@ciag/orchestra/editor';
-import { EditorComponent as canonical__p2_p2_editor_component__EditorComponent } from './p2/p2-editor-component';
 import { FieldsetComponent as fieldset__FieldsetComponent } from '@ciag/orchestra/fieldset';
 import { FieldsetComponent as canonical__p2_p2_primeng_gap_components__FieldsetComponent } from './p2/p2-primeng-gap-components';
 import { FileUpload as file_upload__FileUpload } from '@ciag/orchestra/file-upload';
@@ -93,11 +85,10 @@ import { FileUpload as fileupload__FileUpload } from '@ciag/orchestra/fileupload
 import { FileUploadComponent as fileupload__FileUploadComponent } from '@ciag/orchestra/fileupload';
 import { FlexComponent as flex__FlexComponent } from '@ciag/orchestra/flex';
 import { FlexComponent as canonical__p2_p2_layout_components__FlexComponent } from './p2/p2-layout-components';
-import { FloatLabelComponent as float_label__FloatLabelComponent } from '@ciag/orchestra/float-label';
-import { FloatLabelComponent as canonical__p2_p2_primeng_gap_components__FloatLabelComponent } from './p2/p2-primeng-gap-components';
 import { FloatingActionButtonComponent as floating_action_button__FloatingActionButtonComponent } from '@ciag/orchestra/floating-action-button';
 import { FloatingActionButtonComponent as canonical__p2_p2_overlay_components__FloatingActionButtonComponent } from './p2/p2-overlay-components';
 import { FloatLabelComponent as floatlabel__FloatLabelComponent } from '@ciag/orchestra/floatlabel';
+import { FloatLabelComponent as canonical__float_label_float_label_component__FloatLabelComponent } from './float-label/float-label.component';
 import { FluidComponent as fluid__FluidComponent } from '@ciag/orchestra/fluid';
 import { FluidComponent as canonical__p2_p2_primeng_gap_components__FluidComponent } from './p2/p2-primeng-gap-components';
 import { FocusTrapDirective as focus_trap__FocusTrapDirective } from '@ciag/orchestra/focus-trap';
@@ -107,25 +98,17 @@ import { GalleryComponent as gallery__GalleryComponent } from '@ciag/orchestra/g
 import { GalleriaComponent as canonical__galleria_galleria_component__GalleriaComponent } from './galleria/galleria.component';
 import { GridComponent as grid__GridComponent } from '@ciag/orchestra/grid';
 import { GridComponent as canonical__p2_p2_layout_components__GridComponent } from './p2/p2-layout-components';
-import { IconFieldComponent as icon_field__IconFieldComponent } from '@ciag/orchestra/icon-field';
-import { IconFieldComponent as canonical__p2_p2_input_gap_components__IconFieldComponent } from './p2/p2-input-gap-components';
 import { IconFieldComponent as iconfield__IconFieldComponent } from '@ciag/orchestra/iconfield';
-import { IftaLabelComponent as ifta_label__IftaLabelComponent } from '@ciag/orchestra/ifta-label';
-import { IftaLabelComponent as canonical__p2_p2_input_gap_components__IftaLabelComponent } from './p2/p2-input-gap-components';
+import { IconFieldComponent as canonical__icon_field_icon_field_component__IconFieldComponent } from './icon-field/icon-field.component';
 import { IftaLabelComponent as iftalabel__IftaLabelComponent } from '@ciag/orchestra/iftalabel';
+import { IftaLabelComponent as canonical__ifta_label_ifta_label_component__IftaLabelComponent } from './ifta-label/ifta-label.component';
 import { ImageCompareComponent as imagecompare__ImageCompareComponent } from '@ciag/orchestra/imagecompare';
 import { InplaceComponent as inplace__InplaceComponent } from '@ciag/orchestra/inplace';
 import { InplaceComponent as canonical__p2_p2_inplace_component__InplaceComponent } from './p2/p2-inplace-component';
 import { InputChipsComponent as input_chips__InputChipsComponent } from '@ciag/orchestra/input-chips';
 import { InputColorComponent as input_color__InputColorComponent } from '@ciag/orchestra/input-color';
 import { InputColorComponent as canonical__p2_p2_input_more__InputColorComponent } from './p2/p2-input-more';
-import { InputGroupComponent as input_group__InputGroupComponent } from '@ciag/orchestra/input-group';
-import { InputGroupComponent as canonical__p2_p2_form_components__InputGroupComponent } from './p2/p2-form-components';
-import { InputGroupAddonComponent as input_group_addon__InputGroupAddonComponent } from '@ciag/orchestra/input-group-addon';
-import { InputGroupAddonComponent as canonical__p2_p2_input_gap_components__InputGroupAddonComponent } from './p2/p2-input-gap-components';
 import { InputIconComponent as input_icon__InputIconComponent } from '@ciag/orchestra/input-icon';
-import { InputMaskDirective as input_mask__InputMaskDirective } from '@ciag/orchestra/input-mask';
-import { InputMaskDirective as canonical__p2_p2_form_gap_components__InputMaskDirective } from './p2/p2-form-gap-components';
 import { InputNumber as input_number__InputNumber } from '@ciag/orchestra/input-number';
 import { NumberInputComponent as canonical__number_input_number_input_component__NumberInputComponent } from './number-input/number-input.component';
 import { InputNumberComponent as input_number__InputNumberComponent } from '@ciag/orchestra/input-number';
@@ -133,7 +116,7 @@ import { InputOtp as input_otp__InputOtp } from '@ciag/orchestra/input-otp';
 import { OtpInputComponent as canonical__otp_input_otp_input_component__OtpInputComponent } from './otp-input/otp-input.component';
 import { InputOtpComponent as input_otp__InputOtpComponent } from '@ciag/orchestra/input-otp';
 import { InputPassword as input_password__InputPassword } from '@ciag/orchestra/input-password';
-import { PasswordComponent as canonical__p2_p2_primeng_gap_components__PasswordComponent } from './p2/p2-primeng-gap-components';
+import { PasswordComponent as canonical__password_password_component__PasswordComponent } from './password/password.component';
 import { InputPasswordComponent as input_password__InputPasswordComponent } from '@ciag/orchestra/input-password';
 import { InputTagsComponent as input_tags__InputTagsComponent } from '@ciag/orchestra/input-tags';
 import { InputText as input_text__InputText } from '@ciag/orchestra/input-text';
@@ -142,9 +125,12 @@ import { InputTextComponent as input_text__InputTextComponent } from '@ciag/orch
 import { InputTextareaComponent as input_textarea__InputTextareaComponent } from '@ciag/orchestra/input-textarea';
 import { TextareaComponent as canonical__input_textarea_component__TextareaComponent } from './input/textarea.component';
 import { InputGroupComponent as inputgroup__InputGroupComponent } from '@ciag/orchestra/inputgroup';
+import { InputGroupComponent as canonical__input_group_input_group_component__InputGroupComponent } from './input-group/input-group.component';
 import { InputGroupAddonComponent as inputgroupaddon__InputGroupAddonComponent } from '@ciag/orchestra/inputgroupaddon';
+import { InputGroupAddonComponent as canonical__input_group_addon_input_group_addon_component__InputGroupAddonComponent } from './input-group-addon/input-group-addon.component';
 import { InputIconComponent as inputicon__InputIconComponent } from '@ciag/orchestra/inputicon';
 import { InputMaskDirective as inputmask__InputMaskDirective } from '@ciag/orchestra/inputmask';
+import { InputMaskDirective as canonical__input_mask_input_mask_directive__InputMaskDirective } from './input-mask/input-mask.directive';
 import { InputNumber as inputnumber__InputNumber } from '@ciag/orchestra/inputnumber';
 import { InputNumberComponent as inputnumber__InputNumberComponent } from '@ciag/orchestra/inputnumber';
 import { InputOtp as inputotp__InputOtp } from '@ciag/orchestra/inputotp';
@@ -156,17 +142,12 @@ import { InputTextComponent as inputtext__InputTextComponent } from '@ciag/orche
 import { InputTextareaComponent as inputtextarea__InputTextareaComponent } from '@ciag/orchestra/inputtextarea';
 import { KbdComponent as kbd__KbdComponent } from '@ciag/orchestra/kbd';
 import { KbdComponent as canonical__p2_p2_layout_components__KbdComponent } from './p2/p2-layout-components';
-import { KeyFilterDirective as key_filter__KeyFilterDirective } from '@ciag/orchestra/key-filter';
-import { KeyFilterDirective as canonical__p2_p2_form_gap_components__KeyFilterDirective } from './p2/p2-form-gap-components';
 import { KeyFilterDirective as keyfilter__KeyFilterDirective } from '@ciag/orchestra/keyfilter';
-import { KnobComponent as knob__KnobComponent } from '@ciag/orchestra/knob';
-import { KnobComponent as canonical__p2_p2_org_knob_components__KnobComponent } from './p2/p2-org-knob-components';
+import { KeyFilterDirective as canonical__key_filter_key_filter_directive__KeyFilterDirective } from './key-filter/key-filter.directive';
 import { LabelComponent as label__LabelComponent } from '@ciag/orchestra/label';
 import { FormFieldComponent as canonical__form_field_form_field_component__FormFieldComponent } from './form-field/form-field.component';
 import { LinkComponent as link__LinkComponent } from '@ciag/orchestra/link';
 import { LinkComponent as canonical__p2_p2_layout_components__LinkComponent } from './p2/p2-layout-components';
-import { ListboxComponent as listbox__ListboxComponent } from '@ciag/orchestra/listbox';
-import { ListboxComponent as canonical__p2_p2_listbox_component__ListboxComponent } from './p2/p2-listbox-component';
 import { MegaMenuComponent as megamenu__MegaMenuComponent } from '@ciag/orchestra/megamenu';
 import { MegaMenuComponent as canonical__mega_menu_mega_menu_component__MegaMenuComponent } from './mega-menu/mega-menu.component';
 import { MenuComponent as menu__MenuComponent } from '@ciag/orchestra/menu';
@@ -179,9 +160,8 @@ import { MessageComponent as messages__MessageComponent } from '@ciag/orchestra/
 import { MessagesComponent as messages__MessagesComponent } from '@ciag/orchestra/messages';
 import { MeterGroupComponent as metergroup__MeterGroupComponent } from '@ciag/orchestra/metergroup';
 import { MeterGroupComponent as canonical__meter_group_meter_group_component__MeterGroupComponent } from './meter-group/meter-group.component';
-import { MultiSelectComponent as multi_select__MultiSelectComponent } from '@ciag/orchestra/multi-select';
-import { MultiSelectComponent as canonical__p2_p2_multi_select_component__MultiSelectComponent } from './p2/p2-multi-select-component';
 import { MultiSelectComponent as multiselect__MultiSelectComponent } from '@ciag/orchestra/multiselect';
+import { MultiSelectComponent as canonical__multi_select_multi_select_component__MultiSelectComponent } from './multi-select/multi-select.component';
 import { OrderListComponent as orderlist__OrderListComponent } from '@ciag/orchestra/orderlist';
 import { OrderListComponent as canonical__order_list_order_list_component__OrderListComponent } from './order-list/order-list.component';
 import { OrganizationChartComponent as organizationchart__OrganizationChartComponent } from '@ciag/orchestra/organizationchart';
@@ -199,7 +179,6 @@ import { PanelComponent as panel__PanelComponent } from '@ciag/orchestra/panel';
 import { PanelComponent as canonical__p2_p2_primeng_gap_components__PanelComponent } from './p2/p2-primeng-gap-components';
 import { PanelMenuComponent as panelmenu__PanelMenuComponent } from '@ciag/orchestra/panelmenu';
 import { PanelMenuComponent as canonical__panel_menu_panel_menu_component__PanelMenuComponent } from './panel-menu/panel-menu.component';
-import { PasswordComponent as password__PasswordComponent } from '@ciag/orchestra/password';
 import { PickListComponent as picklist__PickListComponent } from '@ciag/orchestra/picklist';
 import { PickListComponent as canonical__pick_list_pick_list_component__PickListComponent } from './pick-list/pick-list.component';
 import { PortalComponent as portal__PortalComponent } from '@ciag/orchestra/portal';
@@ -227,9 +206,8 @@ import { ScrollerComponent as scroller__ScrollerComponent } from '@ciag/orchestr
 import { VirtualScrollerComponent as canonical__virtual_scroller_virtual_scroller_component__VirtualScrollerComponent } from './virtual-scroller/virtual-scroller.component';
 import { ScrollPanelComponent as scrollpanel__ScrollPanelComponent } from '@ciag/orchestra/scrollpanel';
 import { ScrollTopComponent as scrolltop__ScrollTopComponent } from '@ciag/orchestra/scrolltop';
-import { SelectButtonComponent as select_button__SelectButtonComponent } from '@ciag/orchestra/select-button';
-import { SelectButtonComponent as canonical__p2_p2_form_gap_components__SelectButtonComponent } from './p2/p2-form-gap-components';
 import { SelectButtonComponent as selectbutton__SelectButtonComponent } from '@ciag/orchestra/selectbutton';
+import { SelectButtonComponent as canonical__select_button_select_button_component__SelectButtonComponent } from './select-button/select-button.component';
 import { SeparatorComponent as separator__SeparatorComponent } from '@ciag/orchestra/separator';
 import { SeparatorComponent as canonical__p2_p2_layout_components__SeparatorComponent } from './p2/p2-layout-components';
 import { SidebarComponent as sidebar__SidebarComponent } from '@ciag/orchestra/sidebar';
@@ -255,17 +233,15 @@ import { TabComponent as tabview__TabComponent } from '@ciag/orchestra/tabview';
 import { TabComponent as canonical__tabs_tab_component__TabComponent } from './tabs/tab.component';
 import { TabGroupComponent as tabview__TabGroupComponent } from '@ciag/orchestra/tabview';
 import { TabGroupComponent as canonical__tabs_tab_group_component__TabGroupComponent } from './tabs/tab-group.component';
-import { TagsInputComponent as tags_input__TagsInputComponent } from '@ciag/orchestra/tags-input';
 import { TextComponent as text__TextComponent } from '@ciag/orchestra/text';
 import { TextComponent as canonical__p2_p2_layout_components__TextComponent } from './p2/p2-layout-components';
 import { Textarea as textarea__Textarea } from '@ciag/orchestra/textarea';
 import { TieredMenuComponent as tieredmenu__TieredMenuComponent } from '@ciag/orchestra/tieredmenu';
 import { TieredMenuComponent as canonical__tiered_menu_tiered_menu_component__TieredMenuComponent } from './tiered-menu/tiered-menu.component';
-import { ToggleButtonComponent as toggle_button__ToggleButtonComponent } from '@ciag/orchestra/toggle-button';
-import { ToggleButtonComponent as canonical__p2_p2_form_gap_components__ToggleButtonComponent } from './p2/p2-form-gap-components';
 import { ToggleSwitch as toggle_switch__ToggleSwitch } from '@ciag/orchestra/toggle-switch';
 import { ToggleSwitchComponent as toggle_switch__ToggleSwitchComponent } from '@ciag/orchestra/toggle-switch';
 import { ToggleButtonComponent as togglebutton__ToggleButtonComponent } from '@ciag/orchestra/togglebutton';
+import { ToggleButtonComponent as canonical__toggle_button_toggle_button_component__ToggleButtonComponent } from './toggle-button/toggle-button.component';
 import { ToggleSwitch as toggleswitch__ToggleSwitch } from '@ciag/orchestra/toggleswitch';
 import { ToggleSwitchComponent as toggleswitch__ToggleSwitchComponent } from '@ciag/orchestra/toggleswitch';
 import { TreeSelectComponent as treeselect__TreeSelectComponent } from '@ciag/orchestra/treeselect';
@@ -285,8 +261,6 @@ import type { AvatarItem as avatargroup__AvatarItem } from '@ciag/orchestra/avat
 import type { BlockUiTarget as block_ui__BlockUiTarget } from '@ciag/orchestra/block-ui';
 import type { BlockUiTarget as canonical__p2_p2_block_ui_component__BlockUiTarget } from './p2/p2-block-ui-component';
 import type { BlockUiTarget as blockui__BlockUiTarget } from '@ciag/orchestra/blockui';
-import type { CalendarDay as calendar__CalendarDay } from '@ciag/orchestra/calendar';
-import type { CalendarDay as canonical__p2_p2_calendar_component__CalendarDay } from './p2/p2-calendar-component';
 import type { CascadeOption as cascade_select__CascadeOption } from '@ciag/orchestra/cascade-select';
 import type { CascadeOption as canonical__p2_p2_cascade_select_component__CascadeOption } from './p2/p2-cascade-select-component';
 import type { CascadeOption as cascadeselect__CascadeOption } from '@ciag/orchestra/cascadeselect';
@@ -300,8 +274,6 @@ import type { ColorPickerFormat as colorpicker__ColorPickerFormat } from '@ciag/
 import type { ColorPickerFormat as canonical__color_picker_color_picker_component__ColorPickerFormat } from './color-picker/color-picker.component';
 import type { ColorPickerSize as colorpicker__ColorPickerSize } from '@ciag/orchestra/colorpicker';
 import type { ColorPickerSize as canonical__color_picker_color_picker_component__ColorPickerSize } from './color-picker/color-picker.component';
-import type { ComboboxOption as combobox__ComboboxOption } from '@ciag/orchestra/combobox';
-import type { P2Option as canonical__internal_p2_shared__P2Option } from './internal/p2-shared';
 import type { CommandItem as command_menu__CommandItem } from '@ciag/orchestra/command-menu';
 import type { CommandItem as canonical__p2_p2_command_components__CommandItem } from './p2/p2-command-components';
 import type { ConfirmationRequest as confirm_dialog__ConfirmationRequest } from '@ciag/orchestra/confirm-dialog';
@@ -313,15 +285,12 @@ import type { ContextMenuItem as contextmenu__ContextMenuItem } from '@ciag/orch
 import type { ContextMenuItem as canonical__context_menu_context_menu_component__ContextMenuItem } from './context-menu/context-menu.component';
 import type { DataTableColumn as data_table__DataTableColumn } from '@ciag/orchestra/data-table';
 import type { DataTableColumn as canonical__p2_p2_data_table_component__DataTableColumn } from './p2/p2-data-table-component';
-import type { EditorAction as editor__EditorAction } from '@ciag/orchestra/editor';
-import type { EditorAction as canonical__p2_p2_editor_component__EditorAction } from './p2/p2-editor-component';
 import type { SwitchChangeEvent as inputswitch__SwitchChangeEvent } from '@ciag/orchestra/inputswitch';
 import type { SwitchChangeEvent as canonical__switch_switch_types__SwitchChangeEvent } from './switch/switch.types';
 import type { SwitchLabelPosition as inputswitch__SwitchLabelPosition } from '@ciag/orchestra/inputswitch';
 import type { SwitchLabelPosition as canonical__switch_switch_types__SwitchLabelPosition } from './switch/switch.types';
 import type { SwitchSize as inputswitch__SwitchSize } from '@ciag/orchestra/inputswitch';
 import type { SwitchSize as canonical__switch_switch_types__SwitchSize } from './switch/switch.types';
-import type { ListboxOption as listbox__ListboxOption } from '@ciag/orchestra/listbox';
 import type { PrimeMenuItem as megamenu__PrimeMenuItem } from '@ciag/orchestra/megamenu';
 import type { PrimeMenuItem as canonical__internal_menu_item__PrimeMenuItem } from './internal/menu-item';
 import type { MenuItem as menu__MenuItem } from '@ciag/orchestra/menu';
@@ -330,8 +299,8 @@ import type { P2Message as canonical__p2_p2_message_components__P2Message } from
 import type { MessageItem as messages__MessageItem } from '@ciag/orchestra/messages';
 import type { MeterItem as metergroup__MeterItem } from '@ciag/orchestra/metergroup';
 import type { MeterItem as canonical__meter_group_meter_group_component__MeterItem } from './meter-group/meter-group.component';
-import type { MultiSelectOption as multi_select__MultiSelectOption } from '@ciag/orchestra/multi-select';
 import type { MultiSelectOption as multiselect__MultiSelectOption } from '@ciag/orchestra/multiselect';
+import type { P2Option as canonical__internal_p2_shared__P2Option } from './internal/p2-shared';
 import type { OrganizationNode as organizationchart__OrganizationNode } from '@ciag/orchestra/organizationchart';
 import type { OrganizationNode as canonical__organization_chart_organization_chart_component__OrganizationNode } from './organization-chart/organization-chart.component';
 import type { PaginationPageEvent as pagination__PaginationPageEvent } from '@ciag/orchestra/pagination';
@@ -439,14 +408,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_layout_components__ButtonGroupComponent);
   });
 
-  // calendar.CalendarDay === ./p2/p2-calendar-component#CalendarDay (type-only, checked at generation time)
-
-  it('@ciag/orchestra/calendar re-exports the canonical declarations', () => {
-    expect(calendar__CalendarComponent)
-      .withContext('calendar#CalendarComponent')
-      .toBe(canonical__p2_p2_calendar_component__CalendarComponent);
-  });
-
   // cascade-select.CascadeOption === ./p2/p2-cascade-select-component#CascadeOption (type-only, checked at generation time)
 
   it('@ciag/orchestra/cascade-select re-exports the canonical declarations', () => {
@@ -478,7 +439,7 @@ describe('Alias entry points (generated identity sweep)', () => {
   it('@ciag/orchestra/chips re-exports the canonical declarations', () => {
     expect(chips__ChipsComponent)
       .withContext('chips#ChipsComponent')
-      .toBe(canonical__p2_p2_tags_input_component__TagsInputComponent);
+      .toBe(canonical__tags_input_tags_input_component__TagsInputComponent);
   });
 
   it('@ciag/orchestra/close-button re-exports the canonical declarations', () => {
@@ -502,14 +463,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(
         canonical__color_picker_color_picker_component__ColorPickerComponent,
       );
-  });
-
-  // combobox.ComboboxOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
-
-  it('@ciag/orchestra/combobox re-exports the canonical declarations', () => {
-    expect(combobox__ComboboxComponent)
-      .withContext('combobox#ComboboxComponent')
-      .toBe(canonical__p2_p2_combobox_component__ComboboxComponent);
   });
 
   // command-menu.CommandItem === ./p2/p2-command-components#CommandItem (type-only, checked at generation time)
@@ -595,12 +548,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__data_view_data_view_component__DataViewComponent);
   });
 
-  it('@ciag/orchestra/date-input re-exports the canonical declarations', () => {
-    expect(date_input__DateInputComponent)
-      .withContext('date-input#DateInputComponent')
-      .toBe(canonical__p2_p2_date_input_component__DateInputComponent);
-  });
-
   it('@ciag/orchestra/datepicker re-exports the canonical declarations', () => {
     expect(datepicker__DatePicker)
       .withContext('datepicker#DatePicker')
@@ -658,14 +605,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__modal_modal_service__ModalService);
   });
 
-  // editor.EditorAction === ./p2/p2-editor-component#EditorAction (type-only, checked at generation time)
-
-  it('@ciag/orchestra/editor re-exports the canonical declarations', () => {
-    expect(editor__EditorComponent)
-      .withContext('editor#EditorComponent')
-      .toBe(canonical__p2_p2_editor_component__EditorComponent);
-  });
-
   it('@ciag/orchestra/fieldset re-exports the canonical declarations', () => {
     expect(fieldset__FieldsetComponent)
       .withContext('fieldset#FieldsetComponent')
@@ -704,12 +643,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_layout_components__FlexComponent);
   });
 
-  it('@ciag/orchestra/float-label re-exports the canonical declarations', () => {
-    expect(float_label__FloatLabelComponent)
-      .withContext('float-label#FloatLabelComponent')
-      .toBe(canonical__p2_p2_primeng_gap_components__FloatLabelComponent);
-  });
-
   it('@ciag/orchestra/floating-action-button re-exports the canonical declarations', () => {
     expect(floating_action_button__FloatingActionButtonComponent)
       .withContext('floating-action-button#FloatingActionButtonComponent')
@@ -719,7 +652,7 @@ describe('Alias entry points (generated identity sweep)', () => {
   it('@ciag/orchestra/floatlabel re-exports the canonical declarations', () => {
     expect(floatlabel__FloatLabelComponent)
       .withContext('floatlabel#FloatLabelComponent')
-      .toBe(canonical__p2_p2_primeng_gap_components__FloatLabelComponent);
+      .toBe(canonical__float_label_float_label_component__FloatLabelComponent);
   });
 
   it('@ciag/orchestra/fluid re-exports the canonical declarations', () => {
@@ -752,28 +685,16 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_layout_components__GridComponent);
   });
 
-  it('@ciag/orchestra/icon-field re-exports the canonical declarations', () => {
-    expect(icon_field__IconFieldComponent)
-      .withContext('icon-field#IconFieldComponent')
-      .toBe(canonical__p2_p2_input_gap_components__IconFieldComponent);
-  });
-
   it('@ciag/orchestra/iconfield re-exports the canonical declarations', () => {
     expect(iconfield__IconFieldComponent)
       .withContext('iconfield#IconFieldComponent')
-      .toBe(canonical__p2_p2_input_gap_components__IconFieldComponent);
-  });
-
-  it('@ciag/orchestra/ifta-label re-exports the canonical declarations', () => {
-    expect(ifta_label__IftaLabelComponent)
-      .withContext('ifta-label#IftaLabelComponent')
-      .toBe(canonical__p2_p2_input_gap_components__IftaLabelComponent);
+      .toBe(canonical__icon_field_icon_field_component__IconFieldComponent);
   });
 
   it('@ciag/orchestra/iftalabel re-exports the canonical declarations', () => {
     expect(iftalabel__IftaLabelComponent)
       .withContext('iftalabel#IftaLabelComponent')
-      .toBe(canonical__p2_p2_input_gap_components__IftaLabelComponent);
+      .toBe(canonical__ifta_label_ifta_label_component__IftaLabelComponent);
   });
 
   it('@ciag/orchestra/imagecompare re-exports the canonical declarations', () => {
@@ -793,7 +714,7 @@ describe('Alias entry points (generated identity sweep)', () => {
   it('@ciag/orchestra/input-chips re-exports the canonical declarations', () => {
     expect(input_chips__InputChipsComponent)
       .withContext('input-chips#InputChipsComponent')
-      .toBe(canonical__p2_p2_tags_input_component__TagsInputComponent);
+      .toBe(canonical__tags_input_tags_input_component__TagsInputComponent);
   });
 
   it('@ciag/orchestra/input-color re-exports the canonical declarations', () => {
@@ -802,28 +723,10 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_input_more__InputColorComponent);
   });
 
-  it('@ciag/orchestra/input-group re-exports the canonical declarations', () => {
-    expect(input_group__InputGroupComponent)
-      .withContext('input-group#InputGroupComponent')
-      .toBe(canonical__p2_p2_form_components__InputGroupComponent);
-  });
-
-  it('@ciag/orchestra/input-group-addon re-exports the canonical declarations', () => {
-    expect(input_group_addon__InputGroupAddonComponent)
-      .withContext('input-group-addon#InputGroupAddonComponent')
-      .toBe(canonical__p2_p2_input_gap_components__InputGroupAddonComponent);
-  });
-
   it('@ciag/orchestra/input-icon re-exports the canonical declarations', () => {
     expect(input_icon__InputIconComponent)
       .withContext('input-icon#InputIconComponent')
-      .toBe(canonical__p2_p2_input_gap_components__IconFieldComponent);
-  });
-
-  it('@ciag/orchestra/input-mask re-exports the canonical declarations', () => {
-    expect(input_mask__InputMaskDirective)
-      .withContext('input-mask#InputMaskDirective')
-      .toBe(canonical__p2_p2_form_gap_components__InputMaskDirective);
+      .toBe(canonical__icon_field_icon_field_component__IconFieldComponent);
   });
 
   it('@ciag/orchestra/input-number re-exports the canonical declarations', () => {
@@ -851,16 +754,16 @@ describe('Alias entry points (generated identity sweep)', () => {
   it('@ciag/orchestra/input-password re-exports the canonical declarations', () => {
     expect(input_password__InputPassword)
       .withContext('input-password#InputPassword')
-      .toBe(canonical__p2_p2_primeng_gap_components__PasswordComponent);
+      .toBe(canonical__password_password_component__PasswordComponent);
     expect(input_password__InputPasswordComponent)
       .withContext('input-password#InputPasswordComponent')
-      .toBe(canonical__p2_p2_primeng_gap_components__PasswordComponent);
+      .toBe(canonical__password_password_component__PasswordComponent);
   });
 
   it('@ciag/orchestra/input-tags re-exports the canonical declarations', () => {
     expect(input_tags__InputTagsComponent)
       .withContext('input-tags#InputTagsComponent')
-      .toBe(canonical__p2_p2_tags_input_component__TagsInputComponent);
+      .toBe(canonical__tags_input_tags_input_component__TagsInputComponent);
   });
 
   it('@ciag/orchestra/input-text re-exports the canonical declarations', () => {
@@ -881,25 +784,27 @@ describe('Alias entry points (generated identity sweep)', () => {
   it('@ciag/orchestra/inputgroup re-exports the canonical declarations', () => {
     expect(inputgroup__InputGroupComponent)
       .withContext('inputgroup#InputGroupComponent')
-      .toBe(canonical__p2_p2_form_components__InputGroupComponent);
+      .toBe(canonical__input_group_input_group_component__InputGroupComponent);
   });
 
   it('@ciag/orchestra/inputgroupaddon re-exports the canonical declarations', () => {
     expect(inputgroupaddon__InputGroupAddonComponent)
       .withContext('inputgroupaddon#InputGroupAddonComponent')
-      .toBe(canonical__p2_p2_input_gap_components__InputGroupAddonComponent);
+      .toBe(
+        canonical__input_group_addon_input_group_addon_component__InputGroupAddonComponent,
+      );
   });
 
   it('@ciag/orchestra/inputicon re-exports the canonical declarations', () => {
     expect(inputicon__InputIconComponent)
       .withContext('inputicon#InputIconComponent')
-      .toBe(canonical__p2_p2_input_gap_components__IconFieldComponent);
+      .toBe(canonical__icon_field_icon_field_component__IconFieldComponent);
   });
 
   it('@ciag/orchestra/inputmask re-exports the canonical declarations', () => {
     expect(inputmask__InputMaskDirective)
       .withContext('inputmask#InputMaskDirective')
-      .toBe(canonical__p2_p2_form_gap_components__InputMaskDirective);
+      .toBe(canonical__input_mask_input_mask_directive__InputMaskDirective);
   });
 
   it('@ciag/orchestra/inputnumber re-exports the canonical declarations', () => {
@@ -957,22 +862,10 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_layout_components__KbdComponent);
   });
 
-  it('@ciag/orchestra/key-filter re-exports the canonical declarations', () => {
-    expect(key_filter__KeyFilterDirective)
-      .withContext('key-filter#KeyFilterDirective')
-      .toBe(canonical__p2_p2_form_gap_components__KeyFilterDirective);
-  });
-
   it('@ciag/orchestra/keyfilter re-exports the canonical declarations', () => {
     expect(keyfilter__KeyFilterDirective)
       .withContext('keyfilter#KeyFilterDirective')
-      .toBe(canonical__p2_p2_form_gap_components__KeyFilterDirective);
-  });
-
-  it('@ciag/orchestra/knob re-exports the canonical declarations', () => {
-    expect(knob__KnobComponent)
-      .withContext('knob#KnobComponent')
-      .toBe(canonical__p2_p2_org_knob_components__KnobComponent);
+      .toBe(canonical__key_filter_key_filter_directive__KeyFilterDirective);
   });
 
   it('@ciag/orchestra/label re-exports the canonical declarations', () => {
@@ -985,14 +878,6 @@ describe('Alias entry points (generated identity sweep)', () => {
     expect(link__LinkComponent)
       .withContext('link#LinkComponent')
       .toBe(canonical__p2_p2_layout_components__LinkComponent);
-  });
-
-  // listbox.ListboxOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
-
-  it('@ciag/orchestra/listbox re-exports the canonical declarations', () => {
-    expect(listbox__ListboxComponent)
-      .withContext('listbox#ListboxComponent')
-      .toBe(canonical__p2_p2_listbox_component__ListboxComponent);
   });
 
   // megamenu.PrimeMenuItem === ./internal/menu-item#PrimeMenuItem (type-only, checked at generation time)
@@ -1041,20 +926,14 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__meter_group_meter_group_component__MeterGroupComponent);
   });
 
-  // multi-select.MultiSelectOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
-
-  it('@ciag/orchestra/multi-select re-exports the canonical declarations', () => {
-    expect(multi_select__MultiSelectComponent)
-      .withContext('multi-select#MultiSelectComponent')
-      .toBe(canonical__p2_p2_multi_select_component__MultiSelectComponent);
-  });
-
   // multiselect.MultiSelectOption === ./internal/p2-shared#P2Option (type-only, checked at generation time)
 
   it('@ciag/orchestra/multiselect re-exports the canonical declarations', () => {
     expect(multiselect__MultiSelectComponent)
       .withContext('multiselect#MultiSelectComponent')
-      .toBe(canonical__p2_p2_multi_select_component__MultiSelectComponent);
+      .toBe(
+        canonical__multi_select_multi_select_component__MultiSelectComponent,
+      );
   });
 
   it('@ciag/orchestra/orderlist re-exports the canonical declarations', () => {
@@ -1119,12 +998,6 @@ describe('Alias entry points (generated identity sweep)', () => {
     expect(panelmenu__PanelMenuComponent)
       .withContext('panelmenu#PanelMenuComponent')
       .toBe(canonical__panel_menu_panel_menu_component__PanelMenuComponent);
-  });
-
-  it('@ciag/orchestra/password re-exports the canonical declarations', () => {
-    expect(password__PasswordComponent)
-      .withContext('password#PasswordComponent')
-      .toBe(canonical__p2_p2_primeng_gap_components__PasswordComponent);
   });
 
   // picklist.P2Option === ./internal/p2-shared#P2Option (type-only, checked at generation time)
@@ -1235,16 +1108,12 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__p2_p2_primeng_gap_components__ScrollTopComponent);
   });
 
-  it('@ciag/orchestra/select-button re-exports the canonical declarations', () => {
-    expect(select_button__SelectButtonComponent)
-      .withContext('select-button#SelectButtonComponent')
-      .toBe(canonical__p2_p2_form_gap_components__SelectButtonComponent);
-  });
-
   it('@ciag/orchestra/selectbutton re-exports the canonical declarations', () => {
     expect(selectbutton__SelectButtonComponent)
       .withContext('selectbutton#SelectButtonComponent')
-      .toBe(canonical__p2_p2_form_gap_components__SelectButtonComponent);
+      .toBe(
+        canonical__select_button_select_button_component__SelectButtonComponent,
+      );
   });
 
   it('@ciag/orchestra/separator re-exports the canonical declarations', () => {
@@ -1340,12 +1209,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__tabs_tab_group_component__TabGroupComponent);
   });
 
-  it('@ciag/orchestra/tags-input re-exports the canonical declarations', () => {
-    expect(tags_input__TagsInputComponent)
-      .withContext('tags-input#TagsInputComponent')
-      .toBe(canonical__p2_p2_tags_input_component__TagsInputComponent);
-  });
-
   it('@ciag/orchestra/text re-exports the canonical declarations', () => {
     expect(text__TextComponent)
       .withContext('text#TextComponent')
@@ -1366,12 +1229,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__tiered_menu_tiered_menu_component__TieredMenuComponent);
   });
 
-  it('@ciag/orchestra/toggle-button re-exports the canonical declarations', () => {
-    expect(toggle_button__ToggleButtonComponent)
-      .withContext('toggle-button#ToggleButtonComponent')
-      .toBe(canonical__p2_p2_form_gap_components__ToggleButtonComponent);
-  });
-
   it('@ciag/orchestra/toggle-switch re-exports the canonical declarations', () => {
     expect(toggle_switch__ToggleSwitch)
       .withContext('toggle-switch#ToggleSwitch')
@@ -1384,7 +1241,9 @@ describe('Alias entry points (generated identity sweep)', () => {
   it('@ciag/orchestra/togglebutton re-exports the canonical declarations', () => {
     expect(togglebutton__ToggleButtonComponent)
       .withContext('togglebutton#ToggleButtonComponent')
-      .toBe(canonical__p2_p2_form_gap_components__ToggleButtonComponent);
+      .toBe(
+        canonical__toggle_button_toggle_button_component__ToggleButtonComponent,
+      );
   });
 
   it('@ciag/orchestra/toggleswitch re-exports the canonical declarations', () => {

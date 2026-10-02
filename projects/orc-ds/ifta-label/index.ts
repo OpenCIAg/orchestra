@@ -1,1 +1,1 @@
-export { IftaLabelComponent } from '@ciag/orchestra/p2';
+export { IftaLabelComponent } from './ifta-label.component';

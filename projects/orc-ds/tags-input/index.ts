@@ -1,1 +1,1 @@
-export { TagsInputComponent } from '@ciag/orchestra/p2';
+export { TagsInputComponent } from './tags-input.component';
