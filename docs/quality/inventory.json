@@ -1759,7 +1759,6 @@
         }
       ],
       "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/calendar/calendar-parity.spec.ts",
         "projects/orc-ds/p2-date-input-contract.spec.ts",
@@ -3085,7 +3084,6 @@
         }
       ],
       "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/combobox/combobox-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -3723,7 +3721,6 @@
       ],
       "outputs": [],
       "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/date-input/date-input-parity.spec.ts",
         "projects/orc-ds/p2-date-input-contract.spec.ts",
@@ -5408,7 +5405,6 @@
         }
       ],
       "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/editor-selection-contract.spec.ts",
         "projects/orc-ds/editor/editor-parity.spec.ts",
@@ -7797,7 +7793,6 @@
         }
       ],
       "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/knob-contract.spec.ts",
         "projects/orc-ds/knob/knob-parity.spec.ts",
@@ -8295,7 +8290,6 @@
         }
       ],
       "testReferences": [
-        "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/listbox/listbox-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
