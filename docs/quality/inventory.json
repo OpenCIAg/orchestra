@@ -5434,7 +5434,7 @@
       "kind": "Component",
       "selector": "orc-menubar",
       "file": "projects/orc-ds/menubar/menubar.component.ts",
-      "line": 31,
+      "line": 30,
       "inputs": [
         {
           "name": "items",
