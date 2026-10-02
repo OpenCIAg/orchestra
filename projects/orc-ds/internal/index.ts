@@ -3,3 +3,4 @@ export * from './overlay-lifecycle';
 export * from './overlay-attachment';
 export * from './overlay-position';
 export * from './anchored-popup';
+export * from './cva-control';
