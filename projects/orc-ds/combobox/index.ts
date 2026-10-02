@@ -1,2 +1,2 @@
-export { ComboboxComponent } from '@ciag/orchestra/p2';
-export type { P2Option as ComboboxOption } from '@ciag/orchestra/p2';
+export { ComboboxComponent } from './combobox.component';
+export type { P2Option as ComboboxOption } from '@ciag/orchestra/internal';

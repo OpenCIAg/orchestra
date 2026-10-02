@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EditorComponent } from '@ciag/orchestra/p2';
 import type { EditorAction } from '@ciag/orchestra/p2';
+import { expectConsoleWarning } from '../../../tools/quality/browser-diagnostics';
 
 /**
  * Behavior-parity pins for the editor. The specs import the component
@@ -31,6 +32,7 @@ describe('Editor behavior parity', () => {
   }
 
   it('sanitizes forms values before display', () => {
+    expectConsoleWarning(/sanitizing HTML stripped some content/);
     const fixture = create();
     fixture.componentInstance.writeValue(
       '<p>Hello</p><script>alert(1)</script>',

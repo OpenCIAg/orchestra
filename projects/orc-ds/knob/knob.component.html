@@ -1,0 +1,49 @@
+<div
+    class="orc-knob"
+    [style.width.px]="normalizedSize()"
+    [style.height.px]="normalizedSize()"
+    [attr.aria-label]="ariaLabel()"
+  >
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle
+        class="track"
+        cx="50"
+        cy="50"
+        r="40"
+        [style.stroke-width.px]="strokeWidth()"
+        [style.stroke]="rangeColor()"
+      />
+      <circle
+        class="progress"
+        cx="50"
+        cy="50"
+        r="40"
+        [style.stroke-width.px]="strokeWidth()"
+        [style.stroke]="valueColor()"
+        [style.stroke-dasharray]="circumference"
+        [style.stroke-dashoffset]="dashOffset()"
+      />
+      <text x="50" y="54" text-anchor="middle">
+        {{ valueTemplate() || value() + suffix() }}
+      </text>
+    </svg>
+    <input
+      [attr.id]="inputId() || null"
+      type="range"
+      [min]="min()"
+      [max]="max()"
+      [step]="step()"
+      [value]="value()"
+      [disabled]="disabled() || cvaDisabled()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-readonly]="readonly() ? 'true' : null"
+      [attr.aria-valuenow]="value()"
+      [attr.aria-valuemin]="min()"
+      [attr.aria-valuemax]="max()"
+      (input)="onInput($event)"
+      (mousedown)="onReadonlyPointerdown($event)"
+      (keydown)="onReadonlyKeydown($event)"
+      (focus)="onFocus.emit($event)"
+      (blur)="onBlur.emit($event); onModelTouched()"
+    />
+  </div>

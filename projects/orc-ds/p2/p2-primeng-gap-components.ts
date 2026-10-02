@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -8,15 +7,11 @@ import {
   OnChanges,
   OnDestroy,
   SimpleChanges,
-  ViewEncapsulation,
   computed,
-  forwardRef,
   input,
   model,
   output,
-  signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2_SHARED_STYLES } from './p2-shared';
 
 @Component({
@@ -183,57 +178,11 @@ export class FieldsetComponent {
   }
 }
 
-@Component({
-  selector: 'orc-float-label',
-  standalone: true,
-  template: `<span
-    class="p-floatlabel p-component orc-p2-float-label"
-    [class]="
-      'p-floatlabel p-component orc-p2-float-label variant-' +
-      variant() +
-      (focused() ? ' focused' : '') +
-      (filled() ? ' filled' : '') +
-      ' ' +
-      styleClass()
-    "
-    (focusin)="focused.set(true)"
-    (focusout)="focused.set(false)"
-    (input)="onInput($event)"
-    ><ng-content
-  /></span>`,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-p2-float-label{position:relative;display:block}.orc-p2-float-label>label{position:absolute;z-index:1;top:50%;inset-inline-start:.75rem;transform:translateY(-50%);padding:0 .2rem;color:var(--orc-component-text-muted);background:var(--orc-component-surface);pointer-events:none;transition:.15s}.orc-p2-float-label.variant-over.focused label,.orc-p2-float-label.variant-over.filled label,.orc-p2-float-label.variant-over:has(> .filled, > input[value]:not([value=""]), > textarea[value]:not([value=""]), > input[placeholder]:not(:placeholder-shown), > textarea[placeholder]:not(:placeholder-shown), > select) label{top:0;font-size:.75rem;color:var(--orc-component-interactive)}.orc-p2-float-label.variant-in>label{top:.35rem;transform:none;font-size:.75rem;color:var(--orc-component-text-muted)}.orc-p2-float-label.variant-in :is(input,textarea,select){padding-top:1.35rem}.orc-p2-float-label.variant-on>label{top:0;transform:translateY(-50%);font-size:.75rem;color:var(--orc-component-interactive)}`,
-  ],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class FloatLabelComponent implements AfterViewInit {
-  readonly variant = input<'in' | 'over' | 'on'>('over');
-  readonly styleClass = input('');
-  readonly focused = signal(false);
-  readonly filled = signal(false);
-  constructor(private readonly host: ElementRef<HTMLElement>) {}
-  ngAfterViewInit(): void {
-    this.syncFilled();
-  }
-  onInput(event: Event): void {
-    this.filled.set(
-      String(
-        (
-          event.target as
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null
-        )?.value ?? '',
-      ).length > 0,
-    );
-  }
-  private syncFilled(): void {
-    const control = this.host.nativeElement.querySelector<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >('input,textarea,select');
-    this.filled.set(!!control?.value);
-  }
-}
+/**
+ * Compatibility surface: FloatLabelComponent lives in the canonical
+ * `float-label` directory; these re-exports keep every p2 entry symbol unchanged.
+ */
+export { FloatLabelComponent } from '@ciag/orchestra/float-label';
 
 @Component({
   selector: 'orc-fluid',
@@ -408,223 +357,11 @@ export class MeterGroupComponent {
     return Math.max(0, Math.min(100, share * 100));
   }
 }
-
-@Component({
-  selector: 'orc-password, orc-input-password',
-  standalone: true,
-  template: `<div
-    [class]="
-      'orc-p2-password ' +
-      styleClass() +
-      ' variant-' +
-      variant() +
-      (size() ? ' size-' + size() : '')
-    "
-    [style]="style()"
-    [class.fluid]="fluid()"
-  >
-    <label *ngIf="label()" [attr.for]="effectiveInputId()">{{ label() }}</label>
-    <div class="control">
-      <input
-        [attr.id]="effectiveInputId()"
-        [type]="visible() ? 'text' : 'password'"
-        [value]="value()"
-        [attr.placeholder]="placeholder() || null"
-        [autocomplete]="autocomplete()"
-        [attr.maxlength]="maxLength()"
-        [required]="required()"
-        [disabled]="disabled() || cvaDisabled()"
-        [readonly]="readonly()"
-        [autofocus]="autofocus()"
-        [attr.tabindex]="tabindex()"
-        [class]="inputStyleClass()"
-        [style]="inputStyle()"
-        (input)="onInput($event)"
-        (focus)="handleFocus($event)"
-        (blur)="handleBlur($event)"
-        [attr.aria-label]="ariaLabel() || null"
-        [attr.aria-labelledby]="ariaLabelledBy() || null"
-      />
-      @if (showClear() && value() && clearAriaLabel()) {
-        <button
-          type="button"
-          [disabled]="disabled() || cvaDisabled() || readonly()"
-          (click)="clear()"
-          [attr.aria-label]="clearAriaLabel()"
-        >
-          ×
-        </button>
-      }
-      @if (toggleMask()) {
-        <button
-          type="button"
-          [disabled]="disabled() || cvaDisabled()"
-          (click)="toggleVisible()"
-          [attr.aria-label]="
-            visible()
-              ? effectiveHidePasswordLabel()
-              : effectiveShowPasswordLabel()
-          "
-        >
-          {{ visible() ? '◉' : '○' }}
-        </button>
-      }
-    </div>
-    @if (
-      feedback() &&
-      (value() || focused()) &&
-      (value() ? strengthLabel() : promptLabel())
-    ) {
-      <div class="feedback" aria-live="polite">
-        <span>{{ value() ? strengthLabel() : promptLabel() }}</span
-        ><span
-          class="meter"
-          [class.weak]="strength() === 'weak'"
-          [class.medium]="strength() === 'medium'"
-          [class.strong]="strength() === 'strong'"
-        ></span>
-      </div>
-    }
-  </div>`,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-p2-password{display:flex;flex-direction:column;align-items:stretch;gap:.35rem;width:auto;border:1px solid var(--orc-component-border-strong);border-radius:.5rem;overflow:hidden}.orc-p2-password.fluid{width:100%}.orc-p2-password.variant-outlined{background:var(--orc-component-surface)}.orc-p2-password.variant-filled{background:var(--orc-component-surface-subtle)}.orc-p2-password>label{padding:.4rem .7rem 0}.orc-p2-password .control{display:flex;align-items:center;min-width:0;flex:1;gap:.2rem}.orc-p2-password input{min-width:0;flex:1;border:0;padding:.55rem .7rem;outline:0;background:transparent}.orc-p2-password.size-small input,.orc-p2-password.size-small button{font-size:.875rem;padding:.4rem .55rem}.orc-p2-password.size-large input,.orc-p2-password.size-large button{font-size:1.125rem;padding:.7rem .85rem}.orc-p2-password button{border:0;background:transparent;padding:.5rem}.orc-p2-password .feedback{display:flex;align-items:center;gap:.5rem;padding:0 .7rem .45rem}.orc-p2-password .meter{height:.25rem;flex:1;border-radius:999px;background:var(--orc-component-border)}.orc-p2-password .meter.weak{background:var(--orc-component-status-danger-bg)}.orc-p2-password .meter.medium{background:var(--orc-component-status-warning-bg)}.orc-p2-password .meter.strong{background:var(--orc-component-status-success-bg)}`,
-  ],
-  imports: [CommonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'p-password p-component',
-    '[attr.data-pc-name]': "'password'",
-  },
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => PasswordComponent),
-      multi: true,
-    },
-  ],
-})
-export class PasswordComponent implements ControlValueAccessor {
-  private static generatedIdSequence = 0;
-  private readonly generatedInputId = `orc-password-${++PasswordComponent.generatedIdSequence}`;
-  readonly value = model('');
-  readonly visible = model(false);
-  readonly placeholder = input<string | undefined>(undefined);
-  readonly disabled = input(false, { transform: booleanAttribute });
-  readonly readonly = input(false, { transform: booleanAttribute });
-  readonly required = input(false, { transform: booleanAttribute });
-  readonly ariaLabel = input<string | undefined>(undefined);
-  readonly ariaLabelledBy = input<string | undefined>(undefined);
-  readonly label = input<string | undefined>(undefined);
-  readonly inputId = input<string | undefined>(undefined);
-  readonly inputStyleClass = input('');
-  readonly inputStyle = input<Record<string, string | number> | undefined>(
-    undefined,
-  );
-  readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(
-    undefined,
-  );
-  readonly fluid = input(false, { transform: booleanAttribute });
-  readonly variant = input<'filled' | 'outlined'>('outlined');
-  readonly size = input<'small' | 'large' | undefined>(undefined);
-  readonly maxLength = input<number | undefined>(undefined);
-  readonly autocomplete = input('off');
-  readonly autofocus = input(false, { transform: booleanAttribute });
-  readonly tabindex = input<number | undefined>(undefined);
-  readonly feedback = input(true, { transform: booleanAttribute });
-  readonly toggleMask = input(true, { transform: booleanAttribute });
-  readonly showClear = input(false, { transform: booleanAttribute });
-  readonly clearAriaLabel = input<string | undefined>(undefined);
-  readonly hidePasswordLabel = input<string | undefined>('Hide password');
-  readonly showPasswordLabel = input<string | undefined>('Show password');
-  /** @deprecated Compatibility-only input; Password renders in place and does not portal to an append target. */
-  readonly appendTo = input<unknown>(undefined);
-  /** @deprecated Transition timing is fixed by the component stylesheet. */
-  readonly showTransitionOptions = input('150ms ease');
-  /** @deprecated Transition timing is fixed by the component stylesheet. */
-  readonly hideTransitionOptions = input('150ms ease');
-  readonly promptLabel = input<string | undefined>(undefined);
-  readonly weakLabel = input<string | undefined>(undefined);
-  readonly mediumLabel = input<string | undefined>(undefined);
-  readonly strongLabel = input<string | undefined>(undefined);
-  readonly mediumRegex = input('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}$');
-  readonly strongRegex = input(
-    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}$',
-  );
-  readonly onFocus = output<Event>();
-  readonly onBlur = output<Event>();
-  readonly onClear = output<void>();
-  readonly focused = signal(false);
-  protected readonly cvaDisabled = signal(false);
-  private onModelChange: (value: string) => void = () => {};
-  private onModelTouched: () => void = () => {};
-  readonly strength = computed<'weak' | 'medium' | 'strong'>(() => {
-    const value = this.value();
-    if (!value) return 'weak';
-    try {
-      if (new RegExp(this.strongRegex()).test(value)) return 'strong';
-      if (new RegExp(this.mediumRegex()).test(value)) return 'medium';
-    } catch {
-      /* invalid custom expressions fall back to weak */
-    }
-    return 'weak';
-  });
-  readonly strengthLabel = computed(() =>
-    this.strength() === 'strong'
-      ? this.strongLabel()
-      : this.strength() === 'medium'
-        ? this.mediumLabel()
-        : this.weakLabel(),
-  );
-  readonly effectiveInputId = computed(
-    () => this.inputId() || this.generatedInputId,
-  );
-  readonly effectiveShowPasswordLabel = computed(
-    () => this.showPasswordLabel() || 'Show password',
-  );
-  readonly effectiveHidePasswordLabel = computed(
-    () => this.hidePasswordLabel() || 'Hide password',
-  );
-  writeValue(value: unknown): void {
-    this.value.set(value == null ? '' : String(value));
-  }
-  registerOnChange(fn: (value: string) => void): void {
-    this.onModelChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onModelTouched = fn;
-  }
-  setDisabledState(value: boolean): void {
-    this.cvaDisabled.set(value);
-  }
-  onInput(event: Event): void {
-    if (this.readonly() || this.disabled() || this.cvaDisabled()) return;
-    const value = (event.target as HTMLInputElement).value;
-    this.value.set(value);
-    this.onModelChange(value);
-  }
-  handleFocus(event: Event): void {
-    this.focused.set(true);
-    this.onFocus.emit(event);
-  }
-  handleBlur(event: Event): void {
-    this.focused.set(false);
-    this.onModelTouched();
-    this.onBlur.emit(event);
-  }
-  toggleVisible(): void {
-    if (!this.disabled() && !this.cvaDisabled())
-      this.visible.update((value) => !value);
-  }
-  clear(): void {
-    if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
-    this.value.set('');
-    this.onModelChange('');
-    this.onModelTouched();
-    this.onClear.emit();
-  }
-}
+/**
+ * Compatibility surface: PasswordComponent lives in the canonical
+ * `password` directory; these re-exports keep every p2 entry symbol unchanged.
+ */
+export { PasswordComponent } from '@ciag/orchestra/password';
 
 export { SplitButtonComponent } from './p2-split-button-component';
 

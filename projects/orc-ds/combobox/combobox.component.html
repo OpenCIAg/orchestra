@@ -1,0 +1,73 @@
+    <div
+      class="p-autocomplete p-component orc-p2-field"
+      [class]="'p-autocomplete p-component orc-p2-field ' + styleClass()"
+      [style]="style()"
+      [attr.data-pc-name]="'autocomplete'"
+    >
+      @if (label()) {
+        <label [for]="inputId">{{ label() }}</label>
+      }
+      <div class="p-autocomplete-input-wrapper orc-p2-combobox">
+        <input
+          [id]="inputId"
+          role="combobox"
+          [value]="query()"
+          [attr.placeholder]="placeholder() || null"
+          [disabled]="effectiveDisabled()"
+          [attr.aria-autocomplete]="'list'"
+          [attr.aria-expanded]="open()"
+          [attr.aria-controls]="listId"
+          [attr.aria-activedescendant]="
+            activeOptionIndex() >= 0 ? optionId(activeOptionIndex()) : null
+          "
+          (input)="onInput($event)"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+          (keydown)="onKeydown($event)"
+        />
+        @if (query() && clearAriaLabel()) {
+          <button
+            type="button"
+            class="orc-p2-clear"
+            [attr.aria-label]="clearAriaLabel()"
+            [disabled]="effectiveDisabled()"
+            (click)="clear()"
+          >
+            ×
+          </button>
+        }
+      </div>
+      @if (open()) {
+        <ul
+          class="p-autocomplete-panel p-component orc-p2-options"
+          [id]="listId"
+          role="listbox"
+        >
+          @for (option of filteredOptions(); track option.value) {
+            <li
+              class="p-autocomplete-option"
+              [id]="optionId($index)"
+              role="option"
+              [attr.aria-selected]="isSelected(option)"
+              [class.is-active]="$index === activeOptionIndex()"
+              [class.is-disabled]="option.disabled"
+              [attr.aria-disabled]="option.disabled || null"
+              (mousedown)="$event.preventDefault()"
+              (click)="select(option)"
+            >
+              <strong>{{ option.label }}</strong>
+              @if (option.description) {
+                <small>{{ option.description }}</small>
+              }
+            </li>
+          } @empty {
+            @if (emptyText()) {
+              <li class="orc-p2-empty">{{ emptyText() }}</li>
+            }
+          }
+        </ul>
+      }
+      @if (helperText()) {
+        <small class="orc-p2-muted">{{ helperText() }}</small>
+      }
+    </div>

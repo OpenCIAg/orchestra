@@ -1,1 +1,1 @@
-export { InputGroupComponent } from '@ciag/orchestra/p2';
+export { InputGroupComponent } from './input-group.component';

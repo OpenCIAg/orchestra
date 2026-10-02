@@ -1,1 +1,1 @@
-export { KnobComponent } from '@ciag/orchestra/p2';
+export { KnobComponent } from './knob.component';

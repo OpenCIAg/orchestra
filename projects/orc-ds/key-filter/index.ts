@@ -1,1 +1,1 @@
-export { KeyFilterDirective } from '@ciag/orchestra/p2';
+export { KeyFilterDirective } from './key-filter.directive';

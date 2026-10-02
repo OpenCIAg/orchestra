@@ -1,0 +1,9 @@
+label { font-size: .875rem; font-weight: 600; }
+.orc-p2-combobox { position: relative; display: flex; align-items: center; }
+input { width: 100%; min-height: 2.5rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; padding: .5rem .75rem; background: var(--orc-component-control); color: var(--orc-component-text); }
+.orc-p2-clear { position: absolute; right: .25rem; border: 0; background: transparent; font-size: 1.2rem; }
+.orc-p2-options { position: absolute; z-index: 2; top: 4.3rem; right: 0; left: 0; max-height: 15rem; overflow: auto; margin: 0; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .5rem; background: var(--orc-component-surface-raised); box-shadow: var(--orc-component-overlay-shadow); list-style: none; }
+.orc-p2-options li { display: grid; gap: .1rem; padding: .55rem .65rem; border-radius: .35rem; cursor: pointer; }
+.orc-p2-options li:hover, .orc-p2-options .is-active { background: var(--orc-component-interactive-soft); }
+.orc-p2-options .is-disabled { color: var(--orc-component-text-muted); cursor: not-allowed; }
+.orc-p2-options small { color: var(--orc-component-text-muted); }

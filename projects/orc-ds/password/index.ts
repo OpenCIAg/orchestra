@@ -1,1 +1,1 @@
-export { PasswordComponent } from '@ciag/orchestra/p2';
+export { PasswordComponent } from './password.component';
