@@ -4,6 +4,8 @@ Enterprise Angular Component Framework and Design System built with Angular 19+,
 
 Package versions follow strict semver with the Angular major as the semver major: `22.y.z`. Breaking changes land only at Angular-major boundaries (next: `23.0.0`).
 
+The canonical documentation home is <https://orchestra.ciag.org.br> (component catalog, design guide, and the machine-readable [`llms.txt`](https://orchestra.ciag.org.br/llms.txt) / [`llms.md`](https://orchestra.ciag.org.br/llms.md) agent reference). The GitHub Pages deployment mirrors the same artifact.
+
 ---
 
 ## Installation

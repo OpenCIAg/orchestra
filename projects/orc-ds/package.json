@@ -16,6 +16,7 @@
     "type": "git",
     "url": "https://github.com/OpenCIAg/orchestra"
   },
+  "homepage": "https://orchestra.ciag.org.br",
   "style": "styles/index.scss",
   "sass": "styles/index.scss",
   "sideEffects": [
