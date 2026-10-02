@@ -1,0 +1,61 @@
+name: Version PR
+
+# Changesets Version-PR flow (ticket #7).
+#
+# Feature work lands changeset proposals (.changeset/*.md) on main. This
+# workflow turns them into the Version PR: it consumes the proposals with
+# `changeset version` on the changeset-release/main branch — bumping
+# projects/orc-ds/package.json and generating the changelog section — and
+# creates or refreshes a single PR toward main.
+#
+# It NEVER publishes and NEVER tags. Merging the Version PR produces the
+# governed release commit (version changed vs the parent, zero pending
+# proposals) that the guarded release workflow (release.yml, ticket #6)
+# recognizes; publish, dist-tag and release-collision decisions stay there.
+#
+# Pushes without pending proposals (e.g. the Version PR merge itself) no-op
+# here: changesets/action exits without touching git when the version script
+# produces no changes.
+
+on:
+  push:
+    branches:
+      - main
+
+# The branch update and PR refresh must serialize: a queued older run cannot
+# force-push a stale changeset-release/main over a newer one.
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  version-pr:
+    name: Create or refresh the Version PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history so the changelog generator can attribute each
+          # changeset to the commit that added it.
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create or refresh the Version PR
+        uses: changesets/action@v1
+        with:
+          version: npm run changeset:version
+          commit: 'chore(release): version packages'
+          title: 'chore(release): version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
