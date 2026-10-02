@@ -33,6 +33,9 @@ jobs:
       - name: Verify component inventory and documentation links
         run: npm run verify:docs
 
+      - name: Verify generated alias parity spec
+        run: npm run verify:alias-parity
+
       - name: Run library tests
         run: |
           set -o pipefail
@@ -78,3 +81,9 @@ jobs:
 
       - name: Verify server-side rendering
         run: npm run verify:ssr
+
+      - name: Upload SSR verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.ref_name }}-ssr-verification
+          path: verify-output/

@@ -15,7 +15,8 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CvaControl } from '@ciag/orchestra/internal';
 import { InputSize, InputStatus, TextareaResize } from './input.types';
 
 let nextTextareaUniqueId = 0;
@@ -35,7 +36,7 @@ let nextTextareaUniqueId = 0;
     },
   ],
 })
-export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
+export class TextareaComponent extends CvaControl implements AfterViewInit {
   private readonly uniqueId = `orc-textarea-${++nextTextareaUniqueId}`;
 
   // ── Native Textarea Element Reference ─────────────────────
@@ -97,7 +98,6 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
 
   // ── Estado Interno ────────────────────────────────────────
   protected readonly isFocused = signal<boolean>(false);
-  protected readonly cvaDisabled = signal<boolean>(false);
   /** Writable browser state that cannot be rolled back mid-keystroke. */
   protected readonly viewValue = linkedSignal<string>(() => this.value());
 
@@ -107,10 +107,6 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
   );
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
-
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled(),
-  );
 
   readonly stringValue = computed(() => {
     const v = this.viewValue();
@@ -136,26 +132,15 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
   });
 
   // ── ControlValueAccessor ──────────────────────────────────
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
 
-  writeValue(value: any): void {
+  override writeValue(value: any): void {
     const nextValue = value ?? '';
     this.viewValue.set(nextValue);
     this.value.set(nextValue);
     this.adjustHeight();
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.cvaDisabled.set(isDisabled);
   }
 
   ngAfterViewInit(): void {
@@ -169,7 +154,7 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
 
     this.viewValue.set(val);
     this.value.set(val);
-    this.onChange(val);
+    this.cvaOnChange(val);
     this.inputChange.emit(val);
     this.adjustHeight();
   }
@@ -181,7 +166,7 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
 
   protected onBlur(event: FocusEvent): void {
     this.isFocused.set(false);
-    this.onTouched();
+    this.cvaOnTouched();
     this.blur.emit(event);
   }
 

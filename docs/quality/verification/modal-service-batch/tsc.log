@@ -1,1 +1,0 @@
-projects/orc-ds/runtime-diagnostics.spec.ts(1,8): error TS6059: File '/Users/matheuscastro/Workspaces/orc_ds/tools/quality/browser-diagnostics.ts' is not under 'rootDir' '/Users/matheuscastro/Workspaces/orc_ds/projects/orc-ds'. 'rootDir' is expected to contain all source files.

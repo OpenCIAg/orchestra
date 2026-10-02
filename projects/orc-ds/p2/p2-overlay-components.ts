@@ -17,6 +17,11 @@ import {
 } from '@angular/core';
 import { P2Option, P2_SHARED_STYLES } from './p2-shared';
 import { isElementTarget } from './p2-dom-target';
+import {
+  listenForOutsideInteraction,
+  menuFocusTargets,
+  stepMenuIndex,
+} from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-floating-action-button',
@@ -175,10 +180,8 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
   readonly onShow = output<void>();
   readonly onHide = output<void>();
   private targetElement: HTMLElement | null = null;
-  private readonly outsideDocuments = new Set<Document>();
+  private readonly outsideDismissals = new Map<Document, () => void>();
   private focusReturnTarget: HTMLElement | null = null;
-  private readonly documentMouseDown = (event: MouseEvent): void =>
-    this.onDocumentClick(event);
   private readonly targetContextMenu = (event: Event): void =>
     this.openAt(event as MouseEvent);
   constructor() {
@@ -285,7 +288,7 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
       event.preventDefault();
       const delta = event.key === 'ArrowDown' ? 1 : -1;
       this.activeIndex.update((index) =>
-        items.length ? (index + delta + items.length) % items.length : 0,
+        stepMenuIndex(index, delta, items.length),
       );
       this.focusActiveItemAfterRender();
       return;
@@ -310,21 +313,33 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     const menu = this.host.nativeElement.querySelector('.orc-p2-context-menu');
     if (target && !menu?.contains(target)) this.hide();
   }
+  /** Outside dismissal runs through the shared overlay lifecycle helper; the
+   * menu keeps only the bookkeeping for which owner documents to observe. */
   private syncOutsideDocuments(): void {
     const required = new Set<Document>([
       this.host.nativeElement.ownerDocument,
       ...(this.targetElement ? [this.targetElement.ownerDocument] : []),
     ]);
-    for (const ownerDocument of this.outsideDocuments) {
+    for (const [ownerDocument, release] of this.outsideDismissals) {
       if (!required.has(ownerDocument)) {
-        ownerDocument.removeEventListener('mousedown', this.documentMouseDown);
-        this.outsideDocuments.delete(ownerDocument);
+        release();
+        this.outsideDismissals.delete(ownerDocument);
       }
     }
     for (const ownerDocument of required) {
-      if (!this.outsideDocuments.has(ownerDocument)) {
-        ownerDocument.addEventListener('mousedown', this.documentMouseDown);
-        this.outsideDocuments.add(ownerDocument);
+      if (!this.outsideDismissals.has(ownerDocument)) {
+        this.outsideDismissals.set(
+          ownerDocument,
+          listenForOutsideInteraction(
+            ownerDocument,
+            () => [
+              this.host.nativeElement.querySelector(
+                '.orc-p2-context-menu',
+              ) as HTMLElement | null,
+            ],
+            (event) => this.onDocumentClick(event),
+          ),
+        );
       }
     }
   }
@@ -372,21 +387,21 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     afterNextRender(
       () => {
         if (!this.open()) return;
-        const activeItem = this.host.nativeElement.querySelector(
-          '.orc-p2-context-menu [role="menuitem"][tabindex="0"]:not(:disabled)',
-        ) as HTMLElement | null;
         const menu = this.host.nativeElement.querySelector(
           '.orc-p2-context-menu',
         ) as HTMLElement | null;
+        const [activeItem] = menuFocusTargets(
+          menu,
+          '[role="menuitem"][tabindex="0"]:not(:disabled)',
+        );
         (activeItem ?? menu)?.focus({ preventScroll: true });
       },
       { injector: this.injector },
     );
   }
   ngOnDestroy(): void {
-    for (const ownerDocument of this.outsideDocuments)
-      ownerDocument.removeEventListener('mousedown', this.documentMouseDown);
-    this.outsideDocuments.clear();
+    for (const release of this.outsideDismissals.values()) release();
+    this.outsideDismissals.clear();
     this.targetElement?.removeEventListener(
       'contextmenu',
       this.targetContextMenu,

@@ -1,3 +1,0 @@
-P2 FESM byte size before Tree extraction: 1629793; after extraction: 1629793; delta: 0 bytes.
-P2 FESM gzip size before Tree extraction: 168752; after extraction: 168483; delta: -269 bytes.
-Both builds contain the same repaired Tree source and external template; only the implementation module boundary and compatibility re-export differ.

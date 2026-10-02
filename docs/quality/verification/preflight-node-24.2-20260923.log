@@ -1,9 +1,0 @@
-
-> orc-ds-workspace@0.0.0 test:lib:ci
-> ng test orc-ds --watch=false --browsers=ChromeHeadlessCI
-
-Node.js version v24.2.0 detected.
-The Angular CLI requires a minimum Node.js version of v22.22.3 or v24.15.0 or v26.0.0.
-
-Please update your Node.js version or visit https://nodejs.org/ for additional instructions.
-

@@ -1,7 +1,0 @@
-
-> orc-ds-workspace@0.0.0 verify:ssr
-> node tools/quality/verify-ssr.mjs
-
-
-added 18 packages in 1s
-SSR OK: rendered 147/147 inventory components with Angular 22.1.2.

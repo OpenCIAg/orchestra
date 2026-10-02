@@ -11,6 +11,11 @@ import {
   signal,
 } from '@angular/core';
 import { P2Option, P2_SHARED_STYLES } from './p2-shared';
+import {
+  crossedFocusBoundary,
+  menuFocusTargets,
+  stepMenuIndex,
+} from '@ciag/orchestra/internal';
 
 export interface MenubarItem extends P2Option<string> {
   shortcut?: string;
@@ -199,10 +204,8 @@ export class MenubarComponent {
   }
 
   onFocusOut(event: FocusEvent): void {
-    const host = event.currentTarget as HTMLElement | null;
-    const related = event.relatedTarget as Node | null;
-    if (!host || !related || !host.contains(related)) {
-      this.closeSubmenu(host, false);
+    if (crossedFocusBoundary(event)) {
+      this.closeSubmenu(event.currentTarget as HTMLElement | null, false);
       this.onBlur.emit(event);
     }
   }
@@ -248,20 +251,18 @@ export class MenubarComponent {
     return `${this.id() || `orc-menubar-${this.instanceId}`}-submenu-${index}`;
   }
 
-  private rootButtons(host: HTMLElement): HTMLButtonElement[] {
-    return Array.from(
-      host.querySelectorAll<HTMLButtonElement>(
-        ':scope > .menu-item > [data-menubar-item]',
-      ),
-    ).filter((button) => !button.disabled);
+  private rootButtons(host: HTMLElement | null): HTMLButtonElement[] {
+    return menuFocusTargets(
+      host,
+      ':scope > .menu-item > [data-menubar-item]',
+    ) as HTMLButtonElement[];
   }
 
-  private childButtons(host: HTMLElement): HTMLButtonElement[] {
-    return Array.from(
-      host.querySelectorAll<HTMLButtonElement>(
-        ':scope > .menu-item > .submenu[role="menu"] [data-menubar-child]',
-      ),
-    ).filter((button) => !button.disabled);
+  private childButtons(host: HTMLElement | null): HTMLButtonElement[] {
+    return menuFocusTargets(
+      host,
+      ':scope > .menu-item > .submenu[role="menu"] [data-menubar-child]',
+    ) as HTMLButtonElement[];
   }
 
   private focusRoot(host: HTMLElement, index = this.activeRootIndex()): void {
@@ -317,9 +318,7 @@ export class MenubarComponent {
     this.closeSubmenu(host, false);
     this.activeChild.set(null);
     this.activeIndex.update((index) =>
-      this.loop()
-        ? (index + delta + count) % count
-        : Math.max(0, Math.min(count - 1, index + delta)),
+      stepMenuIndex(index, delta, count, this.loop()),
     );
     if (host) this.focusRoot(host);
   }
@@ -353,8 +352,7 @@ export class MenubarComponent {
         }
       }
     }
-    const related = event.relatedTarget as Node | null;
-    if (!host || !related || !host.contains(related)) this.onFocus.emit(event);
+    if (crossedFocusBoundary(event)) this.onFocus.emit(event);
   }
 
   activate(item: MenubarItem, event?: Event): void {
@@ -403,9 +401,12 @@ export class MenubarComponent {
       if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         event.preventDefault();
         const delta = event.key === 'ArrowDown' ? 1 : -1;
-        const next = this.loop()
-          ? (currentIndex + delta + children.length) % children.length
-          : Math.max(0, Math.min(children.length - 1, currentIndex + delta));
+        const next = stepMenuIndex(
+          currentIndex,
+          delta,
+          children.length,
+          this.loop(),
+        );
         this.childIndex.set(next);
         this.activeChild.set(children[next]);
         if (host) this.focusChild(host, next);

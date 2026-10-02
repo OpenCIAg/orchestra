@@ -9,10 +9,10 @@ import {
   model,
   numberAttribute,
   output,
-  signal,
   viewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CvaControl } from '@ciag/orchestra/internal';
 
 export type NumberInputSize = 'sm' | 'md' | 'lg';
 export type NumberInputStatus = 'default' | 'error' | 'success';
@@ -33,7 +33,7 @@ let nextNumberInputId = 0;
     },
   ],
 })
-export class NumberInputComponent implements ControlValueAccessor {
+export class NumberInputComponent extends CvaControl {
   private readonly uniqueId = `orc-number-input-${++nextNumberInputId}`;
   readonly nativeInput = viewChild<ElementRef<HTMLInputElement>>('nativeInput');
 
@@ -120,12 +120,8 @@ export class NumberInputComponent implements ControlValueAccessor {
   readonly onBlur = output<FocusEvent>();
   readonly onKeyDown = output<KeyboardEvent>();
   readonly onClear = output<void>();
-  private readonly cvaDisabled = signal(false);
   readonly effectiveId = computed(
     () => this.inputId() || this.id() || this.uniqueId,
-  );
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled(),
   );
   readonly displayValue = computed(() => {
     const value = this.value();
@@ -160,10 +156,11 @@ export class NumberInputComponent implements ControlValueAccessor {
         : null,
   );
 
-  private onChange: (value: number | null) => void = () => {};
-  private onTouched: () => void = () => {};
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
 
-  writeValue(value: unknown): void {
+  override writeValue(value: unknown): void {
     const parsed =
       value === null || value === undefined || value === ''
         ? null
@@ -171,15 +168,6 @@ export class NumberInputComponent implements ControlValueAccessor {
     this.value.set(
       parsed !== null && Number.isFinite(parsed) ? this.clamp(parsed) : null,
     );
-  }
-  registerOnChange(fn: (value: number | null) => void): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-  setDisabledState(disabled: boolean): void {
-    this.cvaDisabled.set(disabled);
   }
 
   handleInput(event: Event): void {
@@ -202,7 +190,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   handleBlur(event: FocusEvent): void {
     const input = event.target as HTMLInputElement;
     if (this.value() !== null) input.value = this.displayValue();
-    this.onTouched();
+    this.cvaOnTouched();
     this.blur.emit(event);
     this.onBlur.emit(event);
   }
@@ -222,7 +210,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   clear(): void {
     if (this.effectiveDisabled() || this.readonly()) return;
     this.update(null);
-    this.onTouched();
+    this.cvaOnTouched();
     this.onClear.emit();
   }
 
@@ -243,7 +231,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   private update(value: number | null): void {
     if (this.effectiveDisabled() || this.readonly()) return;
     this.value.set(value);
-    this.onChange(value);
+    this.cvaOnChange(value);
   }
 
   private clamp(value: number): number {
