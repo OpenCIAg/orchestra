@@ -98,6 +98,10 @@ export const COMPONENT_EXAMPLES: Readonly<
     import('./date-input-example.component').then((m) =>
       example(m.DateInputExampleComponent)(),
     ),
+  'color-picker': () =>
+    import('./color-picker-example.component').then((m) =>
+      example(m.ColorPickerExampleComponent)(),
+    ),
   'date-picker': () =>
     import('./date-picker-example.component').then((m) =>
       example(m.DatePickerExampleComponent)(),
@@ -153,6 +157,10 @@ export const COMPONENT_EXAMPLES: Readonly<
   icon: () =>
     import('../icon-catalog-preview.component').then((m) =>
       example(m.IconCatalogPreviewComponent)(),
+    ),
+  image: () =>
+    import('./image-example.component').then((m) =>
+      example(m.ImageExampleComponent)(),
     ),
   'input-group': () =>
     import('./input-group-example.component').then((m) =>
@@ -241,6 +249,10 @@ export const COMPONENT_EXAMPLES: Readonly<
   'tab-menu': () =>
     import('./tab-menu-example.component').then((m) =>
       example(m.TabMenuExampleComponent)(),
+    ),
+  tag: () =>
+    import('./tag-example.component').then((m) =>
+      example(m.TagExampleComponent)(),
     ),
   'tags-input': () =>
     import('./tags-input-example.component').then((m) =>
