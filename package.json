@@ -22,6 +22,7 @@
     "test": "npm run test:lib",
     "test:lib": "ng test orc-ds --watch=false --browsers=ChromeHeadless",
     "test:lib:ci": "ng test orc-ds --watch=false --browsers=ChromeHeadlessCI",
+    "test:tools": "node --test \"tools/release/*.test.mjs\"",
     "test:themes:ci": "node tools/quality/test-themes.mjs",
     "test:docs": "ng test docs --watch=false --browsers=ChromeHeadless",
     "test:browser:interactions": "playwright test --config=playwright.config.mjs",
