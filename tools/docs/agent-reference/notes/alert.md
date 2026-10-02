@@ -1,0 +1,1 @@
+Inline feedback with semantic live-region behavior. `status` is an alias that overrides severity. Use `error`/`warning` for urgent validation or risk; use `info` for guidance. Project content when a message string is not enough.

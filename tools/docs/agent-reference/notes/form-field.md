@@ -1,0 +1,1 @@
+`orc-form-field` names and describes the projected group; each projected control still needs its own accessible name, and `required` is visual only. Supplying `id` makes the fieldset, legend, helper and error IDs deterministic across SSR/hydration.
