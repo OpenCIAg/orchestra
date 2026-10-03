@@ -349,6 +349,57 @@ test('onXxx outputs without a same-class canonical are enumerated as PrimeNG-era
   assert.equal(primeng[0].replacementTbd, true);
 });
 
+test('a declared output moves out of the PrimeNG-era scan (exactly once)', () => {
+  const { manifest, errors } = buildManifest({
+    declaredDualNames: [
+      {
+        component: 'PlainComponent',
+        kind: 'output',
+        name: 'onChange',
+        canonicalName: null,
+        replacementText: 'the `value` model (`valueChange`)',
+        note: 'Calendar-consolidation-style semantic replacement.',
+      },
+    ],
+    productionUse: [],
+  });
+  assert.deepEqual(errors, []);
+  assert.equal(
+    manifest.entries.filter((entry) => entry.category === 'primeng-era-output')
+      .length,
+    0,
+  );
+  const declared = manifest.entries.find(
+    (entry) =>
+      entry.category === 'functional-dual-name' && entry.name === 'onChange',
+  );
+  assert.equal(declared.replacement, 'the `value` model (`valueChange`)');
+  assert.equal(declared.replacementTbd, false);
+});
+
+test('replacementText records a confirmed semantic replacement without a member rename', () => {
+  const { manifest } = buildManifest({
+    declaredDualNames: [
+      {
+        component: 'WidgetComponent',
+        kind: 'input',
+        name: 'size',
+        canonicalName: null,
+        replacementText: "the native input's `readonly` attribute",
+        note: 'Recorded by a consolidation changeset.',
+      },
+    ],
+    productionUse: [],
+  });
+  const entry = manifest.entries.find(
+    (entry) =>
+      entry.category === 'functional-dual-name' && entry.name === 'size',
+  );
+  assert.equal(entry.replacement, "the native input's `readonly` attribute");
+  assert.equal(entry.replacementTbd, false);
+  assert.equal(entry.canonical, null);
+});
+
 // ── alias fan-out, tier entry point, tier artifacts ────────────────────────
 
 test('alias entry points record their re-exports with renamed-class resolution', () => {

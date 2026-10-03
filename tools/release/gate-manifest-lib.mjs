@@ -101,6 +101,15 @@ export const DECLARED_DUAL_NAMES = [
     note: 'PrimeNG Dialog-compatible visibility model; Orchestra callers use `isOpen`.',
   },
   {
+    component: 'DatePickerComponent',
+    kind: 'output',
+    name: 'onSelect',
+    canonicalName: null,
+    replacementText:
+      'the `value` model (`valueChange`) plus `dateSelected` on `orc-calendar`',
+    note: 'PrimeNG-era selection output; canonical replacement recorded by the calendar consolidation changeset (production-used).',
+  },
+  {
     component: 'SelectComponent',
     kind: 'input',
     name: 'searchable',
@@ -119,28 +128,31 @@ export const DECLARED_DUAL_NAMES = [
     kind: 'input',
     name: 'dateFormat',
     canonicalName: null,
-    note: 'PrimeNG-era format string; replacement is a gate decision (production-used).',
+    replacementText:
+      'the canonical ISO `yyyy-MM-dd` model with locale-driven input presentation',
+    note: 'PrimeNG-era format string; canonical replacement recorded by the calendar consolidation changeset (production-used).',
   },
   {
     component: 'DatePickerComponent',
     kind: 'input',
     name: 'selectionMode',
     canonicalName: null,
-    note: 'PrimeNG-era selection-shape input; replacement is a gate decision (production-used).',
+    note: 'PrimeNG-era selection-shape input; no other name on this component — removal-or-rename stays with the gate manifest (production-used).',
   },
   {
     component: 'DatePickerComponent',
     kind: 'input',
     name: 'readonlyInput',
     canonicalName: null,
-    note: 'PrimeNG-era editable-input toggle; replacement is a gate decision (production-used).',
+    replacementText: "the native input's `readonly` attribute",
+    note: 'PrimeNG-era editable-input toggle; canonical replacement recorded by the calendar consolidation changeset (production-used).',
   },
   {
     component: 'DatePickerComponent',
     kind: 'input',
     name: 'dataType',
     canonicalName: null,
-    note: 'PrimeNG-era value-type input; replacement is a gate decision (production-used).',
+    note: 'PrimeNG-era value-type input; bind the model type you want — no other input name exists on this component, removal-or-rename stays with the gate manifest (production-used).',
   },
   {
     component: 'DatePickerComponent',
@@ -586,10 +598,12 @@ export function scanFunctionalDualNames(files, declaredDualNames, errors) {
     entry.file = klass.file;
     entry.line = lineOf(member, klass.source);
     entry.canonical = declared.canonicalName;
-    entry.replacement = declared.canonicalName
-      ? `\`${declared.canonicalName}\``
-      : null;
-    entry.replacementTbd = !declared.canonicalName;
+    entry.replacement = declared.replacementText
+      ? declared.replacementText
+      : declared.canonicalName
+        ? `\`${declared.canonicalName}\``
+        : null;
+    entry.replacementTbd = !declared.canonicalName && !declared.replacementText;
     entry.note = declared.note;
     entries.push(entry);
   }
@@ -631,8 +645,9 @@ export function scanFunctionalDualNames(files, declaredDualNames, errors) {
   );
 }
 
-/** Non-deprecated onXxx outputs with no same-class canonical pair. */
-export function scanPrimengEraOutputs(files) {
+/** Non-deprecated onXxx outputs with no same-class canonical pair and not
+ * already declared as functional dual names (exactly-once invariant). */
+export function scanPrimengEraOutputs(files, declaredKeys = new Set()) {
   const classes = classModel(files);
   const entries = [];
   for (const klass of classes.values()) {
@@ -649,6 +664,7 @@ export function scanPrimengEraOutputs(files) {
       if (!/^on[A-Z]/.test(name)) continue;
       const canonicalName = name.slice(2, 3).toLowerCase() + name.slice(3);
       if (outputs.has(canonicalName)) continue; // dual pair, handled above
+      if (declaredKeys.has(`${klass.name}::${name}`)) continue; // declared above
       const entry = baseEntry('primeng-era-output');
       entry.kind = 'output';
       entry.name = name;
@@ -979,7 +995,12 @@ export function buildGateManifest({
   const deprecated = scanDeprecatedMembers(files);
   const sizes = scanLegacySizeValues(files);
   const dual = scanFunctionalDualNames(files, declaredDualNames, errors);
-  const primengOutputs = scanPrimengEraOutputs(files);
+  // Exactly-once: an output declared as a functional dual name never also
+  // appears in the PrimeNG-era scan.
+  const declaredKeys = new Set(
+    dual.map((entry) => `${entry.component}::${entry.name}`),
+  );
+  const primengOutputs = scanPrimengEraOutputs(files, declaredKeys);
   const tierEntryPoint = scanTierEntryPoint(files);
   const tierArtifacts = scanTierArtifacts(files);
   const aliases = scanAliasEntryPoints(files);
@@ -1141,7 +1162,9 @@ export function renderMigrationGuide(manifest) {
             ? entry.kind === 'output'
               ? `\`(${entry.canonical})\``
               : `\`[${entry.canonical}]\``
-            : '—';
+            : entry.replacementTbd
+              ? '—'
+              : entry.replacement;
         lines.push(
           `| ${entry.kind} | ${legacy} | ${canonical} | ${entry.note}${flagCell(entry) ? ' ' + flagCell(entry) : ''} |`,
         );
