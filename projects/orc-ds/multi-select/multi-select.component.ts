@@ -9,8 +9,22 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  CvaControl,
+  listPickerActiveId,
+  listPickerEnabledIndexes,
+  listPickerEquality,
+  listPickerFieldValues,
+  listPickerFilterFields,
+  listPickerOptionDisabled,
+  listPickerOptionLabel,
+  listPickerOptionValue,
+  listPickerValueMatchesFilter,
+  P2_SHARED_STYLES,
+  stepListPickerActive,
+  toggleListPickerValue,
+} from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
 let nextMultiSelectId = 0;
@@ -30,7 +44,7 @@ let nextMultiSelectId = 0;
     },
   ],
 })
-export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
+export class MultiSelectComponent<T = unknown> extends CvaControl {
   private readonly uniqueId = `orc-multiselect-${++nextMultiSelectId}`;
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T[]>([]);
@@ -162,129 +176,49 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   readonly onPanelShow = output<void>();
   readonly onPanelHide = output<void>();
   readonly onRemove = output<{ value: T; originalEvent: Event }>();
-  protected cvaDisabled = signal(false);
-  private onModelChange: (value: T[]) => void = () => {};
-  private onModelTouched: () => void = () => {};
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
   readonly activeOptionId = computed(() =>
-    this.activeIndex() >= 0
-      ? `${this.effectiveId()}-option-${this.activeIndex()}`
-      : null,
+    listPickerActiveId(this.effectiveId(), this.activeIndex()),
   );
   readonly filteredOptions = computed(() => {
     const term = this.filterValue().trim();
     if (!term) return this.options();
-    const fields =
-      this.filterFields() ??
-      (this.filterBy()
-        ? this.filterBy()!
-            .split(',')
-            .map((field) => field.trim())
-            .filter(Boolean)
-        : undefined);
+    const fields = listPickerFilterFields(this.filterFields(), this.filterBy());
+    const locale = this.filterLocale() || undefined;
     return this.options().filter((option) => {
       const values = fields?.length
-        ? fields.map((field) => String((option as any)?.[field] ?? ''))
-        : [this.getOptionLabel(option)];
-      const locale = this.filterLocale() || undefined;
-      const query = term.toLocaleLowerCase(locale);
-      return values.some((value) => {
-        const normalized = value.toLocaleLowerCase(locale);
-        switch (this.filterMatchMode()) {
-          case 'startsWith':
-            return normalized.startsWith(query);
-          case 'endsWith':
-            return normalized.endsWith(query);
-          case 'equals':
-            return normalized === query;
-          case 'notEquals':
-            return normalized !== query;
-          case 'in':
-            return query
-              .split(',')
-              .map((item) => item.trim())
-              .filter(Boolean)
-              .includes(normalized);
-          case 'lt':
-            return this.compareNumericFilter(
-              value,
-              term,
-              (left, right) => left < right,
-            );
-          case 'lte':
-            return this.compareNumericFilter(
-              value,
-              term,
-              (left, right) => left <= right,
-            );
-          case 'gt':
-            return this.compareNumericFilter(
-              value,
-              term,
-              (left, right) => left > right,
-            );
-          case 'gte':
-            return this.compareNumericFilter(
-              value,
-              term,
-              (left, right) => left >= right,
-            );
-          default:
-            return normalized.includes(query);
-        }
-      });
+        ? listPickerFieldValues(option, fields)
+        : [listPickerOptionLabel(option, this.optionLabel())];
+      return values.some((value) =>
+        listPickerValueMatchesFilter(
+          value,
+          term,
+          this.filterMatchMode(),
+          locale,
+        ),
+      );
     });
   });
+
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
 
   writeValue(value: T[] | null): void {
     this.value.set(Array.isArray(value) ? [...value] : []);
   }
-  registerOnChange(fn: (value: T[]) => void): void {
-    this.onModelChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onModelTouched = fn;
-  }
-  setDisabledState(value: boolean): void {
-    this.cvaDisabled.set(value);
-  }
   getOptionValue(option: any): any {
-    const key = this.optionValue();
-    return key ? option?.[key] : (option?.value ?? option);
+    return listPickerOptionValue(option, this.optionValue());
   }
   getOptionLabel(option: any): string {
-    const key = this.optionLabel();
-    return String(
-      key ? (option?.[key] ?? '') : (option?.label ?? option ?? ''),
-    );
-  }
-  private compareNumericFilter(
-    value: string,
-    term: string,
-    compare: (value: number, query: number) => boolean,
-  ): boolean {
-    const numericValue = Number(value);
-    const numericQuery = Number(term);
-    return (
-      Number.isFinite(numericValue) &&
-      Number.isFinite(numericQuery) &&
-      compare(numericValue, numericQuery)
-    );
+    return listPickerOptionLabel(option, this.optionLabel());
   }
   isOptionDisabled(option: any): boolean {
-    const key = this.optionDisabled();
-    return Boolean(key ? option?.[key] : option?.disabled);
+    return listPickerOptionDisabled(option, this.optionDisabled());
   }
 
   private sameValue(left: any, right: any): boolean {
-    const key = this.dataKey();
-    if (key && left != null && right != null) {
-      const leftKey = left?.[key];
-      const rightKey = right?.[key];
-      if (leftKey !== undefined && rightKey !== undefined)
-        return leftKey === rightKey;
-    }
-    return left === right;
+    return listPickerEquality(this.dataKey(), 'both-sides')(left, right);
   }
   isSelected(option: P2Option<T>): boolean {
     return this.value().some((item) =>
@@ -302,7 +236,7 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
       : labels.join(', ');
   }
   toggleOpen(): void {
-    if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
+    if (this.effectiveDisabled() || this.readonly()) return;
     this.open.update((value) => !value);
     if (!this.open()) {
       if (this.resetFilterOnHide()) this.filterValue.set('');
@@ -315,26 +249,24 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
     }
   }
   onKeydown(event: KeyboardEvent): void {
-    if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
+    if (this.effectiveDisabled() || this.readonly()) return;
     const options = this.filteredOptions();
-    const enabledIndexes = options
-      .map((option, index) => (this.isOptionDisabled(option) ? -1 : index))
-      .filter((index) => index >= 0);
+    const enabledIndexes = listPickerEnabledIndexes(options.length, (index) =>
+      this.isOptionDisabled(options[index]),
+    );
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       if (!this.open()) {
         this.toggleOpen();
       }
-      if (!enabledIndexes.length) return;
       const delta = event.key === 'ArrowDown' ? 1 : -1;
-      const currentPosition = enabledIndexes.indexOf(this.activeIndex());
-      const position =
-        currentPosition < 0 ? (delta > 0 ? -1 : 0) : currentPosition;
-      this.activeIndex.set(
-        enabledIndexes[
-          (position + delta + enabledIndexes.length) % enabledIndexes.length
-        ],
+      const next = stepListPickerActive(
+        this.activeIndex(),
+        delta,
+        enabledIndexes,
       );
+      if (next === null) return;
+      this.activeIndex.set(next);
     } else if (
       (event.key === 'Enter' || event.key === ' ') &&
       this.open() &&
@@ -351,40 +283,40 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   select(option: P2Option<T>, event?: Event): void {
     if (
       this.isOptionDisabled(option) ||
-      this.disabled() ||
-      this.cvaDisabled() ||
+      this.effectiveDisabled() ||
       this.readonly()
     )
       return;
-    const current = [...this.value()];
     const candidate = this.getOptionValue(option);
-    const index = current.findIndex((item) => this.sameValue(item, candidate));
-    if (index >= 0) current.splice(index, 1);
-    else if (
-      this.selectionLimit() === undefined ||
-      current.length < this.selectionLimit()!
-    )
-      current.push(candidate);
-    else return;
+    const toggle = toggleListPickerValue(
+      this.value(),
+      candidate,
+      (left, right) => this.sameValue(left, right),
+      this.selectionLimit(),
+    );
+    if (!toggle) return;
     const originalEvent = event ?? new Event('change');
-    this.value.set(current);
-    this.onModelChange(current);
-    this.onModelTouched();
-    this.onChange.emit({ originalEvent, value: current });
-    if (index >= 0) this.onRemove.emit({ value: candidate, originalEvent });
-    else this.optionSelected.emit(option);
+    this.value.set(toggle.next);
+    this.cvaOnChange(toggle.next);
+    this.cvaOnTouched();
+    this.onChange.emit({ originalEvent, value: toggle.next });
+    if (!toggle.added) {
+      this.onRemove.emit({ value: candidate, originalEvent });
+    } else {
+      this.optionSelected.emit(option);
+    }
   }
   clear(event?: Event): void {
-    if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
+    if (this.effectiveDisabled() || this.readonly()) return;
     const originalEvent = event ?? new Event('clear');
     this.value.set([]);
-    this.onModelChange([]);
-    this.onModelTouched();
+    this.cvaOnChange([]);
+    this.cvaOnTouched();
     this.onChange.emit({ originalEvent, value: [] });
     this.onClear.emit(originalEvent);
   }
   selectAll(event?: Event): void {
-    if (this.disabled() || this.cvaDisabled() || this.readonly()) return;
+    if (this.effectiveDisabled() || this.readonly()) return;
     const selectable = this.toggleAllOptions();
     const checked = !selectable.every((option) => this.isSelected(option));
     const next = checked
@@ -392,8 +324,8 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
       : [];
     const originalEvent = event ?? new Event('selectAll');
     this.value.set(next);
-    this.onModelChange(next);
-    this.onModelTouched();
+    this.cvaOnChange(next);
+    this.cvaOnTouched();
     this.onChange.emit({ originalEvent, value: next });
     this.onSelectAllChange.emit({ originalEvent, checked });
   }
