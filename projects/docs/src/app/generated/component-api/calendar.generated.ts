@@ -19,7 +19,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         kind: 'model',
         name: 'currentMonth',
         type: null,
-        defaultValue: 'toMonthKey(new Date())',
+        defaultValue: 'calendarMonthKey(new Date())',
         required: false,
       },
       {
