@@ -8,8 +8,22 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import {
+  CvaControl,
+  listPickerActiveIndex,
+  listPickerEnabledIndexes,
+  listPickerEquality,
+  listPickerFilterFields,
+  listPickerFirstEnabled,
+  listPickerOptionDisabled,
+  listPickerOptionLabel,
+  listPickerOptionValue,
+  listPickerReadField,
+  listPickerRowMatchesFilter,
+  P2_SHARED_STYLES,
+  stepListPickerActive,
+  toggleListPickerValue,
+} from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-listbox',
@@ -19,7 +33,7 @@ import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
   styleUrl: './listbox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListboxComponent<T = unknown> implements ControlValueAccessor {
+export class ListboxComponent<T = unknown> extends CvaControl {
   private static nextId = 0;
   private readonly generatedId = `orc-listbox-${++ListboxComponent.nextId}`;
   readonly options = input<any[]>([]);
@@ -134,124 +148,53 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   /** @deprecated Compatibility output only; drag-and-drop is not implemented. */
   readonly onDrop = output<unknown>();
   readonly activeIndex = signal(-1);
-  protected readonly cvaDisabled = signal(false);
-  private onModelChange: (value: T | T[] | null) => void = () => {};
-  protected onModelTouched: () => void = () => {};
   readonly filteredOptions = computed(() => {
     const term = this.filterValue().trim();
     if (!term) return this.options();
-    const fields =
-      this.filterFields() ??
-      (this.filterBy()
-        ? this.filterBy()!
-            .split(',')
-            .map((field) => field.trim())
-            .filter(Boolean)
-        : undefined);
+    const fields = listPickerFilterFields(this.filterFields(), this.filterBy());
     const locale = this.filterLocale() || undefined;
-    const query = term.toLocaleLowerCase(locale);
     return this.options().filter((option) => {
       const values = fields?.length
-        ? fields.map((field) => (option as any)?.[field])
+        ? fields.map((field) => listPickerReadField(option, field))
         : [this.getOptionLabel(option)];
-      const normalizedValues = values.map((value) =>
-        String(value ?? '').toLocaleLowerCase(locale),
+      return listPickerRowMatchesFilter(
+        values,
+        term,
+        this.filterMatchMode(),
+        locale,
       );
-      switch (this.filterMatchMode()) {
-        case 'notEquals':
-          // A row matches only when none of its searchable fields equals the
-          // query. Using `some` here makes a multi-field notEquals filter true
-          // as soon as any other field differs, even if one field is equal.
-          return normalizedValues.every((value) => value !== query);
-        case 'in':
-          // `in` is useful for options whose filter field is itself a list of
-          // searchable values (for example, tags or aliases).
-          return values.some(
-            (value) =>
-              Array.isArray(value) &&
-              value.some(
-                (item) =>
-                  String(item ?? '').toLocaleLowerCase(locale) === query,
-              ),
-          );
-        case 'lt':
-        case 'lte':
-        case 'gt':
-        case 'gte': {
-          const numericQuery = Number(query);
-          if (!Number.isFinite(numericQuery)) return false;
-          return values.some((value) => {
-            const numericValue = Number(value);
-            if (value == null || value === '' || !Number.isFinite(numericValue))
-              return false;
-            switch (this.filterMatchMode()) {
-              case 'lt':
-                return numericValue < numericQuery;
-              case 'lte':
-                return numericValue <= numericQuery;
-              case 'gt':
-                return numericValue > numericQuery;
-              default:
-                return numericValue >= numericQuery;
-            }
-          });
-        }
-        default:
-          return normalizedValues.some((value) => {
-            switch (this.filterMatchMode()) {
-              case 'startsWith':
-                return value.startsWith(query);
-              case 'endsWith':
-                return value.endsWith(query);
-              case 'equals':
-                return value === query;
-              default:
-                return value.includes(query);
-            }
-          });
-      }
     });
   });
-  readonly activeOptionIndex = computed(() => {
-    const index = this.activeIndex();
-    const option = this.filteredOptions()[index];
-    return option && !this.isOptionDisabled(option) ? index : -1;
-  });
+  readonly activeOptionIndex = computed(() =>
+    listPickerActiveIndex(
+      this.activeIndex(),
+      this.filteredOptions().length,
+      (index) => this.isOptionDisabled(this.filteredOptions()[index]),
+    ),
+  );
   readonly activeOptionId = computed(() => {
     const index = this.activeOptionIndex();
     return index >= 0 ? this.optionId(index) : null;
   });
 
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
+
   writeValue(value: T | T[] | null): void {
     this.value.set(value ?? null);
   }
-  registerOnChange(fn: (value: T | T[] | null) => void): void {
-    this.onModelChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onModelTouched = fn;
-  }
-  setDisabledState(value: boolean): void {
-    this.cvaDisabled.set(value);
-  }
   getOptionValue(option: any): any {
-    const key = this.optionValue();
-    return key ? option?.[key] : (option?.value ?? option);
+    return listPickerOptionValue(option, this.optionValue());
   }
   optionId(index: number): string {
     return `${this.effectiveId()}-option-${index}`;
   }
   getOptionLabel(option: any): string {
-    const key = this.optionLabel();
-    return String(
-      key ? (option?.[key] ?? '') : (option?.label ?? option ?? ''),
-    );
+    return listPickerOptionLabel(option, this.optionLabel());
   }
   isOptionDisabled(option: any): boolean {
-    const key = this.optionDisabled();
-    return typeof key === 'function'
-      ? key(option)
-      : Boolean(key ? option?.[key] : option?.disabled);
+    return listPickerOptionDisabled(option, this.optionDisabled());
   }
 
   isSelected(option: any): boolean {
@@ -264,20 +207,12 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   }
 
   private sameValue(left: any, right: any): boolean {
-    const key = this.dataKey();
-    return key &&
-      left !== null &&
-      right !== null &&
-      typeof left === 'object' &&
-      typeof right === 'object'
-      ? left?.[key] === right?.[key]
-      : left === right;
+    return listPickerEquality(this.dataKey(), 'objects')(left, right);
   }
 
   select(option: any, event?: Event): void {
     if (
-      this.disabled() ||
-      this.cvaDisabled() ||
+      this.effectiveDisabled() ||
       this.readonly() ||
       this.isOptionDisabled(option)
     )
@@ -286,21 +221,17 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
     let next: T | T[] | null;
     if (this.multiple()) {
       const value = this.value();
-      const current = Array.isArray(value) ? [...value] : [];
-      const index = current.findIndex((item) =>
-        this.sameValue(item, candidate),
+      const current: T[] = Array.isArray(value) ? [...value] : [];
+      const toggle = toggleListPickerValue(current, candidate, (left, right) =>
+        this.sameValue(left, right),
       );
-      if (index >= 0) {
-        current.splice(index, 1);
-      } else {
-        current.push(candidate);
-      }
-      next = current as T[];
+      if (!toggle) return;
+      next = toggle.next as T[];
     } else next = candidate;
     const originalEvent = event ?? new Event('change');
     this.value.set(next);
-    this.onModelChange(next);
-    this.onModelTouched();
+    this.cvaOnChange(next);
+    this.cvaOnTouched();
     this.optionSelected.emit(option);
     this.onChange.emit({ originalEvent, value: next });
     this.onClick.emit({ originalEvent, option });
@@ -308,26 +239,18 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
 
   onKeydown(event: KeyboardEvent): void {
     const options = this.filteredOptions();
-    const enabledIndexes = options
-      .map((option, index) => (this.isOptionDisabled(option) ? -1 : index))
-      .filter((index) => index >= 0);
+    const enabledIndexes = listPickerEnabledIndexes(options.length, (index) =>
+      this.isOptionDisabled(options[index]),
+    );
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       const delta = event.key === 'ArrowDown' ? 1 : -1;
-      if (enabledIndexes.length) {
-        const currentPosition = enabledIndexes.indexOf(this.activeIndex());
-        const position =
-          currentPosition < 0
-            ? delta > 0
-              ? -1
-              : enabledIndexes.length
-            : currentPosition;
-        this.activeIndex.set(
-          enabledIndexes[
-            (position + delta + enabledIndexes.length) % enabledIndexes.length
-          ],
-        );
-      }
+      const next = stepListPickerActive(
+        this.activeIndex(),
+        delta,
+        enabledIndexes,
+      );
+      if (next !== null) this.activeIndex.set(next);
     } else if (
       event.key === 'Enter' &&
       options[this.activeOptionIndex()] &&
@@ -340,10 +263,11 @@ export class ListboxComponent<T = unknown> implements ControlValueAccessor {
   onFilterInput(event: Event): void {
     const filter = (event.target as HTMLInputElement).value;
     this.filterValue.set(filter);
-    const firstEnabled = this.filteredOptions().findIndex(
-      (option) => !this.isOptionDisabled(option),
+    this.activeIndex.set(
+      listPickerFirstEnabled(this.filteredOptions().length, (index) =>
+        this.isOptionDisabled(this.filteredOptions()[index]),
+      ),
     );
-    this.activeIndex.set(firstEnabled);
     this.onFilter.emit({ originalEvent: event, filter });
   }
 }
