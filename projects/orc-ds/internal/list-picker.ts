@@ -139,19 +139,19 @@ export function listPickerEquality(
   }
 }
 
-/** The declared filter match modes shared by the picker family. */
-export type ListPickerMatchMode =
-  | 'contains'
-  | 'startsWith'
-  | 'endsWith'
-  | 'equals'
-  | 'notEquals'
-  | 'in'
-  | 'lt'
-  | 'lte'
-  | 'gt'
-  | 'gte'
-  | string;
+/**
+ * The filter match modes shared by the picker family. Deliberately a plain
+ * `string`: PrimeNG callers can hand through arbitrary match modes, and the
+ * value machine's `default` branch treats every unknown mode as
+ * `contains`. Known modes:
+ *
+ * - `contains` — substring match (the family default);
+ * - `startsWith` / `endsWith` / `equals` / `notEquals` — string matching
+ *   under the configured locale;
+ * - `in` — membership against the comma-separated query;
+ * - `lt` / `lte` / `gt` / `gte` — numeric comparison.
+ */
+export type ListPickerMatchMode = string;
 
 /** Lowercase both sides under the configured locale before matching. */
 function listPickerNormalized(
@@ -177,6 +177,28 @@ function listPickerNumericMatch(
 }
 
 /**
+ * The comparison a numeric match mode asks for — the one mode→comparator
+ * table both filter machines read. `undefined` for any other mode (they are
+ * string modes or fall to the `contains` default).
+ */
+function listPickerNumericComparator(
+  matchMode: ListPickerMatchMode,
+): ((left: number, right: number) => boolean) | undefined {
+  switch (matchMode) {
+    case 'lt':
+      return (left, right) => left < right;
+    case 'lte':
+      return (left, right) => left <= right;
+    case 'gt':
+      return (left, right) => left > right;
+    case 'gte':
+      return (left, right) => left >= right;
+    default:
+      return undefined;
+  }
+}
+
+/**
  * One searchable value against the query. The value-level machine shared by
  * select, multi-select and dropdown (whose mode is always `contains`).
  */
@@ -188,6 +210,8 @@ export function listPickerValueMatchesFilter(
 ): boolean {
   const normalized = listPickerNormalized(value, locale);
   const query = listPickerNormalized(term, locale);
+  const numeric = listPickerNumericComparator(matchMode);
+  if (numeric) return listPickerNumericMatch(value, term, numeric);
   switch (matchMode) {
     case 'startsWith':
       return normalized.startsWith(query);
@@ -203,14 +227,6 @@ export function listPickerValueMatchesFilter(
         .map((item) => item.trim())
         .filter(Boolean)
         .includes(normalized);
-    case 'lt':
-      return listPickerNumericMatch(value, term, (l, r) => l < r);
-    case 'lte':
-      return listPickerNumericMatch(value, term, (l, r) => l <= r);
-    case 'gt':
-      return listPickerNumericMatch(value, term, (l, r) => l > r);
-    case 'gte':
-      return listPickerNumericMatch(value, term, (l, r) => l >= r);
     default:
       return normalized.includes(query);
   }
@@ -230,6 +246,14 @@ export function listPickerRowMatchesFilter(
   locale?: string,
 ): boolean {
   const query = listPickerNormalized(term, locale);
+  const numeric = listPickerNumericComparator(matchMode);
+  if (numeric) {
+    return values.some((value) =>
+      value == null || value === ''
+        ? false
+        : listPickerNumericMatch(value, term, numeric),
+    );
+  }
   switch (matchMode) {
     case 'notEquals':
       return values.every(
@@ -240,23 +264,6 @@ export function listPickerRowMatchesFilter(
         (value) =>
           Array.isArray(value) &&
           value.some((item) => listPickerNormalized(item, locale) === query),
-      );
-    case 'lt':
-    case 'lte':
-    case 'gt':
-    case 'gte':
-      return values.some((value) =>
-        value == null || value === ''
-          ? false
-          : listPickerNumericMatch(value, term, (left, right) =>
-              matchMode === 'lt'
-                ? left < right
-                : matchMode === 'lte'
-                  ? left <= right
-                  : matchMode === 'gt'
-                    ? left > right
-                    : left >= right,
-            ),
       );
     default:
       return values.some((value) =>

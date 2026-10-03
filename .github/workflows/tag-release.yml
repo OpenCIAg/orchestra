@@ -2,7 +2,9 @@ name: Tag release
 
 # Release artifacts (ticket #8 — governed tags and GitHub Releases).
 #
-# The ONLY workflow permitted `contents: write`; release.yml stays
+# One of the two workflows permitted `contents: write` (the other is
+# version-pr.yml, scoped to its Version-PR job's branch pushes); here it
+# buys only tag + GitHub Release creation. release.yml stays
 # read-only plus id-token (npm OIDC publishing needs nothing else).
 #
 # Triggers:

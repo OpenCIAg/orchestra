@@ -57,8 +57,10 @@ see Historical notes (dual-stream collision).
    run the isolated-consumer `verify:package` gates, and
    `npm publish` under `latest` (OIDC trusted publishing, `id-token: write`;
    the workflow itself is `contents: read`).
-5. **Tag + GitHub Release** — `tag-release.yml` (the only `contents: write`
-   workflow) runs the same guard verdict, waits for the version to appear on
+5. **Tag + GitHub Release** — `tag-release.yml` (one of the two
+   `contents: write` workflows, alongside `version-pr.yml` — each scoped to
+   its job: Version-PR branch pushes there, tag + GitHub Release creation
+   here) runs the same guard verdict, waits for the version to appear on
    the npm registry (release.yml publishes concurrently), creates the
    annotated `v<version>` tag at the release commit, and opens the GitHub
    Release with the version's changelog section as notes
