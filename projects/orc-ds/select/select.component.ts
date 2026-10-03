@@ -23,20 +23,26 @@ import {
 import { CommonModule, DOCUMENT } from '@angular/common';
 import {
   CvaControl,
+  attachListPickerOverlay,
   isTopOverlay,
-  listenForOutsideInteraction,
+  listPickerEquality,
+  listPickerFilterFields,
+  listPickerFieldValues,
+  listPickerOptionDisabled,
+  listPickerOptionLabel,
+  listPickerOptionValue,
+  listPickerSkipDisabled,
+  listPickerValueMatchesFilter,
   overlayAttachmentTarget,
-  registerOverlay,
+  stepListPickerActive,
 } from '@ciag/orchestra/internal';
+import type { ListPickerOverlayHandle } from '@ciag/orchestra/internal';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   Overlay,
-  OverlayConfig,
-  OverlayRef,
   PositionStrategy,
   ConnectedPosition,
 } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
 import { SelectOption } from './select-option.model';
 import { SelectStatus } from './select.types';
 import { OptionComponent } from './option.component';
@@ -71,10 +77,8 @@ export class SelectComponent
   private readonly document = inject(DOCUMENT);
 
   // ── Overlay References ─────────────────────────────────────
-  private overlayRef: OverlayRef | null = null;
-  private portal!: TemplatePortal<unknown>;
-  private layerCleanup?: () => void;
-  private outsideCleanup?: () => void;
+  private overlayHandle: ListPickerOverlayHandle | null = null;
+  private panelReady = false;
   private focusTimer?: ReturnType<typeof setTimeout>;
   private blurTimer?: ReturnType<typeof setTimeout>;
 
@@ -353,93 +357,37 @@ export class SelectComponent
     const list = this.dataOptions();
     const term = this.searchTerm().trim();
     if (!term) return list;
+    const fields = listPickerFilterFields(this.filterFields(), this.filterBy());
+    const locale = this.filterLocale() || undefined;
     return list.filter((opt) => {
-      const fields =
-        this.filterFields() ??
-        (this.filterBy()
-          ? this.filterBy()!
-              .split(',')
-              .map((f) => f.trim())
-              .filter(Boolean)
-          : undefined);
       const values = fields?.length
-        ? fields
-            .map((field) => String((opt as any)?.[field] ?? ''))
-            .filter(Boolean)
+        ? listPickerFieldValues(opt, fields).filter(Boolean)
         : [
             this.getOptionLabel(opt),
             String((opt as any)?.description ?? ''),
           ].filter(Boolean);
-      return values.some((value) => this.matchesFilter(value, term));
+      return values.some((value) =>
+        listPickerValueMatchesFilter(
+          value,
+          term,
+          this.filterMatchMode(),
+          locale,
+        ),
+      );
     });
   });
 
   private matchesFilter(value: string, term: string): boolean {
-    const normalized = value.toLocaleLowerCase(
+    return listPickerValueMatchesFilter(
+      value,
+      term,
+      this.filterMatchMode(),
       this.filterLocale() || undefined,
-    );
-    const query = term.toLocaleLowerCase(this.filterLocale() || undefined);
-    switch (this.filterMatchMode()) {
-      case 'startsWith':
-        return normalized.startsWith(query);
-      case 'endsWith':
-        return normalized.endsWith(query);
-      case 'equals':
-        return normalized === query;
-      case 'notEquals':
-        return normalized !== query;
-      case 'in':
-        return query
-          .split(',')
-          .map((item) => item.trim())
-          .filter(Boolean)
-          .includes(normalized);
-      case 'lt':
-        return this.compareNumericFilter(
-          value,
-          term,
-          (left, right) => left < right,
-        );
-      case 'lte':
-        return this.compareNumericFilter(
-          value,
-          term,
-          (left, right) => left <= right,
-        );
-      case 'gt':
-        return this.compareNumericFilter(
-          value,
-          term,
-          (left, right) => left > right,
-        );
-      case 'gte':
-        return this.compareNumericFilter(
-          value,
-          term,
-          (left, right) => left >= right,
-        );
-      default:
-        return normalized.includes(query);
-    }
-  }
-
-  private compareNumericFilter(
-    value: string,
-    term: string,
-    compare: (value: number, query: number) => boolean,
-  ): boolean {
-    const numericValue = Number(value);
-    const numericQuery = Number(term);
-    return (
-      Number.isFinite(numericValue) &&
-      Number.isFinite(numericQuery) &&
-      compare(numericValue, numericQuery)
     );
   }
 
   getOptionValue(option: any): any {
-    const key = this.optionValue();
-    return key ? option?.[key] : (option?.value ?? option);
+    return listPickerOptionValue(option, this.optionValue());
   }
   private toNativeFormValue(value: unknown): string {
     let nativeValue = value;
@@ -461,13 +409,7 @@ export class SelectComponent
     return nativeValue == null ? '' : String(nativeValue);
   }
   sameOptionValue(left: any, right: any): boolean {
-    const key = this.dataKey();
-    if (!key || left == null || right == null) return left === right;
-    const valueForKey = (value: any) =>
-      typeof value === 'object' && value !== null && key in value
-        ? value[key]
-        : value;
-    return valueForKey(left) === valueForKey(right);
+    return listPickerEquality(this.dataKey(), 'extract')(left, right);
   }
   isDataOptionSelected(option: SelectOption): boolean {
     const candidate = this.getOptionValue(option);
@@ -478,14 +420,10 @@ export class SelectComponent
       : this.sameOptionValue(current, candidate);
   }
   getOptionLabel(option: any): string {
-    const key = this.optionLabel();
-    return String(
-      key ? (option?.[key] ?? '') : (option?.label ?? option ?? ''),
-    );
+    return listPickerOptionLabel(option, this.optionLabel());
   }
   isOptionDisabled(option: any): boolean {
-    const key = this.optionDisabled();
-    return Boolean(key ? option?.[key] : option?.disabled);
+    return listPickerOptionDisabled(option, this.optionDisabled());
   }
 
   // Selected Option Items for display
@@ -592,10 +530,7 @@ export class SelectComponent
   }
 
   ngAfterViewInit(): void {
-    this.portal = new TemplatePortal(
-      this.dropdownPanel(),
-      this.viewContainerRef,
-    );
+    this.panelReady = true;
     if (this.autofocus()) {
       this.triggerEl()?.nativeElement.focus({ preventScroll: true });
     }
@@ -619,74 +554,58 @@ export class SelectComponent
 
   openPanel(): void {
     if (this.isOpen() || this.effectiveDisabled() || this.readonly()) return;
-    if (!this.portal) return;
+    if (!this.panelReady) return;
 
     const triggerNative =
       this.triggerEl()?.nativeElement || this.hostEl.nativeElement;
     const triggerWidth = triggerNative.getBoundingClientRect().width;
 
-    const positionStrategy = this.createPositionStrategy(triggerNative);
-    const overlayConfig = new OverlayConfig({
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      positionStrategy,
-      minWidth: triggerWidth,
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-    });
-
-    this.overlayRef = this.overlay.create(overlayConfig);
-    if (this.autoZIndex()) {
-      this.overlayRef.hostElement.style.zIndex = String(
-        Math.max(0, this.baseZIndex()) + 1000,
-      );
-    }
-    this.overlayRef.backdropClick().subscribe(() => this.closePanel());
-    this.overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        this.closePanel(true);
-        event.stopPropagation();
-      }
-    });
-
-    this.overlayRef.attach(this.portal);
-    this.layerCleanup = registerOverlay(this.overlayRef.overlayElement, {
+    this.overlayHandle = attachListPickerOverlay({
       anchor: triggerNative,
+      content: this.dropdownPanel(),
+      viewContainerRef: this.viewContainerRef,
+      overlay: this.overlay,
+      documentRef: this.document,
+      positionStrategy: (anchor) => this.createPositionStrategy(anchor),
+      minWidth: triggerWidth,
+      zIndex: this.autoZIndex()
+        ? Math.max(0, this.baseZIndex()) + 1000
+        : undefined,
+      onEscape: () => this.closePanel(true),
+      onBackdrop: () => this.closePanel(),
       onParentClose: () => this.closePanel(),
-    });
-    this.outsideCleanup = listenForOutsideInteraction(
-      this.document,
-      () => [this.hostEl.nativeElement, this.overlayRef?.overlayElement],
-      (event) => this.onDocumentClick(event.target, event.type),
-    );
-    this.isOpen.set(true);
-    if (this.autoOptionFocus()) this.navigateOption(1);
-    this.opened.emit();
-    this.onShow.emit();
-    if (this.lazy() || this.virtualScroll())
-      this.onLazyLoad.emit({
-        first: 0,
-        last: Math.max(0, this.dataOptions().length - 1),
-      });
+      targets: () => [
+        this.hostEl.nativeElement,
+        this.overlayHandle?.overlayElement,
+      ],
+      onOutside: (event) => this.onDocumentClick(event.target, event.type),
+      onAttached: () => {
+        this.isOpen.set(true);
+        if (this.autoOptionFocus()) this.navigateOption(1);
+        this.opened.emit();
+        this.onShow.emit();
+        if (this.lazy() || this.virtualScroll())
+          this.onLazyLoad.emit({
+            first: 0,
+            last: Math.max(0, this.dataOptions().length - 1),
+          });
 
-    if (this.filterEnabled()) {
-      this.focusTimer = setTimeout(() => {
-        this.focusTimer = undefined;
-        this.searchInputRef()?.nativeElement?.focus();
-      });
-    }
+        if (this.filterEnabled()) {
+          this.focusTimer = setTimeout(() => {
+            this.focusTimer = undefined;
+            this.searchInputRef()?.nativeElement?.focus();
+          });
+        }
+      },
+    });
   }
 
   closePanel(restoreFocus = false): void {
     if (!this.isOpen()) return;
     if (this.focusTimer !== undefined) clearTimeout(this.focusTimer);
     this.focusTimer = undefined;
-    this.outsideCleanup?.();
-    this.outsideCleanup = undefined;
-    this.layerCleanup?.();
-    this.layerCleanup = undefined;
-    this.overlayRef?.dispose();
-    this.overlayRef = null;
+    this.overlayHandle?.dispose();
+    this.overlayHandle = null;
     this.isOpen.set(false);
     if (this.resetFilterOnHide()) this.searchTerm.set('');
     this.activeOptionIndex.set(-1);
@@ -889,18 +808,23 @@ export class SelectComponent
     if (this.isDataMode()) {
       const optionsList = this.filteredDataOptions();
       if (!optionsList.some((option) => !this.isOptionDisabled(option))) return;
-      let nextIndex = this.activeOptionIndex();
-      do {
-        nextIndex =
-          (nextIndex + direction + optionsList.length) % optionsList.length;
-      } while (this.isOptionDisabled(optionsList[nextIndex]));
-      this.activeOptionIndex.set(nextIndex);
+      this.activeOptionIndex.set(
+        listPickerSkipDisabled(
+          this.activeOptionIndex(),
+          direction > 0 ? 1 : -1,
+          optionsList.length,
+          (index) => this.isOptionDisabled(optionsList[index]),
+        ),
+      );
     } else {
       const visibleOpts = this.getVisibleOptions();
       if (visibleOpts.length === 0) return;
-      let nextIndex = this.activeOptionIndex() + direction;
-      if (nextIndex < 0) nextIndex = visibleOpts.length - 1;
-      if (nextIndex >= visibleOpts.length) nextIndex = 0;
+      const nextIndex = stepListPickerActive(
+        this.activeOptionIndex(),
+        direction > 0 ? 1 : -1,
+        visibleOpts.map((_, index) => index),
+      );
+      if (nextIndex === null) return;
       this.activeOptionIndex.set(nextIndex);
       this.updateActiveHighlight(visibleOpts, nextIndex);
     }
@@ -956,7 +880,7 @@ export class SelectComponent
     if (!target) return false;
     const NodeConstructor = this.document.defaultView?.Node;
     if (!NodeConstructor || !(target instanceof NodeConstructor)) return false;
-    const overlay = this.overlayRef?.overlayElement;
+    const overlay = this.overlayHandle?.overlayElement;
     return (
       this.hostEl.nativeElement.contains(target) || !!overlay?.contains(target)
     );
@@ -983,7 +907,7 @@ export class SelectComponent
     const hostNode = host.ownerDocument.defaultView?.Node;
     const insideHost =
       !!hostNode && target instanceof hostNode && host.contains(target);
-    const overlay = this.overlayRef?.overlayElement;
+    const overlay = this.overlayHandle?.overlayElement;
     const overlayNode = overlay?.ownerDocument.defaultView?.Node;
     const insideOverlay =
       !!overlay &&
