@@ -23006,7 +23006,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';\nexport * from './date-utils';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -24031,7 +24031,6 @@
     "projects/orc-ds/internal/calendar-engine.ts",
     "projects/orc-ds/internal/cva-control.spec.ts",
     "projects/orc-ds/internal/cva-control.ts",
-    "projects/orc-ds/internal/date-utils.ts",
     "projects/orc-ds/internal/dom-target.ts",
     "projects/orc-ds/internal/index.ts",
     "projects/orc-ds/internal/list-picker.spec.ts",
