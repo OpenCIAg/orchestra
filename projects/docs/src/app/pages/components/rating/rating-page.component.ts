@@ -10,11 +10,13 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RatingComponent } from '@ciag/orchestra/rating';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-rating-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     ReactiveFormsModule,

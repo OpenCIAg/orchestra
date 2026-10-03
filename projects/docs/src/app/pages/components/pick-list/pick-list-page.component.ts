@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { PickListComponent } from '@ciag/orchestra/p2';
 import type { P2Option } from '@ciag/orchestra/p2';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 type PickListItem = P2Option<string>;
 type TransferEvent = {
@@ -14,7 +15,7 @@ type TransferEvent = {
 @Component({
   selector: 'app-pick-list-page',
   standalone: true,
-  imports: [RouterModule, PickListComponent, FooterComponent],
+  imports: [IconComponent, RouterModule, PickListComponent, FooterComponent],
   templateUrl: './pick-list-page.component.html',
   styleUrl: './pick-list-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

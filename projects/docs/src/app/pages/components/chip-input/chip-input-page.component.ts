@@ -10,11 +10,13 @@ import {
 import { ChipInputComponent } from '@ciag/orchestra/chip-input';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-chip-input-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     ReactiveFormsModule,

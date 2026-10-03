@@ -8,13 +8,14 @@ import { RouterModule } from '@angular/router';
 import { OrderListComponent } from '@ciag/orchestra/p2';
 import type { P2Option } from '@ciag/orchestra/p2';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 type OrderListItem = P2Option<string>;
 
 @Component({
   selector: 'app-order-list-page',
   standalone: true,
-  imports: [RouterModule, OrderListComponent, FooterComponent],
+  imports: [IconComponent, RouterModule, OrderListComponent, FooterComponent],
   templateUrl: './order-list-page.component.html',
   styleUrl: './order-list-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

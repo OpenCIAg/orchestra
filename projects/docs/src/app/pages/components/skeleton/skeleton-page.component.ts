@@ -8,11 +8,13 @@ import {
   SkeletonAnimation,
 } from '@ciag/orchestra/skeleton';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-skeleton-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,

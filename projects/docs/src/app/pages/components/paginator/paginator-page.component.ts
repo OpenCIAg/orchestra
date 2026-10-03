@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PaginatorComponent, PaginatorSize } from '@ciag/orchestra/paginator';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 interface MockItem {
   id: number;
@@ -22,6 +23,7 @@ interface MockItem {
   selector: 'app-paginator-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,

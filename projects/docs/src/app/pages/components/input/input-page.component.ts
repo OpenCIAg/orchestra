@@ -17,11 +17,13 @@ import {
   TextareaResize,
 } from '@ciag/orchestra/input';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-input-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

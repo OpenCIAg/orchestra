@@ -321,6 +321,10 @@
 }
 
 .btn-val {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
   flex: 1;
   min-width: 60px;
   padding: var(--space-2) var(--space-3);
@@ -332,7 +336,6 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
-  text-align: center;
 
   &:hover:not(:disabled) {
     background: var(--bg-subtle);

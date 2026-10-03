@@ -15,6 +15,7 @@ import { JsonPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 import {
   ComponentCatalogService,
   categoryLabel,
@@ -58,7 +59,7 @@ const STATUS_LABELS: Record<ComponentEntry['status'], string> = {
 @Component({
   selector: 'app-component-doc-page',
   standalone: true,
-  imports: [JsonPipe, RouterModule, FooterComponent],
+  imports: [JsonPipe, RouterModule, FooterComponent, IconComponent],
   templateUrl: './component-doc-page.component.html',
   styleUrl: './component-doc-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

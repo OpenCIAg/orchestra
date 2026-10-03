@@ -2,7 +2,10 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Inputs</div>
@@ -333,11 +336,17 @@
                   class="output-header"
                   [class.output-header--error]="form.invalid"
                 >
-                  {{
-                    form.valid
-                      ? '✓ Formulário válido e submetido'
-                      : '✕ Erro de validação nos campos obrigatórios'
-                  }}
+                  @if (form.valid) {
+                    <orc-icon
+                      name="check_circle"
+                      size="sm"
+                      aria-hidden="true"
+                    />
+                    Formulário válido e submetido
+                  } @else {
+                    <orc-icon name="cancel" size="sm" aria-hidden="true" />
+                    Erro de validação nos campos obrigatórios
+                  }
                 </div>
                 <pre class="output-code" *ngIf="formResult()">{{
                   formResult() | json

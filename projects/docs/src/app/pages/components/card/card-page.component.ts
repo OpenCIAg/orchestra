@@ -8,11 +8,13 @@ import { CardFooterComponent } from '@ciag/orchestra/card';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { AvatarComponent } from '@ciag/orchestra/avatar';
 import { BadgeComponent } from '@ciag/orchestra/badge';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-card-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     CardComponent,

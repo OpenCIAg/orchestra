@@ -81,7 +81,8 @@ export const EXAMPLE_STYLES = `
 
   &:focus {
     border-color: var(--orc-color-azul-eletrico);
-    box-shadow: 0 0 0 3px rgba(28, 106, 237, 0.12);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--orc-color-azul-eletrico) 12%, transparent);
   }
 }
 .native-control--error {
@@ -106,9 +107,10 @@ export const EXAMPLE_STYLES = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-2);
   min-height: 40px;
   padding: 0 14px;
-  color: #fff;
+  color: var(--orc-on-interactive);
   background: var(--orc-color-azul-eletrico);
   border: 1px solid var(--orc-color-azul-eletrico);
   border-radius: var(--radius-md);
@@ -124,7 +126,8 @@ export const EXAMPLE_STYLES = `
     filter: brightness(0.94);
   }
   &:focus-visible {
-    outline: 3px solid rgba(28, 106, 237, 0.25);
+    outline: 3px solid
+      color-mix(in srgb, var(--orc-color-azul-eletrico) 25%, transparent);
     outline-offset: 2px;
   }
 }
@@ -132,6 +135,9 @@ export const EXAMPLE_STYLES = `
   color: var(--text-primary);
   background: var(--bg-app);
   border-color: var(--border-default);
+}
+.doc-button__chevron {
+  margin-right: calc(var(--space-2) * -1);
 }
 
 .state-note {
@@ -187,7 +193,8 @@ export const EXAMPLE_STYLES = `
   cursor: pointer;
 }
 .toolbar-action:focus-visible {
-  outline: 3px solid rgba(28, 106, 237, 0.2);
+  outline: 3px solid
+    color-mix(in srgb, var(--orc-color-azul-eletrico) 20%, transparent);
   outline-offset: 2px;
 }
 

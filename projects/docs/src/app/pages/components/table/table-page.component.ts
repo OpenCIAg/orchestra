@@ -13,6 +13,7 @@ import {
 import { BadgeComponent } from '@ciag/orchestra/badge';
 import { BadgeStatus } from '@ciag/orchestra/badge';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 export interface UserRow {
   id: number;
@@ -28,6 +29,7 @@ export interface UserRow {
   selector: 'app-table-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     FormsModule,
     RouterModule,

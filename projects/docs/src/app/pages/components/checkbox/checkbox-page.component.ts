@@ -16,11 +16,13 @@ import {
 } from '@angular/forms';
 import { CheckboxComponent } from '@ciag/orchestra/checkbox';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-checkbox-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,

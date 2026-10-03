@@ -10,6 +10,7 @@ import { ModalComponent } from '@ciag/orchestra/modal';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { ModalService } from '@ciag/orchestra/modal';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 // ── COMPONENTE DINÂMICO PARA DEMONSTRAÇÃO DO SERVIÇO ─────────
 @Component({
@@ -54,6 +55,7 @@ export class DemoDynamicModalComponent {
     ModalComponent,
     ButtonComponent,
     FooterComponent,
+    IconComponent,
   ],
   templateUrl: './modal-page.component.html',
   styleUrl: './modal-page.component.scss',

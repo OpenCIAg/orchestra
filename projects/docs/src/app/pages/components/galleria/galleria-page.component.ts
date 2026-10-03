@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { GalleriaComponent } from '@ciag/orchestra/p2';
 import type { GalleryImage } from '@ciag/orchestra/p2';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 const svg = (color: string): string =>
   `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="640" height="360"%3E%3Crect width="640" height="360" fill="${color}"/%3E%3C/svg%3E`;
@@ -15,7 +16,7 @@ const svg = (color: string): string =>
 @Component({
   selector: 'app-galleria-page',
   standalone: true,
-  imports: [RouterModule, GalleriaComponent, FooterComponent],
+  imports: [IconComponent, RouterModule, GalleriaComponent, FooterComponent],
   templateUrl: './galleria-page.component.html',
   styleUrl: './galleria-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

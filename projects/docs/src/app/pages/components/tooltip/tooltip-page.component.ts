@@ -8,11 +8,13 @@ import {
   TooltipTheme,
 } from '@ciag/orchestra/tooltip';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-tooltip-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,

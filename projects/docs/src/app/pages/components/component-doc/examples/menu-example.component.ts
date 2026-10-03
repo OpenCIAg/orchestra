@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { MenuComponent } from '@ciag/orchestra/menu';
 import type { MenuItem } from '@ciag/orchestra/menu';
+import { IconComponent } from '@ciag/orchestra/icon';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
   selector: 'doc-menu-example',
   standalone: true,
-  imports: [MenuComponent],
+  imports: [MenuComponent, IconComponent],
   template: `
     <div class="example-stack">
       <div class="example example--centered">
@@ -23,7 +24,13 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
           [attr.aria-expanded]="visible()"
           (click)="popup.toggle()"
         >
-          Ações <span aria-hidden="true">⌄</span>
+          Ações
+          <orc-icon
+            name="keyboard_arrow_down"
+            size="sm"
+            aria-hidden="true"
+            class="doc-button__chevron"
+          />
         </button>
         <orc-menu
           #popup

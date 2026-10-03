@@ -19,6 +19,7 @@ import {
 } from '@ciag/orchestra/card';
 import { ChipComponent } from '@ciag/orchestra/chip';
 import { DividerComponent } from '@ciag/orchestra/divider';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 interface ZincSwatch {
   name: string;
@@ -74,6 +75,7 @@ interface CiagLogoGroup {
     CardHeaderComponent,
     ChipComponent,
     DividerComponent,
+    IconComponent,
   ],
   templateUrl: './docs.component.html',
   styleUrl: './docs.component.scss',

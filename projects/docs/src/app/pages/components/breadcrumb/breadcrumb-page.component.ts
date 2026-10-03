@@ -10,11 +10,13 @@ import {
   BreadcrumbVariant,
 } from '@ciag/orchestra/breadcrumb';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-breadcrumb-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,

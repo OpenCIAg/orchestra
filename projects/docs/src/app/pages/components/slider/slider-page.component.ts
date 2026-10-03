@@ -15,11 +15,13 @@ import {
   SliderValue,
 } from '@ciag/orchestra/slider';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-slider-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

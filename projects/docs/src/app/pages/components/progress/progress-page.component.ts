@@ -23,6 +23,7 @@ import {
   StepperType,
 } from '@ciag/orchestra/stepper';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 export type PlaygroundTab = 'bar' | 'circle' | 'segmented' | 'stepper';
 
@@ -30,6 +31,7 @@ export type PlaygroundTab = 'bar' | 'circle' | 'segmented' | 'stepper';
   selector: 'app-progress-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,

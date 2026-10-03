@@ -2,7 +2,10 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Feedback & Processos</div>
@@ -67,7 +70,12 @@
                     @if (isSimulatingBar()) {
                       ⏹ Pausar simulação
                     } @else {
-                      ▶ Simular upload em tempo real
+                      <orc-icon
+                        name="play_arrow"
+                        size="sm"
+                        aria-hidden="true"
+                      />
+                      Simular upload em tempo real
                     }
                   </button>
                 </div>
@@ -99,7 +107,12 @@
                     @if (isSimulatingCircle()) {
                       ⏹ Pausar simulação
                     } @else {
-                      ▶ Simular progresso circular
+                      <orc-icon
+                        name="play_arrow"
+                        size="sm"
+                        aria-hidden="true"
+                      />
+                      Simular progresso circular
                     }
                   </button>
                 </div>
@@ -127,14 +140,24 @@
                       class="btn-val"
                       (click)="prevSegment()"
                     >
-                      ← Etapa anterior
+                      <orc-icon
+                        name="arrow_back"
+                        size="sm"
+                        aria-hidden="true"
+                      />
+                      Etapa anterior
                     </button>
                     <button
                       type="button"
                       class="btn-val btn-val--primary"
                       (click)="nextSegment()"
                     >
-                      Próxima etapa →
+                      Próxima etapa
+                      <orc-icon
+                        name="arrow_forward"
+                        size="sm"
+                        aria-hidden="true"
+                      />
                     </button>
                     <button
                       type="button"
@@ -176,7 +199,12 @@
                       [disabled]="stepperCurrentIndex() === 0"
                       (click)="prevStep()"
                     >
-                      ← Voltar passo
+                      <orc-icon
+                        name="arrow_back"
+                        size="sm"
+                        aria-hidden="true"
+                      />
+                      Voltar passo
                     </button>
                     <button
                       type="button"
@@ -187,7 +215,12 @@
                       "
                       (click)="nextStep()"
                     >
-                      Avançar passo →
+                      Avançar passo
+                      <orc-icon
+                        name="arrow_forward"
+                        size="sm"
+                        aria-hidden="true"
+                      />
                     </button>
                     <button
                       type="button"

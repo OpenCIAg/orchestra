@@ -2,7 +2,10 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a Página Inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a Página Inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Inputs</div>
@@ -227,7 +230,8 @@
                 class="form-error-msg"
                 role="alert"
               >
-                ⚠ Código incompleto ou obrigatório. Digite os 6 dígitos.
+                <orc-icon name="warning" size="sm" aria-hidden="true" />
+                Código incompleto ou obrigatório. Digite os 6 dígitos.
               </div>
             </div>
 
@@ -252,11 +256,13 @@
               [class.form-result-status--valid]="form.valid"
               [class.form-result-status--invalid]="form.invalid"
             >
-              {{
-                form.valid
-                  ? '✓ Código Válido'
-                  : '⚠ Erro de Validação: Código Incompleto'
-              }}
+              @if (form.valid) {
+                <orc-icon name="check_circle" size="sm" aria-hidden="true" />
+                Código Válido
+              } @else {
+                <orc-icon name="warning" size="sm" aria-hidden="true" />
+                Erro de Validação: Código Incompleto
+              }
             </div>
             <pre class="code-block" *ngIf="formResult()">{{
               formResult() | json
