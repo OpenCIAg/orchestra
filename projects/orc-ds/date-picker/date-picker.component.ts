@@ -19,9 +19,20 @@ import {
   afterNextRender,
 } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   attachAnchoredPopup,
+  CvaControl,
+  calendarDateKey,
+  calendarFormatDatePattern,
+  calendarMonthKey,
+  calendarNormalizeDateInput,
+  calendarPad,
+  calendarParseDate,
+  calendarParseDateTime,
+  calendarPositiveInteger,
+  calendarSelection,
+  calendarTimeString,
   eventIsInside,
   isTopOverlay,
   listenForOutsideInteraction,
@@ -31,14 +42,6 @@ import {
   trapTabKey,
 } from '@ciag/orchestra/internal';
 import { DatePickerCalendarComponent } from './date-picker-calendar.component';
-import {
-  dateKey,
-  parseDateTime,
-  parseDate,
-  monthKey,
-  positiveInteger,
-  timeString,
-} from './date-value';
 export { DatePickerCalendarComponent } from './date-picker-calendar.component';
 let nextDatePickerId = 0;
 
@@ -61,7 +64,7 @@ let nextDatePickerId = 0;
     },
   ],
 })
-export class DatePickerComponent implements ControlValueAccessor {
+export class DatePickerComponent extends CvaControl {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
@@ -198,12 +201,10 @@ export class DatePickerComponent implements ControlValueAccessor {
   private restoringFocus = false;
   readonly invalidInput = signal(false);
   private lastCalendarView: { month: number; year: number } | null = null;
-  protected readonly cvaDisabled = signal(false);
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
   constructor() {
+    super();
     effect((onCleanup) => {
-      if (this.disabled() || this.cvaDisabled()) {
+      if (this.effectiveDisabled()) {
         this.hide();
         return;
       }
@@ -278,13 +279,13 @@ export class DatePickerComponent implements ControlValueAccessor {
     effect(() => {
       const key = this.calendarValue();
       const selected =
-        parseDate(key) ?? this.defaultViewDate() ?? this.defaultDate();
+        calendarParseDate(key) ?? this.defaultViewDate() ?? this.defaultDate();
       if (selected && Number.isFinite(selected.getTime()))
         this.viewDate.set(new Date(selected));
     });
   }
   readonly viewMonth = computed(() =>
-    monthKey(
+    calendarMonthKey(
       Number.isFinite(this.viewDate().getTime()) ? this.viewDate() : new Date(),
     ),
   );
@@ -303,17 +304,17 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
   readonly calendarValue = computed(() => {
     const value = this.value();
-    return dateKey(Array.isArray(value) ? value[0] : value);
+    return calendarDateKey(Array.isArray(value) ? value[0] : value);
   });
   readonly calendarValues = computed(() => {
     const value = this.value();
     return (Array.isArray(value) ? value : [value])
-      .map(dateKey)
+      .map(calendarDateKey)
       .filter(Boolean);
   });
   readonly timeParts = computed(() => {
     const value = this.value();
-    const date = parseDateTime(
+    const date = calendarParseDateTime(
       Array.isArray(value) ? value[0] : value,
       this.timeOnly(),
     );
@@ -333,7 +334,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   );
   readonly monthOffsets = computed(() =>
     Array.from(
-      { length: positiveInteger(this.numberOfMonths(), 1, 12) },
+      { length: calendarPositiveInteger(this.numberOfMonths(), 1, 12) },
       (_, index) => index,
     ),
   );
@@ -341,14 +342,9 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.invalidInput.set(false);
     this.value.set(value ?? '');
   }
-  registerOnChange(fn: (value: any) => void): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-  setDisabledState(value: boolean): void {
-    this.cvaDisabled.set(value);
+  /** The control's own disabled input, for the shared CVA base. */
+  protected isSelfDisabled(): boolean {
+    return this.disabled();
   }
   inputValue(): string {
     const value = this.value();
@@ -373,35 +369,28 @@ export class DatePickerComponent implements ControlValueAccessor {
     return raw;
   }
   private formatInputDate(date: Date): string {
-    const pad = (value: number) => String(value).padStart(2, '0');
     if (!this.showTime() && !this.timeOnly())
       return this.formatDateParts(
         date.getFullYear(),
         date.getMonth() + 1,
         date.getDate(),
       );
-    const day = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-    const time = `${pad(date.getHours())}:${pad(date.getMinutes())}${this.showSeconds() ? `:${pad(date.getSeconds())}` : ''}`;
+    const day = `${date.getFullYear()}-${calendarPad(date.getMonth() + 1)}-${calendarPad(date.getDate())}`;
+    const time = `${calendarPad(date.getHours())}:${calendarPad(date.getMinutes())}${this.showSeconds() ? `:${calendarPad(date.getSeconds())}` : ''}`;
     return this.timeOnly() ? time : `${day}T${time}`;
   }
   private formatDateParts(year: number, month: number, day: number): string {
-    const format = this.dateFormat();
-    const pad = (value: number) => String(value).padStart(2, '0');
-    if (format) {
-      const replacements: Record<string, string> = {
-        dd: pad(day),
-        d: String(day),
-        mm: pad(month),
-        m: String(month),
-        yy: String(year),
-        y: pad(year % 100),
-      };
-      return format.replace(/dd|d|mm|m|yy|y/g, (token) => replacements[token]);
-    }
-    return new Intl.DateTimeFormat(
-      this.locale() || this.document.documentElement.lang || undefined,
-      { day: '2-digit', month: '2-digit', year: 'numeric' },
-    ).format(new Date(year, month - 1, day));
+    return calendarFormatDatePattern(
+      this.dateFormat(),
+      this.effectiveLocale,
+      year,
+      month,
+      day,
+    );
+  }
+  /** The locale seam: the configured locale, else the document language. */
+  private get effectiveLocale(): string | undefined {
+    return this.locale() || this.document.documentElement.lang || undefined;
   }
   private parseValue(raw: string): any {
     const separator =
@@ -415,56 +404,25 @@ export class DatePickerComponent implements ControlValueAccessor {
       .map((item) => this.normalizeDateInput(item));
     const parsed =
       this.dataType() === 'date'
-        ? values.map((item) => parseDateTime(item, this.timeOnly()) ?? item)
+        ? values.map(
+            (item) => calendarParseDateTime(item, this.timeOnly()) ?? item,
+          )
         : values;
     return this.selectionMode() === 'single' ? (parsed[0] ?? '') : parsed;
   }
   private normalizeDateInput(value: string): string {
-    if (this.showTime() || this.timeOnly() || /^\d{4}-\d{2}-\d{2}$/.test(value))
-      return value;
-    const numbers = value.match(/\d+/g)?.map(Number);
-    if (!numbers || numbers.length !== 3) return value;
-    const configuredTokens = this.dateFormat()?.match(/dd|d|mm|m|yy|y/g);
-    const localeTokens = new Intl.DateTimeFormat(
-      this.locale() || this.document.documentElement.lang || undefined,
-      { day: 'numeric', month: 'numeric', year: 'numeric' },
-    )
-      .formatToParts(new Date(2006, 10, 22))
-      .filter(
-        (part) =>
-          part.type === 'day' || part.type === 'month' || part.type === 'year',
-      )
-      .map((part) =>
-        part.type === 'day' ? 'd' : part.type === 'month' ? 'm' : 'yy',
-      );
-    const tokens =
-      configuredTokens?.length === 3 ? configuredTokens : localeTokens;
-    const parts: Record<'day' | 'month' | 'year', number> = {
-      day: 0,
-      month: 0,
-      year: 0,
-    };
-    tokens.forEach((token, index) => {
-      parts[
-        token.startsWith('d') ? 'day' : token.startsWith('m') ? 'month' : 'year'
-      ] = numbers[index];
-    });
-    if (parts.year < 100) parts.year += 2000;
-    const date = new Date(parts.year, parts.month - 1, parts.day);
-    if (
-      date.getFullYear() !== parts.year ||
-      date.getMonth() !== parts.month - 1 ||
-      date.getDate() !== parts.day
-    )
-      return value;
-    const pad = (part: number) => String(part).padStart(2, '0');
-    return `${parts.year}-${pad(parts.month)}-${pad(parts.day)}`;
+    if (this.showTime() || this.timeOnly()) return value;
+    return calendarNormalizeDateInput(
+      value,
+      this.dateFormat(),
+      this.effectiveLocale,
+    );
   }
   private isDateSelectable(date: Date): boolean {
     if (!Number.isFinite(date.getTime())) return false;
     const min = this.minDate();
     const max = this.maxDate();
-    const key = dateKey(date);
+    const key = calendarDateKey(date);
     if (this.timeOnly()) {
       const seconds = (item: Date) =>
         item.getHours() * 3600 + item.getMinutes() * 60 + item.getSeconds();
@@ -483,16 +441,18 @@ export class DatePickerComponent implements ControlValueAccessor {
     return (
       !this.disabledDays()?.includes(date.getDay()) &&
       !(this.disabledDates() || []).some(
-        (disabled) => dateKey(disabled) === key,
+        (disabled) => calendarDateKey(disabled) === key,
       )
     );
   }
   update(event: Event): void {
-    if (this.disabled() || this.cvaDisabled() || this.readonlyInput()) return;
+    if (this.effectiveDisabled() || this.readonlyInput()) return;
     const raw = (event.target as HTMLInputElement).value;
     const value = this.parseValue(raw);
     const values = Array.isArray(value) ? value : value === '' ? [] : [value];
-    const dates = values.map((item) => parseDateTime(item, this.timeOnly()));
+    const dates = values.map((item) =>
+      calendarParseDateTime(item, this.timeOnly()),
+    );
     const maxCount = this.maxDateCount();
     const invalid =
       dates.some((date) => !date || !this.isDateSelectable(date)) ||
@@ -506,13 +466,13 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (invalid) {
       if (this.keepInvalid()) {
         this.value.set(raw);
-        this.onChange(raw);
+        this.cvaOnChange(raw);
       }
       this.onInput.emit(raw);
       return;
     }
     this.value.set(value);
-    this.onChange(value);
+    this.cvaOnChange(value);
     this.onInput.emit(value);
     this.onSelect.emit(value);
   }
@@ -522,7 +482,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
   touch(event?: Event): void {
     if (event) this.onBlur.emit(event);
-    this.onTouched();
+    this.cvaOnTouched();
   }
   onInputKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape' && this.overlayVisible()) {
@@ -565,12 +525,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     );
   }
   show(): void {
-    if (
-      !this.inline() &&
-      !this.overlayVisible() &&
-      !this.disabled() &&
-      !this.cvaDisabled()
-    ) {
+    if (!this.inline() && !this.overlayVisible() && !this.effectiveDisabled()) {
       this.overlayVisible.set(true);
       this.onShow.emit();
     }
@@ -579,7 +534,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (!this.overlayVisible()) return;
     this.overlayVisible.set(false);
     this.onClose.emit();
-    this.onTouched();
+    this.cvaOnTouched();
     if (restoreFocus) {
       this.restoringFocus = true;
       this.host.nativeElement
@@ -609,8 +564,8 @@ export class DatePickerComponent implements ControlValueAccessor {
     }
   }
   selectCalendarDate(iso: string): void {
-    if (this.disabled() || this.cvaDisabled()) return;
-    const date = parseDate(iso);
+    if (this.effectiveDisabled()) return;
+    const date = calendarParseDate(iso);
     if (!date) return;
     if (this.showTime()) {
       const time = this.timeParts();
@@ -621,35 +576,37 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.dataType() === 'date'
         ? date
         : this.showTime()
-          ? `${iso}T${timeString(this.timeParts(), this.showSeconds())}`
+          ? `${iso}T${calendarTimeString(this.timeParts(), this.showSeconds())}`
           : iso;
     this.invalidInput.set(false);
     const mode = this.selectionMode();
     let next: any = selected;
-    if (mode === 'multiple') {
-      const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      const index = current.findIndex((item) => this.calendarIso(item) === iso);
+    if (mode !== 'single') {
+      const current: any[] = Array.isArray(this.value())
+        ? [...this.value()]
+        : [];
       if (
-        index < 0 &&
+        mode === 'multiple' &&
         this.maxDateCount() !== undefined &&
+        !current.some((item) => calendarDateKey(item) === iso) &&
         current.length >= this.maxDateCount()!
       )
         return;
-      if (index >= 0) current.splice(index, 1);
-      else current.push(selected);
-      next = current;
-    } else if (mode === 'range') {
-      const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      if (current.length !== 1 || this.calendarIso(current[0]) === iso)
-        next = [selected];
-      else
-        next =
-          this.calendarIso(current[0]) < iso
-            ? [current[0], selected]
-            : [selected, current[0]];
+      const nextKeys = calendarSelection(
+        mode,
+        current.map((item) => calendarDateKey(item)),
+        iso,
+        {
+          restartRangeOnSameDay: true,
+        },
+      );
+      next = nextKeys.map(
+        (key) =>
+          current.find((item) => calendarDateKey(item) === key) ?? selected,
+      );
     }
     this.value.set(next);
-    this.onChange(next);
+    this.cvaOnChange(next);
     this.onInput.emit(next);
     this.onSelect.emit(next);
     if (
@@ -658,9 +615,6 @@ export class DatePickerComponent implements ControlValueAccessor {
         (mode === 'range' && Array.isArray(next) && next.length === 2))
     )
       this.hide(true);
-  }
-  private calendarIso(value: unknown): string {
-    return dateKey(value);
   }
   displayHour(): number {
     const hour = this.timeParts().hour;
@@ -672,7 +626,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   adjustTime(part: 'hour' | 'minute' | 'second', delta: number): void {
     const current = this.timeParts();
     const step =
-      positiveInteger(
+      calendarPositiveInteger(
         part === 'hour'
           ? this.stepHour()
           : part === 'minute'
@@ -693,25 +647,28 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.setTime((current.hour + 12) % 24, current.minute, current.second);
   }
   private setTime(hour: number, minute: number, second: number): void {
-    if (this.disabled() || this.cvaDisabled()) return;
+    if (this.effectiveDisabled()) return;
     const current = this.value();
     const first = Array.isArray(current) ? current[0] : current;
     const date =
-      parseDateTime(first, this.timeOnly()) ??
-      (this.timeOnly() ? parseDate('1970-01-01')! : new Date());
+      calendarParseDateTime(first, this.timeOnly()) ??
+      (this.timeOnly() ? calendarParseDate('1970-01-01')! : new Date());
     date.setHours(hour, minute, second, 0);
     if (!this.isDateSelectable(date)) return;
-    const text = timeString({ hour, minute, second }, this.showSeconds());
+    const text = calendarTimeString(
+      { hour, minute, second },
+      this.showSeconds(),
+    );
     const next =
       this.dataType() === 'date'
         ? date
         : this.timeOnly()
           ? text
-          : `${dateKey(date)}T${text}`;
+          : `${calendarDateKey(date)}T${text}`;
     const value = Array.isArray(current) ? [next, ...current.slice(1)] : next;
     this.invalidInput.set(false);
     this.value.set(value);
-    this.onChange(value);
+    this.cvaOnChange(value);
     this.onInput.emit(value);
   }
   private dateConstraint(
@@ -723,25 +680,25 @@ export class DatePickerComponent implements ControlValueAccessor {
       : fallback;
   }
   clear(): void {
-    if (this.disabled() || this.cvaDisabled()) return;
+    if (this.effectiveDisabled()) return;
     this.invalidInput.set(false);
     this.value.set('');
-    this.onChange('');
-    this.onTouched();
+    this.cvaOnChange('');
+    this.cvaOnTouched();
     this.onInput.emit('');
     this.onClear.emit();
     this.onClearClick.emit();
   }
   today(): void {
-    if (this.disabled() || this.cvaDisabled()) return;
+    if (this.effectiveDisabled()) return;
     const today = new Date();
-    const day = parseDate(dateKey(today))!;
+    const day = calendarParseDate(calendarDateKey(today))!;
     if (this.showTime()) {
       const time = this.timeParts();
       day.setHours(time.hour, time.minute, time.second);
     }
     if (!this.isDateSelectable(day)) return;
-    this.selectCalendarDate(dateKey(today));
+    this.selectCalendarDate(calendarDateKey(today));
     this.onTodayClick.emit(today);
   }
 }

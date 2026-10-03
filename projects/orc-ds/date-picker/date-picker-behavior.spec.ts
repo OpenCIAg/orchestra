@@ -5,7 +5,12 @@ import {
   DatePickerComponent,
   DatePickerCalendarComponent,
 } from './date-picker.component';
-import { dateKey, parseDate, parseDateTime, isoWeekNumber } from './date-value';
+import {
+  calendarDateKey,
+  calendarIsoWeekNumber,
+  calendarParseDate,
+  calendarParseDateTime,
+} from '@ciag/orchestra/internal';
 import { axe, toHaveNoViolations } from 'jasmine-axe';
 import { focusElement } from '../../../tools/quality/test-focus-events';
 
@@ -137,12 +142,12 @@ describe('Date picker browser behavior', () => {
     const calendars = fixture.debugElement
       .queryAll(By.directive(DatePickerCalendarComponent))
       .map((item) => item.componentInstance as DatePickerCalendarComponent);
-    expect(dateKey(calendars[0].monthDate())).toBe('2028-02-01');
-    expect(dateKey(calendars[1].monthDate())).toBe('2028-03-01');
+    expect(calendarDateKey(calendars[0].monthDate())).toBe('2028-02-01');
+    expect(calendarDateKey(calendars[1].monthDate())).toBe('2028-03-01');
     calendars[1].shift(1);
     fixture.detectChanges();
-    expect(dateKey(calendars[0].monthDate())).toBe('2028-03-01');
-    expect(dateKey(calendars[1].monthDate())).toBe('2028-04-01');
+    expect(calendarDateKey(calendars[0].monthDate())).toBe('2028-03-01');
+    expect(calendarDateKey(calendars[1].monthDate())).toBe('2028-04-01');
   });
 
   for (const dataType of ['string', 'date'] as const) {
@@ -214,11 +219,11 @@ describe('Date picker browser behavior', () => {
 
 describe('Calendar dates and keyboard navigation', () => {
   it('keeps local dates and rejects rollover and invalid times', () => {
-    expect(dateKey(new Date(2026, 0, 2, 23, 30))).toBe('2026-01-02');
-    expect(parseDate('2026-02-29')).toBeNull();
-    expect(parseDate('2028-02-29')).not.toBeNull();
-    expect(parseDateTime('2026-01-01T25:00')).toBeNull();
-    expect(isoWeekNumber(new Date(2021, 0, 1))).toBe(53);
+    expect(calendarDateKey(new Date(2026, 0, 2, 23, 30))).toBe('2026-01-02');
+    expect(calendarParseDate('2026-02-29')).toBeNull();
+    expect(calendarParseDate('2028-02-29')).not.toBeNull();
+    expect(calendarParseDateTime('2026-01-01T25:00')).toBeNull();
+    expect(calendarIsoWeekNumber(new Date(2021, 0, 1))).toBe(53);
   });
 
   it('retains all day cells when other months are hidden', () => {
