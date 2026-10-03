@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ElementRef,
   OnDestroy,
   inject,
@@ -11,7 +12,11 @@ import {
   model,
   output,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import {
+  normalizeSize,
+  P2_SHARED_VARS,
+  SizeInput,
+} from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-split-button',
@@ -21,7 +26,8 @@ import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
     [class]="
       'orc-p2-split ' +
       styleClass() +
-      (size() ? ' size-' + size() : '') +
+      (resolvedSize() === 'sm' ? ' size-small' : '') +
+      (resolvedSize() === 'lg' ? ' size-large' : '') +
       (severity() ? ' severity-' + severity() : '')
     "
     [style]="style()"
@@ -130,7 +136,14 @@ export class SplitButtonComponent implements AfterViewInit, OnDestroy {
   readonly menuButtonDisabled = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly severity = input<string | undefined>(undefined);
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly tabindex = input(0);

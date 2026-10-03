@@ -14,6 +14,7 @@ import {
 import {
   createTableEnginePipeline,
   nextTableSortDirection,
+  normalizeSize,
   tableClampPage,
   tableOffset,
   tablePageCount,
@@ -23,6 +24,7 @@ import {
   tableTrimmedLabel,
   TableRowIdentityMap,
   TableEnginePipeline,
+  SizeInput,
 } from '@ciag/orchestra/internal';
 import { P2_SHARED_STYLES } from './p2-shared';
 
@@ -42,8 +44,8 @@ export interface DataTableColumn {
       [class.row-hover]="rowHover()"
       [class.striped]="stripedRows()"
       [class.gridlines]="showGridlines()"
-      [class.small]="size() === 'small'"
-      [class.large]="size() === 'large'"
+      [class.small]="resolvedSize() === 'sm'"
+      [class.large]="resolvedSize() === 'lg'"
       [attr.aria-busy]="loading()"
     >
       @if (filterable()) {
@@ -211,7 +213,14 @@ export class DataTableComponent implements OnInit {
   readonly rowHover = input(false, { transform: booleanAttribute });
   readonly stripedRows = input(false, { transform: booleanAttribute });
   readonly showGridlines = input(false, { transform: booleanAttribute });
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   /** @deprecated Compatibility input; sorting is currently single-field only. */
   readonly sortMode = input<'single' | 'multiple'>('single');
   readonly selectionMode = input<'single' | 'multiple' | undefined>(undefined);

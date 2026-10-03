@@ -2,6 +2,7 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
   forwardRef,
   inject,
@@ -11,7 +12,11 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import {
+  normalizeSize,
+  P2_SHARED_STYLES,
+  SizeInput,
+} from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-select-button',
@@ -45,7 +50,14 @@ export class SelectButtonComponent<
   readonly tabindex = input(0);
   readonly styleClass = input('');
   readonly ariaLabelledBy = input<string | undefined>(undefined);
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly dataKey = input<string | undefined>(undefined);
   readonly style = input<Record<string, any> | null | undefined>(undefined);

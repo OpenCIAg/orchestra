@@ -15,6 +15,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { P2Option, P2_SHARED_STYLES } from './p2-shared';
+import { normalizeSize, SizeInput } from '@ciag/orchestra/internal';
 
 export interface CascadeOption extends P2Option<string> {
   children?: CascadeOption[];
@@ -25,8 +26,8 @@ export interface CascadeOption extends P2Option<string> {
   template: `<div
     class="orc-cascade"
     [class]="styleClass()"
-    [class.orc-cascade--small]="size() === 'small'"
-    [class.orc-cascade--large]="size() === 'large'"
+    [class.orc-cascade--small]="resolvedSize() === 'sm'"
+    [class.orc-cascade--large]="resolvedSize() === 'lg'"
     [class.orc-cascade--filled]="variant() === 'filled'"
     [class.orc-cascade--outlined]="variant() === 'outlined'"
   >
@@ -184,7 +185,14 @@ export class CascadeSelectComponent implements ControlValueAccessor {
   readonly clearAriaLabel = input<string | undefined>(undefined);
   readonly showClear = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
   readonly onChange = output<{ value: string | null }>();
   readonly onShow = output<void>();
