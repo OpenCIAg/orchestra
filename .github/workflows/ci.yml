@@ -14,6 +14,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # The deprecation guard compares the deprecated/alias surface
+          # against the PR merge base or the previous commit.
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,6 +36,9 @@ jobs:
 
       - name: Test release tooling
         run: npm run test:tools
+
+      - name: Guard the 23.0.0 removal surface
+        run: npm run verify:deprecation-guard
 
       - name: Verify Angular compatibility line
         run: npm run verify:compatibility
