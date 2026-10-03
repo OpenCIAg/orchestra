@@ -1,7 +1,7 @@
 <div
-  class="p-datepicker p-component orc-date-picker"
-  [class]="'p-datepicker p-component orc-date-picker ' + (styleClass() || '')"
-  [class.orc-date-picker--disabled]="disabled() || cvaDisabled()"
+  class="orc-date-picker"
+  [class]="styleClass() || ''"
+  [class.orc-date-picker--disabled]="effectiveDisabled()"
   [class.orc-date-picker--fluid]="fluid()"
   [class.orc-date-picker--touch-ui]="touchUI()"
   [class.orc-date-picker--variant-filled]="variant() === 'filled'"
@@ -37,7 +37,7 @@
         [attr.max]="calendarMax() || null"
         [attr.placeholder]="placeholder() || null"
         [required]="required()"
-        [disabled]="disabled() || cvaDisabled()"
+        [disabled]="effectiveDisabled()"
         [readonly]="readonlyInput()"
         [autofocus]="autofocus()"
         [attr.aria-label]="ariaLabel() || null"
@@ -66,7 +66,7 @@
         <button
           type="button"
           class="orc-date-picker__trigger"
-          [disabled]="disabled() || cvaDisabled()"
+          [disabled]="effectiveDisabled()"
           [attr.aria-label]="iconAriaLabel() || 'Choose date'"
           [attr.aria-expanded]="overlayVisible()"
           [attr.aria-controls]="panelId()"
@@ -96,14 +96,11 @@
 
     @if (overlayVisible() || inline()) {
       <div
-        class="p-datepicker-panel p-component orc-date-picker__panel"
+        class="orc-date-picker__panel"
         #panel
         tabindex="-1"
         (keydown)="onPanelKeydown($event)"
-        [class]="
-          'p-datepicker-panel p-component orc-date-picker__panel ' +
-          (panelStyleClass() || '')
-        "
+        [class]="panelStyleClass() || ''"
         [class.orc-date-picker__panel--inline]="inline()"
         [class.orc-date-picker__panel--touch-ui]="touchUI()"
         [style]="panelStyle()"
@@ -130,7 +127,7 @@
                 [firstDayOfWeek]="firstDayOfWeek()"
                 [min]="calendarMin()"
                 [max]="calendarMax()"
-                [disabled]="disabled() || cvaDisabled()"
+                [disabled]="effectiveDisabled()"
                 [disabledDates]="disabledDates() || []"
                 [disabledDays]="disabledDays() || []"
                 [showWeek]="showWeek()"
@@ -165,7 +162,7 @@
               <button
                 type="button"
                 [attr.aria-label]="nextHourLabel() || 'Increase hour'"
-                [disabled]="disabled() || cvaDisabled()"
+                [disabled]="effectiveDisabled()"
                 (click)="adjustTime('hour', 1)"
               >
                 +
@@ -176,7 +173,7 @@
               <button
                 type="button"
                 [attr.aria-label]="previousHourLabel() || 'Decrease hour'"
-                [disabled]="disabled() || cvaDisabled()"
+                [disabled]="effectiveDisabled()"
                 (click)="adjustTime('hour', -1)"
               >
                 −
@@ -191,7 +188,7 @@
               <button
                 type="button"
                 [attr.aria-label]="nextMinuteLabel() || 'Increase minute'"
-                [disabled]="disabled() || cvaDisabled()"
+                [disabled]="effectiveDisabled()"
                 (click)="adjustTime('minute', 1)"
               >
                 +
@@ -202,7 +199,7 @@
               <button
                 type="button"
                 [attr.aria-label]="previousMinuteLabel() || 'Decrease minute'"
-                [disabled]="disabled() || cvaDisabled()"
+                [disabled]="effectiveDisabled()"
                 (click)="adjustTime('minute', -1)"
               >
                 −
@@ -218,7 +215,7 @@
                 <button
                   type="button"
                   [attr.aria-label]="nextSecondLabel() || 'Increase second'"
-                  [disabled]="disabled() || cvaDisabled()"
+                  [disabled]="effectiveDisabled()"
                   (click)="adjustTime('second', 1)"
                 >
                   +
@@ -229,7 +226,7 @@
                 <button
                   type="button"
                   [attr.aria-label]="previousSecondLabel() || 'Decrease second'"
-                  [disabled]="disabled() || cvaDisabled()"
+                  [disabled]="effectiveDisabled()"
                   (click)="adjustTime('second', -1)"
                 >
                   −
@@ -240,7 +237,7 @@
               <button
                 type="button"
                 [attr.aria-label]="toggleMeridiemLabel() || 'Toggle AM/PM'"
-                [disabled]="disabled() || cvaDisabled()"
+                [disabled]="effectiveDisabled()"
                 (click)="toggleMeridiem()"
               >
                 {{ meridiem() }}
@@ -259,7 +256,7 @@
                   (todayButtonStyleClass() || '')
                 "
                 (click)="today()"
-                [disabled]="disabled() || cvaDisabled()"
+                [disabled]="effectiveDisabled()"
               >
                 {{ todayLabel() || 'Today' }}
               </button>
@@ -271,7 +268,7 @@
                   'orc-date-picker__panel-action ' +
                   (clearButtonStyleClass() || '')
                 "
-                [disabled]="disabled() || cvaDisabled() || !inputValue()"
+                [disabled]="effectiveDisabled() || !inputValue()"
                 (click)="clear()"
               >
                 {{ clearLabel() || 'Clear' }}

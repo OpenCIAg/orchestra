@@ -6,10 +6,13 @@ import {
   forwardRef,
   input,
   model,
-  signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES, isIsoDate } from '@ciag/orchestra/internal';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  CvaControl,
+  P2_SHARED_STYLES,
+  calendarParseDate,
+} from '@ciag/orchestra/internal';
 
 let nextDateInputId = 0;
 
@@ -28,7 +31,7 @@ let nextDateInputId = 0;
     },
   ],
 })
-export class DateInputComponent implements ControlValueAccessor {
+export class DateInputComponent extends CvaControl {
   private readonly uniqueId = `orc-date-input-${++nextDateInputId}`;
   readonly value = model('');
   readonly label = input('');
@@ -50,35 +53,25 @@ export class DateInputComponent implements ControlValueAccessor {
   readonly fluid = input(false, { transform: booleanAttribute });
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly tabindex = input<number | undefined>(0);
-  readonly cvaDisabled = signal(false);
-  private onChange: (value: string) => void = () => undefined;
-  private onTouchedCallback: () => void = () => undefined;
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled(),
-  );
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
 
   writeValue(value: string | null): void {
     this.value.set(this.normalizeDate(value));
   }
-  registerOnChange(fn: (value: string) => void): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouchedCallback = fn;
-  }
-  setDisabledState(disabled: boolean): void {
-    this.cvaDisabled.set(disabled);
+  /** The control's own disabled input, for the shared CVA base. */
+  protected isSelfDisabled(): boolean {
+    return this.disabled();
   }
   onInput(event: Event): void {
     const value = this.normalizeDate((event.target as HTMLInputElement).value);
     this.value.set(value);
-    this.onChange(value);
+    this.cvaOnChange(value);
   }
   onTouched(): void {
-    this.onTouchedCallback();
+    this.cvaOnTouched();
   }
+  /** Keep only bare, real ISO calendar dates in the model. */
   private normalizeDate(value: string | null): string {
-    return value && isIsoDate(value) ? value : '';
+    return value && calendarParseDate(value) ? value : '';
   }
 }

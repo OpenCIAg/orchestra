@@ -1569,10 +1569,11 @@
     },
     {
       "name": "CalendarComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-calendar",
       "file": "projects/orc-ds/calendar/calendar.component.ts",
-      "line": 140,
+      "line": 48,
       "inputs": [
         {
           "name": "value",
@@ -1586,7 +1587,7 @@
           "publicName": "currentMonth",
           "kind": "model",
           "required": false,
-          "declaration": "readonly currentMonth = model(toMonthKey(new Date()));"
+          "declaration": "readonly currentMonth = model(calendarMonthKey(new Date()));"
         },
         {
           "name": "min",
@@ -1767,7 +1768,8 @@
         "projects/orc-ds/calendar/calendar-parity.spec.ts",
         "projects/orc-ds/p2-date-input-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "CardBodyComponent",
@@ -3598,10 +3600,11 @@
     },
     {
       "name": "DateInputComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-date-input",
       "file": "projects/orc-ds/date-input/date-input.component.ts",
-      "line": 16,
+      "line": 19,
       "inputs": [
         {
           "name": "value",
@@ -3736,14 +3739,15 @@
         "projects/orc-ds/date-input/date-input-parity.spec.ts",
         "projects/orc-ds/p2-date-input-contract.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "DatePickerCalendarComponent",
       "kind": "Component",
       "selector": "orc-date-picker-calendar",
       "file": "projects/orc-ds/date-picker/date-picker-calendar.component.ts",
-      "line": 27,
+      "line": 34,
       "inputs": [
         {
           "name": "value",
@@ -3764,7 +3768,7 @@
           "publicName": "currentMonth",
           "kind": "model",
           "required": false,
-          "declaration": "readonly currentMonth = model(monthKey(new Date()));"
+          "declaration": "readonly currentMonth = model(calendarMonthKey(new Date()));"
         },
         {
           "name": "min",
@@ -3927,10 +3931,11 @@
     },
     {
       "name": "DatePickerComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-date-picker",
       "file": "projects/orc-ds/date-picker/date-picker.component.ts",
-      "line": 45,
+      "line": 48,
       "inputs": [
         {
           "name": "maxDateCount",
@@ -4650,7 +4655,8 @@
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "DeferDirective",
@@ -23000,7 +23006,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './dom-target';\nexport * from './date-utils';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -23797,7 +23803,6 @@
     "projects/orc-ds/date-picker/date-picker.component.scss",
     "projects/orc-ds/date-picker/date-picker.component.spec.ts",
     "projects/orc-ds/date-picker/date-picker.component.ts",
-    "projects/orc-ds/date-picker/date-value.ts",
     "projects/orc-ds/date-picker/index.ts",
     "projects/orc-ds/date-picker/ng-package.json",
     "projects/orc-ds/datepicker/index.ts",
@@ -24023,9 +24028,9 @@
     "projects/orc-ds/interaction-repair.spec.ts",
     "projects/orc-ds/internal/anchored-popup.spec.ts",
     "projects/orc-ds/internal/anchored-popup.ts",
+    "projects/orc-ds/internal/calendar-engine.ts",
     "projects/orc-ds/internal/cva-control.spec.ts",
     "projects/orc-ds/internal/cva-control.ts",
-    "projects/orc-ds/internal/date-utils.ts",
     "projects/orc-ds/internal/dom-target.ts",
     "projects/orc-ds/internal/index.ts",
     "projects/orc-ds/internal/list-picker.spec.ts",

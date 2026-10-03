@@ -642,4 +642,60 @@ describe('DatePickerComponent', () => {
     expect(fixture.componentInstance.value()).toBe('2026-09-01');
     fixture.destroy();
   });
+
+  it('round-trips the yy-mm-dd dateFormat through the visible input', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    fixture.componentRef.setInput('dateFormat', 'yy-mm-dd');
+    fixture.componentRef.setInput('value', '2026-08-26');
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    expect(input.value).toBe('2026-08-26');
+
+    input.value = '2026-08-27';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(fixture.componentInstance.value()).toBe('2026-08-27');
+    expect(input.value).toBe('2026-08-27');
+  });
+
+  it('orders range bounds regardless of click order and reports onSelect', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const picker = fixture.componentInstance;
+    const selected: unknown[] = [];
+    picker.onSelect.subscribe((value) => selected.push(value));
+    fixture.componentRef.setInput('showOnFocus', false);
+    fixture.componentRef.setInput('selectionMode', 'range');
+    fixture.componentRef.setInput('value', ['2026-08-20']);
+    picker.show();
+    fixture.detectChanges();
+
+    picker.selectCalendarDate('2026-08-15');
+    expect(picker.value()).toEqual(['2026-08-15', '2026-08-20']);
+    expect(selected).toEqual([['2026-08-15', '2026-08-20']]);
+
+    picker.selectCalendarDate('2026-08-22');
+    expect(picker.value()).toEqual(['2026-08-22']);
+    expect(selected[selected.length - 1]).toEqual(['2026-08-22']);
+  });
+
+  it('emits onSelect with the typed model value from the input path', () => {
+    const fixture = TestBed.createComponent(DatePickerComponent);
+    const picker = fixture.componentInstance;
+    const selected: unknown[] = [];
+    picker.onSelect.subscribe((value) => selected.push(value));
+    fixture.componentRef.setInput('showOnFocus', false);
+    fixture.componentRef.setInput('dataType', 'date');
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    input.value = '2026-08-26';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(selected).toHaveSize(1);
+    expect(selected[0] instanceof Date).toBeTrue();
+    expect((selected[0] as Date).getFullYear()).toBe(2026);
+  });
 });

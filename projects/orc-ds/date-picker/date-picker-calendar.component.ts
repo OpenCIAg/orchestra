@@ -15,12 +15,19 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import {
-  dateKey,
-  isoWeekNumber,
-  localDate,
-  monthKey,
-  parseDate,
-} from './date-value';
+  calendarActiveDay,
+  calendarDateKey,
+  calendarLocalDate,
+  calendarMonthGrid,
+  calendarMonthKey,
+  calendarMonthLabel,
+  calendarMonthStart,
+  calendarNavigateDay,
+  calendarParseDate,
+  calendarShiftMonth,
+  calendarWeekRows,
+  calendarWeekdayLabels,
+} from '@ciag/orchestra/internal';
 
 let nextCalendarId = 0;
 
@@ -38,7 +45,7 @@ export class DatePickerCalendarComponent {
   readonly titleId = `orc-calendar-title-${++nextCalendarId}`;
   readonly value = model('');
   readonly selectedValues = input<string[]>([]);
-  readonly currentMonth = model(monthKey(new Date()));
+  readonly currentMonth = model(calendarMonthKey(new Date()));
   readonly min = input('');
   readonly max = input('');
   readonly disabled = input(false, { transform: booleanAttribute });
@@ -71,89 +78,51 @@ export class DatePickerCalendarComponent {
       : 0,
   );
   readonly monthDate = computed(() => {
-    const base = parseDate(`${this.currentMonth()}-01`) ?? new Date();
-    return localDate(
+    const base = calendarParseDate(`${this.currentMonth()}-01`) ?? new Date();
+    return calendarLocalDate(
       base.getFullYear(),
       base.getMonth() + 1 + this.monthOffset(),
       1,
     );
   });
   readonly monthLabel = computed(() =>
-    this.monthDate().toLocaleDateString(this.effectiveLocale(), {
-      month: 'long',
-      year: 'numeric',
-    }),
+    calendarMonthLabel(this.monthDate(), this.effectiveLocale()),
   );
   readonly weekdayLabels = computed(() =>
-    Array.from({ length: 7 }, (_, index) =>
-      new Intl.DateTimeFormat(this.effectiveLocale(), {
-        weekday: 'short',
-      }).format(new Date(2021, 7, 1 + ((index + this.firstWeekday()) % 7))),
-    ),
+    calendarWeekdayLabels(this.effectiveLocale(), this.firstWeekday()),
   );
   private readonly disabledKeys = computed(
-    () => new Set(this.disabledDates().map(dateKey)),
+    () => new Set(this.disabledDates().map(calendarDateKey)),
   );
-  readonly days = computed(() => {
-    const month = this.monthDate();
-    const offset = (month.getDay() - this.firstWeekday() + 7) % 7;
-    const formatter = new Intl.DateTimeFormat(this.effectiveLocale(), {
-      dateStyle: 'full',
-    });
-    return Array.from({ length: 42 }, (_, index) => {
-      const date = localDate(
-        month.getFullYear(),
-        month.getMonth() + 1,
-        1 - offset + index,
-      );
-      const iso = dateKey(date);
-      const inCurrentMonth = date.getMonth() === month.getMonth();
-      return {
-        iso,
-        day: date.getDate(),
-        label: formatter.format(date),
-        weekNumber:
-          index % 7 === 0
-            ? isoWeekNumber(
-                localDate(
-                  date.getFullYear(),
-                  date.getMonth() + 1,
-                  date.getDate() + 3,
-                ),
-              )
-            : undefined,
-        inCurrentMonth,
-        disabled:
-          !this.isAllowed(date) ||
-          (!inCurrentMonth && !this.selectOtherMonths()),
-      };
-    });
-  });
-  readonly weeks = computed(() =>
-    Array.from({ length: 6 }, (_, index) =>
-      this.days().slice(index * 7, index * 7 + 7),
+  readonly days = computed(() =>
+    calendarMonthGrid({
+      month: this.monthDate(),
+      firstDayOfWeek: this.firstWeekday(),
+      labelLocale: this.effectiveLocale(),
+      today: new Date(),
+      weekNumbers: this.showWeek(),
+      selectOtherMonths: this.selectOtherMonths(),
+      isAllowed: (date) => this.isAllowed(date),
+    }),
+  );
+  readonly weeks = computed(() => calendarWeekRows(this.days()));
+  readonly activeDate = computed(() =>
+    calendarActiveDay(
+      this.days(),
+      [this.focusedDate(), this.value(), calendarDateKey(new Date())],
+      { showOtherMonths: this.showOtherMonths(), requireEnabled: false },
     ),
   );
-  readonly activeDate = computed(() => {
-    const visible = this.days().filter(
-      (day) => day.inCurrentMonth || this.showOtherMonths(),
-    );
-    return (
-      [this.focusedDate(), this.value(), dateKey(new Date())].find(
-        (key) => key && visible.some((day) => day.iso === key),
-      ) ??
-      visible.find((day) => day.inCurrentMonth && !day.disabled)?.iso ??
-      visible[0]?.iso
-    );
-  });
   readonly months = computed(() =>
     Array.from({ length: 12 }, (_, index) => ({
       index,
-      label: localDate(2000, index + 1, 1).toLocaleDateString(
+      label: calendarLocalDate(2000, index + 1, 1).toLocaleDateString(
         this.effectiveLocale(),
         { month: 'long' },
       ),
-      iso: dateKey(localDate(this.monthDate().getFullYear(), index + 1, 1)),
+      iso: calendarDateKey(
+        calendarLocalDate(this.monthDate().getFullYear(), index + 1, 1),
+      ),
     })),
   );
   readonly years = computed(() =>
@@ -181,7 +150,7 @@ export class DatePickerCalendarComponent {
       ? this.months()
       : this.years().map((year) => ({
           label: String(year),
-          iso: dateKey(localDate(year, 1, 1)),
+          iso: calendarDateKey(calendarLocalDate(year, 1, 1)),
         }))
     ).map((period) => ({
       ...period,
@@ -201,7 +170,7 @@ export class DatePickerCalendarComponent {
   );
 
   private isAllowed(date: Date): boolean {
-    const key = dateKey(date);
+    const key = calendarDateKey(date);
     return (
       !this.disabled() &&
       (!this.min() || key >= this.min()) &&
@@ -212,18 +181,18 @@ export class DatePickerCalendarComponent {
   }
 
   private periodSelection(iso: string): string | null {
-    const start = parseDate(iso);
+    const start = calendarParseDate(iso);
     if (!start || this.disabled()) return null;
     const end =
       this.view() === 'year'
-        ? localDate(start.getFullYear() + 1, 1, 1)
-        : localDate(start.getFullYear(), start.getMonth() + 2, 1);
+        ? calendarLocalDate(start.getFullYear() + 1, 1, 1)
+        : calendarLocalDate(start.getFullYear(), start.getMonth() + 2, 1);
     for (
       const day = new Date(start);
       day < end;
       day.setDate(day.getDate() + 1)
     ) {
-      if (this.isAllowed(day)) return dateKey(day);
+      if (this.isAllowed(day)) return calendarDateKey(day);
     }
     return null;
   }
@@ -238,16 +207,16 @@ export class DatePickerCalendarComponent {
 
   shift(delta: number): void {
     if (this.disabled()) return;
-    const base = parseDate(`${this.currentMonth()}-01`) ?? new Date();
+    const base =
+      calendarParseDate(`${this.currentMonth()}-01`) ??
+      calendarMonthStart(this.currentMonth());
     const step =
       this.view() === 'date' ? 1 : this.view() === 'month' ? 12 : 144;
-    this.setMonth(
-      localDate(base.getFullYear(), base.getMonth() + 1 + delta * step, 1),
-    );
+    this.setMonth(calendarShiftMonth(base, delta * step));
   }
 
   private setMonth(date: Date): void {
-    this.currentMonth.set(monthKey(date));
+    this.currentMonth.set(calendarMonthKey(date));
     this.viewDateChange.emit({
       month: date.getMonth() + 1,
       year: date.getFullYear(),
@@ -258,23 +227,25 @@ export class DatePickerCalendarComponent {
     if (this.disabled()) return;
     const month = Number((event.target as HTMLSelectElement).value);
     if (!Number.isInteger(month) || month < 0 || month > 11) return;
-    this.setMonth(localDate(this.monthDate().getFullYear(), month + 1, 1));
+    this.setMonth(
+      calendarLocalDate(this.monthDate().getFullYear(), month + 1, 1),
+    );
   }
 
   selectYear(event: Event): void {
     if (this.disabled()) return;
     const year = Number((event.target as HTMLSelectElement).value);
     if (!this.navigatorYears().includes(year)) return;
-    this.setMonth(localDate(year, this.monthDate().getMonth() + 1, 1));
+    this.setMonth(calendarLocalDate(year, this.monthDate().getMonth() + 1, 1));
   }
 
   select(iso: string): void {
-    const date = parseDate(iso);
+    const date = calendarParseDate(iso);
     if (!date || this.disabled()) return;
     if (this.view() === 'date') {
       if (
         !this.isAllowed(date) ||
-        (monthKey(date) !== monthKey(this.monthDate()) &&
+        (calendarMonthKey(date) !== calendarMonthKey(this.monthDate()) &&
           !this.selectOtherMonths())
       )
         return;
@@ -294,55 +265,20 @@ export class DatePickerCalendarComponent {
   }
 
   onDayKeydown(event: KeyboardEvent, iso: string): void {
-    const next = parseDate(iso);
-    if (!next || this.disabled()) return;
-    switch (event.key) {
-      case 'ArrowRight':
-        next.setDate(next.getDate() + 1);
-        break;
-      case 'ArrowLeft':
-        next.setDate(next.getDate() - 1);
-        break;
-      case 'ArrowDown':
-        next.setDate(next.getDate() + 7);
-        break;
-      case 'ArrowUp':
-        next.setDate(next.getDate() - 7);
-        break;
-      case 'Home':
-        next.setDate(
-          next.getDate() - ((next.getDay() - this.firstWeekday() + 7) % 7),
-        );
-        break;
-      case 'End':
-        next.setDate(
-          next.getDate() + 6 - ((next.getDay() - this.firstWeekday() + 7) % 7),
-        );
-        break;
-      case 'PageUp':
-      case 'PageDown': {
-        const day = next.getDate();
-        next.setDate(1);
-        next.setMonth(
-          next.getMonth() +
-            (event.key === 'PageDown' ? 1 : -1) * (event.shiftKey ? 12 : 1),
-        );
-        next.setDate(
-          Math.min(
-            day,
-            localDate(next.getFullYear(), next.getMonth() + 2, 0).getDate(),
-          ),
-        );
-        break;
-      }
-      default:
-        return;
-    }
+    const current = calendarParseDate(iso);
+    if (!current || this.disabled()) return;
+    const next = calendarNavigateDay(
+      current,
+      event.key,
+      event.shiftKey,
+      this.firstWeekday(),
+    );
+    if (!next) return;
     event.preventDefault();
-    this.focusedDate.set(dateKey(next));
-    if (monthKey(next) !== monthKey(this.monthDate()))
+    this.focusedDate.set(calendarDateKey(next));
+    if (calendarMonthKey(next) !== calendarMonthKey(this.monthDate()))
       this.setMonth(
-        localDate(
+        calendarLocalDate(
           next.getFullYear(),
           next.getMonth() + 1 - this.monthOffset(),
           1,

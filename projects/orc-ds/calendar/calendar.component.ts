@@ -13,7 +13,23 @@ import {
   signal,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES, isIsoDate } from '@ciag/orchestra/internal';
+import {
+  CvaControl,
+  P2_SHARED_STYLES,
+  calendarActiveDay,
+  calendarDateKey,
+  calendarLocaleFirstDay,
+  calendarMonthGrid,
+  calendarMonthKey,
+  calendarMonthLabel,
+  calendarMonthStart,
+  calendarNavigateDay,
+  calendarParseTime,
+  calendarSelection,
+  calendarShiftMonth,
+  calendarWeekRows,
+  calendarWeekdayLabels,
+} from '@ciag/orchestra/internal';
 
 let nextCalendarId = 0;
 
@@ -25,117 +41,9 @@ export interface CalendarDay {
   disabled: boolean;
 }
 
-type LocaleWeekInfo = {
-  weekInfo?: { firstDay?: number };
-  getWeekInfo?: () => { firstDay?: number };
-  maximize?: () => { region?: string };
-};
-
-const SUNDAY_FIRST_REGIONS = new Set([
-  'AG',
-  'AR',
-  'AS',
-  'BD',
-  'BR',
-  'BS',
-  'BT',
-  'BZ',
-  'CA',
-  'CO',
-  'DM',
-  'DO',
-  'ET',
-  'GT',
-  'GU',
-  'HK',
-  'HN',
-  'JM',
-  'JP',
-  'KE',
-  'KH',
-  'KR',
-  'LA',
-  'MH',
-  'MM',
-  'MO',
-  'MT',
-  'MX',
-  'MZ',
-  'NI',
-  'NP',
-  'PA',
-  'PE',
-  'PH',
-  'PK',
-  'PR',
-  'PT',
-  'SA',
-  'SG',
-  'SV',
-  'TH',
-  'TT',
-  'TW',
-  'UM',
-  'US',
-  'VE',
-  'VI',
-  'WS',
-  'YE',
-  'ZA',
-  'ZW',
-]);
-
-const SATURDAY_FIRST_REGIONS = new Set([
-  'AF',
-  'BH',
-  'DJ',
-  'DZ',
-  'EG',
-  'IR',
-  'IQ',
-  'JO',
-  'KW',
-  'LY',
-  'OM',
-  'QA',
-  'SD',
-  'SY',
-]);
-
-// Older browsers may not expose weekInfo/getWeekInfo on Intl.Locale. Keep a
-// regional fallback for those runtimes, defaulting to the ISO Monday start.
-const fallbackFirstDayOfWeek = (
-  localeId: string,
-  locale?: LocaleWeekInfo,
-): number => {
-  const explicitRegion = localeId
-    .replace(/_/g, '-')
-    .split('-')
-    .slice(1)
-    .find((part) => /^[A-Z]{2}$|^\d{3}$/i.test(part))
-    ?.toUpperCase();
-  const region = explicitRegion || locale?.maximize?.().region;
-
-  if (region && SATURDAY_FIRST_REGIONS.has(region)) return 6;
-  if (region && SUNDAY_FIRST_REGIONS.has(region)) return 0;
-  return 1;
-};
-
-const pad = (value: number): string => String(value).padStart(2, '0');
-const toIso = (date: Date): string =>
-  `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-const toMonthKey = (date: Date): string =>
-  `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
-const fromMonthKey = (value: string): Date => {
-  const [year, month] = value.split('-').map(Number);
-  const safeYear = Number.isFinite(year) ? year : new Date().getFullYear();
-  const safeMonth = Number.isFinite(month) ? month - 1 : new Date().getMonth();
-  return new Date(safeYear, safeMonth, 1);
-};
-const isIsoTime = (value: string): boolean => {
-  const match = /^(\d{2}):(\d{2})$/.exec(value);
-  return !!match && Number(match[1]) <= 23 && Number(match[2]) <= 59;
-};
+// The time editor accepts strict two-digit `HH:mm` values only.
+const isIsoTime = (value: string): boolean =>
+  /^(\d{2}):(\d{2})$/.test(value) && calendarParseTime(value) !== null;
 
 @Component({
   selector: 'orc-calendar',
@@ -152,16 +60,15 @@ const isIsoTime = (value: string): boolean => {
     },
   ],
 })
-export class CalendarComponent {
+export class CalendarComponent extends CvaControl {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly uniqueId = `orc-calendar-${++nextCalendarId}`;
   private readonly rovingDate = signal<string | null>(null);
   readonly value = model<string | string[]>('');
-  readonly currentMonth = model(toMonthKey(new Date()));
+  readonly currentMonth = model(calendarMonthKey(new Date()));
   readonly min = input('');
   readonly max = input('');
   readonly disabled = input(false, { transform: booleanAttribute });
-  private readonly cvaDisabled = signal(false);
   readonly inputId = input<string | undefined>(undefined);
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(
@@ -189,45 +96,16 @@ export class CalendarComponent {
   readonly onClear = output<void>();
   readonly onTodayClick = output<string>();
   private readonly effectiveLocale = computed(() => this.locale() || undefined);
-  readonly firstDayOfWeek = computed(() => {
-    try {
-      const localeId =
-        this.effectiveLocale() ||
-        new Intl.DateTimeFormat().resolvedOptions().locale;
-      const LocaleConstructor = (
-        Intl as unknown as {
-          Locale?: new (locale: string) => LocaleWeekInfo;
-        }
-      ).Locale;
-      const locale = LocaleConstructor
-        ? new LocaleConstructor(localeId)
-        : undefined;
-      const firstDay =
-        locale?.getWeekInfo?.().firstDay ?? locale?.weekInfo?.firstDay;
-      if (
-        typeof firstDay === 'number' &&
-        Number.isInteger(firstDay) &&
-        firstDay >= 1 &&
-        firstDay <= 7
-      ) {
-        return firstDay % 7;
-      }
-      return fallbackFirstDayOfWeek(localeId, locale);
-    } catch {
-      return fallbackFirstDayOfWeek(
-        this.effectiveLocale() ||
-          new Intl.DateTimeFormat().resolvedOptions().locale,
-      );
-    }
-  });
+  readonly firstDayOfWeek = computed(() =>
+    calendarLocaleFirstDay(this.effectiveLocale()),
+  );
   readonly timeValue = signal('00:00');
   private readonly syncValuePresentation = effect(() => {
     const value = this.value();
     const first = Array.isArray(value) ? value[0] : value;
     if (typeof first !== 'string') return;
 
-    const date = first.slice(0, 10);
-    if (!isIsoDate(date)) return;
+    if (!calendarDateKey(first)) return;
 
     // The writable value model can be updated by a parent without going
     // through CVA writeValue(), so keep the separate time editor in sync too.
@@ -236,48 +114,31 @@ export class CalendarComponent {
     const match = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})(?::\d{2})?$/.exec(
       first,
     );
-    const time = match?.[2] ?? (first === date ? '00:00' : null);
+    const time = match?.[2] ?? (first.length === 10 ? '00:00' : null);
     if (time && isIsoTime(time)) this.timeValue.set(time);
   });
   readonly weekdays = computed(() =>
-    Array.from({ length: 7 }, (_, index) =>
-      new Intl.DateTimeFormat(this.effectiveLocale(), {
-        weekday: 'short',
-      }).format(new Date(2021, 7, 1 + ((index + this.firstDayOfWeek()) % 7))),
-    ),
+    calendarWeekdayLabels(this.effectiveLocale(), this.firstDayOfWeek()),
   );
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
-  readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
-  readonly weeks = computed(() => {
-    const days = this.days();
-    return Array.from({ length: 6 }, (_, week) =>
-      days.slice(week * 7, week * 7 + 7),
-    );
-  });
+  readonly isDisabled = computed(() => this.effectiveDisabled());
+  readonly weeks = computed(() => calendarWeekRows(this.days()));
   readonly activeDate = computed(() => {
-    const visibleEnabled = this.days().filter(
-      (day) => !day.disabled && (this.showOtherMonths() || day.inCurrentMonth),
-    );
-    const focused = this.rovingDate();
-    if (focused && visibleEnabled.some((day) => day.iso === focused)) {
-      return focused;
-    }
-    const selected = visibleEnabled.find((day) => this.isSelected(day.iso));
-    if (selected) return selected.iso;
-    const today = visibleEnabled.find((day) => day.today);
-    return (
-      (
-        today ??
-        visibleEnabled.find((day) => day.inCurrentMonth) ??
-        visibleEnabled[0]
-      )?.iso ?? null
+    const days = this.days();
+    const selectedKeys = days
+      .filter((day) => this.isSelected(day.iso))
+      .map((day) => day.iso);
+    return calendarActiveDay(
+      days,
+      [this.rovingDate(), ...selectedKeys, calendarDateKey(new Date())],
+      { showOtherMonths: this.showOtherMonths(), requireEnabled: true },
     );
   });
 
   readonly monthLabel = computed(() =>
-    fromMonthKey(this.currentMonth()).toLocaleDateString(
+    calendarMonthLabel(
+      calendarMonthStart(this.currentMonth()),
       this.effectiveLocale(),
-      { month: 'long', year: 'numeric' },
     ),
   );
   isSelected(iso: string): boolean {
@@ -285,33 +146,15 @@ export class CalendarComponent {
     const value = this.value();
     return Array.isArray(value) ? value.some(selected) : selected(value);
   }
-  readonly days = computed<CalendarDay[]>(() => {
-    const month = fromMonthKey(this.currentMonth());
-    const startOffset = (month.getDay() - this.firstDayOfWeek() + 7) % 7;
-    const start = new Date(
-      month.getFullYear(),
-      month.getMonth(),
-      1 - startOffset,
-    );
-    const today = toIso(new Date());
-    return Array.from({ length: 42 }, (_, index) => {
-      const date = new Date(
-        start.getFullYear(),
-        start.getMonth(),
-        start.getDate() + index,
-      );
-      const iso = toIso(date);
-      return {
-        iso,
-        day: date.getDate(),
-        inCurrentMonth: date.getMonth() === month.getMonth(),
-        today: iso === today,
-        disabled:
-          this.isDateDisabled(date) ||
-          (!this.selectOtherMonths() && date.getMonth() !== month.getMonth()),
-      };
-    });
-  });
+  readonly days = computed(() =>
+    calendarMonthGrid({
+      month: calendarMonthStart(this.currentMonth()),
+      firstDayOfWeek: this.firstDayOfWeek(),
+      today: new Date(),
+      selectOtherMonths: this.selectOtherMonths(),
+      isAllowed: (date) => !this.isDateDisabled(date),
+    }),
+  );
 
   previousMonth(): void {
     if (this.isDisabled()) return;
@@ -326,7 +169,7 @@ export class CalendarComponent {
     const date = new Date(`${day.iso}T00:00:00`);
     const outsideMonth = day.iso.slice(0, 7) !== this.currentMonth();
     if (
-      !isIsoDate(day.iso) ||
+      !calendarDateKey(day.iso) ||
       this.isDateDisabled(date) ||
       day.disabled ||
       (outsideMonth && !this.selectOtherMonths())
@@ -339,38 +182,39 @@ export class CalendarComponent {
     const selectedValue = this.showTime()
       ? `${day.iso}T${this.timeValue()}`
       : day.iso;
-    let next: string | string[] = selectedValue;
-    if (this.selectionMode() === 'multiple') {
-      const current = this.value();
-      const values = Array.isArray(current)
-        ? [...current]
-        : current
-          ? [current]
-          : [];
-      const index = values.findIndex((value) => value.slice(0, 10) === day.iso);
-      if (index >= 0) {
-        values.splice(index, 1);
-      } else {
-        values.push(selectedValue);
-      }
-      next = values;
-    } else if (this.selectionMode() === 'range') {
-      const current = this.value();
-      const values = Array.isArray(current)
-        ? [...current]
-        : current
-          ? [current]
-          : [];
-      next =
-        values.length !== 1
-          ? [selectedValue]
-          : values[0].slice(0, 10) <= day.iso
-            ? [values[0], selectedValue]
-            : [selectedValue, values[0]];
+    const mode = this.selectionMode();
+    const current = this.value();
+    const currentValues = Array.isArray(current)
+      ? current
+      : current
+        ? [current]
+        : [];
+    if (mode === 'single') {
+      this.commit(selectedValue);
+      this.dateSelected.emit(selectedValue);
+      this.onSelect.emit({ value: selectedValue });
+      return;
     }
-    this.value.set(next);
-    this.onModelChange(next);
-    this.onModelTouched();
+    // Resolve the engine's day keys back onto the stored values, keeping
+    // the historical same-day range behavior (the pair extends the bound).
+    const nextKeys = calendarSelection(
+      mode,
+      currentValues.map((value) => value.slice(0, 10)),
+      day.iso,
+    );
+    const consumed = new Set<number>();
+    const next: string[] = nextKeys.map((key) => {
+      const index = currentValues.findIndex(
+        (value, position) =>
+          !consumed.has(position) && value.slice(0, 10) === key,
+      );
+      if (index >= 0) {
+        consumed.add(index);
+        return currentValues[index];
+      }
+      return selectedValue;
+    });
+    this.commit(next);
     this.dateSelected.emit(selectedValue);
     this.onSelect.emit({ value: next });
   }
@@ -389,27 +233,27 @@ export class CalendarComponent {
         : current;
     if (!next || (Array.isArray(next) && !next.length)) return;
     this.value.set(next);
-    this.onModelChange(next);
-    this.onModelTouched();
+    this.cvaOnChange(next);
+    this.cvaOnTouched();
     this.onSelect.emit({ value: next });
   }
 
   onFocusOut(event: FocusEvent): void {
     const nextTarget = event.relatedTarget as Node | null;
     if (nextTarget && this.host.nativeElement.contains(nextTarget)) return;
-    this.onModelTouched();
+    this.cvaOnTouched();
   }
 
   clear(): void {
     if (this.isDisabled()) return;
     this.value.set('');
-    this.onModelChange('');
-    this.onModelTouched();
+    this.cvaOnChange('');
+    this.cvaOnTouched();
     this.onClear.emit();
   }
   today(): void {
     if (this.isDisabled()) return;
-    const iso = toIso(new Date());
+    const iso = calendarDateKey(new Date());
     const date = new Date(`${iso}T00:00:00`);
     if (this.isDateDisabled(date)) return;
     const alreadySelected =
@@ -423,84 +267,47 @@ export class CalendarComponent {
   }
 
   isTodaySelectable(): boolean {
-    return !this.isDateDisabled(new Date(`${toIso(new Date())}T00:00:00`));
+    return !this.isDateDisabled(
+      new Date(`${calendarDateKey(new Date())}T00:00:00`),
+    );
   }
 
   onDayKeydown(event: KeyboardEvent, day: CalendarDay): void {
     if (this.isDisabled()) return;
     const date = new Date(`${day.iso}T00:00:00`);
-    let target: Date | null = null;
-
-    switch (event.key) {
-      case 'ArrowLeft':
-        target = this.findEnabledDate(
-          new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
-          -1,
-          -1,
-        );
-        break;
-      case 'ArrowRight':
-        target = this.findEnabledDate(
-          new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
-          1,
-          1,
-        );
-        break;
-      case 'ArrowUp':
-        target = this.findEnabledDate(
-          new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7),
-          -7,
-          -7,
-        );
-        break;
-      case 'ArrowDown':
-        target = this.findEnabledDate(
-          new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7),
-          7,
-          7,
-        );
-        break;
-      case 'Home':
-        target = this.findEnabledDate(
-          new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate() - this.weekOffset(date),
-          ),
-          1,
-          1,
-          7,
-        );
-        break;
-      case 'End':
-        target = this.findEnabledDate(
-          new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate() + (6 - this.weekOffset(date)),
-          ),
-          -1,
-          -1,
-          7,
-        );
-        break;
-      case 'PageUp':
-      case 'PageDown': {
-        const monthDelta = event.key === 'PageUp' ? -1 : 1;
-        target = this.offsetDateByMonths(
-          date,
-          monthDelta * (event.altKey ? 12 : 1),
-        );
-        target = this.findEnabledDate(target, 1, 1, 31);
-        break;
-      }
-      default:
-        return;
-    }
-
-    event.preventDefault();
+    const target = calendarNavigateDay(
+      date,
+      event.key,
+      event.altKey,
+      this.firstDayOfWeek(),
+    );
     if (!target) return;
-    const iso = toIso(target);
+    event.preventDefault();
+    // Keep each contract's historical enabled-day skip policy: arrows skip
+    // in their own direction, week edges search within the week, page keys
+    // within the target month.
+    const skipStep =
+      event.key === 'Home'
+        ? 1
+        : event.key === 'End'
+          ? -1
+          : event.key === 'ArrowLeft' || event.key === 'ArrowUp'
+            ? -1
+            : 1;
+    const maxAttempts =
+      event.key === 'Home' || event.key === 'End'
+        ? 7
+        : event.key === 'PageUp' || event.key === 'PageDown'
+          ? 31
+          : 366;
+    const enabled = this.findEnabledDate(
+      target,
+      skipStep,
+      skipStep,
+      maxAttempts,
+    );
+    if (!enabled) return;
+    const iso = calendarDateKey(enabled);
     this.rovingDate.set(iso);
     this.currentMonth.set(iso.slice(0, 7));
     queueMicrotask(() => {
@@ -511,13 +318,11 @@ export class CalendarComponent {
     });
   }
 
-  private onModelChange: (value: string | string[]) => void = () => {};
-  private onModelTouched: () => void = () => {};
   writeValue(value: unknown): void {
     const normalize = (item: unknown): string | null => {
       if (typeof item !== 'string') return null;
-      const date = item.slice(0, 10);
-      if (!isIsoDate(date)) return null;
+      const date = calendarDateKey(item);
+      if (!date) return null;
       if (!this.showTime()) return date;
       const match = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})(?::\d{2})?$/.exec(
         item,
@@ -525,7 +330,7 @@ export class CalendarComponent {
       const time = match?.[2] ?? '00:00';
       return match && isIsoTime(time)
         ? `${date}T${time}`
-        : item === date
+        : item.length === 10
           ? `${date}T00:00`
           : null;
     };
@@ -539,39 +344,40 @@ export class CalendarComponent {
       if (this.showTime()) this.timeValue.set(first.slice(11, 16));
     }
   }
-  registerOnChange(fn: (value: string | string[]) => void): void {
-    this.onModelChange = fn;
+
+  /** The control's own disabled input, for the shared CVA base. */
+  protected isSelfDisabled(): boolean {
+    return this.disabled();
   }
-  registerOnTouched(fn: () => void): void {
-    this.onModelTouched = fn;
-  }
-  setDisabledState(disabled: boolean): void {
-    this.cvaDisabled.set(disabled);
+
+  private commit(value: string | string[]): void {
+    this.value.set(value);
+    this.cvaOnChange(value);
+    this.cvaOnTouched();
   }
 
   private shiftMonth(delta: number): void {
-    const current = fromMonthKey(this.currentMonth());
     this.currentMonth.set(
-      toMonthKey(
-        new Date(current.getFullYear(), current.getMonth() + delta, 1),
+      calendarMonthKey(
+        calendarShiftMonth(calendarMonthStart(this.currentMonth()), delta),
       ),
     );
   }
 
   private isDateDisabled(date: Date): boolean {
-    const iso = toIso(date);
-    const min = this.min().slice(0, 10);
-    const max = this.max().slice(0, 10);
+    const iso = calendarDateKey(date);
+    const min = calendarDateKey(this.min());
+    const max = calendarDateKey(this.max());
     return (
       this.isDisabled() ||
-      (isIsoDate(min) && iso < min) ||
-      (isIsoDate(max) && iso > max) ||
+      (!!min && iso < min) ||
+      (!!max && iso > max) ||
       this.disabledDays().includes(date.getDay()) ||
       this.disabledDates().some(
         (disabled) =>
           disabled instanceof Date &&
           Number.isFinite(disabled.getTime()) &&
-          toIso(disabled) === iso,
+          calendarDateKey(disabled) === iso,
       )
     );
   }
@@ -591,27 +397,5 @@ export class CalendarComponent {
       );
     }
     return null;
-  }
-
-  private offsetDateByMonths(date: Date, months: number): Date {
-    const targetMonth = new Date(
-      date.getFullYear(),
-      date.getMonth() + months,
-      1,
-    );
-    const lastDay = new Date(
-      targetMonth.getFullYear(),
-      targetMonth.getMonth() + 1,
-      0,
-    ).getDate();
-    return new Date(
-      targetMonth.getFullYear(),
-      targetMonth.getMonth(),
-      Math.min(date.getDate(), lastDay),
-    );
-  }
-
-  private weekOffset(date: Date): number {
-    return (date.getDay() - this.firstDayOfWeek() + 7) % 7;
   }
 }

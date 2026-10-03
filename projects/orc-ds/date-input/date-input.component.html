@@ -1,9 +1,8 @@
 <label
-  class="p-datepicker p-component orc-p2-date-input"
-  [class]="'p-datepicker p-component orc-p2-date-input ' + styleClass()"
+  class="orc-p2-date-input"
+  [class]="styleClass()"
   [style]="style()"
-  [class.p-datepicker-fluid]="fluid()"
-  [attr.data-pc-name]="'datepicker'"
+  [class.orc-p2-date-input--fluid]="fluid()"
 >
   @if (label()) {
     <span [id]="effectiveId() + '-label'"
@@ -14,7 +13,7 @@
     </span>
   }
   <input
-    class="p-inputtext p-component"
+    class="orc-p2-date-input__native"
     [id]="effectiveId()"
     [name]="name()"
     type="date"

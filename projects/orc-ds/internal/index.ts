@@ -11,5 +11,5 @@ export * from './size';
 export * from './tree-filter';
 export * from './table-engine';
 export * from './list-picker';
+export * from './calendar-engine';
 export * from './dom-target';
-export * from './date-utils';
