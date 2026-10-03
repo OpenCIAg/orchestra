@@ -16,6 +16,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ORC_OTP_INPUT, OtpInputContext } from './otp.types';
+import { normalizeSize, SizeInput } from '@ciag/orchestra/internal';
 import { OtpSlotComponent } from './otp-slot.component';
 import { OtpSeparatorComponent } from './otp-separator.component';
 import { OtpGroupComponent } from './otp-group.component';
@@ -65,7 +66,14 @@ export class OtpInputComponent
   readonly integerOnly = input(false, { transform: booleanAttribute });
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly inputMode = input<'numeric' | 'text'>('numeric');
   readonly ariaLabel = input<string | undefined>(undefined);
 

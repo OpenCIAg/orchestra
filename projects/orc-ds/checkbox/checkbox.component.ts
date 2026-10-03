@@ -14,7 +14,11 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { CvaControl } from '@ciag/orchestra/internal';
+import {
+  CvaControl,
+  normalizeSize,
+  SizeInput,
+} from '@ciag/orchestra/internal';
 import { CheckboxAriaChecked, CheckboxChangeEvent } from './checkbox.types';
 
 let nextCheckboxUniqueId = 0;
@@ -55,7 +59,14 @@ export class CheckboxComponent extends CvaControl {
   readonly trueValue = input<any>(true);
   readonly falseValue = input<any>(false);
   readonly variant = input<'filled' | 'outlined'>('outlined');
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly styleClass = input('');
 
