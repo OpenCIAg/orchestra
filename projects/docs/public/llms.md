@@ -1610,3 +1610,7 @@ When changing a component or using an API not covered by an existing playground:
 7. If the change is a new public API, add a focused unit/accessibility test, update the catalog usage doc, and regenerate this reference (`npm run docs:generate-agent-reference`).
 
 The interactive catalog is the visual reference. Its stable docs route is `/docs`; the component index is `/`; individual demonstrations use `/components/<id>`. The static machine-readable files are `/llms.txt` and `/llms.md`.
+
+## 9. The 23.0.0 gate (compatibility window end)
+
+The next Angular-major release (23.0.0) removes the compatibility surface: every `@deprecated` no-op input/output, the legacy `small | large` size values, the functional dual names (table `[value]`, modal `[visible]`, select `[searchable]`, duplicated `blur`/`onBlur`-style outputs), the PrimeNG-era `onXxx` outputs, the alias entry points, and the `@ciag/orchestra/p2` tier entry point. The machine-readable manifest is `docs/quality/gate-23-manifest.json` and the human migration guide is `docs/quality/gate-23-migration.md`; both are generated from source by `npm run generate:gate-manifest` — never edit them by hand, and never grow the surface: a new `@deprecated` member or alias export without a changeset fails `npm run verify:deprecation-guard`.
