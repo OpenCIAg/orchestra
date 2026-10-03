@@ -7,6 +7,6 @@ export const HOVER_CARD_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['hover', 'card', 'preview'],
-  icon: '▱',
+  icon: 'preview',
   route: '/components/hover-card',
 };

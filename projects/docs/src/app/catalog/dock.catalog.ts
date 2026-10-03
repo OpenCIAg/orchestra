@@ -7,6 +7,6 @@ export const DOCK_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['dock', 'shortcuts', 'atalhos', 'navegação'],
-  icon: '⚓',
+  icon: 'space_dashboard',
   route: '/components/dock',
 };

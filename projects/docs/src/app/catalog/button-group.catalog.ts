@@ -7,6 +7,6 @@ export const BUTTON_GROUP_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['button', 'group', 'actions'],
-  icon: '▦',
+  icon: 'view_module',
   route: '/components/button-group',
 };

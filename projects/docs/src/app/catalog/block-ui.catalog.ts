@@ -8,6 +8,6 @@ export const BLOCK_UI_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'beta',
   tags: ['loading', 'block', 'overlay', 'bloqueio', 'espera'],
-  icon: '⏸',
+  icon: 'pause_circle',
   route: '/components/block-ui',
 };

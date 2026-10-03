@@ -8,7 +8,7 @@ export const ICON_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['icon', 'svg', 'symbol', 'accessibility'],
-  icon: '✦',
+  icon: 'widgets',
   route: '/components/icon',
 };
 

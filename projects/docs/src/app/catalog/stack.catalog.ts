@@ -8,6 +8,6 @@ export const STACK_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['stack', 'flex', 'layout'],
-  icon: '▤',
+  icon: 'layers',
   route: '/components/stack',
 };

@@ -9,7 +9,7 @@ export const TIERED_MENU_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['menu', 'navigation', 'submenu', 'keyboard'],
-  icon: '☷',
+  icon: 'schema',
   route: '/components/tiered-menu',
 };
 

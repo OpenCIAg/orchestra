@@ -7,6 +7,6 @@ export const TREE_SELECT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['tree', 'select', 'hierarchy'],
-  icon: '🌳',
+  icon: 'account_tree',
   route: '/components/tree-select',
 };

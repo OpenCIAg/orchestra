@@ -8,7 +8,7 @@ export const TOOLBAR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['toolbar', 'actions', 'keyboard', 'roving'],
-  icon: '🛠️',
+  icon: 'construction',
   route: '/components/toolbar',
 };
 

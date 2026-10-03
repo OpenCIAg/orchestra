@@ -7,6 +7,6 @@ export const ORGANIZATION_CHART_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['tree', 'org', 'hierarquia', 'organograma'],
-  icon: '🏢',
+  icon: 'corporate_fare',
   route: '/components/organization-chart',
 };

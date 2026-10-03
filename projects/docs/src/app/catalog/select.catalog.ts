@@ -7,6 +7,6 @@ export const SELECT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['dropdown', 'form', 'lista', 'pick', 'escolha'],
-  icon: '🔽',
+  icon: 'arrow_drop_down_circle',
   route: '/components/select',
 };

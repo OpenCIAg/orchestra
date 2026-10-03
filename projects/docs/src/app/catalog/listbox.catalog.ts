@@ -7,6 +7,6 @@ export const LISTBOX_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['listbox', 'select', 'keyboard'],
-  icon: '☷',
+  icon: 'list',
   route: '/components/listbox',
 };

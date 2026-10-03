@@ -9,7 +9,7 @@ export const TAGS_INPUT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['tags', 'input', 'chips', 'suggestions', 'cva'],
-  icon: '🏷️',
+  icon: 'label',
   route: '/components/tags-input',
 };
 

@@ -7,6 +7,6 @@ export const AVATAR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'stable',
   tags: ['user', 'profile', 'image', 'avatar', 'foto', 'perfil'],
-  icon: '👤',
+  icon: 'person',
   route: '/components/avatar',
 };

@@ -7,6 +7,6 @@ export const FIELDSET_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['form', 'group', 'fieldset', 'agrupamento', 'formulário'],
-  icon: '🗂',
+  icon: 'select_all',
   route: '/components/fieldset',
 };

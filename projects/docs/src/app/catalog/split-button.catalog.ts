@@ -7,6 +7,6 @@ export const SPLIT_BUTTON_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['button', 'menu', 'ação', 'split'],
-  icon: '🔱',
+  icon: 'call_split',
   route: '/components/split-button',
 };

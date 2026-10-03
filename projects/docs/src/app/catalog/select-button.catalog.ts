@@ -7,6 +7,6 @@ export const SELECT_BUTTON_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['select', 'button', 'opções', 'grupo'],
-  icon: '🔘',
+  icon: 'toggle_off',
   route: '/components/select-button',
 };

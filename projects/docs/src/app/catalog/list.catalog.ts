@@ -8,7 +8,7 @@ export const LIST_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'stable',
   tags: ['list', 'selection', 'empty'],
-  icon: '☷',
+  icon: 'format_list_bulleted',
   route: '/components/list',
 };
 

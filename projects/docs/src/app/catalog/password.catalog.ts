@@ -7,6 +7,6 @@ export const PASSWORD_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['password', 'senha', 'input', 'form'],
-  icon: '🔒',
+  icon: 'lock',
   route: '/components/password',
 };

@@ -7,6 +7,6 @@ export const ICON_FIELD_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['icon', 'input', 'ícone', 'campo'],
-  icon: '🔎',
+  icon: 'search',
   route: '/components/icon-field',
 };

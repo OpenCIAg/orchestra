@@ -8,6 +8,6 @@ export const PICK_LIST_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['picklist', 'transfer', 'list', 'selection', 'filter'],
-  icon: '⇄',
+  icon: 'swap_horiz',
   route: '/components/pick-list',
 };

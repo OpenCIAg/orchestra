@@ -7,6 +7,6 @@ export const MESSAGES_CATALOG_ENTRY: ComponentEntry = {
   category: 'Feedback',
   status: 'beta',
   tags: ['messages', 'alert', 'mensagens', 'feedback'],
-  icon: '💬',
+  icon: 'forum',
   route: '/components/messages',
 };

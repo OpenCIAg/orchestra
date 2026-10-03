@@ -7,6 +7,6 @@ export const OVERLAY_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'beta',
   tags: ['overlay', 'surface', 'camada'],
-  icon: '🔲',
+  icon: 'blur_on',
   route: '/components/overlay',
 };

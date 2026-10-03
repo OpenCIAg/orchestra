@@ -7,6 +7,6 @@ export const DROPDOWN_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['dropdown', 'menu', 'actions'],
-  icon: '⌄',
+  icon: 'arrow_drop_down',
   route: '/components/dropdown',
 };

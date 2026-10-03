@@ -410,18 +410,18 @@
   border-radius: var(--radius-sm);
 
   &--stable {
-    background: #dcfce7;
-    color: #15803d;
+    background: var(--status-success-soft-bg);
+    color: var(--status-success-soft-fg);
   }
 
   &--beta {
-    background: #fef9c3;
-    color: #854d0e;
+    background: var(--status-warning-soft-bg);
+    color: var(--status-warning-soft-fg);
   }
 
   &--experimental {
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: var(--status-info-soft-bg);
+    color: var(--status-info-soft-fg);
   }
 
   &--deprecated {

@@ -7,6 +7,6 @@ export const TYPOGRAPHY_CATALOG_ENTRY: ComponentEntry = {
   category: 'Typography',
   status: 'beta',
   tags: ['type', 'text', 'font'],
-  icon: 'T',
+  icon: 'title',
   route: '/components/typography',
 };

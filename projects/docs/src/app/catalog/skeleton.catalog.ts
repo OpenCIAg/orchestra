@@ -14,6 +14,6 @@ export const SKELETON_CATALOG_ENTRY: ComponentEntry = {
     'pulse',
     'carregamento',
   ],
-  icon: '🦴',
+  icon: 'texture',
   route: '/components/skeleton',
 };

@@ -8,6 +8,6 @@ export const IMAGE_COMPARE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['image', 'compare', 'antes', 'depois', 'imagem'],
-  icon: '🪞',
+  icon: 'compare',
   route: '/components/image-compare',
 };

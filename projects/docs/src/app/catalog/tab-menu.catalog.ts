@@ -9,7 +9,7 @@ export const TAB_MENU_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['tabs', 'navigation', 'keyboard', 'links'],
-  icon: '▤',
+  icon: 'tab_unselected',
   route: '/components/tab-menu',
 };
 

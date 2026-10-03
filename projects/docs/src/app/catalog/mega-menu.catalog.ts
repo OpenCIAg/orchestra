@@ -9,7 +9,7 @@ export const MEGA_MENU_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['menu', 'mega', 'navigation', 'keyboard'],
-  icon: '☰',
+  icon: 'menu_open',
   route: '/components/mega-menu',
 };
 

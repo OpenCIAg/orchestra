@@ -8,7 +8,7 @@ export const CAROUSEL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['carousel', 'slider', 'slides', 'content'],
-  icon: '▤',
+  icon: 'view_carousel',
   route: '/components/carousel',
 };
 

@@ -8,7 +8,7 @@ export const POPOVER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'stable',
   tags: ['popover', 'overlay', 'context'],
-  icon: '💭',
+  icon: 'mode_comment',
   route: '/components/popover',
 };
 

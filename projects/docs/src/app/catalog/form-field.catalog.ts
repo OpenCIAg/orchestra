@@ -8,7 +8,7 @@ export const FORM_FIELD_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['field', 'label', 'validation'],
-  icon: '🧾',
+  icon: 'input',
   route: '/components/form-field',
 };
 

@@ -7,6 +7,6 @@ export const METER_GROUP_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['meter', 'values', 'medidores', 'comparação'],
-  icon: '📶',
+  icon: 'signal_cellular_alt',
   route: '/components/meter-group',
 };

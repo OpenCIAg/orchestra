@@ -7,6 +7,6 @@ export const FLUID_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['fluid', 'width', 'largura', 'wrapper'],
-  icon: '↔',
+  icon: 'open_in_full',
   route: '/components/fluid',
 };

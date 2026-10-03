@@ -7,6 +7,6 @@ export const BOX_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['box', 'surface', 'layout'],
-  icon: '□',
+  icon: 'crop_square',
   route: '/components/box',
 };

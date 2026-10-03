@@ -8,6 +8,6 @@ export const SPLITTER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['splitter', 'resize', 'panels'],
-  icon: '║',
+  icon: 'splitscreen',
   route: '/components/splitter',
 };

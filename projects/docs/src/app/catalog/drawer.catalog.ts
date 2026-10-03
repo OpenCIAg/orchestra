@@ -8,7 +8,7 @@ export const DRAWER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'stable',
   tags: ['drawer', 'sheet', 'sidenav'],
-  icon: '◧',
+  icon: 'view_sidebar',
   route: '/components/drawer',
 };
 

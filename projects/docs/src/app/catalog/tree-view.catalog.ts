@@ -8,7 +8,7 @@ export const TREE_VIEW_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'stable',
   tags: ['tree', 'hierarchy', 'expand'],
-  icon: '🌳',
+  icon: 'account_tree',
   route: '/components/tree-view',
 };
 

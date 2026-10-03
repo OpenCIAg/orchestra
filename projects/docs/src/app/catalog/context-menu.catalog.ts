@@ -7,6 +7,6 @@ export const CONTEXT_MENU_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['context', 'menu', 'right click'],
-  icon: '☷',
+  icon: 'more_vert',
   route: '/components/context-menu',
 };

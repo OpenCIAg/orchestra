@@ -9,7 +9,7 @@ export const COMMAND_MENU_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['command', 'search', 'keyboard', 'listbox'],
-  icon: '⌘',
+  icon: 'keyboard_command_key',
   route: '/components/command-menu',
 };
 

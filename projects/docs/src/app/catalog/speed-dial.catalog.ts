@@ -7,6 +7,6 @@ export const SPEED_DIAL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['speed dial', 'actions', 'fab'],
-  icon: '⋮',
+  icon: 'more_vert',
   route: '/components/speed-dial',
 };

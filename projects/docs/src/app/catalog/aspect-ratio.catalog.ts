@@ -7,6 +7,6 @@ export const ASPECT_RATIO_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['ratio', 'media', 'layout'],
-  icon: '▣',
+  icon: 'aspect_ratio',
   route: '/components/aspect-ratio',
 };

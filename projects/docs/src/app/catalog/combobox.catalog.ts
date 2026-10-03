@@ -7,6 +7,6 @@ export const COMBOBOX_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['combobox', 'search', 'select'],
-  icon: '⌕',
+  icon: 'manage_search',
   route: '/components/combobox',
 };

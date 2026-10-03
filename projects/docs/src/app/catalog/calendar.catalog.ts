@@ -7,6 +7,6 @@ export const CALENDAR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['calendar', 'date', 'month'],
-  icon: '📅',
+  icon: 'calendar_month',
   route: '/components/calendar',
 };

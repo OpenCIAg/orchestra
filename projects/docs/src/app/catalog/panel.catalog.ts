@@ -7,6 +7,6 @@ export const PANEL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['panel', 'container', 'painel'],
-  icon: '▦',
+  icon: 'web_asset',
   route: '/components/panel',
 };

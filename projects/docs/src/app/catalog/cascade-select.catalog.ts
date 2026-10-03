@@ -9,7 +9,7 @@ export const CASCADE_SELECT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['cascade', 'select', 'hierarchy', 'tree', 'filter'],
-  icon: '⌄',
+  icon: 'account_tree',
   route: '/components/cascade-select',
 };
 

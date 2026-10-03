@@ -7,6 +7,6 @@ export const SEPARATOR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['separator', 'divider', 'layout'],
-  icon: '—',
+  icon: 'horizontal_rule',
   route: '/components/separator',
 };

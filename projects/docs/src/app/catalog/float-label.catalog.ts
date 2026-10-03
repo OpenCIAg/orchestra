@@ -7,6 +7,6 @@ export const FLOAT_LABEL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['label', 'form', 'rótulo', 'wrapper'],
-  icon: '🏷',
+  icon: 'label_important',
   route: '/components/float-label',
 };

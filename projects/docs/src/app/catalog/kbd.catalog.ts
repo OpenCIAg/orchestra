@@ -8,7 +8,7 @@ export const KBD_CATALOG_ENTRY: ComponentEntry = {
   category: 'Typography',
   status: 'beta',
   tags: ['keyboard', 'shortcut', 'kbd'],
-  icon: '⌘',
+  icon: 'keyboard',
   route: '/components/kbd',
 };
 

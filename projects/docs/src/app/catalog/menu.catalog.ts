@@ -9,7 +9,7 @@ export const MENU_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'stable',
   tags: ['menu', 'navigation', 'keyboard', 'submenu'],
-  icon: '☰',
+  icon: 'menu',
   route: '/components/menu',
 };
 

@@ -7,6 +7,6 @@ export const OVERLAY_BADGE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['badge', 'overlay', 'selo', 'indicador'],
-  icon: '📍',
+  icon: 'location_on',
   route: '/components/overlay-badge',
 };

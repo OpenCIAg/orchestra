@@ -8,6 +8,6 @@ export const INPLACE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['inline', 'edit', 'edição', 'inplace'],
-  icon: '✏',
+  icon: 'published_with_changes',
   route: '/components/inplace',
 };

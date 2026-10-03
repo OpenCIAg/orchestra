@@ -9,7 +9,7 @@ export const CHIP_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['chip', 'tag', 'filter', 'pill'],
-  icon: '🏷️',
+  icon: 'label',
   route: '/components/chip',
 };
 

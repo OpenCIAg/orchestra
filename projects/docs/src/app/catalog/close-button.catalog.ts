@@ -7,6 +7,6 @@ export const CLOSE_BUTTON_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['close', 'dismiss', 'button'],
-  icon: '×',
+  icon: 'close',
   route: '/components/close-button',
 };

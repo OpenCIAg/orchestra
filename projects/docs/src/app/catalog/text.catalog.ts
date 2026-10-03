@@ -7,6 +7,6 @@ export const TEXT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Typography',
   status: 'beta',
   tags: ['text', 'typography', 'copy'],
-  icon: 'T',
+  icon: 'text_fields',
   route: '/components/text',
 };

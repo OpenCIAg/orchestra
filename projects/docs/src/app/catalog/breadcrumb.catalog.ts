@@ -7,6 +7,6 @@ export const BREADCRUMB_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'stable',
   tags: ['path', 'navigation', 'hierarchy', 'trilha', 'migalha'],
-  icon: '🗺️',
+  icon: 'chevron_right',
   route: '/components/breadcrumb',
 };

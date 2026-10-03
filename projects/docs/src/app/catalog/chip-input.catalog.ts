@@ -7,6 +7,6 @@ export const CHIP_INPUT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['tag', 'chip', 'input', 'autocomplete', 'tags'],
-  icon: '🏷️',
+  icon: 'label',
   route: '/components/chip-input',
 };

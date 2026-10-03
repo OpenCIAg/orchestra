@@ -9,7 +9,7 @@ export const NAVIGATION_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['navigation', 'sidebar', 'shell', 'keyboard'],
-  icon: '☰',
+  icon: 'navigation',
   route: '/components/navigation',
 };
 

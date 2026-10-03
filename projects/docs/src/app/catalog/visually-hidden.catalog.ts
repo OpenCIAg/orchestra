@@ -8,6 +8,6 @@ export const VISUALLY_HIDDEN_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['a11y', 'screen reader', 'hidden'],
-  icon: '◉',
+  icon: 'visibility_off',
   route: '/components/visually-hidden',
 };

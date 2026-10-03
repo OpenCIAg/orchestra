@@ -8,6 +8,6 @@ export const RATING_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['rating', 'star', 'estrela', 'avaliação', 'nota', 'score'],
-  icon: '⭐',
+  icon: 'star',
   route: '/components/rating',
 };

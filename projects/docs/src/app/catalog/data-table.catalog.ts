@@ -8,6 +8,6 @@ export const DATA_TABLE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['table', 'data', 'sort', 'select'],
-  icon: '▤',
+  icon: 'table',
   route: '/components/data-table',
 };

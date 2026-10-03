@@ -8,6 +8,6 @@ export const CHECKBOX_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['select', 'form', 'boolean', 'toggle', 'check'],
-  icon: '☑️',
+  icon: 'check_box',
   route: '/components/checkbox',
 };

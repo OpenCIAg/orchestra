@@ -7,6 +7,6 @@ export const INPUT_GROUP_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['input', 'group', 'prefix'],
-  icon: '[]',
+  icon: 'input',
   route: '/components/input-group',
 };

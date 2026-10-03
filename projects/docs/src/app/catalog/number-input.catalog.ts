@@ -8,7 +8,7 @@ export const NUMBER_INPUT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['number', 'stepper', 'input', 'quantity'],
-  icon: '🔢',
+  icon: '123',
   route: '/components/number-input',
 };
 

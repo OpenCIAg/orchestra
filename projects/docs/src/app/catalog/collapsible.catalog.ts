@@ -8,7 +8,7 @@ export const COLLAPSIBLE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['collapse', 'expand', 'disclosure'],
-  icon: '▾',
+  icon: 'keyboard_arrow_down',
   route: '/components/collapsible',
 };
 

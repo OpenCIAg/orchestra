@@ -8,6 +8,6 @@ export const CONFIRM_POPUP_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'beta',
   tags: ['confirm', 'popup', 'confirmação'],
-  icon: '❓',
+  icon: 'help',
   route: '/components/confirm-popup',
 };

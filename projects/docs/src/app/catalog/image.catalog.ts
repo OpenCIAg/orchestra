@@ -9,7 +9,7 @@ export const IMAGE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['image', 'media', 'fallback', 'visual'],
-  icon: '🖼️',
+  icon: 'image',
   route: '/components/image',
 };
 

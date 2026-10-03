@@ -16,6 +16,6 @@ export const PROGRESS_CATALOG_ENTRY: ComponentEntry = {
     'progresso',
     'upload',
   ],
-  icon: '📊',
+  icon: 'progress_activity',
   route: '/components/progress',
 };

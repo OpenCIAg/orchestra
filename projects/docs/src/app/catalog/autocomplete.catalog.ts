@@ -8,7 +8,7 @@ export const AUTOCOMPLETE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['autocomplete', 'combobox', 'search', 'input'],
-  icon: '⌕',
+  icon: 'manage_search',
   route: '/components/autocomplete',
 };
 

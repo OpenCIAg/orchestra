@@ -8,7 +8,7 @@ export const FORM_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['form', 'submit', 'validation'],
-  icon: '🧾',
+  icon: 'edit_note',
   route: '/components/form',
 };
 

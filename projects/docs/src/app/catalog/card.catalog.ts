@@ -7,6 +7,6 @@ export const CARD_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'stable',
   tags: ['container', 'card', 'panel', 'box', 'cartão'],
-  icon: '🃏',
+  icon: 'style',
   route: '/components/card',
 };

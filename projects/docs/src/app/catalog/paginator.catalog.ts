@@ -8,6 +8,6 @@ export const PAGINATOR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'stable',
   tags: ['pages', 'navigation', 'list', 'paginação', 'página', 'paginator'],
-  icon: '📄',
+  icon: 'more_horiz',
   route: '/components/paginator',
 };

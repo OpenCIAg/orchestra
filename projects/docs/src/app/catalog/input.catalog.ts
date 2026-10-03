@@ -8,6 +8,6 @@ export const INPUT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['text', 'form', 'campo', 'formulário', 'entry'],
-  icon: '✏️',
+  icon: 'edit',
   route: '/components/input',
 };

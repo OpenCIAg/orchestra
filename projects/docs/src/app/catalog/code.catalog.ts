@@ -7,6 +7,6 @@ export const CODE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['code', 'snippet', 'copy'],
-  icon: '</>',
+  icon: 'code',
   route: '/components/code',
 };

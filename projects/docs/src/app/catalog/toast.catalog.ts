@@ -8,6 +8,6 @@ export const TOAST_CATALOG_ENTRY: ComponentEntry = {
   category: 'Feedback',
   status: 'stable',
   tags: ['notification', 'snack', 'toast', 'popup', 'notificação'],
-  icon: '🔔',
+  icon: 'notifications',
   route: '/components/toast',
 };

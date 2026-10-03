@@ -33,7 +33,7 @@
             aria-label="Limpar busca"
             (click)="clearSearch()"
           >
-            ×
+            <orc-icon name="close" size="sm" aria-hidden="true" />
           </button>
         }
         @if (!hasQuery()) {
@@ -109,9 +109,12 @@
                   (mouseleave)="setHovered(null)"
                 >
                   <div class="card__top">
-                    <span class="card__icon" aria-hidden="true">{{
-                      comp.icon
-                    }}</span>
+                    <orc-icon
+                      class="card__icon"
+                      [name]="comp.icon"
+                      size="md"
+                      aria-hidden="true"
+                    />
                     <orc-badge
                       [text]="getStatusLabel(comp.status)"
                       [status]="getStatusBadge(comp.status)"

@@ -8,6 +8,6 @@ export const GALLERIA_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['galleria', 'gallery', 'image', 'thumbnail', 'fullscreen'],
-  icon: '▣',
+  icon: 'photo_library',
   route: '/components/galleria',
 };

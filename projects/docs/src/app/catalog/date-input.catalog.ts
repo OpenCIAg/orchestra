@@ -7,6 +7,6 @@ export const DATE_INPUT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['date', 'input', 'form'],
-  icon: '📅',
+  icon: 'edit_calendar',
   route: '/components/date-input',
 };

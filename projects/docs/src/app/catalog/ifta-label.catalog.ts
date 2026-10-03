@@ -7,6 +7,6 @@ export const IFTA_LABEL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['label', 'inline', 'rótulo'],
-  icon: '🔖',
+  icon: 'bookmark',
   route: '/components/ifta-label',
 };

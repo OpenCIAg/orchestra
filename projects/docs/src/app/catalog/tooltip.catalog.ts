@@ -7,6 +7,6 @@ export const TOOLTIP_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'stable',
   tags: ['hint', 'tip', 'popup', 'hover', 'dica', 'ajuda'],
-  icon: '💬',
+  icon: 'chat_bubble',
   route: '/components/tooltip',
 };

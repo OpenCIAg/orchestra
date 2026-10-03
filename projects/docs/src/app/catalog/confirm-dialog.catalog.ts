@@ -8,6 +8,6 @@ export const CONFIRM_DIALOG_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'beta',
   tags: ['confirm', 'dialog', 'confirmação', 'modal'],
-  icon: '✔',
+  icon: 'task_alt',
   route: '/components/confirm-dialog',
 };

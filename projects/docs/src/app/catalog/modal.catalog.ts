@@ -8,6 +8,6 @@ export const MODAL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'stable',
   tags: ['dialog', 'popup', 'modal', 'overlay', 'janela', 'diálogo'],
-  icon: '🪟',
+  icon: 'picture_in_picture',
   route: '/components/modal',
 };

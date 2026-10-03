@@ -8,7 +8,7 @@ export const DIVIDER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['divider', 'separator', 'layout'],
-  icon: '—',
+  icon: 'horizontal_rule',
   route: '/components/divider',
 };
 

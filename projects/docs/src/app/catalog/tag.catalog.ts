@@ -7,6 +7,6 @@ export const TAG_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['tag', 'label', 'status'],
-  icon: '🏷️',
+  icon: 'label',
   route: '/components/tag',
 };

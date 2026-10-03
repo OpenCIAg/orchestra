@@ -7,6 +7,6 @@ export const ALERT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Feedback',
   status: 'stable',
   tags: ['message', 'warning', 'info', 'error', 'alerta', 'mensagem'],
-  icon: '⚠️',
+  icon: 'warning',
   route: '/components/alert',
 };

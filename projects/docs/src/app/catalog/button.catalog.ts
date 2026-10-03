@@ -8,6 +8,6 @@ export const BUTTON_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['action', 'cta', 'interactive', 'click', 'botão'],
-  icon: '⚡',
+  icon: 'touch_app',
   route: '/components/button',
 };

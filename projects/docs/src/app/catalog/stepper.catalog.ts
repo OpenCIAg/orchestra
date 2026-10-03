@@ -8,6 +8,6 @@ export const STEPPER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['stepper', 'progress', 'navigation', 'steps'],
-  icon: '➜',
+  icon: 'stairs',
   route: '/components/progress?tab=stepper',
 };

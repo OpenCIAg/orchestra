@@ -7,6 +7,6 @@ export const SPINNER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Feedback',
   status: 'stable',
   tags: ['loading', 'spinner', 'async', 'wait', 'carregando'],
-  icon: '⏳',
+  icon: 'autorenew',
   route: '/components/spinner',
 };

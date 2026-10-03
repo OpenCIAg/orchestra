@@ -9,7 +9,7 @@ export const SCROLL_AREA_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['scroll', 'viewport', 'overflow'],
-  icon: '↕',
+  icon: 'swipe_vertical',
   route: '/components/scroll-area',
 };
 

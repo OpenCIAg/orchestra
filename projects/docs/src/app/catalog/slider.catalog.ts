@@ -8,6 +8,6 @@ export const SLIDER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['range', 'numeric', 'slide', 'valor', 'intervalo', 'dual'],
-  icon: '🎚️',
+  icon: 'linear_scale',
   route: '/components/slider',
 };

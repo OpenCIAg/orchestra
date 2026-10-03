@@ -7,6 +7,6 @@ export const SEGMENTED_CONTROL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['segmented', 'select', 'toggle'],
-  icon: '▤',
+  icon: 'view_agenda',
   route: '/components/segmented-control',
 };

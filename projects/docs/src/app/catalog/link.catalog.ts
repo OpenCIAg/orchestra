@@ -7,6 +7,6 @@ export const LINK_CATALOG_ENTRY: ComponentEntry = {
   category: 'Typography',
   status: 'beta',
   tags: ['link', 'anchor', 'navigation'],
-  icon: '↗',
+  icon: 'open_in_new',
   route: '/components/link',
 };

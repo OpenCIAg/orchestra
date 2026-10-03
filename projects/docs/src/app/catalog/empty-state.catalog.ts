@@ -7,6 +7,6 @@ export const EMPTY_STATE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Feedback',
   status: 'beta',
   tags: ['empty', 'feedback', 'action'],
-  icon: '∅',
+  icon: 'inbox',
   route: '/components/empty-state',
 };

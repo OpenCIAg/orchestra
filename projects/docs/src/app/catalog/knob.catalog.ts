@@ -8,6 +8,6 @@ export const KNOB_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['dial', 'knob', 'valor', 'circular'],
-  icon: '🎚',
+  icon: 'tune',
   route: '/components/knob',
 };

@@ -7,6 +7,6 @@ export const VIRTUAL_SCROLLER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['virtual', 'scroll', 'performance'],
-  icon: '↕',
+  icon: 'swap_vert',
   route: '/components/virtual-scroller',
 };

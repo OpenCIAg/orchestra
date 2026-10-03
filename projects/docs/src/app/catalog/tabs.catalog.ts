@@ -7,6 +7,6 @@ export const TABS_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'stable',
   tags: ['navigation', 'tabs', 'abas', 'sections', 'panel'],
-  icon: '📑',
+  icon: 'tab',
   route: '/components/tabs',
 };

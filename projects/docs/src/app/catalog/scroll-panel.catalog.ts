@@ -7,6 +7,6 @@ export const SCROLL_PANEL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['scroll', 'panel', 'rolagem', 'painel'],
-  icon: '↕',
+  icon: 'unfold_more',
   route: '/components/scroll-panel',
 };

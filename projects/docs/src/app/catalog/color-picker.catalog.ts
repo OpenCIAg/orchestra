@@ -9,7 +9,7 @@ export const COLOR_PICKER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['color', 'picker', 'palette', 'hex'],
-  icon: '🎨',
+  icon: 'palette',
   route: '/components/color-picker',
 };
 

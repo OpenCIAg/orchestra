@@ -9,7 +9,7 @@ export const CHART_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['chart', 'grafico', 'data', 'svg', 'visualization'],
-  icon: '📈',
+  icon: 'show_chart',
   route: '/components/chart',
 };
 

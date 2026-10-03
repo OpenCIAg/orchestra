@@ -9,7 +9,7 @@ export const TERMINAL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['terminal', 'console', 'command', 'history', 'shell'],
-  icon: '>_',
+  icon: 'terminal',
   route: '/components/terminal',
 };
 

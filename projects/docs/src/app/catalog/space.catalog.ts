@@ -7,6 +7,6 @@ export const SPACE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['space', 'gap', 'layout'],
-  icon: '↕',
+  icon: 'height',
   route: '/components/space',
 };

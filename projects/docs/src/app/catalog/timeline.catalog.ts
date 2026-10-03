@@ -8,7 +8,7 @@ export const TIMELINE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['timeline', 'events', 'steps', 'history'],
-  icon: '◉',
+  icon: 'timeline',
   route: '/components/timeline',
 };
 

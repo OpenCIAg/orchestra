@@ -9,7 +9,7 @@ export const TREE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['tree', 'hierarchy', 'selection', 'filter'],
-  icon: '🌳',
+  icon: 'park',
   route: '/components/tree',
 };
 

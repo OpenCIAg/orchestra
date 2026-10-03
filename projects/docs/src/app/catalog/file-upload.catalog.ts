@@ -7,6 +7,6 @@ export const FILE_UPLOAD_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['file', 'upload', 'drop'],
-  icon: '↑',
+  icon: 'upload',
   route: '/components/file-upload',
 };

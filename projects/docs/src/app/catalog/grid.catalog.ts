@@ -7,6 +7,6 @@ export const GRID_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['grid', 'layout', 'responsive'],
-  icon: '▦',
+  icon: 'grid_view',
   route: '/components/grid',
 };

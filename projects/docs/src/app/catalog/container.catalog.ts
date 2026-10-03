@@ -7,6 +7,6 @@ export const CONTAINER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['container', 'layout', 'width'],
-  icon: '□',
+  icon: 'crop_free',
   route: '/components/container',
 };

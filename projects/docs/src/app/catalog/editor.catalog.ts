@@ -9,7 +9,7 @@ export const EDITOR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['editor', 'rich text', 'contenteditable', 'forms'],
-  icon: '✎',
+  icon: 'edit',
   route: '/components/editor',
 };
 

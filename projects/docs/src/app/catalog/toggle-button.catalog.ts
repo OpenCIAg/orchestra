@@ -7,6 +7,6 @@ export const TOGGLE_BUTTON_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['button', 'toggle', 'alternância', 'estado'],
-  icon: '🔛',
+  icon: 'toggle_off',
   route: '/components/toggle-button',
 };

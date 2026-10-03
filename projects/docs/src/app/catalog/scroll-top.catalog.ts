@@ -7,6 +7,6 @@ export const SCROLL_TOP_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['scroll', 'top', 'topo', 'navegação'],
-  icon: '⬆',
+  icon: 'arrow_upward',
   route: '/components/scroll-top',
 };

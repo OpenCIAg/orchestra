@@ -8,7 +8,7 @@ export const DATE_PICKER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['date', 'calendar', 'data'],
-  icon: '📅',
+  icon: 'calendar_month',
   route: '/components/date-picker',
 };
 

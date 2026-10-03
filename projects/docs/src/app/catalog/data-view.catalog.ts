@@ -9,7 +9,7 @@ export const DATA_VIEW_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['data', 'grid', 'list', 'pagination', 'sort'],
-  icon: '▦',
+  icon: 'grid_view',
   route: '/components/data-view',
 };
 

@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { BadgeStatus, BadgeComponent } from '@ciag/orchestra/badge';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { KbdComponent } from '@ciag/orchestra/kbd';
+import { IconComponent } from '@ciag/orchestra/icon';
 import {
   ComponentCatalogService,
   categoryLabel,
@@ -28,6 +29,7 @@ import { FooterComponent } from '../../shared/footer/footer.component';
     BadgeComponent,
     ButtonComponent,
     KbdComponent,
+    IconComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

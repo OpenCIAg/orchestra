@@ -8,6 +8,6 @@ export const ORDER_LIST_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['orderlist', 'list', 'selection', 'filter', 'reorder'],
-  icon: '↕',
+  icon: 'format_list_numbered',
   route: '/components/order-list',
 };

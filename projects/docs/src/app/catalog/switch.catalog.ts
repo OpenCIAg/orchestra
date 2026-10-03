@@ -7,6 +7,6 @@ export const SWITCH_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['toggle', 'on/off', 'boolean', 'switch', 'habilitar'],
-  icon: '🔄',
+  icon: 'toggle_on',
   route: '/components/switch',
 };

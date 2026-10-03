@@ -8,6 +8,6 @@ export const OTP_INPUT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['otp', 'password', 'code', 'form', 'segurança', 'verificação'],
-  icon: '🔢',
+  icon: 'pin',
   route: '/components/otp-input',
 };

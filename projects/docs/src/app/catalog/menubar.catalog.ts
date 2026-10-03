@@ -7,6 +7,6 @@ export const MENUBAR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Navigation',
   status: 'beta',
   tags: ['menu', 'navigation', 'keyboard'],
-  icon: '☰',
+  icon: 'menu',
   route: '/components/menubar',
 };

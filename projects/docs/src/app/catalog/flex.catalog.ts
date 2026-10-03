@@ -7,6 +7,6 @@ export const FLEX_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'beta',
   tags: ['flex', 'layout', 'alignment'],
-  icon: '↔',
+  icon: 'view_week',
   route: '/components/flex',
 };

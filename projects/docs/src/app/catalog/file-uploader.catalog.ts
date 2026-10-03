@@ -8,6 +8,6 @@ export const FILE_UPLOADER_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'stable',
   tags: ['file', 'upload', 'drag', 'drop', 'arquivo', 'envio'],
-  icon: '📁',
+  icon: 'upload_file',
   route: '/components/file-uploader',
 };

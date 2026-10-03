@@ -7,6 +7,6 @@ export const ACCORDION_CATALOG_ENTRY: ComponentEntry = {
   category: 'Layout',
   status: 'stable',
   tags: ['collapse', 'expand', 'accordion', 'faq', 'seção'],
-  icon: '🪗',
+  icon: 'unfold_more',
   route: '/components/accordion',
 };

@@ -9,7 +9,7 @@ export const TREE_TABLE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'beta',
   tags: ['tree', 'table', 'treegrid', 'selection'],
-  icon: '▤',
+  icon: 'account_tree',
   route: '/components/tree-table',
 };
 

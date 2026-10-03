@@ -8,6 +8,6 @@ export const PORTAL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['portal', 'composition', 'overlay'],
-  icon: '◌',
+  icon: 'output',
   route: '/components/portal',
 };

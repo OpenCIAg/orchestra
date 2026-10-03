@@ -7,6 +7,6 @@ export const FLOATING_ACTION_BUTTON_CATALOG_ENTRY: ComponentEntry = {
   category: 'Utility',
   status: 'beta',
   tags: ['fab', 'action', 'floating'],
-  icon: '+',
+  icon: 'add_circle',
   route: '/components/floating-action-button',
 };

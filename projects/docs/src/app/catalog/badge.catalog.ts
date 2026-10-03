@@ -7,6 +7,6 @@ export const BADGE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Feedback',
   status: 'stable',
   tags: ['label', 'tag', 'status', 'counter', 'badge', 'etiqueta'],
-  icon: '🏷️',
+  icon: 'sell',
   route: '/components/badge',
 };

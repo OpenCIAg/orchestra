@@ -7,6 +7,6 @@ export const MULTI_SELECT_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['multi', 'select', 'form'],
-  icon: '☑',
+  icon: 'checklist',
   route: '/components/multi-select',
 };

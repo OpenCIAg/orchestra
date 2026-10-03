@@ -7,6 +7,6 @@ export const TABLE_CATALOG_ENTRY: ComponentEntry = {
   category: 'Data Display',
   status: 'stable',
   tags: ['grid', 'data', 'tabela', 'rows', 'columns', 'sort'],
-  icon: '📋',
+  icon: 'table',
   route: '/components/table',
 };

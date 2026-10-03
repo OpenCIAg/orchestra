@@ -7,6 +7,6 @@ export const INPUT_COLOR_CATALOG_ENTRY: ComponentEntry = {
   category: 'Inputs',
   status: 'beta',
   tags: ['color', 'picker', 'cor', 'hex'],
-  icon: '🎨',
+  icon: 'colorize',
   route: '/components/input-color',
 };

@@ -7,6 +7,6 @@ export const OVERLAY_PANEL_CATALOG_ENTRY: ComponentEntry = {
   category: 'Overlay',
   status: 'stable',
   tags: ['overlay', 'panel', 'painel', 'popover'],
-  icon: '📄',
+  icon: 'web_asset',
   route: '/components/overlay-panel',
 };
