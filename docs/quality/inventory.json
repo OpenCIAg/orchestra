@@ -2997,10 +2997,11 @@
     },
     {
       "name": "ComboboxComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-combobox",
       "file": "projects/orc-ds/combobox/combobox.component.ts",
-      "line": 17,
+      "line": 26,
       "inputs": [
         {
           "name": "options",
@@ -3099,7 +3100,8 @@
         "projects/orc-ds/combobox/combobox-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/combobox-behavior.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "ConfirmPopupService",
@@ -5065,10 +5067,11 @@
     },
     {
       "name": "DropdownComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-dropdown",
       "file": "projects/orc-ds/dropdown/dropdown.component.ts",
-      "line": 39,
+      "line": 43,
       "inputs": [
         {
           "name": "items",
@@ -5300,9 +5303,11 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/drawer/drawer-modal-isolation.spec.ts",
         "projects/orc-ds/dropdown/dropdown-behavior.spec.ts",
+        "projects/orc-ds/dropdown/dropdown-core-contracts.spec.ts",
         "projects/orc-ds/modal/modal-popup-integration.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "EditorComponent",
@@ -7826,7 +7831,7 @@
       "kind": "Component",
       "selector": "orc-list",
       "file": "projects/orc-ds/list/list.component.ts",
-      "line": 20,
+      "line": 26,
       "inputs": [
         {
           "name": "items",
@@ -7893,10 +7898,11 @@
     },
     {
       "name": "ListboxComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-listbox",
       "file": "projects/orc-ds/listbox/listbox.component.ts",
-      "line": 14,
+      "line": 28,
       "inputs": [
         {
           "name": "options",
@@ -8313,11 +8319,13 @@
       ],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/listbox/listbox-core-contracts.spec.ts",
         "projects/orc-ds/listbox/listbox-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
         "projects/orc-ds/p2/listbox-behavior.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "MegaMenuComponent",
@@ -9074,10 +9082,11 @@
     },
     {
       "name": "MultiSelectComponent",
+      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-multi-select",
       "file": "projects/orc-ds/multi-select/multi-select.component.ts",
-      "line": 18,
+      "line": 33,
       "inputs": [
         {
           "name": "options",
@@ -9689,11 +9698,13 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/multi-select-contract.spec.ts",
+        "projects/orc-ds/multi-select/multi-select-core-contracts.spec.ts",
         "projects/orc-ds/multi-select/multi-select-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
         "projects/orc-ds/size-vocabulary-contract.spec.ts"
-      ]
+      ],
+      "unresolvedBase": "CvaControl"
     },
     {
       "name": "NavigationShellComponent",
@@ -16260,7 +16271,7 @@
       "kind": "Component",
       "selector": "orc-select",
       "file": "projects/orc-ds/select/select.component.ts",
-      "line": 48,
+      "line": 54,
       "inputs": [
         {
           "name": "id",
@@ -16937,6 +16948,7 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/modal/modal-popup-integration.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/select/select-core-contracts.spec.ts",
         "projects/orc-ds/select/select-input-contract.spec.ts",
         "projects/orc-ds/select/select-repair.spec.ts",
         "projects/orc-ds/size-vocabulary-contract.spec.ts",
@@ -22994,7 +23006,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './calendar-engine';\nexport * from './dom-target';\nexport * from './date-utils';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';\nexport * from './date-utils';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -23825,6 +23837,7 @@
     "projects/orc-ds/drawer/index.ts",
     "projects/orc-ds/drawer/ng-package.json",
     "projects/orc-ds/dropdown/dropdown-behavior.spec.ts",
+    "projects/orc-ds/dropdown/dropdown-core-contracts.spec.ts",
     "projects/orc-ds/dropdown/dropdown.component.html",
     "projects/orc-ds/dropdown/dropdown.component.scss",
     "projects/orc-ds/dropdown/dropdown.component.ts",
@@ -24021,6 +24034,8 @@
     "projects/orc-ds/internal/date-utils.ts",
     "projects/orc-ds/internal/dom-target.ts",
     "projects/orc-ds/internal/index.ts",
+    "projects/orc-ds/internal/list-picker.spec.ts",
+    "projects/orc-ds/internal/list-picker.ts",
     "projects/orc-ds/internal/menu-item.ts",
     "projects/orc-ds/internal/menu-keyboard.spec.ts",
     "projects/orc-ds/internal/menu-keyboard.ts",
@@ -24062,6 +24077,7 @@
     "projects/orc-ds/list/list.component.ts",
     "projects/orc-ds/list/ng-package.json",
     "projects/orc-ds/listbox/index.ts",
+    "projects/orc-ds/listbox/listbox-core-contracts.spec.ts",
     "projects/orc-ds/listbox/listbox-parity.spec.ts",
     "projects/orc-ds/listbox/listbox.component.html",
     "projects/orc-ds/listbox/listbox.component.scss",
@@ -24107,6 +24123,7 @@
     "projects/orc-ds/modal/ng-package.json",
     "projects/orc-ds/multi-select-contract.spec.ts",
     "projects/orc-ds/multi-select/index.ts",
+    "projects/orc-ds/multi-select/multi-select-core-contracts.spec.ts",
     "projects/orc-ds/multi-select/multi-select-parity.spec.ts",
     "projects/orc-ds/multi-select/multi-select.component.html",
     "projects/orc-ds/multi-select/multi-select.component.scss",
@@ -24372,6 +24389,7 @@
     "projects/orc-ds/select/option.component.html",
     "projects/orc-ds/select/option.component.scss",
     "projects/orc-ds/select/option.component.ts",
+    "projects/orc-ds/select/select-core-contracts.spec.ts",
     "projects/orc-ds/select/select-input-contract.spec.ts",
     "projects/orc-ds/select/select-option.model.ts",
     "projects/orc-ds/select/select-repair.spec.ts",

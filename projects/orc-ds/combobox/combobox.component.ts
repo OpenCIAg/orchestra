@@ -10,8 +10,17 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  CvaControl,
+  listPickerActiveId,
+  listPickerActiveIndex,
+  listPickerEnabledIndexes,
+  listPickerFirstEnabled,
+  listPickerValueMatchesFilter,
+  P2_SHARED_STYLES,
+  stepListPickerActive,
+} from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
 @Component({
@@ -29,7 +38,7 @@ import type { P2Option } from '@ciag/orchestra/internal';
   styleUrl: './combobox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
+export class ComboboxComponent<T = unknown> extends CvaControl {
   private static nextId = 0;
   readonly inputId = `orc-combobox-${++ComboboxComponent.nextId}`;
   readonly listId = `${this.inputId}-listbox`;
@@ -43,29 +52,26 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
   readonly emptyText = input<string | undefined>(undefined);
   readonly clearAriaLabel = input<string | undefined>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
-  protected readonly cvaDisabled = signal(false);
-  private onModelChange: (value: T | null) => void = () => {};
-  private onModelTouched: () => void = () => {};
   readonly styleClass = input('');
   readonly style = input<Record<string, string | number> | undefined>(
     undefined,
   );
   readonly optionSelected = output<P2Option<T>>();
   readonly activeIndex = signal(-1);
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled(),
+  readonly activeOptionIndex = computed(() =>
+    listPickerActiveIndex(
+      this.activeIndex(),
+      this.filteredOptions().length,
+      (index) => !!this.filteredOptions()[index].disabled,
+    ),
   );
-  readonly activeOptionIndex = computed(() => {
-    const index = this.activeIndex();
-    const option = this.filteredOptions()[index];
-    return option && !option.disabled ? index : -1;
-  });
 
   private inputHasFocus = false;
   private userQueryEdited = false;
   private lastSynchronizedValue: T | null = null;
 
   constructor() {
+    super();
     effect(() => {
       const value = this.value();
       const options = this.options();
@@ -89,14 +95,19 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
   }
 
   readonly filteredOptions = computed(() => {
-    const term = this.query().trim().toLocaleLowerCase();
-    return this.options().filter(
-      (option) => !term || option.label.toLocaleLowerCase().includes(term),
+    const term = this.query().trim();
+    if (!term) return this.options();
+    return this.options().filter((option) =>
+      listPickerValueMatchesFilter(option.label, term, 'contains'),
     );
   });
 
   optionId(index: number): string {
-    return `${this.listId}-option-${index}`;
+    return listPickerActiveId(this.listId, index) as string;
+  }
+
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
   }
 
   writeValue(value: T | null): void {
@@ -110,15 +121,6 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
             ?.label ?? ''),
     );
   }
-  registerOnChange(fn: (value: T | null) => void): void {
-    this.onModelChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onModelTouched = fn;
-  }
-  setDisabledState(disabled: boolean): void {
-    this.cvaDisabled.set(disabled);
-  }
 
   onInput(event: Event): void {
     if (this.effectiveDisabled()) return;
@@ -128,7 +130,7 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
     this.query.set((event.target as HTMLInputElement).value);
     if (previousValue !== null) {
       this.value.set(null);
-      this.onModelChange(null);
+      this.cvaOnChange(null);
     }
     this.open.set(true);
     this.activeIndex.set(this.firstEnabledIndex());
@@ -149,7 +151,7 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
     this.activeIndex.set(-1);
     if (!this.inputHasFocus) return;
     this.inputHasFocus = false;
-    this.onModelTouched();
+    this.cvaOnTouched();
   }
 
   select(option: P2Option<T>): void {
@@ -166,8 +168,7 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
     this.query.set(option.label);
     this.open.set(false);
     this.activeIndex.set(-1);
-    if (!Object.is(previousValue, option.value))
-      this.onModelChange(option.value);
+    if (!Object.is(previousValue, option.value)) this.cvaOnChange(option.value);
     this.optionSelected.emit(option);
   }
 
@@ -180,7 +181,7 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
     this.query.set('');
     this.open.set(false);
     this.activeIndex.set(-1);
-    if (previousValue !== null) this.onModelChange(null);
+    if (previousValue !== null) this.cvaOnChange(null);
   }
 
   isSelected(option: P2Option<T>): boolean {
@@ -213,29 +214,20 @@ export class ComboboxComponent<T = unknown> implements ControlValueAccessor {
   }
 
   private firstEnabledIndex(): number {
-    return this.filteredOptions().findIndex((option) => !option.disabled);
+    return listPickerFirstEnabled(
+      this.filteredOptions().length,
+      (index) => !!this.filteredOptions()[index].disabled,
+    );
   }
 
   private moveActive(delta: 1 | -1): void {
     const options = this.filteredOptions();
-    const enabledIndices = options.flatMap((option, index) =>
-      option.disabled ? [] : [index],
+    const enabled = listPickerEnabledIndexes(
+      options.length,
+      (index) => !!options[index].disabled,
     );
-    if (!enabledIndices.length) {
-      this.activeIndex.set(-1);
-      return;
-    }
-    const activePosition = enabledIndices.indexOf(this.activeOptionIndex());
-    const nextPosition =
-      activePosition < 0
-        ? delta > 0
-          ? 0
-          : enabledIndices.length - 1
-        : Math.max(
-            0,
-            Math.min(enabledIndices.length - 1, activePosition + delta),
-          );
-    this.activeIndex.set(enabledIndices[nextPosition]);
+    const next = stepListPickerActive(this.activeIndex(), delta, enabled, true);
+    this.activeIndex.set(next ?? -1);
   }
 
   private dismiss(): void {

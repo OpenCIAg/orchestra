@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -17,21 +16,26 @@ import {
   forwardRef,
   viewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   Overlay,
-  OverlayConfig,
-  OverlayRef,
   PositionStrategy,
   ConnectedPosition,
 } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
-  listenForOutsideInteraction,
-  registerOverlay,
+  attachListPickerOverlay,
+  CvaControl,
+  listPickerFieldValues,
+  listPickerFilterFields,
+  listPickerOptionDisabled,
+  listPickerOptionLabel,
+  listPickerOptionValue,
+  listPickerReadFieldPath,
+  listPickerValueMatchesFilter,
   nativeModalFor,
 } from '@ciag/orchestra/internal';
+import type { ListPickerOverlayHandle } from '@ciag/orchestra/internal';
 import { DropdownItem } from './dropdown.types';
 
 let nextDropdownId = 0;
@@ -51,9 +55,7 @@ let nextDropdownId = 0;
     },
   ],
 })
-export class DropdownComponent
-  implements AfterViewInit, OnDestroy, ControlValueAccessor
-{
+export class DropdownComponent extends CvaControl implements OnDestroy {
   readonly items = input<DropdownItem[]>([]);
   readonly inputId = input<string | undefined>(undefined);
   readonly styleClass = input('');
@@ -94,12 +96,9 @@ export class DropdownComponent
   readonly onBlur = output<FocusEvent>();
   readonly filterChange = output<string>();
 
-  private overlayRef: OverlayRef | null = null;
-  private portal!: TemplatePortal<unknown>;
+  private overlayHandle: ListPickerOverlayHandle | null = null;
   private hostEl = inject<ElementRef<HTMLElement>>(ElementRef);
   private document = inject(DOCUMENT);
-  private outsideCleanup?: () => void;
-  private layerCleanup?: () => void;
   private focusTimer?: ReturnType<typeof setTimeout>;
   private returnFocus: HTMLElement | null = null;
   private viewContainerRef = inject(ViewContainerRef);
@@ -109,28 +108,24 @@ export class DropdownComponent
   readonly isOpen = signal(false);
   readonly visible = model(false);
   readonly filterValue = signal('');
-  readonly cvaDisabled = signal(false);
   private readonly uniqueId = `orc-dropdown-${++nextDropdownId}`;
   readonly effectiveId = computed(() => this.inputId() || this.uniqueId);
-  private onModelChange: (value: unknown) => void = () => {};
-  onTouched: () => void = () => {};
   readonly formMode = computed(() => this.options() !== undefined);
   readonly filteredOptions = computed(() => {
-    const term = this.filterValue().trim().toLowerCase();
+    const term = this.filterValue().trim();
     const options = this.options() ?? [];
     if (!term) return options;
-    const fields = this.filterBy()
-      ?.split(',')
-      .map((field) => field.trim())
-      .filter(Boolean);
+    const fields = listPickerFilterFields(undefined, this.filterBy());
     return options.filter((option) =>
       fields?.length
-        ? fields.some((field) =>
-            String(this.readField(option, field) ?? '')
-              .toLowerCase()
-              .includes(term),
+        ? listPickerFieldValues(option, fields, listPickerReadFieldPath).some(
+            (value) => listPickerValueMatchesFilter(value, term, 'contains'),
           )
-        : this.optionText(option).toLowerCase().includes(term),
+        : listPickerValueMatchesFilter(
+            this.optionText(option),
+            term,
+            'contains',
+          ),
     );
   });
   readonly selectedLabel = computed(() => {
@@ -141,83 +136,67 @@ export class DropdownComponent
   });
 
   constructor() {
+    super();
     effect(() => {
       const requested = this.visible();
       this.dropdownPanel();
       if (requested && !this.isOpen()) this.open();
-      if (
-        (!requested || this.disabled() || this.cvaDisabled()) &&
-        this.isOpen()
-      )
+      if ((!requested || this.effectiveDisabled()) && this.isOpen())
         this.close();
     });
   }
 
-  ngAfterViewInit(): void {
-    this.portal = new TemplatePortal(
-      this.dropdownPanel()!,
-      this.viewContainerRef,
-    );
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
   }
 
   open(): void {
-    if (this.isOpen() || this.disabled() || this.cvaDisabled()) return;
+    if (this.isOpen() || this.effectiveDisabled()) return;
     const template = this.dropdownPanel();
     if (!template) return;
-    this.portal ??= new TemplatePortal(template, this.viewContainerRef);
     this.returnFocus = this.document.activeElement as HTMLElement | null;
-    const positionStrategy = this.createPositionStrategy();
-    const overlayConfig = new OverlayConfig({
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      positionStrategy,
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-    });
-    this.overlayRef = this.overlay.create(overlayConfig);
-    this.overlayRef.backdropClick().subscribe(() => this.close());
-    this.overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        this.close(true);
-        event.stopPropagation();
-      }
-    });
-    this.overlayRef.attach(this.portal);
-    this.isOpen.set(true);
-    this.visible.set(true);
-    this.onShow.emit();
-    this.layerCleanup = registerOverlay(this.overlayRef.overlayElement, {
+    this.overlayHandle = attachListPickerOverlay({
       anchor: this.hostEl.nativeElement,
+      content: template,
+      viewContainerRef: this.viewContainerRef,
+      overlay: this.overlay,
+      documentRef: this.document,
+      positionStrategy: () => this.createPositionStrategy(),
+      onEscape: () => this.close(true),
+      onBackdrop: () => this.close(),
       onParentClose: () => this.close(),
-    });
-    this.outsideCleanup = listenForOutsideInteraction(
-      this.document,
-      () => [this.hostEl.nativeElement, this.overlayRef?.overlayElement],
-      () => this.close(),
-    );
-    this.focusTimer = setTimeout(() => {
-      this.focusTimer = undefined;
-      const panel = this.overlayRef?.overlayElement;
-      (
-        panel?.querySelector<HTMLElement>('input') ??
-        panel?.querySelector<HTMLElement>(
-          '[aria-selected="true"]:not([disabled])',
-        ) ??
-        panel?.querySelector<HTMLElement>(
-          '[role="menuitem"]:not([disabled]), [role="option"]:not([disabled])',
-        )
-      )?.focus();
+      targets: () =>
+        [this.hostEl.nativeElement, this.overlayHandle?.overlayElement].filter(
+          (element): element is HTMLElement => !!element,
+        ),
+      onOutside: () => this.close(),
+      onAttached: (panel) => {
+        this.isOpen.set(true);
+        this.visible.set(true);
+        this.onShow.emit();
+        this.focusTimer = setTimeout(() => {
+          this.focusTimer = undefined;
+          (
+            panel.querySelector<HTMLElement>('input') ??
+            panel.querySelector<HTMLElement>(
+              '[aria-selected="true"]:not([disabled])',
+            ) ??
+            panel.querySelector<HTMLElement>(
+              '[role="menuitem"]:not([disabled]), [role="option"]:not([disabled])',
+            )
+          )?.focus();
+        });
+      },
     });
   }
 
   close(restoreFocus = false): void {
     if (!this.isOpen()) return;
     this.disposeOverlay();
-    this.overlayRef = null;
     this.isOpen.set(false);
     this.visible.set(false);
     if (this.resetFilterOnHide()) this.filterValue.set('');
-    this.onTouched();
+    this.cvaOnTouched();
     this.onHide.emit();
     if (restoreFocus && this.returnFocus?.isConnected) this.returnFocus.focus();
   }
@@ -228,7 +207,7 @@ export class DropdownComponent
   }
 
   onItemClick(item: DropdownItem, $event: MouseEvent): void {
-    if (item.disabled || this.disabled() || this.cvaDisabled()) {
+    if (item.disabled || this.effectiveDisabled()) {
       $event.stopPropagation();
       return;
     }
@@ -237,61 +216,49 @@ export class DropdownComponent
     this.close(true);
   }
 
-  private readField(option: unknown, path: string): unknown {
-    return path
-      .split('.')
-      .reduce<unknown>(
-        (value, key) =>
-          value !== null && typeof value === 'object'
-            ? (value as Record<string, unknown>)[key]
-            : undefined,
-        option,
-      );
-  }
-
   optionText(option: unknown): string {
-    const key = this.optionLabel();
-    return String(
-      key
-        ? (this.readField(option, key) ?? '')
-        : (this.readField(option, 'label') ?? option ?? ''),
+    return listPickerOptionLabel(
+      option,
+      this.optionLabel(),
+      listPickerReadFieldPath,
     );
   }
 
   optionValueOf(option: unknown): unknown {
-    const key = this.optionValue();
-    return key
-      ? this.readField(option, key)
-      : (this.readField(option, 'value') ?? option);
+    return listPickerOptionValue(
+      option,
+      this.optionValue(),
+      listPickerReadFieldPath,
+    );
   }
 
   isOptionDisabled(option: unknown): boolean {
-    const rule = this.optionDisabled();
-    return typeof rule === 'function'
-      ? rule(option)
-      : Boolean(this.readField(option, rule || 'disabled'));
+    return listPickerOptionDisabled(
+      option,
+      this.optionDisabled(),
+      listPickerReadFieldPath,
+    );
   }
 
   selectOption(option: unknown, event: Event): void {
     if (
-      this.disabled() ||
-      this.cvaDisabled() ||
+      this.effectiveDisabled() ||
       this.loading() ||
       this.isOptionDisabled(option)
     )
       return;
     const value = this.optionValueOf(option);
     this.value.set(value);
-    this.onModelChange(value);
+    this.cvaOnChange(value);
     this.onChange.emit({ originalEvent: event, value });
     this.close(true);
   }
 
   clearValue(event: Event): void {
-    if (this.disabled() || this.cvaDisabled() || this.loading()) return;
-    this.onTouched();
+    if (this.effectiveDisabled() || this.loading()) return;
+    this.cvaOnTouched();
     this.value.set(null);
-    this.onModelChange(null);
+    this.cvaOnChange(null);
     this.onChange.emit({ originalEvent: event, value: null });
     this.onClear.emit(event);
   }
@@ -304,15 +271,6 @@ export class DropdownComponent
 
   writeValue(value: unknown): void {
     this.value.set(value);
-  }
-  registerOnChange(fn: (value: unknown) => void): void {
-    this.onModelChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-  setDisabledState(disabled: boolean): void {
-    this.cvaDisabled.set(disabled);
   }
 
   onItemKeydown(event: KeyboardEvent): void {
@@ -418,8 +376,8 @@ export class DropdownComponent
       event.key === 'ArrowDown'
     ) {
       event.preventDefault();
-      this.overlayRef?.overlayElement
-        .querySelector<HTMLElement>('[role="option"]:not([disabled])')
+      this.overlayHandle?.overlayElement
+        ?.querySelector<HTMLElement>('[role="option"]:not([disabled])')
         ?.focus();
     }
   }
@@ -427,12 +385,8 @@ export class DropdownComponent
   private disposeOverlay(): void {
     if (this.focusTimer !== undefined) clearTimeout(this.focusTimer);
     this.focusTimer = undefined;
-    this.outsideCleanup?.();
-    this.outsideCleanup = undefined;
-    this.layerCleanup?.();
-    this.layerCleanup = undefined;
-    this.overlayRef?.dispose();
-    this.overlayRef = null;
+    this.overlayHandle?.dispose();
+    this.overlayHandle = null;
   }
 
   ngOnDestroy(): void {

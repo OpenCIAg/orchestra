@@ -30,7 +30,7 @@
     [attr.aria-disabled]="disabled() || cvaDisabled()"
     (keydown)="onKeydown($event)"
     (focus)="onFocus.emit($event)"
-    (blur)="onBlur.emit($event); onModelTouched()"
+    (blur)="onBlur.emit($event); cvaOnTouched()"
   >
     @for (option of filteredOptions(); track getOptionValue(option)) {
       <li
