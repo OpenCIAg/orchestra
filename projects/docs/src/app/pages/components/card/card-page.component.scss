@@ -265,8 +265,8 @@
   letter-spacing: 0.04em;
 
   &--active {
-    background: #e0f2fe;
-    color: #0369a1;
+    background: var(--status-info-soft-bg);
+    color: var(--status-info-soft-fg);
   }
 }
 

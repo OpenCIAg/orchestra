@@ -321,7 +321,7 @@
 
   &--primary {
     background: var(--orc-color-azul-eletrico);
-    color: #ffffff;
+    color: var(--orc-on-interactive);
 
     &:hover {
       background: var(--orc-color-azul-royal);

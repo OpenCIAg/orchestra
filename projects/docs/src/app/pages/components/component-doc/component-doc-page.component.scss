@@ -93,20 +93,24 @@
   letter-spacing: 0.04em;
 }
 .status--stable {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--status-success-soft-bg);
+  color: var(--status-success-soft-fg);
 }
 .status--beta {
-  background: #fef9c3;
-  color: #854d0e;
+  background: var(--status-warning-soft-bg);
+  color: var(--status-warning-soft-fg);
 }
 .status--experimental {
-  background: #ede9fe;
-  color: #6d28d9;
+  background: color-mix(
+    in srgb,
+    var(--orc-color-roxo-lavender) 12%,
+    transparent
+  );
+  color: var(--orc-color-roxo-lavender);
 }
 .status--deprecated {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--status-danger-soft-bg);
+  color: var(--status-danger-soft-fg);
 }
 
 .tag-row {

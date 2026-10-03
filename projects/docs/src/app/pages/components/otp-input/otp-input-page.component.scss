@@ -246,8 +246,8 @@
   color: var(--text-secondary);
 
   &--success {
-    background: #dcfce7;
-    color: #15803d;
+    background: var(--status-success-soft-bg);
+    color: var(--status-success-soft-fg);
   }
 }
 
@@ -346,7 +346,7 @@
 
   &--primary {
     background: var(--orc-color-azul-eletrico);
-    color: #ffffff;
+    color: var(--orc-on-interactive);
 
     &:hover {
       background: var(--orc-color-azul-royal);
@@ -459,7 +459,7 @@
   margin-bottom: var(--space-3);
 
   &--valid {
-    color: #15803d;
+    color: var(--color-success);
   }
 
   &--invalid {

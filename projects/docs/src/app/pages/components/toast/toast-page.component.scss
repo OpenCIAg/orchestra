@@ -378,7 +378,7 @@
 
     &:hover {
       background: var(--orc-color-azul-eletrico, #1c6aed);
-      color: #ffffff;
+      color: var(--orc-on-interactive);
       border-color: var(--orc-color-azul-eletrico, #1c6aed);
     }
   }

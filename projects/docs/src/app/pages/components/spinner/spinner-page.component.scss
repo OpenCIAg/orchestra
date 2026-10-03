@@ -351,12 +351,12 @@
   margin-left: var(--space-1);
 
   &--input {
-    background-color: #e6f0fa;
-    color: #0066cc;
+    background-color: var(--status-info-soft-bg);
+    color: var(--status-info-soft-fg);
   }
 
   &--output {
-    background-color: #fdf2e9;
-    color: #d97706;
+    background-color: var(--status-warning-soft-bg);
+    color: var(--status-warning-soft-fg);
   }
 }
