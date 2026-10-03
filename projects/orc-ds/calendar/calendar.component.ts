@@ -24,7 +24,6 @@ import {
   calendarMonthLabel,
   calendarMonthStart,
   calendarNavigateDay,
-  calendarParseDate,
   calendarParseTime,
   calendarSelection,
   calendarShiftMonth,
