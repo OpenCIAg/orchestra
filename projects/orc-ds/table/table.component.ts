@@ -21,6 +21,7 @@ import {
 } from '@ciag/orchestra/checkbox';
 import { PaginatorComponent } from '@ciag/orchestra/paginator';
 import { SkeletonComponent } from '@ciag/orchestra/skeleton';
+import { normalizeSize, SizeInput } from '@ciag/orchestra/internal';
 import { ColumnDirective } from './table-column.directive';
 import {
   SortDirection,
@@ -169,7 +170,14 @@ export class TableComponent<T = any> implements OnInit {
   readonly rowHover = input(false, { transform: booleanAttribute });
   readonly showGridlines = input(false, { transform: booleanAttribute });
   readonly stripedRows = input(false, { transform: booleanAttribute });
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   /** @deprecated Responsive stack rendering is not implemented; the table remains in scroll layout. */
   readonly responsiveLayout = input('scroll');
   /** @deprecated Responsive breakpoint switching is not implemented. */
