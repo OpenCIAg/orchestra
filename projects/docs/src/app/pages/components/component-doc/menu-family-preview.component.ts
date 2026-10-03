@@ -15,6 +15,7 @@ import {
 } from '@ciag/orchestra/p2-menu-family-components';
 import type { CommandItem } from '@ciag/orchestra/p2-command-components';
 import type { PrimeMenuItem } from '@ciag/orchestra/p2';
+import { EXAMPLE_STYLES } from './examples/example-shared.styles';
 
 export type MenuFamilyId =
   'tiered-menu' | 'panel-menu' | 'mega-menu' | 'command-menu';
@@ -29,7 +30,32 @@ export type MenuFamilyId =
     CommandMenuComponent,
   ],
   templateUrl: './menu-family-preview.component.html',
-  styleUrl: './menu-family-preview.component.scss',
+  styles: [
+    EXAMPLE_STYLES +
+      `
+.menu-family-preview {
+  display: block;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.menu-family-preview > code {
+  display: block;
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 680px) {
+  .example {
+    padding: var(--space-3);
+  }
+}
+`,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuFamilyPreviewComponent {
