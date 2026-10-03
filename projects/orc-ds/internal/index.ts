@@ -12,6 +12,4 @@ export * from './tree-filter';
 export * from './table-engine';
 export * from './calendar-engine';
 export * from './dom-target';
-export * from './tree-filter';
-export * from './table-engine';
 export * from './date-utils';
