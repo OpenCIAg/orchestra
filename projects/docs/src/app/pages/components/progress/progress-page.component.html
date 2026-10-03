@@ -68,7 +68,8 @@
                     (click)="toggleBarSimulation()"
                   >
                     @if (isSimulatingBar()) {
-                      ⏹ Pausar simulação
+                      <orc-icon name="pause" size="sm" aria-hidden="true" />
+                      Pausar simulação
                     } @else {
                       <orc-icon
                         name="play_arrow"
@@ -105,7 +106,8 @@
                     (click)="toggleCircleSimulation()"
                   >
                     @if (isSimulatingCircle()) {
-                      ⏹ Pausar simulação
+                      <orc-icon name="pause" size="sm" aria-hidden="true" />
+                      Pausar simulação
                     } @else {
                       <orc-icon
                         name="play_arrow"
