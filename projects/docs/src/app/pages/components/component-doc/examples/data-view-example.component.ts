@@ -6,45 +6,30 @@ import {
   signal,
 } from '@angular/core';
 import { DataViewComponent } from '@ciag/orchestra/p2-doc-components';
+import { ButtonComponent } from '@ciag/orchestra/button';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
   selector: 'doc-data-view-example',
   standalone: true,
-  imports: [DataViewComponent],
+  imports: [DataViewComponent, ButtonComponent],
   template: `
     <div class="example-stack">
       <div class="example">
         <span class="example__label">Coleção local controlada</span>
         <div class="popover-row">
-          <button
-            class="doc-button doc-button--secondary"
-            type="button"
-            (click)="setLayout('grid')"
-          >
+          <orc-button variant="secondary" (click)="setLayout('grid')">
             Grade
-          </button>
-          <button
-            class="doc-button doc-button--secondary"
-            type="button"
-            (click)="setLayout('list')"
-          >
+          </orc-button>
+          <orc-button variant="secondary" (click)="setLayout('list')">
             Lista
-          </button>
-          <button
-            class="doc-button doc-button--secondary"
-            type="button"
-            (click)="sort(1)"
-          >
+          </orc-button>
+          <orc-button variant="secondary" (click)="sort(1)">
             Nome A–Z
-          </button>
-          <button
-            class="doc-button doc-button--secondary"
-            type="button"
-            (click)="sort(-1)"
-          >
+          </orc-button>
+          <orc-button variant="secondary" (click)="sort(-1)">
             Nome Z–A
-          </button>
+          </orc-button>
         </div>
         <ng-template #dataViewItem let-item>
           <strong>{{ item.name }}</strong>

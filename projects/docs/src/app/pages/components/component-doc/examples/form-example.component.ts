@@ -6,12 +6,13 @@ import {
   signal,
 } from '@angular/core';
 import { FormComponent, FormSubmitEvent } from '@ciag/orchestra/form';
+import { ButtonComponent } from '@ciag/orchestra/button';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
   selector: 'doc-form-example',
   standalone: true,
-  imports: [FormComponent],
+  imports: [FormComponent, ButtonComponent],
   template: `
     <div class="example-stack">
       <div class="example">
@@ -41,10 +42,8 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
             placeholder="Equipe de produto"
           />
           <div class="form-actions">
-            <button class="doc-button" type="submit">Validar</button
-            ><button class="doc-button doc-button--secondary" type="reset">
-              Resetar
-            </button>
+            <orc-button type="submit">Validar</orc-button
+            ><orc-button variant="secondary" type="reset"> Resetar </orc-button>
           </div>
         </orc-form>
         @if (message(); as message) {

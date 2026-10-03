@@ -6,19 +6,18 @@ import {
   signal,
 } from '@angular/core';
 import { DrawerComponent } from '@ciag/orchestra/drawer';
+import { ButtonComponent } from '@ciag/orchestra/button';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
   selector: 'doc-drawer-example',
   standalone: true,
-  imports: [DrawerComponent],
+  imports: [DrawerComponent, ButtonComponent],
   template: `
     <div class="example-stack">
       <div class="example example--centered">
         <span class="example__label">Gaveta à direita</span>
-        <button class="doc-button" type="button" (click)="open.set(true)">
-          Abrir painel
-        </button>
+        <orc-button (click)="open.set(true)">Abrir painel</orc-button>
         <orc-drawer
           [(open)]="open"
           placement="right"
@@ -32,13 +31,9 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
             </p>
           </div>
           <div drawer-actions>
-            <button
-              class="doc-button doc-button--secondary"
-              type="button"
-              (click)="open.set(false)"
-            >
+            <orc-button variant="secondary" (click)="open.set(false)">
               Concluir
-            </button>
+            </orc-button>
           </div>
         </orc-drawer>
       </div>
