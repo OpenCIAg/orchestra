@@ -507,7 +507,7 @@ export type CalendarEngineActiveDayOptions = {
  */
 export function calendarActiveDay(
   days: readonly CalendarEngineDay[],
-  candidates: readonly string[],
+  candidates: readonly (string | null | undefined)[],
   options: CalendarEngineActiveDayOptions,
 ): string | null {
   const visible = days.filter(
