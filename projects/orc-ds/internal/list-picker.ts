@@ -154,7 +154,10 @@ export type ListPickerMatchMode =
   | string;
 
 /** Lowercase both sides under the configured locale before matching. */
-function listPickerNormalized(value: unknown, locale: string | undefined): string {
+function listPickerNormalized(
+  value: unknown,
+  locale: string | undefined,
+): string {
   return String(value ?? '').toLocaleLowerCase(locale || undefined);
 }
 
@@ -236,9 +239,7 @@ export function listPickerRowMatchesFilter(
       return values.some(
         (value) =>
           Array.isArray(value) &&
-          value.some(
-            (item) => listPickerNormalized(item, locale) === query,
-          ),
+          value.some((item) => listPickerNormalized(item, locale) === query),
       );
     case 'lt':
     case 'lte':
@@ -247,17 +248,14 @@ export function listPickerRowMatchesFilter(
       return values.some((value) =>
         value == null || value === ''
           ? false
-          : listPickerNumericMatch(
-              value,
-              term,
-              (left, right) =>
-                matchMode === 'lt'
-                  ? left < right
-                  : matchMode === 'lte'
-                    ? left <= right
-                    : matchMode === 'gt'
-                      ? left > right
-                      : left >= right,
+          : listPickerNumericMatch(value, term, (left, right) =>
+              matchMode === 'lt'
+                ? left < right
+                : matchMode === 'lte'
+                  ? left <= right
+                  : matchMode === 'gt'
+                    ? left > right
+                    : left >= right,
             ),
       );
     default:

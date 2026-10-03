@@ -50,9 +50,15 @@ describe('list-picker interaction core', () => {
       expect(listPickerReadFieldPath(nested, 'title.text')).toBe('Deep');
       expect(listPickerReadFieldPath(nested, 'meta.blocked')).toBe('yes');
       expect(listPickerReadFieldPath('plain', 'title.text')).toBeUndefined();
-      expect(listPickerOptionLabel(nested, 'title.text', listPickerReadFieldPath)).toBe('Deep');
       expect(
-        listPickerOptionDisabled(nested, 'meta.blocked', listPickerReadFieldPath),
+        listPickerOptionLabel(nested, 'title.text', listPickerReadFieldPath),
+      ).toBe('Deep');
+      expect(
+        listPickerOptionDisabled(
+          nested,
+          'meta.blocked',
+          listPickerReadFieldPath,
+        ),
       ).toBeTrue();
     });
   });
@@ -91,11 +97,21 @@ describe('list-picker interaction core', () => {
 
   describe('filter machines', () => {
     it('matches single values with every declared mode and locale', () => {
-      expect(listPickerValueMatchesFilter('Alpha', 'alp', 'contains')).toBeTrue();
-      expect(listPickerValueMatchesFilter('Alpha', 'ALP', 'startsWith', 'tr')).toBeTrue();
-      expect(listPickerValueMatchesFilter('Alpha', 'pha', 'endsWith')).toBeTrue();
-      expect(listPickerValueMatchesFilter('Alpha', 'alpha', 'equals')).toBeTrue();
-      expect(listPickerValueMatchesFilter('Alpha', 'alpha', 'notEquals')).toBeFalse();
+      expect(
+        listPickerValueMatchesFilter('Alpha', 'alp', 'contains'),
+      ).toBeTrue();
+      expect(
+        listPickerValueMatchesFilter('Alpha', 'ALP', 'startsWith', 'tr'),
+      ).toBeTrue();
+      expect(
+        listPickerValueMatchesFilter('Alpha', 'pha', 'endsWith'),
+      ).toBeTrue();
+      expect(
+        listPickerValueMatchesFilter('Alpha', 'alpha', 'equals'),
+      ).toBeTrue();
+      expect(
+        listPickerValueMatchesFilter('Alpha', 'alpha', 'notEquals'),
+      ).toBeFalse();
       expect(listPickerValueMatchesFilter('Be', 'Al, Be', 'in')).toBeTrue();
       expect(listPickerValueMatchesFilter('Beta', 'Al, Be', 'in')).toBeFalse();
       expect(listPickerValueMatchesFilter('3', '5', 'lt')).toBeTrue();

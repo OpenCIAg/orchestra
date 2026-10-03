@@ -213,7 +213,9 @@ describe('Listbox behavior parity', () => {
     fixture.componentInstance.writeValue({ id: 7 });
     fixture.detectChanges();
     expect(
-      fixture.componentInstance.isSelected(fixture.componentInstance.options()[0]),
+      fixture.componentInstance.isSelected(
+        fixture.componentInstance.options()[0],
+      ),
     ).toBeTrue();
     expect(
       fixture.nativeElement

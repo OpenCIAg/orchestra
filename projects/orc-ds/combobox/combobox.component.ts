@@ -168,8 +168,7 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
     this.query.set(option.label);
     this.open.set(false);
     this.activeIndex.set(-1);
-    if (!Object.is(previousValue, option.value))
-      this.cvaOnChange(option.value);
+    if (!Object.is(previousValue, option.value)) this.cvaOnChange(option.value);
     this.optionSelected.emit(option);
   }
 
