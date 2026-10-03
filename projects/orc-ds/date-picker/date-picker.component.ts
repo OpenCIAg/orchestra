@@ -52,10 +52,6 @@ let nextDatePickerId = 0;
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'p-datepicker p-component',
-    '[attr.data-pc-name]': "'datepicker'",
-  },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

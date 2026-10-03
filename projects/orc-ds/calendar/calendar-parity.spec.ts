@@ -254,9 +254,15 @@ describe('Calendar behavior parity', () => {
   });
 
   it('starts pt-BR weeks on Sunday and en-GB weeks on Monday', () => {
-    const brazil = create();
-    brazil.componentRef.setInput('locale', 'pt-BR');
-    brazil.detectChanges();
+    const build = (locale: string) => {
+      const fixture = TestBed.createComponent(CalendarComponent);
+      fixture.componentRef.setInput('currentMonth', '2026-03');
+      // Pin the week start so keyboard navigation is deterministic in any CI locale.
+      fixture.componentRef.setInput('locale', locale);
+      fixture.detectChanges();
+      return fixture;
+    };
+    const brazil = build('pt-BR');
     const brazilWeekdays = Array.from(
       brazil.nativeElement.querySelectorAll('[role="columnheader"]'),
     ).map((cell) => (cell as HTMLElement).textContent?.trim().toLowerCase());
@@ -267,9 +273,7 @@ describe('Calendar behavior parity', () => {
     );
     expect(brazilFirstWeek[0]?.getAttribute('data-date')).toBe('2026-03-01');
 
-    const britain = create();
-    britain.componentRef.setInput('locale', 'en-GB');
-    britain.detectChanges();
+    const britain = build('en-GB');
     const britainWeekdays = Array.from(
       britain.nativeElement.querySelectorAll('[role="columnheader"]'),
     ).map((cell) => (cell as HTMLElement).textContent?.trim().toLowerCase());

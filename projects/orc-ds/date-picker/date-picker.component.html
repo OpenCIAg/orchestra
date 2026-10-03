@@ -1,6 +1,6 @@
 <div
-  class="p-datepicker p-component orc-date-picker"
-  [class]="'p-datepicker p-component orc-date-picker ' + (styleClass() || '')"
+  class="orc-date-picker"
+  [class]="styleClass() || ''"
   [class.orc-date-picker--disabled]="effectiveDisabled()"
   [class.orc-date-picker--fluid]="fluid()"
   [class.orc-date-picker--touch-ui]="touchUI()"
@@ -96,14 +96,11 @@
 
     @if (overlayVisible() || inline()) {
       <div
-        class="p-datepicker-panel p-component orc-date-picker__panel"
+        class="orc-date-picker__panel"
         #panel
         tabindex="-1"
         (keydown)="onPanelKeydown($event)"
-        [class]="
-          'p-datepicker-panel p-component orc-date-picker__panel ' +
-          (panelStyleClass() || '')
-        "
+        [class]="panelStyleClass() || ''"
         [class.orc-date-picker__panel--inline]="inline()"
         [class.orc-date-picker__panel--touch-ui]="touchUI()"
         [style]="panelStyle()"
