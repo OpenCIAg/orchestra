@@ -22,7 +22,7 @@
       (click)="toggle()"
       (keydown)="onTriggerKeydown($event)"
       (focus)="onFocus.emit($event)"
-      (blur)="onTouched(); onBlur.emit($event)"
+      (blur)="cvaOnTouched(); onBlur.emit($event)"
     >
       <span>{{ selectedLabel() || placeholder() }}</span>
       <span aria-hidden="true">⌄</span>
