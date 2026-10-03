@@ -2115,7 +2115,7 @@
       "kind": "Component",
       "selector": "orc-checkbox",
       "file": "projects/orc-ds/checkbox/checkbox.component.ts",
-      "line": 26,
+      "line": 22,
       "inputs": [
         {
           "name": "id",
@@ -9071,7 +9071,7 @@
       "kind": "Component",
       "selector": "orc-multi-select",
       "file": "projects/orc-ds/multi-select/multi-select.component.ts",
-      "line": 21,
+      "line": 18,
       "inputs": [
         {
           "name": "options",
@@ -14461,7 +14461,7 @@
       "kind": "Component",
       "selector": "orc-password, orc-input-password",
       "file": "projects/orc-ds/password/password.component.ts",
-      "line": 16,
+      "line": 20,
       "inputs": [
         {
           "name": "value",
