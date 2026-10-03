@@ -273,9 +273,9 @@ describe('Size vocabulary contract', () => {
     }
 
     it('button surfaces the canonical size on its host classes', () => {
-      expect(classMatrix(create(ButtonComponent, { size: 'sm' })).flat()).toContain(
-        'orc-button--size-sm',
-      );
+      expect(
+        classMatrix(create(ButtonComponent, { size: 'sm' })).flat(),
+      ).toContain('orc-button--size-sm');
     });
 
     it('modal accepts the canonical vocabulary plus its documented extras', () => {

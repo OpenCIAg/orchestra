@@ -11,7 +11,11 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { normalizeSize, P2_SHARED_STYLES, SizeInput } from '@ciag/orchestra/internal';
+import {
+  normalizeSize,
+  P2_SHARED_STYLES,
+  SizeInput,
+} from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-password, orc-input-password',

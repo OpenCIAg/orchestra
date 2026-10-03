@@ -10,10 +10,7 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {
-  P2_SHARED_STYLES,
-  SizeInput,
-} from '@ciag/orchestra/internal';
+import { P2_SHARED_STYLES, SizeInput } from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
 let nextMultiSelectId = 0;

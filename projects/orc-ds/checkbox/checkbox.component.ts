@@ -14,11 +14,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import {
-  CvaControl,
-  normalizeSize,
-  SizeInput,
-} from '@ciag/orchestra/internal';
+import { CvaControl, normalizeSize, SizeInput } from '@ciag/orchestra/internal';
 import { CheckboxAriaChecked, CheckboxChangeEvent } from './checkbox.types';
 
 let nextCheckboxUniqueId = 0;
