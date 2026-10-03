@@ -252,4 +252,66 @@ describe('Calendar behavior parity', () => {
       expect(typeof item.disabled).toBe('boolean');
     }
   });
+
+  it('starts pt-BR weeks on Sunday and en-GB weeks on Monday', () => {
+    const brazil = create();
+    brazil.componentRef.setInput('locale', 'pt-BR');
+    brazil.detectChanges();
+    const brazilWeekdays = Array.from(
+      brazil.nativeElement.querySelectorAll('[role="columnheader"]'),
+    ).map((cell) => (cell as HTMLElement).textContent?.trim().toLowerCase());
+    expect(brazilWeekdays[0]).toMatch(/^dom/);
+    // 2026-03-01 is a Sunday, so it leads the first week row.
+    const brazilFirstWeek = brazil.nativeElement.querySelectorAll(
+      '.orc-p2-calendar__week button[data-date]',
+    );
+    expect(brazilFirstWeek[0]?.getAttribute('data-date')).toBe('2026-03-01');
+
+    const britain = create();
+    britain.componentRef.setInput('locale', 'en-GB');
+    britain.detectChanges();
+    const britainWeekdays = Array.from(
+      britain.nativeElement.querySelectorAll('[role="columnheader"]'),
+    ).map((cell) => (cell as HTMLElement).textContent?.trim().toLowerCase());
+    expect(britainWeekdays[0]).toMatch(/^mon/);
+    // With Monday first, Sunday 2026-03-01 closes the first week row.
+    const firstWeekCells = britain.nativeElement.querySelectorAll(
+      '.orc-p2-calendar__week button[data-date]',
+    );
+    expect(firstWeekCells[6]?.getAttribute('data-date')).toBe('2026-03-01');
+  });
+
+  it('applies a time-editor edit to every selected value in multiple mode', () => {
+    const fixture = create();
+    fixture.componentRef.setInput('selectionMode', 'multiple');
+    fixture.componentRef.setInput('showTime', true);
+    fixture.detectChanges();
+    const selections: (string | string[])[] = [];
+    fixture.componentInstance.onSelect.subscribe((event) =>
+      selections.push(event.value),
+    );
+
+    day(fixture, '2026-03-10')!.click();
+    day(fixture, '2026-03-12')!.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toEqual([
+      '2026-03-10T00:00',
+      '2026-03-12T00:00',
+    ]);
+
+    const time = fixture.nativeElement.querySelector(
+      '.orc-p2-calendar__time input',
+    ) as HTMLInputElement;
+    time.value = '08:30';
+    time.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toEqual([
+      '2026-03-10T08:30',
+      '2026-03-12T08:30',
+    ]);
+    expect(selections[selections.length - 1]).toEqual([
+      '2026-03-10T08:30',
+      '2026-03-12T08:30',
+    ]);
+  });
 });
