@@ -18,7 +18,12 @@ import {
   signal,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { CvaControl, P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import {
+  CvaControl,
+  normalizeSize,
+  P2_SHARED_VARS,
+  SizeInput,
+} from '@ciag/orchestra/internal';
 import { filterTreeNodes } from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
@@ -72,7 +77,14 @@ export class TreeSelectComponent
   readonly variant = input<'filled' | 'outlined'>('outlined');
   /** @deprecated Compatibility input only; selected values always render comma-separated. */
   readonly display = input<'comma' | 'chip'>('comma');
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly style = input<Record<string, string | number> | undefined>(
     undefined,
   );

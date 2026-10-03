@@ -25,7 +25,9 @@ import {
   eventIsInside,
   isTopOverlay,
   listenForOutsideInteraction,
+  normalizeSize,
   registerOverlay,
+  SizeInput,
   trapTabKey,
 } from '@ciag/orchestra/internal';
 import { DatePickerCalendarComponent } from './date-picker-calendar.component';
@@ -131,7 +133,14 @@ export class DatePickerComponent implements ControlValueAccessor {
   readonly focusTrap = input(true, { transform: booleanAttribute });
   readonly fluid = input(false, { transform: booleanAttribute });
   readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   /** @deprecated Compatibility-only input; text parsing is controlled by dateFormat and the date value parser. */
   readonly mask = input(false, { transform: booleanAttribute });
   readonly multipleSeparator = input(', ');

@@ -10,7 +10,10 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import {
+  P2_SHARED_STYLES,
+  SizeInput,
+} from '@ciag/orchestra/internal';
 import type { P2Option } from '@ciag/orchestra/internal';
 
 let nextMultiSelectId = 0;
@@ -131,8 +134,13 @@ export class MultiSelectComponent<T = unknown> implements ControlValueAccessor {
   readonly display = input<'comma' | 'chip'>('comma');
   /** @deprecated Compatibility input only; no native autocomplete input is rendered. */
   readonly autocomplete = input('off');
-  /** @deprecated Compatibility input only; this implementation has no size styling. */
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * @deprecated Compatibility input only; this implementation has no size
+   * styling. Accepts the canonical `sm | md | lg` vocabulary; the legacy
+   * `small`/`large` values are deprecated aliases (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
   /** @deprecated Compatibility input only; tooltip rendering is not provided. */
   readonly tooltip = input('');
   /** @deprecated Compatibility input only; tooltip rendering is not provided. */
