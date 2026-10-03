@@ -29,6 +29,14 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
           Datas fora do intervalo <code>2026-01-01</code> a
           <code>2026-12-31</code> ficam desabilitadas.
         </p>
+        <orc-calendar
+          ariaLabel="Calendário com limites"
+          [min]="'2026-01-01'"
+          [max]="'2026-12-31'"
+          [(value)]="limitedValue"
+          (dateSelected)="onLimitedDateSelected($event)"
+        />
+        <code>value = {{ limitedValue() }}</code>
       </div>
     </div>
   `,
@@ -38,6 +46,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
 export class CalendarExampleComponent implements OnInit {
   readonly stateChange = output<Record<string, unknown>>();
   readonly value = signal('2026-08-17');
+  readonly limitedValue = signal('2026-06-15');
 
   ngOnInit(): void {
     this.emit();
@@ -45,6 +54,10 @@ export class CalendarExampleComponent implements OnInit {
 
   onDateSelected(value: string): void {
     this.stateChange.emit({ state: `Data: ${value}` });
+  }
+
+  onLimitedDateSelected(value: string): void {
+    this.stateChange.emit({ state: `Data com limites: ${value}` });
   }
 
   private emit(): void {
