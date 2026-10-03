@@ -1,0 +1,5 @@
+---
+'@ciag/orchestra': minor
+---
+
+Consolidated the parallel list-picker implementations (select, dropdown, combobox, multi-select, listbox, and list) onto one shared internal interaction core — option-model field/value/label/disabled readers, the value-level and row-level filter machines with the shared match modes and locales, the per-family dataKey equality strategies, enabled-index keyboard roving, the limited selection toggle, active-option validation and aria ids, and the detached-overlay open/close lifecycle — behind every surviving public entry point. All public contracts are unchanged. The recorded deliberate divergences are preserved, not unified away: select keeps its dual projected/data modes, its empty-value filter drop, the single initial lazy range, and every onChange-shape output; dropdown remains a flat action menu with focus roving; listbox keeps its row-wise filter semantics; combobox keeps its clamp roving. No compatibility inputs, outputs, selectors, or entry points changed, and no deprecated surface was implemented or removed.
