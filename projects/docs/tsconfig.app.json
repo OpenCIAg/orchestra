@@ -45,7 +45,15 @@
       "@ciag/orchestra/speed-dial": ["../orc-ds/speed-dial/index.ts"],
       "@ciag/orchestra/dock": ["../orc-ds/dock/index.ts"],
       "@ciag/orchestra/confirm-popup": ["../orc-ds/confirm-popup/index.ts"],
-      "@ciag/orchestra/split-button": ["../orc-ds/split-button/index.ts"]
+      "@ciag/orchestra/split-button": ["../orc-ds/split-button/index.ts"],
+      "@ciag/orchestra/calendar": ["../orc-ds/calendar/index.ts"],
+      "@ciag/orchestra/combobox": ["../orc-ds/combobox/index.ts"],
+      "@ciag/orchestra/date-input": ["../orc-ds/date-input/index.ts"],
+      "@ciag/orchestra/editor": ["../orc-ds/editor/index.ts"],
+      "@ciag/orchestra/input-group": ["../orc-ds/input-group/index.ts"],
+      "@ciag/orchestra/listbox": ["../orc-ds/listbox/index.ts"],
+      "@ciag/orchestra/multi-select": ["../orc-ds/multi-select/index.ts"],
+      "@ciag/orchestra/tags-input": ["../orc-ds/tags-input/index.ts"]
     }
   },
   "files": ["src/main.ts"],
