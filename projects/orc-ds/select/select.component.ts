@@ -33,6 +33,7 @@ import {
   listPickerOptionValue,
   listPickerSkipDisabled,
   listPickerValueMatchesFilter,
+  normalizeSize,
   overlayAttachmentTarget,
   stepListPickerActive,
 } from '@ciag/orchestra/internal';
@@ -44,7 +45,7 @@ import {
   ConnectedPosition,
 } from '@angular/cdk/overlay';
 import { SelectOption } from './select-option.model';
-import { SelectStatus } from './select.types';
+import { SelectSize, SelectStatus } from './select.types';
 import { OptionComponent } from './option.component';
 import { SELECT_HOST } from './select.tokens';
 
@@ -156,7 +157,14 @@ export class SelectComponent
   );
   readonly tabindex = input<number | undefined>(undefined);
   readonly variant = input<'filled' | 'outlined'>('outlined');
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SelectSize | undefined>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly fluid = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly loadingIcon = input<string | undefined>(undefined);

@@ -5,8 +5,8 @@
   [class.orc-table-container--striped]="striped() || stripedRows()"
   [class.orc-table-container--hoverable]="hoverable() || rowHover()"
   [class.orc-table-container--gridlines]="showGridlines()"
-  [class.orc-table-container--small]="size() === 'small'"
-  [class.orc-table-container--large]="size() === 'large'"
+  [class.orc-table-container--small]="resolvedSize() === 'sm'"
+  [class.orc-table-container--large]="resolvedSize() === 'lg'"
   [class]="'orc-table-container ' + styleClass()"
   [style]="style()"
 >

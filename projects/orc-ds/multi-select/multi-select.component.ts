@@ -22,6 +22,7 @@ import {
   listPickerOptionValue,
   listPickerValueMatchesFilter,
   P2_SHARED_STYLES,
+  SizeInput,
   stepListPickerActive,
   toggleListPickerValue,
 } from '@ciag/orchestra/internal';
@@ -145,8 +146,13 @@ export class MultiSelectComponent<T = unknown> extends CvaControl {
   readonly display = input<'comma' | 'chip'>('comma');
   /** @deprecated Compatibility input only; no native autocomplete input is rendered. */
   readonly autocomplete = input('off');
-  /** @deprecated Compatibility input only; this implementation has no size styling. */
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * @deprecated Compatibility input only; this implementation has no size
+   * styling. Accepts the canonical `sm | md | lg` vocabulary; the legacy
+   * `small`/`large` values are deprecated aliases (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
   /** @deprecated Compatibility input only; tooltip rendering is not provided. */
   readonly tooltip = input('');
   /** @deprecated Compatibility input only; tooltip rendering is not provided. */

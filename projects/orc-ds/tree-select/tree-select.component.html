@@ -1,8 +1,8 @@
 <div
   class="orc-p2-tree-select"
   [class]="'orc-p2-tree-select ' + styleClass()"
-  [class.orc-p2-tree-select--small]="size() === 'small'"
-  [class.orc-p2-tree-select--large]="size() === 'large'"
+  [class.orc-p2-tree-select--small]="resolvedSize() === 'sm'"
+  [class.orc-p2-tree-select--large]="resolvedSize() === 'lg'"
   [class.orc-p2-tree-select--filled]="variant() === 'filled'"
   [class.orc-p2-tree-select--outlined]="variant() === 'outlined'"
   [class.orc-p2-tree-select--fluid]="fluid()"

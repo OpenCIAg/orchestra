@@ -1,5 +1,6 @@
 import {
   booleanAttribute,
+  computed,
   Directive,
   ElementRef,
   inject,
@@ -10,6 +11,7 @@ import {
   output,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { normalizeSize, SizeInput } from '@ciag/orchestra/internal';
 
 @Directive({
   selector: '[orcInputMask],[pInputMask]',
@@ -48,7 +50,14 @@ export class InputMaskDirective implements ControlValueAccessor {
   readonly styleClass = input('');
   readonly inputId = input<string | undefined>(undefined);
   readonly placeholder = input<string | undefined>(undefined);
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly maxlength = input<number | undefined>(undefined);
   readonly tabindex = input<string | number | undefined>(undefined);
   readonly title = input<string | undefined>(undefined);
@@ -131,10 +140,10 @@ export class InputMaskDirective implements ControlValueAccessor {
     return this.readonly();
   }
   @HostBinding('class.orc-input-mask--small') get hostSmall(): boolean {
-    return this.size() === 'small';
+    return this.resolvedSize() === 'sm';
   }
   @HostBinding('class.orc-input-mask--large') get hostLarge(): boolean {
-    return this.size() === 'large';
+    return this.resolvedSize() === 'lg';
   }
   @HostBinding('class.orc-input-mask--filled') get hostFilled(): boolean {
     return this.variant() === 'filled';

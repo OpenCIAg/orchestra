@@ -11,7 +11,11 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import {
+  normalizeSize,
+  P2_SHARED_STYLES,
+  SizeInput,
+} from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-password, orc-input-password',
@@ -53,7 +57,14 @@ export class PasswordComponent implements ControlValueAccessor {
   );
   readonly fluid = input(false, { transform: booleanAttribute });
   readonly variant = input<'filled' | 'outlined'>('outlined');
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly maxLength = input<number | undefined>(undefined);
   readonly autocomplete = input('off');
   readonly autofocus = input(false, { transform: booleanAttribute });

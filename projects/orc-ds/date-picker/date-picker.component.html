@@ -6,8 +6,8 @@
   [class.orc-date-picker--touch-ui]="touchUI()"
   [class.orc-date-picker--variant-filled]="variant() === 'filled'"
   [class.orc-date-picker--variant-outlined]="variant() === 'outlined'"
-  [class.orc-date-picker--size-small]="size() === 'small'"
-  [class.orc-date-picker--size-large]="size() === 'large'"
+  [class.orc-date-picker--size-small]="resolvedSize() === 'sm'"
+  [class.orc-date-picker--size-large]="resolvedSize() === 'lg'"
   [style]="style()"
 >
   @if (label()) {

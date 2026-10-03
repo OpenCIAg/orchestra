@@ -7,6 +7,7 @@ export * from './cva-control';
 export * from './menu-keyboard';
 export * from './menu-item';
 export * from './p2-shared';
+export * from './size';
 export * from './tree-filter';
 export * from './table-engine';
 export * from './list-picker';

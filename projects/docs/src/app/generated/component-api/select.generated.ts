@@ -318,9 +318,11 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       {
         kind: 'input',
         name: 'size',
-        type: "'small' | 'large' | undefined",
+        type: 'SelectSize | undefined',
         defaultValue: 'undefined',
         required: false,
+        description:
+          'Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`.',
       },
       {
         kind: 'input',

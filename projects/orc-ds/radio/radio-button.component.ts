@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ORC_RADIO_GROUP, RadioButtonItem } from './radio.types';
+import { normalizeSize, SizeInput } from '@ciag/orchestra/internal';
 
 let nextUniqueId = 0;
 const standaloneRadios = new Set<RadioButtonComponent>();
@@ -44,7 +45,14 @@ export class RadioButtonComponent
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly binary = input(false, { transform: booleanAttribute });
   readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
 
   // Outputs (Signals API)
   readonly select = output<any>();

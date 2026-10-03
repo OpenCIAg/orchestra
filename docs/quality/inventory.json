@@ -917,7 +917,8 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/avatar/avatar-behavior.spec.ts",
         "projects/orc-ds/avatar/avatar-group-contract.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts"
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -1058,6 +1059,7 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/badge/badge-behavior.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts",
         "projects/orc-ds/styles/theme-contract.spec.ts"
       ]
@@ -1497,6 +1499,7 @@
         "projects/orc-ds/button/button-input-contract.spec.ts",
         "projects/orc-ds/button/button.component.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/styles/theme-contract.spec.ts"
       ]
     },
@@ -1560,7 +1563,8 @@
       ],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/button/icon-button.component.spec.ts"
+        "projects/orc-ds/button/icon-button.component.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -2251,7 +2255,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "autofocus",
@@ -2308,7 +2313,8 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/checkbox/checkbox.component.spec.ts",
         "projects/orc-ds/controls-repair.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts"
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ],
       "unresolvedBase": "CvaControl"
     },
@@ -2491,7 +2497,8 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/chip-input/chip-input-contract.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
-        "projects/orc-ds/p1-core.spec.ts"
+        "projects/orc-ds/p1-core.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -2631,6 +2638,7 @@
         "projects/orc-ds/chip-contract.spec.ts",
         "projects/orc-ds/p1-core.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts"
       ]
     },
@@ -2981,16 +2989,16 @@
         "projects/orc-ds/color-picker/color-picker-behavior.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
         "projects/orc-ds/owner-document-hostlisteners.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts"
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
       "name": "ComboboxComponent",
-      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-combobox",
       "file": "projects/orc-ds/combobox/combobox.component.ts",
-      "line": 26,
+      "line": 17,
       "inputs": [
         {
           "name": "options",
@@ -3089,8 +3097,7 @@
         "projects/orc-ds/combobox/combobox-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/combobox-behavior.spec.ts"
-      ],
-      "unresolvedBase": "CvaControl"
+      ]
     },
     {
       "name": "ConfirmPopupService",
@@ -3921,7 +3928,7 @@
       "kind": "Component",
       "selector": "orc-date-picker",
       "file": "projects/orc-ds/date-picker/date-picker.component.ts",
-      "line": 43,
+      "line": 45,
       "inputs": [
         {
           "name": "maxDateCount",
@@ -4328,7 +4335,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "mask",
@@ -4638,6 +4646,7 @@
         "projects/orc-ds/date-picker/date-picker.component.spec.ts",
         "projects/orc-ds/p0-foundations.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts"
       ]
     },
@@ -5050,11 +5059,10 @@
     },
     {
       "name": "DropdownComponent",
-      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-dropdown",
       "file": "projects/orc-ds/dropdown/dropdown.component.ts",
-      "line": 43,
+      "line": 39,
       "inputs": [
         {
           "name": "items",
@@ -5286,11 +5294,9 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/drawer/drawer-modal-isolation.spec.ts",
         "projects/orc-ds/dropdown/dropdown-behavior.spec.ts",
-        "projects/orc-ds/dropdown/dropdown-core-contracts.spec.ts",
         "projects/orc-ds/modal/modal-popup-integration.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
-      ],
-      "unresolvedBase": "CvaControl"
+      ]
     },
     {
       "name": "EditorComponent",
@@ -6472,7 +6478,8 @@
       "outputs": [],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/icon/icon.component.spec.ts"
+        "projects/orc-ds/icon/icon.component.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -6869,7 +6876,7 @@
       "kind": "Directive",
       "selector": "[orcInputMask],[pInputMask]",
       "file": "projects/orc-ds/input-mask/input-mask.directive.ts",
-      "line": 14,
+      "line": 16,
       "inputs": [
         {
           "name": "mask",
@@ -6959,7 +6966,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "maxlength",
@@ -7097,7 +7105,8 @@
       "testReferences": [
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/input-mask-contract.spec.ts",
-        "projects/orc-ds/input-mask/input-mask-parity.spec.ts"
+        "projects/orc-ds/input-mask/input-mask-parity.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -7398,6 +7407,7 @@
         "projects/orc-ds/input-repair.spec.ts",
         "projects/orc-ds/input/input.component.spec.ts",
         "projects/orc-ds/p1-core.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts"
       ],
       "unresolvedBase": "CvaControl"
@@ -7630,7 +7640,8 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
         "projects/orc-ds/input/textarea.component.spec.ts",
-        "projects/orc-ds/p1-core.spec.ts"
+        "projects/orc-ds/p1-core.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ],
       "unresolvedBase": "CvaControl"
     },
@@ -7809,7 +7820,7 @@
       "kind": "Component",
       "selector": "orc-list",
       "file": "projects/orc-ds/list/list.component.ts",
-      "line": 26,
+      "line": 20,
       "inputs": [
         {
           "name": "items",
@@ -7876,11 +7887,10 @@
     },
     {
       "name": "ListboxComponent",
-      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-listbox",
       "file": "projects/orc-ds/listbox/listbox.component.ts",
-      "line": 28,
+      "line": 14,
       "inputs": [
         {
           "name": "options",
@@ -8297,13 +8307,11 @@
       ],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/listbox/listbox-core-contracts.spec.ts",
         "projects/orc-ds/listbox/listbox-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
         "projects/orc-ds/p2/listbox-behavior.spec.ts"
-      ],
-      "unresolvedBase": "CvaControl"
+      ]
     },
     {
       "name": "MegaMenuComponent",
@@ -9041,7 +9049,8 @@
         "projects/orc-ds/modal/modal-lifecycle.spec.ts",
         "projects/orc-ds/modal/modal-popup-integration.spec.ts",
         "projects/orc-ds/modal/modal.component.spec.ts",
-        "projects/orc-ds/modal/modal.service.spec.ts"
+        "projects/orc-ds/modal/modal.service.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -9059,11 +9068,10 @@
     },
     {
       "name": "MultiSelectComponent",
-      "baseClass": "CvaControl",
       "kind": "Component",
       "selector": "orc-multi-select",
       "file": "projects/orc-ds/multi-select/multi-select.component.ts",
-      "line": 32,
+      "line": 18,
       "inputs": [
         {
           "name": "options",
@@ -9553,9 +9561,9 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);",
+          "declaration": "readonly size = input<SizeInput>(undefined);",
           "deprecated": true,
-          "description": "Compatibility input only; this implementation has no size styling."
+          "description": "Compatibility input only; this implementation has no size\nstyling. Accepts the canonical `sm | md | lg` vocabulary; the legacy\n`small`/`large` values are deprecated aliases (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "tooltip",
@@ -9675,12 +9683,11 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/multi-select-contract.spec.ts",
-        "projects/orc-ds/multi-select/multi-select-core-contracts.spec.ts",
         "projects/orc-ds/multi-select/multi-select-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/p2-repair.spec.ts"
-      ],
-      "unresolvedBase": "CvaControl"
+        "projects/orc-ds/p2-repair.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
+      ]
     },
     {
       "name": "NavigationShellComponent",
@@ -10196,7 +10203,8 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/input-repair.spec.ts",
         "projects/orc-ds/number-input/number-input.component.spec.ts",
-        "projects/orc-ds/p1-core.spec.ts"
+        "projects/orc-ds/p1-core.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ],
       "unresolvedBase": "CvaControl"
     },
@@ -10516,7 +10524,7 @@
       "kind": "Component",
       "selector": "orc-otp-input, orc-input-otp",
       "file": "projects/orc-ds/otp-input/otp-input.component.ts",
-      "line": 23,
+      "line": 24,
       "inputs": [
         {
           "name": "length",
@@ -10593,7 +10601,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "inputMode",
@@ -10643,7 +10652,8 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/controls-repair.spec.ts",
-        "projects/orc-ds/otp-input/otp-input-contract.spec.ts"
+        "projects/orc-ds/otp-input/otp-input-contract.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -11365,7 +11375,7 @@
       "kind": "Component",
       "selector": "orc-cascade-select",
       "file": "projects/orc-ds/p2/p2-cascade-select-component.ts",
-      "line": 22,
+      "line": 23,
       "inputs": [
         {
           "name": "options",
@@ -11540,7 +11550,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "variant",
@@ -11581,7 +11592,8 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/p2/p2-dom-realm-contract.spec.ts"
+        "projects/orc-ds/p2/p2-dom-realm-contract.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -11887,7 +11899,7 @@
       "kind": "Component",
       "selector": "orc-data-table",
       "file": "projects/orc-ds/p2/p2-data-table-component.ts",
-      "line": 35,
+      "line": 37,
       "inputs": [
         {
           "name": "data",
@@ -11985,7 +11997,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "sortMode",
@@ -12242,7 +12255,8 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/p2/data-table-behavior.spec.ts"
+        "projects/orc-ds/p2/data-table-behavior.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -14309,6 +14323,7 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/paginator/paginator-behavior.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/table/table-behavior.spec.ts"
       ]
     },
@@ -14446,7 +14461,7 @@
       "kind": "Component",
       "selector": "orc-password, orc-input-password",
       "file": "projects/orc-ds/password/password.component.ts",
-      "line": 16,
+      "line": 20,
       "inputs": [
         {
           "name": "value",
@@ -14565,7 +14580,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "maxLength",
@@ -14729,7 +14745,8 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts",
         "projects/orc-ds/p2/password-behavior.spec.ts",
-        "projects/orc-ds/password/password-parity.spec.ts"
+        "projects/orc-ds/password/password-parity.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -15195,7 +15212,8 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/progress/progress-bar-behavior.spec.ts"
+        "projects/orc-ds/progress/progress-bar-behavior.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -15357,7 +15375,8 @@
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/progress/progress-bar-behavior.spec.ts"
+        "projects/orc-ds/progress/progress-bar-behavior.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -15444,7 +15463,7 @@
       "kind": "Component",
       "selector": "orc-radio-button",
       "file": "projects/orc-ds/radio/radio-button.component.ts",
-      "line": 21,
+      "line": 22,
       "inputs": [
         {
           "name": "value",
@@ -15549,7 +15568,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         }
       ],
       "outputs": [
@@ -15577,7 +15597,8 @@
       "testReferences": [
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/radio/radio-contract.spec.ts"
+        "projects/orc-ds/radio/radio-contract.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -16003,7 +16024,7 @@
       "kind": "Component",
       "selector": "orc-select-button",
       "file": "projects/orc-ds/select-button/select-button.component.ts",
-      "line": 16,
+      "line": 21,
       "inputs": [
         {
           "name": "options",
@@ -16101,7 +16122,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "autofocus",
@@ -16158,7 +16180,8 @@
         "projects/orc-ds/p2/p2-dom-realm-contract.spec.ts",
         "projects/orc-ds/select-button-behavior.spec.ts",
         "projects/orc-ds/select-button/select-button-parity.spec.ts",
-        "projects/orc-ds/select-toggle-contract.spec.ts"
+        "projects/orc-ds/select-toggle-contract.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -16231,7 +16254,7 @@
       "kind": "Component",
       "selector": "orc-select",
       "file": "projects/orc-ds/select/select.component.ts",
-      "line": 53,
+      "line": 48,
       "inputs": [
         {
           "name": "id",
@@ -16499,7 +16522,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SelectSize | undefined>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "fluid",
@@ -16907,9 +16931,9 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/modal/modal-popup-integration.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
-        "projects/orc-ds/select/select-core-contracts.spec.ts",
         "projects/orc-ds/select/select-input-contract.spec.ts",
         "projects/orc-ds/select/select-repair.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/styles/spacing-contract.spec.ts"
       ],
       "unresolvedBase": "CvaControl"
@@ -17251,6 +17275,7 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/interaction-repair.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/slider/slider.component.spec.ts"
       ]
     },
@@ -17525,7 +17550,8 @@
       "outputs": [],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
-        "projects/orc-ds/navigation-toolbar-contract.spec.ts"
+        "projects/orc-ds/navigation-toolbar-contract.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -17533,7 +17559,7 @@
       "kind": "Component",
       "selector": "orc-split-button",
       "file": "projects/orc-ds/split-button/split-button.component.ts",
-      "line": 16,
+      "line": 21,
       "inputs": [
         {
           "name": "model",
@@ -17661,7 +17687,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "severity",
@@ -17730,6 +17757,7 @@
         "projects/orc-ds/owner-document-hostlisteners.spec.ts",
         "projects/orc-ds/p2-primeng-gap-controls-contract.spec.ts",
         "projects/orc-ds/public-binding-behavior.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/split-button/split-button-parity.spec.ts"
       ]
     },
@@ -18083,7 +18111,8 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/controls-repair.spec.ts",
-        "projects/orc-ds/p2-expansion.spec.ts"
+        "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -18262,7 +18291,7 @@
       "kind": "Component",
       "selector": "orc-table",
       "file": "projects/orc-ds/table/table.component.ts",
-      "line": 68,
+      "line": 69,
       "inputs": [
         {
           "name": "data",
@@ -18472,7 +18501,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "responsiveLayout",
@@ -19215,6 +19245,7 @@
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/table/table-behavior.spec.ts"
       ]
     },
@@ -19378,6 +19409,7 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/tabs/tab-group.component.spec.ts"
       ]
     },
@@ -20310,7 +20342,7 @@
       "kind": "Component",
       "selector": "orc-toggle-button",
       "file": "projects/orc-ds/toggle-button/toggle-button.component.ts",
-      "line": 14,
+      "line": 19,
       "inputs": [
         {
           "name": "checked",
@@ -20387,7 +20419,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "style",
@@ -20447,7 +20480,8 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/select-button/select-button-parity.spec.ts",
-        "projects/orc-ds/select-toggle-contract.spec.ts"
+        "projects/orc-ds/select-toggle-contract.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]
     },
     {
@@ -20727,7 +20761,7 @@
       "kind": "Component",
       "selector": "orc-tree-select",
       "file": "projects/orc-ds/tree-select/tree-select.component.ts",
-      "line": 37,
+      "line": 42,
       "inputs": [
         {
           "name": "styleClass",
@@ -20834,7 +20868,8 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<'small' | 'large' | undefined>(undefined);"
+          "declaration": "readonly size = input<SizeInput>(undefined);",
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "style",
@@ -21136,6 +21171,7 @@
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/p2-dom-realm-contract.spec.ts",
         "projects/orc-ds/p2/tree-select-presentation-contract.spec.ts",
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/tree-select-contract.spec.ts",
         "projects/orc-ds/tree-select-lifecycle-contract.spec.ts",
         "projects/orc-ds/tree-select/tree-select-parity.spec.ts"
@@ -22952,7 +22988,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './dom-target';\nexport * from './date-utils';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './dom-target';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './date-utils';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -23784,7 +23820,6 @@
     "projects/orc-ds/drawer/index.ts",
     "projects/orc-ds/drawer/ng-package.json",
     "projects/orc-ds/dropdown/dropdown-behavior.spec.ts",
-    "projects/orc-ds/dropdown/dropdown-core-contracts.spec.ts",
     "projects/orc-ds/dropdown/dropdown.component.html",
     "projects/orc-ds/dropdown/dropdown.component.scss",
     "projects/orc-ds/dropdown/dropdown.component.ts",
@@ -23980,8 +24015,6 @@
     "projects/orc-ds/internal/date-utils.ts",
     "projects/orc-ds/internal/dom-target.ts",
     "projects/orc-ds/internal/index.ts",
-    "projects/orc-ds/internal/list-picker.spec.ts",
-    "projects/orc-ds/internal/list-picker.ts",
     "projects/orc-ds/internal/menu-item.ts",
     "projects/orc-ds/internal/menu-keyboard.spec.ts",
     "projects/orc-ds/internal/menu-keyboard.ts",
@@ -23994,6 +24027,8 @@
     "projects/orc-ds/internal/overlay-ownership.spec.ts",
     "projects/orc-ds/internal/overlay-position.ts",
     "projects/orc-ds/internal/p2-shared.ts",
+    "projects/orc-ds/internal/size.spec.ts",
+    "projects/orc-ds/internal/size.ts",
     "projects/orc-ds/internal/table-engine.ts",
     "projects/orc-ds/internal/tree-filter.ts",
     "projects/orc-ds/kbd/index.ts",
@@ -24021,7 +24056,6 @@
     "projects/orc-ds/list/list.component.ts",
     "projects/orc-ds/list/ng-package.json",
     "projects/orc-ds/listbox/index.ts",
-    "projects/orc-ds/listbox/listbox-core-contracts.spec.ts",
     "projects/orc-ds/listbox/listbox-parity.spec.ts",
     "projects/orc-ds/listbox/listbox.component.html",
     "projects/orc-ds/listbox/listbox.component.scss",
@@ -24067,7 +24101,6 @@
     "projects/orc-ds/modal/ng-package.json",
     "projects/orc-ds/multi-select-contract.spec.ts",
     "projects/orc-ds/multi-select/index.ts",
-    "projects/orc-ds/multi-select/multi-select-core-contracts.spec.ts",
     "projects/orc-ds/multi-select/multi-select-parity.spec.ts",
     "projects/orc-ds/multi-select/multi-select.component.html",
     "projects/orc-ds/multi-select/multi-select.component.scss",
@@ -24333,7 +24366,6 @@
     "projects/orc-ds/select/option.component.html",
     "projects/orc-ds/select/option.component.scss",
     "projects/orc-ds/select/option.component.ts",
-    "projects/orc-ds/select/select-core-contracts.spec.ts",
     "projects/orc-ds/select/select-input-contract.spec.ts",
     "projects/orc-ds/select/select-option.model.ts",
     "projects/orc-ds/select/select-repair.spec.ts",
@@ -24348,6 +24380,7 @@
     "projects/orc-ds/separator/ng-package.json",
     "projects/orc-ds/sidebar/index.ts",
     "projects/orc-ds/sidebar/ng-package.json",
+    "projects/orc-ds/size-vocabulary-contract.spec.ts",
     "projects/orc-ds/skeleton/index.ts",
     "projects/orc-ds/skeleton/ng-package.json",
     "projects/orc-ds/skeleton/skeleton.component.html",
