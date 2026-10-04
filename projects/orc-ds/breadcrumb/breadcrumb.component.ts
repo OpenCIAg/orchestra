@@ -50,7 +50,7 @@ export class BreadcrumbComponent {
 
   // Outputs (Signals API)
   readonly itemClick = output<{ item: BreadcrumbItemData; index: number }>();
-  readonly onItemClick = this.itemClick;
+  readonly onItemClick = output<{ item: BreadcrumbItemData; index: number }>();
 
   // Itens filhos registrados via projeção de conteúdo
   readonly breadcrumbItems = contentChildren(BreadcrumbItemComponent);
@@ -113,7 +113,13 @@ export class BreadcrumbComponent {
     this.isExpanded.set(true);
   }
 
-  onItemClicked(item: ProcessedBreadcrumbItem, index: number, event: MouseEvent): void {
-    this.itemClick.emit({ item: item as BreadcrumbItemData, index });
+  onItemClicked(
+    item: ProcessedBreadcrumbItem,
+    index: number,
+    _event: MouseEvent,
+  ): void {
+    const payload = { item: item as BreadcrumbItemData, index };
+    this.itemClick.emit(payload);
+    this.onItemClick.emit(payload);
   }
 }

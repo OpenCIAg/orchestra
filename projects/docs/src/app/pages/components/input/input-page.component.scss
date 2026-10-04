@@ -197,7 +197,7 @@
   letter-spacing: 0.05em;
   padding: 2px 8px;
   background: var(--orc-color-azul-eletrico, #1c6aed);
-  color: #ffffff;
+  color: var(--orc-on-interactive);
   border-radius: var(--radius-full, 9999px);
 }
 
@@ -445,7 +445,7 @@
 .btn-form-submit {
   padding: 10px 20px;
   background: var(--orc-color-azul-eletrico, #1c6aed);
-  color: #ffffff;
+  color: var(--orc-on-interactive);
   border: none;
   border-radius: var(--radius-md, 8px);
   font-family: var(--font-sans, 'Poppins', sans-serif);
@@ -502,7 +502,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: #ffffff;
+  color: var(--orc-on-dark);
   font-family: var(--font-mono, monospace);
   border-top: 1px solid #2a2a2a;
   padding-top: 8px;
@@ -536,7 +536,8 @@
   text-align: left;
   font-size: 0.875rem;
 
-  th, td {
+  th,
+  td {
     padding: var(--space-3, 0.75rem) var(--space-5, 1.25rem);
     border-bottom: 1px solid var(--border-default, #e5e5e5);
   }

@@ -12,7 +12,8 @@
   box-shadow: var(--shadow-md);
   padding: var(--space-1);
   z-index: var(--z-dropdown);
-  overflow: hidden;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .orc-dropdown-item {
@@ -29,7 +30,9 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   text-align: left;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 
   &:hover:not(:disabled) {
     background-color: var(--bg-muted);
@@ -39,7 +42,11 @@
     color: var(--color-error);
 
     &:hover:not(:disabled) {
-      background-color: color-mix(in srgb, var(--orc-danger, var(--color-error, #fb2c36)) 10%, transparent);
+      background-color: color-mix(
+        in srgb,
+        var(--orc-danger, var(--color-error, #fb2c36)) 10%,
+        transparent
+      );
     }
   }
 
@@ -72,4 +79,59 @@
   height: 1px;
   margin: var(--space-1) 0;
   background-color: var(--border-default);
+}
+
+.orc-dropdown-field {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+.orc-dropdown-label {
+  flex-basis: 100%;
+}
+.orc-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.5rem);
+  min-height: 2.5rem;
+  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+  border: 1px solid var(--orc-border-default, #888);
+  border-radius: var(--radius-md, 0.375rem);
+  background: var(--orc-surface, white);
+  color: var(--orc-text, #141414);
+  font: inherit;
+  cursor: pointer;
+}
+.orc-dropdown-clear {
+  min-width: 2rem;
+  min-height: 2rem;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.orc-dropdown-trigger:disabled,
+.orc-dropdown-clear:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.orc-dropdown-trigger:focus-visible,
+.orc-dropdown-clear:focus-visible,
+.orc-dropdown-item:focus-visible,
+.p-select-filter:focus-visible {
+  outline: 2px solid var(--orc-interactive, #1c6aed);
+  outline-offset: 2px;
+}
+.p-select-filter {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--space-2, 0.5rem);
+}
+@media (prefers-reduced-motion: reduce) {
+  .orc-dropdown-item {
+    transition: none;
+  }
 }

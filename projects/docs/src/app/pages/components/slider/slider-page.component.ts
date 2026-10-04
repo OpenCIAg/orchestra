@@ -1,10 +1,12 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  signal,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   SliderComponent,
@@ -13,11 +15,13 @@ import {
   SliderValue,
 } from '@ciag/orchestra/slider';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-slider-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -43,7 +47,9 @@ export class SliderPageComponent {
   readonly sliderShowLabels = signal<boolean>(true);
   readonly sliderShowTooltip = signal<SliderTooltipMode>('auto');
   readonly sliderLabel = signal<string>('Controle de Volume');
-  readonly sliderHelperText = signal<string>('Ajuste o nível desejado arrastando o indicador.');
+  readonly sliderHelperText = signal<string>(
+    'Ajuste o nível desejado arrastando o indicador.',
+  );
 
   // ── Variantes Demonstrativas ──────────────────────────────
   readonly basicValue = signal<number>(65);
@@ -72,11 +78,15 @@ export class SliderPageComponent {
   // ── Formulário Reativo (Reactive Forms Integration) ──────
   readonly demoForm = new FormGroup({
     brightness: new FormControl(70, [Validators.required, Validators.min(10)]),
-    budgetRange: new FormControl<[number, number]>([200, 800], [Validators.required]),
+    budgetRange: new FormControl<[number, number]>(
+      [200, 800],
+      [Validators.required],
+    ),
   });
 
   // Formatador de Moeda
-  readonly currencyFormatter = (val: number) => `R$ ${val.toLocaleString('pt-BR')}`;
+  readonly currencyFormatter = (val: number) =>
+    `R$ ${val.toLocaleString('pt-BR')}`;
   readonly percentFormatter = (val: number) => `${val}%`;
 
   toggleRangeMode(range: boolean): void {

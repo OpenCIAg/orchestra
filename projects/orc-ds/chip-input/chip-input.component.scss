@@ -7,7 +7,7 @@
   width: 100%;
   position: relative;
 
-  // Modificando os estilos encapsulados do InputComponent via ::ng-deep 
+  // Modificando os estilos encapsulados do InputComponent via ::ng-deep
   // para permitir que os chips ocupem múltiplas linhas e redimensionem o box.
   ::ng-deep {
     .orc-input-box {
@@ -17,7 +17,7 @@
       padding-bottom: 4px;
       gap: 4px 8px;
     }
-    
+
     .orc-input__slot--prefix {
       flex-wrap: wrap;
       gap: 6px;
@@ -67,9 +67,12 @@
   cursor: pointer;
   color: var(--orc-text, var(--orc-font-main, #141414));
   transition: background-color var(--transition-fast, 0.2s ease);
-  
+
   &:hover {
-    background: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #ededed));
+    background: var(
+      --orc-surface-muted,
+      var(--orc-highlight-cinza-claro, #ededed)
+    );
   }
 }
 
@@ -87,6 +90,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

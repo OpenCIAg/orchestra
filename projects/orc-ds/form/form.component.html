@@ -1,3 +1,13 @@
-<form #nativeForm class="orc-form" [class.orc-form--inline]="layout() === 'inline'" [attr.name]="name() || null" [attr.aria-label]="ariaLabel()" [attr.novalidate]="novalidate() ? '' : null" [class.orc-form--disabled]="disabled()" (submit)="onSubmit($event)" (reset)="onReset()">
+<form
+  #nativeForm
+  class="orc-form"
+  [class.orc-form--inline]="layout() === 'inline'"
+  [class.orc-form--disabled]="disabled()"
+  [attr.name]="name() || null"
+  [attr.aria-label]="ariaLabel()?.trim() || 'Formulário'"
+  novalidate
+  (submit)="onSubmit($event)"
+  (reset)="onReset()"
+>
   <fieldset [disabled]="disabled()"><ng-content /></fieldset>
 </form>

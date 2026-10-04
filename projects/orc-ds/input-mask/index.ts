@@ -1,1 +1,1 @@
-export { InputMaskDirective } from '@ciag/orchestra/p2';
+export { InputMaskDirective } from './input-mask.directive';

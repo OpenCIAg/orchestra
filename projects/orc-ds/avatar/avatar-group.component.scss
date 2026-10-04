@@ -31,11 +31,12 @@
   }
 
   // Estilo aplicado para itens no grupo (tanto via [items] quanto via ng-content)
-  ::ng-deep > app-avatar,
+  ::ng-deep > orc-avatar,
   .orc-avatar-group__item {
     position: relative;
-    transition: transform var(--transition-fast, 120ms ease),
-                z-index var(--transition-fast, 120ms ease);
+    transition:
+      transform var(--transition-fast, 120ms ease),
+      z-index var(--transition-fast, 120ms ease);
 
     // Borda separadora branca (padrão Figma)
     .orc-avatar {

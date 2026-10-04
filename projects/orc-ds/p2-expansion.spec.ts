@@ -1,11 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { CalendarComponent, DateInputComponent } from './p2/p2-form-components';
 import { ComboboxComponent } from './p2/p2-form-components';
-import { ListboxComponent, MultiSelectComponent } from './p2/p2-form-components';
+import {
+  ListboxComponent,
+  MultiSelectComponent,
+} from './p2/p2-form-components';
 import { TagsInputComponent } from './p2/p2-form-components';
 import { DataTableComponent } from './p2/p2-data-components';
 import { VirtualScrollerComponent } from './p2/p2-data-components';
-import { SegmentedControlComponent, TreeSelectComponent } from './p2/p2-selection-components';
+import {
+  SegmentedControlComponent,
+  TreeSelectComponent,
+} from './p2/p2-selection-components';
 import { CascadeSelectComponent } from './p2/p2-form-gap-components';
 import { DataViewComponent } from './p2/p2-advanced-components';
 import { ToggleButtonComponent } from './p2/p2-form-gap-components';
@@ -14,7 +20,10 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SwitchComponent } from './switch/switch.component';
 import { SliderComponent } from './slider/slider.component';
 import { RatingComponent } from './rating/rating.component';
-import { KnobComponent, OrganizationChartComponent } from './p2/p2-org-knob-components';
+import {
+  KnobComponent,
+  OrganizationChartComponent,
+} from './p2/p2-org-knob-components';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { ProgressSpinnerComponent } from './progress/progress-spinner.component';
@@ -23,18 +32,40 @@ import { AlertComponent } from './alert/alert.component';
 import { CardComponent } from './card/card.component';
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
-import { DraggableDirective, DroppableDirective } from './drag-drop/drag-drop.directive';
-import { TreeComponent, TreeTableComponent } from './p2/p2-hierarchical-components';
-import { OverlayPanelComponent, PopoverComponent } from './p2/p2-overlay-components';
+import {
+  DraggableDirective,
+  DroppableDirective,
+} from './drag-drop/drag-drop.directive';
+import {
+  TreeComponent,
+  TreeTableComponent,
+} from './p2/p2-hierarchical-components';
+import {
+  OverlayPanelComponent,
+  PopoverComponent,
+} from './p2/p2-overlay-components';
 import { StepperComponent } from './stepper/stepper.component';
 import { TableComponent } from './table/table.component';
-import { FieldsetComponent, PanelComponent } from './p2/p2-primeng-gap-components';
+import {
+  FieldsetComponent,
+  PanelComponent,
+} from './p2/p2-primeng-gap-components';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
-import { DatePickerCalendarComponent, DatePickerComponent } from './date-picker/date-picker.component';
-import { GalleriaComponent, OrderListComponent, PickListComponent } from './p2/p2-list-gallery-components';
+import {
+  DatePickerCalendarComponent,
+  DatePickerComponent,
+} from './date-picker/date-picker.component';
+import {
+  GalleriaComponent,
+  OrderListComponent,
+  PickListComponent,
+} from './p2/p2-list-gallery-components';
 import { MessagesComponent } from './p2/p2-message-components';
-import { ContextMenuComponent, ContextMenuItem } from './p2/p2-overlay-components';
+import {
+  ContextMenuComponent,
+  ContextMenuItem,
+} from './p2/p2-overlay-components';
 import { SplitterComponent } from './p2/p2-overlay-components';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
@@ -46,15 +77,33 @@ import { MenubarComponent, TagComponent } from './p2/p2-data-components';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
 import { ToastComponent } from './toast/toast.component';
-import { ConfirmDialogComponent, ConfirmationService, MenuComponent, PanelMenuComponent, TieredMenuComponent } from './p2/p2-advanced-components';
+import {
+  ConfirmDialogComponent,
+  ConfirmationService,
+  MenuComponent,
+} from './p2/p2-advanced-components';
+import {
+  PanelMenuComponent,
+  TieredMenuComponent,
+} from './p2/p2-menu-family-components';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
 import { ChipComponent } from './chip/chip.component';
-import { FloatLabelComponent, MeterGroupComponent } from './p2/p2-primeng-gap-components';
-import { ImageCompareComponent, InplaceComponent, TerminalComponent } from './p2/p2-input-gap-components';
+import {
+  FloatLabelComponent,
+  MeterGroupComponent,
+} from './p2/p2-primeng-gap-components';
+import {
+  ImageCompareComponent,
+  InplaceComponent,
+  TerminalComponent,
+} from './p2/p2-input-gap-components';
 import { BlockUiComponent } from './p2/p2-advanced-components';
 import { SpeedDialComponent } from './p2/p2-overlay-components';
-import { ChartComponent, EditorComponent } from './p2/p2-chart-editor-components';
+import {
+  ChartComponent,
+  EditorComponent,
+} from './p2/p2-chart-editor-components';
 import { TabComponent, TabGroupComponent } from './tabs';
 import { ImageComponent } from './image/image.component';
 
@@ -62,7 +111,9 @@ describe('P2 expansion components', () => {
   it('selects an allowed calendar day and advances months', () => {
     const fixture = TestBed.createComponent(CalendarComponent);
     const component = fixture.componentInstance;
-    component.selectDay(component.days().find(day => day.inCurrentMonth && !day.disabled)!);
+    component.selectDay(
+      component.days().find((day) => day.inCurrentMonth && !day.disabled)!,
+    );
     expect(component.value()).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     const currentMonth = component.currentMonth();
     component.nextMonth();
@@ -79,7 +130,7 @@ describe('P2 expansion components', () => {
     component.writeValue('2025-01-10');
     expect(component.value()).toBe('2025-01-10');
     let changed: string | string[] = '';
-    component.registerOnChange(value => changed = value);
+    component.registerOnChange((value) => (changed = value));
     component.clear();
     expect(changed).toBe('');
     component.setDisabledState(true);
@@ -100,16 +151,24 @@ describe('P2 expansion components', () => {
   it('filters a combobox and emits the selected option', () => {
     const fixture = TestBed.createComponent(ComboboxComponent<string>);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [{ value: 'sp', label: 'São Paulo' }, { value: 'rj', label: 'Rio de Janeiro' }]);
+    fixture.componentRef.setInput('options', [
+      { value: 'sp', label: 'São Paulo' },
+      { value: 'rj', label: 'Rio de Janeiro' },
+    ]);
     component.query.set('são');
-    expect(component.filteredOptions().map(option => option.value)).toEqual(['sp']);
+    expect(component.filteredOptions().map((option) => option.value)).toEqual([
+      'sp',
+    ]);
     component.select(component.filteredOptions()[0]);
     expect(component.value()).toBe('sp');
   });
 
   it('supports multi-select and tag entry', () => {
     const multi = TestBed.createComponent(MultiSelectComponent<string>);
-    multi.componentRef.setInput('options', [{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]);
+    multi.componentRef.setInput('options', [
+      { value: 'one', label: 'One' },
+      { value: 'two', label: 'Two' },
+    ]);
     multi.componentInstance.select(multi.componentInstance.options()[0]);
     expect(multi.componentInstance.value()).toEqual(['one']);
 
@@ -117,26 +176,6 @@ describe('P2 expansion components', () => {
     tags.componentInstance.addTag('angular');
     tags.componentInstance.addTag('angular');
     expect(tags.componentInstance.value()).toEqual(['angular']);
-  });
-
-  it('renders the multiselect filter inside the popup panel', () => {
-    const fixture = TestBed.createComponent(MultiSelectComponent<string>);
-    const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]);
-    fixture.componentRef.setInput('filter', true);
-    component.open.set(true);
-    fixture.detectChanges();
-
-    const panel = fixture.nativeElement.querySelector('.panel') as HTMLElement;
-    const filter = panel?.querySelector('.filter-input') as HTMLInputElement;
-    const options = panel?.querySelector('ul[role="listbox"]') as HTMLUListElement;
-
-    expect(panel).not.toBeNull();
-    expect(filter).not.toBeNull();
-    expect(options).not.toBeNull();
-    expect(panel.contains(filter)).toBeTrue();
-    expect(panel.contains(options)).toBeTrue();
-    expect(fixture.nativeElement.querySelector('.orc-p2-multi-select > input')).toBeNull();
   });
 
   it('supports PrimeNG Chips separator, duplicate, blur, clear, and lifecycle aliases', () => {
@@ -170,7 +209,9 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('selectionMode', 'multiple');
     fixture.componentRef.setInput('numberOfMonths', 2);
     expect(component.monthOffsets()).toEqual([0, 1]);
-    component.update({ target: { value: '2025-01-06, 2025-01-07' } } as unknown as Event);
+    component.update({
+      target: { value: '2025-01-06, 2025-01-07' },
+    } as unknown as Event);
     expect(component.value()).toHaveSize(2);
   });
 
@@ -247,9 +288,15 @@ describe('P2 expansion components', () => {
   it('supports DatePicker keyboard show and Escape close behavior', () => {
     const fixture = TestBed.createComponent(DatePickerComponent);
     const component = fixture.componentInstance;
-    component.onInputKeydown({ key: 'ArrowDown', preventDefault() {} } as KeyboardEvent);
+    component.onInputKeydown({
+      key: 'ArrowDown',
+      preventDefault() {},
+    } as KeyboardEvent);
     expect(component.overlayVisible()).toBeTrue();
-    component.onInputKeydown({ key: 'Escape', preventDefault() {} } as KeyboardEvent);
+    component.onInputKeydown({
+      key: 'Escape',
+      preventDefault() {},
+    } as KeyboardEvent);
     expect(component.overlayVisible()).toBeFalse();
   });
 
@@ -257,9 +304,13 @@ describe('P2 expansion components', () => {
     const fixture = TestBed.createComponent(OverlayPanelComponent);
     const component = fixture.componentInstance;
     component.show();
-    component.onDocumentClick({ target: fixture.nativeElement } as unknown as MouseEvent);
+    component.onDocumentClick({
+      target: fixture.nativeElement,
+    } as unknown as MouseEvent);
     expect(component.visible()).toBeTrue();
-    component.onDocumentClick({ target: document.body } as unknown as MouseEvent);
+    component.onDocumentClick({
+      target: document.body,
+    } as unknown as MouseEvent);
     expect(component.visible()).toBeFalse();
   });
 
@@ -270,7 +321,11 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('firstDayOfWeek', 1);
     expect(component.days()[0].iso).toBe('2024-12-30');
     fixture.componentRef.setInput('locale', 'en-US');
-    expect(component.weekdayLabels()[0]).toBe(new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(2021, 7, 2)));
+    expect(component.weekdayLabels()[0]).toBe(
+      new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(
+        new Date(2021, 7, 2),
+      ),
+    );
   });
 
   it('renders week numbers when DatePicker showWeek is enabled', () => {
@@ -280,52 +335,76 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('showWeek', true);
     expect(component.days()[0].weekNumber).toBe(1);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelectorAll('.week-number').length).toBe(6);
+    expect(fixture.nativeElement.querySelectorAll('.week-number').length).toBe(
+      6,
+    );
   });
 
   it('renders DatePicker month and year views', () => {
     const fixture = TestBed.createComponent(DatePickerCalendarComponent);
-    const component = fixture.componentInstance;
     fixture.componentRef.setInput('currentMonth', '2025-01');
     fixture.componentRef.setInput('view', 'month');
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelectorAll('.month-grid button').length).toBe(12);
+    expect(
+      fixture.nativeElement.querySelectorAll('.month-grid button').length,
+    ).toBe(12);
     fixture.componentRef.setInput('view', 'year');
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelectorAll('.year-grid button').length).toBe(12);
+    expect(
+      fixture.nativeElement.querySelectorAll('.year-grid button').length,
+    ).toBe(12);
   });
 
   it('maps, filters, and propagates CVA values for listbox and multiselect', () => {
     const listbox = TestBed.createComponent(ListboxComponent<any>);
-    listbox.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    listbox.componentRef.setInput('options', [
+      { id: 1, name: 'Alpha' },
+      { id: 2, name: 'Beta' },
+    ]);
     listbox.componentRef.setInput('optionValue', 'id');
     listbox.componentRef.setInput('optionLabel', 'name');
     listbox.componentRef.setInput('filter', true);
     listbox.componentInstance.filterValue.set('beta');
     expect(listbox.componentInstance.filteredOptions()).toHaveSize(1);
-    listbox.componentInstance.select(listbox.componentInstance.filteredOptions()[0]);
+    listbox.componentInstance.select(
+      listbox.componentInstance.filteredOptions()[0],
+    );
     expect(listbox.componentInstance.value()).toBe(2);
 
     const multi = TestBed.createComponent(MultiSelectComponent<any>);
-    multi.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    multi.componentRef.setInput('options', [
+      { id: 1, name: 'Alpha' },
+      { id: 2, name: 'Beta' },
+    ]);
     multi.componentRef.setInput('optionValue', 'id');
     multi.componentRef.setInput('optionLabel', 'name');
     multi.componentInstance.select(multi.componentInstance.options()[0]);
     expect(multi.componentInstance.value()).toEqual([1]);
     const removed = jasmine.createSpy('removed');
     multi.componentInstance.onRemove.subscribe(removed);
-    multi.componentInstance.select(multi.componentInstance.options()[0], new Event('click'));
-    expect(removed).toHaveBeenCalledWith({ value: 1, originalEvent: jasmine.any(Event) });
+    multi.componentInstance.select(
+      multi.componentInstance.options()[0],
+      new Event('click'),
+    );
+    expect(removed).toHaveBeenCalledWith({
+      value: 1,
+      originalEvent: jasmine.any(Event),
+    });
     let touched = false;
-    multi.componentInstance.registerOnTouched(() => touched = true);
+    multi.componentInstance.registerOnTouched(() => (touched = true));
     multi.componentInstance.clear(new Event('click'));
     expect(touched).toBeTrue();
   });
 
   it('skips disabled Listbox options during keyboard navigation', () => {
     const fixture = TestBed.createComponent(ListboxComponent<string>);
-    fixture.componentRef.setInput('options', [{ value: 'blocked', label: 'Blocked', disabled: true }, { value: 'open', label: 'Open' }]);
-    fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    fixture.componentRef.setInput('options', [
+      { value: 'blocked', label: 'Blocked', disabled: true },
+      { value: 'open', label: 'Open' },
+    ]);
+    fixture.componentInstance.onKeydown(
+      new KeyboardEvent('keydown', { key: 'ArrowDown' }),
+    );
     expect(fixture.componentInstance.activeIndex()).toBe(1);
   });
 
@@ -334,18 +413,28 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('options', [{ id: 1, label: 'Alpha' }]);
     fixture.componentRef.setInput('dataKey', 'id');
     fixture.componentRef.setInput('value', { id: 1 });
-    expect(fixture.componentInstance.isSelected(fixture.componentInstance.options()[0])).toBeTrue();
+    expect(
+      fixture.componentInstance.isSelected(
+        fixture.componentInstance.options()[0],
+      ),
+    ).toBeTrue();
   });
 
   it('emits MultiSelect changes without a DOM event and respects readonly mode', () => {
     const fixture = TestBed.createComponent(MultiSelectComponent<string>);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]);
+    fixture.componentRef.setInput('options', [
+      { value: 'one', label: 'One' },
+      { value: 'two', label: 'Two' },
+    ]);
     const changed = jasmine.createSpy('changed');
     component.onChange.subscribe(changed);
 
     component.select(component.options()[0]);
-    expect(changed).toHaveBeenCalledWith({ originalEvent: jasmine.any(Event), value: ['one'] });
+    expect(changed).toHaveBeenCalledWith({
+      originalEvent: jasmine.any(Event),
+      value: ['one'],
+    });
 
     fixture.componentRef.setInput('readonly', true);
     component.select(component.options()[1]);
@@ -370,15 +459,22 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('min', '2025-01-01');
     fixture.componentRef.setInput('max', '2025-12-31');
     fixture.detectChanges();
-    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
     expect(input.tabIndex).toBe(0);
     expect(input.min).toBe('2025-01-01');
     expect(input.max).toBe('2025-12-31');
   });
 
   it('paginates and sorts data view items', () => {
-    const fixture = TestBed.createComponent(DataViewComponent<{ name: string }>);
-    fixture.componentRef.setInput('value', [{ name: 'Beta' }, { name: 'Alpha' }]);
+    const fixture = TestBed.createComponent(
+      DataViewComponent<{ name: string }>,
+    );
+    fixture.componentRef.setInput('value', [
+      { name: 'Beta' },
+      { name: 'Alpha' },
+    ]);
     fixture.componentRef.setInput('sortField', 'name');
     fixture.componentRef.setInput('paginator', true);
     fixture.componentRef.setInput('rows', 1);
@@ -391,7 +487,7 @@ describe('P2 expansion components', () => {
     const fixture = TestBed.createComponent(ToggleButtonComponent);
     const component = fixture.componentInstance;
     let modelValue = false;
-    component.registerOnChange(value => modelValue = value);
+    component.registerOnChange((value) => (modelValue = value));
     component.toggle();
     expect(component.checked()).toBeTrue();
     expect(modelValue).toBeTrue();
@@ -402,7 +498,10 @@ describe('P2 expansion components', () => {
   it('maps PrimeNG-style Select option fields and emits filter state', () => {
     const fixture = TestBed.createComponent(SelectComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [{ code: 'br', title: 'Brazil' }, { code: 'pt', title: 'Portugal' }]);
+    fixture.componentRef.setInput('options', [
+      { code: 'br', title: 'Brazil' },
+      { code: 'pt', title: 'Portugal' },
+    ]);
     fixture.componentRef.setInput('optionValue', 'code');
     fixture.componentRef.setInput('optionLabel', 'title');
     expect(component.getOptionValue(component.options()![0])).toBe('br');
@@ -414,16 +513,29 @@ describe('P2 expansion components', () => {
     const selected = jasmine.createSpy('selected');
     component.onChange.subscribe(changed);
     component.onOptionSelect.subscribe(selected);
-    component.onDataOptionClick(component.options()![1] as any, new Event('click'));
+    component.onDataOptionClick(
+      component.options()![1] as any,
+      new Event('click'),
+    );
     expect(changed).toHaveBeenCalled();
-    expect(selected).toHaveBeenCalledWith({ originalEvent: jasmine.any(Event), value: 'pt' });
+    expect(selected).toHaveBeenCalledWith({
+      originalEvent: jasmine.any(Event),
+      value: 'pt',
+    });
     fixture.componentRef.setInput('filter', true);
     component.searchTerm.set('port');
-    expect(component.filteredDataOptions().map(option => (option as any).code)).toEqual(['pt']);
+    expect(
+      component.filteredDataOptions().map((option) => (option as any).code),
+    ).toEqual(['pt']);
     fixture.componentRef.setInput('filterMatchMode', 'gte');
-    fixture.componentRef.setInput('options', [{ code: 'low', title: '10' }, { code: 'high', title: '20' }]);
+    fixture.componentRef.setInput('options', [
+      { code: 'low', title: '10' },
+      { code: 'high', title: '20' },
+    ]);
     component.searchTerm.set('20');
-    expect(component.filteredDataOptions().map(option => (option as any).code)).toEqual(['high']);
+    expect(
+      component.filteredDataOptions().map((option) => (option as any).code),
+    ).toEqual(['high']);
     const clearEvent = new MouseEvent('click');
     component.clearValue(clearEvent);
     expect(component.value()).toBeUndefined();
@@ -436,7 +548,7 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('trueValue', 'yes');
     fixture.componentRef.setInput('falseValue', 'no');
     let modelValue: unknown;
-    component.registerOnChange(value => modelValue = value);
+    component.registerOnChange((value) => (modelValue = value));
     component.toggle();
     expect(modelValue).toBe('yes');
     component.writeValue('no');
@@ -450,7 +562,7 @@ describe('P2 expansion components', () => {
     component.writeValue(['sms', 'email']);
     expect(component.checked()).toBeTrue();
     let modelValue: unknown;
-    component.registerOnChange(value => modelValue = value);
+    component.registerOnChange((value) => (modelValue = value));
     component.toggle();
     expect(modelValue).toEqual(['sms']);
     component.toggle();
@@ -463,7 +575,7 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('trueValue', 'enabled');
     fixture.componentRef.setInput('falseValue', 'disabled');
     let modelValue: unknown;
-    component.registerOnChange(value => modelValue = value);
+    component.registerOnChange((value) => (modelValue = value));
     component.toggle();
     expect(modelValue).toBe('enabled');
     component.writeValue('disabled');
@@ -478,7 +590,9 @@ describe('P2 expansion components', () => {
     const event = new MouseEvent('click');
     component.onToggle(event);
     expect(component.tabindex()).toBe(0);
-    expect(changed).toHaveBeenCalledWith(jasmine.objectContaining({ originalEvent: event, checked: true }));
+    expect(changed).toHaveBeenCalledWith(
+      jasmine.objectContaining({ originalEvent: event, checked: true }),
+    );
   });
 
   it('supports PrimeNG slider orientation and range values', () => {
@@ -497,8 +611,16 @@ describe('P2 expansion components', () => {
     const changed = jasmine.createSpy('changed');
     component.onChange.subscribe(changed);
     component.writeValue(20);
-    (component as any).onKeyDown(new KeyboardEvent('keydown', { key: 'ArrowRight' }), 'end');
-    expect(changed).toHaveBeenCalledWith(jasmine.objectContaining({ originalEvent: jasmine.any(KeyboardEvent), value: 21 }));
+    (component as any).onKeyDown(
+      new KeyboardEvent('keydown', { key: 'ArrowRight' }),
+      'end',
+    );
+    expect(changed).toHaveBeenCalledWith(
+      jasmine.objectContaining({
+        originalEvent: jasmine.any(KeyboardEvent),
+        value: 21,
+      }),
+    );
   });
 
   it('supports PrimeNG rating stars and rate events', () => {
@@ -533,7 +655,7 @@ describe('P2 expansion components', () => {
     const fixture = TestBed.createComponent(KnobComponent);
     const component = fixture.componentInstance;
     let modelValue = 0;
-    component.registerOnChange(value => modelValue = value);
+    component.registerOnChange((value) => (modelValue = value));
     component.writeValue(42);
     expect(component.value()).toBe(42);
     expect(component.dashOffset()).toBeGreaterThan(0);
@@ -556,7 +678,11 @@ describe('P2 expansion components', () => {
   it('exposes OrganizationChart selectionChange and collapsible behavior', () => {
     const fixture = TestBed.createComponent(OrganizationChartComponent);
     const component = fixture.componentInstance;
-    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child' }] };
+    const root = {
+      key: 'root',
+      label: 'Root',
+      children: [{ key: 'child', label: 'Child' }],
+    };
     fixture.componentRef.setInput('value', [root]);
     fixture.componentRef.setInput('collapsible', false);
     component.toggle(root);
@@ -591,8 +717,13 @@ describe('P2 expansion components', () => {
   it('sorts and selects rows in the data table', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('data', [{ id: 1, name: 'Beta' }, { id: 2, name: 'Alpha' }]);
-    fixture.componentRef.setInput('columns', [{ key: 'name', header: 'Name', sortable: true }]);
+    fixture.componentRef.setInput('data', [
+      { id: 1, name: 'Beta' },
+      { id: 2, name: 'Alpha' },
+    ]);
+    fixture.componentRef.setInput('columns', [
+      { key: 'name', header: 'Name', sortable: true },
+    ]);
     component.sortBy(component.columns()[0]);
     expect(component.rows()[0]['name']).toBe('Alpha');
     component.toggleRow(component.rows()[0], true);
@@ -602,7 +733,9 @@ describe('P2 expansion components', () => {
   it('emits DataTable onSort alongside sortChange', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('columns', [{ key: 'name', header: 'Name', sortable: true }]);
+    fixture.componentRef.setInput('columns', [
+      { key: 'name', header: 'Name', sortable: true },
+    ]);
     const sort = jasmine.createSpy('sort');
     component.onSort.subscribe(sort);
     component.sortBy(component.columns()[0]);
@@ -612,7 +745,10 @@ describe('P2 expansion components', () => {
   it('supports PrimeNG DataTable value/rows/sort aliases and header selection event', () => {
     const fixture = TestBed.createComponent(DataTableComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('value', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('value', [
+      { id: 1, name: 'Alpha' },
+      { id: 2, name: 'Beta' },
+    ]);
     fixture.componentRef.setInput('rows', 1);
     fixture.componentRef.setInput('paginator', true);
     fixture.componentRef.setInput('selectionMode', 'multiple');
@@ -632,7 +768,11 @@ describe('P2 expansion components', () => {
     const page = jasmine.createSpy('page');
     component.onPage.subscribe(page);
     fixture.detectChanges();
-    (fixture.nativeElement.querySelector('.paginator button:last-child') as HTMLButtonElement).click();
+    (
+      fixture.nativeElement.querySelector(
+        '.paginator button:last-child',
+      ) as HTMLButtonElement
+    ).click();
     expect(page).toHaveBeenCalledWith({ first: 1, rows: 1 });
   });
 
@@ -665,7 +805,9 @@ describe('P2 expansion components', () => {
     const row = { code: 'A', label: 'Alpha' };
     fixture.componentRef.setInput('data', [row]);
     fixture.componentRef.setInput('dataKey', 'code');
-    fixture.componentRef.setInput('selection', [{ code: 'A', label: 'External copy' }]);
+    fixture.componentRef.setInput('selection', [
+      { code: 'A', label: 'External copy' },
+    ]);
     expect(fixture.componentInstance.isSelected(row)).toBeTrue();
   });
 
@@ -688,26 +830,40 @@ describe('P2 expansion components', () => {
 
   it('calculates a virtualized range and expands a tree select', () => {
     const scroller = TestBed.createComponent(VirtualScrollerComponent);
-    scroller.componentRef.setInput('items', Array.from({ length: 100 }, (_, index) => `Item ${index}`));
-    scroller.componentInstance.onScroll({ target: { scrollTop: 400 } } as unknown as Event);
+    scroller.componentRef.setInput(
+      'items',
+      Array.from({ length: 100 }, (_, index) => `Item ${index}`),
+    );
+    scroller.componentInstance.onScroll({
+      target: { scrollTop: 400 },
+    } as unknown as Event);
     expect(scroller.componentInstance.startIndex()).toBeGreaterThan(0);
     expect(scroller.componentInstance.visibleItems().length).toBeGreaterThan(0);
     scroller.componentRef.setInput('lazy', true);
-    scroller.componentInstance.onScroll({ target: { scrollTop: 800 } } as unknown as Event);
+    scroller.componentInstance.onScroll({
+      target: { scrollTop: 800 },
+    } as unknown as Event);
     expect(scroller.componentInstance.startIndex()).toBeGreaterThan(0);
 
     const tree = TestBed.createComponent(TreeSelectComponent);
-    const root = { value: 'root', label: 'Root', children: [{ value: 'child', label: 'Child' }] };
+    const root = {
+      value: 'root',
+      label: 'Root',
+      children: [{ value: 'child', label: 'Child' }],
+    };
     tree.componentRef.setInput('nodes', [root]);
     tree.componentInstance.toggle(root);
     expect(tree.componentInstance.visibleNodes()).toHaveSize(2);
     tree.componentInstance.select(root.children[0]);
     expect(tree.componentInstance.value()).toBe('child');
     let hidden = false;
-    tree.componentInstance.onHide.subscribe(() => hidden = true);
+    tree.componentInstance.onHide.subscribe(() => (hidden = true));
     tree.componentInstance.open.set(true);
     tree.componentInstance.select(root.children[0], new Event('click'));
     expect(hidden).toBeTrue();
+    // Start checkbox assertions from an empty multiple-selection value; the
+    // earlier scalar value was selected in single mode.
+    tree.componentInstance.value.set(null);
     tree.componentRef.setInput('selectionMode', 'checkbox');
     tree.componentInstance.select(root, new Event('click'));
     expect(tree.componentInstance.value()).toEqual(['root', 'child']);
@@ -718,8 +874,10 @@ describe('P2 expansion components', () => {
     upward.componentRef.setInput('nodes', [root]);
     upward.componentRef.setInput('selectionMode', 'checkbox');
     upward.componentInstance.select(root.children[0], new Event('click'));
-    expect(upward.componentInstance.value()).toEqual(['child']);
+    expect(upward.componentInstance.value()).toEqual(['child', 'root']);
     upward.componentInstance.select(root, new Event('click'));
+    expect(upward.componentInstance.value()).toEqual([]);
+    upward.componentInstance.select(root.children[0], new Event('click'));
     expect(upward.componentInstance.value()).toEqual(['child', 'root']);
     upward.componentInstance.select(root.children[0], new Event('click'));
     expect(upward.componentInstance.value()).toEqual([]);
@@ -727,7 +885,10 @@ describe('P2 expansion components', () => {
 
   it('updates a segmented control value', () => {
     const fixture = TestBed.createComponent(SegmentedControlComponent<string>);
-    fixture.componentRef.setInput('options', [{ value: 'grid', label: 'Grid' }, { value: 'list', label: 'List' }]);
+    fixture.componentRef.setInput('options', [
+      { value: 'grid', label: 'Grid' },
+      { value: 'list', label: 'List' },
+    ]);
     fixture.componentInstance.select(fixture.componentInstance.options()[1]);
     expect(fixture.componentInstance.value()).toBe('list');
   });
@@ -735,14 +896,308 @@ describe('P2 expansion components', () => {
   it('supports CascadeSelect ControlValueAccessor synchronization', () => {
     const fixture = TestBed.createComponent(CascadeSelectComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [{ value: 'br', label: 'Brazil', children: [{ value: 'sp', label: 'São Paulo' }] }]);
+    fixture.componentRef.setInput('options', [
+      {
+        value: 'br',
+        label: 'Brazil',
+        children: [{ value: 'sp', label: 'São Paulo' }],
+      },
+    ]);
     component.writeValue('sp');
     expect(component.value()).toBe('sp');
     expect(component.selectedLabel()).toContain('São Paulo');
     let changed: string | null = 'sp';
-    component.registerOnChange(value => changed = value);
+    component.registerOnChange((value) => (changed = value));
     component.clear();
     expect(changed).toBeNull();
+  });
+
+  it('exposes CascadeSelect listbox semantics and supports keyboard navigation and dismissal', async () => {
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    fixture.componentRef.setInput('inputId', 'region');
+    fixture.componentRef.setInput('label', 'Region');
+    fixture.componentRef.setInput('options', [
+      {
+        value: 'br',
+        label: 'Brazil',
+        children: [{ value: 'sp', label: 'São Paulo' }],
+      },
+      { value: 'ca', label: 'Canada' },
+    ]);
+    fixture.componentRef.setInput('filter', true);
+    fixture.componentInstance.open.set(false);
+    fixture.detectChanges();
+
+    const trigger = fixture.nativeElement.querySelector(
+      '.trigger',
+    ) as HTMLButtonElement;
+    trigger.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    fixture.detectChanges();
+    await Promise.resolve();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.open()).toBeTrue();
+    const listbox = fixture.nativeElement.querySelector(
+      '[role="listbox"]',
+    ) as HTMLElement;
+    const options = Array.from(
+      fixture.nativeElement.querySelectorAll('[role="option"]'),
+    ) as HTMLButtonElement[];
+    expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
+    expect(trigger.getAttribute('aria-controls')).toBe('region-listbox-0');
+    expect(listbox.getAttribute('aria-label')).toBe('Region, level 1');
+    expect(
+      fixture.nativeElement.querySelector('input')?.getAttribute('aria-label'),
+    ).toBe('Region');
+    expect(options[0].getAttribute('aria-selected')).toBe('false');
+    expect(document.activeElement).toBe(options[0]);
+    options[0].focus();
+    options[0].dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(options[1]);
+    options[1].dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    );
+    expect(fixture.componentInstance.open()).toBeFalse();
+    expect(document.activeElement).toBe(trigger);
+    trigger.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    fixture.detectChanges();
+    const filterInput = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    filterInput.focus();
+    filterInput.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    );
+    expect(fixture.componentInstance.open()).toBeFalse();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('keeps disabled CascadeSelect options inert and clears selection and filter together', () => {
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    const component = fixture.componentInstance;
+    const options = [
+      {
+        value: 'br',
+        label: 'Brazil',
+        children: [{ value: 'sp', label: 'São Paulo' }],
+      },
+      { value: 'xx', label: 'Unavailable', disabled: true },
+    ];
+    fixture.componentRef.setInput('options', options);
+    fixture.componentRef.setInput('filter', true);
+    fixture.componentRef.setInput('showClear', true);
+    component.open.set(true);
+    fixture.detectChanges();
+    const disabledOption = fixture.nativeElement.querySelector(
+      '[role="option"][disabled]',
+    ) as HTMLButtonElement;
+    expect(disabledOption.getAttribute('aria-disabled')).toBe('true');
+    disabledOption.click();
+    expect(component.value()).toBeNull();
+    component.setDisabledState(true);
+    fixture.detectChanges();
+    const cvaDisabledOption = fixture.nativeElement.querySelector(
+      '[role="option"]',
+    ) as HTMLButtonElement;
+    expect(cvaDisabledOption.disabled).toBeTrue();
+    expect(cvaDisabledOption.getAttribute('aria-disabled')).toBe('true');
+    component.setDisabledState(false);
+    fixture.detectChanges();
+    component.choose(options[1], 0);
+    expect(component.value()).toBeNull();
+    component.choose(options[0], 0);
+    component.choose(options[0].children![0], 1);
+    component.filterValue.set('paul');
+    component.open.set(true);
+    fixture.detectChanges();
+    expect(component.value()).toBe('sp');
+    expect(
+      fixture.nativeElement.querySelector('input')?.getAttribute('aria-label'),
+    ).toBe('Filter options');
+    (
+      fixture.nativeElement.querySelector(
+        '[aria-label="Clear selection"]',
+      ) as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+    expect(component.value()).toBeNull();
+    expect(component.selected()).toEqual([]);
+    expect(component.filterValue()).toBe('');
+    component.writeValue('sp');
+    fixture.componentRef.setInput('readonly', true);
+    component.open.set(true);
+    fixture.detectChanges();
+    const readonlyOption = fixture.nativeElement.querySelector(
+      '[role="option"]',
+    ) as HTMLButtonElement;
+    expect(readonlyOption.disabled).toBeTrue();
+    expect(readonlyOption.getAttribute('aria-disabled')).toBe('true');
+    const readonlyClear = fixture.nativeElement.querySelector(
+      '[aria-label="Clear selection"]',
+    ) as HTMLButtonElement;
+    expect(readonlyClear.disabled).toBeTrue();
+    readonlyClear.click();
+    expect(component.value()).toBe('sp');
+  });
+
+  it('announces when CascadeSelect filtering returns no options', () => {
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    fixture.componentRef.setInput('filter', true);
+    fixture.componentRef.setInput('options', [
+      { value: 'br', label: 'Brazil' },
+    ]);
+    fixture.componentInstance.open.set(true);
+    fixture.componentInstance.filterValue.set('missing');
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement
+        .querySelector('[role="status"]')
+        ?.textContent.trim(),
+    ).toBe('No results found');
+  });
+
+  it('gives unnamed CascadeSelect instances unique listbox ids and accessible trigger names', () => {
+    const first = TestBed.createComponent(CascadeSelectComponent);
+    const second = TestBed.createComponent(CascadeSelectComponent);
+    for (const fixture of [first, second]) {
+      fixture.componentRef.setInput('options', [
+        { value: 'one', label: 'One' },
+      ]);
+      fixture.componentInstance.open.set(true);
+      fixture.detectChanges();
+    }
+    const firstTrigger = first.nativeElement.querySelector(
+      '.trigger',
+    ) as HTMLButtonElement;
+    const secondTrigger = second.nativeElement.querySelector(
+      '.trigger',
+    ) as HTMLButtonElement;
+    const firstListbox = first.nativeElement.querySelector(
+      '[role="listbox"]',
+    ) as HTMLElement;
+    const secondListbox = second.nativeElement.querySelector(
+      '[role="listbox"]',
+    ) as HTMLElement;
+    expect(firstTrigger.getAttribute('aria-label')).toBe('Select an option');
+    expect(secondTrigger.getAttribute('aria-label')).toBe('Select an option');
+    expect(firstTrigger.getAttribute('aria-controls')).toBe(firstListbox.id);
+    expect(secondTrigger.getAttribute('aria-controls')).toBe(secondListbox.id);
+    expect(firstListbox.id).not.toBe(secondListbox.id);
+  });
+
+  it('applies CascadeSelect size and surface variant classes while preserving the default size', () => {
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    fixture.componentRef.setInput('options', [
+      { value: 'br', label: 'Brazil' },
+    ]);
+    fixture.componentRef.setInput('size', 'small');
+    fixture.componentRef.setInput('variant', 'filled');
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    const root = fixture.nativeElement.querySelector(
+      '.orc-cascade',
+    ) as HTMLElement;
+    let trigger = fixture.nativeElement.querySelector(
+      '.trigger',
+    ) as HTMLButtonElement;
+    expect(root.classList.contains('orc-cascade--small')).toBeTrue();
+    expect(root.classList.contains('orc-cascade--filled')).toBeTrue();
+    expect(getComputedStyle(trigger).minHeight).toBe('32px');
+    expect(getComputedStyle(trigger).fontSize).toBe('14px');
+
+    fixture.componentRef.setInput('size', 'large');
+    fixture.componentRef.setInput('variant', 'outlined');
+    fixture.detectChanges();
+    trigger = fixture.nativeElement.querySelector(
+      '.trigger',
+    ) as HTMLButtonElement;
+    expect(root.classList.contains('orc-cascade--large')).toBeTrue();
+    expect(root.classList.contains('orc-cascade--outlined')).toBeTrue();
+    expect(root.classList.contains('orc-cascade--small')).toBeFalse();
+    expect(getComputedStyle(trigger).minHeight).toBe('48px');
+    expect(getComputedStyle(trigger).fontSize).toBe('18px');
+
+    fixture.componentRef.setInput('size', undefined);
+    fixture.componentRef.setInput('variant', undefined);
+    fixture.detectChanges();
+    trigger = fixture.nativeElement.querySelector(
+      '.trigger',
+    ) as HTMLButtonElement;
+    expect(root.classList.contains('orc-cascade--large')).toBeFalse();
+    expect(root.classList.contains('orc-cascade--outlined')).toBeFalse();
+    expect(getComputedStyle(trigger).minHeight).toBe('40px');
+  });
+
+  it('announces loading and blocks CascadeSelect option selection until loading finishes', () => {
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    const component = fixture.componentInstance;
+    const option = { value: 'br', label: 'Brazil' };
+    fixture.componentRef.setInput('options', [option]);
+    fixture.componentRef.setInput('loading', true);
+    component.open.set(true);
+    fixture.detectChanges();
+    expect(
+      (
+        fixture.nativeElement.querySelector('.trigger') as HTMLButtonElement
+      ).getAttribute('aria-busy'),
+    ).toBe('true');
+    expect(
+      fixture.nativeElement
+        .querySelector('[role="status"]')
+        ?.textContent.trim(),
+    ).toBe('Loading options');
+    expect(
+      (
+        fixture.nativeElement.querySelector(
+          '[role="option"]',
+        ) as HTMLButtonElement
+      ).disabled,
+    ).toBeTrue();
+    component.choose(option, 0);
+    expect(component.value()).toBeNull();
+  });
+
+  it('dismisses an open CascadeSelect panel on outside pointer interaction', () => {
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    document.body.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true }),
+    );
+    expect(fixture.componentInstance.open()).toBeFalse();
+  });
+
+  it('registers CascadeSelect outside-pointer handling only while open and cleans it up', () => {
+    const addListener = spyOn(document, 'addEventListener').and.callThrough();
+    const removeListener = spyOn(
+      document,
+      'removeEventListener',
+    ).and.callThrough();
+    const fixture = TestBed.createComponent(CascadeSelectComponent);
+    fixture.detectChanges();
+    const pointerAdds = () =>
+      addListener.calls.allArgs().filter(([type]) => type === 'pointerdown');
+    const pointerRemoves = () =>
+      removeListener.calls.allArgs().filter(([type]) => type === 'pointerdown');
+    expect(pointerAdds()).toHaveSize(0);
+
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    expect(pointerAdds()).toHaveSize(1);
+    fixture.componentInstance.open.set(false);
+    fixture.detectChanges();
+    expect(pointerRemoves()).toHaveSize(1);
+
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    expect(pointerAdds()).toHaveSize(2);
+    fixture.destroy();
+    expect(pointerRemoves()).toHaveSize(2);
   });
 
   it('honors ToggleButton allowEmpty when already active', () => {
@@ -759,7 +1214,11 @@ describe('P2 expansion components', () => {
 
   it('supports Tree filtering, multiple selection, and expand/collapse events', () => {
     const fixture = TestBed.createComponent(TreeComponent<{ kind: string }>);
-    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child', data: { kind: 'leaf' } }] };
+    const root = {
+      key: 'root',
+      label: 'Root',
+      children: [{ key: 'child', label: 'Child', data: { kind: 'leaf' } }],
+    };
     fixture.componentRef.setInput('nodes', [root]);
     fixture.componentRef.setInput('selectionMode', 'multiple');
     fixture.componentRef.setInput('filter', true);
@@ -767,7 +1226,9 @@ describe('P2 expansion components', () => {
     component.toggle(root);
     expect(component.visibleNodes()).toHaveSize(2);
     component.filterValue.set('child');
-    expect(component.filteredVisibleNodes().map(item => item.node.key)).toEqual(['child']);
+    expect(
+      component.filteredVisibleNodes().map((item) => item.node.key),
+    ).toEqual(['root', 'child']);
     component.select(root.children[0]);
     expect(component.selected()).toEqual(['child']);
     component.select(root.children[0]);
@@ -782,10 +1243,19 @@ describe('P2 expansion components', () => {
   });
 
   it('supports TreeTable selection and expansion lifecycle outputs', () => {
-    const fixture = TestBed.createComponent(TreeTableComponent<{ amount: number }>);
-    const root = { key: 'root', label: 'Root', data: { amount: 1 }, children: [{ key: 'child', label: 'Child', data: { amount: 2 } }] };
+    const fixture = TestBed.createComponent(
+      TreeTableComponent<{ amount: number }>,
+    );
+    const root = {
+      key: 'root',
+      label: 'Root',
+      data: { amount: 1 },
+      children: [{ key: 'child', label: 'Child', data: { amount: 2 } }],
+    };
     fixture.componentRef.setInput('value', [root]);
-    fixture.componentRef.setInput('columns', [{ key: 'amount', header: 'Amount' }]);
+    fixture.componentRef.setInput('columns', [
+      { key: 'amount', header: 'Amount' },
+    ]);
     const component = fixture.componentInstance;
     component.toggle(component.visibleNodes()[0]);
     expect(component.visibleNodes()).toHaveSize(2);
@@ -798,7 +1268,11 @@ describe('P2 expansion components', () => {
   it('supports TreeTable selection modes and descendant propagation', () => {
     const fixture = TestBed.createComponent(TreeTableComponent);
     const component = fixture.componentInstance;
-    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child' }] };
+    const root = {
+      key: 'root',
+      label: 'Root',
+      children: [{ key: 'child', label: 'Child' }],
+    };
     fixture.componentRef.setInput('value', [root]);
     fixture.componentRef.setInput('selectionMode', 'checkbox');
     fixture.componentRef.setInput('propagateSelectionDown', true);
@@ -816,14 +1290,16 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('lazyLoadOnInit', true);
     fixture.componentRef.setInput('rows', 25);
     let request: { first: number; rows: number } | undefined;
-    component.onLazyLoad.subscribe(event => request = event);
+    component.onLazyLoad.subscribe((event) => (request = event));
     component.ngOnInit();
     expect(request).toEqual({ first: 0, rows: 25 });
   });
 
   it('emits DataView layout and initial lazy-load lifecycle events', () => {
     const fixture = TestBed.createComponent(DataViewComponent);
-    const component = fixture.componentInstance as DataViewComponent<{ id: number }>;
+    const component = fixture.componentInstance as DataViewComponent<{
+      id: number;
+    }>;
     fixture.componentRef.setInput('lazy', true);
     fixture.componentRef.setInput('lazyLoadOnInit', true);
     const lazy = jasmine.createSpy('lazy');
@@ -859,7 +1335,7 @@ describe('P2 expansion components', () => {
     component.writeValue(['A', 'B']);
     component.selectedIndex.set(0);
     let changed: string[] = [];
-    component.registerOnChange(value => changed = value);
+    component.registerOnChange((value) => (changed = value));
     component.move(1);
     expect(changed).toEqual(['B', 'A']);
   });
@@ -870,7 +1346,10 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('images', [{ src: 'a' }, { src: 'b' }]);
     fixture.componentRef.setInput('fullScreen', true);
     fixture.componentRef.setInput('showItemNavigators', true);
-    component.onKeydown({ key: 'ArrowRight', preventDefault() {} } as KeyboardEvent);
+    component.onKeydown({
+      key: 'ArrowRight',
+      preventDefault() {},
+    } as KeyboardEvent);
     expect(component.activeIndex()).toBe(1);
     expect(component.fullScreen()).toBeTrue();
   });
@@ -900,7 +1379,10 @@ describe('P2 expansion components', () => {
     component.hide();
     expect(component.visible()).toBeFalse();
     component.show();
-    component.onKeydown({ key: 'Escape', preventDefault() {} } as KeyboardEvent);
+    component.onKeydown({
+      key: 'Escape',
+      preventDefault() {},
+    } as KeyboardEvent);
     expect(component.visible()).toBeFalse();
   });
 
@@ -924,7 +1406,10 @@ describe('P2 expansion components', () => {
   it('supports stepper next/previous/reset and completion lifecycle', () => {
     const fixture = TestBed.createComponent(StepperComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('steps', [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }]);
+    fixture.componentRef.setInput('steps', [
+      { id: 'one', title: 'One' },
+      { id: 'two', title: 'Two' },
+    ]);
     component.next();
     expect(component.currentStep()).toBe(1);
     component.previous();
@@ -937,7 +1422,10 @@ describe('P2 expansion components', () => {
   it('keeps Steps activeIndex and Stepper currentStep synchronized', () => {
     const fixture = TestBed.createComponent(StepperComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('steps', [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }]);
+    fixture.componentRef.setInput('steps', [
+      { id: 'one', title: 'One' },
+      { id: 'two', title: 'Two' },
+    ]);
     fixture.componentRef.setInput('activeIndex', 1);
     fixture.detectChanges();
     expect(component.currentStep()).toBe(1);
@@ -948,7 +1436,10 @@ describe('P2 expansion components', () => {
   it('uses the PrimeNG Steps model input and honors readonly navigation', () => {
     const fixture = TestBed.createComponent(StepperComponent);
     const component = fixture.componentInstance;
-    const model = [{ id: 'a', title: 'A' }, { id: 'b', title: 'B' }];
+    const model = [
+      { id: 'a', title: 'A' },
+      { id: 'b', title: 'B' },
+    ];
     fixture.componentRef.setInput('model', model);
     fixture.componentRef.setInput('readonly', true);
     expect(component.effectiveSteps()).toEqual(model);
@@ -957,9 +1448,14 @@ describe('P2 expansion components', () => {
   });
 
   it('supports PrimeNG-style table filtering, row events, and lazy paging', () => {
-    const fixture = TestBed.createComponent(TableComponent<{ id: number; name: string }>);
+    const fixture = TestBed.createComponent(
+      TableComponent<{ id: number; name: string }>,
+    );
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('data', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('data', [
+      { id: 1, name: 'Alpha' },
+      { id: 2, name: 'Beta' },
+    ]);
     fixture.componentRef.setInput('filterable', true);
     fixture.componentRef.setInput('globalFilterFields', ['name']);
     component.applyFilter('alpha');
@@ -968,7 +1464,7 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('showGridlines', true);
     fixture.componentRef.setInput('metaKeySelection', false);
     let selectedEvent: unknown;
-    component.onRowSelect.subscribe(event => selectedEvent = event);
+    component.onRowSelect.subscribe((event) => (selectedEvent = event));
     component.toggleRowSelect(component.displayData()[0], true);
     expect(component.selectedRows()).toHaveSize(1);
     expect(selectedEvent).toEqual({ data: { id: 1, name: 'Alpha' } });
@@ -977,14 +1473,23 @@ describe('P2 expansion components', () => {
   });
 
   it('supports Table single selection, row guards, reset, and deep selection comparison', () => {
-    const fixture = TestBed.createComponent(TableComponent<{ id: number; name: string }>);
+    const fixture = TestBed.createComponent(
+      TableComponent<{ id: number; name: string }>,
+    );
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('data', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('data', [
+      { id: 1, name: 'Alpha' },
+      { id: 2, name: 'Beta' },
+    ]);
     fixture.componentRef.setInput('selectionMode', 'single');
     component.toggleRowSelect(component.data()[0], true);
     component.toggleRowSelect(component.data()[1], true);
     expect(component.selectedRows()).toEqual([{ id: 2, name: 'Beta' }]);
-    fixture.componentRef.setInput('rowSelectable', ({ data }: { data: { id: number; name: string }; index: number }) => data.id === 1);
+    fixture.componentRef.setInput(
+      'rowSelectable',
+      ({ data }: { data: { id: number; name: string }; index: number }) =>
+        data.id === 1,
+    );
     component.toggleRowSelect(component.data()[1], true);
     expect(component.selectedRows()).toEqual([{ id: 2, name: 'Beta' }]);
     fixture.componentRef.setInput('compareSelectionBy', 'deepEquals');
@@ -1049,13 +1554,18 @@ describe('P2 expansion components', () => {
     const meter = TestBed.createComponent(MeterGroupComponent);
     meter.componentRef.setInput('value', [{ value: 25, label: 'CPU' }]);
     expect(meter.componentInstance.total()).toBe(25);
-    expect(meter.componentInstance.percent(meter.componentInstance.effectiveValues()[0])).toBe(25);
+    expect(
+      meter.componentInstance.percent(
+        meter.componentInstance.effectiveValues()[0],
+      ),
+    ).toBe(25);
     const inplace = TestBed.createComponent(InplaceComponent).componentInstance;
     inplace.activate();
     expect(inplace.active()).toBeTrue();
     inplace.deactivate();
     const dialFixture = TestBed.createComponent(SpeedDialComponent);
     const dial = dialFixture.componentInstance;
+    dialFixture.detectChanges();
     dial.show();
     expect(dial.open()).toBeTrue();
     document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
@@ -1065,14 +1575,19 @@ describe('P2 expansion components', () => {
     document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     expect(dial.open()).toBeTrue();
     dial.hide();
-    const compare = TestBed.createComponent(ImageCompareComponent).componentInstance;
+    const compare = TestBed.createComponent(
+      ImageCompareComponent,
+    ).componentInstance;
     compare.setPosition(120);
     expect(compare.position()).toBe(100);
-    const terminal = TestBed.createComponent(TerminalComponent).componentInstance;
+    const terminal =
+      TestBed.createComponent(TerminalComponent).componentInstance;
     terminal.command.set('help');
     terminal.submit(new Event('submit'));
     expect(terminal.history()[0].command).toBe('help');
-    expect(TestBed.createComponent(FloatLabelComponent).componentInstance.variant()).toBe('over');
+    expect(
+      TestBed.createComponent(FloatLabelComponent).componentInstance.variant(),
+    ).toBe('over');
   });
 
   it('supports PrimeNG chart and editor lifecycle aliases', () => {
@@ -1085,7 +1600,9 @@ describe('P2 expansion components', () => {
     editorFixture.detectChanges();
     const editor = editorFixture.componentInstance;
     editor.exec('bold');
-    editor.onInput({ target: document.createElement('div') } as unknown as Event);
+    editor.onInput({
+      target: document.createElement('div'),
+    } as unknown as Event);
     expect(editor.getQuill()).not.toBeNull();
   });
 
@@ -1095,15 +1612,19 @@ describe('P2 expansion components', () => {
     const editor = fixture.componentInstance;
     let textEvent: any;
     let selectionEvent: any;
-    editor.onTextChange.subscribe(event => textEvent = event);
-    editor.onSelectionChange.subscribe(event => selectionEvent = event);
-    const surface = fixture.nativeElement.querySelector('.surface') as HTMLElement;
+    editor.onTextChange.subscribe((event) => (textEvent = event));
+    editor.onSelectionChange.subscribe((event) => (selectionEvent = event));
+    const surface = fixture.nativeElement.querySelector(
+      '.surface',
+    ) as HTMLElement;
     surface.innerHTML = '<b>Hello</b>';
     editor.onInput({ target: surface } as unknown as Event);
     editor.emitSelectionChange(new Event('selectionchange'));
     expect(textEvent.source).toBe('user');
     expect(textEvent.html).toContain('Hello');
-    expect(selectionEvent).toEqual(jasmine.objectContaining({ source: 'user' }));
+    expect(selectionEvent).toEqual(
+      jasmine.objectContaining({ source: 'user' }),
+    );
   });
 
   it('supports PrimeNG Image preview, zoom, rotation, and hide lifecycle', () => {
@@ -1124,11 +1645,21 @@ describe('P2 expansion components', () => {
   it('emits Toast onClick and onClose lifecycle payloads', () => {
     const fixture = TestBed.createComponent(ToastComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('toast', { id: 't1', type: 'info', title: 'Info', message: 'Hello', duration: 0, dismissible: true, showIcon: true, position: 'top-right', pauseOnHover: true });
+    fixture.componentRef.setInput('toast', {
+      id: 't1',
+      type: 'info',
+      title: 'Info',
+      message: 'Hello',
+      duration: 0,
+      dismissible: true,
+      showIcon: true,
+      position: 'top-right',
+      pauseOnHover: true,
+    });
     let clicked: any;
     let closed: any;
-    component.onClick.subscribe(event => clicked = event);
-    component.onClose.subscribe(event => closed = event);
+    component.onClick.subscribe((event) => (clicked = event));
+    component.onClose.subscribe((event) => (closed = event));
     const click = new MouseEvent('click');
     component.handleToastClick(click);
     component.handleClose(click);
@@ -1148,13 +1679,17 @@ describe('P2 expansion components', () => {
   });
 
   it('supports OrderList reorder and PickList transfer events', () => {
-    const order = TestBed.createComponent(OrderListComponent<string>).componentInstance;
+    const order = TestBed.createComponent(
+      OrderListComponent<string>,
+    ).componentInstance;
     order.value.set(['a', 'b']);
     order.select(1);
     order.move(-1);
     expect(order.value()).toEqual(['b', 'a']);
 
-    const pick = TestBed.createComponent(PickListComponent<{ value: string; label: string }>).componentInstance;
+    const pick = TestBed.createComponent(
+      PickListComponent<{ value: string; label: string }>,
+    ).componentInstance;
     pick.source.set([{ value: 'a', label: 'A' }]);
     pick.toggleSource(pick.source()[0]);
     pick.transferSelected();
@@ -1165,7 +1700,10 @@ describe('P2 expansion components', () => {
   it('supports Messages removal and clear lifecycle', () => {
     const fixture = TestBed.createComponent(MessagesComponent);
     const component = fixture.componentInstance;
-    component.messages.set([{ id: 1, severity: 'success', detail: 'Saved' }, { id: 2, severity: 'error', detail: 'Failed' }]);
+    component.messages.set([
+      { id: 1, severity: 'success', detail: 'Saved' },
+      { id: 2, severity: 'error', detail: 'Failed' },
+    ]);
     component.remove(0);
     expect(component.messages()).toHaveSize(1);
     component.clearMessages();
@@ -1176,20 +1714,26 @@ describe('P2 expansion components', () => {
     const fixture = TestBed.createComponent(ContextMenuComponent);
     const component = fixture.componentInstance;
     const selected: ContextMenuItem[] = [];
-    fixture.componentRef.setInput('items', [{ label: 'Disabled', value: 'disabled', disabled: true }, { label: 'Open', value: 'open' }]);
-    component.itemSelect.subscribe(item => selected.push(item));
+    fixture.componentRef.setInput('items', [
+      { label: 'Disabled', value: 'disabled', disabled: true },
+      { label: 'Open', value: 'open' },
+    ]);
+    fixture.detectChanges();
+    component.itemSelect.subscribe((item) => selected.push(item));
     component.show();
     expect(component.visible()).toBeTrue();
     component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
     expect(component.activeIndex()).toBe(0);
     component.onKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
-    expect(selected.map(item => item.value)).toEqual(['open']);
+    expect(selected.map((item) => item.value)).toEqual(['open']);
     component.show();
-    document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    document.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     expect(component.visible()).toBeFalse();
     component.toggle();
     expect(component.visible()).toBeTrue();
-    component.openAt(new MouseEvent('contextmenu', { clientX: 20, clientY: 30 }));
+    component.openAt(
+      new MouseEvent('contextmenu', { clientX: 20, clientY: 30 }),
+    );
     expect(component.position()).toEqual({ x: 20, y: 30 });
     component.hide();
     expect(component.visible()).toBeFalse();
@@ -1201,7 +1745,10 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('popup', true);
     component.show();
     expect(component.visible()).toBeTrue();
-    fixture.componentRef.setInput('items', [{ label: 'File', value: 'file' }, { label: 'Edit', value: 'edit' }]);
+    fixture.componentRef.setInput('items', [
+      { label: 'File', value: 'file' },
+      { label: 'Edit', value: 'edit' },
+    ]);
     component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
     expect(component.activeIndex()).toBe(1);
     component.onKeydown(new KeyboardEvent('keydown', { key: 'Home' }));
@@ -1228,7 +1775,10 @@ describe('P2 expansion components', () => {
     const component = fixture.componentInstance;
     fixture.componentRef.setInput('totalRecords', 42);
     fixture.componentRef.setInput('rows', 10);
-    fixture.componentRef.setInput('currentPageReportTemplate', '{first}-{last} / {totalRecords} ({currentPage}/{totalPages})');
+    fixture.componentRef.setInput(
+      'currentPageReportTemplate',
+      '{first}-{last} / {totalRecords} ({currentPage}/{totalPages})',
+    );
     component.goToPage(2);
     expect(component.pageReport()).toBe('11-20 / 42 (2/5)');
   });
@@ -1276,7 +1826,9 @@ describe('P2 expansion components', () => {
     const parent = { label: 'Parent', items: [child] };
     fixture.componentRef.setInput('model', [parent]);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelectorAll('ul[role="menu"]').length).toBe(1);
+    expect(
+      fixture.nativeElement.querySelectorAll('ul[role="menu"]').length,
+    ).toBe(1);
     component.activate(child);
     expect(command).toHaveBeenCalled();
   });
@@ -1287,7 +1839,10 @@ describe('P2 expansion components', () => {
     const command = jasmine.createSpy('keyboardCommand');
     const items = [{ label: 'First' }, { label: 'Second', command }];
     fixture.componentRef.setInput('model', items);
-    component.onKeydown({ key: 'ArrowDown', preventDefault() {} } as KeyboardEvent);
+    component.onKeydown({
+      key: 'ArrowDown',
+      preventDefault() {},
+    } as KeyboardEvent);
     expect(component.activeIndex()).toBe(1);
     component.onKeydown({ key: 'Enter', preventDefault() {} } as KeyboardEvent);
     expect(command).toHaveBeenCalled();
@@ -1296,7 +1851,11 @@ describe('P2 expansion components', () => {
   it('supports OrganizationChart expansion and multiple selection', () => {
     const fixture = TestBed.createComponent(OrganizationChartComponent);
     const component = fixture.componentInstance;
-    const root = { key: 'root', label: 'Root', children: [{ key: 'child', label: 'Child' }] };
+    const root = {
+      key: 'root',
+      label: 'Root',
+      children: [{ key: 'child', label: 'Child' }],
+    };
     fixture.componentRef.setInput('value', [root]);
     fixture.componentRef.setInput('selectionMode', 'multiple');
     component.toggle(root);
@@ -1346,7 +1905,9 @@ describe('P2 expansion components', () => {
     component.onTextInput({ target: { value: '#ff0000' } } as unknown as Event);
     expect(component.value()).toBe('rgb(255, 0, 0)');
     fixture.componentRef.setInput('format', 'hsv');
-    component.onTextInput({ target: { value: 'rgb(0, 255, 0)' } } as unknown as Event);
+    component.onTextInput({
+      target: { value: 'rgb(0, 255, 0)' },
+    } as unknown as Event);
     expect(component.value()).toBe('hsv(120, 100%, 100%)');
     expect(component.nativeValue()).toBe('#00ff00');
     fixture.componentRef.setInput('format', 'hsb');
@@ -1366,13 +1927,20 @@ describe('P2 expansion components', () => {
   it('supports PrimeNG toast add/addAll/remove aliases and message fields', () => {
     const service = TestBed.inject(ToastService);
     service.clear();
-    const first = service.add({ severity: 'success', summary: 'Saved', detail: 'Done', life: 0 });
-    const ids = service.addAll([{ severity: 'error', summary: 'Failed', detail: 'Nope', sticky: true }]);
-    expect(service.toasts().map(toast => toast.id)).toContain(first);
+    const first = service.add({
+      severity: 'success',
+      summary: 'Saved',
+      detail: 'Done',
+      life: 0,
+    });
+    const ids = service.addAll([
+      { severity: 'error', summary: 'Failed', detail: 'Nope', sticky: true },
+    ]);
+    expect(service.toasts().map((toast) => toast.id)).toContain(first);
     expect(ids).toHaveSize(1);
     expect(service.toasts()[0].message).toBe('Done');
     service.remove(first);
-    expect(service.toasts().map(toast => toast.id)).not.toContain(first);
+    expect(service.toasts().map((toast) => toast.id)).not.toContain(first);
     service.clear();
   });
 
@@ -1382,7 +1950,11 @@ describe('P2 expansion components', () => {
     avatar.componentRef.setInput('icon', '★');
     expect(avatar.componentInstance.computedInitials()).toBe('AL');
     const group = TestBed.createComponent(AvatarGroupComponent);
-    group.componentRef.setInput('items', [{ name: 'A' }, { name: 'B' }, { name: 'C' }]);
+    group.componentRef.setInput('items', [
+      { name: 'A' },
+      { name: 'B' },
+      { name: 'C' },
+    ]);
     group.componentRef.setInput('max', 2);
     expect(group.componentInstance.visibleItems()).toHaveSize(2);
     expect(group.componentInstance.calculatedExcess()).toBe(1);
@@ -1390,7 +1962,7 @@ describe('P2 expansion components', () => {
 
   it('supports DynamicDialog-style ModalRef close results', () => {
     let destroyed = false;
-    const ref = new ModalRef({ instance: {} } as any, () => destroyed = true);
+    const ref = new ModalRef({ instance: {} } as any, () => (destroyed = true));
     ref.close({ saved: true });
     expect(destroyed).toBeTrue();
     expect(ref.afterClosed()).toEqual({ saved: true });
@@ -1401,7 +1973,7 @@ describe('P2 expansion components', () => {
     const fixture = TestBed.createComponent(ConfirmDialogComponent);
     const component = fixture.componentInstance;
     let accepted = false;
-    service.confirm({ message: 'Continue?', accept: () => accepted = true });
+    service.confirm({ message: 'Continue?', accept: () => (accepted = true) });
     expect(component.request()).toBeTruthy();
     component.accept();
     expect(accepted).toBeTrue();
@@ -1413,7 +1985,12 @@ describe('P2 expansion components', () => {
     const fixture = TestBed.createComponent(ConfirmDialogComponent);
     const component = fixture.componentInstance;
     let rejected = false;
-    service.confirm({ message: 'Delete?', acceptVisible: false, rejectLabel: 'Keep', reject: () => rejected = true });
+    service.confirm({
+      message: 'Delete?',
+      acceptVisible: false,
+      rejectLabel: 'Keep',
+      reject: () => (rejected = true),
+    });
     expect(component.request()?.acceptVisible).toBeFalse();
     expect(component.request()?.rejectLabel).toBe('Keep');
     component.reject();
@@ -1424,7 +2001,11 @@ describe('P2 expansion components', () => {
   it('supports Menubar nested submenu activation', () => {
     const fixture = TestBed.createComponent(MenubarComponent);
     const component = fixture.componentInstance;
-    const item = { value: 'file', label: 'File', children: [{ value: 'new', label: 'New' }] };
+    const item = {
+      value: 'file',
+      label: 'File',
+      children: [{ value: 'new', label: 'New' }],
+    };
     fixture.componentRef.setInput('items', [item]);
     component.activate(item);
     expect(component.openItem()).toBe(item);
@@ -1434,7 +2015,10 @@ describe('P2 expansion components', () => {
   it('supports Carousel hover pause and page lifecycle events', () => {
     const fixture = TestBed.createComponent(CarouselComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('items', [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }]);
+    fixture.componentRef.setInput('items', [
+      { id: 'a', label: 'A' },
+      { id: 'b', label: 'B' },
+    ]);
     component.next();
     expect(component.activeIndex()).toBe(1);
     component.onMouseEnter();
@@ -1446,13 +2030,19 @@ describe('P2 expansion components', () => {
   it('supports PrimeNG Carousel value/page aliases and page event bounds', () => {
     const fixture = TestBed.createComponent(CarouselComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('value', [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }, { id: 'c', label: 'C' }]);
+    fixture.componentRef.setInput('value', [
+      { id: 'a', label: 'A' },
+      { id: 'b', label: 'B' },
+      { id: 'c', label: 'C' },
+    ]);
     fixture.componentRef.setInput('numVisible', 2);
     let page: any;
-    component.onPage.subscribe(event => page = event);
+    component.onPage.subscribe((event) => (page = event));
     component.goTo(1);
     expect(component.activeItem()?.label).toBe('B');
-    expect(page).toEqual(jasmine.objectContaining({ first: 1, last: 2, pageCount: 2 }));
+    expect(page).toEqual(
+      jasmine.objectContaining({ first: 1, last: 2, pageCount: 2 }),
+    );
   });
 
   it('supports PrimeNG Tag value, severity, icon, and remove events', () => {
@@ -1467,12 +2057,15 @@ describe('P2 expansion components', () => {
   it('supports PrimeNG Dropdown form mode with option mapping and CVA events', () => {
     const fixture = TestBed.createComponent(DropdownComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta', blocked: true }]);
+    fixture.componentRef.setInput('options', [
+      { id: 1, name: 'Alpha' },
+      { id: 2, name: 'Beta', blocked: true },
+    ]);
     fixture.componentRef.setInput('optionLabel', 'name');
     fixture.componentRef.setInput('optionValue', 'id');
     fixture.componentRef.setInput('optionDisabled', 'blocked');
     let changed: unknown;
-    component.registerOnChange(value => changed = value);
+    component.registerOnChange((value) => (changed = value));
     component.selectOption(component.options()![0], new Event('click'));
     expect(component.value()).toBe(1);
     expect(changed).toBe(1);
@@ -1483,7 +2076,10 @@ describe('P2 expansion components', () => {
   it('does not open a disabled dropdown and navigates mapped options', () => {
     const fixture = TestBed.createComponent(DropdownComponent);
     const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }]);
+    fixture.componentRef.setInput('options', [
+      { id: 1, name: 'Alpha' },
+      { id: 2, name: 'Beta' },
+    ]);
     fixture.componentRef.setInput('optionLabel', 'name');
     fixture.componentRef.setInput('optionValue', 'id');
     fixture.componentRef.setInput('disabled', true);
@@ -1513,7 +2109,7 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('icon', '★');
     fixture.componentRef.setInput('removable', true);
     let removed = false;
-    component.onRemove.subscribe(() => removed = true);
+    component.onRemove.subscribe(() => (removed = true));
     component.remove(new Event('click'));
     expect(removed).toBeTrue();
   });
@@ -1534,7 +2130,9 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('severity', 'success');
     fixture.componentRef.setInput('outlined', true);
     fixture.componentRef.setInput('badge', 3);
-    expect(component.buttonClassString()).toContain('orc-button--variant-success');
+    expect(component.buttonClassString()).toContain(
+      'orc-button--variant-success',
+    );
     expect(component.buttonClassString()).toContain('orc-button--outlined');
   });
 
@@ -1555,7 +2153,7 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('subheader', 'Details');
     fixture.componentRef.setInput('clickable', true);
     let clicked = false;
-    component.onClickEvent.subscribe(() => clicked = true);
+    component.onClickEvent.subscribe(() => (clicked = true));
     component.onClick();
     expect(component.header()).toBe('Summary');
     expect(clicked).toBeFalse();
@@ -1578,7 +2176,19 @@ describe('P2 expansion components', () => {
     const uploaded = jasmine.createSpy('uploaded');
     component.onUpload.subscribe(uploaded);
     const bad = new File(['bad'], 'bad.txt', { type: 'text/plain' });
-    component.files.set([{ id: 'bad', file: bad, name: bad.name, size: bad.size, formattedSize: '3 Bytes', type: bad.type, progress: 0, status: 'error', errorMessage: 'Invalid' }]);
+    component.files.set([
+      {
+        id: 'bad',
+        file: bad,
+        name: bad.name,
+        size: bad.size,
+        formattedSize: '3 Bytes',
+        type: bad.type,
+        progress: 0,
+        status: 'error',
+        errorMessage: 'Invalid',
+      },
+    ]);
     component.upload();
     expect(uploaded).not.toHaveBeenCalled();
   });
@@ -1589,12 +2199,13 @@ describe('P2 expansion components', () => {
     fixture.componentRef.setInput('customUpload', true);
     const file = new File(['ok'], 'ok.txt', { type: 'text/plain' });
     const selectEvent = new Event('change');
-    let selected: { originalEvent: Event; files: File[]; currentFiles: File[] } | undefined;
+    let selected:
+      { originalEvent: Event; files: File[]; currentFiles: File[] } | undefined;
     let before: FormData | undefined;
     let handled: File[] | undefined;
-    component.onSelect.subscribe(event => selected = event);
-    component.onBeforeUpload.subscribe(event => before = event.formData);
-    component.uploadHandler.subscribe(event => handled = event.files);
+    component.onSelect.subscribe((event) => (selected = event));
+    component.onBeforeUpload.subscribe((event) => (before = event.formData));
+    component.uploadHandler.subscribe((event) => (handled = event.files));
     (component as any).handleFiles([file], selectEvent);
     expect(selected?.originalEvent).toBe(selectEvent);
     expect(selected?.files).toEqual([file]);

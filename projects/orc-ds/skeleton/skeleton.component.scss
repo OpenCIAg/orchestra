@@ -8,7 +8,7 @@
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background-color: var(--skeleton-base, #F1F5F9);
+  background-color: var(--skeleton-base, #f1f5f9);
   position: relative;
   overflow: hidden;
 
@@ -27,12 +27,12 @@
 
   // ── Shimmer Animation ─────────────────────────────────────
   &--shimmer {
-    background-color: var(--skeleton-base, #F1F5F9);
+    background-color: var(--skeleton-base, #f1f5f9);
     background-image: linear-gradient(
       90deg,
-      var(--skeleton-base, #F1F5F9) 0%,
-      var(--skeleton-highlight, #E2E8F0) 50%,
-      var(--skeleton-base, #F1F5F9) 100%
+      var(--skeleton-base, #f1f5f9) 0%,
+      var(--skeleton-highlight, #e2e8f0) 50%,
+      var(--skeleton-base, #f1f5f9) 100%
     );
     background-size: 200% 100%;
     background-repeat: no-repeat;
@@ -41,14 +41,14 @@
 
   // ── Pulse Animation ───────────────────────────────────────
   &--pulse {
-    background-color: var(--skeleton-base, #F1F5F9);
+    background-color: var(--skeleton-base, #f1f5f9);
     animation: orcPulse 1.5s ease-in-out infinite;
   }
 
   // ── Static / None ─────────────────────────────────────────
   &--none {
     animation: none;
-    background-color: var(--skeleton-base, #F1F5F9);
+    background-color: var(--skeleton-base, #f1f5f9);
   }
 }
 
@@ -74,7 +74,8 @@
 }
 
 @keyframes orcPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -86,6 +87,6 @@
   .orc-skeleton--shimmer,
   .orc-skeleton--pulse {
     animation: none;
-    background-color: var(--skeleton-base, #F1F5F9);
+    background-color: var(--skeleton-base, #f1f5f9);
   }
 }

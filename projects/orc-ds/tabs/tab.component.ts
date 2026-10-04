@@ -26,13 +26,17 @@ export class TabComponent {
   readonly label = input<string>('');
   readonly icon = input<string>('');
   readonly iconPosition = input<TabIconPosition>('start');
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
   readonly closable = input(false, { transform: booleanAttribute });
   readonly closeAriaLabel = input<string | undefined>(undefined);
   readonly cache = input(true, { transform: booleanAttribute });
   readonly tooltip = input<string | undefined>(undefined);
   readonly tooltipPosition = input<'top' | 'bottom' | 'left' | 'right'>('top');
-  readonly headerStyle = input<Record<string, string | number> | undefined>(undefined);
+  readonly headerStyle = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly headerStyleClass = input('');
   readonly selected = input(false, { transform: booleanAttribute });
   readonly badge = input<string | number | undefined>(undefined);
@@ -40,7 +44,9 @@ export class TabComponent {
 
   // Templates internos para projeção sob demanda
   readonly contentTemplate = viewChild<TemplateRef<unknown>>('contentTemplate');
-  readonly customLabelTemplate = viewChild<TemplateRef<unknown>>('customLabelTemplate');
+  readonly customLabelTemplate = viewChild<TemplateRef<unknown>>(
+    'customLabelTemplate',
+  );
 
   // Identificador único garantido
   private readonly fallbackId = `orc-tab-${++uniqueTabIdCounter}`;

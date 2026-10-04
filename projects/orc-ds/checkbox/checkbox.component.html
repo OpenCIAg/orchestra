@@ -1,6 +1,10 @@
 <label
   class="p-checkbox p-component orc-checkbox"
   [class]="'p-checkbox p-component orc-checkbox ' + styleClass()"
+  [class.variant-filled]="variant() === 'filled'"
+  [class.variant-outlined]="variant() === 'outlined'"
+  [class.size-small]="resolvedSize() === 'sm'"
+  [class.size-large]="resolvedSize() === 'lg'"
   [class.orc-checkbox--checked]="checked() && !indeterminate()"
   [class.orc-checkbox--indeterminate]="indeterminate()"
   [class.orc-checkbox--disabled]="isDisabled()"
@@ -8,7 +12,7 @@
   [class.p-checkbox-checked]="checked() && !indeterminate()"
   [class.p-checkbox-disabled]="isDisabled()"
   [attr.data-pc-name]="'checkbox'"
-    [attr.for]="effectiveId()"
+  [attr.for]="inputId() || effectiveId()"
 >
   <!-- Visually hidden native checkbox input for complete a11y, keyboard navigation (Space key) and Form bindings -->
   <input
@@ -19,11 +23,13 @@
     [name]="name() || null"
     [checked]="checked()"
     [disabled]="isDisabled()"
+    [readOnly]="readonly()"
     [required]="required()"
     [attr.aria-label]="ariaLabel() || null"
     [attr.aria-labelledby]="ariaLabelledBy() || ariaLabelledby() || null"
     [attr.aria-describedby]="computedAriaDescribedBy()"
     [attr.aria-checked]="ariaChecked()"
+    [attr.aria-readonly]="readonly() ? 'true' : null"
     [attr.aria-invalid]="isError()"
     (change)="onNativeChange($event)"
     (focus)="handleFocus($event)"
@@ -68,9 +74,15 @@
 
   <!-- Label, Description / Error & Content Projection -->
   <span class="orc-checkbox__content" *ngIf="hasContent()">
-    <span class="orc-checkbox__label" [id]="labelId()" *ngIf="label()">{{ label() }}</span>
+    <span class="orc-checkbox__label" [id]="labelId()" *ngIf="label()">{{
+      label()
+    }}</span>
     <ng-content></ng-content>
-    <span class="orc-checkbox__description" [id]="descriptionId()" *ngIf="description() && !errorMessage()">
+    <span
+      class="orc-checkbox__description"
+      [id]="descriptionId()"
+      *ngIf="description() && !errorMessage()"
+    >
       {{ description() }}
     </span>
     <span class="orc-checkbox__error" [id]="errorId()" *ngIf="errorMessage()">

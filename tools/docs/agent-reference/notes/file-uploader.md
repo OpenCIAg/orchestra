@@ -1,0 +1,1 @@
+`FileItemData` includes `id`, `file`, `name`, `size`, `formattedSize`, `type`, `progress`, `status: pending | uploading | success | error`, optional `errorMessage` and `previewUrl`. The family composes with `orc-file-item`, whose input is `disabled` and whose output is `remove: string`.

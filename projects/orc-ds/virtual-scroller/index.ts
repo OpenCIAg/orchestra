@@ -1,1 +1,1 @@
-export { VirtualScrollerComponent } from '@ciag/orchestra/p2';
+export { VirtualScrollerComponent } from './virtual-scroller.component';

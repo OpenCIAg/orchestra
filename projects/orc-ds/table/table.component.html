@@ -1,70 +1,138 @@
 <div
-  [id]="id() || null"
-  class="p-datatable p-component orc-table-container"
+  [attr.id]="id() || null"
+  class="orc-table-container"
   [class.orc-table-container--bordered]="bordered()"
-  [class.orc-table-container--striped]="striped()"
-  [class.orc-table-container--hoverable]="hoverable()"
-  [class]="'p-datatable p-component orc-table-container ' + styleClass()"
-  [attr.data-pc-name]="'datatable'"
+  [class.orc-table-container--striped]="striped() || stripedRows()"
+  [class.orc-table-container--hoverable]="hoverable() || rowHover()"
+  [class.orc-table-container--gridlines]="showGridlines()"
+  [class.orc-table-container--small]="resolvedSize() === 'sm'"
+  [class.orc-table-container--large]="resolvedSize() === 'lg'"
+  [class]="'orc-table-container ' + styleClass()"
   [style]="style()"
 >
-  <div class="orc-table-wrapper" role="region" [attr.aria-label]="ariaLabel()" tabindex="0">
+  @if (paginatorPosition() === 'top' || paginatorPosition() === 'both') {
+    <ng-container *ngTemplateOutlet="pagination" />
+  }
+  <div
+    class="orc-table-wrapper"
+    role="region"
+    [attr.aria-label]="effectiveAriaLabel()"
+    [attr.aria-busy]="loading()"
+    tabindex="0"
+    [style.max-height]="scrollable() ? scrollHeight() : null"
+  >
     @if (filterable()) {
-      <input class="orc-table__filter" type="search" [value]="filter()" [attr.placeholder]="filterPlaceholder() || null" (input)="applyFilter(($any($event.target)).value)" [attr.aria-label]="filterAriaLabel() || null" />
+      <input
+        class="orc-table__filter"
+        type="search"
+        [value]="filter()"
+        [attr.placeholder]="effectiveFilterPlaceholder()"
+        (input)="applyFilter($any($event.target).value)"
+        [attr.aria-label]="effectiveFilterAriaLabel()"
+      />
     }
-    <table class="orc-table {{ tableStyleClass() }}">
+    <table class="orc-table {{ tableStyleClass() }}" [style]="tableStyle()">
       <!-- ── Cabeçalho da Tabela ─────────────────────────────── -->
       <thead class="orc-table__head">
         <tr class="orc-table__head-row">
           <!-- Coluna de Seleção em Massa -->
           @if (selectionEnabled()) {
             <th scope="col" class="orc-table__th orc-table__th--checkbox">
-              <orc-checkbox
-                [checked]="isAllSelected()"
-                [indeterminate]="isSomeSelected()"
-                (change)="toggleSelectAll($event)"
-                [ariaLabel]="selectAllAriaLabel()"
-              />
+              @if (selectionMode() !== 'single') {
+                <orc-checkbox
+                  [checked]="isAllSelected()"
+                  [indeterminate]="isSomeSelected()"
+                  (change)="toggleSelectAll($event)"
+                  [ariaLabel]="effectiveSelectAllAriaLabel()"
+                  [disabled]="selectableRows().length === 0"
+                />
+              } @else {
+                <span class="orc-table__selection-heading">Selection</span>
+              }
             </th>
           }
 
           <!-- Colunas Declaradas via <orc-column> -->
-          @for (col of effectiveColumns(); track col.key) {
+          @for (col of effectiveColumns(); track col.key()) {
             <th
               scope="col"
               class="orc-table__th"
-              [class.orc-table__th--sortable]="col.sortable"
-              [class.orc-table__th--sorted]="sortColumn() === col.key"
-              [style.width]="col.width || null"
-              [style.text-align]="col.align"
-              [attr.aria-sort]="getAriaSort(col.key, col.sortable)"
-              (click)="handleSort(col.key, col.sortable)"
-              (keydown.enter)="handleSort(col.key, col.sortable)"
-              (keydown.space)="handleSort(col.key, col.sortable); $event.preventDefault()"
-              [tabindex]="col.sortable ? 0 : -1"
+              [class.orc-table__th--sortable]="col.sortable()"
+              [class.orc-table__th--sorted]="
+                sorting().column === col.key() && sorting().direction !== 'none'
+              "
+              [style.width]="col.width() || null"
+              [style.text-align]="col.align()"
+              [attr.aria-sort]="getAriaSort(col.key(), col.sortable())"
+              (click)="handleSort(col.key(), col.sortable(), $event)"
+              (keydown)="onHeaderKeydown(col, $event)"
+              [tabindex]="col.sortable() ? 0 : -1"
             >
-              @if (col.headerTemplate; as headerTpl) {
-                <ng-container *ngTemplateOutlet="headerTpl.templateRef; context: { column: col }"></ng-container>
+              @if (col.headerTemplate(); as headerTpl) {
+                <ng-container
+                  *ngTemplateOutlet="
+                    headerTpl.templateRef;
+                    context: { column: col }
+                  "
+                ></ng-container>
               } @else {
-                <div class="orc-table__th-content" [style.justify-content]="col.align === 'center' ? 'center' : (col.align === 'right' ? 'flex-end' : 'flex-start')">
-                  <span class="orc-table__th-text">{{ col.header }}</span>
-                  @if (col.sortable) {
+                <div
+                  class="orc-table__th-content"
+                  [style.justify-content]="
+                    col.align() === 'center'
+                      ? 'center'
+                      : col.align() === 'right'
+                        ? 'flex-end'
+                        : 'flex-start'
+                  "
+                >
+                  <span class="orc-table__th-text">{{ col.header() }}</span>
+                  @if (
+                    col.sortable() &&
+                    (showInitialSortBadge() ||
+                      (sorting().column === col.key() &&
+                        sorting().direction !== 'none'))
+                  ) {
                     <span class="orc-table__sort-icon" aria-hidden="true">
-                        @if (sortColumn() === col.key) {
-                        @if (sortDirection() === 'asc') {
+                      @if (
+                        sorting().column === col.key() &&
+                        sorting().direction !== 'none'
+                      ) {
+                        @if (sorting().direction === 'asc') {
                           <!-- Seta Ascendente (SVG Figma) -->
-                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
                             <path d="M8 12V4M4 8l4-4 4 4" />
                           </svg>
-                        } @else if (sortDirection() === 'desc') {
+                        } @else if (sorting().direction === 'desc') {
                           <!-- Seta Descendente (SVG Figma) -->
-                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
                             <path d="M8 4v8M4 8l4 4 4-4" />
                           </svg>
                         }
                       } @else {
                         <!-- Ícone Neutro de Ordenação -->
-                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <svg
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.75"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
                           <path d="M5 6l3-3 3 3M5 10l3 3 3-3" opacity="0.4" />
                         </svg>
                       }
@@ -85,12 +153,21 @@
             <tr class="orc-table__row orc-table__row--loading">
               @if (selectionEnabled()) {
                 <td class="orc-table__td orc-table__td--checkbox">
-                  <orc-skeleton variant="rectangular" width="18px" height="18px" borderRadius="4px" />
+                  <orc-skeleton
+                    variant="rectangular"
+                    width="18px"
+                    height="18px"
+                    borderRadius="4px"
+                  />
                 </td>
               }
-              @for (col of effectiveColumns(); track col.key) {
+              @for (col of effectiveColumns(); track col.key()) {
                 <td class="orc-table__td">
-                  <orc-skeleton variant="text" height="16px" [width]="col.key === 'id' ? '40px' : '75%'" />
+                  <orc-skeleton
+                    variant="text"
+                    height="16px"
+                    [width]="col.key() === 'id' ? '40px' : '75%'"
+                  />
                 </td>
               }
             </tr>
@@ -101,62 +178,124 @@
           <tr class="orc-table__empty-row">
             <td
               class="orc-table__empty-cell"
-              [attr.colspan]="effectiveColumns().length + (selectionEnabled() ? 1 : 0)"
+              [attr.colspan]="
+                effectiveColumns().length + (selectionEnabled() ? 1 : 0)
+              "
             >
               <div class="orc-table__empty-content">
                 <div class="orc-table__empty-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect
+                      x="3"
+                      y="3"
+                      width="18"
+                      height="18"
+                      rx="2"
+                      ry="2"
+                    ></rect>
                     <line x1="3" y1="9" x2="21" y2="9"></line>
                     <line x1="9" y1="21" x2="9" y2="9"></line>
                   </svg>
                 </div>
-                @if (emptyTitle()) { <h4 class="orc-table__empty-title">{{ emptyTitle() }}</h4> }
-                @if (emptyMessage()) { <p class="orc-table__empty-desc">{{ emptyMessage() }}</p> }
+                @if (emptyTitle()) {
+                  <h4 class="orc-table__empty-title">{{ emptyTitle() }}</h4>
+                }
+                @if (emptyMessage()) {
+                  <p class="orc-table__empty-desc">{{ emptyMessage() }}</p>
+                }
               </div>
             </td>
           </tr>
         }
         <!-- Linhas de Dados -->
         @else {
-          @for (row of displayData(); track getRowId(row); let rowIndex = $index) {
+          @for (
+            row of displayData();
+            track trackRow($index, row);
+            let rowIndex = $index
+          ) {
             @let selected = isRowSelected(row);
             <tr
               class="orc-table__row"
               [class.orc-table__row--selected]="selected"
-              (click)="handleRowClick(row)"
+              [attr.aria-selected]="selectionEnabled() ? selected : null"
+              tabindex="0"
+              [attr.aria-label]="
+                effectiveRowAriaLabel()
+                  ? effectiveRowAriaLabel() + ' ' + (rowIndex + 1)
+                  : null
+              "
+              (click)="handleRowClick(row, $event)"
+              (keydown)="onRowKeydown(row, $event)"
             >
               <!-- Checkbox de Seleção por Linha -->
               @if (selectionEnabled()) {
-                <td class="orc-table__td orc-table__td--checkbox" (click)="$event.stopPropagation()">
+                <td
+                  class="orc-table__td orc-table__td--checkbox"
+                  (click)="$event.stopPropagation()"
+                >
                   <orc-checkbox
                     [checked]="selected"
                     (change)="toggleRowSelect(row, $event)"
-                    [ariaLabel]="rowAriaLabel() ? rowAriaLabel() + ' ' + (rowIndex + 1) : undefined"
+                    [ariaLabel]="
+                      (effectiveRowAriaLabel() || 'Select row') +
+                      ' ' +
+                      (displayRowIndex(rowIndex) + 1)
+                    "
+                    [disabled]="
+                      !isRowSelectable(row, displayRowIndex(rowIndex))
+                    "
                   />
                 </td>
               }
 
               <!-- Células de Dados -->
-              @for (col of effectiveColumns(); track col.key) {
-                <td class="orc-table__td" [style.text-align]="col.align">
-                  @if (col.cellTemplate; as cellTpl) {
+              @for (col of effectiveColumns(); track col.key()) {
+                <td class="orc-table__td" [style.text-align]="col.align()">
+                  @if (col.cellTemplate(); as cellTpl) {
                     <ng-container
-                      *ngTemplateOutlet="cellTpl.templateRef; context: {
-                        $implicit: row,
-                        row: row,
-                        index: rowIndex,
-                        column: col,
-                        value: getCellValue(row, col.key)
-                      }"
+                      *ngTemplateOutlet="
+                        cellTpl.templateRef;
+                        context: {
+                          $implicit: row,
+                          row: row,
+                          index: rowIndex,
+                          column: col,
+                          value: getCellValue(row, col.key()),
+                        }
+                      "
                     ></ng-container>
                   } @else {
-                    <span class="orc-table__cell-value">{{ getCellValue(row, col.key) }}</span>
+                    <span class="orc-table__cell-value">{{
+                      getCellValue(row, col.key())
+                    }}</span>
                   }
                 </td>
               }
             </tr>
-            @if (rowExpansionTemplate() && isExpanded(row)) { <tr class="orc-table__expansion-row"><td [attr.colspan]="effectiveColumns().length + (selectionEnabled() ? 1 : 0)"><ng-container *ngTemplateOutlet="rowExpansionTemplate()!.templateRef; context: { $implicit: row, row: row, index: rowIndex }"></ng-container></td></tr> }
+            @if (rowExpansionTemplate() && isExpanded(row)) {
+              <tr class="orc-table__expansion-row">
+                <td
+                  [attr.colspan]="
+                    effectiveColumns().length + (selectionEnabled() ? 1 : 0)
+                  "
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      rowExpansionTemplate()!.templateRef;
+                      context: { $implicit: row, row: row, index: rowIndex }
+                    "
+                  ></ng-container>
+                </td>
+              </tr>
+            }
           }
         }
       </tbody>
@@ -164,17 +303,40 @@
   </div>
 
   <!-- ── Rodapé com Paginação Integrada ───────────────────────── -->
-  @if (effectivePaginated() && effectiveTotalItems() > 0) {
-    <div class="orc-table__footer">
-      <orc-paginator
-        [totalItems]="effectiveTotalItems()"
-        [(pageSize)]="pageSize"
-        [(currentPage)]="currentPage"
-        [pageSizeOptions]="effectiveRowsPerPageOptions()"
-        [showPageSizeSelector]="true"
-        (pageChange)="handlePageChange($event)"
-      />
+  @if (paginatorPosition() === 'bottom' || paginatorPosition() === 'both') {
+    <ng-container *ngTemplateOutlet="pagination" />
+  }
+  <ng-template #pagination>
+    @if (
+      effectivePaginated() &&
+      (alwaysShowPaginator() || effectiveTotalItems() > effectivePageSize())
+    ) {
+      <div class="orc-table__footer">
+        <orc-paginator
+          [totalItems]="effectiveTotalItems()"
+          [pageSize]="effectivePageSize()"
+          [currentPage]="displayedPage()"
+          [pageSizeOptions]="effectiveRowsPerPageOptions()"
+          [showPageSizeSelector]="true"
+          [alwaysShow]="alwaysShowPaginator()"
+          [pageLinkSize]="pageLinks()"
+          [styleClass]="paginatorStyleClass()"
+          [showCurrentPageReport]="showCurrentPageReport()"
+          [currentPageReportTemplate]="currentPageReportTemplate()"
+          [showJumpToPageDropdown]="showJumpToPageDropdown()"
+          [showJumpToPageInput]="showJumpToPageInput()"
+          [showFirstLastIcon]="showFirstLastIcon()"
+          [showPageLinks]="showPageLinks()"
+          (pageChange)="handlePageChange($event)"
+        />
+      </div>
+    }
+  </ng-template>
+  @if (footerTemplate()) {
+    <div class="orc-table__aggregate-footer">
+      <ng-container
+        *ngTemplateOutlet="footerTemplate()!.templateRef"
+      ></ng-container>
     </div>
   }
-  @if (footerTemplate()) { <div class="orc-table__aggregate-footer"><ng-container *ngTemplateOutlet="footerTemplate()!.templateRef"></ng-container></div> }
 </div>

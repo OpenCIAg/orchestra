@@ -1,1 +1,23 @@
-<label class="orc-form-field" [class.orc-form-field--invalid]="error()"><span class="orc-form-field__label">{{label()}} @if(required()){<span aria-hidden="true">*</span>}</span><span class="orc-form-field__control"><ng-content /></span>@if(error()){<span class="orc-form-field__error" role="alert">{{error()}}</span>}@else if(helperText()){<span class="orc-form-field__help">{{helperText()}}</span>}</label>
+<fieldset
+  class="orc-form-field"
+  [attr.id]="fieldId"
+  [class.orc-form-field--invalid]="error()"
+  [attr.aria-describedby]="error() ? errorId : helperText() ? helpId : null"
+>
+  @if (label()) {
+    <legend class="orc-form-field__label" [id]="labelId">
+      {{ label() }}
+      @if (required()) {
+        <span aria-hidden="true">*</span>
+      }
+    </legend>
+  }
+  <div class="orc-form-field__control"><ng-content /></div>
+  @if (error()) {
+    <span class="orc-form-field__error" [id]="errorId" role="alert">{{
+      error()
+    }}</span>
+  } @else if (helperText()) {
+    <span class="orc-form-field__help" [id]="helpId">{{ helperText() }}</span>
+  }
+</fieldset>

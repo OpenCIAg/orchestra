@@ -1,0 +1,120 @@
+<div
+  class="p-multiselect p-component orc-p2-multi-select"
+  [class]="'p-multiselect p-component orc-p2-multi-select ' + styleClass()"
+  [style]="style()"
+  [class.fluid]="fluid()"
+  [attr.data-pc-name]="'multiselect'"
+>
+  @if (label()) {
+    <label [for]="effectiveId()">{{ label() }}</label>
+  }
+  <button
+    type="button"
+    class="p-multiselect-label p-multiselect-trigger trigger"
+    #triggerEl
+    role="combobox"
+    [disabled]="disabled() || cvaDisabled()"
+    [attr.id]="effectiveId()"
+    [attr.tabindex]="tabindex()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-labelledby]="ariaLabelledBy()"
+    [attr.aria-haspopup]="'listbox'"
+    [attr.aria-expanded]="open()"
+    [attr.aria-controls]="effectiveId() + '-panel'"
+    [attr.aria-activedescendant]="activeOptionId()"
+    [attr.aria-readonly]="readonly()"
+    (click)="toggleOpen()"
+    (keydown)="onKeydown($event)"
+    (focus)="onFocus.emit($event)"
+    (blur)="onBlur.emit($event)"
+  >
+    <span>{{ selectedLabels() || placeholder() }}</span
+    ><orc-icon name="keyboard_arrow_down" size="sm" aria-hidden="true" />
+  </button>
+  @if (showClear() && value().length && !readonly()) {
+    <button
+      type="button"
+      class="clear"
+      [disabled]="disabled() || cvaDisabled()"
+      (click)="clear($event)"
+      [attr.aria-label]="clearAriaLabel() || 'Clear selection'"
+    >
+      ×
+    </button>
+  }
+</div>
+
+<!-- Detached option panel: portaled through the shared list-picker overlay
+     so ancestor overflow can never clip it. -->
+<ng-template #panelTemplate>
+  <div class="orc-p2-multi-select-panel orc-p2-portal-panel">
+    @if (
+      showToggleAll() &&
+      showHeader() &&
+      !readonly() &&
+      (allOptionsSelected() ? clearAllLabel() : selectAllLabel())
+    ) {
+      <button
+        type="button"
+        class="toggle-all"
+        [disabled]="disabled() || cvaDisabled()"
+        (click)="selectAll($event)"
+      >
+        {{ allOptionsSelected() ? clearAllLabel() : selectAllLabel() }}
+      </button>
+    }
+    @if (filter()) {
+      <input
+        [value]="filterValue()"
+        [disabled]="disabled() || cvaDisabled()"
+        [attr.placeholder]="filterPlaceholder() || null"
+        (input)="onFilterInput($event)"
+        [attr.aria-label]="ariaFilterLabel() || null"
+        [autofocus]="autofocusFilter()"
+      />
+    }
+    <ul
+      class="p-multiselect-panel p-component options"
+      [class]="'p-multiselect-panel p-component options ' + panelStyleClass()"
+      [style]="panelStyle()"
+      [id]="effectiveId() + '-panel'"
+      role="listbox"
+      aria-multiselectable="true"
+    >
+      @if (loading()) {
+        <li class="empty" aria-live="polite">
+          {{ loadingMessage() || 'Loading…' }}
+        </li>
+      } @else {
+        @for (
+          option of filteredOptions();
+          track getOptionValue(option);
+          let index = $index
+        ) {
+          <li
+            role="option"
+            [id]="effectiveId() + '-option-' + index"
+            [attr.aria-selected]="isSelected(option)"
+            [attr.aria-disabled]="
+              isOptionDisabled(option) || disabled() || cvaDisabled()
+            "
+            [class.is-disabled]="
+              isOptionDisabled(option) || disabled() || cvaDisabled()
+            "
+            [class.is-active]="activeIndex() === index"
+            (click)="select(option, $event)"
+          >
+            <span class="check">{{ isSelected(option) ? '✓' : '' }}</span
+            >{{ getOptionLabel(option) }}
+          </li>
+        } @empty {
+          @if (filterValue() ? emptyFilterMessage() : emptyMessage()) {
+            <li class="empty">
+              {{ filterValue() ? emptyFilterMessage() : emptyMessage() }}
+            </li>
+          }
+        }
+      }
+    </ul>
+  </div>
+</ng-template>

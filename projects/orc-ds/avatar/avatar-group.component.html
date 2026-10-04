@@ -27,7 +27,7 @@
   </ng-container>
 
   <!-- Projeção de conteúdo quando items não for informado -->
-  <ng-content></ng-content>
+  <ng-content *ngIf="items().length === 0"></ng-content>
 
   <!-- Contador Excedente (+N) -->
   <orc-avatar

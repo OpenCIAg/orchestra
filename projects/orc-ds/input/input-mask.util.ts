@@ -12,7 +12,11 @@ export function applyMask(rawVal: string, maskPattern: string): string {
   let formatted = '';
   let rawIdx = 0;
 
-  for (let mIdx = 0; mIdx < maskPattern.length && rawIdx < rawChars.length; mIdx++) {
+  for (
+    let mIdx = 0;
+    mIdx < maskPattern.length && rawIdx < rawChars.length;
+    mIdx++
+  ) {
     const maskChar = maskPattern[mIdx];
     const rawChar = rawChars[rawIdx];
 

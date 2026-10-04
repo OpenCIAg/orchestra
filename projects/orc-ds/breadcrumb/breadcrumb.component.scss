@@ -147,7 +147,7 @@
   }
 
   // ── SEPARADOR AUTOMÁTICO PARA PROJEÇÃO DECLARATIVA ────────
-  ::ng-deep app-breadcrumb-item + app-breadcrumb-item {
+  ::ng-deep orc-breadcrumb-item + orc-breadcrumb-item {
     &::before {
       content: '';
       display: inline-block;

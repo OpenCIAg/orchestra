@@ -1,7 +1,9 @@
 <div
-  [id]="id() || null"
+  [attr.id]="id() || null"
   class="p-accordion p-component orc-accordion"
-  [class]="'p-accordion p-component orc-accordion ' + styleClass()"
+  [ngClass]="styleClass()"
+  [ngStyle]="style()"
+  [style.--orc-accordion-transition]="transitionOptions() || null"
   [class.orc-accordion--separated]="variant() === 'separated'"
   [class.orc-accordion--bordered]="variant() === 'bordered'"
   role="region"

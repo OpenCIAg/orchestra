@@ -30,7 +30,8 @@ export class AvatarGroupComponent {
   readonly excessCount = input<number>(0);
   readonly excessColorVariant = input<AvatarColorVariant>('default');
   readonly bordered = input<boolean>(true);
-  readonly styleClass = input(''); readonly label = input<string | undefined>(undefined);
+  readonly styleClass = input('');
+  readonly label = input<string | undefined>(undefined);
 
   // Sinais computados
   readonly visibleItems = computed(() => {

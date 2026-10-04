@@ -10,10 +10,13 @@ import {
   effect,
   viewChildren,
   booleanAttribute,
+  ElementRef,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ORC_OTP_INPUT, OtpInputContext } from './otp.types';
+import { normalizeSize, SizeInput } from '@ciag/orchestra/internal';
 import { OtpSlotComponent } from './otp-slot.component';
 import { OtpSeparatorComponent } from './otp-separator.component';
 import { OtpGroupComponent } from './otp-group.component';
@@ -42,9 +45,18 @@ import { OtpGroupComponent } from './otp-group.component';
     },
   ],
 })
-export class OtpInputComponent implements ControlValueAccessor, OtpInputContext {
+export class OtpInputComponent
+  implements ControlValueAccessor, OtpInputContext
+{
+  private readonly hostElement = inject(ElementRef<HTMLElement>);
   // Inputs
-  readonly length = input<number>(6);
+  readonly length = input<number, unknown>(6, {
+    transform: (value: unknown) =>
+      Math.max(
+        1,
+        Number.isFinite(Number(value)) ? Math.floor(Number(value)) : 6,
+      ),
+  });
   readonly placeholder = input<string>('');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
@@ -54,7 +66,14 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
   readonly integerOnly = input(false, { transform: booleanAttribute });
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
-  readonly size = input<'small' | 'large' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
   readonly inputMode = input<'numeric' | 'text'>('numeric');
   readonly ariaLabel = input<string | undefined>(undefined);
 
@@ -95,7 +114,10 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
     effect(() => {
       const len = this.length();
       const currentVal = this.value() || '';
-      const newValues = Array.from({ length: len }, (_, i) => currentVal[i] || '');
+      const newValues = Array.from(
+        { length: len },
+        (_, i) => currentVal[i] || '',
+      );
       this.inputValues.set(newValues);
     });
 
@@ -135,6 +157,8 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
 
   // Handle Input Changes from Slots
   onSlotInput(event: Event, index: number): void {
+    if (this.isDisabled() || this.readonly()) return;
+    if ('isComposing' in event && (event as InputEvent).isComposing) return;
     const target = event.target as HTMLInputElement;
     let val = target.value;
 
@@ -159,10 +183,15 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
 
   // Handle key events from Slots
   onSlotKeyDown(event: KeyboardEvent, index: number): void {
+    if (event.isComposing || event.keyCode === 229) return;
     const target = event.target as HTMLInputElement;
 
     switch (event.key) {
       case 'Backspace':
+        if (this.isDisabled() || this.readonly()) {
+          event.preventDefault();
+          break;
+        }
         if (!target.value && index > 0) {
           const currentValues = [...this.inputValues()];
           currentValues[index - 1] = '';
@@ -173,6 +202,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
           const currentValues = [...this.inputValues()];
           currentValues[index] = '';
           this.updateValues(currentValues);
+          event.preventDefault();
         }
         break;
 
@@ -192,12 +222,12 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
     }
   }
 
-  onSlotFocus(index: number): void {
-    this.onTouched();
-  }
+  /** @deprecated Retained for compatibility; focus does not change CVA touched state. */
+  onSlotFocus(_index: number): void {}
 
   onSlotPaste(event: ClipboardEvent, index: number): void {
     event.preventDefault();
+    if (this.isDisabled() || this.readonly()) return;
     const clipboardData = event.clipboardData;
     if (!clipboardData) return;
 
@@ -210,7 +240,7 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
   }
 
   private pasteCode(code: string, startIndex: number): void {
-    if (!code) return;
+    if (!code || this.isDisabled() || this.readonly()) return;
 
     const currentValues = [...this.inputValues()];
     const len = this.length();
@@ -247,6 +277,18 @@ export class OtpInputComponent implements ControlValueAccessor, OtpInputContext 
     }
   }
 
-  onSlotFocusEvent(event: Event): void { this.onFocus.emit(event); }
-  onSlotBlur(event: Event): void { this.onBlur.emit(event); this.onTouched(); }
+  onSlotFocusEvent(event: Event): void {
+    this.onFocus.emit(event);
+  }
+  onSlotBlur(event: Event): void {
+    this.onBlur.emit(event);
+    const relatedTarget = (event as FocusEvent).relatedTarget;
+    const NodeConstructor =
+      this.hostElement.nativeElement.ownerDocument.defaultView?.Node;
+    const remainsInside =
+      !!NodeConstructor &&
+      relatedTarget instanceof NodeConstructor &&
+      this.hostElement.nativeElement.contains(relatedTarget);
+    if (!remainsInside) this.onTouched();
+  }
 }

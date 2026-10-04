@@ -1,19 +1,92 @@
-<div class="p-colorpicker p-component orc-color-picker" [class]="'p-colorpicker p-component orc-color-picker ' + styleClass()" [style]="style()" [class.orc-color-picker--disabled]="effectiveDisabled()" [attr.data-pc-name]="'colorpicker'">
-  @if (label()) { <label class="orc-color-picker__label" [for]="effectiveId()">{{ label() }}</label> }
+<div
+  class="p-colorpicker p-component orc-color-picker"
+  [class]="'p-colorpicker p-component orc-color-picker ' + styleClass()"
+  [style]="style()"
+  [class.orc-color-picker--disabled]="effectiveDisabled()"
+  [attr.data-pc-name]="'colorpicker'"
+>
+  @if (label()) {
+    <label class="orc-color-picker__label" [for]="effectiveId()">{{
+      label()
+    }}</label>
+  }
   <div class="orc-color-picker__control">
-    <button type="button" class="orc-color-picker__trigger" [id]="effectiveId()" [disabled]="effectiveDisabled()" [attr.tabindex]="tabindex()" [attr.aria-label]="ariaLabel()" [attr.aria-expanded]="isOpen()" (click)="toggle()">
-      <span class="orc-color-picker__swatch" [style.background-color]="value() || 'transparent'" aria-hidden="true"></span>
-      @if (showInput() && value()) { <span class="orc-color-picker__value">{{ value() }}</span> }
+    <button
+      type="button"
+      class="orc-color-picker__trigger"
+      [id]="effectiveId()"
+      [disabled]="effectiveDisabled()"
+      [attr.tabindex]="tabindex()"
+      [attr.aria-label]="ariaLabel() || (label() ? null : 'Choose color')"
+      [attr.aria-expanded]="isOpen()"
+      (click)="toggle()"
+    >
+      <span
+        class="orc-color-picker__swatch"
+        [style.background-color]="value() || 'transparent'"
+        aria-hidden="true"
+      ></span>
+      @if (showInput() && value()) {
+        <span class="orc-color-picker__value">{{ value() }}</span>
+      }
       <span class="orc-color-picker__chevron" aria-hidden="true">⌄</span>
     </button>
-    @if (clearable() && value()) { <button type="button" class="orc-color-picker__clear" (click)="clear()" [disabled]="effectiveDisabled()" [attr.aria-label]="clearAriaLabel() || null">×</button> }
+    @if (clearable() && value()) {
+      <button
+        type="button"
+        class="orc-color-picker__clear"
+        (click)="clear()"
+        [disabled]="effectiveDisabled()"
+        [attr.aria-label]="clearAriaLabel() || 'Clear color'"
+      >
+        ×
+      </button>
+    }
   </div>
   @if (isOpen() || inline()) {
-    <div class="p-colorpicker-panel p-component orc-color-picker__panel" [class]="'p-colorpicker-panel p-component orc-color-picker__panel ' + panelStyleClass()" role="dialog" [attr.aria-label]="panelAriaLabel() || null">
-      <input class="orc-color-picker__native" type="color" [value]="nativeValue()" (input)="onNativeColor($event)" [disabled]="effectiveDisabled()" [attr.aria-label]="nativeAriaLabel() || null" />
-      @if (showInput()) { <input class="orc-color-picker__text" type="text" [value]="value()" (input)="onTextInput($event)" [attr.aria-label]="inputAriaLabel() || null" inputmode="text" /> }
-      <div class="orc-color-picker__presets" [attr.aria-label]="presetsAriaLabel() || null">
-        @for (color of presets(); track color) { <button type="button" class="orc-color-picker__preset" [style.background-color]="color" [class.orc-color-picker__preset--active]="value().toUpperCase() === color.toUpperCase()" [attr.aria-label]="color" (click)="selectColor(color)"></button> }
+    <div
+      class="p-colorpicker-panel p-component orc-color-picker__panel"
+      [class]="
+        'p-colorpicker-panel p-component orc-color-picker__panel ' +
+        panelStyleClass()
+      "
+      role="dialog"
+      [attr.aria-label]="panelAriaLabel() || null"
+    >
+      <input
+        class="orc-color-picker__native"
+        type="color"
+        [value]="nativeValue()"
+        (input)="onNativeColor($event)"
+        [disabled]="effectiveDisabled()"
+        [attr.aria-label]="nativeAriaLabel() || null"
+      />
+      @if (showInput()) {
+        <input
+          class="orc-color-picker__text"
+          type="text"
+          [value]="value()"
+          (input)="onTextInput($event)"
+          [attr.aria-label]="inputAriaLabel() || null"
+          inputmode="text"
+        />
+      }
+      <div
+        class="orc-color-picker__presets"
+        [attr.aria-label]="presetsAriaLabel() || null"
+      >
+        @for (color of presets(); track color) {
+          <button
+            type="button"
+            class="orc-color-picker__preset"
+            [style.background-color]="color"
+            [class.orc-color-picker__preset--active]="
+              value().toUpperCase() === color.toUpperCase()
+            "
+            [attr.aria-label]="color"
+            (click)="selectColor(color)"
+          ></button>
+        }
       </div>
     </div>
   }

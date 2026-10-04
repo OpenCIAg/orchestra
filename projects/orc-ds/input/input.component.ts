@@ -14,7 +14,8 @@ import {
   numberAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CvaControl } from '@ciag/orchestra/internal';
 import { InputSize, InputStatus, InputType } from './input.types';
 import { applyMask, cleanMask } from './input-mask.util';
 
@@ -35,11 +36,12 @@ let nextInputUniqueId = 0;
     },
   ],
 })
-export class InputComponent implements ControlValueAccessor {
+export class InputComponent extends CvaControl {
   private readonly uniqueId = `orc-input-${++nextInputUniqueId}`;
 
   // ── Native Input Element Reference ────────────────────────
-  readonly nativeInputRef = viewChild<ElementRef<HTMLInputElement>>('nativeInput');
+  readonly nativeInputRef =
+    viewChild<ElementRef<HTMLInputElement>>('nativeInput');
 
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly id = input<string>('');
@@ -60,10 +62,12 @@ export class InputComponent implements ControlValueAccessor {
   readonly mask = input<string>('');
   readonly unmaskValue = input(false, { transform: booleanAttribute });
   readonly maxLength = input<number | undefined, unknown>(undefined, {
-    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+    transform: (val: unknown) =>
+      val !== undefined && val !== null ? numberAttribute(val) : undefined,
   });
   readonly minLength = input<number | undefined, unknown>(undefined, {
-    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+    transform: (val: unknown) =>
+      val !== undefined && val !== null ? numberAttribute(val) : undefined,
   });
   readonly min = input<number | string | undefined>(undefined);
   readonly max = input<number | string | undefined>(undefined);
@@ -74,7 +78,9 @@ export class InputComponent implements ControlValueAccessor {
   readonly autocomplete = input<string>('off');
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly variant = input<'filled' | 'outlined' | undefined>(undefined);
   readonly fluid = input(false, { transform: booleanAttribute });
 
@@ -98,23 +104,22 @@ export class InputComponent implements ControlValueAccessor {
   // ── Estado Interno ────────────────────────────────────────
   protected readonly isFocused = signal<boolean>(false);
   protected readonly isPasswordVisible = signal<boolean>(false);
-  protected readonly cvaDisabled = signal<boolean>(false);
   /**
    * Keeps browser editing state independent from the public model input.
    * Angular may re-apply a parent model value during the same input event;
    * binding the native control to this writable state prevents keystrokes
    * from being visually rolled back before the parent receives valueChange.
    */
-  protected readonly viewValue = linkedSignal<string | number>(() => this.value());
+  protected readonly viewValue = linkedSignal<string | number>(() =>
+    this.value(),
+  );
 
   // ── Computeds ─────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
+  readonly effectiveId = computed(
+    () => this.inputId()?.trim() || this.id().trim() || this.uniqueId,
+  );
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
   readonly errorId = computed(() => `${this.effectiveId()}-error`);
-
-  readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled()
-  );
 
   readonly currentType = computed(() => {
     if (this.type() === 'password') {
@@ -138,7 +143,10 @@ export class InputComponent implements ControlValueAccessor {
     if (this.mask()) {
       return this.mask().length;
     }
-    return this.maxLength();
+    const maxLength = this.maxLength();
+    if (maxLength === undefined || !Number.isFinite(maxLength))
+      return undefined;
+    return Math.max(0, Math.floor(maxLength));
   });
 
   readonly isClearVisible = computed(() => {
@@ -152,27 +160,43 @@ export class InputComponent implements ControlValueAccessor {
   });
 
   readonly computedAriaDescribedBy = computed(() => {
-    const ids: string[] = [];
-    if (this.ariaDescribedby()) {
-      ids.push(this.ariaDescribedby());
-    }
-    if ((this.status() === 'error' || this.errorMessage()) && this.errorMessage()) {
+    const ids = this.ariaDescribedby().trim().split(/\s+/).filter(Boolean);
+    if (this.resolvedErrorMessage()) {
       ids.push(this.errorId());
-    } else if (this.helperText()) {
+    } else if (this.resolvedHelperText()) {
       ids.push(this.helperId());
     }
-    return ids.length ? ids.join(' ') : null;
+    return ids.length ? [...new Set(ids)].join(' ') : null;
   });
+  readonly resolvedLabel = computed(() => this.label().trim());
+  readonly resolvedHelperText = computed(() => this.helperText().trim());
+  readonly resolvedErrorMessage = computed(() => this.errorMessage().trim());
+  readonly resolvedAriaLabel = computed(() => this.ariaLabel().trim() || null);
+  readonly resolvedAriaLabelledBy = computed(
+    () => this.ariaLabelledBy()?.trim() || null,
+  );
+  readonly resolvedClearAriaLabel = computed(
+    () => this.clearAriaLabel()?.trim() || 'Clear input',
+  );
+  readonly resolvedShowPasswordAriaLabel = computed(
+    () => this.showPasswordAriaLabel()?.trim() || 'Show password',
+  );
+  readonly resolvedHidePasswordAriaLabel = computed(
+    () => this.hidePasswordAriaLabel()?.trim() || 'Hide password',
+  );
 
   // ── ControlValueAccessor ──────────────────────────────────
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  protected override isSelfDisabled(): boolean {
+    return this.disabled();
+  }
 
-  writeValue(value: any): void {
+  override writeValue(value: any): void {
     const val = value ?? '';
     if (this.mask() && val) {
       const masked = applyMask(String(val), this.mask());
-      const nextValue = this.unmaskValue() ? cleanMask(masked, this.mask()) : masked;
+      const nextValue = this.unmaskValue()
+        ? cleanMask(masked, this.mask())
+        : masked;
       this.viewValue.set(nextValue);
       this.value.set(nextValue);
     } else {
@@ -181,41 +205,54 @@ export class InputComponent implements ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.cvaDisabled.set(isDisabled);
-  }
-
   // ── Handlers de Eventos ───────────────────────────────────
   protected onInput(event: Event): void {
     const target = event.target as HTMLInputElement;
-    let rawVal = target.value;
+    const rawVal = target.value;
 
     if (this.mask()) {
+      const mask = this.mask();
+      const selectionStart = target.selectionStart ?? rawVal.length;
+      const selectionEnd = target.selectionEnd ?? selectionStart;
+      const rawStart = cleanMask(
+        applyMask(rawVal.slice(0, selectionStart), mask),
+        mask,
+      ).length;
+      const rawEnd = cleanMask(
+        applyMask(rawVal.slice(0, selectionEnd), mask),
+        mask,
+      ).length;
       const maskedVal = applyMask(rawVal, this.mask());
       target.value = maskedVal;
-      const emittedVal = this.unmaskValue() ? cleanMask(maskedVal, this.mask()) : maskedVal;
+      const emittedVal = this.unmaskValue()
+        ? cleanMask(maskedVal, this.mask())
+        : maskedVal;
       this.viewValue.set(emittedVal);
       this.value.set(emittedVal);
-      this.onChange(emittedVal);
+      this.cvaOnChange(emittedVal);
       this.inputChange.emit(emittedVal);
+      const nextSelectionStart = this.caretForRawOffset(rawStart, maskedVal);
+      const nextSelectionEnd = this.caretForRawOffset(rawEnd, maskedVal);
+      queueMicrotask(() => {
+        try {
+          target.setSelectionRange(nextSelectionStart, nextSelectionEnd);
+        } catch {
+          // Number and other non-text input types do not expose a selection.
+        }
+      });
       return;
     }
 
-    const val = this.type() === 'number' && rawVal !== ''
-      ? (target.valueAsNumber || rawVal)
-      : rawVal;
+    const val =
+      this.type() === 'number' && rawVal !== ''
+        ? Number.isNaN(target.valueAsNumber)
+          ? rawVal
+          : target.valueAsNumber
+        : rawVal;
 
     this.viewValue.set(val);
     this.value.set(val);
-    this.onChange(val);
+    this.cvaOnChange(val);
     this.inputChange.emit(val);
   }
 
@@ -226,7 +263,7 @@ export class InputComponent implements ControlValueAccessor {
 
   protected onBlur(event: FocusEvent): void {
     this.isFocused.set(false);
-    this.onTouched();
+    this.cvaOnTouched();
     this.blur.emit(event);
   }
 
@@ -235,7 +272,8 @@ export class InputComponent implements ControlValueAccessor {
     event.stopPropagation();
     this.viewValue.set('');
     this.value.set('');
-    this.onChange('');
+    this.cvaOnChange('');
+    this.cvaOnTouched();
     this.inputChange.emit('');
     this.clear.emit();
     this.focusNative();
@@ -244,7 +282,18 @@ export class InputComponent implements ControlValueAccessor {
   protected togglePasswordVisibility(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    this.isPasswordVisible.update(visible => !visible);
+    this.isPasswordVisible.update((visible) => !visible);
+  }
+
+  private caretForRawOffset(rawOffset: number, formatted: string): number {
+    const mask = this.mask();
+    let rawIndex = 0;
+    for (let index = 0; index < mask.length; index += 1) {
+      if (!'09Aa*'.includes(mask[index])) continue;
+      if (rawIndex >= rawOffset) return index;
+      rawIndex += 1;
+    }
+    return formatted.length;
   }
 
   focusNative(): void {

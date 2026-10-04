@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+.orc-p2-code {
+  overflow: hidden;
+  border: 1px solid var(--orc-component-code-border);
+  border-radius: 0.75rem;
+  background: var(--orc-component-code-surface);
+  color: var(--orc-component-code-text);
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--orc-component-code-border);
+  color: var(--orc-component-code-muted);
+  font-size: 0.75rem;
+}
+.toolbar button {
+  flex: none;
+  border: 0;
+  border-radius: 0.35rem;
+  background: var(--orc-component-code-surface-raised);
+  color: var(--orc-component-code-text);
+  padding: 0.35rem 0.6rem;
+  font: inherit;
+  cursor: pointer;
+}
+.toolbar button:focus-visible {
+  outline: 2px solid var(--orc-component-interactive);
+  outline-offset: 2px;
+}
+pre {
+  max-width: 100%;
+  max-height: 32rem;
+  margin: 0;
+  overflow: auto;
+  padding: 1rem;
+  tab-size: 2;
+}
+code {
+  font:
+    0.82rem/1.6 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  white-space: pre;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

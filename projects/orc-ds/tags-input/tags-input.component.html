@@ -1,0 +1,92 @@
+<div
+  class="p-chips p-component orc-p2-tags-input"
+  [class]="'p-chips p-component orc-p2-tags-input ' + styleClass()"
+  [style]="style()"
+  [attr.data-pc-name]="'chips'"
+  (focusout)="onCompositeFocusOut($event)"
+>
+  @if (label()) {
+    <label [for]="effectiveId()">{{ label() }}</label>
+  }
+  <div
+    class="p-chips-multiple-container input-shell"
+    [class.is-disabled]="effectiveDisabled()"
+  >
+    @for (tag of value(); track $index) {
+      <span
+        class="p-chips-token tag"
+        (click)="
+          onChipClick.emit({
+            value: tag,
+            index: $index,
+            originalEvent: $event,
+          })
+        "
+        >{{ tag }}
+        @if (removeAriaLabel()) {
+          <button
+            type="button"
+            [disabled]="effectiveDisabled()"
+            [attr.aria-label]="removeAriaLabel()"
+            (click)="removeTag($index); $event.stopPropagation()"
+          >
+            ×
+          </button>
+        }
+      </span>
+    }
+    <input
+      [id]="effectiveId()"
+      [attr.placeholder]="value().length ? null : placeholder() || null"
+      [disabled]="effectiveDisabled()"
+      [value]="draft()"
+      [attr.maxlength]="maxLength() ?? null"
+      [attr.aria-label]="ariaLabel() || null"
+      [attr.aria-controls]="effectiveId() + '-panel'"
+      [attr.aria-expanded]="suggestionsVisible()"
+      [attr.aria-activedescendant]="activeSuggestionId()"
+      (input)="onDraftInput($event)"
+      (paste)="onPaste($event)"
+      (keydown)="onKeydown($event)"
+      (focus)="onFocus.emit($event)"
+      (blur)="onBlur.emit($event); onBlurCommit()"
+    />
+  </div>
+  @if (suggestionsVisible()) {
+    <ul
+      class="p-chips-panel p-component suggestions"
+      [id]="effectiveId() + '-panel'"
+      role="listbox"
+    >
+      @for (
+        suggestion of filteredSuggestions();
+        track suggestion;
+        let index = $index
+      ) {
+        <li
+          class="p-chips-option"
+          [id]="suggestionId(index)"
+          role="option"
+          [attr.aria-selected]="activeSuggestionIndex() === index"
+          (mousedown)="$event.preventDefault()"
+          (click)="addTag(suggestion)"
+        >
+          {{ suggestion }}
+        </li>
+      }
+    </ul>
+  }
+  @if (showClear() && value().length && clearAriaLabel()) {
+    <button
+      type="button"
+      [disabled]="effectiveDisabled()"
+      (click)="clear($event)"
+      [attr.aria-label]="clearAriaLabel()"
+    >
+      ×
+    </button>
+  }
+  @if (helperText()) {
+    <small>{{ helperText() }}</small>
+  }
+</div>

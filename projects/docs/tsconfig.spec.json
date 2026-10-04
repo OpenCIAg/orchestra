@@ -2,12 +2,60 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": [
-      "jasmine"
-    ]
+    "paths": {
+      "@ciag/orchestra/chart": ["../orc-ds/p2/p2-chart-editor-components.ts"],
+      "@ciag/orchestra/terminal": ["../orc-ds/terminal/index.ts"],
+      "@ciag/orchestra/p2": ["../orc-ds/p2/p2-doc-components.ts"],
+      "@ciag/orchestra/p2-doc-components": [
+        "../orc-ds/p2/p2-doc-components.ts"
+      ],
+      "@ciag/orchestra/p2-command-components": [
+        "../orc-ds/p2/p2-command-components.ts"
+      ],
+      "@ciag/orchestra/p2-menu-family-components": [
+        "../orc-ds/p2/p2-menu-family-components.ts"
+      ],
+      "@ciag/orchestra/empty-state": ["../orc-ds/empty-state/index.ts"],
+      "@ciag/orchestra/code": ["../orc-ds/code/index.ts"],
+      "@ciag/orchestra/data-view": ["../orc-ds/data-view/index.ts"],
+      "@ciag/orchestra/galleria": ["../orc-ds/galleria/index.ts"],
+      "@ciag/orchestra/hover-card": ["../orc-ds/hover-card/index.ts"],
+      "@ciag/orchestra/order-list": ["../orc-ds/order-list/index.ts"],
+      "@ciag/orchestra/pick-list": ["../orc-ds/pick-list/index.ts"],
+      "@ciag/orchestra/tree": ["../orc-ds/tree/index.ts"],
+      "@ciag/orchestra/tree-select": ["../orc-ds/tree-select/index.ts"],
+      "@ciag/orchestra/tree-table": ["../orc-ds/tree-table/index.ts"],
+      "@ciag/orchestra/virtual-scroller": [
+        "../orc-ds/virtual-scroller/index.ts"
+      ],
+      "@ciag/orchestra/internal": ["../orc-ds/internal/index.ts"],
+      "@ciag/orchestra/overlay-panel": ["../orc-ds/overlay-panel/index.ts"],
+      "@ciag/orchestra/paginator": ["../orc-ds/paginator/index.ts"],
+      "@ciag/orchestra/popover": ["../orc-ds/popover/index.ts"],
+      "@ciag/orchestra/segmented-control": [
+        "../orc-ds/segmented-control/index.ts"
+      ],
+      "@ciag/orchestra/tag": ["../orc-ds/tag/index.ts"],
+      "@ciag/orchestra/tiered-menu": ["../orc-ds/tiered-menu/index.ts"],
+      "@ciag/orchestra/panel-menu": ["../orc-ds/panel-menu/index.ts"],
+      "@ciag/orchestra/mega-menu": ["../orc-ds/mega-menu/index.ts"],
+      "@ciag/orchestra/menubar": ["../orc-ds/menubar/index.ts"],
+      "@ciag/orchestra/context-menu": ["../orc-ds/context-menu/index.ts"],
+      "@ciag/orchestra/speed-dial": ["../orc-ds/speed-dial/index.ts"],
+      "@ciag/orchestra/dock": ["../orc-ds/dock/index.ts"],
+      "@ciag/orchestra/confirm-popup": ["../orc-ds/confirm-popup/index.ts"],
+      "@ciag/orchestra/split-button": ["../orc-ds/split-button/index.ts"],
+      "@ciag/orchestra/calendar": ["../orc-ds/calendar/index.ts"],
+      "@ciag/orchestra/combobox": ["../orc-ds/combobox/index.ts"],
+      "@ciag/orchestra/date-input": ["../orc-ds/date-input/index.ts"],
+      "@ciag/orchestra/editor": ["../orc-ds/editor/index.ts"],
+      "@ciag/orchestra/input-group": ["../orc-ds/input-group/index.ts"],
+      "@ciag/orchestra/listbox": ["../orc-ds/listbox/index.ts"],
+      "@ciag/orchestra/multi-select": ["../orc-ds/multi-select/index.ts"],
+      "@ciag/orchestra/icon": ["../orc-ds/icon/index.ts"],
+      "@ciag/orchestra/tags-input": ["../orc-ds/tags-input/index.ts"]
+    },
+    "types": ["jasmine"]
   },
-  "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

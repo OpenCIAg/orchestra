@@ -41,13 +41,19 @@ describe('P1 core components', () => {
     const input = TestBed.createComponent(InputComponent);
     input.componentRef.setInput('errorMessage', 'Required');
     input.detectChanges();
-    expect(input.nativeElement.querySelector('input')?.getAttribute('aria-invalid')).toBe('true');
+    expect(
+      input.nativeElement.querySelector('input')?.getAttribute('aria-invalid'),
+    ).toBe('true');
     expect(input.nativeElement.textContent).toContain('Required');
 
     const textarea = TestBed.createComponent(TextareaComponent);
     textarea.componentRef.setInput('errorMessage', 'Required');
     textarea.detectChanges();
-    expect(textarea.nativeElement.querySelector('textarea')?.getAttribute('aria-invalid')).toBe('true');
+    expect(
+      textarea.nativeElement
+        .querySelector('textarea')
+        ?.getAttribute('aria-invalid'),
+    ).toBe('true');
   });
 
   it('marks ChipInput touched when chips are removed', () => {
@@ -55,7 +61,7 @@ describe('P1 core components', () => {
     const component = fixture.componentInstance;
     component.writeValue(['Angular']);
     let touched = false;
-    component.registerOnTouched(() => touched = true);
+    component.registerOnTouched(() => (touched = true));
     component.removeChip(0);
     expect(touched).toBeTrue();
     expect(component.value()).toEqual([]);
@@ -69,7 +75,10 @@ describe('P1 core components', () => {
     component.onKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
     expect(component.a11yMessage()).toBe('');
 
-    fixture.componentRef.setInput('addAnnouncement', (item: string) => `Added ${item}`);
+    fixture.componentRef.setInput(
+      'addAnnouncement',
+      (item: string) => `Added ${item}`,
+    );
     component.inputValue.set('Signals');
     component.onKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
     expect(component.a11yMessage()).toBe('Added Signals');
@@ -80,7 +89,9 @@ describe('P1 core components', () => {
     const option = { value: 'sp', label: 'São Paulo' };
     fixture.componentRef.setInput('options', [option]);
     let selected = '';
-    fixture.componentInstance.optionSelected.subscribe(item => selected = item.value);
+    fixture.componentInstance.optionSelected.subscribe(
+      (item) => (selected = item.value),
+    );
     fixture.componentInstance.select(option);
     expect(fixture.componentInstance.value()).toBe('sp');
     expect(selected).toBe('sp');
@@ -91,13 +102,17 @@ describe('P1 core components', () => {
     const option = { value: 'sp', label: 'São Paulo' };
     fixture.componentRef.setInput('options', [option]);
     fixture.componentRef.setInput('forceSelection', true);
-    fixture.componentInstance.onInput({ target: { value: 'unknown' } } as unknown as Event);
+    fixture.componentInstance.onInput({
+      target: { value: 'unknown' },
+    } as unknown as Event);
     fixture.componentInstance.onBlur();
     expect(fixture.componentInstance.value()).toBeNull();
 
     fixture.componentInstance.isOpen.set(true);
     fixture.componentRef.setInput('closeOnEscape', false);
-    fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.componentInstance.onKeydown(
+      new KeyboardEvent('keydown', { key: 'Escape' }),
+    );
     expect(fixture.componentInstance.isOpen()).toBeTrue();
   });
 
@@ -114,7 +129,11 @@ describe('P1 core components', () => {
 
   it('moves a carousel to the next enabled item', () => {
     const fixture = TestBed.createComponent(CarouselComponent);
-    fixture.componentRef.setInput('items', [{ label: 'A' }, { label: 'B' }, { label: 'C', disabled: true }]);
+    fixture.componentRef.setInput('items', [
+      { label: 'A' },
+      { label: 'B' },
+      { label: 'C', disabled: true },
+    ]);
     fixture.componentInstance.next();
     expect(fixture.componentInstance.activeIndex()).toBe(1);
     fixture.componentInstance.next();
@@ -129,7 +148,9 @@ describe('P1 core components', () => {
     const chip = TestBed.createComponent(ChipComponent);
     chip.componentRef.setInput('label', 'Angular');
     let removed = '';
-    chip.componentInstance.removed.subscribe(value => removed = String(value));
+    chip.componentInstance.removed.subscribe(
+      (value) => (removed = String(value)),
+    );
     chip.componentInstance.remove(new Event('click'));
     expect(removed).toBe('Angular');
   });

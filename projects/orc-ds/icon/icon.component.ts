@@ -1,7 +1,24 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { IconFamily, IconFill, IconGrade, IconName, IconOpticalSize, IconSize, IconWeight } from './icon.types';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
+import {
+  IconFamily,
+  IconFill,
+  IconGrade,
+  IconName,
+  IconOpticalSize,
+  IconSize,
+  IconWeight,
+} from './icon.types';
 
-export const ORC_MATERIAL_SYMBOL_FAMILIES: readonly IconFamily[] = ['outlined', 'rounded', 'sharp'];
+export const ORC_MATERIAL_SYMBOL_FAMILIES: readonly IconFamily[] = [
+  'outlined',
+  'rounded',
+  'sharp',
+];
 
 const SIZE_MAP: Readonly<Record<string, string>> = {
   xs: '12px',
@@ -16,7 +33,8 @@ const clamp = (value: number, min: number, max: number): number => {
   return Math.min(Math.max(numericValue, min), max);
 };
 
-const familyName = (family: IconFamily): string => `Material Symbols ${family.charAt(0).toUpperCase()}${family.slice(1)}`;
+const familyName = (family: IconFamily): string =>
+  `Material Symbols ${family.charAt(0).toUpperCase()}${family.slice(1)}`;
 
 @Component({
   selector: 'orc-icon',
@@ -38,13 +56,18 @@ export class IconComponent {
   readonly fontFamily = computed(() => familyName(this.family()));
   readonly sizeValue = computed(() => {
     const size = this.size();
-    return typeof size === 'number' ? `${Math.max(size, 0)}px` : (SIZE_MAP[size] ?? SIZE_MAP['md']);
+    return typeof size === 'number'
+      ? `${Math.max(size, 0)}px`
+      : (SIZE_MAP[size] ?? SIZE_MAP['md']);
   });
   readonly opticalSizeValue = computed(() => {
     const opticalSize = this.opticalSize();
     if (typeof opticalSize === 'number') return clamp(opticalSize, 20, 48);
     const size = this.size();
-    const sizeInPixels = typeof size === 'number' ? size : Number.parseFloat(SIZE_MAP[size] ?? SIZE_MAP['md']);
+    const sizeInPixels =
+      typeof size === 'number'
+        ? size
+        : Number.parseFloat(SIZE_MAP[size] ?? SIZE_MAP['md']);
     return clamp(sizeInPixels, 20, 48);
   });
   readonly opticalSizing = computed(() => 'none');
@@ -57,5 +80,7 @@ export class IconComponent {
     ];
     return axes.join(', ');
   });
-  readonly accessibleName = computed(() => this.ariaLabel().trim() || this.title().trim());
+  readonly accessibleName = computed(
+    () => this.ariaLabel().trim() || this.title().trim(),
+  );
 }

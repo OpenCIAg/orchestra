@@ -1,14 +1,107 @@
-import { ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
-import { P2Option, P2_SHARED_STYLES } from './p2-shared';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
+import { P2_SHARED_STYLES } from './p2-shared';
 
-export interface DockItem extends P2Option<string> { command?: () => void; }
-@Component({ selector: 'orc-dock', standalone: true, template: `<nav class="orc-dock" [class.top]="position() === 'top'" [class.bottom]="position() === 'bottom'" [attr.aria-label]="label() || null" role="toolbar">@for (item of items(); track item.value) { <button type="button" [disabled]="item.disabled" [attr.aria-label]="item.label || null" (click)="item.command?.()"><span>{{ item.icon || '•' }}</span><small>{{ item.label }}</small></button> }</nav>`, styles: [P2_SHARED_STYLES + `.orc-dock{position:fixed;z-index:20;left:50%;display:flex;gap:.4rem;transform:translateX(-50%);padding:.5rem;border:1px solid var(--orc-component-border);border-radius:.7rem;background:var(--orc-component-surface);box-shadow:0 10px 25px var(--orc-component-shadow-color)}.orc-dock.top{top:1rem}.orc-dock.bottom{bottom:1rem}.orc-dock button{display:grid;justify-items:center;gap:.15rem;min-width:3rem;border:0;border-radius:.45rem;background:transparent;padding:.35rem}.orc-dock button:hover:not(:disabled){background:var(--orc-component-interactive-soft);color:var(--orc-component-interactive)}.orc-dock span{font-size:1.3rem}.orc-dock small{font-size:.65rem}`], changeDetection: ChangeDetectionStrategy.OnPush })
-export class DockComponent { readonly items = input<DockItem[]>([]); readonly position = input<'top' | 'bottom'>('bottom'); readonly label = input<string | undefined>(undefined); }
+export { DockComponent } from '@ciag/orchestra/dock';
+export type { DockItem } from '@ciag/orchestra/dock';
 
-@Component({ selector: 'orc-scroll-panel', standalone: true, template: `<div #panel class="orc-scroll-panel {{ styleClass() }}" [style]="style()" [style.height]="height()" [style.max-height]="maxHeight()" [attr.id]="contentId()" [attr.aria-label]="label()" tabindex="0" (keydown)="onKeydown($event)"><ng-content /></div>`, styles: [P2_SHARED_STYLES + `.orc-scroll-panel{display:block;width:100%;overflow:auto;scrollbar-color:var(--orc-component-text-muted) var(--orc-component-surface-muted);scroll-behavior:smooth}`], changeDetection: ChangeDetectionStrategy.OnPush })
+@Component({
+  selector: 'orc-scroll-panel',
+  standalone: true,
+  template: `
+    <div
+      #panel
+      class="orc-scroll-panel {{ styleClass() }}"
+      [style]="style()"
+      [style.height]="height()"
+      [style.max-height]="maxHeight()"
+      [attr.id]="contentId()"
+      [attr.aria-label]="label() || 'Scrollable content'"
+      role="region"
+      tabindex="0"
+      (keydown)="onKeydown($event)"
+      (scroll)="onScroll.emit($event)"
+    >
+      <ng-content />
+    </div>
+  `,
+  styles: [
+    P2_SHARED_STYLES +
+      `.orc-scroll-panel{display:block;width:100%;overflow:auto;scrollbar-color:var(--orc-component-text-muted) var(--orc-component-surface-muted);scroll-behavior:smooth}`,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
 export class ScrollPanelComponent {
-  readonly panel = viewChild<ElementRef<HTMLDivElement>>('panel'); readonly height = input('auto'); readonly maxHeight = input('20rem'); readonly step = input(5); readonly styleClass = input(''); readonly style = input<Record<string, string | number> | undefined>(undefined); readonly contentId = input<string | undefined>(undefined); readonly label = input<string | undefined>(undefined);
-  scrollTop(value: number): void { this.panel()?.nativeElement.scrollTo({ top: value }); }
-  onKeydown(event: KeyboardEvent): void { const element = this.panel()?.nativeElement; if (!element) return; const amount = event.key === 'PageDown' || event.key === 'PageUp' ? element.clientHeight : this.step(); if (event.key === 'ArrowDown' || event.key === 'PageDown') { event.preventDefault(); element.scrollBy({ top: amount }); } else if (event.key === 'ArrowUp' || event.key === 'PageUp') { event.preventDefault(); element.scrollBy({ top: -amount }); } else if (event.key === 'Home') { event.preventDefault(); element.scrollTo({ top: 0 }); } else if (event.key === 'End') { event.preventDefault(); element.scrollTo({ top: element.scrollHeight }); } }
-  refresh(): void { const element = this.panel()?.nativeElement; if (element) element.dispatchEvent(new Event('scroll')); }
+  readonly panel = viewChild<ElementRef<HTMLDivElement>>('panel');
+  readonly height = input('auto');
+  readonly maxHeight = input('20rem');
+  readonly step = input(5);
+  readonly styleClass = input('');
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  readonly contentId = input<string | undefined>(undefined);
+  readonly label = input<string | undefined>(undefined);
+  readonly onScroll = output<Event>();
+
+  scrollTop(value: number): void {
+    const element = this.panel()?.nativeElement;
+    if (element && Number.isFinite(value))
+      element.scrollTo({ top: Math.max(0, value) });
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    const element = this.panel()?.nativeElement;
+    // Leave keys alone when focus is in projected controls such as inputs and buttons.
+    if (
+      !element ||
+      event.target !== element ||
+      element.scrollHeight <= element.clientHeight ||
+      event.defaultPrevented ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey
+    ) {
+      return;
+    }
+
+    const pageAmount = Math.max(1, element.clientHeight);
+    const configuredStep = this.step();
+    const lineAmount =
+      Number.isFinite(configuredStep) && configuredStep > 0
+        ? configuredStep
+        : 5;
+    const amount =
+      event.key === 'PageDown' || event.key === 'PageUp'
+        ? pageAmount
+        : lineAmount;
+
+    if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+      event.preventDefault();
+      element.scrollBy({ top: amount });
+    } else if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+      event.preventDefault();
+      element.scrollBy({ top: -amount });
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      element.scrollTo({ top: 0 });
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      element.scrollTo({ top: element.scrollHeight });
+    }
+  }
+
+  refresh(): void {
+    const element = this.panel()?.nativeElement;
+    const EventConstructor = element?.ownerDocument.defaultView?.Event;
+    if (element && EventConstructor)
+      element.dispatchEvent(new EventConstructor('scroll'));
+  }
 }

@@ -39,8 +39,12 @@ export class AvatarComponent {
   readonly status = input<AvatarStatus | undefined>(undefined);
   readonly statusPosition = input<AvatarStatusPosition>('bottom-right');
   readonly colorVariant = input<AvatarColorVariant>('default');
-  readonly bordered = input<boolean, unknown>(false, { transform: booleanAttribute });
-  readonly clickable = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly bordered = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly clickable = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
   readonly id = input<string | undefined>(undefined);
   readonly styleClass = input('');
 
@@ -95,7 +99,12 @@ export class AvatarComponent {
     const key = this.name() || this.initials() || '';
     if (!key) return 'default';
 
-    const variants: AvatarColorVariant[] = ['primary', 'royal', 'orange', 'purple'];
+    const variants: AvatarColorVariant[] = [
+      'primary',
+      'royal',
+      'orange',
+      'purple',
+    ];
     let hash = 0;
     for (let i = 0; i < key.length; i++) {
       hash = key.charCodeAt(i) + ((hash << 5) - hash);
@@ -104,10 +113,30 @@ export class AvatarComponent {
     return variants[index];
   });
 
-  readonly accessibleLabel = computed<string | undefined>(() => this.alt() || this.name() || this.label() || this.initials() || undefined);
+  readonly accessibleLabel = computed<string | undefined>(
+    () =>
+      this.alt() || this.name() || this.label() || this.initials() || undefined,
+  );
 
   readonly statusText = computed(() => {
-    return this.statusLabel() || '';
+    if (this.statusLabel()) return this.statusLabel()!;
+    switch (this.status()) {
+      case 'online':
+        return 'Online';
+      case 'offline':
+        return 'Offline';
+      case 'busy':
+        return 'Busy';
+      case 'away':
+        return 'Away';
+      default:
+        return '';
+    }
+  });
+
+  readonly accessibleName = computed(() => {
+    const identity = this.accessibleLabel() || 'User';
+    return this.statusText() ? `${identity}, ${this.statusText()}` : identity;
   });
 
   // ── Event Handlers ────────────────────────────────────────
@@ -120,5 +149,12 @@ export class AvatarComponent {
     if (this.clickable()) {
       this.avatarClick.emit(event);
     }
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (!this.clickable() || (event.key !== 'Enter' && event.key !== ' '))
+      return;
+    event.preventDefault();
+    (event.currentTarget as HTMLElement | null)?.click();
   }
 }

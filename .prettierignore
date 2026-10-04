@@ -1,0 +1,36 @@
+# Dependencies and build outputs
+node_modules/
+dist/
+coverage/
+.angular/
+test-results/
+playwright-report/
+.vscode/
+
+# Vendored standalone demo workspace (own lockfile and Angular version)
+orchestra-demo/
+
+# Machine-managed manifests
+package-lock.json
+
+# Generated sources — regenerate instead of reformatting.
+# NOTE: projects/orc-ds/catalog/*.catalog.ts is hand-written and stays checked.
+# Icon catalog + manifest (tools/material-symbols/generate.mjs)
+projects/orc-ds/icons/icon-catalog.ts
+projects/orc-ds/icons/manifest.json
+# Docs component-api reference modules (npm run docs:generate-api)
+projects/docs/src/app/generated/
+# Alias-parity spec (npm run generate:alias-parity)
+projects/orc-ds/alias-parity.generated.spec.ts
+
+# Generated quality ledgers and archived verification evidence
+# (tools/quality/inventory.mjs output, verify-ssr snapshots)
+docs/quality/inventory.json
+docs/quality/component-inventory.md
+docs/quality/behavior-coverage-ledger.md
+docs/quality/directive-service-contract-ledger.md
+docs/quality/verification/
+docs/quality/archive/
+
+# Changesets writes this file on release; formatting would churn every publish
+**/CHANGELOG.md

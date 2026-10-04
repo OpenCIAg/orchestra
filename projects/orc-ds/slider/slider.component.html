@@ -37,8 +37,18 @@
       <!-- Barra Preenchida Ativa (Progress Fill) -->
       <div
         class="p-slider-range orc-slider-fill"
-        [style.left.%]="fillLeftPercent()"
-        [style.width.%]="fillWidthPercent()"
+        [style.left.%]="
+          orientation() === 'horizontal' ? fillLeftPercent() : null
+        "
+        [style.width.%]="
+          orientation() === 'horizontal' ? fillWidthPercent() : null
+        "
+        [style.bottom.%]="
+          orientation() === 'vertical' ? fillLeftPercent() : null
+        "
+        [style.height.%]="
+          orientation() === 'vertical' ? fillWidthPercent() : null
+        "
       ></div>
 
       <!-- Marcações de Escala (Ticks) -->
@@ -47,7 +57,12 @@
           @for (tickPercent of ticks(); track $index) {
             <span
               class="orc-slider-tick"
-              [style.left.%]="tickPercent"
+              [style.left.%]="
+                orientation() === 'horizontal' ? tickPercent : null
+              "
+              [style.bottom.%]="
+                orientation() === 'vertical' ? tickPercent : null
+              "
             ></span>
           }
         </div>
@@ -59,12 +74,14 @@
       <div
         #startThumb
         class="p-slider-handle orc-slider-thumb orc-slider-thumb--start"
-        [class.orc-slider-thumb--active]="activeThumb() === 'start' && isDragging()"
+        [class.orc-slider-thumb--active]="
+          activeThumb() === 'start' && isDragging()
+        "
         [class.orc-slider-thumb--focused]="focusedThumb() === 'start'"
-        [style.left.%]="startPercent()"
+        [style.left.%]="orientation() === 'horizontal' ? startPercent() : null"
+        [style.bottom.%]="orientation() === 'vertical' ? startPercent() : null"
         role="slider"
         [attr.tabindex]="effectiveDisabled() ? -1 : tabindex()"
-        [attr.autofocus]="autofocus() ? '' : null"
         [attr.aria-valuenow]="currentStartValue()"
         [attr.aria-valuemin]="minVal()"
         [attr.aria-valuemax]="currentEndValue()"
@@ -95,15 +112,17 @@
       class="p-slider-handle orc-slider-thumb orc-slider-thumb--end"
       [class.orc-slider-thumb--active]="activeThumb() === 'end' && isDragging()"
       [class.orc-slider-thumb--focused]="focusedThumb() === 'end'"
-      [style.left.%]="endPercent()"
+      [style.left.%]="orientation() === 'horizontal' ? endPercent() : null"
+      [style.bottom.%]="orientation() === 'vertical' ? endPercent() : null"
       role="slider"
       [attr.tabindex]="effectiveDisabled() ? -1 : tabindex()"
-      [attr.autofocus]="autofocus() ? '' : null"
       [attr.aria-valuenow]="currentEndValue()"
       [attr.aria-valuemin]="range() ? currentStartValue() : minVal()"
       [attr.aria-valuemax]="maxVal()"
       [attr.aria-valuetext]="formattedEndValue()"
-      [attr.aria-label]="range() ? ariaLabelMax() : (ariaLabel() || label() || null)"
+      [attr.aria-label]="
+        range() ? ariaLabelMax() : ariaLabel() || label() || null
+      "
       [attr.aria-orientation]="orientation()"
       [attr.aria-labelledby]="ariaLabelledBy()"
       [attr.aria-disabled]="effectiveDisabled() ? 'true' : null"
@@ -127,10 +146,7 @@
   @if (parsedMarks().length > 0) {
     <div class="orc-slider-marks">
       @for (mark of parsedMarks(); track mark.value) {
-        <span
-          class="orc-slider-mark-label"
-          [style.left.%]="mark.percent"
-        >
+        <span class="orc-slider-mark-label" [style.left.%]="mark.percent">
           {{ mark.label }}
         </span>
       }

@@ -11,6 +11,48 @@
   user-select: none;
   font-family: var(--font-sans, 'Poppins', sans-serif);
   line-height: 1.428;
+  min-width: 24px;
+  min-height: 24px;
+
+  &.variant-filled {
+    .orc-checkbox__box {
+      background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
+    }
+  }
+
+  &.variant-outlined {
+    .orc-checkbox__box {
+      background-color: var(--orc-fill-input, #ffffff);
+    }
+  }
+
+  &.size-small {
+    gap: 8px;
+
+    .orc-checkbox__box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+
+    .orc-checkbox__label {
+      font-size: 0.8125rem;
+    }
+  }
+
+  &.size-large {
+    gap: 12px;
+
+    .orc-checkbox__box {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+    }
+
+    .orc-checkbox__label {
+      font-size: 1rem;
+    }
+  }
 
   // Native input visually hidden but fully accessible
   &__native-input {
@@ -35,12 +77,16 @@
     position: relative;
     border-radius: 4px; // Figma rounded-[4px]
     border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
-    background-color: var(--orc-control-surface, var(--orc-fill-input, #ffffff));
+    background-color: var(
+      --orc-control-surface,
+      var(--orc-fill-input, #ffffff)
+    );
     color: var(--orc-on-interactive, #ffffff);
     box-sizing: border-box;
-    transition: background-color var(--transition-fast, 120ms ease),
-                border-color var(--transition-fast, 120ms ease),
-                box-shadow var(--transition-fast, 120ms ease);
+    transition:
+      background-color var(--transition-fast, 120ms ease),
+      border-color var(--transition-fast, 120ms ease),
+      box-shadow var(--transition-fast, 120ms ease);
   }
 
   // Check and Dash vector icons
@@ -71,8 +117,9 @@
     font-weight: 400;
     color: var(--orc-text, var(--text-primary, #141414));
     line-height: 1.428;
-    transition: color var(--transition-fast, 120ms ease),
-                font-weight var(--transition-fast, 120ms ease);
+    transition:
+      color var(--transition-fast, 120ms ease),
+      font-weight var(--transition-fast, 120ms ease);
   }
 
   // Helper description text
@@ -95,21 +142,31 @@
   // ── HOVER STATE ───────────────────────────────────────────
   &:hover:not(.orc-checkbox--disabled) {
     .orc-checkbox__box {
-      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
   }
 
   // ── FOCUS-VISIBLE STATE ───────────────────────────────────
   .orc-checkbox__native-input:focus-visible + .orc-checkbox__box {
-    outline: 2px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+    outline: 2px solid
+      var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     outline-offset: 2px;
   }
 
   // ── CHECKED STATE (Figma #1C6AED) ─────────────────────────
   &--checked {
     .orc-checkbox__box {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
-      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
+      border-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
 
     .orc-checkbox__label {
@@ -121,8 +178,14 @@
   // ── INDETERMINATE STATE ───────────────────────────────────
   &--indeterminate {
     .orc-checkbox__box {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
-      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
+      border-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
 
     .orc-checkbox__label {
@@ -139,7 +202,10 @@
 
     &.orc-checkbox--checked .orc-checkbox__box,
     &.orc-checkbox--indeterminate .orc-checkbox__box {
-      background-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
+      background-color: var(
+        --orc-danger,
+        var(--color-error, #fb2c36)
+      ) !important;
       border-color: var(--orc-danger, var(--color-error, #fb2c36)) !important;
     }
 
@@ -164,7 +230,10 @@
 
     &.orc-checkbox--checked .orc-checkbox__box,
     &.orc-checkbox--indeterminate .orc-checkbox__box {
-      background-color: var(--orc-text-secondary, var(--text-secondary, #666666));
+      background-color: var(
+        --orc-text-secondary,
+        var(--text-secondary, #666666)
+      );
       border-color: var(--orc-text-secondary, var(--text-secondary, #666666));
     }
 

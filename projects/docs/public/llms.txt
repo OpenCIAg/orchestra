@@ -1,14 +1,14 @@
 # Orchestra Design System
 
-> Orchestra is an Angular 19+ component framework and design system with standalone components, native Signals, strict TypeScript APIs, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA behavior.
+> Orchestra is an Angular component framework and design system with standalone components, native Signals, strict TypeScript APIs, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA behavior.
 
 Use the links below as the canonical reading order for coding agents. Prefer the component API reference over inventing a replacement control.
 
 ## Reference
 
-- [Complete coding-agent reference](./llms.md): installation, imports, composition rules, accessibility behavior, all secondary entry points, components, properties, models, outputs, variants, and examples.
-- [Interactive component catalog](./): live playgrounds and searchable component inventory.
-- [Design documentation](./docs): brand principles, tokens, typography, spacing, assets, and usage guidance.
+- [Complete coding-agent reference](https://orchestra.ciag.org.br/llms.md): installation, imports, composition rules, accessibility behavior, all secondary entry points, components, properties, models, outputs, variants, and examples.
+- [Interactive component catalog](https://orchestra.ciag.org.br/): live playgrounds and searchable component inventory.
+- [Design documentation](https://orchestra.ciag.org.br/docs): brand principles, tokens, typography, spacing, assets, and usage guidance.
 - [Source package entry points](https://github.com/OpenCIAg/orchestra): Angular library source and tests.
 
 ## Agent instructions

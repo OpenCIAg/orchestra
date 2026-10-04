@@ -1,9 +1,11 @@
-import { InjectionToken, Signal } from '@angular/core';
+import { ElementRef, InjectionToken, Signal } from '@angular/core';
 
 export interface RadioButtonItem {
   readonly value: Signal<any>;
   readonly isDisabled: Signal<boolean>;
+  readonly element: ElementRef<HTMLElement>;
   focus(): void;
+  onSelect(event?: Event): void;
 }
 
 export interface RadioGroupContext {
@@ -17,6 +19,9 @@ export interface RadioGroupContext {
   hasSelectedRadio(): boolean;
   isFirstEnabled(radio: RadioButtonItem): boolean;
   handleKeydown(event: KeyboardEvent, currentRadio: RadioButtonItem): void;
+  touch(event?: Event): void;
 }
 
-export const ORC_RADIO_GROUP = new InjectionToken<RadioGroupContext>('ORC_RADIO_GROUP');
+export const ORC_RADIO_GROUP = new InjectionToken<RadioGroupContext>(
+  'ORC_RADIO_GROUP',
+);

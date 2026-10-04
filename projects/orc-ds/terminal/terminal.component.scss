@@ -1,0 +1,39 @@
+.orc-terminal {
+  display: block;
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  background: var(--orc-component-code-surface);
+  color: var(--orc-component-code-text);
+  font:
+    0.85rem/1.5 ui-monospace,
+    monospace;
+}
+.welcome {
+  margin: 0 0 0.5rem;
+  color: var(--orc-component-code-muted);
+}
+.history {
+  max-height: 18rem;
+  overflow: auto;
+}
+.prompt {
+  color: var(--orc-component-code-accent);
+}
+.history pre {
+  margin: 0.15rem 0 0.5rem;
+  white-space: pre-wrap;
+  color: var(--orc-component-code-muted);
+}
+.orc-terminal form {
+  display: flex;
+  gap: 0.3rem;
+}
+.orc-terminal input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}

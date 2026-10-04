@@ -1,2 +1,2 @@
-export { MenubarComponent } from '@ciag/orchestra/p2';
-export type { MenubarItem } from '@ciag/orchestra/p2';
+export { MenubarComponent } from './menubar.component';
+export type { MenubarItem } from './menubar.component';

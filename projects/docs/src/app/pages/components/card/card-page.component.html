@@ -2,13 +2,17 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a Página Inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a Página Inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Data Display</div>
       <h1 class="section-title">Card</h1>
       <p class="section-desc">
-        Containers flexíveis e estruturados para agrupar conteúdos e ações sobre um único tema ou estatística.
+        Containers flexíveis e estruturados para agrupar conteúdos e ações sobre
+        um único tema ou estatística.
       </p>
 
       <!-- Grid of Card Variants -->
@@ -22,8 +26,9 @@
             </orc-card-header>
             <orc-card-body>
               <p>Uma descrição breve do conteúdo.</p>
-              <p style="font-size: 0.8125rem;">
-                Este é um card básico com header e conteúdo. Ideal para exibir informações agrupadas de forma clara.
+              <p style="font-size: 0.8125rem">
+                Este é um card básico com header e conteúdo. Ideal para exibir
+                informações agrupadas de forma clara.
               </p>
             </orc-card-body>
           </orc-card>
@@ -34,7 +39,14 @@
           <div class="showcase-card-label">Card Dashboard</div>
           <orc-card variant="dashboard">
             <div class="dashboard-icon-container">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <line x1="18" y1="20" x2="18" y2="10" />
                 <line x1="12" y1="20" x2="12" y2="4" />
                 <line x1="6" y1="20" x2="6" y2="14" />
@@ -53,7 +65,15 @@
           <orc-card>
             <orc-card-header>
               <div class="metrics-header">
-                <svg class="metrics-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  class="metrics-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <line x1="18" y1="20" x2="18" y2="10" />
                   <line x1="12" y1="20" x2="12" y2="4" />
                   <line x1="6" y1="20" x2="6" y2="14" />
@@ -63,7 +83,7 @@
             </orc-card-header>
             <orc-card-body>
               <p class="metrics-subtitle">Resumo do mês atual</p>
-              
+
               <div class="metrics-list">
                 <div class="metric-item">
                   <div class="metric-info">
@@ -109,14 +129,24 @@
           >
             <orc-card-header>
               <strong>Card Interativo</strong>
-              <span class="badge" [class.badge--active]="isSelected()">{{ isSelected() ? 'Selecionado' : 'Foco' }}</span>
+              <span class="badge" [class.badge--active]="isSelected()">{{
+                isSelected() ? 'Selecionado' : 'Foco'
+              }}</span>
             </orc-card-header>
             <orc-card-body>
               <p>Clique no card para registrar uma ação.</p>
-              <p style="font-size: 0.8125rem;">Clicks registrados: <strong>{{ clickCount() }}</strong></p>
+              <p style="font-size: 0.8125rem">
+                Clicks registrados: <strong>{{ clickCount() }}</strong>
+              </p>
             </orc-card-body>
             <orc-card-footer>
-              <button type="button" class="btn btn-secondary btn-sm" (click)="isSelected.set(!isSelected()); $event.stopPropagation()">
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                (click)="
+                  isSelected.set(!isSelected()); $event.stopPropagation()
+                "
+              >
                 Alternar Seleção
               </button>
             </orc-card-footer>
@@ -129,7 +159,15 @@
           <orc-card>
             <orc-card-header>
               <div class="team-header">
-                <svg class="team-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  class="team-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
                   <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -146,7 +184,11 @@
                     <strong class="team-name">Ana Silva</strong>
                     <span class="team-role">Designer</span>
                   </div>
-                  <orc-badge variant="outline" status="secondary" text="Ativo"></orc-badge>
+                  <orc-badge
+                    variant="outline"
+                    status="secondary"
+                    text="Ativo"
+                  ></orc-badge>
                 </div>
 
                 <div class="team-item">
@@ -155,7 +197,11 @@
                     <strong class="team-name">Maria Santos</strong>
                     <span class="team-role">Dev Backend</span>
                   </div>
-                  <orc-badge variant="outline" status="secondary" text="Inativo"></orc-badge>
+                  <orc-badge
+                    variant="outline"
+                    status="secondary"
+                    text="Inativo"
+                  ></orc-badge>
                 </div>
 
                 <div class="team-item">
@@ -164,29 +210,36 @@
                     <strong class="team-name">Carlos Lima</strong>
                     <span class="team-role">Dev Frontend</span>
                   </div>
-                  <orc-badge variant="outline" status="secondary" text="Ativo"></orc-badge>
+                  <orc-badge
+                    variant="outline"
+                    status="secondary"
+                    text="Ativo"
+                  ></orc-badge>
                 </div>
               </div>
             </orc-card-body>
             <orc-card-footer>
-              <button type="button" class="btn btn-ghost">
-                Ver todos
-              </button>
+              <button type="button" class="btn btn-ghost">Ver todos</button>
             </orc-card-footer>
           </orc-card>
         </div>
       </div>
 
-      <hr class="divider">
+      <hr class="divider" />
 
       <!-- How to Use Section -->
       <section class="doc-section">
         <h2 class="section-heading">Como usar</h2>
-        <p class="section-subdesc">Use a estrutura modular de tags projetadas para montar diferentes layouts de cards.</p>
+        <p class="section-subdesc">
+          Use a estrutura modular de tags projetadas para montar diferentes
+          layouts de cards.
+        </p>
 
         <h3 class="subsection-heading">Importação</h3>
         <div class="code-block">
-          <pre class="code-block__body"><code>import {{ '{' }} CardComponent, CardHeaderComponent, CardBodyComponent, CardFooterComponent {{ '}' }} from 'src/app/shared/card';
+          <pre
+            class="code-block__body"
+          ><code>import {{ '{' }} CardComponent, CardHeaderComponent, CardBodyComponent, CardFooterComponent {{ '}' }} from 'src/app/shared/card';
 
 &#64;Component({{ '{' }}
   imports: [
@@ -199,7 +252,9 @@
 export class SeuComponente {{ '{' }}{{ '}' }}</code></pre>
         </div>
 
-        <h3 class="subsection-heading" style="margin-top: 2rem">Template HTML (Card Simples)</h3>
+        <h3 class="subsection-heading" style="margin-top: 2rem">
+          Template HTML (Card Simples)
+        </h3>
         <div class="code-block">
           <pre class="code-block__body"><code>&lt;app-card&gt;
   &lt;app-card-header&gt;

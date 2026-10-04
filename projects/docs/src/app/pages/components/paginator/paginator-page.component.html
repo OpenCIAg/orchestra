@@ -2,14 +2,18 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Navegação</div>
       <h1 class="section-title">Paginator</h1>
       <p class="section-desc">
-        Controle de navegação entre páginas para divisão e visualização de grandes conjuntos de dados, com suporte a
-        seletor de itens por página e cálculo dinâmico de reticências.
+        Controle de navegação entre páginas para divisão e visualização de
+        grandes conjuntos de dados, com suporte a seletor de itens por página e
+        cálculo dinâmico de reticências.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -18,14 +22,20 @@
         <div class="playground-grid">
           <!-- Preview Panel -->
           <div class="panel preview-panel">
-            <div class="panel__header">Live preview</div>
+            <div class="panel__header">Prévia ao vivo</div>
             <div class="panel__body">
               <div class="preview-box">
-                <orc-paginator [totalItems]="playgroundTotalItems()" [(pageSize)]="playgroundPageSize"
-                  [(currentPage)]="playgroundCurrentPage" [pageSizeOptions]="playgroundPageSizeOptions"
+                <orc-paginator
+                  [totalItems]="playgroundTotalItems()"
+                  [(pageSize)]="playgroundPageSize"
+                  [(currentPage)]="playgroundCurrentPage"
+                  [pageSizeOptions]="playgroundPageSizeOptions"
                   [showPageSizeSelector]="playgroundShowPageSizeSelector()"
-                  [showFirstLastButtons]="playgroundShowFirstLast()" [showTotalInfo]="playgroundShowTotalInfo()"
-                  [disabled]="playgroundDisabled()" [size]="playgroundSize()"></orc-paginator>
+                  [showFirstLastButtons]="playgroundShowFirstLast()"
+                  [showTotalInfo]="playgroundShowTotalInfo()"
+                  [disabled]="playgroundDisabled()"
+                  [size]="playgroundSize()"
+                ></orc-paginator>
               </div>
             </div>
           </div>
@@ -36,18 +46,44 @@
             <div class="panel__body">
               <!-- Total de Itens -->
               <div class="control-group">
-                <label class="control-label" for="total-items-input">Total de itens ({{ playgroundTotalItems()
-                  }})</label>
+                <label class="control-label" for="total-items-input"
+                  >Total de itens ({{ playgroundTotalItems() }})</label
+                >
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTotalItems() === 45"
-                    (click)="playgroundTotalItems.set(45)">45</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTotalItems() === 120"
-                    (click)="playgroundTotalItems.set(120)">120</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundTotalItems() === 240"
-                    (click)="playgroundTotalItems.set(240)">240</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundTotalItems() === 1000"
-                    (click)="playgroundTotalItems.set(1000)">1000</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundTotalItems() === 45"
+                    (click)="playgroundTotalItems.set(45)"
+                  >
+                    45
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundTotalItems() === 120"
+                    (click)="playgroundTotalItems.set(120)"
+                  >
+                    120
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundTotalItems() === 240"
+                    (click)="playgroundTotalItems.set(240)"
+                  >
+                    240
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundTotalItems() === 1000
+                    "
+                    (click)="playgroundTotalItems.set(1000)"
+                  >
+                    1000
+                  </button>
                 </div>
               </div>
 
@@ -55,12 +91,30 @@
               <div class="control-group">
                 <label class="control-label">Tamanho (size)</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'sm'"
-                    (click)="playgroundSize.set('sm')">Small (sm)</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'md'"
-                    (click)="playgroundSize.set('md')">Medium (md)</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'lg'"
-                    (click)="playgroundSize.set('lg')">Large (lg)</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'sm'"
+                    (click)="playgroundSize.set('sm')"
+                  >
+                    Small (sm)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'md'"
+                    (click)="playgroundSize.set('md')"
+                  >
+                    Medium (md)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'lg'"
+                    (click)="playgroundSize.set('lg')"
+                  >
+                    Large (lg)
+                  </button>
                 </div>
               </div>
 
@@ -69,23 +123,45 @@
                 <label class="control-label">Recursos visuais</label>
                 <div class="checkbox-group">
                   <label class="checkbox-label">
-                    <input type="checkbox" [checked]="playgroundShowPageSizeSelector()"
-                      (change)="playgroundShowPageSizeSelector.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundShowPageSizeSelector()"
+                      (change)="
+                        playgroundShowPageSizeSelector.set(
+                          $any($event.target).checked
+                        )
+                      "
+                    />
                     Seletor de itens por página (ex.: "20 / página")
                   </label>
                   <label class="checkbox-label">
-                    <input type="checkbox" [checked]="playgroundShowTotalInfo()"
-                      (change)="playgroundShowTotalInfo.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundShowTotalInfo()"
+                      (change)="
+                        playgroundShowTotalInfo.set($any($event.target).checked)
+                      "
+                    />
                     Exibir texto informativo ("1–20 de 120 itens")
                   </label>
                   <label class="checkbox-label">
-                    <input type="checkbox" [checked]="playgroundShowFirstLast()"
-                      (change)="playgroundShowFirstLast.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundShowFirstLast()"
+                      (change)="
+                        playgroundShowFirstLast.set($any($event.target).checked)
+                      "
+                    />
                     Botões primeira / última página
                   </label>
                   <label class="checkbox-label">
-                    <input type="checkbox" [checked]="playgroundDisabled()"
-                      (change)="playgroundDisabled.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundDisabled()"
+                      (change)="
+                        playgroundDisabled.set($any($event.target).checked)
+                      "
+                    />
                     Desabilitado (disabled)
                   </label>
                 </div>
@@ -101,17 +177,25 @@
 
         <div class="figma-block">
           <div class="figma-block__label">
-            Paginador completo com navegação centralizada e seletor de quantidade de itens por página à direita.
+            Paginador completo com navegação centralizada e seletor de
+            quantidade de itens por página à direita.
           </div>
-          <orc-paginator [totalItems]="240" [(pageSize)]="figmaPageSize" [(currentPage)]="figmaPage"
-            [pageSizeOptions]="[10, 20, 50]"></orc-paginator>
+          <orc-paginator
+            [totalItems]="240"
+            [(pageSize)]="figmaPageSize"
+            [(currentPage)]="figmaPage"
+            [pageSizeOptions]="[10, 20, 50]"
+          ></orc-paginator>
         </div>
       </section>
 
       <!-- ── EXEMPLO COM TABELA DE DADOS ─────────────────────── -->
       <section class="section">
         <h2 class="section-subtitle">Exemplo com tabela de dados integrada</h2>
-        <div class="figma-block" style="flex-direction: column; gap: var(--space-4);">
+        <div
+          class="figma-block"
+          style="flex-direction: column; gap: var(--space-4)"
+        >
           <div class="table-container">
             <table class="data-table">
               <thead>
@@ -125,13 +209,20 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of visibleTableData()">
-                  <td><code>#{{ item.id }}</code></td>
-                  <td><strong>{{ item.name }}</strong></td>
+                  <td>
+                    <code>#{{ item.id }}</code>
+                  </td>
+                  <td>
+                    <strong>{{ item.name }}</strong>
+                  </td>
                   <td>{{ item.category }}</td>
                   <td>
-                    <span class="status-pill" [class.status-pill--success]="item.status === 'Concluído'"
+                    <span
+                      class="status-pill"
+                      [class.status-pill--success]="item.status === 'Concluído'"
                       [class.status-pill--active]="item.status === 'Ativo'"
-                      [class.status-pill--pending]="item.status === 'Pendente'">
+                      [class.status-pill--pending]="item.status === 'Pendente'"
+                    >
                       {{ item.status }}
                     </span>
                   </td>
@@ -141,8 +232,13 @@
             </table>
           </div>
 
-          <orc-paginator [totalItems]="tableTotalItems" [(pageSize)]="tablePageSize" [(currentPage)]="tablePage"
-            [pageSizeOptions]="[5, 10]" [showTotalInfo]="true"></orc-paginator>
+          <orc-paginator
+            [totalItems]="tableTotalItems"
+            [(pageSize)]="tablePageSize"
+            [(currentPage)]="tablePage"
+            [pageSizeOptions]="[5, 10]"
+            [showTotalInfo]="true"
+          ></orc-paginator>
         </div>
       </section>
 
@@ -163,94 +259,187 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>totalItems</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>totalItems</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>number</code></td>
                 <td><code>0</code></td>
                 <td>Quantidade total de itens no conjunto de dados.</td>
               </tr>
               <tr>
-                <td><code>pageSize</code> <span class="badge-tag badge-tag--model">model</span></td>
+                <td>
+                  <code>pageSize</code>
+                  <span class="badge-tag badge-tag--model">model</span>
+                </td>
                 <td><code>number</code></td>
                 <td><code>10</code></td>
-                <td>Quantidade de registros exibidos por página (two-way binding).</td>
+                <td>
+                  Quantidade de registros exibidos por página (two-way binding).
+                </td>
               </tr>
               <tr>
-                <td><code>currentPage</code> <span class="badge-tag badge-tag--model">model</span></td>
+                <td>
+                  <code>currentPage</code>
+                  <span class="badge-tag badge-tag--model">model</span>
+                </td>
                 <td><code>number</code></td>
                 <td><code>1</code></td>
-                <td>Número da página atual selecionada (1-indexed, two-way binding).</td>
+                <td>
+                  Número da página atual selecionada (1-indexed, two-way
+                  binding).
+                </td>
               </tr>
               <tr>
-                <td><code>pageSizeOptions</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>pageSizeOptions</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>number[]</code></td>
                 <td><code>[10, 20, 50]</code></td>
                 <td>Opções disponíveis no dropdown de itens por página.</td>
               </tr>
               <tr>
-                <td><code>showPageSizeSelector</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>showPageSizeSelector</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>true</code></td>
                 <td>Exibe ou oculta o seletor de itens por página.</td>
               </tr>
               <tr>
-                <td><code>showFirstLastButtons</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>showFirstLastButtons</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
                 <td>Exibe botões rápidos para a primeira e última página.</td>
               </tr>
               <tr>
-                <td><code>showPrevNextButtons</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>showPrevNextButtons</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>true</code></td>
                 <td>Exibe os botões de navegação anterior e próximo.</td>
               </tr>
               <tr>
-                <td><code>showTotalInfo</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>showTotalInfo</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
-                <td>Exibe o texto informativo de intervalo ("1–20 de 120 itens").</td>
+                <td>
+                  Exibe o texto informativo de intervalo ("1–20 de 120 itens").
+                </td>
               </tr>
               <tr>
-                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>size</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'sm' | 'md' | 'lg'</code></td>
                 <td><code>'md'</code></td>
                 <td>Dimensões visuais dos botões e seletores.</td>
               </tr>
               <tr>
-                <td><code>disabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>disabled</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
                 <td>Desabilita todas as interações e cliques no paginador.</td>
               </tr>
               <tr>
-                <td><code>previousLabel</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>locale</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
+                <td><code>string</code></td>
+                <td><code>'pt-BR'</code></td>
+                <td>
+                  Formata os números do relatório. Valores
+                  <code>en-*</code> também usam os rótulos padrão em inglês; os
+                  demais usam os rótulos padrão em português. Rótulos e modelos
+                  definidos explicitamente são preservados.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>previousLabel</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>'Anterior'</code></td>
-                <td>Texto do botão de página anterior.</td>
+                <td>
+                  Texto do botão de página anterior; sem valor explícito,
+                  acompanha o idioma padrão.
+                </td>
               </tr>
               <tr>
-                <td><code>nextLabel</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>nextLabel</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>'Próximo'</code></td>
-                <td>Texto do botão de próxima página.</td>
+                <td>
+                  Texto do botão de próxima página; sem valor explícito,
+                  acompanha o idioma padrão.
+                </td>
               </tr>
               <tr>
-                <td><code>itemsPerPageLabel</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>itemsPerPageLabel</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>'Página'</code></td>
-                <td>Sufixo textual no dropdown (ex.: "20 / página").</td>
+                <td>
+                  Sufixo textual no dropdown (ex.: "20 / página"); sem valor
+                  explícito, acompanha o idioma padrão.
+                </td>
               </tr>
               <tr>
-                <td><code>pageChange</code> <span class="badge-tag badge-tag--output">output</span></td>
+                <td>
+                  <code>currentPageReportTemplate</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
+                <td><code>string</code></td>
+                <td>Rótulo padrão do idioma</td>
+                <td>
+                  Substitui o relatório padrão. Os marcadores de número
+                  continuam formatados pelo <code>locale</code>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>pageChange</code>
+                  <span class="badge-tag badge-tag--output">output</span>
+                </td>
                 <td><code>EventEmitter&lt;PageChangeEvent&gt;</code></td>
                 <td>—</td>
-                <td>Emitido quando a página atual ou o tamanho da página é modificado.</td>
+                <td>
+                  Emitido quando a página atual ou o tamanho da página é
+                  modificado.
+                </td>
               </tr>
               <tr>
-                <td><code>pageSizeChange</code> <span class="badge-tag badge-tag--output">output</span></td>
+                <td>
+                  <code>pageSizeChange</code>
+                  <span class="badge-tag badge-tag--output">output</span>
+                </td>
                 <td><code>EventEmitter&lt;number&gt;</code></td>
                 <td>—</td>
-                <td>Emitido exclusivamente quando o tamanho da página é modificado.</td>
+                <td>
+                  Emitido exclusivamente quando o tamanho da página é
+                  modificado.
+                </td>
               </tr>
             </tbody>
           </table>

@@ -16,31 +16,55 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  white-space: nowrap;
   box-shadow: var(--orc-shadow-overlay, var(--shadow-lg));
-  transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1), transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 0;
+
+  &__text {
+    // Account for the tooltip's horizontal padding and keep an 8px viewport gutter.
+    max-width: min(20rem, calc(100vw - 2.75rem));
+    overflow-wrap: anywhere;
+    text-align: center;
+    white-space: normal;
+  }
+
+  &--fit-content &__text {
+    // Short labels stay content-sized; long labels still fit the viewport.
+    max-width: calc(100vw - 2.75rem);
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
 
   &--visible {
     opacity: 1;
   }
 
   // ── Themes ────────────────────────────────────────────────
+  // The dark variant is an explicit paired overlay surface themed in
+  // _light.scss/_dark.scss (--orc-overlay-surface/--orc-overlay-text).
+  // Never bridge an overlay surface through --bg-inverse/--text-inverse:
+  // those aliases invert per theme and their text side used to fall back
+  // to a literal white, producing white-on-white for brand-only hosts.
   &--dark {
-    background-color: var(--bg-inverse, var(--orc-font-main, #141414));
-    color: var(--text-inverse, #FFFFFF);
+    background-color: var(--orc-overlay-surface, var(--orc-font-main, #141414));
+    color: var(--orc-overlay-text, var(--orc-bg, #ffffff));
 
     .orc-tooltip__arrow {
-      color: var(--bg-inverse, var(--orc-font-main, #141414));
+      color: var(--orc-overlay-surface, var(--orc-font-main, #141414));
     }
   }
 
   &--light {
-    background-color: var(--orc-surface-muted, var(--orc-secondary-bg, #D9D9D9));
+    background-color: var(
+      --orc-surface-muted,
+      var(--orc-secondary-bg, #d9d9d9)
+    );
     color: var(--orc-text, var(--orc-font-main, #141414));
 
     .orc-tooltip__arrow {
-      color: var(--orc-surface-muted, var(--orc-secondary-bg, #D9D9D9));
+      color: var(--orc-surface-muted, var(--orc-secondary-bg, #d9d9d9));
     }
   }
 

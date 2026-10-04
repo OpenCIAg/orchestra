@@ -1,1 +1,79 @@
-<div class="orc-tree" role="tree" [attr.aria-label]="label() || null">@for(item of visibleNodes();track item.node.id){<div class="orc-tree__item" role="treeitem" tabindex="0" [style.--orc-tree-level]="item.level" [attr.aria-level]="item.level" [attr.aria-expanded]="item.expandable ? expanded().has(item.node.id) : null" [attr.aria-disabled]="item.node.disabled || null" (keydown)="keydown($event,item)" (click)="activate(item.node)">@if(item.expandable){<button type="button" class="orc-tree__toggle" (click)="toggle(item.node);$event.stopPropagation()" [attr.aria-label]="(expanded().has(item.node.id) ? collapseLabel() : expandLabel()) || null">{{expanded().has(item.node.id)?'−':'+'}}</button>}@else{<span class="orc-tree__spacer"></span>}<span>{{item.node.label}}</span></div>}</div>
+<div
+  class="orc-tree"
+  #tree
+  role="tree"
+  [attr.id]="treeId"
+  [attr.aria-label]="label() || 'Tree'"
+>
+  <ng-template #renderNodes let-list let-level="level">
+    @for (node of list; track node.id) {
+      @if (visibleItem(node); as item) {
+        <div
+          #treeItem
+          class="orc-tree__item"
+          role="treeitem"
+          [attr.id]="itemId(item.node)"
+          [tabindex]="normalizedActiveIndex() === item.index ? 0 : -1"
+          [style.--orc-tree-level]="level"
+          [attr.aria-level]="level"
+          [attr.aria-setsize]="item.setSize"
+          [attr.aria-posinset]="item.position + 1"
+          [attr.aria-expanded]="
+            item.expandable ? expanded().has(item.node.id) : null
+          "
+          [attr.aria-disabled]="item.node.disabled ? 'true' : null"
+          [attr.aria-labelledby]="labelId(item.node)"
+          (focus)="focusItem($event, item.index)"
+          (keydown)="keydown($event, item, item.index)"
+          (click)="activate(item.node, item.index, $event)"
+        >
+          <div class="orc-tree__row">
+            @if (item.expandable) {
+              <button
+                type="button"
+                class="orc-tree__toggle"
+                tabindex="-1"
+                [disabled]="item.node.disabled"
+                [attr.aria-controls]="
+                  expanded().has(item.node.id) ? groupId(item.node) : null
+                "
+                [attr.aria-label]="
+                  (expanded().has(item.node.id)
+                    ? collapseLabel()
+                    : expandLabel()) ||
+                  (expanded().has(item.node.id) ? 'Collapse ' : 'Expand ') +
+                    item.node.label
+                "
+                (click)="toggle(item.node); $event.stopPropagation()"
+              >
+                {{ expanded().has(item.node.id) ? '−' : '+' }}
+              </button>
+            } @else {
+              <span class="orc-tree__spacer" aria-hidden="true"></span>
+            }
+            <span class="orc-tree__label" [attr.id]="labelId(item.node)">{{
+              item.node.label
+            }}</span>
+          </div>
+          @if (item.expandable && expanded().has(item.node.id)) {
+            <div
+              class="orc-tree__group"
+              role="group"
+              [attr.id]="groupId(item.node)"
+            >
+              <ng-container
+                *ngTemplateOutlet="
+                  renderNodes;
+                  context: { $implicit: item.node.children, level: level + 1 }
+                "
+              ></ng-container>
+            </div>
+          }
+        </div>
+      }
+    }
+  </ng-template>
+  <ng-container
+    *ngTemplateOutlet="renderNodes; context: { $implicit: nodes(), level: 1 }"
+  ></ng-container>
+</div>

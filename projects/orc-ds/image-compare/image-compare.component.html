@@ -1,0 +1,22 @@
+<div
+  class="orc-image-compare"
+  [style.aspect-ratio]="aspectRatio()"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-labelledby]="ariaLabelledBy() || null"
+  [attr.tabindex]="tabindex()"
+  role="group"
+>
+  <img class="after" [src]="after()" [attr.alt]="afterAlt() ?? ''" />
+  <div class="before" [style.width.%]="effectivePosition()">
+    <img [src]="before()" [attr.alt]="beforeAlt() ?? ''" />
+  </div>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    [value]="effectivePosition()"
+    (input)="setPosition(+$any($event.target).value)"
+    [attr.aria-label]="rangeLabel()"
+    [attr.aria-valuetext]="effectivePosition() + '%'"
+  />
+</div>

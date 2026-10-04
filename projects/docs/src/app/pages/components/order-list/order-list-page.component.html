@@ -1,0 +1,117 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para componentes</a
+        >
+      </div>
+
+      <div class="section-eyebrow">Componentes · Data Display</div>
+      <h1 class="section-title">OrderList</h1>
+      <p class="section-desc">
+        Selecione, filtre e reordene itens mantendo o valor controlado pelo
+        consumidor. Itens desabilitados permanecem protegidos durante o uso.
+      </p>
+
+      <section class="section" id="preview">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Exemplo interativo</h2>
+            <p class="section-text">
+              Clique em um item para selecioná-lo, use as setas para navegar e
+              os controles de posição para reordenar.
+            </p>
+          </div>
+          <span class="section-index">01 / 02</span>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-toolbar">
+            <span
+              class="demo-status"
+              aria-live="polite"
+              data-testid="order-status"
+            >
+              Selecionados: {{ selectedLabels() }}
+            </span>
+            <label class="toggle-label">
+              <input
+                type="checkbox"
+                [checked]="disabled()"
+                (change)="disabled.set($any($event.target).checked)"
+              />
+              Desabilitar interação
+            </label>
+          </div>
+
+          <div class="order-list-shell">
+            <orc-order-list
+              label="Reordenar componentes"
+              header="Componentes"
+              [value]="items()"
+              (valueChange)="updateItems($event)"
+              [(filter)]="filter"
+              filterBy="label"
+              filterPlaceholder="Filtrar componentes"
+              ariaFilterLabel="Filtrar componentes"
+              selectionMode="multiple"
+              [selection]="selection()"
+              (selectionChange)="updateSelection($event)"
+              [disabled]="disabled()"
+              moveUpLabel="Mover para cima"
+              moveDownLabel="Mover para baixo"
+            />
+          </div>
+
+          <div class="state-summary" aria-label="Estado atual da lista">
+            <span><strong>Ordem:</strong> {{ orderLabels() }}</span>
+            <span class="state-note"
+              >Use Enter ou Espaço para selecionar; Home, End e as setas movem o
+              foco.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Contrato de uso</h2>
+            <p class="section-text">
+              O valor e a seleção são controlados pelo consumidor para que a
+              ordem possa ser persistida.
+            </p>
+          </div>
+          <span class="section-index">02 / 02</span>
+        </div>
+        <div class="contract-grid">
+          <article class="contract-card">
+            <h3>Seleção e teclado</h3>
+            <p>
+              O modo múltiplo permite marcar itens independentemente. O foco
+              segue um único item habilitado por vez.
+            </p>
+          </article>
+          <article class="contract-card">
+            <h3>Filtro e ordem</h3>
+            <p>
+              Filtre pelos rótulos e use os botões nomeados para mover o item
+              selecionado para cima ou para baixo.
+            </p>
+          </article>
+          <article class="contract-card">
+            <h3>Itens desabilitados</h3>
+            <p>
+              Itens desabilitados e o estado geral desabilitado não aceitam
+              seleção, foco ou reordenação.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer />
+</div>

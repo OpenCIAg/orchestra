@@ -1,4 +1,10 @@
-import { Component, ChangeDetectionStrategy, input, output, booleanAttribute } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  input,
+  output,
+  booleanAttribute,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,8 +16,8 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent {
-  clickable = input<boolean>(false);
-  selected = input<boolean>(false);
+  clickable = input(false, { transform: booleanAttribute });
+  selected = input(false, { transform: booleanAttribute });
   variant = input<'simple' | 'dashboard'>('simple');
   readonly flush = input(false, { transform: booleanAttribute });
   readonly media = input(false, { transform: booleanAttribute });
@@ -30,5 +36,43 @@ export class CardComponent {
     if (this.clickable()) {
       this.cardClick.emit();
     }
+  }
+
+  onCardClick(event: MouseEvent): void {
+    if (!this.clickable() || this.isNestedInteractive(event)) return;
+    this.activate(event);
+  }
+
+  onPrimaryClick(event: MouseEvent): void {
+    if (!this.clickable()) return;
+    this.activate(event);
+  }
+
+  private activate(event: MouseEvent): void {
+    this.onClick();
+    this.onClickEvent.emit(event);
+  }
+
+  private isNestedInteractive(event: Event): boolean {
+    const target = event.target;
+    const current = event.currentTarget;
+    const ownerDocument =
+      (current as { ownerDocument?: Document | null } | null)?.ownerDocument ??
+      (target as { ownerDocument?: Document | null } | null)?.ownerDocument;
+    const ElementConstructor = ownerDocument?.defaultView?.Element;
+    if (
+      !ElementConstructor ||
+      !(target instanceof ElementConstructor) ||
+      !(current instanceof ElementConstructor)
+    ) {
+      return false;
+    }
+    const selector =
+      'a,button,input,select,textarea,[role="button"],[role="link"],[role="checkbox"],[role="radio"],[role="slider"],[role="combobox"],[role="switch"],[role="tab"],[role="menuitem"],[tabindex]';
+    const path = event.composedPath();
+    const boundary = path.slice(0, Math.max(path.indexOf(current), 0));
+    return boundary.some(
+      (node) => node instanceof ElementConstructor && node.matches(selector),
+    );
   }
 }

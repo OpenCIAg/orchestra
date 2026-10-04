@@ -1,10 +1,16 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ModalComponent } from '@ciag/orchestra/modal';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { ModalService } from '@ciag/orchestra/modal';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 // ── COMPONENTE DINÂMICO PARA DEMONSTRAÇÃO DO SERVIÇO ─────────
 @Component({
@@ -16,7 +22,8 @@ import { FooterComponent } from '../../../shared/footer/footer.component';
       <span modal-header>Modal via Serviço</span>
       <div modal-body>
         <p style="margin-bottom: 1rem;">
-          Fui injetado no DOM dinamicamente usando o <code>ModalService</code> e o <code>createComponent</code>!
+          Fui injetado no DOM dinamicamente usando o <code>ModalService</code> e
+          o <code>createComponent</code>!
         </p>
         <p>Apertar ESC ou clicar fora também funciona perfeitamente.</p>
       </div>
@@ -30,7 +37,7 @@ import { FooterComponent } from '../../../shared/footer/footer.component';
 export class DemoDynamicModalComponent {
   // A referência será injetada para que possamos destruí-lo
   closeFn!: () => void;
-  
+
   fechar() {
     if (this.closeFn) {
       this.closeFn();
@@ -47,7 +54,8 @@ export class DemoDynamicModalComponent {
     RouterModule,
     ModalComponent,
     ButtonComponent,
-    FooterComponent
+    FooterComponent,
+    IconComponent,
   ],
   templateUrl: './modal-page.component.html',
   styleUrl: './modal-page.component.scss',

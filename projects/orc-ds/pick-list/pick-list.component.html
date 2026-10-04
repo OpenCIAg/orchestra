@@ -1,0 +1,163 @@
+<section
+  class="orc-pick-list"
+  [class]="'orc-pick-list ' + styleClass()"
+  [class.orc-pick-list--responsive]="responsive()"
+  [class.orc-pick-list--compact]="responsive() && compactViewport()"
+  [class.orc-pick-list--striped]="stripedRows()"
+  [style]="style()"
+  [attr.aria-label]="label()?.trim() || 'Pick list'"
+  [attr.aria-disabled]="disabled() || null"
+>
+  <div class="list-pane" [style]="sourceStyle()">
+    @if (sourceHeader()?.trim(); as sourceTitle) {
+      <header>{{ sourceTitle }}</header>
+    }
+    @if (filterBy()) {
+      <input
+        [value]="sourceFilter()"
+        [disabled]="disabled()"
+        [attr.placeholder]="sourceFilterPlaceholder()?.trim() || null"
+        [attr.aria-label]="
+          ariaSourceFilterLabel()?.trim() || 'Filter source list'
+        "
+        (input)="sourceFilter.set($any($event.target).value)"
+      />
+    }
+    <ul
+      role="listbox"
+      aria-multiselectable="true"
+      [attr.aria-label]="sourceHeader()?.trim() || 'Source list'"
+      (dragover)="allowDrop($event)"
+      (drop)="dropInPane($event, true)"
+    >
+      @for (item of filteredSource(); track item.value) {
+        <li
+          role="option"
+          [attr.data-orc-option-value]="item.value"
+          [attr.tabindex]="
+            disabled() || item.disabled
+              ? -1
+              : sourceFocusValue() === item.value
+                ? 0
+                : -1
+          "
+          [attr.aria-disabled]="disabled() || item.disabled ? 'true' : null"
+          [attr.aria-selected]="sourceSelected().has(item.value)"
+          [attr.draggable]="
+            dragdrop() && !disabled() && !item.disabled ? 'true' : null
+          "
+          [class.selected]="sourceSelected().has(item.value)"
+          (click)="toggleSource(item, $event)"
+          (focus)="onOptionFocus($event, item, true)"
+          (blur)="onOptionBlur($event)"
+          (keydown)="onSourceKeydown($event, item)"
+          (dragstart)="startDrag(item, true, $event)"
+          (dragover)="allowDrop($event)"
+          (drop)="dropBefore($event, item, true)"
+          (dragend)="clearDrag()"
+        >
+          {{ item.label }}
+        </li>
+      } @empty {
+        @if (emptyText()?.trim(); as message) {
+          <li class="empty">{{ message }}</li>
+        }
+      }
+    </ul>
+  </div>
+  <div class="actions" role="group" aria-label="Transfer actions">
+    <button
+      type="button"
+      (click)="transferSelected()"
+      [disabled]="disabled() || !canTransferSelectedToTarget()"
+      [attr.aria-label]="
+        moveToTargetLabel().trim() || 'Move selected to target'
+      "
+    >
+      {{ compactViewport() ? '↓' : '→' }}
+    </button>
+    <button
+      type="button"
+      (click)="transferAllToTarget()"
+      [disabled]="disabled() || !canTransferAllToTarget()"
+      [attr.aria-label]="moveAllToTargetLabel().trim() || 'Move all to target'"
+    >
+      {{ compactViewport() ? '⇓' : '≫' }}
+    </button>
+    <button
+      type="button"
+      (click)="transferBack()"
+      [disabled]="disabled() || !canTransferSelectedToSource()"
+      [attr.aria-label]="
+        moveToSourceLabel().trim() || 'Move selected to source'
+      "
+    >
+      {{ compactViewport() ? '↑' : '←' }}
+    </button>
+    <button
+      type="button"
+      (click)="transferAllToSource()"
+      [disabled]="disabled() || !canTransferAllToSource()"
+      [attr.aria-label]="moveAllToSourceLabel().trim() || 'Move all to source'"
+    >
+      {{ compactViewport() ? '⇑' : '≪' }}
+    </button>
+  </div>
+  <div class="list-pane" [style]="targetStyle()">
+    @if (targetHeader()?.trim(); as targetTitle) {
+      <header>{{ targetTitle }}</header>
+    }
+    @if (filterBy()) {
+      <input
+        [value]="targetFilter()"
+        [disabled]="disabled()"
+        [attr.placeholder]="targetFilterPlaceholder()?.trim() || null"
+        [attr.aria-label]="
+          ariaTargetFilterLabel()?.trim() || 'Filter target list'
+        "
+        (input)="targetFilter.set($any($event.target).value)"
+      />
+    }
+    <ul
+      role="listbox"
+      aria-multiselectable="true"
+      [attr.aria-label]="targetHeader()?.trim() || 'Target list'"
+      (dragover)="allowDrop($event)"
+      (drop)="dropInPane($event, false)"
+    >
+      @for (item of filteredTarget(); track item.value) {
+        <li
+          role="option"
+          [attr.data-orc-option-value]="item.value"
+          [attr.tabindex]="
+            disabled() || item.disabled
+              ? -1
+              : targetFocusValue() === item.value
+                ? 0
+                : -1
+          "
+          [attr.aria-disabled]="disabled() || item.disabled ? 'true' : null"
+          [attr.aria-selected]="targetSelected().has(item.value)"
+          [attr.draggable]="
+            dragdrop() && !disabled() && !item.disabled ? 'true' : null
+          "
+          [class.selected]="targetSelected().has(item.value)"
+          (click)="toggleTarget(item, $event)"
+          (focus)="onOptionFocus($event, item, false)"
+          (blur)="onOptionBlur($event)"
+          (keydown)="onTargetKeydown($event, item)"
+          (dragstart)="startDrag(item, false, $event)"
+          (dragover)="allowDrop($event)"
+          (drop)="dropBefore($event, item, false)"
+          (dragend)="clearDrag()"
+        >
+          {{ item.label }}
+        </li>
+      } @empty {
+        @if (emptyText()?.trim(); as message) {
+          <li class="empty">{{ message }}</li>
+        }
+      }
+    </ul>
+  </div>
+</section>

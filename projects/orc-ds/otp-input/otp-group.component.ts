@@ -10,15 +10,17 @@ import { CommonModule } from '@angular/common';
       <ng-content></ng-content>
     </div>
   `,
-  styles: [`
-    :host {
-      display: inline-flex;
-    }
-    .otp-group {
-      display: flex;
-      gap: 4px;
-    }
-  `],
+  styles: [
+    `
+      :host {
+        display: inline-flex;
+      }
+      .otp-group {
+        display: flex;
+        gap: 4px;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OtpGroupComponent {}

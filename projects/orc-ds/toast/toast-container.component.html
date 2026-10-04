@@ -8,10 +8,7 @@
       aria-live="polite"
     >
       @for (item of toastsByPosition()[pos]; track item.id) {
-        <orc-toast
-          [toast]="item"
-          (dismiss)="handleDismiss($event)"
-        />
+        <orc-toast [toast]="item" (dismiss)="handleDismiss($event)" />
       }
     </div>
   }

@@ -1,4 +1,4 @@
-<div
+<article
   class="card {{ styleClass() }}"
   [style]="style()"
   [class.card--clickable]="clickable()"
@@ -8,16 +8,28 @@
   [class.card--media]="media()"
   [class.card--clip]="clip() || media()"
   [style.padding]="padding() ?? null"
-  [attr.role]="clickable() ? 'button' : null"
-  [attr.tabindex]="clickable() ? 0 : null"
-  [attr.aria-selected]="selected() ? true : null"
-  [attr.aria-label]="ariaLabel() || null"
-  (click)="onClick(); onClickEvent.emit($event)"
-  (keydown.enter)="onClick()"
-  (keydown.space)="onClick()"
+  [attr.aria-label]="ariaLabel() || header() || null"
+  (click)="onCardClick($event)"
 >
+  @if (clickable()) {
+    <button
+      #primaryButton
+      type="button"
+      class="card__primary-action"
+      [attr.aria-label]="ariaLabel() || header() || 'Card action'"
+      [attr.aria-pressed]="clickable() ? (selected() ? 'true' : 'false') : null"
+      (click)="onPrimaryClick($event)"
+    ></button>
+  }
   @if (header() || subheader()) {
-    <div class="card__header">@if (header()) { <div class="card__title">{{ header() }}</div> } @if (subheader()) { <div class="card__subtitle">{{ subheader() }}</div> }</div>
+    <div class="card__header">
+      @if (header()) {
+        <div class="card__title">{{ header() }}</div>
+      }
+      @if (subheader()) {
+        <div class="card__subtitle">{{ subheader() }}</div>
+      }
+    </div>
   }
   <ng-content></ng-content>
-</div>
+</article>

@@ -1,1 +1,1 @@
-export { FloatLabelComponent } from '@ciag/orchestra/p2';
+export { FloatLabelComponent } from './float-label.component';

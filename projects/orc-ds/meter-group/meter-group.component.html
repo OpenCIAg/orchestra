@@ -1,0 +1,40 @@
+<div
+  class="orc-p2-meter"
+  [class]="
+    'orc-p2-meter orientation-' +
+    orientation() +
+    ' label-orientation-' +
+    labelOrientation() +
+    ' ' +
+    styleClass()
+  "
+  [style]="style()"
+>
+  @if (label() && labelPosition() === 'start') {
+    <small class="orc-p2-meter__label"
+      >{{ label() }} {{ ariaValue() }}/{{ normalizedMax() }}</small
+    >
+  }
+  <div
+    class="orc-p2-meter__track"
+    role="meter"
+    [attr.aria-label]="ariaLabel() || label() || 'Meter'"
+    [attr.aria-valuemin]="normalizedMin()"
+    [attr.aria-valuemax]="normalizedMax()"
+    [attr.aria-valuenow]="ariaValue()"
+  >
+    @for (item of effectiveValues(); track $index) {
+      <span
+        [style.width.%]="orientation() === 'horizontal' ? percent(item) : null"
+        [style.height.%]="orientation() === 'vertical' ? percent(item) : null"
+        [style.background]="item.color || color()"
+        [attr.title]="item.label || null"
+      ></span>
+    }
+  </div>
+  @if (label() && labelPosition() === 'end') {
+    <small class="orc-p2-meter__label"
+      >{{ label() }} {{ ariaValue() }}/{{ normalizedMax() }}</small
+    >
+  }
+</div>

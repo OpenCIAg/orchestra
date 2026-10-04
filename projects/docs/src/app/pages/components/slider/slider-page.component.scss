@@ -208,7 +208,7 @@
   letter-spacing: 0.05em;
   padding: 2px 8px;
   background: var(--orc-color-azul-eletrico, #1c6aed);
-  color: #ffffff;
+  color: var(--orc-on-interactive);
   border-radius: var(--radius-full, 9999px);
 }
 
@@ -339,7 +339,7 @@
   }
 
   &--active {
-    background: #ffffff;
+    background: var(--orc-surface);
     color: var(--orc-color-azul-eletrico, #1c6aed);
     font-weight: 600;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -480,7 +480,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   background: var(--orc-color-azul-eletrico, #1c6aed);
-  color: #ffffff;
+  color: var(--orc-on-interactive);
   border: none;
   border-radius: var(--radius-md, 8px);
   cursor: pointer;

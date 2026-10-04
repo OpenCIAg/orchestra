@@ -1,1 +1,1 @@
-export { DateInputComponent } from '@ciag/orchestra/p2';
+export { DateInputComponent } from './date-input.component';

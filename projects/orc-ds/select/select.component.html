@@ -1,7 +1,17 @@
-<div class="orc-select-wrapper" [class.is-disabled]="effectiveDisabled()" [class.is-invalid]="isInvalid()" [class]="styleClass()" [style]="style()">
+<div
+  class="orc-select-wrapper"
+  (focusin)="onCompositeFocus($event)"
+  (focusout)="onCompositeFocusOut($event)"
+  [class.is-disabled]="effectiveDisabled()"
+  [class.is-invalid]="isInvalid()"
+  [class.is-filled]="variant() === 'filled'"
+  [class.is-fluid]="fluid()"
+  [class]="styleClass()"
+  [style]="style()"
+>
   <!-- Label -->
   @if (label()) {
-    <label [for]="effectiveId()" class="orc-select-label">
+    <label [id]="labelId()" class="orc-select-label">
       {{ label() }}
       @if (required()) {
         <span class="orc-select-required-asterisk" aria-hidden="true">*</span>
@@ -19,21 +29,24 @@
     [class.is-disabled]="effectiveDisabled()"
     [class.is-readonly]="readonly()"
     [class.is-invalid]="isInvalid()"
+    [class.is-filled]="variant() === 'filled'"
+    [class.is-small]="resolvedSize() === 'sm'"
+    [class.is-large]="resolvedSize() === 'lg'"
     role="combobox"
     [attr.aria-expanded]="isOpen()"
     [attr.aria-controls]="listboxId()"
     [attr.aria-activedescendant]="activeOptionId()"
     [attr.aria-haspopup]="'listbox'"
     [attr.aria-disabled]="effectiveDisabled()"
+    [attr.aria-readonly]="readonly()"
+    [attr.aria-required]="required()"
     [attr.aria-invalid]="isInvalid()"
-    [attr.aria-labelledby]="ariaLabelledBy()"
-    [attr.aria-label]="ariaLabel() || null"
+    [attr.aria-labelledby]="effectiveAriaLabelledBy()"
+    [attr.aria-label]="effectiveAriaLabel()"
     [attr.aria-describedby]="computedAriaDescribedBy()"
     [attr.tabindex]="effectiveDisabled() ? -1 : (tabindex() ?? 0)"
     (click)="onClick.emit($event); togglePanel()"
     (keydown)="onKeyDown($event)"
-    (focus)="onTriggerFocus($event)"
-    (blur)="onTriggerBlur($event)"
   >
     <div class="orc-select-trigger-content">
       <ng-content select="[orcSelectTrigger], [selectTrigger]">
@@ -43,16 +56,27 @@
               @for (item of selectedItems(); track item.value) {
                 <span class="orc-select-chip">
                   @if (item.avatarUrl) {
-                    <img [src]="item.avatarUrl" alt="" class="orc-chip-avatar" />
+                    <img
+                      [src]="item.avatarUrl"
+                      alt=""
+                      class="orc-chip-avatar"
+                    />
                   } @else if (item.icon) {
-                    <i [class]="item.icon" class="orc-chip-icon" aria-hidden="true"></i>
+                    <i
+                      [class]="item.icon"
+                      class="orc-chip-icon"
+                      aria-hidden="true"
+                    ></i>
                   }
                   <span class="orc-chip-label">{{ item.label }}</span>
                   @if (!effectiveDisabled() && !readonly()) {
                     <button
                       type="button"
                       class="orc-chip-remove"
-                      [attr.aria-label]="removeOptionAriaLabel() || null"
+                      [attr.aria-label]="
+                        effectiveRemoveOptionAriaLabel() ||
+                        'Remove ' + item.label
+                      "
                       (click)="removeSelectedItem(item.value, $event)"
                     >
                       &times;
@@ -68,9 +92,17 @@
           @if (hasValue()) {
             <div class="orc-select-single-value">
               @if (selectedItems()[0].avatarUrl) {
-                <img [src]="selectedItems()[0].avatarUrl" alt="" class="orc-value-avatar" />
+                <img
+                  [src]="selectedItems()[0].avatarUrl"
+                  alt=""
+                  class="orc-value-avatar"
+                />
               } @else if (selectedItems()[0].icon) {
-                <i [class]="selectedItems()[0].icon" class="orc-value-icon" aria-hidden="true"></i>
+                <i
+                  [class]="selectedItems()[0].icon"
+                  class="orc-value-icon"
+                  aria-hidden="true"
+                ></i>
               }
               <span class="orc-value-text">{{ selectedItems()[0].label }}</span>
             </div>
@@ -83,11 +115,16 @@
 
     <!-- Actions (Clear & Chevron Arrow) -->
     <div class="orc-select-actions">
-      @if ((clearable() || showClear()) && hasValue() && !effectiveDisabled() && !readonly()) {
+      @if (
+        (clearable() || showClear()) &&
+        hasValue() &&
+        !effectiveDisabled() &&
+        !readonly()
+      ) {
         <button
           type="button"
           class="orc-select-clear-btn"
-          [attr.aria-label]="clearAriaLabel() || null"
+          [attr.aria-label]="effectiveClearAriaLabel()"
           (click)="clearValue($event)"
         >
           &times;
@@ -95,10 +132,24 @@
       }
 
       <div class="orc-select-arrow" [class.is-expanded]="isOpen()">
-        @if (dropdownIcon()) { <span>{{ dropdownIcon() }}</span> } @else {
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        @if (dropdownIcon()) {
+          <span>{{ dropdownIcon() }}</span>
+        } @else {
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5 7.5L10 12.5L15 7.5"
+              stroke="currentColor"
+              stroke-width="1.67"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         }
       </div>
     </div>
@@ -114,6 +165,28 @@
       {{ helperText() }}
     </p>
   }
+  <span
+    class="orc-select-sr-only"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    @if (isOpen() && loading()) {
+      {{ loadingMessage() || 'Loading options' }}
+    } @else if (isOpen() && !hasVisibleOptions()) {
+      {{ emptyStateMessage() }}
+    }
+  </span>
+  @if (name() && !effectiveDisabled()) {
+    @for (formValue of nativeFormValues(); track $index) {
+      <input
+        class="orc-select__form-value"
+        type="hidden"
+        [name]="name()"
+        [value]="formValue"
+      />
+    }
+  }
 </div>
 
 <!-- Floating Dropdown Panel Template -->
@@ -121,6 +194,8 @@
   <div
     [id]="listboxId()"
     class="orc-select-dropdown"
+    (focusin)="onCompositeFocus($event)"
+    (focusout)="onCompositeFocusOut($event)"
     role="listbox"
     [class]="panelStyleClass()"
     [style]="panelStyle()"
@@ -137,8 +212,8 @@
           #searchInput
           type="text"
           class="orc-select-search-input"
-          [attr.placeholder]="(filterPlaceholder() || searchPlaceholder()) || null"
-          [attr.aria-label]="ariaFilterLabel() || null"
+          [attr.placeholder]="effectiveFilterPlaceholder()"
+          [attr.aria-label]="effectiveAriaFilterLabel()"
           [attr.maxlength]="maxlength()"
           [value]="searchTerm()"
           (input)="onSearchInput($event)"
@@ -150,47 +225,73 @@
     <!-- Options Container -->
     <div class="orc-select-options-list">
       @if (loading()) {
-        @if (loadingIcon() || loadingMessage()) { <div class="orc-select-empty-state" aria-live="polite">{{ loadingIcon() || loadingMessage() }}</div> }
+        <div class="orc-select-empty-state" aria-hidden="true">
+          @if (loadingIcon()) {
+            <i [class]="loadingIcon()"></i>
+          }
+          <span>{{ loadingMessage() || 'Loading options' }}</span>
+        </div>
       } @else {
-      @if (isDataMode()) {
-        @for (opt of filteredDataOptions(); track getOptionValue(opt); let idx = $index) {
-          <div
-            class="orc-data-option"
-            [id]="listboxId() + '-option-' + idx"
-            [class.is-selected]="isDataOptionSelected(opt)"
-            [class.is-active]="activeOptionIndex() === idx"
-            [class.is-disabled]="isOptionDisabled(opt)"
-            role="option"
-            [attr.aria-selected]="isDataOptionSelected(opt)"
-            [attr.aria-disabled]="isOptionDisabled(opt)"
-            (click)="onDataOptionClick(opt, $event)"
-          >
-            @if (opt.avatarUrl) {
-              <img [src]="opt.avatarUrl" alt="" class="orc-option-avatar" />
-            } @else if (opt.icon) {
-              <i [class]="opt.icon" class="orc-option-icon" aria-hidden="true"></i>
-            }
-            <div class="orc-option-content">
-              <span class="orc-option-label">{{ getOptionLabel(opt) }}</span>
-              @if (opt.description) {
-                <span class="orc-option-description">{{ opt.description }}</span>
+        @if (isDataMode()) {
+          @for (opt of filteredDataOptions(); track $index; let idx = $index) {
+            <div
+              class="orc-data-option"
+              [id]="listboxId() + '-option-' + idx"
+              [class.is-selected]="isDataOptionSelected(opt)"
+              [class.is-active]="
+                activeOptionIndex() === idx && !isOptionDisabled(opt)
+              "
+              [class.is-disabled]="isOptionDisabled(opt)"
+              role="option"
+              [attr.aria-selected]="isDataOptionSelected(opt)"
+              [attr.aria-disabled]="isOptionDisabled(opt)"
+              (click)="onDataOptionClick(opt, $event)"
+            >
+              @if (opt.avatarUrl) {
+                <img [src]="opt.avatarUrl" alt="" class="orc-option-avatar" />
+              } @else if (opt.icon) {
+                <i
+                  [class]="opt.icon"
+                  class="orc-option-icon"
+                  aria-hidden="true"
+                ></i>
+              }
+              <div class="orc-option-content">
+                <span class="orc-option-label">{{ getOptionLabel(opt) }}</span>
+                @if (opt.description) {
+                  <span class="orc-option-description">{{
+                    opt.description
+                  }}</span>
+                }
+              </div>
+              @if (isDataOptionSelected(opt)) {
+                <svg
+                  class="orc-option-checkmark"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
               }
             </div>
-            @if (isDataOptionSelected(opt)) {
-              <svg class="orc-option-checkmark" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-            }
-          </div>
-        } @empty {
-          <div class="orc-select-empty-state">
-            {{ searchTerm() ? (emptyFilterMessage() || searchEmptyText()) : emptyMessage() }}
-          </div>
+          } @empty {
+            <div class="orc-select-empty-state" aria-hidden="true">
+              {{ emptyStateMessage() }}
+            </div>
+          }
+        } @else {
+          <!-- Projected <orc-option> elements -->
+          <ng-content></ng-content>
+          @if (!hasVisibleOptions()) {
+            <div class="orc-select-empty-state" aria-hidden="true">
+              {{ emptyStateMessage() }}
+            </div>
+          }
         }
-      } @else {
-        <!-- Projected <orc-option> elements -->
-        <ng-content></ng-content>
-      }
       }
     </div>
 

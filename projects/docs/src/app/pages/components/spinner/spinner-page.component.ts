@@ -10,11 +10,13 @@ import {
   SpinnerTextPosition,
 } from '@ciag/orchestra/spinner';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-spinner-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,

@@ -1,0 +1,44 @@
+<section class="orc-org" role="tree" [attr.aria-label]="label() || null">
+  <div class="tree">
+    @for (item of flatNodes(); track item.node.key) {
+      <article
+        class="node"
+        [class.disabled]="item.node.disabled"
+        [style.margin-left.rem]="item.level * 2.2"
+        role="treeitem"
+        [attr.aria-level]="item.level + 1"
+        [attr.aria-selected]="isSelected(item.node.key)"
+        [attr.aria-disabled]="item.node.disabled ? 'true' : null"
+        [attr.aria-expanded]="
+          item.node.children?.length ? expanded().has(item.node.key) : null
+        "
+        tabindex="0"
+        (click)="select(item.node)"
+        (keydown)="onNodeKeydown($event, item.node)"
+      >
+        <div class="card" [class.selected]="isSelected(item.node.key)">
+          @if (item.node.children?.length) {
+            <button
+              type="button"
+              class="expand"
+              [disabled]="item.node.disabled || !collapsible()"
+              (click)="$event.stopPropagation(); toggle(item.node)"
+              (keydown)="$event.stopPropagation()"
+              [attr.aria-expanded]="expanded().has(item.node.key)"
+              [attr.aria-label]="toggleLabel(item.node)"
+            >
+              {{ expanded().has(item.node.key) ? '−' : '+' }}
+            </button>
+          }
+          @if (item.node.image) {
+            <img [src]="item.node.image" [alt]="item.node.label" />
+          }
+          <strong>{{ item.node.label }}</strong>
+          @if (item.node.subtitle) {
+            <small>{{ item.node.subtitle }}</small>
+          }
+        </div>
+      </article>
+    }
+  </div>
+</section>
