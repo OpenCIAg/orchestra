@@ -32,16 +32,20 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       {
         kind: 'input',
         name: 'min',
-        type: 'string',
+        type: 'string | Date',
         defaultValue: "''",
         required: false,
+        description:
+          'ISO string or Date; the native picker bound honors both spellings.',
       },
       {
         kind: 'input',
         name: 'max',
-        type: 'string',
+        type: 'string | Date',
         defaultValue: "''",
         required: false,
+        description:
+          'ISO string or Date; the native picker bound honors both spellings.',
       },
       {
         kind: 'input',
@@ -56,6 +60,15 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         type: 'string',
         defaultValue: "''",
         required: false,
+      },
+      {
+        kind: 'input',
+        name: 'invalidRangeMessage',
+        type: 'string',
+        defaultValue: "'Date outside the allowed range'",
+        required: false,
+        description:
+          'Message surfaced when a typed value falls outside `[min]`/`[max]`.',
       },
       {
         kind: 'input',

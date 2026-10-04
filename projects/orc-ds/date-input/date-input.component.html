@@ -18,8 +18,8 @@
     [name]="name()"
     type="date"
     [value]="value()"
-    [min]="min() || null"
-    [max]="max() || null"
+    [min]="minKey() || null"
+    [max]="maxKey() || null"
     [required]="required()"
     [disabled]="effectiveDisabled()"
     [readonly]="readonly()"
@@ -29,15 +29,23 @@
     [attr.aria-labelledby]="
       ariaLabelledBy() || (label() ? effectiveId() + '-label' : null)
     "
-    [attr.aria-describedby]="helperText() ? effectiveId() + '-helper' : null"
-    [attr.aria-invalid]="!!error()"
+    [attr.aria-describedby]="
+      error() || rangeInvalid()
+        ? effectiveId() + '-error'
+        : helperText()
+          ? effectiveId() + '-helper'
+          : null
+    "
+    [attr.aria-invalid]="!!(error() || rangeInvalid())"
     (input)="onInput($event)"
     (blur)="onTouched()"
   />
-  @if (error()) {
-    <small class="error" role="alert">{{ error() }}</small>
+  @if (error() || rangeInvalid()) {
+    <small class="error" role="alert" [id]="effectiveId() + '-error'">{{
+      error() || invalidRangeMessage()
+    }}</small>
   }
-  @if (!error() && helperText()) {
+  @if (!error() && !rangeInvalid() && helperText()) {
     <small [id]="effectiveId() + '-helper'">{{ helperText() }}</small>
   }
 </label>

@@ -3,10 +3,20 @@ import { TestBed } from '@angular/core/testing';
 import { BadgeComponent } from '../badge/badge.component';
 import { BadgeStatus, BadgeVariant } from '../badge/badge.types';
 import { ButtonComponent } from '../button/button.component';
+import { ChipComponent } from '../chip/chip.component';
+import { SliderComponent } from '../slider/slider.component';
 import { TagComponent } from '../tag/tag.component';
+import { TooltipComponent } from '../tooltip/tooltip.component';
 
 @Component({
-  imports: [BadgeComponent, ButtonComponent, TagComponent],
+  imports: [
+    BadgeComponent,
+    ButtonComponent,
+    ChipComponent,
+    SliderComponent,
+    TagComponent,
+    TooltipComponent,
+  ],
   styleUrl: './core.scss',
   encapsulation: ViewEncapsulation.None,
   template: `<section
@@ -34,6 +44,17 @@ import { TagComponent } from '../tag/tag.component';
       }
       <orc-button variant="danger">Delete</orc-button>
       <orc-tag severity="warning" value="Warning" />
+      <orc-chip variant="success" label="OK" />
+      <orc-chip variant="warning" label="Warn" />
+      <orc-chip variant="danger" label="Fail" />
+      <orc-slider class="slider-probe" [showTooltip]="'always'" />
+      <orc-tooltip-overlay class="tooltip-probe" text="Hint" />
+      <div
+        class="alias-bridge-off"
+        style="--bg-inverse: initial; --text-inverse: initial"
+      >
+        <orc-tooltip-overlay class="tooltip-alias-less" text="Hint" />
+      </div>
       <div
         class="orc-sizing-probe"
         style="width:100px;padding:10px;border:2px solid"
@@ -67,7 +88,14 @@ class Host {
 }
 
 function rgba(css: string): number[] {
-  return css.match(/[\d.]+/g)!.map(Number);
+  const values = css.match(/[\d.]+/g)!.map(Number);
+  if (css.startsWith('color(srgb')) {
+    // color-mix results serialize as `color(srgb r g b / a)` with 0–1
+    // channels; scale them onto the 0–255 scale the helpers work in.
+    const alpha = values.length > 3 ? values[3] : 1;
+    return [...values.slice(0, 3).map((channel) => channel * 255), alpha];
+  }
+  return values;
 }
 function composite(foreground: number[], background: number[]): number[] {
   const alpha = foreground[3] ?? 1;
@@ -196,6 +224,91 @@ describe('Theme and component style contracts without the global reset', () => {
       }
     });
   }
+
+  it('keeps chip status text legible in dark mode for every status variant', () => {
+    const { fixture, host, scope } = setup();
+    host.theme.set('dark');
+    fixture.detectChanges();
+    for (const element of fixture.nativeElement.querySelectorAll(
+      '.orc-chip--success, .orc-chip--warning, .orc-chip--danger',
+    ) as NodeListOf<HTMLElement>) {
+      expect(contrast(element, scope))
+        .withContext(`dark: ${element.className}`)
+        .toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it('keeps the light chip status variants unchanged and legible', () => {
+    const { fixture, host, scope } = setup();
+    host.theme.set('light');
+    fixture.detectChanges();
+    const chip = (variant: string) =>
+      fixture.nativeElement.querySelector(
+        `.orc-chip--${variant}`,
+      ) as HTMLElement;
+    // The warning text is the historical #8b4c00 literal kept token-fed, and
+    // success rides the untouched light --color-success. The danger chip's
+    // light text (--color-error #fb2c36 on its 10% tint over white) computes
+    // 3.3:1 pre-existing; repairing it would change the light appearance and
+    // stays out of the dark-contrast repair's scope.
+    expect(getComputedStyle(chip('warning')).color).toBe('rgb(139, 76, 0)');
+    expect(contrast(chip('warning'), scope)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(chip('success'), scope)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  for (const theme of ['light', 'dark'] as const) {
+    it(`renders the dark tooltip and slider tooltip as one dark paired surface in ${theme} mode`, () => {
+      const { fixture, host, scope } = setup();
+      host.theme.set(theme);
+      fixture.detectChanges();
+      const probes = [
+        ...(fixture.nativeElement.querySelectorAll(
+          'orc-tooltip-overlay.tooltip-probe .orc-tooltip, orc-slider .orc-slider-tooltip',
+        ) as NodeListOf<HTMLElement>),
+      ];
+      expect(probes.length).toBe(2);
+      for (const probe of probes) {
+        const style = getComputedStyle(probe);
+        if (theme === 'dark') {
+          // The inverse-alias inversion rendered a white surface in dark.
+          expect(style.backgroundColor).not.toBe('rgb(255, 255, 255)');
+        } else {
+          // The intended light-mode look: near-black surface, white text.
+          expect(style.backgroundColor).toBe('rgb(20, 20, 20)');
+        }
+        const background = composite(
+          rgba(style.backgroundColor),
+          rgba(getComputedStyle(scope).backgroundColor),
+        );
+        const values = [
+          luminance(composite(rgba(style.color), background)),
+          luminance(background),
+        ].sort((a, b) => a - b);
+        expect((values[1] + 0.05) / (values[0] + 0.05))
+          .withContext(`${theme}: ${probe.className}`)
+          .toBeGreaterThanOrEqual(4.5);
+      }
+    });
+  }
+
+  it('keeps the dark tooltip readable for brand-only hosts without the alias bridge', () => {
+    const { fixture, host, scope } = setup();
+    host.theme.set('dark');
+    fixture.detectChanges();
+    const tooltip = fixture.nativeElement.querySelector(
+      'orc-tooltip-overlay.tooltip-alias-less .orc-tooltip',
+    ) as HTMLElement;
+    const style = getComputedStyle(tooltip);
+    const background = composite(
+      rgba(style.backgroundColor),
+      rgba(getComputedStyle(scope).backgroundColor),
+    );
+    const values = [
+      luminance(composite(rgba(style.color), background)),
+      luminance(background),
+    ].sort((a, b) => a - b);
+    expect((values[1] + 0.05) / (values[0] + 0.05)).toBeGreaterThanOrEqual(4.5);
+  });
 
   it('sizes component-owned subtrees consistently without resetting application boxes', () => {
     const { fixture } = setup();

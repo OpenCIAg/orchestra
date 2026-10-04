@@ -42,12 +42,17 @@
   }
 
   // ── Themes ────────────────────────────────────────────────
+  // The dark variant is an explicit paired overlay surface themed in
+  // _light.scss/_dark.scss (--orc-overlay-surface/--orc-overlay-text).
+  // Never bridge an overlay surface through --bg-inverse/--text-inverse:
+  // those aliases invert per theme and their text side used to fall back
+  // to a literal white, producing white-on-white for brand-only hosts.
   &--dark {
-    background-color: var(--bg-inverse, var(--orc-font-main, #141414));
-    color: var(--text-inverse, #ffffff);
+    background-color: var(--orc-overlay-surface, var(--orc-font-main, #141414));
+    color: var(--orc-overlay-text, var(--orc-bg, #ffffff));
 
     .orc-tooltip__arrow {
-      color: var(--bg-inverse, var(--orc-font-main, #141414));
+      color: var(--orc-overlay-surface, var(--orc-font-main, #141414));
     }
   }
 

@@ -109,4 +109,116 @@ describe('DateInput behavior parity', () => {
     expect(input(fixture).getAttribute('min')).toBe('2026-01-01');
     expect(input(fixture).getAttribute('max')).toBe('2026-12-31');
   });
+
+  it('surfaces typed below-min values as invalid without writing them to the model', () => {
+    const fixture = create();
+    const changes: string[] = [];
+    fixture.componentInstance.registerOnChange((value) => changes.push(value));
+    fixture.componentRef.setInput('min', '2026-01-01');
+    fixture.componentRef.setInput('max', '2026-12-31');
+    fixture.componentInstance.writeValue('2026-06-15');
+    fixture.detectChanges();
+
+    const native = input(fixture);
+    native.value = '2025-12-31';
+    native.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+
+    // The out-of-range value never reaches the model or the forms API.
+    expect(fixture.componentInstance.value()).toBe('2026-06-15');
+    expect(changes).toEqual([]);
+    // The typed text stays editable in the field while the state is invalid.
+    expect(native.value).toBe('2025-12-31');
+    expect(native.getAttribute('aria-invalid')).toBe('true');
+    const alert = fixture.nativeElement.querySelector(
+      'small[role="alert"]',
+    ) as HTMLElement;
+    expect(alert.textContent?.trim()).toBe('Date outside the allowed range');
+
+    // A corrected in-range value recovers the valid state.
+    native.value = '2026-06-01';
+    native.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('2026-06-01');
+    expect(changes).toEqual(['2026-06-01']);
+    expect(native.getAttribute('aria-invalid')).toBe('false');
+    expect(
+      fixture.nativeElement.querySelector('small[role="alert"]'),
+    ).toBeNull();
+  });
+
+  it('surfaces typed above-max values as invalid without writing them to the model', () => {
+    const fixture = create();
+    const changes: string[] = [];
+    fixture.componentInstance.registerOnChange((value) => changes.push(value));
+    fixture.componentRef.setInput('min', '2026-01-01');
+    fixture.componentRef.setInput('max', '2026-12-31');
+    fixture.componentInstance.writeValue('2026-06-15');
+    fixture.detectChanges();
+
+    const native = input(fixture);
+    native.value = '2027-01-01';
+    native.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.value()).toBe('2026-06-15');
+    expect(changes).toEqual([]);
+    expect(native.getAttribute('aria-invalid')).toBe('true');
+    expect(
+      fixture.nativeElement.querySelector('small[role="alert"]'),
+    ).not.toBeNull();
+  });
+
+  it('accepts Date objects for min and max like ISO strings', () => {
+    const fixture = create();
+    const changes: string[] = [];
+    fixture.componentInstance.registerOnChange((value) => changes.push(value));
+    fixture.componentRef.setInput('min', new Date(2026, 0, 1));
+    fixture.componentRef.setInput('max', new Date(2026, 11, 31));
+    fixture.componentInstance.writeValue('2026-06-15');
+    fixture.detectChanges();
+
+    const native = input(fixture);
+    expect(native.getAttribute('min')).toBe('2026-01-01');
+    expect(native.getAttribute('max')).toBe('2026-12-31');
+
+    native.value = '2026-12-31';
+    native.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('2026-12-31');
+    expect(changes).toEqual(['2026-12-31']);
+    expect(native.getAttribute('aria-invalid')).toBe('false');
+
+    native.value = '2026-01-01';
+    native.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('2026-01-01');
+
+    native.value = '2025-12-31';
+    native.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('2026-01-01');
+    expect(native.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('clears the surfaced range validity when the forms API writes a value', () => {
+    const fixture = create();
+    fixture.componentRef.setInput('min', '2026-01-01');
+    fixture.componentRef.setInput('max', '2026-12-31');
+    fixture.componentInstance.writeValue('2026-06-15');
+    fixture.detectChanges();
+
+    const native = input(fixture);
+    native.value = '2025-12-31';
+    native.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect(native.getAttribute('aria-invalid')).toBe('true');
+
+    fixture.componentInstance.writeValue('2026-03-01');
+    fixture.detectChanges();
+    expect(native.getAttribute('aria-invalid')).toBe('false');
+    expect(
+      fixture.nativeElement.querySelector('small[role="alert"]'),
+    ).toBeNull();
+  });
 });
