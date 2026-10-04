@@ -210,13 +210,16 @@
 }
 
 // ── Tooltip Flutuante ───────────────────────────────────────
+// Paired overlay surface tokens (see _light.scss/_dark.scss); the
+// fallbacks stay a token-to-token chain so the surface and text colors
+// can never diverge into white-on-white.
 .orc-slider-tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--bg-inverse, var(--orc-font-main, #141414));
-  color: var(--text-inverse, #ffffff);
+  background: var(--orc-overlay-surface, var(--orc-font-main, #141414));
+  color: var(--orc-overlay-text, var(--orc-bg, #ffffff));
   font-size: 0.6875rem;
   font-weight: 600;
   line-height: 1;
@@ -237,8 +240,8 @@
     transform: translateX(-50%);
     border-width: 4px 4px 0 4px;
     border-style: solid;
-    border-color: var(--bg-inverse, var(--orc-font-main, #141414)) transparent
-      transparent transparent;
+    border-color: var(--orc-overlay-surface, var(--orc-font-main, #141414))
+      transparent transparent transparent;
   }
 }
 

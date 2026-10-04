@@ -132,6 +132,32 @@ describe('Calendar behavior parity', () => {
     expect(fixture.componentInstance.value()).toBe('');
   });
 
+  it('keeps roving tab stops and the active day on enabled days only', () => {
+    const fixture = create();
+    fixture.componentRef.setInput('min', '2026-03-05');
+    fixture.componentRef.setInput('max', '2026-03-25');
+    fixture.detectChanges();
+
+    const buttons = Array.from(
+      fixture.nativeElement.querySelectorAll(
+        'button[data-date]',
+      ) as NodeListOf<HTMLButtonElement>,
+    );
+    expect(buttons.some((button) => button.disabled)).toBeTrue();
+    for (const button of buttons) {
+      if (button.disabled) {
+        expect(button.getAttribute('tabindex'))
+          .withContext(button.getAttribute('data-date')!)
+          .not.toBe('0');
+      }
+    }
+    const active = fixture.nativeElement.querySelector(
+      'button[data-date][tabindex="0"]',
+    ) as HTMLButtonElement | null;
+    expect(active).not.toBeNull();
+    expect(active!.disabled).toBeFalse();
+  });
+
   it('moves DOM focus with arrow keys, Home and End across enabled days', async () => {
     const fixture = create();
     fixture.detectChanges();

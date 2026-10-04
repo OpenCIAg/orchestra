@@ -100,8 +100,7 @@
                 @if (showOtherMonths() || day.inCurrentMonth) {
                   <button
                     type="button"
-                    [disabled]="disabled()"
-                    [attr.aria-disabled]="day.disabled"
+                    [disabled]="disabled() || day.disabled"
                     [class.outside]="!day.inCurrentMonth"
                     [class.unavailable]="day.disabled"
                     [class.selected]="isSelected(day.iso)"

@@ -664,7 +664,7 @@ Use for page-width boundaries, not arbitrary per-section margins.
 Implements `ControlValueAccessor`.
 
 - **DateInputComponent (orc-date-input)**
-  - Inputs: `label` (string) default `''`, `name` (string) default `''`, `min` (string) default `''`, `max` (string) default `''`, `helperText` (string) default `''`, `error` (string) default `''`, `required` (boolean) default `false`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `inputId` (string | undefined) default `undefined`, `ariaLabel` (string) default `''`, `ariaLabelledBy` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `fluid` (boolean) default `false`, `autofocus` (boolean) default `false`, `tabindex` (number | undefined) default `0`
+  - Inputs: `label` (string) default `''`, `name` (string) default `''`, `min` (string | Date) default `''`, `max` (string | Date) default `''`, `helperText` (string) default `''`, `error` (string) default `''`, `invalidRangeMessage` (string) default `'Date outside the allowed range'`, `required` (boolean) default `false`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `inputId` (string | undefined) default `undefined`, `ariaLabel` (string) default `''`, `ariaLabelledBy` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `fluid` (boolean) default `false`, `autofocus` (boolean) default `false`, `tabindex` (number | undefined) default `0`
   - Models: `value` (string) default `''`
 - Interactive docs: https://orchestra.ciag.org.br/components/date-input
 

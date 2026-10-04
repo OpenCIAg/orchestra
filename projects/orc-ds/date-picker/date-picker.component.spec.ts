@@ -698,4 +698,89 @@ describe('DatePickerComponent', () => {
     expect(selected[0] instanceof Date).toBeTrue();
     expect((selected[0] as Date).getFullYear()).toBe(2026);
   });
+
+  describe('embedded calendar day-cell constraint policy', () => {
+    function openMarchPicker(bindings: {
+      min?: string;
+      max?: string;
+      minDate?: Date;
+      maxDate?: Date;
+    }) {
+      const fixture = TestBed.createComponent(DatePickerComponent);
+      const picker = fixture.componentInstance;
+      fixture.componentRef.setInput('showOnFocus', false);
+      fixture.componentRef.setInput('value', '2026-03-10');
+      picker.viewDate.set(new Date(2026, 2, 10));
+      if (bindings.min) fixture.componentRef.setInput('min', bindings.min);
+      if (bindings.max) fixture.componentRef.setInput('max', bindings.max);
+      if (bindings.minDate)
+        fixture.componentRef.setInput('minDate', bindings.minDate);
+      if (bindings.maxDate)
+        fixture.componentRef.setInput('maxDate', bindings.maxDate);
+      picker.show();
+      fixture.detectChanges();
+      const day = (iso: string) =>
+        fixture.nativeElement.querySelector(
+          `orc-date-picker-calendar [data-date="${iso}"]`,
+        ) as HTMLButtonElement;
+      return { fixture, picker, day };
+    }
+
+    function expectDisabledDayPolicy(
+      fixture: ReturnType<typeof openMarchPicker>['fixture'],
+    ) {
+      // Constrained and other-month days render as real DOM-disabled
+      // buttons — not merely aria-disabled, focusable dead ends.
+      for (const button of fixture.nativeElement.querySelectorAll(
+        'orc-date-picker-calendar tbody .days button',
+      ) as NodeListOf<HTMLButtonElement>) {
+        if (button.classList.contains('unavailable')) {
+          expect(button.disabled)
+            .withContext(`data-date=${button.getAttribute('data-date')}`)
+            .toBeTrue();
+        }
+        expect(button.getAttribute('aria-disabled')).toBeNull();
+      }
+      // Roving tab stops and the active day only ever land on enabled days.
+      const active = fixture.nativeElement.querySelector(
+        'orc-date-picker-calendar [data-active="true"]',
+      ) as HTMLButtonElement;
+      expect(active).not.toBeNull();
+      expect(active.disabled).toBeFalse();
+      for (const button of fixture.nativeElement.querySelectorAll(
+        'orc-date-picker-calendar tbody .days button[tabindex="0"]',
+      ) as NodeListOf<HTMLButtonElement>) {
+        expect(button.disabled).toBeFalse();
+      }
+    }
+
+    it('DOM-disables days outside ISO string min/max bounds', () => {
+      const { fixture, picker, day } = openMarchPicker({
+        min: '2026-03-05',
+        max: '2026-03-25',
+      });
+      expect(day('2026-03-02').disabled).toBeTrue();
+      expect(day('2026-03-30').disabled).toBeTrue();
+      expect(day('2026-03-10').disabled).toBeFalse();
+      expect(day('2026-03-02').classList.contains('unavailable')).toBeTrue();
+
+      day('2026-03-02').click();
+      fixture.detectChanges();
+      expect(picker.value()).toBe('2026-03-10');
+      expectDisabledDayPolicy(fixture);
+      fixture.destroy();
+    });
+
+    it('DOM-disables days outside Date-object minDate/maxDate bounds', () => {
+      const { fixture, day } = openMarchPicker({
+        minDate: new Date(2026, 2, 5),
+        maxDate: new Date(2026, 2, 25),
+      });
+      expect(day('2026-03-02').disabled).toBeTrue();
+      expect(day('2026-03-30').disabled).toBeTrue();
+      expect(day('2026-03-10').disabled).toBeFalse();
+      expectDisabledDayPolicy(fixture);
+      fixture.destroy();
+    });
+  });
 });

@@ -2641,7 +2641,8 @@
         "projects/orc-ds/p1-core.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/size-vocabulary-contract.spec.ts",
-        "projects/orc-ds/styles/spacing-contract.spec.ts"
+        "projects/orc-ds/styles/spacing-contract.spec.ts",
+        "projects/orc-ds/styles/theme-contract.spec.ts"
       ]
     },
     {
@@ -3604,7 +3605,7 @@
       "kind": "Component",
       "selector": "orc-date-input",
       "file": "projects/orc-ds/date-input/date-input.component.ts",
-      "line": 19,
+      "line": 21,
       "inputs": [
         {
           "name": "value",
@@ -3632,14 +3633,16 @@
           "publicName": "min",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly min = input('');"
+          "declaration": "readonly min = input<string | Date>('');",
+          "description": "ISO string or Date; the native picker bound honors both spellings."
         },
         {
           "name": "max",
           "publicName": "max",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly max = input('');"
+          "declaration": "readonly max = input<string | Date>('');",
+          "description": "ISO string or Date; the native picker bound honors both spellings."
         },
         {
           "name": "helperText",
@@ -3654,6 +3657,14 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly error = input('');"
+        },
+        {
+          "name": "invalidRangeMessage",
+          "publicName": "invalidRangeMessage",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly invalidRangeMessage = input('Date outside the allowed range');",
+          "description": "Message surfaced when a typed value falls outside `[min]`/`[max]`."
         },
         {
           "name": "required",
@@ -17294,7 +17305,8 @@
         "projects/orc-ds/interaction-repair.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/size-vocabulary-contract.spec.ts",
-        "projects/orc-ds/slider/slider.component.spec.ts"
+        "projects/orc-ds/slider/slider.component.spec.ts",
+        "projects/orc-ds/styles/theme-contract.spec.ts"
       ]
     },
     {
@@ -20585,6 +20597,7 @@
       "outputs": [],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/styles/theme-contract.spec.ts",
         "projects/orc-ds/tooltip/tooltip.component.spec.ts"
       ]
     },

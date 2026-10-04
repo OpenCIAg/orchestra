@@ -54,7 +54,9 @@
       var(--color-warning, #fe9a00) 12%,
       transparent
     );
-    color: #8b4c00;
+    // Paired warning text token themed in _light.scss/_dark.scss; the
+    // literal mirrors the light value for hosts without the theme layers.
+    color: var(--color-warning-text, #8b4c00);
   }
   &--danger {
     background: color-mix(

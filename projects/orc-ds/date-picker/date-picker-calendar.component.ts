@@ -110,7 +110,10 @@ export class DatePickerCalendarComponent {
     calendarActiveDay(
       this.days(),
       [this.focusedDate(), this.value(), calendarDateKey(new Date())],
-      { showOtherMonths: this.showOtherMonths(), requireEnabled: false },
+      // The inline calendar's policy: the roving day (the grid's only
+      // tab stop) must be an enabled day, so a fully constrained value
+      // never strands keyboard focus on a DOM-disabled cell.
+      { showOtherMonths: this.showOtherMonths(), requireEnabled: true },
     ),
   );
   readonly months = computed(() =>

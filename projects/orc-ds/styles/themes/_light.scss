@@ -15,9 +15,19 @@
     --orc-fill-modal: #ffffff;
     --orc-highlight-cinza-claro: #ededed;
     --orc-opposite-bw: #ffffff;
+    --orc-overlay-surface: #141414;
+    --orc-overlay-text: #ffffff;
     --color-accent: #141414;
     --color-accent-hover: #2a2a2a;
     --color-accent-fg: #ffffff;
+    // Re-declared from _tokens.scss so a light-scoped subtree keeps the
+    // light status palette even when the OS prefers dark and no root
+    // theme attribute narrows _dark.scss's media query away.
+    --color-success: #006f4a;
+    --color-error: #fb2c36;
+    --color-warning: #fe9a00;
+    --color-info: #2b7fff;
+    --color-warning-text: #8b4c00;
     --text-muted: #666666;
     --status-neutral-soft-bg: #eceef2;
     --status-neutral-soft-fg: #141414;
