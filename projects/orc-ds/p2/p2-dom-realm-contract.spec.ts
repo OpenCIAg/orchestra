@@ -82,10 +82,10 @@ describe('P2 owner-document DOM contracts', () => {
     (component as unknown as { host: ElementRef<HTMLElement> }).host =
       new ElementRef(host);
 
-    // The shared in-place lifecycle binds to the panel's owner document;
-    // events dispatched inside a foreign realm (an iframe) cannot reach it,
-    // so the panel stays open. The helper-level owner-document contract is
-    // pinned in internal/in-place-overlay.spec.ts.
+    // The shared detached-picker lifecycle binds to the anchor's owner
+    // document; events dispatched inside a foreign realm (an iframe) cannot
+    // reach it, so the panel stays open. The helper-level owner-document
+    // contract is pinned in internal/list-picker.spec.ts.
     inside.dispatchEvent(
       new frameDocument.defaultView!.MouseEvent('pointerdown', {
         bubbles: true,
