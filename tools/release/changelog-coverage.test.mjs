@@ -47,8 +47,8 @@ test('every npm-published version has exactly one changelog section (ticket #8 c
   assert.equal(report.stats.published, fixture.versions.length);
   assert.equal(
     report.stats.published,
-    34,
-    'the fixture snapshot expects 34 published versions (19.4.0 joins after its publish)',
+    35,
+    'the fixture snapshot expects 35 published versions',
   );
 });
 
