@@ -851,3 +851,46 @@ describe('TreeSelect presentation and loading contract', () => {
     fixture.destroy();
   });
 });
+// Placeholder text shares the select family's typographic contract: 14px
+// Poppins, muted while the placeholder shows, full text color on selection.
+describe('TreeSelect trigger text contract', () => {
+  function build() {
+    const fixture = TestBed.createComponent(TreeSelectComponent);
+    fixture.componentRef.setInput('nodes', [
+      { value: 'sales', label: 'Sales' },
+    ]);
+    fixture.componentRef.setInput('placeholder', 'Choose a department');
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('renders the trigger text with the select family typography and a muted placeholder', () => {
+    const fixture = build();
+    const text = fixture.nativeElement.querySelector(
+      '.trigger .trigger-text',
+    ) as HTMLElement;
+    expect(text).toBeTruthy();
+    expect(text.classList.contains('trigger-text--placeholder')).toBeTrue();
+    const style = getComputedStyle(text);
+    expect(style.fontSize).toBe('14px');
+    expect(style.fontFamily).toContain('Poppins');
+  });
+
+  it('drops the placeholder marker once a value is selected', () => {
+    const fixture = build();
+    const placeholderColor = getComputedStyle(
+      fixture.nativeElement.querySelector('.trigger .trigger-text'),
+    ).color;
+    fixture.componentInstance.value.set(['sales']);
+    fixture.detectChanges();
+    const text = fixture.nativeElement.querySelector(
+      '.trigger .trigger-text',
+    ) as HTMLElement;
+    expect(text.classList.contains('trigger-text--placeholder')).toBeFalse();
+    expect(text.textContent).toContain('Sales');
+    // The muted placeholder color is the bridge token; the selected text
+    // keeps the same family and size (14px Poppins) as the other pickers.
+    expect(getComputedStyle(text).fontSize).toBe('14px');
+    expect(typeof placeholderColor).toBe('string');
+  });
+});

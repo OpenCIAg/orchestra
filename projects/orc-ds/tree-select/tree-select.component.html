@@ -29,7 +29,14 @@
     [attr.aria-readonly]="readonly()"
     (click)="toggleOpen()"
   >
-    {{ selectedLabel() || placeholder() }}
+    <span
+      [class]="
+        selectedLabel()
+          ? 'trigger-text'
+          : 'trigger-text trigger-text--placeholder'
+      "
+      >{{ selectedLabel() || placeholder() }}</span
+    >
     <orc-icon name="keyboard_arrow_down" size="sm" aria-hidden="true" />
   </button>
   @if (showClear() && value() !== null && !readonly()) {

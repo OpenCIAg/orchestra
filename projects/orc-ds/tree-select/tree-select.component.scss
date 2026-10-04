@@ -10,14 +10,32 @@ label {
 }
 .trigger {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  min-height: 2.5rem;
+  gap: 0.35rem;
+  min-height: var(--orc-control-height-md, 2.75rem);
   border: 1px solid var(--orc-component-border-strong);
   border-radius: 0.5rem;
   background: var(--orc-component-control);
   color: var(--orc-component-text);
   padding: 0.5rem 0.7rem;
   text-align: left;
+}
+/*
+ * Trigger text shares the select family's typographic contract: 14px
+ * Poppins, muted when showing the placeholder.
+ */
+.trigger-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem;
+}
+.trigger-text--placeholder {
+  color: var(--orc-component-text-muted);
 }
 /*
  * The detached panel root. The visual chrome moved here from `.tree` when
