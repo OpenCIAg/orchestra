@@ -416,7 +416,7 @@
       "kind": "Component",
       "selector": "orc-autocomplete",
       "file": "projects/orc-ds/autocomplete/autocomplete.component.ts",
-      "line": 30,
+      "line": 35,
       "inputs": [
         {
           "name": "id",
@@ -24056,6 +24056,7 @@
     "projects/orc-ds/internal/ng-package.json",
     "projects/orc-ds/internal/overlay-attachment.spec.ts",
     "projects/orc-ds/internal/overlay-attachment.ts",
+    "projects/orc-ds/internal/overlay-lifecycle.spec.ts",
     "projects/orc-ds/internal/overlay-lifecycle.ts",
     "projects/orc-ds/internal/overlay-ownership.spec.ts",
     "projects/orc-ds/internal/overlay-position.ts",

@@ -47,7 +47,9 @@ let nextAutocompleteId = 0;
     },
   ],
 })
-export class AutocompleteComponent implements AfterViewInit, ControlValueAccessor {
+export class AutocompleteComponent
+  implements AfterViewInit, ControlValueAccessor
+{
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
@@ -62,9 +64,8 @@ export class AutocompleteComponent implements AfterViewInit, ControlValueAccesso
   /** The panel template is only attachable once the host view exists. */
   private readonly panelReady = signal(false);
   private overlayHandle: ListPickerOverlayHandle | null = null;
-  private readonly controlEl = viewChild.required<ElementRef<HTMLElement>>(
-    'controlEl',
-  );
+  private readonly controlEl =
+    viewChild.required<ElementRef<HTMLElement>>('controlEl');
   private readonly panelTemplate =
     viewChild.required<TemplateRef<unknown>>('panelTemplate');
 

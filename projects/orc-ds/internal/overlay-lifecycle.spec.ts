@@ -25,7 +25,11 @@ describe('listenForOutsideInteraction pointer-gesture triage', () => {
   });
 
   function listen(roots: HTMLElement[], onOutside: (event: Event) => void) {
-    const release = listenForOutsideInteraction(document, () => roots, onOutside);
+    const release = listenForOutsideInteraction(
+      document,
+      () => roots,
+      onOutside,
+    );
     cleanups.push(release);
     return release;
   }
@@ -68,9 +72,7 @@ describe('listenForOutsideInteraction pointer-gesture triage', () => {
 
     // Drag-release: the press began on the picker, the release landed
     // outside it, so the click retargets to a common ancestor outside.
-    root.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
+    root.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     document.body.dispatchEvent(
       new MouseEvent('click', { bubbles: true, detail: 1 }),
     );

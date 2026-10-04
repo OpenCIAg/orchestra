@@ -289,9 +289,7 @@ describe('AutocompleteComponent', () => {
       // document (the frame realm), not the rendering document.
       const outside = frameDocument.createElement('button');
       frameDocument.body.appendChild(outside);
-      outside.dispatchEvent(
-        new PointerEvent('pointerdown', { bubbles: true }),
-      );
+      outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
       expect(fixture.componentInstance.isOpen()).toBeFalse();
     } finally {
       fixture.destroy();
@@ -329,9 +327,7 @@ describe('AutocompleteComponent', () => {
     loading.componentInstance.toggleDropdown();
     loading.detectChanges();
     expect(
-      document
-        .getElementById(loading.componentInstance.listId())
-        ?.textContent,
+      document.getElementById(loading.componentInstance.listId())?.textContent,
     ).toContain('Loading cities');
   });
 
@@ -439,10 +435,7 @@ describe('AutocompleteComponent', () => {
         anchor.bottom - 1,
         0,
       );
-      expect(panel.getBoundingClientRect().width).toBeCloseTo(
-        anchor.width,
-        0,
-      );
+      expect(panel.getBoundingClientRect().width).toBeCloseTo(anchor.width, 0);
       fixture.componentInstance.toggleDropdown();
       fixture.detectChanges();
 
@@ -835,9 +828,7 @@ describe('AutocompleteComponent', () => {
     component.toggleDropdown();
     fixture.detectChanges();
 
-    const panel = document.getElementById(
-      component.listId(),
-    ) as HTMLElement;
+    const panel = document.getElementById(component.listId()) as HTMLElement;
     expect(panel.getAttribute('aria-busy')).toBe('true');
     expect(panel.textContent).toContain('Finding cities');
 
