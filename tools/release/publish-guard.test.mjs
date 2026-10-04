@@ -268,7 +268,10 @@ test('a tag that disagrees with the package version fails the release', () => {
   assert.match(plan.reason, /mismatch|disagree/i);
 });
 
-test('a tag on a commit that does not change the version attempts no publish', () => {
+test('a tag republishing a version the line already carries fails on the registry collision', () => {
+  // The tag is the release instruction on old lines; the baseline is the
+  // line's registry state, so an unchanged version means the collision
+  // check rejects the re-publish instead of silently skipping it.
   const plan = resolveReleasePlan({
     event: 'tag-push',
     branch: 'v22',
@@ -279,7 +282,23 @@ test('a tag on a commit that does not change the version attempts no publish', (
     registry,
     topology,
   });
-  assert.equal(plan.action, 'skip');
+  assert.equal(plan.action, 'fail');
+  assert.match(plan.reason, /patch releases/);
+});
+
+test('a backport tag after tooling-only commits publishes against the line registry baseline', () => {
+  const plan = resolveReleasePlan({
+    event: 'tag-push',
+    branch: 'v21',
+    tagName: 'v21.2.0',
+    version: '21.2.0',
+    previousVersion: '21.1.1',
+    pendingChangesets: 0,
+    registry,
+    topology,
+  });
+  assert.equal(plan.action, 'publish');
+  assert.equal(plan.distTag, 'angular21');
 });
 
 test('a tag marking a current-line release commit skips the old-line path (ticket #8)', () => {
