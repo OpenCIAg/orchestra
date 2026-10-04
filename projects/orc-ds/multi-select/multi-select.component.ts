@@ -1,5 +1,6 @@
 import {
   effect,
+  AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
@@ -12,11 +13,14 @@ import {
   model,
   output,
   signal,
+  TemplateRef,
   viewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
 import {
-  attachInPlaceOverlay,
+  attachListPickerOverlay,
   CvaControl,
   listPickerActiveId,
   listPickerEnabledIndexes,
@@ -27,12 +31,14 @@ import {
   listPickerOptionLabel,
   listPickerOptionValue,
   listPickerValueMatchesFilter,
+  overlayAttachmentTarget,
+  P2_PANEL_VARS,
   P2_SHARED_STYLES,
   SizeInput,
   stepListPickerActive,
   toggleListPickerValue,
 } from '@ciag/orchestra/internal';
-import type { P2Option } from '@ciag/orchestra/internal';
+import type { ListPickerOverlayHandle, P2Option } from '@ciag/orchestra/internal';
 
 let nextMultiSelectId = 0;
 
@@ -40,7 +46,7 @@ let nextMultiSelectId = 0;
   selector: 'orc-multi-select',
   standalone: true,
   templateUrl: './multi-select.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [P2_SHARED_STYLES, P2_PANEL_VARS],
   styleUrl: './multi-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -51,11 +57,21 @@ let nextMultiSelectId = 0;
     },
   ],
 })
-export class MultiSelectComponent<T = unknown> extends CvaControl {
+export class MultiSelectComponent<T = unknown>
+  extends CvaControl
+  implements AfterViewInit
+{
   private readonly uniqueId = `orc-multiselect-${++nextMultiSelectId}`;
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
-  private inPlaceRelease: (() => void) | null = null;
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly overlay = inject(Overlay);
+  private readonly triggerEl =
+    viewChild<ElementRef<HTMLButtonElement>>('triggerEl');
+  private readonly panelTemplate =
+    viewChild.required<TemplateRef<unknown>>('panelTemplate');
+  /** The panel template is only attachable once the host view exists. */
+  private readonly panelReady = signal(false);
+  private overlayHandle: ListPickerOverlayHandle | null = null;
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T[]>([]);
   readonly label = input('');
@@ -77,7 +93,11 @@ export class MultiSelectComponent<T = unknown> extends CvaControl {
   readonly style = input<Record<string, string> | undefined>(undefined);
   readonly panelStyle = input<Record<string, string> | undefined>(undefined);
   readonly panelStyleClass = input('');
-  /** @deprecated Compatibility input only; the panel is rendered in place. */
+  /**
+   * Where the detached panel attaches. Defaults to the body (or the
+   * enclosing native modal, so the pane never escapes native inertness);
+   * an element or selector attaches the panel inside that target instead.
+   */
   readonly appendTo = input<unknown>(undefined);
   /** @deprecated Compatibility input only; overlay options are not interpreted. */
   readonly overlayOptions = input<Record<string, unknown> | undefined>(
@@ -172,9 +192,9 @@ export class MultiSelectComponent<T = unknown> extends CvaControl {
   readonly tooltipPositionStyle = input('absolute');
   /** @deprecated Compatibility input only; tooltip rendering is not provided. */
   readonly tooltipStyleClass = input<string | undefined>(undefined);
-  /** @deprecated Compatibility input only; in-place panels do not use z-index management. */
+  /** Whether the detached panel applies an automatic layer z-index. */
   readonly autoZIndex = input(true, { transform: booleanAttribute });
-  /** @deprecated Compatibility input only; in-place panels do not use z-index management. */
+  /** Base z-index added to the panel layer when `autoZIndex` is set. */
   readonly baseZIndex = input(0);
   readonly open = model(false);
   readonly activeIndex = signal(-1);
@@ -222,19 +242,23 @@ export class MultiSelectComponent<T = unknown> extends CvaControl {
   constructor() {
     super();
     inject(DestroyRef).onDestroy(() => {
-      this.inPlaceRelease?.();
-      this.inPlaceRelease = null;
+      this.overlayHandle?.dispose();
+      this.overlayHandle = null;
     });
     // Signal-driven attachment: direct writes to the open model must arm the
     // dismissal lifecycle too; idempotent against the open-path attach.
     effect(() => {
-      if (this.open() && !this.inPlaceRelease) {
+      if (this.open() && this.panelReady() && !this.overlayHandle) {
         this.ensureOverlay();
-      } else if (!this.open() && this.inPlaceRelease) {
-        this.inPlaceRelease();
-        this.inPlaceRelease = null;
+      } else if (!this.open() && this.overlayHandle) {
+        this.overlayHandle.dispose();
+        this.overlayHandle = null;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.panelReady.set(true);
   }
 
   writeValue(value: T[] | null): void {
@@ -281,22 +305,69 @@ export class MultiSelectComponent<T = unknown> extends CvaControl {
 
   /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
   private ensureOverlay(): void {
-    if (this.inPlaceRelease) return;
-    this.inPlaceRelease = attachInPlaceOverlay({
-      host: this.host.nativeElement,
-      panel: () => this.panelRef()?.nativeElement ?? null,
+    if (this.overlayHandle || !this.panelReady()) return;
+    const anchor =
+      this.triggerEl()?.nativeElement ?? this.host.nativeElement;
+    const triggerWidth = anchor.getBoundingClientRect().width;
+    this.overlayHandle = attachListPickerOverlay({
+      anchor,
+      content: this.panelTemplate(),
+      viewContainerRef: this.viewContainerRef,
+      overlay: this.overlay,
+      positionStrategy: (origin) => this.createPositionStrategy(origin),
+      minWidth: triggerWidth,
+      zIndex: this.autoZIndex()
+        ? Math.max(0, this.baseZIndex()) + 1000
+        : undefined,
       onEscape: () => this.closePanel(true),
+      onBackdrop: () => this.closePanel(),
+      onParentClose: () => this.closePanel(),
+      documentEscape: () => this.closePanel(true),
+      targets: () =>
+        [this.host.nativeElement, this.overlayHandle?.overlayElement].filter(
+          (element): element is HTMLElement => !!element,
+        ),
       onOutside: () => {
         this.closePanel();
         this.cvaOnTouched();
       },
-      onParentClose: () => this.closePanel(),
-    }).dispose;
+    });
   }
+
+  private createPositionStrategy(origin: HTMLElement): PositionStrategy {
+    const parent = overlayAttachmentTarget(origin, this.appendTo() ?? 'body');
+    const positions = [
+      {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: 4,
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+        offsetY: -4,
+      },
+    ] as const;
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(origin)
+      .withPopoverLocation(
+        parent === origin.ownerDocument.body
+          ? 'global'
+          : { type: 'parent', element: parent },
+      )
+      .withPositions([...positions])
+      .withPush(true);
+  }
+
   private closePanel(restoreFocus = false): void {
     if (!this.open()) return;
-    this.inPlaceRelease?.();
-    this.inPlaceRelease = null;
+    this.overlayHandle?.dispose();
+    this.overlayHandle = null;
     this.open.set(false);
     if (this.resetFilterOnHide()) this.filterValue.set('');
     this.activeIndex.set(-1);

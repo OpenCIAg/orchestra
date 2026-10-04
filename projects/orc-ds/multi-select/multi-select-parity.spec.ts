@@ -28,10 +28,12 @@ describe('MultiSelect behavior parity', () => {
   function openPanel(fixture: ReturnType<typeof create>): HTMLElement[] {
     fixture.componentInstance.toggleOpen();
     fixture.detectChanges();
+    // The panel renders detached from the host view; its options live in
+    // the document, scoped by the panel's identity.
     return Array.from(
-      fixture.nativeElement.querySelectorAll(
-        'li[role="option"]',
-      ) as NodeListOf<HTMLElement>,
+      document.querySelectorAll<HTMLElement>(
+        `#${fixture.componentInstance.effectiveId()}-panel li[role="option"]`,
+      ),
     ) as HTMLElement[];
   }
 
@@ -137,10 +139,12 @@ describe('MultiSelect behavior parity', () => {
     fixture.componentRef.setInput('selectAllLabel', 'Select all');
     fixture.componentRef.setInput('clearAllLabel', 'Clear all');
     openPanel(fixture);
+    // The detached panel renders its header actions in the document.
+    const panelRoot = document.querySelector(
+      '.orc-p2-multi-select-panel',
+    ) as HTMLElement;
     const toggleAll = Array.from(
-      fixture.nativeElement.querySelectorAll(
-        'button',
-      ) as NodeListOf<HTMLButtonElement>,
+      panelRoot.querySelectorAll('button'),
     ).find((button) => button.textContent?.trim() === 'Select all');
     expect(toggleAll).toBeDefined();
     toggleAll!.click();
@@ -148,11 +152,9 @@ describe('MultiSelect behavior parity', () => {
     expect(fixture.componentInstance.value()).toEqual(['a', 'c']);
     expect(allChanges).toEqual([{ checked: true }]);
 
-    const clearAll = Array.from(
-      fixture.nativeElement.querySelectorAll(
-        'button',
-      ) as NodeListOf<HTMLButtonElement>,
-    ).find((button) => button.textContent?.trim() === 'Clear all');
+    const clearAll = Array.from(panelRoot.querySelectorAll('button')).find(
+      (button) => button.textContent?.trim() === 'Clear all',
+    );
     clearAll!.click();
     fixture.detectChanges();
     expect(fixture.componentInstance.value()).toEqual([]);
@@ -168,8 +170,8 @@ describe('MultiSelect behavior parity', () => {
     fixture.componentRef.setInput('filter', true);
     openPanel(fixture);
 
-    const filterInput = fixture.nativeElement.querySelector(
-      'input',
+    const filterInput = document.querySelector(
+      '.orc-p2-multi-select-panel input',
     ) as HTMLInputElement;
     filterInput.value = 'alp';
     filterInput.dispatchEvent(new Event('input', { bubbles: true }));
@@ -205,8 +207,8 @@ describe('MultiSelect behavior parity', () => {
     trigger.click();
     host.detectChanges();
     const options = Array.from(
-      host.nativeElement.querySelectorAll(
-        'li[role="option"]',
+      document.querySelectorAll(
+        '.orc-p2-multi-select-panel li[role="option"]',
       ) as NodeListOf<HTMLElement>,
     );
     const alpha = options.find(

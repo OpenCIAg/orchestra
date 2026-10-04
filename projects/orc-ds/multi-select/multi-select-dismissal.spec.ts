@@ -85,9 +85,10 @@ describe('MultiSelect dismissal lifecycle', () => {
     trigger.click();
     host.detectChanges();
     settle(host);
+    // The panel renders detached from the host view; it is located in the
+    // document, not under the fixture element.
     expect(
-      (host.nativeElement.querySelector('ul.options') as HTMLElement | null)
-        ?.id,
+      (document.querySelector('ul.options') as HTMLElement | null)?.id,
     ).toBeTruthy();
 
     clickOutside();
@@ -114,7 +115,8 @@ describe('MultiSelect dismissal lifecycle', () => {
     const fixture = create();
     openPanel(fixture);
     settle(fixture);
-    const option = fixture.nativeElement.querySelector(
+    // The panel renders detached from the host view.
+    const option = document.querySelector(
       'li[role="option"]',
     ) as HTMLElement;
     option.dispatchEvent(
@@ -202,8 +204,9 @@ describe('MultiSelect dismissal lifecycle', () => {
     fixture.detectChanges();
     openPanel(fixture);
     settle(fixture);
-    const filter = fixture.nativeElement.querySelector(
-      'input',
+    // The filter input renders inside the detached panel.
+    const filter = document.querySelector(
+      '.orc-p2-multi-select-panel input',
     ) as HTMLInputElement;
     filter.focus();
     expect(document.activeElement).toBe(filter);

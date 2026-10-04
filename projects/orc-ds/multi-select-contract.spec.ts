@@ -53,6 +53,22 @@ describe('MultiSelect public contract', () => {
     ).toBe('Remove all teams');
   });
 
+  function panelOf(aFixture: ComponentFixture<MultiSelectComponent<string>>) {
+    // The panel renders detached from the host view; it is located in the
+    // document by the panel id the trigger points at.
+    return document.getElementById(
+      `${aFixture.componentInstance.effectiveId()}-panel`,
+    ) as HTMLUListElement;
+  }
+
+  function panelRootOf(
+    aFixture: ComponentFixture<MultiSelectComponent<string>>,
+  ) {
+    return panelOf(aFixture)!.closest(
+      '.orc-p2-multi-select-panel',
+    ) as HTMLElement;
+  }
+
   it('exposes the trigger as a labelled listbox combobox', () => {
     fixture.componentRef.setInput('label', 'Teams');
     component.open.set(true);
@@ -62,9 +78,7 @@ describe('MultiSelect public contract', () => {
     const trigger = fixture.nativeElement.querySelector(
       'button.trigger',
     ) as HTMLButtonElement;
-    const panel = fixture.nativeElement.querySelector(
-      '[role="listbox"]',
-    ) as HTMLUListElement;
+    const panel = panelOf(fixture);
 
     expect(trigger.getAttribute('role')).toBe('combobox');
     expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
@@ -72,7 +86,7 @@ describe('MultiSelect public contract', () => {
     expect(trigger.labels?.item(0)?.textContent?.trim()).toBe('Teams');
     expect(trigger.getAttribute('aria-controls')).toBe(panel.id);
     expect(trigger.getAttribute('aria-activedescendant')).toBe(
-      fixture.nativeElement.querySelector('[role="option"]').id,
+      panel.querySelector('[role="option"]')!.id,
     );
   });
 
@@ -117,7 +131,7 @@ describe('MultiSelect public contract', () => {
     component.open.set(true);
     fixture.detectChanges();
 
-    const toggleAll = fixture.nativeElement.querySelector(
+    const toggleAll = panelRootOf(fixture).querySelector(
       'button.toggle-all',
     ) as HTMLButtonElement;
     expect(toggleAll.textContent?.trim()).toBe('Select all');
@@ -143,13 +157,13 @@ describe('MultiSelect public contract', () => {
     const clear = fixture.nativeElement.querySelector(
       'button.clear',
     ) as HTMLButtonElement;
-    const toggleAll = fixture.nativeElement.querySelector(
+    const toggleAll = panelRootOf(fixture).querySelector(
       'button.toggle-all',
     ) as HTMLButtonElement;
-    const filter = fixture.nativeElement.querySelector(
+    const filter = panelRootOf(fixture).querySelector(
       'input',
     ) as HTMLInputElement;
-    const option = fixture.nativeElement.querySelector(
+    const option = panelOf(fixture).querySelector(
       '[role="option"]',
     ) as HTMLLIElement;
 
@@ -192,9 +206,7 @@ describe('MultiSelect public contract', () => {
     const trigger = fixture.nativeElement.querySelector(
       'button.trigger',
     ) as HTMLButtonElement;
-    const panel = fixture.nativeElement.querySelector(
-      '[role="listbox"]',
-    ) as HTMLElement;
+    const panel = panelOf(fixture) as HTMLElement;
     expect(root.classList.contains('fluid')).toBeTrue();
     expect(root.classList.contains('customer-select')).toBeTrue();
     expect(root.style.width).toBe('30rem');
@@ -218,7 +230,7 @@ describe('MultiSelect public contract', () => {
     objectComponent.open.set(true);
     objectFixture.detectChanges();
 
-    const options = objectFixture.nativeElement.querySelectorAll(
+    const options = panelOf(objectFixture).querySelectorAll(
       '[role="option"]',
     ) as NodeListOf<HTMLElement>;
     expect(objectComponent.selectedLabels()).toBe('Alpha');
@@ -264,7 +276,7 @@ describe('MultiSelect public contract', () => {
     const trigger = fixture.nativeElement.querySelector(
       'button.trigger',
     ) as HTMLButtonElement;
-    const filter = fixture.nativeElement.querySelector(
+    const filter = panelRootOf(fixture).querySelector(
       'input',
     ) as HTMLInputElement;
     const focused = jasmine.createSpy('focused');
@@ -308,7 +320,7 @@ describe('MultiSelect public contract', () => {
     component.open.set(true);
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('No matching team');
+    expect(panelOf(fixture)?.textContent).toContain('No matching team');
     component.filterValue.set('turkey');
     expect(component.filteredOptions().map((option) => option.value)).toEqual([
       'one',
@@ -322,7 +334,7 @@ describe('MultiSelect public contract', () => {
     component.filterValue.set('');
     component.open.set(true);
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('No teams');
+    expect(panelOf(fixture)?.textContent).toContain('No teams');
   });
 
   it('filters through filterBy fields and applies the requested locale', () => {
@@ -363,24 +375,24 @@ describe('MultiSelect public contract', () => {
     component.open.set(true);
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Loading teams');
-    expect(fixture.nativeElement.querySelector('[role="option"]')).toBeNull();
+    expect(panelOf(fixture)?.textContent).toContain('Loading teams');
+    expect(panelOf(fixture)!.querySelector('[role="option"]')).toBeNull();
     expect(
-      fixture.nativeElement.querySelector('button.toggle-all'),
+      panelRootOf(fixture).querySelector('button.toggle-all'),
     ).not.toBeNull();
 
     fixture.componentRef.setInput('loadingMessage', undefined);
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Loading…');
+    expect(panelOf(fixture)?.textContent).toContain('Loading…');
 
     fixture.componentRef.setInput('showHeader', false);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('button.toggle-all')).toBeNull();
+    expect(panelRootOf(fixture).querySelector('button.toggle-all')).toBeNull();
 
     fixture.componentRef.setInput('showHeader', true);
     fixture.componentRef.setInput('showToggleAll', false);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('button.toggle-all')).toBeNull();
+    expect(panelRootOf(fixture).querySelector('button.toggle-all')).toBeNull();
   });
 
   it('can autofocus the filter when the panel is shown', () => {
@@ -389,7 +401,7 @@ describe('MultiSelect public contract', () => {
     component.open.set(true);
     fixture.detectChanges();
     expect(
-      (fixture.nativeElement.querySelector('input') as HTMLInputElement)
+      (panelRootOf(fixture).querySelector('input') as HTMLInputElement)
         .autofocus,
     ).toBeTrue();
   });

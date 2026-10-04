@@ -24,21 +24,27 @@ label {
   text-align: left;
 }
 .options {
-  position: absolute;
-  z-index: 2;
-  top: 4.2rem;
-  right: 0;
-  left: 0;
   max-height: 15rem;
   overflow: auto;
   margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * The detached panel root. The visual chrome moved here from `.options`
+ * when the panel started rendering through the shared list-picker overlay:
+ * the CDK pane owns positioning, so the list scrolls inside the panel.
+ */
+.orc-p2-multi-select-panel {
+  display: grid;
+  gap: 0.35rem;
   padding: 0.25rem;
   border: 1px solid var(--orc-component-border-strong);
   border-radius: 0.5rem;
   background: var(--orc-component-surface-raised);
   color: var(--orc-component-text);
   box-shadow: var(--orc-component-overlay-shadow);
-  list-style: none;
 }
 li {
   display: flex;

@@ -11,6 +11,7 @@
   <button
     type="button"
     class="p-multiselect-label p-multiselect-trigger trigger"
+    #triggerEl
     role="combobox"
     [disabled]="disabled() || cvaDisabled()"
     [attr.id]="effectiveId()"
@@ -41,7 +42,12 @@
       ×
     </button>
   }
-  @if (open()) {
+</div>
+
+<!-- Detached option panel: portaled through the shared list-picker overlay
+     so ancestor overflow can never clip it. -->
+<ng-template #panelTemplate>
+  <div class="orc-p2-multi-select-panel orc-p2-portal-panel">
     @if (
       showToggleAll() &&
       showHeader() &&
@@ -68,7 +74,6 @@
       />
     }
     <ul
-      #panel
       class="p-multiselect-panel p-component options"
       [class]="'p-multiselect-panel p-component options ' + panelStyleClass()"
       [style]="panelStyle()"
@@ -111,5 +116,5 @@
         }
       }
     </ul>
-  }
-</div>
+  </div>
+</ng-template>
