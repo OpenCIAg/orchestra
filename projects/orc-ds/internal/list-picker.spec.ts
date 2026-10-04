@@ -1,4 +1,14 @@
 import {
+  Component,
+  TemplateRef,
+  inject,
+  viewChild,
+} from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { Overlay } from '@angular/cdk/overlay';
+import { ViewContainerRef } from '@angular/core';
+import {
+  attachListPickerOverlay,
   listPickerActiveId,
   listPickerActiveIndex,
   listPickerEnabledIndexes,
@@ -16,6 +26,7 @@ import {
   stepListPickerActive,
   toggleListPickerValue,
 } from './list-picker';
+import { registerOverlay } from './overlay-lifecycle';
 
 describe('list-picker interaction core', () => {
   describe('option model normalization', () => {
@@ -209,5 +220,214 @@ describe('list-picker interaction core', () => {
         added: false,
       });
     });
+  });
+});
+
+/**
+ * Pins for the shared detached-picker overlay lifecycle: outside
+ * dismissal, registry participation, topmost-aware document Escape with
+ * owner-document realm binding and the idempotent dispose. These are the
+ * realm-correct binding lessons absorbed from the former in-place helper;
+ * the picker families pin the same behaviors through their public
+ * components.
+ */
+describe('attachListPickerOverlay lifecycle', () => {
+  @Component({
+    template: `<ng-template #content><div class="probe">panel</div></ng-template>`,
+  })
+  class PortalHost {
+    readonly content = viewChild.required<TemplateRef<unknown>>('content');
+    readonly viewContainerRef = inject(ViewContainerRef);
+    readonly overlay = inject(Overlay);
+  }
+
+  function setup(options: {
+    documentRef?: Document;
+    parent?: HTMLElement;
+    documentEscape?: () => void;
+  }) {
+    const realm = options.documentRef ?? document;
+    TestBed.configureTestingModule({});
+    const fixture = TestBed.createComponent(PortalHost);
+    fixture.detectChanges();
+    const host = realm.createElement('div');
+    const anchor = realm.createElement('button');
+    host.appendChild(anchor);
+    (options.parent ?? realm.body).appendChild(host);
+    const calls = {
+      escape: 0,
+      documentEscape: 0,
+      outside: [] as Event[],
+      backdrop: 0,
+      parentClose: 0,
+    };
+    const handle = attachListPickerOverlay({
+      anchor,
+      content: fixture.componentInstance.content(),
+      viewContainerRef: fixture.componentInstance.viewContainerRef,
+      overlay: fixture.componentInstance.overlay,
+      positionStrategy: (origin) =>
+        fixture.componentInstance.overlay
+          .position()
+          .flexibleConnectedTo(origin)
+          .withPositions([
+            {
+              originX: 'start',
+              originY: 'bottom',
+              overlayX: 'start',
+              overlayY: 'top',
+              offsetY: 4,
+            },
+          ]),
+      ...(options.documentRef ? { documentRef: options.documentRef } : {}),
+      documentEscape: options.documentEscape
+        ? () => {
+            calls.documentEscape += 1;
+          }
+        : undefined,
+      onEscape: () => {
+        calls.escape += 1;
+      },
+      onBackdrop: () => {
+        calls.backdrop += 1;
+      },
+      onOutside: (event) => {
+        calls.outside.push(event);
+      },
+      onParentClose: () => {
+        calls.parentClose += 1;
+      },
+      targets: (): HTMLElement[] =>
+        [anchor, handle?.overlayElement].filter(
+          (element): element is HTMLElement => !!element,
+        ),
+    })!;
+    const cleanup = () => {
+      handle.dispose();
+      host.remove();
+      fixture.destroy();
+    };
+    return { realm, anchor, handle, calls, cleanup };
+  }
+
+  function pressEscape(realm: Document): boolean {
+    const event = new realm.defaultView!.KeyboardEvent('keydown', {
+      key: 'Escape',
+      cancelable: true,
+    });
+    realm.dispatchEvent(event);
+    return event.defaultPrevented;
+  }
+
+  function click(realm: Document, target: HTMLElement): void {
+    const MouseEventConstructor =
+      realm.defaultView?.MouseEvent ?? MouseEvent;
+    target.dispatchEvent(
+      new MouseEventConstructor('pointerdown', {
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+    target.dispatchEvent(
+      new MouseEventConstructor('click', { bubbles: true, cancelable: true }),
+    );
+  }
+
+  it('attaches the panel and dismisses for outside pointer interactions', () => {
+    const scene = setup({});
+    expect(scene.handle.overlayElement).not.toBeNull();
+    expect(
+      scene.handle.overlayElement!.querySelector('.probe'),
+    ).not.toBeNull();
+
+    const stranger = document.createElement('button');
+    document.body.appendChild(stranger);
+    click(document, stranger);
+    expect(scene.calls.outside.length).toBe(2);
+    stranger.remove();
+    scene.cleanup();
+    expect(scene.handle.overlayElement).toBeNull();
+  });
+
+  it('reports backdrop clicks and stays open for interactions on the anchor', () => {
+    const scene = setup({});
+    click(document, scene.anchor);
+    expect(scene.calls.outside).toEqual([]);
+
+    const backdrop = document.querySelector('.cdk-overlay-backdrop');
+    expect(backdrop).not.toBeNull();
+    click(document, backdrop as HTMLElement);
+    expect(scene.calls.backdrop).toBe(1);
+    scene.cleanup();
+  });
+
+  it('closes through the registry when a containing parent layer releases', () => {
+    const parent = document.createElement('div');
+    document.body.appendChild(parent);
+    const release = registerOverlay(parent);
+    const scene = setup({ parent });
+
+    expect(scene.calls.parentClose).toBe(0);
+    release();
+    parent.remove();
+    expect(scene.calls.parentClose).toBe(1);
+    scene.cleanup();
+  });
+
+  it('arbitrates document-level Escape through the overlay-layer registry', () => {
+    const scene = setup({ documentEscape: () => {} });
+    expect(pressEscape(document)).toBeTrue();
+
+    const sibling = document.createElement('div');
+    document.body.appendChild(sibling);
+    const release = registerOverlay(sibling);
+    expect(pressEscape(document)).toBeFalse();
+    release();
+    sibling.remove();
+    expect(pressEscape(document)).toBeTrue();
+    expect(scene.calls.documentEscape).toBe(2);
+    scene.cleanup();
+  });
+
+  it('binds to the anchor owner document, not the rendering one', () => {
+    const frame = document.createElement('iframe');
+    document.body.appendChild(frame);
+    const frameDocument = frame.contentDocument;
+    if (!frameDocument) throw new Error('same-origin iframe unavailable');
+
+    const scene = setup({
+      documentRef: frameDocument,
+      documentEscape: () => {},
+    });
+    // Outside interaction inside the owner realm dismisses.
+    click(frameDocument, frameDocument.body);
+    expect(scene.calls.outside.length).toBe(2);
+    // Escape inside the owner realm reaches the panel.
+    expect(pressEscape(frameDocument)).toBeTrue();
+    // The main document never sees a listener for this panel.
+    click(document, document.body);
+    expect(pressEscape(document)).toBeFalse();
+    expect(scene.calls.outside.length).toBe(2);
+    expect(scene.calls.documentEscape).toBe(1);
+
+    scene.cleanup();
+    frame.remove();
+  });
+
+  it('dispose is idempotent and stops every listener', () => {
+    const scene = setup({
+      documentEscape: () => {
+        /* counted in setup */
+      },
+    });
+    scene.cleanup();
+    scene.cleanup();
+
+    const stranger = document.createElement('button');
+    document.body.appendChild(stranger);
+    click(document, stranger);
+    expect(pressEscape(document)).toBeFalse();
+    expect(scene.calls.outside).toEqual([]);
+    stranger.remove();
   });
 });

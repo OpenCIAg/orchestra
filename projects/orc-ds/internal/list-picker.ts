@@ -2,6 +2,7 @@ import { TemplateRef, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayConfig, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
+  isTopOverlay,
   listenForOutsideInteraction,
   registerOverlay,
 } from './overlay-lifecycle';
@@ -440,7 +441,12 @@ export interface ListPickerOverlayConfig {
   content: TemplateRef<unknown>;
   viewContainerRef: ViewContainerRef;
   overlay: Overlay;
-  documentRef: Document;
+  /**
+   * The realm the dismissal listeners bind to. Defaults to
+   * `anchor.ownerDocument` — the document the picker actually renders in,
+   * even when its host was adopted into an iframe.
+   */
+  documentRef?: Document;
   positionStrategy: (anchor: HTMLElement) => PositionStrategy;
   minWidth?: number;
   /** Applied as the layer z-index when set (select's autoZIndex math). */
@@ -455,12 +461,21 @@ export interface ListPickerOverlayConfig {
   onOutside?: (event: Event) => void;
   /** Runs after attach (families focus their filter/first item here). */
   onAttached?: (overlayElement: HTMLElement) => void;
+  /**
+   * Document-level Escape arbitration for pickers whose keyboard focus can
+   * live outside the pane (multi-select roves from the trigger). Skips
+   * already-handled events and defers to topmost layers, then
+   * default-prevents so a native-dialog parent does not also treat the
+   * event as its own dismissal.
+   */
+  documentEscape?: () => void;
 }
 
 export function attachListPickerOverlay(
   config: ListPickerOverlayConfig,
 ): ListPickerOverlayHandle | null {
   const portal = new TemplatePortal(config.content, config.viewContainerRef);
+  const documentRef = config.documentRef ?? config.anchor.ownerDocument;
   const overlayConfig = new OverlayConfig({
     hasBackdrop: true,
     backdropClass: 'cdk-overlay-transparent-backdrop',
@@ -475,22 +490,49 @@ export function attachListPickerOverlay(
   const backdropSubscription = overlayRef
     .backdropClick()
     .subscribe(() => config.onBackdrop?.());
+  // CDK's keyboard dispatcher feeds `keydownEvents` from a body-level
+  // listener without consulting the overlay-layer registry, so the
+  // documentEscape mode re-routes its delivery through the registry-aware
+  // arbitration the in-place pickers were pinned on.
   const keydownSubscription = overlayRef
     .keydownEvents()
     .subscribe((event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key !== 'Escape') return;
+      if (config.documentEscape) {
+        if (event.defaultPrevented) return;
+        if (!isTopOverlay(overlayRef.overlayElement)) return;
+        event.preventDefault();
+        config.documentEscape();
+        event.stopPropagation();
+      } else {
         event.preventDefault();
         config.onEscape?.();
         event.stopPropagation();
       }
     });
+  // The dispatcher listens on the rendering document's body only; pickers
+  // adopted into another realm (an iframe host) still need Escape from
+  // their owner document.
+  const documentEscape = config.documentEscape;
+  let documentEscapeCleanup: (() => void) | null = null;
+  if (documentEscape) {
+    const keydown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.key !== 'Escape') return;
+      if (!isTopOverlay(overlayRef.overlayElement)) return;
+      event.preventDefault();
+      documentEscape();
+    };
+    documentRef.addEventListener('keydown', keydown);
+    documentEscapeCleanup = () =>
+      documentRef.removeEventListener('keydown', keydown);
+  }
   overlayRef.attach(portal);
   const layerCleanup = registerOverlay(overlayRef.overlayElement, {
     anchor: config.anchor,
     onParentClose: () => config.onParentClose?.(),
   });
   const outsideCleanup = listenForOutsideInteraction(
-    config.documentRef,
+    documentRef,
     config.targets,
     (event) => config.onOutside?.(event),
   );
@@ -503,6 +545,7 @@ export function attachListPickerOverlay(
     dispose(): void {
       if (disposed) return;
       disposed = true;
+      documentEscapeCleanup?.();
       outsideCleanup();
       layerCleanup();
       backdropSubscription.unsubscribe();
