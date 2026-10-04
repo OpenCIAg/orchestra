@@ -25092,6 +25092,7 @@
     "projects/docs/src/app/pages/home/home.component.scss",
     "projects/docs/src/app/pages/home/home.component.spec.ts",
     "projects/docs/src/app/pages/home/home.component.ts",
+    "projects/docs/src/app/pages/sandbox/inside-modal-sandbox.component.ts",
     "projects/docs/src/app/services/component-catalog.service.ts",
     "projects/docs/src/app/services/easter-egg.service.ts",
     "projects/docs/src/app/services/seo.service.ts",
