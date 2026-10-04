@@ -1,1 +1,1 @@
-export { InputGroupAddonComponent } from '@ciag/orchestra/p2';
+export { InputGroupAddonComponent } from './input-group-addon.component';

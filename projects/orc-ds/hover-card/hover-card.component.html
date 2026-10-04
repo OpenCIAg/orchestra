@@ -1,0 +1,20 @@
+<div
+  class="orc-p2-hover-card"
+  (mouseenter)="openCard()"
+  (mouseleave)="onMouseLeave()"
+  (focusin)="onFocusIn($event)"
+  (focusout)="onFocusOut($event)"
+  (keydown)="onKeydown($event)"
+>
+  <span class="trigger"><ng-content select="[hover-card-trigger]" /></span>
+  @if (open()) {
+    <div
+      class="content"
+      role="dialog"
+      [attr.id]="id() || null"
+      [attr.aria-label]="label() || null"
+    >
+      <ng-content />
+    </div>
+  }
+</div>

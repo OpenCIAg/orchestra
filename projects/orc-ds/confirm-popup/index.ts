@@ -1,2 +1,5 @@
-export { ConfirmPopupComponent, ConfirmPopupService } from '@ciag/orchestra/p2';
-export type { PopupConfirmation } from '@ciag/orchestra/p2';
+export {
+  ConfirmPopupComponent,
+  ConfirmPopupService,
+} from './confirm-popup.component';
+export type { PopupConfirmation } from './confirm-popup.component';

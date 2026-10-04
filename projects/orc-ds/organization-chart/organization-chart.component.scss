@@ -1,0 +1,53 @@
+.orc-org {
+  width: 100%;
+  overflow: auto;
+}
+.tree {
+  min-width: 18rem;
+  padding: 1rem;
+}
+.node {
+  position: relative;
+  padding: 0.35rem 0;
+}
+.node:before {
+  content: '';
+  position: absolute;
+  top: -0.35rem;
+  left: -1.1rem;
+  width: 1px;
+  height: calc(100% + 0.35rem);
+  background: var(--orc-component-surface-subtle);
+}
+.node:first-child:before {
+  top: 50%;
+  height: 50%;
+}
+.card {
+  display: grid;
+  gap: 0.15rem;
+  width: max-content;
+  min-width: 10rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.5rem;
+  background: var(--orc-component-surface);
+  box-shadow: 0 2px 6px var(--orc-component-shadow-color);
+  cursor: pointer;
+}
+.card:hover {
+  border-color: var(--orc-component-interactive);
+  background: var(--orc-component-interactive-soft);
+}
+.card img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.card small {
+  color: var(--orc-component-text-muted);
+}
+.node.disabled {
+  opacity: 0.5;
+}

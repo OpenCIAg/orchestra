@@ -1,5 +1,5 @@
 <button
-  [id]="id() || null"
+  [attr.id]="id() || null"
   [type]="type()"
   [disabled]="isDisabled()"
   [attr.aria-disabled]="isDisabled() ? 'true' : null"
@@ -19,10 +19,37 @@
 >
   @if (loading()) {
     <span class="orc-button__spinner" aria-hidden="true">
-      <svg class="orc-button__spinner-svg" viewBox="0 0 24 24" fill="none">
-        <circle class="orc-button__spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
-        <circle class="orc-button__spinner-head" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="80" stroke-dashoffset="60"></circle>
-      </svg>
+      @if (safeLoadingIcon(); as icon) {
+        @if (icon.isSvg) {
+          <span
+            class="orc-button__loading-icon orc-button__icon-svg-wrapper"
+            [innerHTML]="icon.content"
+          ></span>
+        } @else {
+          <i [class]="'orc-button__loading-icon ' + icon.content"></i>
+        }
+      } @else {
+        <svg class="orc-button__spinner-svg" viewBox="0 0 24 24" fill="none">
+          <circle
+            class="orc-button__spinner-track"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="3"
+          ></circle>
+          <circle
+            class="orc-button__spinner-head"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-dasharray="80"
+            stroke-dashoffset="60"
+          ></circle>
+        </svg>
+      }
     </span>
   }
 
@@ -30,33 +57,41 @@
   @if (safeIconLeft(); as icon) {
     <span class="orc-button__icon orc-button__icon--left" aria-hidden="true">
       @if (icon.isSvg) {
-        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon.content"></span>
+        <span
+          class="orc-button__icon-svg-wrapper"
+          [innerHTML]="icon.content"
+        ></span>
       } @else {
         <i [class]="icon.content"></i>
       }
     </span>
   } @else {
-    <ng-content select="[iconLeft]"></ng-content>
+    <span class="orc-button__icon orc-button__icon--left" aria-hidden="true"
+      ><ng-content select="[iconLeft]"></ng-content
+    ></span>
   }
 
   <!-- Content -->
-  @if (!iconOnly()) {
-    <span class="orc-button__text">
-      <ng-content></ng-content>
-    </span>
+  <span class="orc-button__text"><ng-content></ng-content></span>
+  @if (badge() !== undefined) {
+    <span class="orc-button__badge {{ badgeClass() }}">{{ badge() }}</span>
   }
-  @if (badge() !== undefined) { <span class="orc-button__badge {{ badgeClass() }}">{{ badge() }}</span> }
 
   <!-- Right Icon -->
   @if (safeIconRight(); as icon) {
     <span class="orc-button__icon orc-button__icon--right" aria-hidden="true">
       @if (icon.isSvg) {
-        <span class="orc-button__icon-svg-wrapper" [innerHTML]="icon.content"></span>
+        <span
+          class="orc-button__icon-svg-wrapper"
+          [innerHTML]="icon.content"
+        ></span>
       } @else {
         <i [class]="icon.content"></i>
       }
     </span>
   } @else {
-    <ng-content select="[iconRight]"></ng-content>
+    <span class="orc-button__icon orc-button__icon--right" aria-hidden="true"
+      ><ng-content select="[iconRight]"></ng-content
+    ></span>
   }
 </button>

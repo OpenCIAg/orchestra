@@ -1,0 +1,200 @@
+<div
+  class="orc-p2-tree-select"
+  [class]="'orc-p2-tree-select ' + styleClass()"
+  [class.orc-p2-tree-select--small]="resolvedSize() === 'sm'"
+  [class.orc-p2-tree-select--large]="resolvedSize() === 'lg'"
+  [class.orc-p2-tree-select--filled]="variant() === 'filled'"
+  [class.orc-p2-tree-select--outlined]="variant() === 'outlined'"
+  [class.orc-p2-tree-select--fluid]="fluid()"
+  [style]="style()"
+  [attr.aria-busy]="loading() ? 'true' : null"
+  (keydown)="onKeydown($event)"
+  (focusin)="onHostFocusIn($event)"
+  (focusout)="onHostFocusOut($event)"
+>
+  @if (effectiveLabel()) {
+    <label [for]="effectiveId()">{{ effectiveLabel() }}</label>
+  }
+  <button
+    type="button"
+    class="trigger"
+    #triggerEl
+    [disabled]="disabled() || cvaDisabled()"
+    [attr.id]="effectiveId()"
+    [attr.tabindex]="tabindex()"
+    [attr.aria-label]="effectiveAriaLabel()"
+    [attr.aria-labelledby]="effectiveAriaLabelledBy()"
+    [attr.aria-expanded]="open()"
+    [attr.aria-controls]="effectiveId() + '-panel'"
+    [attr.aria-readonly]="readonly()"
+    (click)="toggleOpen()"
+  >
+    <span
+      [class]="
+        selectedLabel()
+          ? 'trigger-text'
+          : 'trigger-text trigger-text--placeholder'
+      "
+      >{{ selectedLabel() || placeholder() }}</span
+    >
+    <orc-icon name="keyboard_arrow_down" size="sm" aria-hidden="true" />
+  </button>
+  @if (showClear() && value() !== null && !readonly()) {
+    <button
+      type="button"
+      [disabled]="disabled() || cvaDisabled()"
+      (click)="clear($event)"
+      [attr.aria-label]="effectiveClearAriaLabel()"
+    >
+      ×
+    </button>
+  }
+</div>
+
+<!-- Detached panel: portaled through the shared list-picker overlay so
+     ancestor overflow can never clip it. The wrapper repeats the host's
+     keyboard and focus composites, because tree focus now lives in the
+     overlay pane. -->
+<ng-template #panelTemplate>
+  <div
+    class="orc-p2-tree-select-panel orc-p2-portal-panel"
+    (keydown)="onKeydown($event)"
+    (focusin)="onHostFocusIn($event)"
+    (focusout)="onHostFocusOut($event)"
+  >
+    @if (filter()) {
+      <input
+        [value]="filterValue()"
+        [disabled]="isTreeControlDisabled()"
+        [attr.placeholder]="filterPlaceholder() || null"
+        (input)="onFilterInput($event)"
+        [attr.aria-label]="effectiveFilterAriaLabel()"
+      />
+    }
+    @if (loading()) {
+      <div
+        class="tree tree-state"
+        [class]="'tree tree-state ' + panelClasses()"
+        [style]="panelStyle()"
+        [style.max-height]="scrollHeight()"
+        [id]="effectiveId() + '-panel'"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        Loading options
+      </div>
+    } @else if (filteredVisibleNodes().length) {
+      <ul
+        class="tree"
+        [class]="'tree ' + panelClasses()"
+        [style]="panelStyle()"
+        [style.max-height]="scrollHeight()"
+        [id]="effectiveId() + '-panel'"
+        role="tree"
+        [attr.tabindex]="0"
+        [attr.aria-labelledby]="treeLabelledBy()"
+        [attr.aria-label]="treeAriaLabel()"
+        [attr.aria-activedescendant]="activeTreeOptionId()"
+        [attr.aria-disabled]="isTreeInteractionDisabled() ? 'true' : null"
+        (focusin)="onTreeFocusIn($event)"
+      >
+        @for (item of filteredVisibleNodes(); track item.node.value) {
+          <li
+            role="treeitem"
+            [id]="treeOptionId($index)"
+            [attr.aria-level]="item.level"
+            [attr.aria-expanded]="
+              item.node.children?.length ? isExpandedForView(item.node) : null
+            "
+            [attr.aria-disabled]="isTreeItemDisabled(item.node) ? 'true' : null"
+            [style.padding-left.rem]="item.level * 0.9"
+            [attr.aria-selected]="
+              selectionMode() === 'checkbox' ? null : isNodeSelected(item.node)
+            "
+            [attr.aria-checked]="
+              selectionMode() === 'checkbox' ? nodeCheckState(item.node) : null
+            "
+            [class.selected]="
+              selectionMode() === 'checkbox'
+                ? nodeCheckState(item.node) === true
+                : isNodeSelected(item.node)
+            "
+            [class.partial]="nodeCheckState(item.node) === 'mixed'"
+            [class.active]="resolvedActiveTreeIndex() === $index"
+            [class.disabled]="isTreeItemDisabled(item.node)"
+          >
+            @if (item.node.children?.length) {
+              <button
+                type="button"
+                class="expand"
+                tabindex="-1"
+                [disabled]="
+                  !!filterValue().trim() || isTreeItemDisabled(item.node)
+                "
+                [attr.aria-label]="
+                  (isExpandedForView(item.node)
+                    ? effectiveCollapseAriaLabel()
+                    : effectiveExpandAriaLabel()) +
+                  ' ' +
+                  item.node.label
+                "
+                (click)="onTreeToggleClick(item.node, $index)"
+              >
+                @if (isExpandedForView(item.node)) {
+                  <orc-icon
+                    name="keyboard_arrow_down"
+                    size="sm"
+                    aria-hidden="true"
+                  />
+                } @else {
+                  <orc-icon
+                    name="keyboard_arrow_right"
+                    size="sm"
+                    aria-hidden="true"
+                  />
+                }
+              </button>
+            } @else {
+              <span class="expand-placeholder"></span>
+            }
+            <button
+              type="button"
+              class="item"
+              tabindex="-1"
+              [disabled]="isTreeItemDisabled(item.node)"
+              (click)="onTreeItemClick(item.node, $index, $event)"
+            >
+              @if (selectionMode() === 'checkbox') {
+                <span aria-hidden="true">{{
+                  nodeCheckState(item.node) === 'mixed'
+                    ? '◩'
+                    : nodeCheckState(item.node)
+                      ? '☑'
+                      : '☐'
+                }}</span>
+              }
+              {{ item.node.label }}
+            </button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div
+        class="tree tree-state"
+        [class]="'tree tree-state ' + panelClasses()"
+        [style]="panelStyle()"
+        [style.max-height]="scrollHeight()"
+        [id]="effectiveId() + '-panel'"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {{
+          emptyMessage() ||
+            (filterValue().trim() ? 'No results found' : 'No options available')
+        }}
+      </div>
+    }
+  </div>
+</ng-template>

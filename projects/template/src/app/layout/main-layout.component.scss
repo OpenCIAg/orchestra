@@ -37,7 +37,11 @@
     width: 28px;
     height: 28px;
     border-radius: var(--radius-md);
-    background: linear-gradient(135deg, var(--orc-color-azul-eletrico), var(--orc-color-roxo-lavender));
+    background: linear-gradient(
+      135deg,
+      var(--orc-color-azul-eletrico),
+      var(--orc-color-roxo-lavender)
+    );
     flex-shrink: 0;
   }
 

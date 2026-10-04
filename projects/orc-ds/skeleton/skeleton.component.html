@@ -3,7 +3,9 @@
   [class.orc-skeleton--text]="effectiveVariant() === 'text'"
   [class.orc-skeleton--circular]="effectiveVariant() === 'circular'"
   [class.orc-skeleton--rectangular]="effectiveVariant() === 'rectangular'"
-  [class.orc-skeleton--shimmer]="animation() === 'shimmer' || animation() === 'wave'"
+  [class.orc-skeleton--shimmer]="
+    animation() === 'shimmer' || animation() === 'wave'
+  "
   [class.orc-skeleton--pulse]="animation() === 'pulse'"
   [class.orc-skeleton--none]="animation() === 'none'"
   [style.width]="computedWidth()"
@@ -12,9 +14,10 @@
   [class]="'p-skeleton p-component orc-skeleton ' + styleClass()"
   [style]="style()"
   [attr.data-pc-name]="'skeleton'"
-  role="status"
-  aria-busy="true"
-  [attr.aria-label]="ariaLabel()"
+  [attr.role]="ariaLabel() ? 'status' : null"
+  [attr.aria-busy]="ariaLabel() ? 'true' : null"
+  [attr.aria-hidden]="ariaLabel() ? null : 'true'"
+  [attr.aria-label]="ariaLabel() ? ariaLabel() : null"
 >
   <span class="sr-only">{{ ariaLabel() }}</span>
 </div>

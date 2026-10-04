@@ -27,18 +27,31 @@ export class BadgeComponent {
   readonly value = input<string | number | undefined>(undefined);
   readonly count = input<number | undefined>(undefined);
   readonly maxCount = input<number>(99);
-  readonly dot = input<boolean, unknown>(false, { transform: booleanAttribute });
-  readonly showDefaultIcon = input<boolean, unknown>(false, { transform: booleanAttribute });
-  readonly dismissible = input<boolean, unknown>(false, { transform: booleanAttribute });
-  readonly pill = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly dot = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly showDefaultIcon = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly dismissible = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly liveRegion = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly pill = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
   readonly id = input<string | undefined>(undefined);
-  readonly ariaLabel = input<string>('');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly removeAriaLabel = input<string | undefined>(undefined);
   readonly styleClass = input('');
 
   // Outputs (Signals API)
   readonly dismiss = output<MouseEvent>();
 
   // ── Sinais Computados ──────────────────────────────────────
+  readonly effectiveStatus = computed(() => this.severity() ?? this.status());
   readonly displayValue = computed(() => {
     const direct = this.value();
     if (direct !== undefined) return String(direct);
@@ -51,7 +64,7 @@ export class BadgeComponent {
   });
 
   readonly normalizedStatus = computed<string>(() => {
-    const s = this.severity() || this.status();
+    const s = this.effectiveStatus();
     switch (s) {
       case 'danger':
         return 'error';
@@ -65,13 +78,20 @@ export class BadgeComponent {
   });
 
   readonly isDotOnly = computed(() => {
-    return this.variant() === 'dot' && !this.displayValue();
+    return (this.variant() === 'dot' || this.dot()) && !this.displayValue();
   });
 
   readonly accessibleLabel = computed(() => {
     if (this.ariaLabel()) return this.ariaLabel();
     if (this.displayValue()) return this.displayValue();
-    return `Badge de status ${this.status()}`;
+    if (this.isDotOnly()) return `${this.normalizedStatus()} status`;
+    return undefined;
+  });
+
+  readonly computedRole = computed<'status' | 'img' | undefined>(() => {
+    if (this.dismissible()) return undefined;
+    if (this.liveRegion()) return 'status';
+    return this.isDotOnly() ? 'img' : undefined;
   });
 
   // ── Handlers ──────────────────────────────────────────────

@@ -30,10 +30,7 @@
           "options": {
             "tsConfig": "projects/orc-ds/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "polyfills": ["zone.js", "zone.js/testing"]
           }
         }
       }
@@ -50,14 +47,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/docs",
             "index": "projects/docs/src/index.html",
             "browser": "projects/docs/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/docs/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -67,9 +62,7 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "projects/docs/src/styles.scss"
-            ],
+            "styles": ["projects/docs/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -97,7 +90,12 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "prebundle": {
+              "exclude": ["@ciag/orchestra"]
+            }
+          },
           "configurations": {
             "production": {
               "buildTarget": "docs:build:production"
@@ -109,16 +107,13 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular/build:extract-i18n"
         },
         "test": {
           "builder": "@angular/build:karma",
           "options": {
             "karmaConfig": "karma.conf.js",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/docs/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -128,9 +123,7 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "projects/docs/src/styles.scss"
-            ],
+            "styles": ["projects/docs/src/styles.scss"],
             "scripts": []
           }
         }
@@ -148,14 +141,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/template",
             "index": "projects/template/src/index.html",
             "browser": "projects/template/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/template/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -165,9 +156,7 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "projects/template/src/styles.scss"
-            ],
+            "styles": ["projects/template/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -195,9 +184,12 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
-            "port": 4300
+            "port": 4300,
+            "prebundle": {
+              "exclude": ["@ciag/orchestra"]
+            }
           },
           "configurations": {
             "production": {

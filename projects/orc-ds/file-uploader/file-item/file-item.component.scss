@@ -19,6 +19,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &--preview {
+      height: auto;
+      max-width: 25%;
+      img {
+        display: block;
+        width: 100%;
+        max-height: 100px;
+        object-fit: contain;
+      }
+    }
   }
 
   &__icon {
@@ -44,7 +55,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    height: 24px;
+    min-height: 32px;
+    gap: var(--spacing-2, 8px);
   }
 
   &__name {
@@ -59,22 +71,9 @@
 
   &__remove {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    ::ng-deep .orc-button {
-      padding: 0 !important;
-      min-height: 24px !important;
-      min-width: 24px !important;
-      
-      svg {
-        width: 16px !important;
-        height: 16px !important;
-      }
-    }
   }
 
   &__progress-container {
@@ -87,13 +86,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 16px;
+    min-height: 16px;
+    gap: var(--spacing-2, 8px);
   }
 
   &__meta {
     font-size: 0.75rem; /* 12px */
     color: var(--text-secondary);
     line-height: 16px;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+  }
+
+  &__error {
+    color: var(--orc-danger);
   }
 }

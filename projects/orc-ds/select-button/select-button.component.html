@@ -1,0 +1,28 @@
+<div
+  class="p-selectbutton p-component orc-select-button"
+  [class]="'p-selectbutton p-component orc-select-button ' + styleClass()"
+  [class.orc-select-button--small]="resolvedSize() === 'sm'"
+  [class.orc-select-button--large]="resolvedSize() === 'lg'"
+  [style]="style()"
+  role="group"
+  [attr.aria-label]="label() || null"
+  [attr.aria-labelledby]="ariaLabelledBy()"
+  [attr.data-pc-name]="'selectbutton'"
+  (focusout)="onContainerFocusOut($event)"
+>
+  @for (option of options(); track getOptionValue(option)) {
+    <button
+      type="button"
+      [disabled]="disabled() || cvaDisabled() || isOptionDisabled(option)"
+      [attr.tabindex]="tabindex()"
+      [autofocus]="autofocus() && $index === 0"
+      [class.selected]="isSelected(option)"
+      [attr.aria-pressed]="isSelected(option)"
+      (focus)="onFocus.emit($event)"
+      (blur)="onBlur.emit()"
+      (click)="select(option, $event)"
+    >
+      {{ getOptionLabel(option) }}
+    </button>
+  }
+</div>

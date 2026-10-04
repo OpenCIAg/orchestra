@@ -1,1 +1,2 @@
-export { EditorComponent } from '@ciag/orchestra/p2';
+export { EditorComponent } from './editor.component';
+export type { EditorAction } from './editor.component';

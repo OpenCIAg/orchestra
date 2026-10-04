@@ -8,11 +8,13 @@ import {
   AccordionVariant,
 } from '@ciag/orchestra/accordion';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-accordion-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -37,7 +39,7 @@ export class AccordionPageComponent {
   readonly eventLogs = signal<string[]>([]);
 
   logEvent(msg: string): void {
-    this.eventLogs.update(logs => [
+    this.eventLogs.update((logs) => [
       `[${new Date().toLocaleTimeString()}] ${msg}`,
       ...logs.slice(0, 4),
     ]);

@@ -2,15 +2,19 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Exibição de dados</div>
       <h1 class="section-title">Table</h1>
       <p class="section-desc">
-        Tabela de dados com suporte a ordenação de colunas, seleção individual e em massa, células customizadas via
-        templates, integração de status com BadgeComponent, estados de carregamento (Skeletons) e paginação fluida com
-        PaginatorComponent.
+        Tabela de dados com suporte a ordenação de colunas, seleção individual e
+        em massa, células customizadas via templates, integração de status com
+        BadgeComponent, estados de carregamento (Skeletons) e paginação fluida
+        com PaginatorComponent.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -21,20 +25,38 @@
           <!-- Painel de Preview da Tabela -->
           <div class="panel preview-panel">
             <div class="panel__header">
-              <span>Live preview</span>
+              <span>Prévia ao vivo</span>
               @if (selectedRows().length > 0) {
-              <span class="selection-badge">{{ selectedRows().length }} selecionado(s)</span>
+                <span class="selection-badge"
+                  >{{ selectedRows().length }} selecionado(s)</span
+                >
               }
             </div>
             <div class="panel__body">
               <div class="table-preview-wrapper">
-                <orc-table [data]="mockUsers()" [selectable]="selectable()" [(selectedRows)]="selectedRows"
-                  [striped]="striped()" [bordered]="bordered()" [hoverable]="hoverable()" [loading]="loading()"
-                  [paginated]="paginated()" [(pageSize)]="pageSize" [(currentPage)]="currentPage"
-                  [(sortColumn)]="sortColumn" [(sortDirection)]="sortDirection" (sortChange)="onSortChanged($event)"
-                  (rowClick)="onRowClicked($event)">
+                <orc-table
+                  [data]="mockUsers()"
+                  [selectable]="selectable()"
+                  [(selectedRows)]="selectedRows"
+                  [striped]="striped()"
+                  [bordered]="bordered()"
+                  [hoverable]="hoverable()"
+                  [loading]="loading()"
+                  [paginated]="paginated()"
+                  [(pageSize)]="pageSize"
+                  [(currentPage)]="currentPage"
+                  [(sortColumn)]="sortColumn"
+                  [(sortDirection)]="sortDirection"
+                  (sortChange)="onSortChanged($event)"
+                  (rowClick)="onRowClicked($event)"
+                >
                   <!-- Coluna 1: Título / Nome com Avatar -->
-                  <orc-column key="name" header="Título" [sortable]="true" width="220px">
+                  <orc-column
+                    key="name"
+                    header="Título"
+                    [sortable]="true"
+                    width="220px"
+                  >
                     <ng-template orcCellDef let-row>
                       <div class="cell-title-group">
                         <span class="cell-title-text">{{ row.name }}</span>
@@ -51,33 +73,70 @@
                   </orc-column>
 
                   <!-- Coluna 3: Data de Criação -->
-                  <orc-column key="createdAt" header="Data" [sortable]="true" width="130px">
+                  <orc-column
+                    key="createdAt"
+                    header="Data"
+                    [sortable]="true"
+                    width="130px"
+                  >
                     <ng-template orcCellDef let-row>
                       <span class="cell-date-text">{{ row.createdAt }}</span>
                     </ng-template>
                   </orc-column>
 
                   <!-- Coluna 4: Status com BadgeComponent Integrado -->
-                  <orc-column key="status" header="Status" [sortable]="true" width="140px" align="center">
+                  <orc-column
+                    key="status"
+                    header="Status"
+                    [sortable]="true"
+                    width="140px"
+                    align="center"
+                  >
                     <ng-template orcHeaderCellDef>
-                      <div class="orc-table__th-content" style="justify-content: center;">
+                      <div
+                        class="orc-table__th-content"
+                        style="justify-content: center"
+                      >
                         <span>Status</span>
                       </div>
                     </ng-template>
                     <ng-template orcCellDef let-row>
-                      <orc-badge variant="soft" [status]="mapBadgeStatus(row.status)" [text]="row.statusLabel"
-                        [pill]="true" />
+                      <orc-badge
+                        variant="soft"
+                        [status]="mapBadgeStatus(row.status)"
+                        [text]="row.statusLabel"
+                        [pill]="true"
+                      />
                     </ng-template>
                   </orc-column>
 
                   <!-- Coluna 5: Ações Customizadas -->
-                  <orc-column key="actions" header="Ações" width="100px" align="right">
+                  <orc-column
+                    key="actions"
+                    header="Ações"
+                    width="100px"
+                    align="right"
+                  >
                     <ng-template orcCellDef let-row>
-                      <div class="row-actions" (click)="$event.stopPropagation()">
-                        <button type="button" class="btn-row-action btn-row-action--delete" (click)="deleteRow(row.id)"
-                          title="Remover linha">
-                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75">
-                            <path d="M3 5h10M6 5V3h4v2M5 5v8a1 1 0 001 1h4a1 1 0 001-1V5" />
+                      <div
+                        class="row-actions"
+                        (click)="$event.stopPropagation()"
+                      >
+                        <button
+                          type="button"
+                          class="btn-row-action btn-row-action--delete"
+                          (click)="deleteRow(row.id)"
+                          title="Remover linha"
+                        >
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.75"
+                          >
+                            <path
+                              d="M3 5h10M6 5V3h4v2M5 5v8a1 1 0 001 1h4a1 1 0 001-1V5"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -88,10 +147,18 @@
 
               <!-- Ações do Playground -->
               <div class="preview-actions-row">
-                <button type="button" class="btn-action-trigger" (click)="toggleLoadingSimulation()">
+                <button
+                  type="button"
+                  class="btn-action-trigger"
+                  (click)="toggleLoadingSimulation()"
+                >
                   Simular carregamento (1.5s)
                 </button>
-                <button type="button" class="btn-action-ghost" (click)="resetData()">
+                <button
+                  type="button"
+                  class="btn-action-ghost"
+                  (click)="resetData()"
+                >
                   Restaurar dados iniciais
                 </button>
               </div>
@@ -107,26 +174,43 @@
                 <label class="control-label">Recursos de linha & seleção</label>
                 <div class="checkbox-stack">
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="selectable()"
-                      (change)="selectable.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="selectable()"
+                      (change)="selectable.set($any($event.target).checked)"
+                    />
                     <span>Habilitar checkbox de seleção (Coluna 0)</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="paginated()"
-                      (change)="paginated.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="paginated()"
+                      (change)="paginated.set($any($event.target).checked)"
+                    />
                     <span>Paginação integrada (PaginatorComponent)</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="hoverable()"
-                      (change)="hoverable.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="hoverable()"
+                      (change)="hoverable.set($any($event.target).checked)"
+                    />
                     <span>Efeito Hover ao passar o mouse</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="striped()" (change)="striped.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="striped()"
+                      (change)="striped.set($any($event.target).checked)"
+                    />
                     <span>Linhas zebradas</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="bordered()" (change)="bordered.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="bordered()"
+                      (change)="bordered.set($any($event.target).checked)"
+                    />
                     <span>Borda container </span>
                   </label>
                 </div>
@@ -134,17 +218,37 @@
 
               <!-- Itens por Página -->
               @if (paginated()) {
-              <div class="control-group">
-                <label class="control-label">Itens por Página (Page Size: {{ pageSize() }})</label>
-                <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="pageSize() === 3"
-                    (click)="pageSize.set(3)">3</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="pageSize() === 5"
-                    (click)="pageSize.set(5)">5</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="pageSize() === 10"
-                    (click)="pageSize.set(10)">10</button>
+                <div class="control-group">
+                  <label class="control-label"
+                    >Itens por Página (Page Size: {{ pageSize() }})</label
+                  >
+                  <div class="segmented-control">
+                    <button
+                      type="button"
+                      class="segment-btn"
+                      [class.segment-btn--active]="pageSize() === 3"
+                      (click)="pageSize.set(3)"
+                    >
+                      3
+                    </button>
+                    <button
+                      type="button"
+                      class="segment-btn"
+                      [class.segment-btn--active]="pageSize() === 5"
+                      (click)="pageSize.set(5)"
+                    >
+                      5
+                    </button>
+                    <button
+                      type="button"
+                      class="segment-btn"
+                      [class.segment-btn--active]="pageSize() === 10"
+                      (click)="pageSize.set(10)"
+                    >
+                      10
+                    </button>
+                  </div>
                 </div>
-              </div>
               }
             </div>
           </div>
@@ -154,25 +258,43 @@
       <section class="section">
         <h2 class="section-subtitle">Componente plano</h2>
         <p class="section-text">
-          Tabela completa exatamente com o layout de colunas (Título, Conteúdo, Status) e badges semânticos desenhados
-          no Figma DS Orchestra:
+          Tabela completa exatamente com o layout de colunas (Título, Conteúdo,
+          Status) e badges semânticos desenhados no Figma DS Orchestra:
         </p>
 
         <div class="example-card">
-
           <div class="example-card__body">
-            <orc-table [data]="mockUsers().slice(0, 6)" [bordered]="true" [hoverable]="true">
-              <orc-column key="name" header="Título" [sortable]="true" width="260px">
+            <orc-table
+              [data]="mockUsers().slice(0, 6)"
+              [bordered]="true"
+              [hoverable]="true"
+            >
+              <orc-column
+                key="name"
+                header="Título"
+                [sortable]="true"
+                width="260px"
+              >
                 <ng-template orcCellDef let-row>
                   <span class="figma-cell-title">{{ row.name }}</span>
                 </ng-template>
               </orc-column>
               <orc-column key="role" header="Conteúdo" [sortable]="true" />
               <orc-column key="email" header="Conteúdo" [sortable]="true" />
-              <orc-column key="status" header="Status" [sortable]="true" width="160px" align="center">
+              <orc-column
+                key="status"
+                header="Status"
+                [sortable]="true"
+                width="160px"
+                align="center"
+              >
                 <ng-template orcCellDef let-row>
-                  <orc-badge variant="soft" [status]="mapBadgeStatus(row.status)" [text]="row.statusLabel"
-                    [pill]="true" />
+                  <orc-badge
+                    variant="soft"
+                    [status]="mapBadgeStatus(row.status)"
+                    [text]="row.statusLabel"
+                    [pill]="true"
+                  />
                 </ng-template>
               </orc-column>
             </orc-table>
@@ -186,7 +308,9 @@
 
         <!-- 1. TableComponent API -->
         <div class="api-doc-block">
-          <h3 class="api-component-title">&lt;orc-table&gt; (TableComponent)</h3>
+          <h3 class="api-component-title">
+            &lt;orc-table&gt; (TableComponent)
+          </h3>
           <div class="table-container">
             <table class="api-table">
               <thead>
@@ -202,31 +326,44 @@
                   <td><code>data</code></td>
                   <td><code>T[]</code></td>
                   <td><code>[]</code></td>
-                  <td>Array de dados tipados a serem renderizados na tabela.</td>
+                  <td>
+                    Array de dados tipados a serem renderizados na tabela.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>selectable</code></td>
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
-                  <td>Exibe a primeira coluna com Checkbox para seleção individual e em massa.</td>
+                  <td>
+                    Exibe a primeira coluna com Checkbox para seleção individual
+                    e em massa.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>selectedRows</code></td>
                   <td><code>model&lt;T[]&gt;</code></td>
                   <td><code>[]</code></td>
-                  <td>Linhas selecionadas atualmente com suporte a Two-Way Binding (<code>[(selectedRows)]</code>).</td>
+                  <td>
+                    Linhas selecionadas atualmente com suporte a Two-Way Binding
+                    (<code>[(selectedRows)]</code>).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>rowKey</code></td>
                   <td><code>string</code></td>
                   <td><code>'id'</code></td>
-                  <td>Nome da propriedade identificadora única do registro de cada linha.</td>
+                  <td>
+                    Nome da propriedade identificadora única do registro de cada
+                    linha.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>sortColumn</code></td>
                   <td><code>model&lt;string&gt;</code></td>
                   <td><code>''</code></td>
-                  <td>Chave da coluna ordenada atualmente (Two-Way Binding).</td>
+                  <td>
+                    Chave da coluna ordenada atualmente (Two-Way Binding).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>sortDirection</code></td>
@@ -238,7 +375,10 @@
                   <td><code>paginated</code></td>
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
-                  <td>Exibe o rodapé com <code>PaginatorComponent</code> integrado para navegação de páginas.</td>
+                  <td>
+                    Exibe o rodapé com <code>PaginatorComponent</code> integrado
+                    para navegação de páginas.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>pageSize</code></td>
@@ -268,31 +408,47 @@
                   <td><code>hoverable</code></td>
                   <td><code>boolean</code></td>
                   <td><code>true</code></td>
-                  <td>Aplica efeito visual de realce quando o mouse passa sobre as linhas.</td>
+                  <td>
+                    Aplica efeito visual de realce quando o mouse passa sobre as
+                    linhas.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>loading</code></td>
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
-                  <td>Exibe estado de carregamento com linhas de <code>SkeletonComponent</code>.</td>
+                  <td>
+                    Exibe estado de carregamento com linhas de
+                    <code>SkeletonComponent</code>.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>emptyTitle</code> / <code>emptyMessage</code></td>
                   <td><code>string</code></td>
-                  <td>'Nenhum dado...'</td>
-                  <td>Textos exibidos no estado vazio quando <code>data</code> não possui registros.</td>
+                  <td>
+                    <code>Nenhum dado encontrado</code> / <code>undefined</code>
+                  </td>
+                  <td>
+                    Textos exibidos no estado vazio quando <code>data</code> não
+                    possui registros.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>sortChange</code></td>
                   <td><code>output&lt;TableSortEvent&gt;</code></td>
                   <td>-</td>
-                  <td>Disparado quando o usuário clica no cabeçalho para ordenar.</td>
+                  <td>
+                    Disparado quando o usuário clica no cabeçalho para ordenar.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>selectionChange</code></td>
                   <td><code>output&lt;T[]&gt;</code></td>
                   <td>-</td>
-                  <td>Disparado sempre que a lista de linhas selecionadas é alterada.</td>
+                  <td>
+                    Disparado sempre que a lista de linhas selecionadas é
+                    alterada.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>rowClick</code></td>
@@ -307,7 +463,9 @@
 
         <!-- 2. ColumnDirective API -->
         <div class="api-doc-block">
-          <h3 class="api-component-title">&lt;orc-column&gt; (ColumnDirective)</h3>
+          <h3 class="api-component-title">
+            &lt;orc-column&gt; (ColumnDirective)
+          </h3>
           <div class="table-container">
             <table class="api-table">
               <thead>
@@ -341,7 +499,10 @@
                   <td><code>width</code></td>
                   <td><code>string</code></td>
                   <td><code>''</code></td>
-                  <td>Largura customizada para a coluna (ex: <code>'160px'</code>, <code>'25%'</code>).</td>
+                  <td>
+                    Largura customizada para a coluna (ex: <code>'160px'</code>,
+                    <code>'25%'</code>).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>align</code></td>
@@ -356,7 +517,9 @@
 
         <!-- 3. Directives de Template -->
         <div class="api-doc-block">
-          <h3 class="api-component-title">Diretivas de Template Célula (*orcCellDef / *orcHeaderCellDef)</h3>
+          <h3 class="api-component-title">
+            Diretivas de Template Célula (*orcCellDef / *orcHeaderCellDef)
+          </h3>
           <div class="table-container">
             <table class="api-table">
               <thead>
@@ -368,15 +531,28 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><code>*orcCellDef="let row; let i = index; let col = column"</code></td>
-                  <td><code>row</code> (dado da linha), <code>index</code> (índice da linha), <code>column</code>
-                    (diretiva da coluna), <code>value</code> (valor do campo)</td>
-                  <td>Permite renderizar componentes customizados (Badges, Avatars, Ações) no corpo da célula.</td>
+                  <td>
+                    <code
+                      >*orcCellDef="let row; let i = index; let col =
+                      column"</code
+                    >
+                  </td>
+                  <td>
+                    <code>row</code> (dado da linha), <code>index</code> (índice
+                    da linha), <code>column</code> (diretiva da coluna),
+                    <code>value</code> (valor do campo)
+                  </td>
+                  <td>
+                    Permite renderizar componentes customizados (Badges,
+                    Avatars, Ações) no corpo da célula.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>*orcHeaderCellDef="let col = column"</code></td>
                   <td><code>column</code> (diretiva da coluna)</td>
-                  <td>Permite customizar o conteúdo HTML do cabeçalho da coluna.</td>
+                  <td>
+                    Permite customizar o conteúdo HTML do cabeçalho da coluna.
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -389,8 +565,12 @@
         <h2 class="section-subtitle">Exemplo de Uso com BadgeComponent</h2>
 
         <div class="code-block-wrapper">
-          <div class="code-block-header">Exemplo Angular Standalone Completo</div>
-          <pre class="code-block"><code>import &#123; Component, signal &#125; from '&#64;angular/core';
+          <div class="code-block-header">
+            Exemplo Angular Standalone Completo
+          </div>
+          <pre
+            class="code-block"
+          ><code>import &#123; Component, signal &#125; from '&#64;angular/core';
 import &#123; TableComponent, ColumnDirective, CellDefDirective &#125; from '&#64;orc/ds';
 import &#123; BadgeComponent &#125; from '&#64;orc/ds';
 

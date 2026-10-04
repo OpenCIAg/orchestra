@@ -30,7 +30,11 @@
 
     &--dragover {
       border-color: var(--orc-interactive, var(--orc-color-azul-eletrico));
-      background-color: color-mix(in srgb, var(--orc-interactive) 4%, transparent);
+      background-color: color-mix(
+        in srgb,
+        var(--orc-interactive) 4%,
+        transparent
+      );
     }
 
     &--disabled {
@@ -38,6 +42,42 @@
       border-color: var(--orc-border-default, var(--border-default)) !important;
       background-color: var(--orc-surface-subtle, var(--bg-subtle)) !important;
     }
+  }
+
+  &__basic-trigger,
+  &__upload,
+  &__cancel {
+    border: 1px solid var(--orc-border-default, var(--border-default));
+    border-radius: var(--radius-md, 8px);
+    background: var(--orc-surface, var(--bg-app));
+    color: var(--orc-text, var(--text-primary));
+    cursor: pointer;
+    font: inherit;
+    padding: var(--space-2) var(--space-4);
+
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled) {
+      border-color: var(--orc-interactive, var(--color-accent));
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  &__basic-trigger {
+    align-self: flex-start;
+  }
+
+  &__button-icon {
+    display: inline-block;
+    margin-right: var(--space-2);
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-3);
   }
 
   &__dropzone-content {
@@ -104,4 +144,10 @@
       background: var(--orc-text-secondary, var(--text-secondary));
     }
   }
+}
+:host .orc-file-uploader__error {
+  margin: 0;
+  color: var(--orc-danger);
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
 }

@@ -4,43 +4,74 @@
   [class.orc-accordion-item--disabled]="disabled()"
 >
   <!-- Cabeçalho (WAI-ARIA Button) -->
-  <button
-    #headerBtn
-    type="button"
-    class="p-accordionheader orc-accordion-item__header"
-    [attr.data-pc-section]="'header'"
-    [attr.id]="headerId()"
-    [attr.aria-expanded]="expanded()"
-    [attr.aria-controls]="panelId()"
-    [attr.aria-level]="headerAriaLevel()"
-    [disabled]="disabled()"
-    (click)="toggleExpanded($event)"
-    (keydown)="onKeyDown($event)"
+  <div
+    class="orc-accordion-item__heading"
+    role="heading"
+    [attr.aria-level]="effectiveHeaderAriaLevel()"
   >
-    <!-- Custom Header Projection or Default Title -->
-    <div class="orc-accordion-item__header-content">
-      <ng-content select="[accordion-header], [accordionHeader]"></ng-content>
+    <button
+      #headerBtn
+      type="button"
+      class="p-accordionheader orc-accordion-item__header"
+      [ngClass]="headerStyleClass()"
+      [attr.data-pc-section]="'header'"
+      [attr.id]="headerId()"
+      [attr.aria-expanded]="expanded()"
+      [attr.aria-controls]="panelId()"
+      [disabled]="disabled()"
+      (click)="toggleExpanded($event)"
+      (keydown)="onKeyDown($event)"
+    >
+      <!-- Custom Header Projection or Default Title -->
+      <span
+        *ngIf="icon() && iconPos() === 'start'"
+        class="orc-accordion-item__icon"
+        [ngClass]="icon()"
+        aria-hidden="true"
+      ></span>
+      <div class="orc-accordion-item__header-content">
+        <ng-content select="[accordion-header], [accordionHeader]"></ng-content>
 
-      <div class="orc-accordion-item__title-group" *ngIf="effectiveTitle()">
-        <span class="orc-accordion-item__title">{{ effectiveTitle() }}</span>
-        <span *ngIf="subtitle()" class="orc-accordion-item__subtitle">{{ subtitle() }}</span>
+        <div class="orc-accordion-item__title-group" *ngIf="effectiveTitle()">
+          <span class="orc-accordion-item__title">{{ effectiveTitle() }}</span>
+          <span *ngIf="subtitle()" class="orc-accordion-item__subtitle">{{
+            subtitle()
+          }}</span>
+        </div>
       </div>
-    </div>
 
-    <!-- Chevron Indicator (Figma Node 26:16952 & 26:17019) -->
-    <span *ngIf="!hideToggle()" class="orc-accordion-item__chevron" aria-hidden="true">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+      <span
+        *ngIf="icon() && iconPos() === 'end'"
+        class="orc-accordion-item__icon"
+        [ngClass]="icon()"
+        aria-hidden="true"
+      ></span>
+
+      <!-- Toggle indicator (custom icon class or default chevron). -->
+      <span
+        *ngIf="!hideToggle()"
+        class="orc-accordion-item__chevron"
+        aria-hidden="true"
       >
-        <polyline points="6 9 12 15 18 9"></polyline>
-      </svg>
-    </span>
-  </button>
+        <span
+          *ngIf="toggleIconClass(); else defaultToggleIcon"
+          [ngClass]="toggleIconClass()"
+        ></span>
+        <ng-template #defaultToggleIcon>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </ng-template>
+      </span>
+    </button>
+  </div>
 
   <!-- Painel de Conteúdo com Animação Fluida (WAI-ARIA Region) -->
   <div
@@ -49,9 +80,11 @@
     [attr.id]="panelId()"
     role="region"
     [attr.aria-labelledby]="headerId()"
+    [hidden]="!expanded()"
+    [attr.aria-hidden]="expanded() ? null : 'true'"
   >
     <div class="orc-accordion-item__content">
-      <div class="orc-accordion-item__body">
+      <div class="orc-accordion-item__body" [ngClass]="contentStyleClass()">
         <ng-content></ng-content>
       </div>
     </div>

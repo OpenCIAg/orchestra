@@ -1,0 +1,57 @@
+<span
+  #trigger
+  class="orc-popover__trigger"
+  (click)="onTriggerClick($event)"
+  (keydown)="onTriggerKeydown($event)"
+  ><ng-content select="[popover-trigger]"
+/></span>
+<section
+  #panel
+  [id]="panelId()"
+  [hidden]="!open()"
+  [inert]="!open()"
+  [attr.aria-hidden]="open() ? null : true"
+  tabindex="-1"
+  role="dialog"
+  [class]="panelClassNames()"
+  [style]="style()"
+  [style.--orc-popover-transition]="
+    open() ? showTransitionOptions() : hideTransitionOptions()
+  "
+  [style.z-index]="
+    autoZIndex() ? (baseZIndex() ? computedZIndex() : null) : baseZIndex()
+  "
+  [attr.aria-label]="
+    ariaLabel() ||
+    label() ||
+    (!header() && !ariaLabelledBy() ? defaultLabel() : null)
+  "
+  [attr.aria-labelledby]="
+    ariaLabelledBy() ||
+    (header() && !ariaLabel() && !label() ? panelId() + '-title' : null)
+  "
+  [attr.aria-modal]="modal() || null"
+  [attr.data-pc-name]="componentKind"
+  (click)="onClick.emit($event)"
+>
+  @if (header() || closable() || showCloseIcon()) {
+    <header class="orc-popover__header">
+      @if (header()) {
+        <span [id]="panelId() + '-title'">{{ header() }}</span>
+      }
+      @if (closable() || showCloseIcon()) {
+        <button
+          type="button"
+          class="orc-popover__close close"
+          [attr.aria-label]="
+            ariaCloseLabel() || closeLabel() || defaultCloseLabel()
+          "
+          (click)="hide()"
+        >
+          ×
+        </button>
+      }
+    </header>
+  }
+  <ng-content />
+</section>

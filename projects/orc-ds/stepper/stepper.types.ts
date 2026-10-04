@@ -1,6 +1,7 @@
 export type StepperOrientation = 'horizontal' | 'vertical';
 export type StepperType = 'numeric' | 'icon';
-export type StepStatus = 'pending' | 'active' | 'completed' | 'loading' | 'error';
+export type StepStatus =
+  'pending' | 'active' | 'completed' | 'loading' | 'error';
 
 export interface StepItem {
   id?: string | number;

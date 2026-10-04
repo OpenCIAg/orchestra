@@ -17,6 +17,6 @@ export interface ComponentEntry {
   category: ComponentCategory;
   status: ComponentStatus;
   tags: string[];
-  icon: string; // SVG path or emoji/unicode
+  icon: string; // Material Symbol name, rendered by <orc-icon>
   route?: string;
 }

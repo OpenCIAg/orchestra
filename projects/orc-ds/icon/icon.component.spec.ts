@@ -8,7 +8,7 @@ describe('IconComponent', () => {
     fixture.detectChanges();
 
     const icon = fixture.nativeElement.querySelector('.orc-icon');
-    expect(icon.textContent.trim()).toBe('pin');
+    expect(icon.textContent?.trim()).toBe('pin');
     expect(icon.style.fontFamily).toContain('Material Symbols Rounded');
     expect(icon.style.fontVariationSettings).toContain('"FILL" 0');
     expect(icon.getAttribute('aria-hidden')).toBe('true');

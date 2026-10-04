@@ -1,0 +1,128 @@
+.orc-p2-tree-select {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  color: var(--orc-component-text);
+}
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-height: var(--orc-control-height-md, 2.75rem);
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.5rem;
+  background: var(--orc-component-control);
+  color: var(--orc-component-text);
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+}
+/*
+ * Trigger text shares the select family's typographic contract: 14px
+ * Poppins, muted when showing the placeholder.
+ */
+.trigger-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 0.875rem;
+}
+.trigger-text--placeholder {
+  color: var(--orc-component-text-muted);
+}
+/*
+ * The detached panel root. The visual chrome moved here from `.tree` when
+ * the panel started rendering through the shared list-picker overlay: the
+ * CDK pane owns positioning, so the tree scrolls inside the panel.
+ */
+.orc-p2-tree-select-panel {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.5rem;
+  background: var(--orc-component-surface-raised);
+  color: var(--orc-component-text);
+  box-shadow: var(--orc-component-overlay-shadow);
+}
+.tree {
+  max-height: 16rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tree-state {
+  display: flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--orc-component-text-muted);
+}
+li {
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+}
+li.selected,
+li.partial {
+  background: var(--orc-component-interactive-soft);
+}
+li.disabled {
+  color: var(--orc-component-text-muted);
+}
+.expand,
+.expand-placeholder {
+  flex: 0 0 1.4rem;
+  width: 1.4rem;
+  border: 0;
+  background: transparent;
+  text-align: center;
+}
+.item {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem;
+  text-align: left;
+}
+.orc-p2-tree-select--small .trigger {
+  min-height: 2rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.875rem;
+}
+.orc-p2-tree-select--small .tree li {
+  min-height: 1.75rem;
+}
+.orc-p2-tree-select--small .tree .item {
+  padding: 0.25rem;
+  font-size: 0.875rem;
+}
+.orc-p2-tree-select--large .trigger {
+  min-height: 3rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 1.125rem;
+}
+.orc-p2-tree-select--large .tree li {
+  min-height: 2.5rem;
+}
+.orc-p2-tree-select--large .tree .item {
+  padding: 0.6rem;
+  font-size: 1.125rem;
+}
+.orc-p2-tree-select--filled .trigger {
+  border-color: var(--orc-component-border);
+  background: var(--orc-component-interactive-soft);
+}
+.orc-p2-tree-select--outlined .trigger {
+  border-color: var(--orc-component-border-strong);
+  background: var(--orc-component-control);
+}

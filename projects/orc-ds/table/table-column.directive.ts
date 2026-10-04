@@ -5,9 +5,15 @@ import {
   booleanAttribute,
 } from '@angular/core';
 import { ColumnAlign } from './table.types';
-import { CellDefDirective, HeaderCellDefDirective } from './table-cell-def.directive';
+import {
+  CellDefDirective,
+  HeaderCellDefDirective,
+} from './table-cell-def.directive';
 
 @Directive({
+  // `app-column` is a kept public binding alias.
+  // TODO(orchestra-overhaul #2): drop the alias when the overhaul retires it.
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'orc-column, app-column',
   standalone: true,
 })

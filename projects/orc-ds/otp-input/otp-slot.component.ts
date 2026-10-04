@@ -40,21 +40,31 @@ export class OtpSlotComponent {
   });
 
   readonly effectivePlaceholder = computed(() => {
-    return this.placeholder() || (this.parentContext ? this.parentContext.placeholder() : '');
+    return (
+      this.placeholder() ||
+      (this.parentContext ? this.parentContext.placeholder() : '')
+    );
   });
 
   readonly isDisabled = computed(() => {
-    return this.disabled() || (this.parentContext ? this.parentContext.isDisabled() : false);
+    return (
+      this.disabled() ||
+      (this.parentContext ? this.parentContext.isDisabled() : false)
+    );
   });
 
   readonly isReadonly = computed(() => this.parentContext?.readonly() ?? false);
   readonly isMasked = computed(() => this.parentContext?.mask() ?? false);
   readonly slotTabIndex = computed(() => this.parentContext?.tabindex() ?? 0);
-  readonly isAutofocus = computed(() => this.parentContext?.autofocus() && this.index() === 0);
+  readonly isAutofocus = computed(
+    () => this.parentContext?.autofocus() && this.index() === 0,
+  );
 
-  readonly ariaLabel = computed(() => {
-    if (!this.parentContext) return `Dígito ${this.index() + 1}`;
-    return `${this.parentContext.ariaLabel()} - dígito ${this.index() + 1} de ${this.parentContext.length()}`;
+  readonly ariaLabel = computed<string | undefined>(() => {
+    const label = this.parentContext?.ariaLabel();
+    return label
+      ? `${label} ${this.index() + 1}`
+      : `OTP digit ${this.index() + 1}`;
   });
 
   onInput(event: Event): void {
@@ -69,12 +79,7 @@ export class OtpSlotComponent {
     this.parentContext?.onSlotPaste(event, this.index());
   }
 
-  onFocus(): void {
-    this.parentContext?.onSlotFocus(this.index());
-  }
-
   onFocusEvent(event: Event): void {
-    this.onFocus();
     this.parentContext?.onSlotFocusEvent(event);
   }
 

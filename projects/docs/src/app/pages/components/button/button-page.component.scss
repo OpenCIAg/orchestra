@@ -210,7 +210,8 @@
   margin-bottom: var(--space-2);
 }
 
-.text-input, .select-input {
+.text-input,
+.select-input {
   width: 100%;
   padding: 8px 12px;
   font-size: 0.875rem;
@@ -277,7 +278,7 @@
   color: var(--text-primary);
   cursor: pointer;
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     accent-color: var(--orc-color-azul-eletrico, #1c6aed);
   }
 }

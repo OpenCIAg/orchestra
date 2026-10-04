@@ -1,1 +1,50 @@
-<div class="orc-list" role="listbox" [attr.aria-label]="label()" [attr.aria-multiselectable]="selection()==='multiple' ? 'true' : null">@for(item of items();track item.id){<button type="button" class="orc-list__item" role="option" [disabled]="item.disabled" [attr.aria-selected]="selection()!=='none' ? item.selected : null" (click)="select(item)"><span class="orc-list__label">{{item.label}}</span>@if(item.description){<span class="orc-list__description">{{item.description}}</span>}</button>}@empty{<div class="orc-list__empty">Nenhum item</div>}</div>
+<div
+  class="orc-list"
+  [attr.role]="items().length ? (isSelectable() ? 'listbox' : 'list') : null"
+  [attr.aria-label]="label() || (isSelectable() ? 'Options' : null)"
+  [attr.aria-multiselectable]="selection() === 'multiple' ? 'true' : null"
+>
+  @for (item of items(); track item.id; let i = $index) {
+    @if (isSelectable()) {
+      <button
+        #listItem
+        type="button"
+        class="orc-list__item"
+        role="option"
+        [disabled]="item.disabled"
+        [tabindex]="tabIndexFor(i)"
+        [attr.aria-selected]="isSelected(item)"
+        (click)="select(item)"
+        (focus)="activeIndex.set(i)"
+        (keydown)="onKeydown($event, i)"
+      >
+        <span class="orc-list__label">{{ item.label }}</span>
+        @if (item.description) {
+          <span class="orc-list__description">{{ item.description }}</span>
+        }
+      </button>
+    } @else {
+      <div class="orc-list__item-wrapper" role="listitem">
+        <button
+          #listItem
+          type="button"
+          class="orc-list__item"
+          [disabled]="item.disabled"
+          [tabindex]="tabIndexFor(i)"
+          (click)="select(item)"
+          (focus)="activeIndex.set(i)"
+          (keydown)="onKeydown($event, i)"
+        >
+          <span class="orc-list__label">{{ item.label }}</span>
+          @if (item.description) {
+            <span class="orc-list__description">{{ item.description }}</span>
+          }
+        </button>
+      </div>
+    }
+  } @empty {
+    @if (emptyMessage()) {
+      <div class="orc-list__empty" role="status">{{ emptyMessage() }}</div>
+    }
+  }
+</div>

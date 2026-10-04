@@ -1,1 +1,1 @@
-export { SelectButtonComponent } from '@ciag/orchestra/p2';
+export { SelectButtonComponent } from './select-button.component';

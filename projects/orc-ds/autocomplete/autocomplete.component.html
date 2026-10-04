@@ -1,34 +1,99 @@
-<div class="p-autocomplete p-component orc-autocomplete" [class]="'p-autocomplete p-component orc-autocomplete ' + styleClass()" [style]="style()" [class.orc-autocomplete--disabled]="effectiveDisabled()" [attr.data-pc-name]="'autocomplete'">
-  @if (label()) { <label class="orc-autocomplete__label" [for]="effectiveId()">{{ label() }} @if (required()) { <span aria-hidden="true">*</span> }</label> }
-  <div class="orc-autocomplete__control">
+<div
+  class="p-autocomplete p-component orc-autocomplete"
+  [class]="'p-autocomplete p-component orc-autocomplete ' + styleClass()"
+  [style]="style()"
+  [class.orc-autocomplete--disabled]="effectiveDisabled()"
+  [class.orc-autocomplete--readonly]="effectiveReadonly()"
+  [attr.data-pc-name]="'autocomplete'"
+>
+  @if (label()) {
+    <label class="orc-autocomplete__label" [for]="effectiveId()"
+      >{{ label() }}
+      @if (required()) {
+        <span aria-hidden="true">*</span>
+      }
+    </label>
+  }
+  <div #controlEl class="orc-autocomplete__control">
     <input
       class="orc-autocomplete__input"
       [id]="effectiveId()"
       [name]="name()"
       type="text"
       role="combobox"
+      aria-autocomplete="list"
       [value]="displayText()"
-      [placeholder]="placeholder()"
+      [attr.placeholder]="placeholder() || null"
       [disabled]="effectiveDisabled()"
+      [readOnly]="effectiveReadonly()"
       [required]="required()"
-      [attr.aria-label]="ariaLabel() || null"
-      [attr.aria-expanded]="isOpen()"
-      [attr.aria-controls]="listId()"
-      [attr.aria-activedescendant]="activeIndex() >= 0 ? optionId(activeIndex()) : null"
+      [attr.aria-label]="ariaLabel() || (!label() ? 'Autocomplete' : null)"
+      [attr.aria-expanded]="panelVisible()"
+      [attr.aria-controls]="panelVisible() ? listId() : null"
+      [attr.aria-readonly]="effectiveReadonly() ? 'true' : null"
+      [attr.aria-activedescendant]="
+        panelVisible() &&
+        activeIndex() >= 0 &&
+        activeIndex() < filteredOptions().length
+          ? optionId(activeIndex())
+          : null
+      "
       [attr.aria-invalid]="errorMessage() ? 'true' : null"
       [attr.aria-describedby]="describedBy()"
       autocomplete="off"
       (input)="onInput($event)"
+      (compositionstart)="onCompositionStart()"
+      (compositionend)="onCompositionEnd($event)"
       (focus)="onFocus($event)"
       (blur)="onBlur($event)"
       (keydown)="onKeydown($event)"
     />
-    @if (effectiveShowClear() && (query() || value())) { <button type="button" class="orc-autocomplete__clear" (mousedown)="$event.preventDefault()" (click)="clear($event)" aria-label="Limpar seleção">×</button> }
-    @if (dropdown()) { <button type="button" class="p-autocomplete-dropdown" (mousedown)="$event.preventDefault()" (click)="toggleDropdown($event)" [disabled]="effectiveDisabled()" aria-label="Mostrar opções">⌄</button> }
+    @if (effectiveShowClear() && (query() || value())) {
+      <button
+        type="button"
+        class="orc-autocomplete__clear"
+        (mousedown)="$event.preventDefault()"
+        (click)="clear($event)"
+        [disabled]="effectiveDisabled() || readonly()"
+        [attr.aria-label]="clearAriaLabel() || 'Clear selection'"
+      >
+        ×
+      </button>
+    }
+    @if (dropdown()) {
+      <button
+        type="button"
+        class="p-autocomplete-dropdown"
+        (mousedown)="$event.preventDefault()"
+        (click)="toggleDropdown($event)"
+        [disabled]="effectiveDisabled() || readonly()"
+        [attr.aria-label]="dropdownAriaLabel() || 'Show options'"
+      >
+        ⌄
+      </button>
+    }
   </div>
-  @if (isOpen() && (filteredOptions().length || loading())) {
-    <ul class="p-autocomplete-panel p-component orc-autocomplete__list" [class]="'p-autocomplete-panel p-component orc-autocomplete__list ' + panelStyleClass()" [style]="panelStyle()" [id]="listId()" role="listbox">
-      @if (loading()) { <li class="orc-autocomplete__option">{{ emptyMessage() }}</li> }
+  <!-- Detached option panel: portaled through the shared list-picker overlay
+       so ancestor overflow can never clip it and the panel never escapes its
+       realm's dismissal rules. -->
+  <ng-template #panelTemplate>
+    <ul
+      class="p-autocomplete-panel p-component orc-autocomplete__list orc-autocomplete__list--detached orc-p2-portal-panel"
+      [class]="
+        'p-autocomplete-panel p-component orc-autocomplete__list orc-autocomplete__list--detached orc-p2-portal-panel ' +
+        panelStyleClass()
+      "
+      [style]="panelStyle()"
+      [id]="listId()"
+      role="listbox"
+      [attr.aria-busy]="loading()"
+      [attr.aria-label]="ariaLabel() || label() || 'Options'"
+    >
+      @if (loading()) {
+        <li class="orc-autocomplete__option" role="status">
+          {{ loadingMessage() }}
+        </li>
+      }
       @for (option of filteredOptions(); track option.value) {
         <li
           class="orc-autocomplete__option"
@@ -42,11 +107,25 @@
           (click)="select(option)"
         >
           <span>{{ option.label }}</span>
-          @if (option.description) { <small>{{ option.description }}</small> }
+          @if (option.description) {
+            <small>{{ option.description }}</small>
+          }
         </li>
       }
-      @if (!loading() && !filteredOptions().length && showEmptyMessage()) { <li class="orc-autocomplete__option" role="status">{{ emptyMessage() }}</li> }
+      @if (!loading() && !filteredOptions().length && showEmptyMessage()) {
+        <li class="orc-autocomplete__option" role="status">
+          {{ emptyMessage() || 'No results' }}
+        </li>
+      }
     </ul>
+  </ng-template>
+  @if (errorMessage() || helperText()) {
+    <p
+      class="orc-autocomplete__message"
+      [class.orc-autocomplete__message--error]="!!errorMessage()"
+      [id]="describedBy()"
+    >
+      {{ errorMessage() || helperText() }}
+    </p>
   }
-  @if (errorMessage() || helperText()) { <p class="orc-autocomplete__message" [class.orc-autocomplete__message--error]="!!errorMessage()" [id]="describedBy()">{{ errorMessage() || helperText() }}</p> }
 </div>

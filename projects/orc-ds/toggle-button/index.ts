@@ -1,1 +1,1 @@
-export { ToggleButtonComponent } from '@ciag/orchestra/p2';
+export { ToggleButtonComponent } from './toggle-button.component';

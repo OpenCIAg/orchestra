@@ -5,7 +5,8 @@
       <h1 class="login-hero__title">Construa aplicações de alto impacto</h1>
       <p class="login-hero__description">
         Design system robusto com suporte nativo a Signals do Angular 19,
-        acessibilidade de nível empresarial e performance de carregamento ultrarrápida.
+        semântica ARIA, foco visível e navegação por teclado, com performance de
+        carregamento ultrarrápida.
       </p>
 
       <div class="login-hero__metrics">
@@ -18,8 +19,8 @@
           <span class="metric-label">Signals & Standalone</span>
         </div>
         <div class="metric-item">
-          <span class="metric-value">AA</span>
-          <span class="metric-label">WCAG 2.1</span>
+          <span class="metric-value">ARIA</span>
+          <span class="metric-label">Semântica e teclado</span>
         </div>
       </div>
     </div>
@@ -33,14 +34,19 @@
           <span class="login-logo__title">Orchestra</span>
         </div>
         <h2 class="login-card__heading">Acessar sua conta</h2>
-        <p class="login-card__subheading">Entre com suas credenciais para gerenciar a plataforma</p>
+        <p class="login-card__subheading">
+          Entre com suas credenciais para gerenciar a plataforma
+        </p>
       </div>
 
       <orc-alert *ngIf="errorMessage()" status="error" [dismissible]="true">
         {{ errorMessage() }}
       </orc-alert>
 
-      <form (submit)="handleLogin(); $event.preventDefault()" class="login-form">
+      <form
+        (submit)="handleLogin(); $event.preventDefault()"
+        class="login-form"
+      >
         <orc-input
           label="E-mail profissional"
           placeholder="exemplo@ciag.com"
@@ -77,7 +83,9 @@
 
         <div class="login-form__footer">
           <span>Ambiente de Demonstração</span>
-          <a routerLink="/dashboard" class="guest-link">Acessar como Convidado →</a>
+          <a routerLink="/dashboard" class="guest-link"
+            >Acessar como Convidado →</a
+          >
         </div>
       </form>
     </div>

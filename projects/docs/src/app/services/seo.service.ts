@@ -3,9 +3,19 @@ import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
+  /**
+   * Canonical documentation origin. Every host that serves the docs app
+   * (Komodo production and the GitHub Pages mirror) declares the same
+   * canonical URL so sitemap entries, robots.txt, the llms manifest and the
+   * runtime canonical tags always agree; the mirror must not emit its own
+   * origin into rel=canonical/og:url.
+   */
+  private static readonly CANONICAL_ORIGIN = 'https://orchestra.ciag.org.br';
+
   private readonly document = inject(DOCUMENT);
   private readonly router = inject(Router);
   private readonly title = inject(Title);
@@ -13,7 +23,12 @@ export class SeoService {
 
   constructor() {
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+        takeUntilDestroyed(),
+      )
       .subscribe(() => this.update());
 
     this.update();
@@ -21,11 +36,13 @@ export class SeoService {
 
   private update(): void {
     const route = this.getDeepestRoute(this.router.routerState.snapshot.root);
-    const pageTitle = route.title || 'Orchestra Design System — Angular Components';
-    const description = route.data['description'] as string ||
-      'Orchestra é um design system Angular com componentes standalone, Signals, acessibilidade WCAG 2.1 AA, tokens e APIs TypeScript estritas.';
+    const pageTitle =
+      route.title || 'Orchestra Design System — Componentes Angular';
+    const description =
+      (route.data['description'] as string) ||
+      'Orchestra é um design system Angular com componentes standalone, Signals, semântica ARIA, foco visível e navegação por teclado, tokens e APIs TypeScript estritas.';
     const path = this.router.url.split(/[?#]/, 1)[0] || '/';
-    const canonical = `${this.document.location?.origin || 'https://orchestra.ciag.org.br'}${path === '/' ? '/' : path}`;
+    const canonical = `${SeoService.CANONICAL_ORIGIN}${path === '/' ? '/' : path}`;
 
     this.title.setTitle(pageTitle);
     this.meta.updateTag({ name: 'description', content: description });
@@ -35,7 +52,9 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:title', content: pageTitle });
     this.meta.updateTag({ name: 'twitter:description', content: description });
 
-    let canonicalLink = this.document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    let canonicalLink = this.document.head.querySelector<HTMLLinkElement>(
+      'link[rel="canonical"]',
+    );
     if (!canonicalLink) {
       canonicalLink = this.document.createElement('link');
       canonicalLink.rel = 'canonical';
@@ -44,7 +63,9 @@ export class SeoService {
     canonicalLink.href = canonical;
   }
 
-  private getDeepestRoute(route: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
+  private getDeepestRoute(
+    route: ActivatedRouteSnapshot,
+  ): ActivatedRouteSnapshot {
     let current = route;
     while (current.firstChild) {
       current = current.firstChild;

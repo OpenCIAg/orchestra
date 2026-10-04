@@ -62,11 +62,11 @@
 
   // ── Color Variants ────────────────────────────────────────
   &--primary {
-    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
+    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
   }
 
   &--secondary {
-    color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
+    color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406ab));
   }
 
   &--neutral {
@@ -74,7 +74,7 @@
   }
 
   &--white {
-    color: var(--orc-on-dark, #FFFFFF);
+    color: var(--orc-on-dark, #ffffff);
   }
 
   // ── Ring / Rollin Spinner ─────────────────────────────────
@@ -155,29 +155,22 @@
   }
 }
 
+.orc-spinner--static .orc-spinner__ring,
+.orc-spinner--static .orc-spinner__star,
+.orc-spinner--static .orc-spinner__dots__dot {
+  animation: none;
+}
+
 // ── Text Label ──────────────────────────────────────────────
 .orc-spinner-text {
   font-size: 14px;
   font-weight: 500;
   color: var(--orc-text, var(--orc-font-main, #141414));
   user-select: none;
-
-  .orc-spinner--white + & {
-    color: var(--orc-on-dark, #FFFFFF);
-  }
 }
 
-// ── Screen Reader Only (A11y) ───────────────────────────────
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+.orc-spinner--white + .orc-spinner-text {
+  color: var(--orc-on-dark, #ffffff);
 }
 
 // ── Keyframe Animations ──────────────────────────────────────
@@ -200,7 +193,9 @@
 }
 
 @keyframes orcSpinnerPulse {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0.6);
     opacity: 0.35;
   }
@@ -212,11 +207,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .orc-spinner__ring,
-  .orc-spinner__star {
-    animation-duration: 2.5s;
-  }
-
+  .orc-spinner__star,
   .orc-spinner__dots__dot {
-    animation-duration: 2.5s;
+    animation: none;
   }
 }

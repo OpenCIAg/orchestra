@@ -12,9 +12,14 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { BadgeComponent } from '@ciag/orchestra/badge';
 import { ButtonComponent } from '@ciag/orchestra/button';
-import { CardBodyComponent, CardComponent, CardHeaderComponent } from '@ciag/orchestra/card';
+import {
+  CardBodyComponent,
+  CardComponent,
+  CardHeaderComponent,
+} from '@ciag/orchestra/card';
 import { ChipComponent } from '@ciag/orchestra/chip';
 import { DividerComponent } from '@ciag/orchestra/divider';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 interface ZincSwatch {
   name: string;
@@ -57,7 +62,6 @@ interface CiagLogoGroup {
   formats: Record<AssetFormat, string>; // formato → path
 }
 
-
 @Component({
   selector: 'app-docs',
   standalone: true,
@@ -71,6 +75,7 @@ interface CiagLogoGroup {
     CardHeaderComponent,
     ChipComponent,
     DividerComponent,
+    IconComponent,
   ],
   templateUrl: './docs.component.html',
   styleUrl: './docs.component.scss',
@@ -213,7 +218,7 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   }
 
   setCiagFormat(id: string, fmt: AssetFormat): void {
-    this.ciagFormat.update(prev => ({ ...prev, [id]: fmt }));
+    this.ciagFormat.update((prev) => ({ ...prev, [id]: fmt }));
   }
 
   getCiagPath(group: CiagLogoGroup): string {
@@ -224,42 +229,146 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   readonly selectedFont = signal<'poppins' | 'jetbrains'>('poppins');
 
   readonly brandColors: BrandColor[] = [
-    { name: 'Azul Elétrico', token: '--orc-color-azul-eletrico', hex: '#1C6AED', textLight: false },
-    { name: 'Azul Royal', token: '--orc-color-azul-royal', hex: '#0406AB', textLight: false },
-    { name: 'Laranja', token: '--orc-color-laranja', hex: '#FF6A1C', textLight: false },
-    { name: 'Ciano', token: '--orc-color-ciano', hex: '#1CEDB9', textLight: true },
-    { name: 'Roxo Lavender', token: '--orc-color-roxo-lavender', hex: '#6A1CED', textLight: false },
-    { name: 'Azul Navy', token: '--orc-color-azul-navy', hex: '#004B77', textLight: false },
+    {
+      name: 'Azul Elétrico',
+      token: '--orc-color-azul-eletrico',
+      hex: '#1C6AED',
+      textLight: false,
+    },
+    {
+      name: 'Azul Royal',
+      token: '--orc-color-azul-royal',
+      hex: '#0406AB',
+      textLight: false,
+    },
+    {
+      name: 'Laranja',
+      token: '--orc-color-laranja',
+      hex: '#FF6A1C',
+      textLight: false,
+    },
+    {
+      name: 'Ciano',
+      token: '--orc-color-ciano',
+      hex: '#1CEDB9',
+      textLight: true,
+    },
+    {
+      name: 'Roxo Lavender',
+      token: '--orc-color-roxo-lavender',
+      hex: '#6A1CED',
+      textLight: false,
+    },
+    {
+      name: 'Azul Navy',
+      token: '--orc-color-azul-navy',
+      hex: '#004B77',
+      textLight: false,
+    },
   ];
 
   readonly statusColors = [
-    { name: 'Accent',  token: '--color-accent',  hex: '#141414', bg: '#141414' },
-    { name: 'Success', token: '--color-success',  hex: '#006F4A', bg: '#006F4A' },
-    { name: 'Error',   token: '--color-error',    hex: '#FB2C36', bg: '#FB2C36' },
-    { name: 'Warning', token: '--color-warning',  hex: '#FE9A00', bg: '#FE9A00' },
-    { name: 'Info',    token: '--color-info',     hex: '#2B7FFF', bg: '#2B7FFF' },
+    { name: 'Accent', token: '--color-accent', hex: '#141414', bg: '#141414' },
+    {
+      name: 'Success',
+      token: '--color-success',
+      hex: '#006F4A',
+      bg: '#006F4A',
+    },
+    { name: 'Error', token: '--color-error', hex: '#FB2C36', bg: '#FB2C36' },
+    {
+      name: 'Warning',
+      token: '--color-warning',
+      hex: '#FE9A00',
+      bg: '#FE9A00',
+    },
+    { name: 'Info', token: '--color-info', hex: '#2B7FFF', bg: '#2B7FFF' },
   ];
 
   readonly zincScale: ZincSwatch[] = [
     { name: 'Bg', token: '--orc-bg', hex: '#FFFFFF', light: true },
     { name: 'Th', token: '--orc-th', hex: '#F9F9F9', light: true },
-    { name: 'Highlight', token: '--orc-highlight-cinza-claro', hex: '#EDEDED', light: true },
-    { name: 'Secondary-Bg', token: '--orc-secondary-bg', hex: '#D9D9D9', light: true },
-    { name: 'Fonte-Secondary', token: '--orc-font-secondary', hex: '#666666', light: false },
-    { name: 'Fonte-Main', token: '--orc-font-main', hex: '#141414', light: false },
+    {
+      name: 'Highlight',
+      token: '--orc-highlight-cinza-claro',
+      hex: '#EDEDED',
+      light: true,
+    },
+    {
+      name: 'Secondary-Bg',
+      token: '--orc-secondary-bg',
+      hex: '#D9D9D9',
+      light: true,
+    },
+    {
+      name: 'Fonte-Secondary',
+      token: '--orc-font-secondary',
+      hex: '#666666',
+      light: false,
+    },
+    {
+      name: 'Fonte-Main',
+      token: '--orc-font-main',
+      hex: '#141414',
+      light: false,
+    },
   ];
 
   readonly backgroundTokens: BgToken[] = [
-    { token: '--orc-bg', value: '#FFFFFF', use: 'Fundo principal da aplicação', bordered: true },
-    { token: '--orc-th', value: '#F9F9F9', use: 'Cabeçalho de tabela, fundo sutil', bordered: true },
-    { token: '--orc-fill-input', value: '#FFFFFF', use: 'Fundo de inputs e campos de formulário', bordered: true },
-    { token: '--orc-fill-modal', value: '#FFFFFF', use: 'Fundo de modais e overlays', bordered: true },
-    { token: '--orc-highlight-cinza-claro', value: '#EDEDED', use: 'Highlights, hover states, chips', bordered: true },
-    { token: '--orc-secondary-bg', value: '#D9D9D9', use: 'Fundo secundário, divisores', bordered: true },
-    { token: '--orc-border', value: '#D9D9D9', use: 'Bordas padrão', bordered: true },
-    { token: '--orc-font-secondary', value: '#666666', use: 'Texto secundário, labels, metadados' },
+    {
+      token: '--orc-bg',
+      value: '#FFFFFF',
+      use: 'Fundo principal da aplicação',
+      bordered: true,
+    },
+    {
+      token: '--orc-th',
+      value: '#F9F9F9',
+      use: 'Cabeçalho de tabela, fundo sutil',
+      bordered: true,
+    },
+    {
+      token: '--orc-fill-input',
+      value: '#FFFFFF',
+      use: 'Fundo de inputs e campos de formulário',
+      bordered: true,
+    },
+    {
+      token: '--orc-fill-modal',
+      value: '#FFFFFF',
+      use: 'Fundo de modais e overlays',
+      bordered: true,
+    },
+    {
+      token: '--orc-highlight-cinza-claro',
+      value: '#EDEDED',
+      use: 'Highlights, hover states, chips',
+      bordered: true,
+    },
+    {
+      token: '--orc-secondary-bg',
+      value: '#D9D9D9',
+      use: 'Fundo secundário, divisores',
+      bordered: true,
+    },
+    {
+      token: '--orc-border',
+      value: '#D9D9D9',
+      use: 'Bordas padrão',
+      bordered: true,
+    },
+    {
+      token: '--orc-font-secondary',
+      value: '#666666',
+      use: 'Texto secundário, labels, metadados',
+    },
     { token: '--orc-font-main', value: '#141414', use: 'Texto principal' },
-    { token: '--orc-opposite-bw', value: '#FFFFFF', use: 'Cor oposta ao modo atual (B&W)', bordered: true },
+    {
+      token: '--orc-opposite-bw',
+      value: '#FFFFFF',
+      use: 'Cor oposta ao modo atual (B&W)',
+      bordered: true,
+    },
   ];
 
   readonly spacingScale: SpacingStep[] = [
@@ -277,10 +386,10 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   ];
 
   readonly radiusScale: RadiusStep[] = [
-    { token: '--radius-sm', value: '0.375rem' },  // 6px
-    { token: '--radius-md', value: '0.625rem' },  // 10px — base
-    { token: '--radius-lg', value: '0.875rem' },  // 14px
-    { token: '--radius-xl', value: '1.25rem' },  // 20px
+    { token: '--radius-sm', value: '0.375rem' }, // 6px
+    { token: '--radius-md', value: '0.625rem' }, // 10px — base
+    { token: '--radius-lg', value: '0.875rem' }, // 14px
+    { token: '--radius-xl', value: '1.25rem' }, // 20px
     { token: '--radius-full', value: '9999px' },
   ];
 

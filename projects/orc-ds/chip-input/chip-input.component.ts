@@ -34,29 +34,42 @@ export class ChipInputComponent implements ControlValueAccessor {
   readonly id = input<string>('');
   readonly inputId = input<string | undefined>(undefined);
   readonly label = input<string>('');
-  readonly placeholder = input<string>('Digite e pressione Enter...');
+  readonly placeholder = input<string | undefined>(undefined);
   readonly helperText = input<string>('');
   readonly errorMessage = input<string>('');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly size = input<'sm' | 'md' | 'lg'>('md');
-  
+
   // Chip specific config
   readonly allowDuplicates = input(false, { transform: booleanAttribute });
-  readonly allowDuplicate = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
+  readonly allowDuplicate = input<boolean | undefined, unknown>(undefined, {
+    transform: booleanAttribute,
+  });
   readonly maxChips = input<number | undefined, unknown>(undefined, {
-    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+    transform: (val: unknown) =>
+      val !== undefined && val !== null ? numberAttribute(val) : undefined,
   });
   readonly max = input<number | undefined, unknown>(undefined, {
-    transform: (val: unknown) => (val !== undefined && val !== null ? numberAttribute(val) : undefined),
+    transform: (val: unknown) =>
+      val !== undefined && val !== null ? numberAttribute(val) : undefined,
   });
   readonly separator = input<string | undefined>(undefined);
   readonly addOnBlur = input(true, { transform: booleanAttribute });
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly ariaLabel = input('');
   readonly separatorKeyCodes = input<string[]>(['Enter', ',', ' ']);
   readonly suggestions = input<string[]>([]);
+  /** Optional localized announcements for assistive technology. */
+  readonly addAnnouncement = input<
+    ((item: string) => string | undefined) | undefined
+  >(undefined);
+  readonly removeAnnouncement = input<
+    ((item: string) => string | undefined) | undefined
+  >(undefined);
 
   // ── Outputs ─────────────────────────────────────────────────
   readonly chipsChange = output<string[]>();
@@ -67,22 +80,30 @@ export class ChipInputComponent implements ControlValueAccessor {
   readonly inputValue = signal<string>('');
   readonly a11yMessage = signal<string>('');
   readonly cvaDisabled = signal<boolean>(false);
-  
-  readonly effectiveDisabled = computed(() => this.disabled() || this.cvaDisabled());
-  readonly status = computed(() => this.errorMessage() ? 'error' : 'default');
-  readonly effectiveSeparators = computed(() => this.separator() ? [...this.separator()!] : this.separatorKeyCodes());
+
+  readonly effectiveDisabled = computed(
+    () => this.disabled() || this.cvaDisabled(),
+  );
+  readonly status = computed(() => (this.errorMessage() ? 'error' : 'default'));
+  readonly effectiveSeparators = computed(() =>
+    this.separator() ? [...this.separator()!] : this.separatorKeyCodes(),
+  );
 
   readonly filteredSuggestions = computed(() => {
     const term = this.inputValue().toLowerCase().trim();
     if (!term) return [];
-    
+
     return this.suggestions()
-      .filter(s => s.toLowerCase().includes(term))
-      .filter(s => !this.value().includes(s)); // Evita sugerir chips já adicionados
+      .filter((s) => s.toLowerCase().includes(term))
+      .filter((s) => !this.value().includes(s)); // Evita sugerir chips já adicionados
   });
 
   readonly isSuggestionsVisible = computed(() => {
-    return this.filteredSuggestions().length > 0 && !this.effectiveDisabled() && !this.readonly();
+    return (
+      this.filteredSuggestions().length > 0 &&
+      !this.effectiveDisabled() &&
+      !this.readonly()
+    );
   });
 
   // ── ControlValueAccessor ───────────────────────────────────
@@ -97,11 +118,11 @@ export class ChipInputComponent implements ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string[]) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -116,6 +137,7 @@ export class ChipInputComponent implements ControlValueAccessor {
 
   onKeydown(event: KeyboardEvent): void {
     if (this.effectiveDisabled() || this.readonly()) return;
+    if (event.isComposing || event.keyCode === 229) return;
 
     const currentInput = this.inputValue().trim();
 
@@ -128,75 +150,92 @@ export class ChipInputComponent implements ControlValueAccessor {
     }
 
     // Remover último Chip no Backspace se input estiver vazio
-    if (event.key === 'Backspace' && currentInput === '' && this.value().length > 0) {
+    if (
+      event.key === 'Backspace' &&
+      currentInput === '' &&
+      this.value().length > 0
+    ) {
       this.removeChip(this.value().length - 1);
+      event.preventDefault();
     }
   }
 
   onPaste(event: ClipboardEvent): void {
     if (this.effectiveDisabled() || this.readonly()) return;
-    
+
     const clipboardData = event.clipboardData;
     const pastedText = clipboardData?.getData('text');
-    
+
     if (pastedText) {
       event.preventDefault();
-      // Separar por vírgula ou quebra de linha
-      const items = pastedText.split(/[\n,]+/).map(item => item.trim()).filter(item => item.length > 0);
-      
-      items.forEach(item => this.addChip(item, true));
-      this.onTouched();
-      this.updateFormAndEmit();
+      const separator = this.separator();
+      const items = (
+        separator ? pastedText.split(separator) : pastedText.split(/[\n,]+/)
+      )
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0);
+
+      let changed = false;
+      for (const item of items) {
+        changed = this.addChip(item, true) || changed;
+      }
+      if (changed) this.updateFormAndEmit();
     }
   }
 
   onBlur(): void {
-    this.onTouched();
     const currentInput = this.inputValue().trim();
     if (currentInput && this.addOnBlur()) {
       this.addChip(currentInput);
     }
+    this.onTouched();
   }
 
   // ── Lógica de Chips ─────────────────────────────────────────
   selectSuggestion(item: string): void {
+    if (this.effectiveDisabled() || this.readonly()) return;
     this.addChip(item);
   }
 
-  private addChip(item: string, skipEmit = false): void {
+  private addChip(item: string, skipEmit = false): boolean {
+    if (this.effectiveDisabled() || this.readonly()) return false;
     const max = this.max() ?? this.maxChips();
     const current = this.value();
 
     if (max !== undefined && current.length >= max) {
       this.maxReached.emit();
-      return;
+      return false;
     }
 
-    if (!(this.allowDuplicate() ?? this.allowDuplicates()) && current.includes(item)) {
-      return; // Previne duplicatas
+    if (
+      !(this.allowDuplicate() ?? this.allowDuplicates()) &&
+      current.includes(item)
+    ) {
+      return false; // Prevent duplicates.
     }
 
-    this.value.update(arr => [...arr, item]);
+    this.value.update((arr) => [...arr, item]);
     this.inputValue.set('');
-    
-    // Atualiza A11y
-    this.a11yMessage.set(`Item ${item} adicionado.`);
+
+    this.a11yMessage.set(this.addAnnouncement()?.(item) ?? '');
 
     if (!skipEmit) {
       this.updateFormAndEmit();
     }
+    return true;
   }
 
   removeChip(index: number): void {
     if (this.effectiveDisabled() || this.readonly()) return;
-    
+
     const current = this.value();
     const removedItem = current[index];
-    
-    this.value.update(arr => arr.filter((_, i) => i !== index));
-    this.a11yMessage.set(`Item ${removedItem} removido.`);
-    this.onTouched();
+    if (removedItem === undefined) return;
+
+    this.value.update((arr) => arr.filter((_, i) => i !== index));
+    this.a11yMessage.set(this.removeAnnouncement()?.(removedItem) ?? '');
     this.updateFormAndEmit();
+    this.onTouched();
   }
 
   private updateFormAndEmit(): void {

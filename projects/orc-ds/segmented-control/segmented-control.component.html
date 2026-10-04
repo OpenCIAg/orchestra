@@ -1,0 +1,35 @@
+<div
+  [class]="
+    'orc-segmented-control p-selectbutton p-buttonset p-component orc-p2-segmented ' +
+    styleClass()
+  "
+  [style]="style()"
+  [attr.id]="inputId() || null"
+  role="radiogroup"
+  [attr.aria-label]="label() || null"
+  [attr.aria-readonly]="readonly() || null"
+  [attr.aria-disabled]="disabled() || cvaDisabled() || null"
+  data-pc-name="selectbutton"
+>
+  @for (option of options(); track option.value; let i = $index) {
+    <button
+      #segment
+      type="button"
+      class="p-button p-component"
+      role="radio"
+      [disabled]="disabled() || cvaDisabled() || option.disabled"
+      [class.orc-segmented-control__option--selected]="isSelected(option)"
+      [class.selected]="isSelected(option)"
+      [attr.aria-checked]="isSelected(option)"
+      [attr.tabindex]="isTabStop(option) ? tabindex() : -1"
+      (focus)="onFocus(i)"
+      (click)="select(option)"
+      (keydown)="onKeydown($event, i)"
+    >
+      @if (option.icon) {
+        <span aria-hidden="true">{{ option.icon }}</span>
+      }
+      {{ option.label }}
+    </button>
+  }
+</div>

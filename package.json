@@ -2,8 +2,13 @@
   "name": "orc-ds-workspace",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
+    "npm": ">=10.9.8"
+  },
+  "packageManager": "npm@10.9.8",
   "workspaces": [
-    "projects/orc-ds"
+    "dist/orc-ds"
   ],
   "scripts": {
     "ng": "ng",
@@ -17,11 +22,37 @@
     "test": "npm run test:lib",
     "test:lib": "ng test orc-ds --watch=false --browsers=ChromeHeadless",
     "test:lib:ci": "ng test orc-ds --watch=false --browsers=ChromeHeadlessCI",
+    "test:tools": "node --test \"tools/release/*.test.mjs\" \"tools/docs/*.test.mjs\" \"tools/quality/*.test.mjs\"",
+    "test:themes:ci": "node tools/quality/test-themes.mjs",
     "test:docs": "ng test docs --watch=false --browsers=ChromeHeadless",
+    "test:browser:interactions": "playwright test --config=playwright.config.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
     "pack:lib": "npm pack ./dist/orc-ds",
     "verify:compatibility": "node tools/release/verify-compatibility.mjs",
+    "verify:changelog-coverage": "node tools/release/verify-changelog-coverage.mjs",
+    "verify:inventory": "node tools/quality/inventory.mjs --check",
+    "generate:alias-parity": "node tools/quality/generate-alias-parity.mjs",
+    "verify:alias-parity": "node tools/quality/generate-alias-parity.mjs --check",
+    "generate:gate-manifest": "node tools/release/generate-gate-manifest.mjs",
+    "verify:gate-manifest": "node tools/release/generate-gate-manifest.mjs --check",
+    "verify:deprecation-guard": "node tools/release/verify-deprecation-guard.mjs",
+    "verify:docs-integrity": "node tools/quality/verify-documentation-integrity.mjs",
+    "docs:generate-api": "node tools/docs/generate-component-api.mjs",
+    "verify:docs-api": "node tools/docs/generate-component-api.mjs --check",
+    "docs:generate-agent-reference": "node tools/docs/generate-agent-reference.mjs",
+    "verify:docs-agent-reference": "node tools/docs/generate-agent-reference.mjs --check",
+    "docs:generate-sitemap": "node tools/docs/generate-sitemap.mjs",
+    "verify:docs-sitemap": "node tools/docs/generate-sitemap.mjs --check",
+    "verify:docs-coverage": "node tools/quality/check-docs-coverage.mjs",
+    "verify:docs": "npm run verify:inventory && npm run verify:docs-integrity && npm run verify:docs-api && npm run verify:docs-agent-reference && npm run verify:docs-sitemap && npm run verify:docs-coverage && npm run verify:gate-manifest",
+    "verify:package": "node tools/quality/verify-package.mjs",
+    "verify:package:minimum": "node tools/quality/verify-package.mjs --minimum-angular",
+    "verify:ssr": "node tools/quality/verify-ssr.mjs",
     "score:compatibility": "node tools/release/score-compatibility.mjs",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "changeset:version": "node tools/release/version-packages.mjs"
   },
   "dependencies": {
     "@angular/cdk": "^19.2.19",
@@ -32,17 +63,24 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@ciag/orchestra": "^19.1.0",
+    "dompurify": "^3.4.15",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.27",
+    "@angular/build": "^19.2.27",
     "@angular/cli": "^19.2.27",
     "@angular/compiler-cli": "^19.2.0",
     "@changesets/cli": "^3.0.0",
+    "@playwright/test": "^1.63.0",
     "@types/jasmine": "~5.1.0",
+    "angular-eslint": "19.4.0",
     "axe-core": "^4.13.0",
+    "eslint": "9.39.5",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.13.0",
     "jasmine-axe": "^1.1.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
@@ -51,6 +89,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^19.2.2",
-    "typescript": "~5.7.2"
+    "prettier": "^3.9.6",
+    "sass": "^1.104.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "8.71.0"
   }
 }

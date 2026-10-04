@@ -1,7 +1,7 @@
 <section
   class="orc-carousel"
   [class.orc-carousel--vertical]="orientation() === 'vertical'"
-  [attr.aria-label]="ariaLabel()"
+  [attr.aria-label]="ariaLabel()?.trim() || 'Carousel'"
   aria-roledescription="carousel"
   tabindex="0"
   (mouseenter)="onMouseEnter()"
@@ -11,44 +11,82 @@
     @if (activeItem(); as item) {
       <article
         class="orc-carousel__slide"
-        [id]="itemId(safeIndex())"
-        role="group"
+        [id]="panelId"
+        role="tabpanel"
         aria-roledescription="slide"
-        [attr.aria-label]="(safeIndex() + 1) + ' of ' + effectiveItems().length"
+        [attr.aria-labelledby]="
+          showIndicators() && effectiveItems().length > 1
+            ? indicatorId(safeIndex())
+            : null
+        "
+        [attr.aria-label]="item.label.trim() || 'Slide ' + (safeIndex() + 1)"
       >
         @if (item.image) {
-          <img class="orc-carousel__image" [src]="item.image" [alt]="item.alt || item.label" />
+          <img
+            class="orc-carousel__image"
+            [src]="item.image"
+            [alt]="item.alt || item.label"
+          />
         } @else {
-          <div class="orc-carousel__placeholder" aria-hidden="true">{{ safeIndex() + 1 }}</div>
+          <div class="orc-carousel__placeholder" aria-hidden="true">
+            {{ safeIndex() + 1 }}
+          </div>
         }
         <div class="orc-carousel__content">
           <h3>{{ item.label }}</h3>
-          @if (item.description) { <p>{{ item.description }}</p> }
+          @if (item.description) {
+            <p>{{ item.description }}</p>
+          }
         </div>
       </article>
     } @else {
-      <div class="orc-carousel__empty">Nenhum item disponível.</div>
+      @if (emptyMessage()) {
+        <div class="orc-carousel__empty">{{ emptyMessage() }}</div>
+      }
     }
   </div>
 
   @if (effectiveShowNavigators() && effectiveItems().length > 1) {
     <div class="orc-carousel__arrows">
-      <button type="button" class="orc-carousel__arrow" (click)="previous()" [disabled]="!canGoPrevious()" aria-label="Anterior">‹</button>
-      <button type="button" class="orc-carousel__arrow" (click)="next()" [disabled]="!canGoNext()" aria-label="Próximo">›</button>
+      <button
+        type="button"
+        class="orc-carousel__arrow"
+        (click)="previous()"
+        [disabled]="!canGoPrevious()"
+        [attr.aria-label]="previousLabel()?.trim() || 'Previous slide'"
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        class="orc-carousel__arrow"
+        (click)="next()"
+        [disabled]="!canGoNext()"
+        [attr.aria-label]="nextLabel()?.trim() || 'Next slide'"
+      >
+        ›
+      </button>
     </div>
   }
 
   @if (showIndicators() && effectiveItems().length > 1) {
-    <div class="orc-carousel__indicators" role="tablist" aria-label="Slides">
+    <div
+      class="orc-carousel__indicators"
+      role="tablist"
+      [attr.aria-label]="indicatorsLabel()?.trim() || 'Slides'"
+    >
       @for (item of effectiveItems(); track trackItem($index, item)) {
         <button
           type="button"
           class="orc-carousel__indicator"
+          [id]="indicatorId($index)"
           [class.orc-carousel__indicator--active]="safeIndex() === $index"
           [disabled]="item.disabled"
           role="tab"
+          [attr.aria-controls]="panelId"
           [attr.aria-selected]="safeIndex() === $index"
-          [attr.aria-label]="'Exibir ' + item.label"
+          [attr.tabindex]="safeIndex() === $index ? 0 : -1"
+          [attr.aria-label]="item.label.trim() || 'Slide ' + ($index + 1)"
           (click)="goTo($index)"
         ></button>
       }

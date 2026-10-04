@@ -9,11 +9,12 @@
   user-select: none;
   white-space: nowrap;
   position: relative;
-  transition: background-color var(--transition-base),
-              border-color var(--transition-base),
-              color var(--transition-base),
-              opacity var(--transition-base),
-              box-shadow var(--transition-base);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    opacity var(--transition-base),
+    box-shadow var(--transition-base);
 
   // Focus-visible ring
   &:focus-visible {
@@ -26,13 +27,11 @@
   &--disabled {
     cursor: not-allowed;
     opacity: 0.6;
-    pointer-events: none;
   }
 
   // Loading state
   &--loading {
     cursor: default;
-    pointer-events: none;
 
     .orc-icon-button__icon-container {
       opacity: 0; // Hide the icon but keep it rendering for width
@@ -79,7 +78,7 @@
 
   // ── SIZES (SQUARE RATIO) ──────────────────────────────────
   &--size-sm {
-    width: 2rem;  // 32px
+    width: 2rem; // 32px
     height: 2rem;
     font-size: 0.875rem;
     border-radius: var(--radius-sm);
@@ -110,7 +109,7 @@
   }
 
   &--size-lg {
-    width: 3rem;  // 48px
+    width: 3rem; // 48px
     height: 3rem;
     font-size: 1.125rem;
 
@@ -126,13 +125,25 @@
 
   // ── VARIANTS ───────────────────────────────────────────────
   &--variant-primary {
-    background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
-    color: var(--orc-on-interactive, #FFFFFF);
-    border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
+    background-color: var(
+      --orc-interactive,
+      var(--orc-color-azul-eletrico, #1c6aed)
+    );
+    color: var(--orc-on-interactive, #ffffff);
+    border-color: var(
+      --orc-interactive,
+      var(--orc-color-azul-eletrico, #1c6aed)
+    );
 
     &:hover:not(:disabled) {
-      background-color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
-      border-color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
+      background-color: var(
+        --orc-interactive-hover,
+        var(--orc-color-azul-royal, #0406ab)
+      );
+      border-color: var(
+        --orc-interactive-hover,
+        var(--orc-color-azul-royal, #0406ab)
+      );
     }
 
     &:active:not(:disabled) {
@@ -141,13 +152,22 @@
   }
 
   &--variant-secondary {
-    background-color: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #EDEDED));
+    background-color: var(
+      --orc-surface-muted,
+      var(--orc-highlight-cinza-claro, #ededed)
+    );
     color: var(--orc-text, var(--text-primary, #141414));
-    border-color: var(--orc-surface-muted, var(--orc-highlight-cinza-claro, #EDEDED));
+    border-color: var(
+      --orc-surface-muted,
+      var(--orc-highlight-cinza-claro, #ededed)
+    );
 
     &:hover:not(:disabled) {
-      background-color: var(--orc-border-strong, var(--orc-secondary-bg, #D9D9D9));
-      border-color: var(--orc-border-strong, var(--orc-secondary-bg, #D9D9D9));
+      background-color: var(
+        --orc-border-strong,
+        var(--orc-secondary-bg, #d9d9d9)
+      );
+      border-color: var(--orc-border-strong, var(--orc-secondary-bg, #d9d9d9));
     }
 
     &:active:not(:disabled) {
@@ -158,16 +178,16 @@
   &--variant-outline {
     background-color: transparent;
     color: var(--orc-text, var(--text-primary, #141414));
-    border-color: var(--orc-border-default, var(--border-default, #D9D9D9));
+    border-color: var(--orc-border-default, var(--border-default, #d9d9d9));
 
     &:hover:not(:disabled) {
-      background-color: var(--orc-surface-subtle, var(--bg-subtle, #F9F9F9));
-      border-color: var(--orc-border-strong, var(--border-strong, #D9D9D9));
-      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
+      background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
+      border-color: var(--orc-border-strong, var(--border-strong, #d9d9d9));
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
 
     &:active:not(:disabled) {
-      background-color: var(--orc-surface-muted, var(--bg-muted, #EDEDED));
+      background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
     }
   }
 
@@ -177,18 +197,18 @@
     border-color: transparent;
 
     &:hover:not(:disabled) {
-      background-color: var(--orc-surface-subtle, var(--bg-subtle, #F9F9F9));
-      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
+      background-color: var(--orc-surface-subtle, var(--bg-subtle, #f9f9f9));
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
 
     &:active:not(:disabled) {
-      background-color: var(--orc-surface-muted, var(--bg-muted, #EDEDED));
+      background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
     }
   }
 
   &--variant-link {
     background-color: transparent;
-    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1C6AED));
+    color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     border-color: transparent;
     width: auto;
     height: auto;
@@ -198,7 +218,7 @@
 
     &:hover:not(:disabled) {
       text-decoration: underline;
-      color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406AB));
+      color: var(--orc-interactive-hover, var(--orc-color-azul-royal, #0406ab));
     }
 
     &:active:not(:disabled) {
@@ -207,13 +227,21 @@
   }
 
   &--variant-danger {
-    background-color: var(--orc-danger, var(--color-error, #FB2C36));
-    color: var(--orc-on-danger, #FFFFFF);
-    border-color: var(--orc-danger, var(--color-error, #FB2C36));
+    background-color: var(--orc-danger, var(--color-error, #fb2c36));
+    color: var(--orc-on-danger, #ffffff);
+    border-color: var(--orc-danger, var(--color-error, #fb2c36));
 
     &:hover:not(:disabled) {
-      background-color: color-mix(in srgb, var(--orc-danger, #d4183d) 86%, var(--orc-text, #141414));
-      border-color: color-mix(in srgb, var(--orc-danger, #d4183d) 86%, var(--orc-text, #141414));
+      background-color: color-mix(
+        in srgb,
+        var(--orc-danger, #d4183d) 86%,
+        var(--orc-text, #141414)
+      );
+      border-color: color-mix(
+        in srgb,
+        var(--orc-danger, #d4183d) 86%,
+        var(--orc-text, #141414)
+      );
     }
 
     &:active:not(:disabled) {
@@ -225,5 +253,45 @@
 @keyframes orc-icon-button-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+:host {
+  display: inline-block;
+  vertical-align: middle;
+}
+.orc-icon-button {
+  box-sizing: border-box;
+  padding: 0;
+}
+.orc-icon-button__icon-container,
+.orc-icon-button__icon-svg-wrapper {
+  display: inline-flex;
+  width: 1.25rem;
+  height: 1.25rem;
+  align-items: center;
+  justify-content: center;
+}
+.orc-icon-button__icon-container ::ng-deep svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.orc-icon-button--size-sm .orc-icon-button__icon-container,
+.orc-icon-button--size-sm .orc-icon-button__icon-svg-wrapper {
+  width: 1rem;
+  height: 1rem;
+}
+.orc-icon-button--size-lg .orc-icon-button__icon-container,
+.orc-icon-button--size-lg .orc-icon-button__icon-svg-wrapper {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orc-icon-button {
+    transition: none;
+  }
+  .orc-icon-button__spinner-svg {
+    animation-duration: 2s;
   }
 }

@@ -1,0 +1,92 @@
+<div class="menu-family-preview">
+  @switch (componentId()) {
+    @case ('tiered-menu') {
+      <div class="example-stack">
+        <div class="example">
+          <span class="example__label">Hierarchical menu</span>
+          <orc-tiered-menu
+            [items]="menuFamilyItems"
+            ariaLabel="Navegação hierárquica do projeto"
+            (itemSelect)="onTieredMenuItem($event)"
+          />
+          <p class="example__caption">
+            Use <code>ArrowRight</code> para abrir o submenu,
+            <code>ArrowLeft</code>/<code>Escape</code> para voltar e
+            <code>Home</code>/<code>End</code> para navegar.
+          </p>
+        </div>
+      </div>
+    }
+    @case ('panel-menu') {
+      <div class="example-stack">
+        <div class="example">
+          <span class="example__label">Expandable panels</span>
+          <orc-panel-menu
+            [items]="menuFamilyItems"
+            ariaLabel="Seções do projeto"
+            (itemSelect)="onPanelMenuItem($event)"
+          />
+          <p class="example__caption">
+            Enter/Space expande; ArrowRight abre e ArrowLeft/Escape retorna ao
+            painel pai.
+          </p>
+        </div>
+      </div>
+    }
+    @case ('mega-menu') {
+      <div class="example-stack">
+        <div class="example example--centered">
+          <span class="example__label">Grouped navigation</span>
+          <div class="button-row">
+            <button
+              class="doc-button"
+              type="button"
+              [attr.aria-pressed]="megaMenuOrientation() === 'horizontal'"
+              (click)="megaMenuOrientation.set('horizontal')"
+            >
+              Horizontal
+            </button>
+            <button
+              class="doc-button doc-button--secondary"
+              type="button"
+              [attr.aria-pressed]="megaMenuOrientation() === 'vertical'"
+              (click)="megaMenuOrientation.set('vertical')"
+            >
+              Vertical
+            </button>
+          </div>
+          <orc-mega-menu
+            [items]="megaMenuItems"
+            [orientation]="megaMenuOrientation()"
+            ariaLabel="Navegação principal do projeto"
+            (itemSelect)="onMegaMenuItem($event)"
+          />
+        </div>
+      </div>
+    }
+    @case ('command-menu') {
+      <div class="example-stack">
+        <div class="example">
+          <span class="example__label">Command palette</span>
+          <orc-command-menu
+            [items]="commandMenuItems"
+            [(query)]="commandMenuQuery"
+            label="Ações do projeto"
+            placeholder="Buscar uma ação"
+            searchAriaLabel="Buscar comandos do projeto"
+            emptyText="Nenhum comando encontrado."
+            (itemSelect)="onCommandMenuItem($event)"
+          />
+          <p class="example__caption">
+            Filtre por texto ou keywords e use ArrowUp/ArrowDown, Home/End e
+            Enter para executar um comando habilitado.
+          </p>
+        </div>
+      </div>
+    }
+  }
+
+  <code data-testid="menu-family-action">{{
+    actionMessage() || 'keyboard-ready'
+  }}</code>
+</div>

@@ -10,7 +10,10 @@ import { RouterModule, Router } from '@angular/router';
 import { IconButtonComponent } from '@ciag/orchestra/button';
 import { AvatarComponent } from '@ciag/orchestra/avatar';
 import { BadgeComponent } from '@ciag/orchestra/badge';
-import { BreadcrumbComponent, BreadcrumbItemComponent } from '@ciag/orchestra/breadcrumb';
+import {
+  BreadcrumbComponent,
+  BreadcrumbItemComponent,
+} from '@ciag/orchestra/breadcrumb';
 import { DropdownComponent, DropdownItem } from '@ciag/orchestra/dropdown';
 import { TooltipDirective } from '@ciag/orchestra/tooltip';
 import { ToastService } from '@ciag/orchestra/toast';
@@ -76,6 +79,8 @@ export class MainLayoutComponent {
         document.documentElement.setAttribute('data-theme', 'light');
       }
     }
-    this.toastService.success(`Tema ${nextTheme ? 'Escuro' : 'Claro'} ativado!`);
+    this.toastService.success(
+      `Tema ${nextTheme ? 'Escuro' : 'Claro'} ativado!`,
+    );
   }
 }

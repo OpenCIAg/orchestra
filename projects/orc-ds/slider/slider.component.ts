@@ -10,10 +10,11 @@ import {
   ElementRef,
   viewChild,
   booleanAttribute,
-  numberAttribute,
+  inject,
+  AfterViewInit,
   OnDestroy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   SliderValue,
@@ -24,6 +25,11 @@ import {
 } from './slider.types';
 
 let nextSliderUniqueId = 0;
+
+function numericInput(value: unknown, fallback: number): number {
+  if (value === null || value === undefined || value === '') return fallback;
+  return typeof value === 'number' ? value : Number(value);
+}
 
 @Component({
   selector: 'orc-slider',
@@ -40,7 +46,12 @@ let nextSliderUniqueId = 0;
     },
   ],
 })
-export class SliderComponent implements ControlValueAccessor, OnDestroy {
+export class SliderComponent
+  implements ControlValueAccessor, AfterViewInit, OnDestroy
+{
+  private readonly document = inject(DOCUMENT);
+  private activeWindow: Window | null = null;
+  private destroyed = false;
   private readonly uniqueId = `orc-slider-${++nextSliderUniqueId}`;
 
   // ── Element References ────────────────────────────────────
@@ -56,33 +67,40 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly animate = input(false, { transform: booleanAttribute });
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  /** Focuses the primary thumb once after initial render when enabled and not disabled. */
   readonly autofocus = input(false, { transform: booleanAttribute });
   readonly ariaLabelledBy = input<string | undefined>(undefined);
   readonly tabindex = input(0);
   readonly min = input<number, unknown>(0, {
-    transform: (v: unknown) => numberAttribute(v, 0),
+    transform: (v: unknown) => numericInput(v, 0),
   });
   readonly max = input<number, unknown>(100, {
-    transform: (v: unknown) => numberAttribute(v, 100),
+    transform: (v: unknown) => numericInput(v, 100),
   });
   readonly step = input<number, unknown>(1, {
-    transform: (v: unknown) => numberAttribute(v, 1),
+    transform: (v: unknown) => numericInput(v, 1),
   });
   readonly size = input<SliderSize>('md');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly showTicks = input(false, { transform: booleanAttribute });
   readonly showLabels = input(false, { transform: booleanAttribute });
-  readonly marks = input<Record<number, string> | SliderMark[] | number[] | undefined>(undefined);
+  readonly marks = input<
+    Record<number, string> | SliderMark[] | number[] | undefined
+  >(undefined);
   readonly showTooltip = input<SliderTooltipMode>('auto');
   readonly tooltip = input<string | undefined>(undefined);
   readonly tooltipPosition = input<'top' | 'bottom' | 'left' | 'right'>('top');
-  readonly valueFormatter = input<((val: number) => string) | undefined>(undefined);
+  readonly valueFormatter = input<((val: number) => string) | undefined>(
+    undefined,
+  );
   readonly label = input<string>('');
   readonly helperText = input<string>('');
-  readonly ariaLabel = input<string>('');
-  readonly ariaLabelMin = input<string>('Valor mínimo');
-  readonly ariaLabelMax = input<string>('Valor máximo');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly ariaLabelMin = input<string | undefined>(undefined);
+  readonly ariaLabelMax = input<string | undefined>(undefined);
 
   // ── Two-Way Model ─────────────────────────────────────────
   readonly value = model<SliderValue>(0);
@@ -103,52 +121,45 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   private activePointerId: number | null = null;
 
   // ── Computeds ─────────────────────────────────────────────
-  readonly effectiveId = computed(() => this.inputId() || this.id() || this.uniqueId);
+  readonly effectiveId = computed(
+    () => this.inputId() || this.id() || this.uniqueId,
+  );
   readonly helperId = computed(() => `${this.effectiveId()}-helper`);
 
   readonly effectiveDisabled = computed(
-    () => this.disabled() || this.cvaDisabled()
+    () => this.disabled() || this.cvaDisabled(),
   );
 
-  readonly minVal = computed(() => this.min());
+  readonly minVal = computed(() => {
+    const min = this.min();
+    return Number.isFinite(min) ? min : 0;
+  });
+  /** Reports an invalid configured range; geometry uses a one-unit fallback span. */
+  readonly hasInvalidRange = computed(() => {
+    const max = this.max();
+    return (
+      !Number.isFinite(this.min()) ||
+      !Number.isFinite(max) ||
+      max <= this.minVal()
+    );
+  });
   readonly maxVal = computed(() => {
     const min = this.minVal();
     const max = this.max();
-    return max > min ? max : min + 1;
+    // Keep geometry and keyboard math defined for an invalid max input.
+    return this.hasInvalidRange() ? min + 1 : max;
   });
 
   readonly stepVal = computed(() => {
     const s = this.step();
-    return s > 0 ? s : 1;
+    return Number.isFinite(s) && s > 0 ? s : 1;
   });
 
   readonly normalizedValues = computed<[number, number]>(() => {
-    const raw = this.value();
-    const min = this.minVal();
-    const max = this.maxVal();
-    const isRange = this.range();
-
-    if (isRange) {
-      let start: number;
-      let end: number;
-      if (Array.isArray(raw)) {
-        start = Number(raw[0]) || min;
-        end = Number(raw[1]) || max;
-      } else {
-        start = min;
-        end = Number(raw) || max;
-      }
-      start = this.clamp(start, min, max);
-      end = this.clamp(end, min, max);
-      if (start > end) {
-        start = end;
-      }
-      return [start, end];
-    } else {
-      let val = typeof raw === 'number' ? raw : Array.isArray(raw) ? raw[0] : min;
-      val = this.clamp(Number(val) || min, min, max);
-      return [min, val];
-    }
+    const normalized = this.normalizeModelValue(this.value());
+    return this.range()
+      ? (normalized as [number, number])
+      : [this.minVal(), normalized as number];
   });
 
   readonly currentStartValue = computed(() => this.normalizedValues()[0]);
@@ -209,7 +220,8 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     if (Array.isArray(marksData)) {
       return marksData.map((item) => {
         const val = typeof item === 'number' ? item : item.value;
-        const lbl = typeof item === 'number' ? String(item) : item.label ?? String(val);
+        const lbl =
+          typeof item === 'number' ? String(item) : (item.label ?? String(val));
         return {
           value: val,
           percent: this.calculatePercent(val, min, max),
@@ -253,11 +265,7 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   private onTouched: () => void = () => {};
 
   writeValue(value: any): void {
-    if (value === null || value === undefined) {
-      this.value.set(this.range() ? [this.minVal(), this.maxVal()] : this.minVal());
-    } else {
-      this.value.set(value);
-    }
+    this.value.set(this.normalizeModelValue(value));
   }
 
   registerOnChange(fn: any): void {
@@ -272,12 +280,24 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     this.cvaDisabled.set(isDisabled);
   }
 
+  ngAfterViewInit(): void {
+    if (this.autofocus() && !this.effectiveDisabled()) {
+      queueMicrotask(() => {
+        if (!this.destroyed && !this.effectiveDisabled()) {
+          this.endThumbRef()?.nativeElement.focus();
+        }
+      });
+    }
+  }
+
   // ── Handlers de Ponteiro / Arraste ────────────────────────
   protected onTrackPointerDown(event: PointerEvent): void {
     if (this.effectiveDisabled()) return;
 
     const track = this.trackRef()?.nativeElement;
     if (!track) return;
+    const view = this.document.defaultView;
+    if (!view) return;
 
     const rect = track.getBoundingClientRect();
     const clickPercent = this.pointerPercent(event, rect);
@@ -304,9 +324,10 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     this.updateValueByTarget(targetThumb, clickedVal, event);
 
     // Adiciona ouvintes globais para continuidade fluida do arraste
-    window.addEventListener('pointermove', this.onGlobalPointerMove);
-    window.addEventListener('pointerup', this.onGlobalPointerUp);
-    window.addEventListener('pointercancel', this.onGlobalPointerUp);
+    this.activeWindow = view;
+    view.addEventListener('pointermove', this.onGlobalPointerMove);
+    view.addEventListener('pointerup', this.onGlobalPointerUp);
+    view.addEventListener('pointercancel', this.onGlobalPointerUp);
 
     // Foca o thumb correspondente para acessibilidade
     if (targetThumb === 'start') {
@@ -319,7 +340,12 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   }
 
   private onGlobalPointerMove = (event: PointerEvent): void => {
-    if (!this.isDragging() || this.effectiveDisabled()) return;
+    if (
+      !this.isDragging() ||
+      this.effectiveDisabled() ||
+      event.pointerId !== this.activePointerId
+    )
+      return;
 
     const track = this.trackRef()?.nativeElement;
     if (!track) return;
@@ -335,15 +361,13 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   };
 
   private onGlobalPointerUp = (event: PointerEvent): void => {
-    if (!this.isDragging()) return;
+    if (!this.isDragging() || event.pointerId !== this.activePointerId) return;
 
     this.isDragging.set(false);
     this.activeThumb.set(null);
     this.activePointerId = null;
 
-    window.removeEventListener('pointermove', this.onGlobalPointerMove);
-    window.removeEventListener('pointerup', this.onGlobalPointerUp);
-    window.removeEventListener('pointercancel', this.onGlobalPointerUp);
+    this.removeGlobalListeners();
 
     this.onTouched();
     this.sliderChange.emit(this.value());
@@ -356,7 +380,8 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
 
     const step = this.stepVal();
     const pageJump = Math.max(step * 10, (this.maxVal() - this.minVal()) / 10);
-    const currentVal = thumb === 'start' ? this.currentStartValue() : this.currentEndValue();
+    const currentVal =
+      thumb === 'start' ? this.currentStartValue() : this.currentEndValue();
     let nextVal = currentVal;
     let handled = false;
 
@@ -414,7 +439,11 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   }
 
   // ── Utilitários de Cálculo e Atualização ───────────────────
-  private updateValueByTarget(thumb: 'start' | 'end', rawVal: number, originalEvent?: Event): void {
+  private updateValueByTarget(
+    thumb: 'start' | 'end',
+    rawVal: number,
+    originalEvent?: Event,
+  ): void {
     const min = this.minVal();
     const max = this.maxVal();
     const steppedVal = this.snapToStep(this.clamp(rawVal, min, max));
@@ -449,6 +478,40 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
     return Number(result.toFixed(stepDecimals));
   }
 
+  private normalizeModelValue(value: unknown): SliderValue {
+    const min = this.minVal();
+    const max = this.maxVal();
+
+    if (value === null || value === undefined) {
+      return this.range() ? [min, max] : min;
+    }
+
+    if (this.range()) {
+      if (Array.isArray(value)) {
+        const first = Number(value[0]);
+        const second = Number(value[1]);
+        const start =
+          value[0] !== null && value[0] !== '' && Number.isFinite(first)
+            ? this.clamp(first, min, max)
+            : min;
+        const end =
+          value[1] !== null && value[1] !== '' && Number.isFinite(second)
+            ? this.clamp(second, min, max)
+            : max;
+        return start <= end ? [start, end] : [end, start];
+      }
+      const numeric = Number(value);
+      return [
+        min,
+        Number.isFinite(numeric) ? this.clamp(numeric, min, max) : max,
+      ];
+    }
+
+    const candidate = Array.isArray(value) ? value[0] : value;
+    const numeric = Number(candidate);
+    return Number.isFinite(numeric) ? this.clamp(numeric, min, max) : min;
+  }
+
   private calculatePercent(val: number, min: number, max: number): number {
     if (max <= min) return 0;
     return this.clamp(((val - min) / (max - min)) * 100, 0, 100);
@@ -461,7 +524,8 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   }
 
   private pointerPercent(event: PointerEvent, rect: DOMRect): number {
-    if (this.orientation() === 'vertical') return this.clamp(1 - (event.clientY - rect.top) / rect.height, 0, 1);
+    if (this.orientation() === 'vertical')
+      return this.clamp(1 - (event.clientY - rect.top) / rect.height, 0, 1);
     return this.clamp((event.clientX - rect.left) / rect.width, 0, 1);
   }
 
@@ -483,8 +547,16 @@ export class SliderComponent implements ControlValueAccessor, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('pointermove', this.onGlobalPointerMove);
-    window.removeEventListener('pointerup', this.onGlobalPointerUp);
-    window.removeEventListener('pointercancel', this.onGlobalPointerUp);
+    this.destroyed = true;
+    this.removeGlobalListeners();
+  }
+
+  private removeGlobalListeners(): void {
+    const view = this.activeWindow ?? this.document.defaultView;
+    if (!view) return;
+    view.removeEventListener('pointermove', this.onGlobalPointerMove);
+    view.removeEventListener('pointerup', this.onGlobalPointerUp);
+    view.removeEventListener('pointercancel', this.onGlobalPointerUp);
+    this.activeWindow = null;
   }
 }

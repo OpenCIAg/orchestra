@@ -14,9 +14,10 @@
   white-space: nowrap;
   box-sizing: border-box;
   overflow: hidden;
-  transition: background-color var(--transition-fast, 120ms ease),
-              border-color var(--transition-fast, 120ms ease),
-              color var(--transition-fast, 120ms ease);
+  transition:
+    background-color var(--transition-fast, 120ms ease),
+    border-color var(--transition-fast, 120ms ease),
+    color var(--transition-fast, 120ms ease);
 
   // ── SIZES (Figma Node 382:5314) ───────────────────────────
   // SM = 18px
@@ -87,6 +88,12 @@
     border: none;
   }
 
+  &--dismissible {
+    height: auto;
+    min-height: var(--orc-action-target-size, 1.5rem);
+    overflow: visible;
+  }
+
   // ── ICONS & DOTS ──────────────────────────────────────────
   &__icon {
     flex-shrink: 0;
@@ -111,6 +118,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: var(--orc-action-target-size, 1.5rem);
+    min-width: var(--orc-action-target-size, 1.5rem);
+    height: var(--orc-action-target-size, 1.5rem);
+    min-height: var(--orc-action-target-size, 1.5rem);
     background: transparent;
     border: none;
     padding: 0;
@@ -119,8 +130,9 @@
     color: inherit;
     opacity: 0.7;
     border-radius: 50%;
-    transition: opacity var(--transition-fast, 120ms ease),
-                background-color var(--transition-fast, 120ms ease);
+    transition:
+      opacity var(--transition-fast, 120ms ease),
+      background-color var(--transition-fast, 120ms ease);
 
     svg {
       width: 10px;
@@ -131,6 +143,11 @@
       opacity: 1;
       background-color: color-mix(in srgb, currentColor 12%, transparent);
     }
+
+    &:focus-visible {
+      outline: 2px solid var(--orc-interactive, #1c6aed);
+      outline-offset: 1px;
+    }
   }
 
   // ──────────────────────────────────────────────────────────
@@ -139,27 +156,54 @@
   &--variant-soft {
     &.orc-badge--status-primary {
       background-color: var(--orc-interactive-soft);
-      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      color: var(
+        --orc-interactive-hover,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
     }
     &.orc-badge--status-secondary,
     &.orc-badge--status-neutral {
-      background-color: var(--orc-status-neutral-bg, var(--status-neutral-soft-bg, #eceef2));
-      color: var(--orc-status-neutral-fg, var(--status-neutral-soft-fg, #141414));
+      background-color: var(
+        --orc-status-neutral-bg,
+        var(--status-neutral-soft-bg, #eceef2)
+      );
+      color: var(
+        --orc-status-neutral-fg,
+        var(--status-neutral-soft-fg, #141414)
+      );
     }
     &.orc-badge--status-success {
-      background-color: var(--orc-status-success-bg, var(--status-success-soft-bg, #b8e7d7));
-      color: var(--orc-status-success-fg, var(--status-success-soft-fg, #006f4a));
+      background-color: var(
+        --orc-status-success-bg,
+        var(--status-success-soft-bg, #b8e7d7)
+      );
+      color: var(
+        --orc-status-success-fg,
+        var(--status-success-soft-fg, #006f4a)
+      );
     }
     &.orc-badge--status-info {
-      background-color: var(--orc-status-info-bg, var(--status-info-soft-bg, #e1eaf6));
+      background-color: var(
+        --orc-status-info-bg,
+        var(--status-info-soft-bg, #e1eaf6)
+      );
       color: var(--orc-status-info-fg, var(--status-info-soft-fg, #2b7fff));
     }
     &.orc-badge--status-warning {
-      background-color: var(--orc-status-warning-bg, var(--status-warning-soft-bg, #f6ecdd));
-      color: var(--orc-status-warning-fg, var(--status-warning-soft-fg, #fe9a00));
+      background-color: var(
+        --orc-status-warning-bg,
+        var(--status-warning-soft-bg, #f6ecdd)
+      );
+      color: var(
+        --orc-status-warning-fg,
+        var(--status-warning-soft-fg, #fe9a00)
+      );
     }
     &.orc-badge--status-danger {
-      background-color: var(--orc-status-danger-bg, var(--status-danger-soft-bg, #f6d7d8));
+      background-color: var(
+        --orc-status-danger-bg,
+        var(--status-danger-soft-bg, #f6d7d8)
+      );
       color: var(--orc-status-danger-fg, var(--status-danger-soft-fg, #fb2c36));
     }
     &.orc-badge--status-pending {
@@ -168,7 +212,8 @@
     }
     &.orc-badge--status-active {
       background-color: var(--orc-surface, var(--bg-app, #ffffff));
-      border: 1px solid var(--orc-border-default, var(--border-default, #d9d9d9));
+      border: 1px solid
+        var(--orc-border-default, var(--border-default, #d9d9d9));
       color: var(--orc-text, var(--text-primary, #141414));
     }
     &.orc-badge--status-inactive {
@@ -182,12 +227,21 @@
   // ──────────────────────────────────────────────────────────
   &--variant-solid {
     &.orc-badge--status-primary {
-      background-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      background-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
       color: var(--orc-on-interactive, #ffffff);
     }
     &.orc-badge--status-secondary {
-      background-color: var(--orc-status-neutral-bg, var(--status-neutral-soft-bg, #eceef2));
-      color: var(--orc-status-neutral-fg, var(--status-neutral-soft-fg, #141414));
+      background-color: var(
+        --orc-status-neutral-bg,
+        var(--status-neutral-soft-bg, #eceef2)
+      );
+      color: var(
+        --orc-status-neutral-fg,
+        var(--status-neutral-soft-fg, #141414)
+      );
     }
     &.orc-badge--status-neutral {
       background-color: var(--bg-inverse, #141414);
@@ -203,7 +257,7 @@
     }
     &.orc-badge--status-warning {
       background-color: var(--orc-status-warning-fg, #fe9a00);
-      color: var(--orc-text, #141414);
+      color: var(--orc-on-interactive, #ffffff);
     }
     &.orc-badge--status-danger {
       background-color: var(--orc-danger, #d4183d);
@@ -232,7 +286,10 @@
     color: var(--orc-text, var(--text-primary, #141414));
 
     &.orc-badge--status-primary {
-      border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+      border-color: var(
+        --orc-interactive,
+        var(--orc-color-azul-eletrico, #1c6aed)
+      );
       color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
     }
     &.orc-badge--status-success {
@@ -260,16 +317,34 @@
     background-color: transparent;
     padding: 0 4px;
 
-    &.orc-badge--status-primary { color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed)); }
+    &.orc-badge--status-primary {
+      color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+    }
     &.orc-badge--status-secondary,
-    &.orc-badge--status-neutral { color: var(--orc-text-secondary, var(--text-secondary, #71717a)); }
-    &.orc-badge--status-success { color: var(--orc-status-success-fg, #006f4a); }
-    &.orc-badge--status-info { color: var(--orc-status-info-fg, #2b7fff); }
-    &.orc-badge--status-warning { color: var(--orc-status-warning-fg, #fe9a00); }
-    &.orc-badge--status-danger { color: var(--orc-danger, #fb2c36); }
-    &.orc-badge--status-pending { color: var(--orc-status-warning-fg, #fe9a00); }
-    &.orc-badge--status-active { color: var(--orc-status-success-fg, #006f4a); }
-    &.orc-badge--status-inactive { color: var(--orc-text-muted, #999999); }
+    &.orc-badge--status-neutral {
+      color: var(--orc-text-secondary, var(--text-secondary, #71717a));
+    }
+    &.orc-badge--status-success {
+      color: var(--orc-status-success-fg, #006f4a);
+    }
+    &.orc-badge--status-info {
+      color: var(--orc-status-info-fg, #2b7fff);
+    }
+    &.orc-badge--status-warning {
+      color: var(--orc-status-warning-fg, #fe9a00);
+    }
+    &.orc-badge--status-danger {
+      color: var(--orc-danger, #fb2c36);
+    }
+    &.orc-badge--status-pending {
+      color: var(--orc-status-warning-fg, #fe9a00);
+    }
+    &.orc-badge--status-active {
+      color: var(--orc-status-success-fg, #006f4a);
+    }
+    &.orc-badge--status-inactive {
+      color: var(--orc-text-muted, #999999);
+    }
   }
 
   // ──────────────────────────────────────────────────────────

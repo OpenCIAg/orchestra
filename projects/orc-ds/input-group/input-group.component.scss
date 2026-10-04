@@ -1,0 +1,39 @@
+.orc-p2-input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 2.5rem;
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: var(--orc-component-control);
+}
+.prefix,
+.suffix {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 0.7rem;
+  background: var(--orc-component-surface-subtle);
+  color: var(--orc-component-text-secondary);
+  font-size: 0.875rem;
+}
+.prefix.empty,
+.suffix.empty {
+  display: none;
+}
+.control {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+}
+.control ::ng-deep input,
+.control ::ng-deep textarea,
+.control ::ng-deep select {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  padding: 0.5rem 0.7rem;
+  background: transparent;
+  color: var(--orc-component-text);
+}

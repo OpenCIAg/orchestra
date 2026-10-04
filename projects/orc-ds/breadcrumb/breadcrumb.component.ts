@@ -44,12 +44,13 @@ export class BreadcrumbComponent {
   readonly maxItems = input<number | undefined>(undefined);
   readonly itemsBeforeCollapse = input<number>(1);
   readonly itemsAfterCollapse = input<number>(1);
-  readonly ariaLabel = input<string>('Breadcrumb');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly expandAriaLabel = input<string | undefined>(undefined);
   readonly id = input<string | undefined>(undefined);
 
   // Outputs (Signals API)
   readonly itemClick = output<{ item: BreadcrumbItemData; index: number }>();
-  readonly onItemClick = this.itemClick;
+  readonly onItemClick = output<{ item: BreadcrumbItemData; index: number }>();
 
   // Itens filhos registrados via projeção de conteúdo
   readonly breadcrumbItems = contentChildren(BreadcrumbItemComponent);
@@ -112,7 +113,13 @@ export class BreadcrumbComponent {
     this.isExpanded.set(true);
   }
 
-  onItemClicked(item: ProcessedBreadcrumbItem, index: number, event: MouseEvent): void {
-    this.itemClick.emit({ item: item as BreadcrumbItemData, index });
+  onItemClicked(
+    item: ProcessedBreadcrumbItem,
+    index: number,
+    _event: MouseEvent,
+  ): void {
+    const payload = { item: item as BreadcrumbItemData, index };
+    this.itemClick.emit(payload);
+    this.onItemClick.emit(payload);
   }
 }

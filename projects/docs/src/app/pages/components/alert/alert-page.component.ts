@@ -8,11 +8,13 @@ import {
   AlertVariant,
 } from '@ciag/orchestra/alert';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-alert-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -27,7 +29,7 @@ export class AlertPageComponent {
   // ── Playground Signals ────────────────────────────────────
   readonly playgroundTitle = signal<string>('Título do Alerta');
   readonly playgroundMessage = signal<string>(
-    'Esta é uma mensagem demonstrativa para informar o usuário.'
+    'Esta é uma mensagem demonstrativa para informar o usuário.',
   );
   readonly playgroundSeverity = signal<AlertSeverity>('info');
   readonly playgroundVariant = signal<AlertVariant>('subtle');
@@ -42,30 +44,34 @@ export class AlertPageComponent {
       id: 1,
       severity: 'info',
       title: 'Informação',
-      message: 'Este é um alerta informativo padrão para comunicar algo ao usuário.',
+      message:
+        'Este é um alerta informativo padrão para comunicar algo ao usuário.',
     },
     {
       id: 2,
       severity: 'success',
       title: 'Sucesso',
-      message: 'Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado.',
+      message:
+        'Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado.',
     },
     {
       id: 3,
       severity: 'warning',
       title: 'Atenção',
-      message: 'Verifique as configurações antes de continuar. Alguns campos podem estar incompletos.',
+      message:
+        'Verifique as configurações antes de continuar. Alguns campos podem estar incompletos.',
     },
     {
       id: 4,
       severity: 'error',
       title: 'Erro',
-      message: 'Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.',
+      message:
+        'Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.',
     },
   ]);
 
   removeAlert(id: number): void {
-    this.demoAlerts.update(alerts => alerts.filter(a => a.id !== id));
+    this.demoAlerts.update((alerts) => alerts.filter((a) => a.id !== id));
   }
 
   resetDemoAlerts(): void {
@@ -74,25 +80,29 @@ export class AlertPageComponent {
         id: 1,
         severity: 'info',
         title: 'Informação',
-        message: 'Este é um alerta informativo padrão para comunicar algo ao usuário.',
+        message:
+          'Este é um alerta informativo padrão para comunicar algo ao usuário.',
       },
       {
         id: 2,
         severity: 'success',
         title: 'Sucesso',
-        message: 'Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado.',
+        message:
+          'Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado.',
       },
       {
         id: 3,
         severity: 'warning',
         title: 'Atenção',
-        message: 'Verifique as configurações antes de continuar. Alguns campos podem estar incompletos.',
+        message:
+          'Verifique as configurações antes de continuar. Alguns campos podem estar incompletos.',
       },
       {
         id: 4,
         severity: 'error',
         title: 'Erro',
-        message: 'Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.',
+        message:
+          'Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.',
       },
     ]);
   }

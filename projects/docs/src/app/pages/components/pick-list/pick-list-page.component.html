@@ -1,0 +1,127 @@
+<div class="page">
+  <div class="layout">
+    <main class="content">
+      <div class="back-link-container">
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para componentes</a
+        >
+      </div>
+
+      <div class="section-eyebrow">Componentes · Data Display</div>
+      <h1 class="section-title">PickList</h1>
+      <p class="section-desc">
+        Transfira opções entre duas listas com seleção por teclado, filtros
+        independentes, ações por botão e suporte a arrastar itens habilitados.
+      </p>
+
+      <section class="section" id="preview">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Exemplo interativo</h2>
+            <p class="section-text">
+              O estado de origem e destino é controlado pelo consumidor com
+              two-way binding.
+            </p>
+          </div>
+          <span class="section-index">01 / 02</span>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-toolbar">
+            <span
+              class="demo-status"
+              aria-live="polite"
+              data-testid="transfer-status"
+              >{{ status() }}</span
+            >
+            <label class="toggle-label">
+              <input
+                type="checkbox"
+                [checked]="disabled()"
+                (change)="disabled.set($any($event.target).checked)"
+              />
+              Desabilitar interação
+            </label>
+          </div>
+
+          <div class="pick-list-shell">
+            <orc-pick-list
+              label="Escolher módulos"
+              sourceHeader="Disponíveis"
+              targetHeader="Selecionados"
+              filterBy="label"
+              sourceFilterPlaceholder="Filtrar disponíveis"
+              targetFilterPlaceholder="Filtrar selecionados"
+              ariaSourceFilterLabel="Filtrar módulos disponíveis"
+              ariaTargetFilterLabel="Filtrar módulos selecionados"
+              moveToTargetLabel="Mover selecionado para selecionados"
+              moveToSourceLabel="Devolver selecionado para disponíveis"
+              moveAllToTargetLabel="Mover todos para selecionados"
+              moveAllToSourceLabel="Devolver todos para disponíveis"
+              [responsive]="true"
+              breakpoint="720px"
+              [dragdrop]="true"
+              [stripedRows]="true"
+              [(source)]="source"
+              [(target)]="target"
+              [disabled]="disabled()"
+              (onMoveToTarget)="recordSelectedToTarget($event)"
+              (onMoveToSource)="recordSelectedToSource($event)"
+              (onMoveAllToTarget)="recordAllToTarget($event)"
+              (onMoveAllToSource)="recordAllToSource($event)"
+            />
+          </div>
+
+          <div class="state-summary" aria-label="Estado atual das listas">
+            <span><strong>Disponíveis:</strong> {{ source().length }}</span>
+            <span><strong>Selecionados:</strong> {{ target().length }}</span>
+            <span class="state-note"
+              >Experimental está desabilitado e permanece na lista de
+              origem.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-subtitle">Contrato de uso</h2>
+            <p class="section-text">
+              Use valores string estáveis em cada opção e mantenha os nomes das
+              duas listas.
+            </p>
+          </div>
+          <span class="section-index">02 / 02</span>
+        </div>
+        <div class="contract-grid">
+          <article class="contract-card">
+            <h3>Seleção e transferência</h3>
+            <p>
+              Enter ou Espaço seleciona uma opção. Ctrl/Command adiciona outra
+              seleção por padrão; desative metaKeySelection para alternar itens
+              sem modificadores. Arraste itens habilitados ou use as ações.
+            </p>
+          </article>
+          <article class="contract-card">
+            <h3>Filtros acessíveis</h3>
+            <p>
+              Cada painel tem um nome e um filtro próprio. Ações “todos” ignoram
+              o filtro, mas respeitam itens desabilitados.
+            </p>
+          </article>
+          <article class="contract-card">
+            <h3>Layout estreito</h3>
+            <p>
+              Em telas estreitas, as listas ficam empilhadas e os quatro
+              controles de transferência passam para uma linha compacta.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer />
+</div>

@@ -1,5 +1,5 @@
 <div
-  [id]="id() || null"
+  [attr.id]="id() || null"
   class="p-avatar p-component orc-avatar"
   [class]="'p-avatar p-component orc-avatar ' + styleClass()"
   [attr.data-pc-name]="'avatar'"
@@ -19,18 +19,17 @@
   [class.orc-avatar--variant-orange]="effectiveColorVariant() === 'orange'"
   [class.orc-avatar--variant-purple]="effectiveColorVariant() === 'purple'"
   [class.orc-avatar--variant-cyan]="effectiveColorVariant() === 'cyan'"
-  role="img"
-  [attr.aria-label]="accessibleLabel()"
+  [attr.role]="clickable() ? 'button' : 'img'"
+  [attr.aria-label]="accessibleName()"
   [attr.tabindex]="clickable() ? 0 : null"
   (click)="onClick($event)"
-  (keydown.enter)="onClick($any($event))"
-  (keydown.space)="onClick($any($event))"
+  (keydown)="onKeydown($event)"
 >
   <!-- Imagem do Avatar -->
   <img
     *ngIf="showImage()"
     [src]="src()"
-    [alt]="alt() || accessibleLabel()"
+    [attr.alt]="alt() || accessibleName()"
     (error)="onImageError($event)"
     class="orc-avatar__img"
     loading="lazy"
@@ -41,7 +40,9 @@
     {{ computedInitials() }}
   </span>
 
-  @if (icon()) { <span class="orc-avatar__icon" aria-hidden="true">{{ icon() }}</span> }
+  @if (icon()) {
+    <span class="orc-avatar__icon" aria-hidden="true">{{ icon() }}</span>
+  }
   <!-- Ícone Fallback Padrão -->
   <svg
     *ngIf="showIcon() && !icon()"
@@ -67,10 +68,12 @@
     [class.orc-avatar__status--busy]="status() === 'busy'"
     [class.orc-avatar__status--away]="status() === 'away'"
     [class.orc-avatar__status--top-right]="statusPosition() === 'top-right'"
-    [class.orc-avatar__status--bottom-right]="statusPosition() === 'bottom-right'"
+    [class.orc-avatar__status--bottom-right]="
+      statusPosition() === 'bottom-right'
+    "
     [class.orc-avatar__status--top-left]="statusPosition() === 'top-left'"
     [class.orc-avatar__status--bottom-left]="statusPosition() === 'bottom-left'"
-    [attr.aria-label]="statusText()"
-    [title]="statusText()"
+    [attr.aria-label]="statusText() || null"
+    [attr.title]="statusText() || null"
   ></span>
 </div>

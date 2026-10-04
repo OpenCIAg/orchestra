@@ -34,7 +34,9 @@ export class AccordionItemComponent implements OnInit, OnDestroy {
   readonly value = input<string | number | undefined>(undefined);
   readonly headerStyleClass = input('');
   readonly contentStyleClass = input('');
+  /** @deprecated Compatibility-only input; this accordion item has no close action separate from collapsing. */
   readonly closable = input(false);
+  /** @deprecated Compatibility-only input; projected content remains mounted while collapsed. */
   readonly cache = input(true);
   readonly subtitle = input<string>('');
   readonly icon = input<string>('');
@@ -59,6 +61,14 @@ export class AccordionItemComponent implements OnInit, OnDestroy {
 
   readonly itemId = computed(() => this.id() || this.fallbackId);
   readonly effectiveTitle = computed(() => this.header() ?? this.title());
+  readonly effectiveHeaderAriaLevel = computed(
+    () => this.headerAriaLevel() ?? this.accordion?.headerAriaLevel() ?? 2,
+  );
+  readonly toggleIconClass = computed(() =>
+    this.expanded()
+      ? this.accordion?.collapseIcon()
+      : this.accordion?.expandIcon(),
+  );
   readonly headerId = computed(() => `orc-accordion-header-${this.itemId()}`);
   readonly panelId = computed(() => `orc-accordion-panel-${this.itemId()}`);
 

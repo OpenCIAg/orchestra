@@ -1,0 +1,114 @@
+<div
+  class="orc-tree"
+  [class]="'orc-tree ' + styleClass()"
+  [style]="style()"
+  [style.max-height]="scrollHeight()"
+  (scroll)="onScroll.emit($event)"
+>
+  @if (loading() && loadingMessage()) {
+    <span class="loading" role="status">{{ loadingMessage() }}</span>
+  }
+  @if (filter()) {
+    <input
+      [value]="filterValue()"
+      [attr.placeholder]="filterPlaceholder() || null"
+      [attr.aria-label]="filterAriaLabel() || null"
+      (input)="onFilterInput($event)"
+    />
+  }
+  <div
+    class="tree-items"
+    [id]="treeId()"
+    role="tree"
+    tabindex="0"
+    [attr.aria-label]="treeAriaLabel()"
+    [attr.aria-labelledby]="treeAriaLabelledBy()"
+    [attr.aria-busy]="loading() ? 'true' : null"
+    [attr.aria-activedescendant]="activeTreeItemId()"
+    (focusin)="onTreeFocusIn($event)"
+  >
+    @for (
+      item of filteredVisibleNodes();
+      track item.node.key;
+      let index = $index
+    ) {
+      <div
+        class="tree-row"
+        [class.active]="resolvedActiveTreeIndex() === index"
+        [class.selected]="isSelected(item.node.key)"
+        [class.disabled]="item.node.disabled"
+        [style.padding-left.rem]="0.5 + item.level * indentation()"
+        role="treeitem"
+        [id]="treeItemId(index)"
+        [attr.aria-level]="item.level"
+        [attr.aria-expanded]="
+          item.node.children?.length ? isExpandedForView(item.node) : null
+        "
+        [attr.aria-selected]="
+          selectionMode() === 'checkbox' ? null : isSelected(item.node.key)
+        "
+        [attr.aria-checked]="
+          selectionMode() === 'checkbox' ? checkboxState(item.node) : null
+        "
+        [attr.aria-disabled]="item.node.disabled ? 'true' : null"
+        (dblclick)="onTreeItemDoubleClick(item.node)"
+        (contextmenu)="onContextMenu($event, item.node)"
+      >
+        <button
+          type="button"
+          class="toggle"
+          tabindex="-1"
+          [disabled]="
+            item.node.disabled ||
+            !item.node.children?.length ||
+            !!filterValue().trim()
+          "
+          [attr.aria-label]="
+            (isExpandedForView(item.node)
+              ? collapseAriaLabel() || 'Collapse'
+              : expandAriaLabel() || 'Expand') +
+            ' ' +
+            item.node.label
+          "
+          (click)="onTreeToggleClick(item.node, index)"
+        >
+          {{
+            item.node.children?.length
+              ? isExpandedForView(item.node)
+                ? '▾'
+                : '▸'
+              : '·'
+          }}
+        </button>
+        <button
+          type="button"
+          class="label"
+          tabindex="-1"
+          [disabled]="item.node.disabled"
+          (click)="onTreeItemClick(item.node, index, $event)"
+        >
+          @if (selectionMode() === 'checkbox') {
+            <span
+              class="tree-checkbox"
+              [class.checked]="checkboxState(item.node) === true"
+              [class.mixed]="checkboxState(item.node) === 'mixed'"
+              aria-hidden="true"
+            >
+              {{
+                checkboxState(item.node) === true
+                  ? '✓'
+                  : checkboxState(item.node) === 'mixed'
+                    ? '−'
+                    : ''
+              }}
+            </span>
+          }
+          <span>{{ item.node.label }}</span>
+        </button>
+      </div>
+    }
+  </div>
+  @if (!loading() && !filteredVisibleNodes().length && emptyText()) {
+    <span role="status">{{ emptyText() }}</span>
+  }
+</div>

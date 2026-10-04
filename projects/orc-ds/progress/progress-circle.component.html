@@ -1,13 +1,14 @@
 <div
-  class="orc-progress-circle-host"
-  [class]="'orc-progress-circle-host ' + styleClass()"
+  [class]="'orc-progress-circle-host ' + normalizedStyleClass()"
   [style]="style()"
   [class.orc-progress-circle--primary]="variant() === 'primary'"
   [class.orc-progress-circle--neutral]="variant() === 'neutral'"
   [class.orc-progress-circle--success]="variant() === 'success'"
   [class.orc-progress-circle--warning]="variant() === 'warning'"
-  [class.orc-progress-circle--error]="variant() === 'error' || variant() === 'danger'"
-  [class.orc-progress-circle--indeterminate]="isIndeterminate() && animation() !== 'none'"
+  [class.orc-progress-circle--error]="
+    variant() === 'error' || variant() === 'danger'
+  "
+  [class.orc-progress-circle--indeterminate]="isAnimatedIndeterminate()"
   [style.width.px]="pixelSize()"
   [style.height.px]="pixelSize()"
 >
@@ -20,8 +21,9 @@
     [attr.aria-valuenow]="isIndeterminate() ? null : normalizedValue()"
     [attr.aria-valuemin]="isIndeterminate() ? null : 0"
     [attr.aria-valuemax]="isIndeterminate() ? null : 100"
-    [attr.aria-label]="ariaLabel() || label() || 'Progresso circular'"
-    [attr.aria-valuetext]="ariaValueText() || (isIndeterminate() ? 'Carregando...' : formattedValue())"
+    [attr.aria-label]="accessibleName()"
+    [attr.aria-valuetext]="accessibleValueText()"
+    [style.animation-duration]="animationDuration()"
   >
     <!-- Trilha de fundo (Track) -->
     <circle
@@ -30,7 +32,7 @@
       [attr.cy]="center()"
       [attr.r]="radius()"
       [attr.stroke-width]="computedStrokeWidth()"
-      [style.stroke]="customTrackColor() || null"
+      [style.stroke]="effectiveTrackColor() || null"
     />
 
     <!-- Arco de preenchimento (Fill) -->
@@ -40,17 +42,28 @@
       [attr.cy]="center()"
       [attr.r]="radius()"
       [attr.stroke-width]="computedStrokeWidth()"
-      [attr.stroke-dasharray]="circumference()"
+      [attr.stroke-dasharray]="strokeDashArray()"
       [attr.stroke-dashoffset]="strokeDashOffset()"
       [attr.stroke-linecap]="rounded() ? 'round' : 'butt'"
       [style.stroke]="effectiveColor() || null"
       [style.animation-duration]="animationDuration()"
-      [attr.fill]="fill()"
+      [style.fill]="fill()"
     />
   </svg>
 
   <!-- Conteúdo centralizado (Porcentagem ou custom template) -->
-  <div class="orc-progress-circle__content" [style.font-size.px]="pixelSize() <= 32 ? 9 : pixelSize() <= 48 ? 11 : pixelSize() <= 64 ? 14 : 18">
+  <div
+    class="orc-progress-circle__content"
+    [style.font-size.px]="
+      pixelSize() <= 32
+        ? 9
+        : pixelSize() <= 48
+          ? 11
+          : pixelSize() <= 64
+            ? 14
+            : 18
+    "
+  >
     @if (showValue() && !isIndeterminate()) {
       <span class="orc-progress-circle__value">{{ formattedValue() }}</span>
     } @else {

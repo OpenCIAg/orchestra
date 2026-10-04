@@ -1,0 +1,14 @@
+@layer orchestra.components {
+  // Component geometry cannot depend on a consumer opting into the global reset.
+  // Leave unrelated application content, typography and margins to the consumer.
+  :where([class^='orc-'], [class*=' orc-']) {
+    &,
+    &::before,
+    &::after,
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+  }
+}

@@ -86,10 +86,10 @@ describe('ButtonComponent', () => {
       readonly variant = signal<'primary' | 'secondary'>('primary');
       readonly size = signal<'sm' | 'md' | 'lg'>('md');
       readonly disabled = signal<boolean>(false);
-      clicked = false;
+      clicked = 0;
 
       onClick() {
-        this.clicked = true;
+        this.clicked += 1;
       }
     }
 
@@ -108,13 +108,13 @@ describe('ButtonComponent', () => {
 
     it('should render button text correctly', () => {
       const buttonEl = hostFixture.nativeElement.querySelector('button');
-      expect(buttonEl.textContent.trim()).toContain('Salvar');
+      expect(buttonEl.textContent?.trim()).toContain('Salvar');
     });
 
     it('should trigger host click handler', () => {
       const buttonEl = hostFixture.nativeElement.querySelector('button');
       buttonEl.click();
-      expect(hostComponent.clicked).toBeTrue();
+      expect(hostComponent.clicked).toBe(1);
     });
   });
 });

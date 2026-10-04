@@ -8,11 +8,13 @@ import {
   TooltipTheme,
 } from '@ciag/orchestra/tooltip';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-tooltip-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -31,4 +33,5 @@ export class TooltipPageComponent {
   readonly playgroundShowDelay = signal<number>(150);
   readonly playgroundHideDelay = signal<number>(100);
   readonly playgroundDisabled = signal<boolean>(false);
+  readonly playgroundFitContent = signal<boolean>(true);
 }

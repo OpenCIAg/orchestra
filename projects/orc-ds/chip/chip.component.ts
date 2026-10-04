@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, booleanAttribute, input, model, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  booleanAttribute,
+  input,
+  model,
+  output,
+} from '@angular/core';
 import { ChipSize, ChipVariant } from './chip.types';
 
 @Component({
@@ -19,19 +26,30 @@ export class ChipComponent {
   readonly image = input<string | undefined>(undefined);
   readonly removeIcon = input('×');
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly id = input<string | undefined>(undefined);
   readonly ariaLabel = input<string | undefined>(undefined);
+  readonly removeAriaLabel = input<string | undefined>(undefined);
   readonly selected = model(false);
   readonly removed = output<string | number>();
   readonly onRemove = output<Event>();
 
+  removeButtonLabel(): string {
+    return this.removeAriaLabel() || `Remove ${this.label() || 'chip'}`;
+  }
+
   toggle(): void {
-    if (!this.disabled() && this.selectable()) this.selected.update(value => !value);
+    if (!this.disabled() && this.selectable())
+      this.selected.update((value) => !value);
   }
   remove(event: Event): void {
     event.stopPropagation();
-    if (!this.disabled()) { this.removed.emit(this.value() !== '' ? this.value() : this.label()); this.onRemove.emit(event); }
+    if (!this.disabled()) {
+      this.removed.emit(this.value() !== '' ? this.value() : this.label());
+      this.onRemove.emit(event);
+    }
   }
 }

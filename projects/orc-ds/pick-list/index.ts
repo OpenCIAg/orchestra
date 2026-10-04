@@ -1,2 +1,2 @@
-export { PickListComponent } from '@ciag/orchestra/p2';
-export type { P2Option } from '@ciag/orchestra/p2';
+export { PickListComponent } from './pick-list.component';
+export type { P2Option } from '@ciag/orchestra/internal';

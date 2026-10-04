@@ -1,15 +1,26 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StepperComponent } from '@ciag/orchestra/stepper';
 import { StepItem } from '@ciag/orchestra/stepper';
 import { InputComponent } from '@ciag/orchestra/input';
 import { ButtonComponent } from '@ciag/orchestra/button';
-import { RadioGroupComponent, RadioButtonComponent } from '@ciag/orchestra/radio';
+import {
+  RadioGroupComponent,
+  RadioButtonComponent,
+} from '@ciag/orchestra/radio';
 import { SwitchComponent } from '@ciag/orchestra/switch';
 import { OtpInputComponent } from '@ciag/orchestra/otp-input';
 import { FileUploaderComponent } from '@ciag/orchestra/file-uploader';
-import { AccordionComponent, AccordionItemComponent } from '@ciag/orchestra/accordion';
+import {
+  AccordionComponent,
+  AccordionItemComponent,
+} from '@ciag/orchestra/accordion';
 import { AlertComponent } from '@ciag/orchestra/alert';
 import { ToastService } from '@ciag/orchestra/toast';
 
@@ -71,13 +82,17 @@ export class SettingsPageComponent {
   verifyOtp(): void {
     if (this.otpCode().length === 6) {
       this.is2faEnabled.set(true);
-      this.toastService.success('Autenticação em 2 etapas (2FA) configurada com sucesso!');
+      this.toastService.success(
+        'Autenticação em 2 etapas (2FA) configurada com sucesso!',
+      );
     } else {
       this.toastService.error('Digite o código de 6 dígitos completo.');
     }
   }
 
   saveAllPreferences(): void {
-    this.toastService.success('Todas as configurações foram salvas com sucesso!');
+    this.toastService.success(
+      'Todas as configurações foram salvas com sucesso!',
+    );
   }
 }
