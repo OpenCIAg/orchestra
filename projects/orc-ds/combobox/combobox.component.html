@@ -9,6 +9,7 @@
   }
   <div class="p-autocomplete-input-wrapper orc-p2-combobox">
     <input
+      #inputEl
       [id]="inputId"
       role="combobox"
       [value]="query()"
@@ -37,38 +38,40 @@
       </button>
     }
   </div>
-  @if (open()) {
-    <ul
-      #panel
-      class="p-autocomplete-panel p-component orc-p2-options"
-      [id]="listId"
-      role="listbox"
-    >
-      @for (option of filteredOptions(); track option.value) {
-        <li
-          class="p-autocomplete-option"
-          [id]="optionId($index)"
-          role="option"
-          [attr.aria-selected]="isSelected(option)"
-          [class.is-active]="$index === activeOptionIndex()"
-          [class.is-disabled]="option.disabled"
-          [attr.aria-disabled]="option.disabled || null"
-          (mousedown)="$event.preventDefault()"
-          (click)="select(option)"
-        >
-          <strong>{{ option.label }}</strong>
-          @if (option.description) {
-            <small>{{ option.description }}</small>
-          }
-        </li>
-      } @empty {
-        @if (emptyText()) {
-          <li class="orc-p2-empty">{{ emptyText() }}</li>
-        }
-      }
-    </ul>
-  }
   @if (helperText()) {
     <small class="orc-p2-muted">{{ helperText() }}</small>
   }
 </div>
+
+<!-- Detached option panel: portaled through the shared list-picker overlay
+     so ancestor overflow can never clip it. -->
+<ng-template #panelTemplate>
+  <ul
+    class="p-autocomplete-panel p-component orc-p2-options orc-p2-portal-panel"
+    [id]="listId"
+    role="listbox"
+  >
+    @for (option of filteredOptions(); track option.value) {
+      <li
+        class="p-autocomplete-option"
+        [id]="optionId($index)"
+        role="option"
+        [attr.aria-selected]="isSelected(option)"
+        [class.is-active]="$index === activeOptionIndex()"
+        [class.is-disabled]="option.disabled"
+        [attr.aria-disabled]="option.disabled || null"
+        (mousedown)="$event.preventDefault()"
+        (click)="select(option)"
+      >
+        <strong>{{ option.label }}</strong>
+        @if (option.description) {
+          <small>{{ option.description }}</small>
+        }
+      </li>
+    } @empty {
+      @if (emptyText()) {
+        <li class="orc-p2-empty">{{ emptyText() }}</li>
+      }
+    }
+  </ul>
+</ng-template>

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
@@ -12,21 +13,29 @@ import {
   model,
   output,
   signal,
+  TemplateRef,
   viewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
 import {
-  attachInPlaceOverlay,
+  attachListPickerOverlay,
   CvaControl,
   listPickerActiveId,
   listPickerActiveIndex,
   listPickerEnabledIndexes,
   listPickerFirstEnabled,
   listPickerValueMatchesFilter,
+  overlayAttachmentTarget,
+  P2_PANEL_VARS,
   P2_SHARED_STYLES,
   stepListPickerActive,
 } from '@ciag/orchestra/internal';
-import type { P2Option } from '@ciag/orchestra/internal';
+import type {
+  ListPickerOverlayHandle,
+  P2Option,
+} from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-combobox',
@@ -39,17 +48,27 @@ import type { P2Option } from '@ciag/orchestra/internal';
     },
   ],
   templateUrl: './combobox.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [P2_SHARED_STYLES, P2_PANEL_VARS],
   styleUrl: './combobox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ComboboxComponent<T = unknown> extends CvaControl {
+export class ComboboxComponent<T = unknown>
+  extends CvaControl
+  implements AfterViewInit
+{
   private static nextId = 0;
   readonly inputId = `orc-combobox-${++ComboboxComponent.nextId}`;
   readonly listId = `${this.inputId}-listbox`;
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
-  private inPlaceRelease: (() => void) | null = null;
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly overlay = inject(Overlay);
+  private readonly inputEl =
+    viewChild<ElementRef<HTMLInputElement>>('inputEl');
+  private readonly panelTemplate =
+    viewChild.required<TemplateRef<unknown>>('panelTemplate');
+  /** The panel template is only attachable once the host view exists. */
+  private readonly panelReady = signal(false);
+  private overlayHandle: ListPickerOverlayHandle | null = null;
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T | null>(null);
   readonly query = model('');
@@ -81,8 +100,8 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
   constructor() {
     super();
     inject(DestroyRef).onDestroy(() => {
-      this.inPlaceRelease?.();
-      this.inPlaceRelease = null;
+      this.overlayHandle?.dispose();
+      this.overlayHandle = null;
     });
     effect(() => {
       const value = this.value();
@@ -104,6 +123,10 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
         this.activeIndex.set(-1);
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.panelReady.set(true);
   }
 
   readonly filteredOptions = computed(() => {
@@ -247,8 +270,8 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
 
   private dismiss(): void {
     if (!this.open()) return;
-    this.inPlaceRelease?.();
-    this.inPlaceRelease = null;
+    this.overlayHandle?.dispose();
+    this.overlayHandle = null;
     this.open.set(false);
     this.activeIndex.set(-1);
   }
@@ -256,24 +279,66 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
   // Signal-driven attachment: direct writes to the open model must arm the
   // dismissal lifecycle too; idempotent against the open-path attach.
   private readonly overlayWatcher = effect(() => {
-    if (this.open() && !this.inPlaceRelease) {
+    if (this.open() && this.panelReady() && !this.overlayHandle) {
       this.ensureOverlay();
-    } else if (!this.open() && this.inPlaceRelease) {
-      this.inPlaceRelease();
-      this.inPlaceRelease = null;
+    } else if (!this.open() && this.overlayHandle) {
+      this.overlayHandle.dispose();
+      this.overlayHandle = null;
     }
   });
 
   /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
   private ensureOverlay(): void {
-    if (this.inPlaceRelease) return;
-    this.inPlaceRelease = attachInPlaceOverlay({
-      host: this.host.nativeElement,
-      panel: () => this.panelRef()?.nativeElement ?? null,
+    if (this.overlayHandle || !this.panelReady()) return;
+    const anchor = this.inputEl()?.nativeElement ?? this.host.nativeElement;
+    const anchorWidth = anchor.getBoundingClientRect().width;
+    this.overlayHandle = attachListPickerOverlay({
+      anchor,
+      content: this.panelTemplate(),
+      viewContainerRef: this.viewContainerRef,
+      overlay: this.overlay,
+      positionStrategy: (origin) => this.createPositionStrategy(origin),
+      minWidth: anchorWidth,
       onEscape: () => this.dismiss(),
-      onOutside: () => this.dismissFromOutside(),
+      onBackdrop: () => this.dismiss(),
       onParentClose: () => this.dismiss(),
-    }).dispose;
+      documentEscape: () => this.dismiss(),
+      targets: () =>
+        [this.host.nativeElement, this.overlayHandle?.overlayElement].filter(
+          (element): element is HTMLElement => !!element,
+        ),
+      onOutside: () => this.dismissFromOutside(),
+    });
+  }
+
+  private createPositionStrategy(origin: HTMLElement): PositionStrategy {
+    const parent = overlayAttachmentTarget(origin, 'body');
+    const positions = [
+      {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: 4,
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+        offsetY: -4,
+      },
+    ] as const;
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(origin)
+      .withPopoverLocation(
+        parent === origin.ownerDocument.body
+          ? 'global'
+          : { type: 'parent', element: parent },
+      )
+      .withPositions([...positions])
+      .withPush(true);
   }
 
   /**

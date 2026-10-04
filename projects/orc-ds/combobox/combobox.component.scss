@@ -23,12 +23,13 @@ input {
   background: transparent;
   font-size: 1.2rem;
 }
+/*
+ * The detached panel root. Positioning moved to the CDK pane when the
+ * panel started rendering through the shared list-picker overlay; the
+ * element keeps its chrome (and consumer-facing classes) as the
+ * scrollable option list.
+ */
 .orc-p2-options {
-  position: absolute;
-  z-index: 2;
-  top: 4.3rem;
-  right: 0;
-  left: 0;
   max-height: 15rem;
   overflow: auto;
   margin: 0;
