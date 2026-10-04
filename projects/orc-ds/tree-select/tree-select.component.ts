@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
+import { IconComponent } from '@ciag/orchestra/icon';
 import {
   attachListPickerOverlay,
   CvaControl,
@@ -51,6 +52,7 @@ interface VisibleTreeSelectNode {
 @Component({
   selector: 'orc-tree-select',
   standalone: true,
+  imports: [IconComponent],
   templateUrl: './tree-select.component.html',
   styles: [P2_SHARED_VARS, P2_PANEL_VARS],
   styleUrl: './tree-select.component.scss',

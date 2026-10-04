@@ -29,7 +29,8 @@
     [attr.aria-readonly]="readonly()"
     (click)="toggleOpen()"
   >
-    {{ selectedLabel() || placeholder() }} <span aria-hidden="true">⌄</span>
+    {{ selectedLabel() || placeholder() }}
+    <orc-icon name="keyboard_arrow_down" size="sm" aria-hidden="true" />
   </button>
   @if (showClear() && value() !== null && !readonly()) {
     <button
@@ -133,7 +134,19 @@
                 "
                 (click)="onTreeToggleClick(item.node, $index)"
               >
-                {{ isExpandedForView(item.node) ? '▾' : '▸' }}
+                @if (isExpandedForView(item.node)) {
+                  <orc-icon
+                    name="keyboard_arrow_down"
+                    size="sm"
+                    aria-hidden="true"
+                  />
+                } @else {
+                  <orc-icon
+                    name="keyboard_arrow_right"
+                    size="sm"
+                    aria-hidden="true"
+                  />
+                }
               </button>
             } @else {
               <span class="expand-placeholder"></span>

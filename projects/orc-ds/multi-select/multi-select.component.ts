@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
+import { IconComponent } from '@ciag/orchestra/icon';
 import {
   attachListPickerOverlay,
   CvaControl,
@@ -45,6 +46,7 @@ let nextMultiSelectId = 0;
 @Component({
   selector: 'orc-multi-select',
   standalone: true,
+  imports: [IconComponent],
   templateUrl: './multi-select.component.html',
   styles: [P2_SHARED_STYLES, P2_PANEL_VARS],
   styleUrl: './multi-select.component.scss',
