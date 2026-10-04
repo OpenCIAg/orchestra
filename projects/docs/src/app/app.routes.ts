@@ -27,6 +27,14 @@ export const routes: Routes = [
     },
   },
   {
+    path: 'sandbox/inside-modal',
+    loadComponent: () =>
+      import('./pages/sandbox/inside-modal-sandbox.component').then(
+        (m) => m.InsideModalSandboxComponent,
+      ),
+    title: 'Sandbox — overlays dentro do modal (temporário)',
+  },
+  {
     path: 'docs',
     loadComponent: () =>
       import('./pages/docs/docs.component').then((m) => m.DocsComponent),

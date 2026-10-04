@@ -45,7 +45,7 @@ export class MultiSelectExampleComponent implements OnInit {
       disabled: true,
     },
   ];
-  readonly value = signal<string[]>(['tokens', 'a11y']);
+  readonly value = signal<string[]>(['angular']);
 
   ngOnInit(): void {
     this.emit();
