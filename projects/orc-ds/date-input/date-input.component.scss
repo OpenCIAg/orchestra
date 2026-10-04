@@ -1,0 +1,23 @@
+.orc-p2-date-input {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--orc-component-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+input {
+  min-height: 2.5rem;
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--orc-component-control);
+  color: var(--orc-component-text);
+  font-weight: 400;
+}
+small {
+  color: var(--orc-component-text-muted);
+  font-weight: 400;
+}
+.error {
+  color: var(--orc-component-danger);
+}

@@ -1,1 +1,1 @@
-export { DataViewComponent } from '@ciag/orchestra/p2';
+export { DataViewComponent } from './data-view.component';

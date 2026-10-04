@@ -9,11 +9,13 @@ import {
   BadgeVariant,
 } from '@ciag/orchestra/badge';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-badge-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -41,11 +43,11 @@ export class BadgePageComponent {
     'Design System',
     'Angular 18',
     'Signals API',
-    'WCAG 2.1 AA',
+    'Foco por teclado',
   ]);
 
   removeTag(tagToRemove: string): void {
-    this.tags.update(list => list.filter(t => t !== tagToRemove));
+    this.tags.update((list) => list.filter((t) => t !== tagToRemove));
   }
 
   resetTags(): void {
@@ -53,7 +55,7 @@ export class BadgePageComponent {
       'Design System',
       'Angular 18',
       'Signals API',
-      'WCAG 2.1 AA',
+      'Foco por teclado',
     ]);
   }
 }

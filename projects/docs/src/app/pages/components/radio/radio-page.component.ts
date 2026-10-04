@@ -1,14 +1,30 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RadioButtonComponent, RadioGroupComponent } from '@ciag/orchestra/radio';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  RadioButtonComponent,
+  RadioGroupComponent,
+} from '@ciag/orchestra/radio';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-radio-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -27,9 +43,13 @@ export class RadioPageComponent {
   readonly layout = signal<'vertical' | 'horizontal'>('vertical');
   readonly isDisabled = signal<boolean>(false);
   readonly isError = signal<boolean>(false);
-  readonly errorMessage = signal<string>('Selecione uma opção válida para continuar');
+  readonly errorMessage = signal<string>(
+    'Selecione uma opção válida para continuar',
+  );
   readonly groupLabel = signal<string>('Selecione sua preferência');
-  readonly groupHint = signal<string>('Escolha apenas uma das opções disponíveis');
+  readonly groupHint = signal<string>(
+    'Escolha apenas uma das opções disponíveis',
+  );
 
   // ── Reactive Forms Demo ───────────────────────────────────
   readonly form: FormGroup;
@@ -41,7 +61,9 @@ export class RadioPageComponent {
   readonly horizontalDemo = signal<string>('credit');
   readonly planDemo = signal<string>('pro');
 
-  constructor(private fb: FormBuilder) {
+  private readonly fb = inject(FormBuilder);
+
+  constructor() {
     this.form = this.fb.group({
       selectedPlan: ['', [Validators.required]],
     });

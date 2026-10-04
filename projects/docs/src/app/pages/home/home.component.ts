@@ -4,39 +4,54 @@ import {
   computed,
   inject,
   signal,
-  AfterViewInit,
   ViewChild,
   ElementRef,
+  HostListener,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BadgeStatus, BadgeComponent } from '@ciag/orchestra/badge';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { KbdComponent } from '@ciag/orchestra/kbd';
-import { ComponentCatalogService } from '../../services/component-catalog.service';
+import { IconComponent } from '@ciag/orchestra/icon';
+import {
+  ComponentCatalogService,
+  categoryLabel,
+} from '../../services/component-catalog.service';
 import { ComponentEntry } from '../../models/component-entry.model';
 import { FooterComponent } from '../../shared/footer/footer.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule, FooterComponent, BadgeComponent, ButtonComponent, KbdComponent],
+  imports: [
+    RouterModule,
+    FooterComponent,
+    BadgeComponent,
+    ButtonComponent,
+    KbdComponent,
+    IconComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent {
   @ViewChild('searchInput') searchInputRef?: ElementRef<HTMLInputElement>;
 
   protected readonly catalog = inject(ComponentCatalogService);
 
-  protected readonly searchValue = signal('');
+  protected readonly searchValue = this.catalog.query;
   protected readonly isFocused = signal(false);
   protected readonly hoveredId = signal<string | null>(null);
 
   protected readonly categories = this.catalog.allCategories;
+
+  protected readonly categoryLabel = categoryLabel;
   protected readonly results = this.catalog.filteredComponents;
 
-  protected readonly hasQuery = computed(() => this.searchValue().trim().length > 0);
+  protected readonly hasQuery = computed(
+    () => this.searchValue().trim().length > 0,
+  );
 
   protected readonly resultCount = computed(() => this.results().length);
 
@@ -51,21 +66,36 @@ export class HomeComponent implements AfterViewInit {
   });
 
   protected readonly groupedEntries = computed(() =>
-    Array.from(this.groupedResults().entries())
+    Array.from(this.groupedResults().entries()),
   );
 
-  ngAfterViewInit(): void {
-    // Auto-focus search on load
-    setTimeout(() => this.searchInputRef?.nativeElement.focus(), 200);
-  }
-
   protected onSearch(value: string): void {
-    this.searchValue.set(value);
     this.catalog.setQuery(value);
   }
 
+  @HostListener('document:keydown', ['$event'])
+  protected focusSearch(event: KeyboardEvent): void {
+    if (
+      event.key !== '/' ||
+      event.defaultPrevented ||
+      event.isComposing ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey
+    )
+      return;
+    const target = event.composedPath()[0];
+    if (
+      target instanceof HTMLElement &&
+      (target.isContentEditable ||
+        target.closest('input, textarea, select, [role="textbox"]'))
+    )
+      return;
+    event.preventDefault();
+    this.searchInputRef?.nativeElement.focus();
+  }
+
   protected clearSearch(): void {
-    this.searchValue.set('');
     this.catalog.setQuery('');
     this.searchInputRef?.nativeElement.focus();
   }
@@ -82,7 +112,10 @@ export class HomeComponent implements AfterViewInit {
     return item.id;
   }
 
-  protected trackByCategory(_: number, entry: [string, ComponentEntry[]]): string {
+  protected trackByCategory(
+    _: number,
+    entry: [string, ComponentEntry[]],
+  ): string {
     return entry[0];
   }
 

@@ -8,14 +8,17 @@ describe('TextareaComponent', () => {
   let component: TextareaComponent;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [TextareaComponent] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [TextareaComponent],
+    }).compileComponents();
     fixture = TestBed.createComponent(TextareaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('retains text entered into the native textarea', () => {
-    const textarea: HTMLTextAreaElement = fixture.nativeElement.querySelector('textarea');
+    const textarea: HTMLTextAreaElement =
+      fixture.nativeElement.querySelector('textarea');
     textarea.value = 'A browser-authored note';
     textarea.dispatchEvent(new Event('input'));
     fixture.detectChanges();
@@ -28,7 +31,11 @@ describe('TextareaComponent', () => {
     @Component({
       standalone: true,
       imports: [FormsModule, TextareaComponent],
-      template: `<orc-textarea [(ngModel)]="value" name="notes" label="Notes" />`,
+      template: `<orc-textarea
+        [(ngModel)]="value"
+        name="notes"
+        label="Notes"
+      />`,
     })
     class HostComponent {
       value = '';
@@ -39,7 +46,8 @@ describe('TextareaComponent', () => {
       hostFixture.detectChanges();
       await hostFixture.whenStable();
 
-      const textarea: HTMLTextAreaElement = hostFixture.nativeElement.querySelector('textarea');
+      const textarea: HTMLTextAreaElement =
+        hostFixture.nativeElement.querySelector('textarea');
       textarea.value = 'Persisted notes';
       textarea.dispatchEvent(new Event('input'));
       hostFixture.detectChanges();

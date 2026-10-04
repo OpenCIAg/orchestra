@@ -6,6 +6,7 @@ import {
   output,
   signal,
   booleanAttribute,
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionToggleEvent, AccordionVariant } from './accordion.types';
@@ -21,12 +22,16 @@ import type { AccordionItemComponent } from './accordion-item.component';
 })
 export class AccordionComponent {
   // Inputs (Signals API)
-  readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
-  readonly value = model<string | number | string[] | number[]>(0);
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly multiple = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly value = model<string | number | (string | number)[]>(0);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
   readonly variant = input<AccordionVariant>('default');
   readonly styleClass = input('');
-  readonly ariaLabel = input('Accordion');
+  readonly ariaLabel = input<string | undefined>(undefined);
   readonly id = input<string | undefined>(undefined);
   readonly expandIcon = input<string | undefined>(undefined);
   readonly collapseIcon = input<string | undefined>(undefined);
@@ -34,6 +39,41 @@ export class AccordionComponent {
   readonly transitionOptions = input('');
   readonly headerAriaLevel = input(2);
   readonly activeIndex = model<number | number[] | null>(0);
+
+  private previousValue: string | number | (string | number)[] = 0;
+  private previousActiveIndex: number | number[] | null = 0;
+  private selectionSource: 'value' | 'index' = 'value';
+
+  constructor() {
+    effect(() => {
+      const items = this.items();
+      const value = this.value();
+      const active = this.activeIndex();
+      // Both public models remain controllable after user interaction. A changed
+      // value wins if a consumer updates both aliases in the same render.
+      if (value !== this.previousValue) this.selectionSource = 'value';
+      else if (active !== this.previousActiveIndex)
+        this.selectionSource = 'index';
+      this.previousValue = value;
+      this.previousActiveIndex = active;
+      let selectedOne = false;
+      items.forEach((item, index) => {
+        const keys = Array.isArray(value) ? value : [value];
+        const indices = Array.isArray(active) ? active : [active];
+        const selected =
+          this.selectionSource === 'index'
+            ? indices.includes(index)
+            : keys.some(
+                (key) =>
+                  key === (item.value() ?? index) || key === item.itemId(),
+              );
+        const expanded =
+          selected && !item.disabled() && (this.multiple() || !selectedOne);
+        if (expanded) selectedOne = true;
+        item.expanded.set(expanded);
+      });
+    });
+  }
 
   // Outputs (Signals API)
   readonly expandedChange = output<AccordionToggleEvent>();
@@ -45,14 +85,18 @@ export class AccordionComponent {
 
   // ── Registro e Gerenciamento de Itens ──────────────────────
   registerItem(item: AccordionItemComponent): void {
-    this.items.update(list => [...list, item]);
+    this.items.update((list) => [...list, item]);
   }
 
   unregisterItem(item: AccordionItemComponent): void {
-    this.items.update(list => list.filter(i => i !== item));
+    this.items.update((list) => list.filter((i) => i !== item));
   }
 
-  onItemToggle(targetItem: AccordionItemComponent, isExpanded: boolean, originalEvent: Event = new Event('toggle')): void {
+  onItemToggle(
+    targetItem: AccordionItemComponent,
+    isExpanded: boolean,
+    originalEvent: Event = new Event('toggle'),
+  ): void {
     if (!this.multiple() && isExpanded) {
       // Fecha todos os outros itens quando multiple for false
       for (const item of this.items()) {
@@ -65,8 +109,12 @@ export class AccordionComponent {
     }
 
     const visibleItems = this.items();
-    const activeIndexes = visibleItems.filter(item => item.expanded()).map(item => visibleItems.indexOf(item));
-    const activeValue = this.multiple() ? activeIndexes : (activeIndexes[0] ?? null);
+    const activeIndexes = visibleItems
+      .filter((item) => item.expanded())
+      .map((item) => visibleItems.indexOf(item));
+    const activeValue = this.multiple()
+      ? activeIndexes
+      : (activeIndexes[0] ?? null);
     this.activeIndex.set(activeValue);
     this.expandedChange.emit({
       id: targetItem.itemId(),
@@ -74,15 +122,25 @@ export class AccordionComponent {
       originalEvent,
       index: visibleItems.indexOf(targetItem),
     });
-    const activeIds = visibleItems.filter(item => item.expanded()).map(item => item.itemId());
+    const activeIds = visibleItems
+      .filter((item) => item.expanded())
+      .map((item) => item.value() ?? item.itemId());
     this.value.set(this.multiple() ? activeIds : (activeIds[0] ?? ''));
-    const event = { id: targetItem.itemId(), expanded: isExpanded, originalEvent, index: visibleItems.indexOf(targetItem) };
+    const event = {
+      id: targetItem.itemId(),
+      expanded: isExpanded,
+      originalEvent,
+      index: visibleItems.indexOf(targetItem),
+    };
     (isExpanded ? this.onOpen : this.onClose).emit(event);
   }
 
   // ── Navegação por Teclado (WAI-ARIA Accordion Pattern) ─────
-  handleKeyNavigation(event: KeyboardEvent, currentItem: AccordionItemComponent): void {
-    const enabledItems = this.items().filter(item => !item.disabled());
+  handleKeyNavigation(
+    event: KeyboardEvent,
+    currentItem: AccordionItemComponent,
+  ): void {
+    const enabledItems = this.items().filter((item) => !item.disabled());
     const currentIndex = enabledItems.indexOf(currentItem);
 
     if (currentIndex === -1) return;
@@ -98,7 +156,9 @@ export class AccordionComponent {
       case 'ArrowUp':
         event.preventDefault();
         targetItem =
-          enabledItems[(currentIndex - 1 + enabledItems.length) % enabledItems.length];
+          enabledItems[
+            (currentIndex - 1 + enabledItems.length) % enabledItems.length
+          ];
         break;
 
       case 'Home':

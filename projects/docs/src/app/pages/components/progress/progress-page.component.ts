@@ -4,9 +4,10 @@ import {
   signal,
   computed,
   OnDestroy,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {
   ProgressBarComponent,
@@ -22,6 +23,7 @@ import {
   StepperType,
 } from '@ciag/orchestra/stepper';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 export type PlaygroundTab = 'bar' | 'circle' | 'segmented' | 'stepper';
 
@@ -29,6 +31,7 @@ export type PlaygroundTab = 'bar' | 'circle' | 'segmented' | 'stepper';
   selector: 'app-progress-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -42,8 +45,16 @@ export type PlaygroundTab = 'bar' | 'circle' | 'segmented' | 'stepper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressPageComponent implements OnDestroy {
+  private readonly route = inject(ActivatedRoute);
+
   // ── Active Playground Tab ─────────────────────────────────
   readonly activeTab = signal<PlaygroundTab>('bar');
+
+  constructor() {
+    if (this.route.snapshot.queryParamMap.get('tab') === 'stepper') {
+      this.activeTab.set('stepper');
+    }
+  }
 
   // ── 1. Progress Bar Playground Signals ────────────────────
   readonly barValue = signal<number>(65);
@@ -85,9 +96,24 @@ export class ProgressPageComponent implements OnDestroy {
   ]);
 
   readonly iconSteps = signal<StepItem[]>([
-    { id: 'personal', title: 'Personal info', subtitle: 'Lorem Ipsum is simply', icon: '👤' },
-    { id: 'social', title: 'Social accounts', subtitle: 'Lorem Ipsum is simply', icon: '🔗' },
-    { id: 'payment', title: 'Payment info', subtitle: 'Lorem Ipsum is simply', icon: '💳' },
+    {
+      id: 'personal',
+      title: 'Dados pessoais',
+      subtitle: 'Lorem Ipsum is simply',
+      icon: '👤',
+    },
+    {
+      id: 'social',
+      title: 'Contas sociais',
+      subtitle: 'Lorem Ipsum is simply',
+      icon: '🔗',
+    },
+    {
+      id: 'payment',
+      title: 'Dados de pagamento',
+      subtitle: 'Lorem Ipsum is simply',
+      icon: '💳',
+    },
   ]);
 
   readonly verticalProcessSteps = computed<StepItem[]>(() => [
@@ -114,7 +140,9 @@ export class ProgressPageComponent implements OnDestroy {
     if (this.stepperOrientation() === 'vertical') {
       return this.verticalProcessSteps();
     }
-    return this.stepperType() === 'numeric' ? this.numericSteps() : this.iconSteps();
+    return this.stepperType() === 'numeric'
+      ? this.numericSteps()
+      : this.iconSteps();
   });
 
   // ── Simulações de Progresso em Tempo Real ─────────────────
@@ -130,7 +158,7 @@ export class ProgressPageComponent implements OnDestroy {
       this.isSimulatingBar.set(true);
       this.barValue.set(0);
       this.barInterval = setInterval(() => {
-        this.barValue.update(v => {
+        this.barValue.update((v) => {
           if (v >= 100) {
             this.stopBarSimulation();
             return 100;
@@ -156,7 +184,7 @@ export class ProgressPageComponent implements OnDestroy {
       this.isSimulatingCircle.set(true);
       this.circleValue.set(0);
       this.circleInterval = setInterval(() => {
-        this.circleValue.update(v => {
+        this.circleValue.update((v) => {
           if (v >= 100) {
             this.stopCircleSimulation();
             return 100;
@@ -177,20 +205,20 @@ export class ProgressPageComponent implements OnDestroy {
 
   // Métodos de controle de etapas
   nextSegment(): void {
-    this.segCurrent.update(c => Math.min(this.segTotal(), c + 1));
+    this.segCurrent.update((c) => Math.min(this.segTotal(), c + 1));
   }
 
   prevSegment(): void {
-    this.segCurrent.update(c => Math.max(0, c - 1));
+    this.segCurrent.update((c) => Math.max(0, c - 1));
   }
 
   nextStep(): void {
     const max = this.activeStepperSteps().length - 1;
-    this.stepperCurrentIndex.update(idx => Math.min(max, idx + 1));
+    this.stepperCurrentIndex.update((idx) => Math.min(max, idx + 1));
   }
 
   prevStep(): void {
-    this.stepperCurrentIndex.update(idx => Math.max(0, idx - 1));
+    this.stepperCurrentIndex.update((idx) => Math.max(0, idx - 1));
   }
 
   resetStepper(): void {

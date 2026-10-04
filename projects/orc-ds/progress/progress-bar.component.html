@@ -1,16 +1,19 @@
 <div
   class="p-progressbar p-component orc-progress-bar-host"
-  [class]="'orc-progress-bar-host ' + styleClass()"
+  [class]="'orc-progress-bar-host ' + styleClass().trim()"
   [style]="style()"
   [class.orc-progress-bar--rounded]="rounded()"
   [class.orc-progress-bar--sm]="size() === 'sm'"
   [class.orc-progress-bar--md]="size() === 'md'"
   [class.orc-progress-bar--lg]="size() === 'lg'"
+  [class.orc-progress-bar--xl]="size() === 'xl'"
   [class.orc-progress-bar--primary]="variant() === 'primary'"
   [class.orc-progress-bar--neutral]="variant() === 'neutral'"
   [class.orc-progress-bar--success]="variant() === 'success'"
   [class.orc-progress-bar--warning]="variant() === 'warning'"
-  [class.orc-progress-bar--error]="variant() === 'error' || variant() === 'danger'"
+  [class.orc-progress-bar--error]="
+    variant() === 'error' || variant() === 'danger'
+  "
   [class.orc-progress-bar--indeterminate]="isIndeterminate()"
   [class.p-progressbar-determinate]="!isIndeterminate()"
   [class.p-progressbar-indeterminate]="isIndeterminate()"
@@ -20,32 +23,42 @@
   <!-- Header (Label & Valor numérico) -->
   @if (hasHeader()) {
     <div class="orc-progress-bar__header">
-      @if (label()) {
-        <span class="orc-progress-bar__label">{{ label() }}</span>
+      @if (labelText()) {
+        <span class="orc-progress-bar__label">{{ labelText() }}</span>
       }
       @if (showValue() && !isIndeterminate()) {
-        <span class="orc-progress-bar__value" [class]="'orc-progress-bar__value ' + valueStyleClass()">{{ formattedValue() }}</span>
+        <span
+          class="orc-progress-bar__value"
+          [class]="'orc-progress-bar__value ' + valueStyleClass().trim()"
+          >{{ formattedValue() }}</span
+        >
       }
     </div>
   }
 
   <!-- Segmented Bars Mode -->
-  @if (segmentArray().length > 0) {
+  @if (isSegmented()) {
     <div
       class="orc-progress-bar__segments"
       role="progressbar"
-      [attr.aria-valuenow]="currentSegment()"
-      [attr.aria-valuemin]="1"
+      [attr.aria-valuenow]="normalizedCurrentSegment()"
+      [attr.aria-valuemin]="0"
       [attr.aria-valuemax]="segmentArray().length"
-      [attr.aria-label]="ariaLabel() || label() || 'Etapas do progresso'"
-      [attr.aria-valuetext]="ariaValueText() || ('Etapa ' + currentSegment() + ' de ' + segmentArray().length)"
+      [attr.aria-label]="accessibleLabel()"
+      [attr.aria-valuetext]="accessibleValueText()"
     >
       @for (seg of segmentArray(); track seg) {
         <div
           class="orc-progress-bar__segment-item"
-          [class.orc-progress-bar__segment-item--active]="seg <= currentSegment()"
-          [style.background-color]="seg <= currentSegment() ? (effectiveColor() || null) : (customTrackColor() || null)"
-          [style.height]="customHeight() ? (customHeight() + (customHeight().toString().endsWith('px') ? '' : 'px')) : null"
+          [class.orc-progress-bar__segment-item--active]="
+            seg <= normalizedCurrentSegment()
+          "
+          [style.background-color]="
+            seg <= normalizedCurrentSegment()
+              ? effectiveColor() || null
+              : effectiveTrackColor() || null
+          "
+          [style.height]="customHeightStyle()"
         ></div>
       }
     </div>
@@ -57,27 +70,54 @@
       [attr.aria-valuenow]="isIndeterminate() ? null : normalizedValue()"
       [attr.aria-valuemin]="isIndeterminate() ? null : 0"
       [attr.aria-valuemax]="isIndeterminate() ? null : 100"
-      [attr.aria-label]="ariaLabel() || label() || 'Progresso'"
-      [attr.aria-valuetext]="ariaValueText() || (isIndeterminate() ? 'Carregando...' : formattedValue())"
-      [style.background-color]="customTrackColor() || null"
-      [style.height]="customHeight() ? (customHeight() + (customHeight().toString().endsWith('px') ? '' : 'px')) : null"
+      [attr.aria-label]="accessibleLabel()"
+      [attr.aria-valuetext]="
+        accessibleValueText() || (isIndeterminate() ? null : formattedValue())
+      "
+      [style.background-color]="effectiveTrackColor() || null"
+      [style.height]="customHeightStyle()"
     >
       <div
         class="p-progressbar-value p-progressbar-value-animate orc-progress-bar__fill"
-        [style.width]="isIndeterminate() ? null : (normalizedValue() + '%')"
+        [style.width]="isIndeterminate() ? null : normalizedValue() + '%'"
         [style.background-color]="effectiveColor() || null"
         [attr.data-pc-section]="'value'"
       >
-        <div class="p-progressbar-label orc-progress-bar__value" [class]="'p-progressbar-label orc-progress-bar__value ' + valueStyleClass()" [attr.data-pc-section]="'label'">
+        <div
+          class="p-progressbar-label orc-progress-bar__value"
+          [class]="
+            'p-progressbar-label orc-progress-bar__value ' +
+            valueStyleClass().trim()
+          "
+          [attr.data-pc-section]="'label'"
+        >
           @if (contentTemplate) {
-            <ng-container *ngTemplateOutlet="contentTemplate; context: { $implicit: value() }"></ng-container>
-          } @else if (showValue() && normalizedValue() !== 0) {
-            {{ normalizedValue() }}{{ unit() }}
+            <ng-container
+              *ngTemplateOutlet="
+                contentTemplate;
+                context: { $implicit: value() }
+              "
+            ></ng-container>
+          } @else if (showValue()) {
+            {{ formattedValue() }}
           }
         </div>
       </div>
-      @for (marker of markers(); track marker.value) {
-        <span class="orc-progress-bar__marker" [style.left.%]="marker.value" [attr.data-tone]="marker.tone || null" [attr.aria-label]="marker.label || ('Meta: ' + marker.value + '%')"><span class="orc-progress-bar__marker-line"></span>@if (marker.label) { <span class="orc-progress-bar__marker-label">{{ marker.label }}</span> }</span>
+      @for (marker of normalizedMarkers(); track $index) {
+        <span
+          class="orc-progress-bar__marker"
+          [style.left.%]="marker.value"
+          [attr.data-tone]="marker.tone || null"
+          [attr.role]="marker.label ? 'img' : 'presentation'"
+          [attr.aria-label]="marker.label || null"
+          [attr.aria-hidden]="marker.label ? null : 'true'"
+          ><span class="orc-progress-bar__marker-line"></span>
+          @if (marker.label) {
+            <span class="orc-progress-bar__marker-label">{{
+              marker.label
+            }}</span>
+          }
+        </span>
       }
     </div>
   }

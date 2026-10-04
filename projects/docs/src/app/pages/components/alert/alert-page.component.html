@@ -2,14 +2,18 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Feedback</div>
       <h1 class="section-title">Alert</h1>
       <p class="section-desc">
-        Mensagens contextuais para informar, alertar ou confirmar ações do usuário. Suporta múltiplos níveis de
-        severidade, variantes visuais, ações integradas e conformidade total com acessibilidade WCAG.
+        Mensagens contextuais para informar, alertar ou confirmar ações do
+        usuário. Suporta múltiplos níveis de severidade, variantes visuais,
+        ações integradas e anúncios semânticos de status ou alerta.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -18,12 +22,17 @@
         <div class="playground-grid">
           <!-- Preview Panel -->
           <div class="panel preview-panel">
-            <div class="panel__header">Live preview</div>
+            <div class="panel__header">Prévia ao vivo</div>
             <div class="panel__body">
               <div class="preview-box">
-                <orc-alert [title]="playgroundTitle()" [message]="playgroundMessage()" [severity]="playgroundSeverity()"
-                  [variant]="playgroundVariant()" [showIcon]="playgroundShowIcon()"
-                  [dismissible]="playgroundDismissible()" />
+                <orc-alert
+                  [title]="playgroundTitle()"
+                  [message]="playgroundMessage()"
+                  [severity]="playgroundSeverity()"
+                  [variant]="playgroundVariant()"
+                  [showIcon]="playgroundShowIcon()"
+                  [dismissible]="playgroundDismissible()"
+                />
               </div>
             </div>
           </div>
@@ -35,33 +44,71 @@
               <!-- Title Input -->
               <div class="control-group">
                 <label class="control-label">Título</label>
-                <input type="text" class="text-input" [value]="playgroundTitle()"
-                  (input)="playgroundTitle.set($any($event.target).value)" placeholder="Título do alerta...">
+                <input
+                  type="text"
+                  class="text-input"
+                  [value]="playgroundTitle()"
+                  (input)="playgroundTitle.set($any($event.target).value)"
+                  placeholder="Título do alerta..."
+                />
               </div>
 
               <!-- Message Input -->
               <div class="control-group">
                 <label class="control-label">Mensagem / Descrição</label>
-                <input type="text" class="text-input" [value]="playgroundMessage()"
-                  (input)="playgroundMessage.set($any($event.target).value)" placeholder="Mensagem do alerta...">
+                <input
+                  type="text"
+                  class="text-input"
+                  [value]="playgroundMessage()"
+                  (input)="playgroundMessage.set($any($event.target).value)"
+                  placeholder="Mensagem do alerta..."
+                />
               </div>
 
               <!-- Severity Selection -->
               <div class="control-group">
                 <label class="control-label">Severidade / Status</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundSeverity() === 'info'"
-                    (click)="playgroundSeverity.set('info')">Info</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundSeverity() === 'success'"
-                    (click)="playgroundSeverity.set('success')">Success</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundSeverity() === 'warning'"
-                    (click)="playgroundSeverity.set('warning')">Warning</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundSeverity() === 'error'"
-                    (click)="playgroundSeverity.set('error')">Error</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundSeverity() === 'info'
+                    "
+                    (click)="playgroundSeverity.set('info')"
+                  >
+                    Info
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundSeverity() === 'success'
+                    "
+                    (click)="playgroundSeverity.set('success')"
+                  >
+                    Success
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundSeverity() === 'warning'
+                    "
+                    (click)="playgroundSeverity.set('warning')"
+                  >
+                    Warning
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundSeverity() === 'error'
+                    "
+                    (click)="playgroundSeverity.set('error')"
+                  >
+                    Error
+                  </button>
                 </div>
               </div>
 
@@ -69,15 +116,36 @@
               <div class="control-group">
                 <label class="control-label">Variante visual</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundVariant() === 'subtle'"
-                    (click)="playgroundVariant.set('subtle')">Subtle / Soft</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundVariant() === 'outline'"
-                    (click)="playgroundVariant.set('outline')">Outline</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundVariant() === 'filled'"
-                    (click)="playgroundVariant.set('filled')">Filled</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'subtle'
+                    "
+                    (click)="playgroundVariant.set('subtle')"
+                  >
+                    Subtle / Soft
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'outline'
+                    "
+                    (click)="playgroundVariant.set('outline')"
+                  >
+                    Outline
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'filled'
+                    "
+                    (click)="playgroundVariant.set('filled')"
+                  >
+                    Filled
+                  </button>
                 </div>
               </div>
 
@@ -86,13 +154,23 @@
                 <label class="control-label">Opções</label>
                 <div class="checkbox-row">
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundShowIcon()"
-                      (change)="playgroundShowIcon.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundShowIcon()"
+                      (change)="
+                        playgroundShowIcon.set($any($event.target).checked)
+                      "
+                    />
                     <span>Exibir ícone</span>
                   </label>
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundDismissible()"
-                      (change)="playgroundDismissible.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundDismissible()"
+                      (change)="
+                        playgroundDismissible.set($any($event.target).checked)
+                      "
+                    />
                     <span>Dispensável (Fechar)</span>
                   </label>
                 </div>
@@ -106,8 +184,9 @@
       <section class="section">
         <h2 class="section-subtitle">Componentes planos</h2>
         <p class="section-text">
-          Comparação direta entre as variantes <strong>Subtle</strong> (fundo claro com cor correspondente) e
-          <strong>Outline</strong> (fundo limpo com borda sutil) para cada severidade.
+          Comparação direta entre as variantes <strong>Subtle</strong> (fundo
+          claro com cor correspondente) e <strong>Outline</strong> (fundo limpo
+          com borda sutil) para cada severidade.
         </p>
 
         <div class="alerts-stack">
@@ -115,10 +194,18 @@
           <div class="alert-group">
             <h3 class="group-title">Informação</h3>
             <div class="group-items">
-              <orc-alert variant="subtle" severity="info" title="Informação"
-                message="Este é um alerta informativo padrão para comunicar algo ao usuário." />
-              <orc-alert variant="outline" severity="info" title="Informação"
-                message="Este é um alerta informativo padrão para comunicar algo ao usuário." />
+              <orc-alert
+                variant="subtle"
+                severity="info"
+                title="Informação"
+                message="Este é um alerta informativo padrão para comunicar algo ao usuário."
+              />
+              <orc-alert
+                variant="outline"
+                severity="info"
+                title="Informação"
+                message="Este é um alerta informativo padrão para comunicar algo ao usuário."
+              />
             </div>
           </div>
 
@@ -126,10 +213,18 @@
           <div class="alert-group">
             <h3 class="group-title">Erro</h3>
             <div class="group-items">
-              <orc-alert variant="subtle" severity="error" title="Erro"
-                message="Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde." />
-              <orc-alert variant="outline" severity="error" title="Erro"
-                message="Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde." />
+              <orc-alert
+                variant="subtle"
+                severity="error"
+                title="Erro"
+                message="Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde."
+              />
+              <orc-alert
+                variant="outline"
+                severity="error"
+                title="Erro"
+                message="Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde."
+              />
             </div>
           </div>
 
@@ -137,10 +232,18 @@
           <div class="alert-group">
             <h3 class="group-title">Atenção</h3>
             <div class="group-items">
-              <orc-alert variant="subtle" severity="warning" title="Atenção"
-                message="Verifique as configurações antes de continuar. Alguns campos podem estar incompletos." />
-              <orc-alert variant="outline" severity="warning" title="Atenção"
-                message="Verifique as configurações antes de continuar. Alguns campos podem estar incompletos." />
+              <orc-alert
+                variant="subtle"
+                severity="warning"
+                title="Atenção"
+                message="Verifique as configurações antes de continuar. Alguns campos podem estar incompletos."
+              />
+              <orc-alert
+                variant="outline"
+                severity="warning"
+                title="Atenção"
+                message="Verifique as configurações antes de continuar. Alguns campos podem estar incompletos."
+              />
             </div>
           </div>
 
@@ -148,10 +251,18 @@
           <div class="alert-group">
             <h3 class="group-title">Sucesso</h3>
             <div class="group-items">
-              <orc-alert variant="subtle" severity="success" title="Sucesso"
-                message="Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado." />
-              <orc-alert variant="outline" severity="success" title="Sucesso"
-                message="Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado." />
+              <orc-alert
+                variant="subtle"
+                severity="success"
+                title="Sucesso"
+                message="Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado."
+              />
+              <orc-alert
+                variant="outline"
+                severity="success"
+                title="Sucesso"
+                message="Sua ação foi concluída com sucesso. Tudo está funcionando conforme esperado."
+              />
             </div>
           </div>
         </div>
@@ -161,18 +272,35 @@
       <section class="section">
         <h2 class="section-subtitle">Variante Filled</h2>
         <p class="section-text">
-          Utilizada para dar maior ênfase visual ou para alertas críticos e banners de destaque.
+          Utilizada para dar maior ênfase visual ou para alertas críticos e
+          banners de destaque.
         </p>
 
         <div class="alerts-stack">
-          <orc-alert variant="filled" severity="info" title="Informação importante"
-            message="O sistema passará por manutenção preventiva hoje às 23:00." />
-          <orc-alert variant="filled" severity="success" title="Assinatura ativada"
-            message="Seu plano Pro foi ativado com sucesso. Aproveite todos os recursos." />
-          <orc-alert variant="filled" severity="warning" title="Limite de armazenamento"
-            message="Você utilizou 92% da sua cota total de dados." />
-          <orc-alert variant="filled" severity="error" title="Falha de conexão"
-            message="Não foi possível sincronizar suas alterações com o servidor." />
+          <orc-alert
+            variant="filled"
+            severity="info"
+            title="Informação importante"
+            message="O sistema passará por manutenção preventiva hoje às 23:00."
+          />
+          <orc-alert
+            variant="filled"
+            severity="success"
+            title="Assinatura ativada"
+            message="Seu plano Pro foi ativado com sucesso. Aproveite todos os recursos."
+          />
+          <orc-alert
+            variant="filled"
+            severity="warning"
+            title="Limite de armazenamento"
+            message="Você utilizou 92% da sua cota total de dados."
+          />
+          <orc-alert
+            variant="filled"
+            severity="error"
+            title="Falha de conexão"
+            message="Não foi possível sincronizar suas alterações com o servidor."
+          />
         </div>
       </section>
 
@@ -182,32 +310,44 @@
           <div>
             <h2 class="section-subtitle">Alertas com ações e fechamento</h2>
             <p class="section-text">
-              Demonstração de alertas dispensáveis com evento <code>(onClose)</code> e botões de ação integrados via
+              Demonstração de alertas dispensáveis com evento
+              <code>(onClose)</code> e botões de ação integrados via
               <code>[alert-actions]</code>.
             </p>
           </div>
-          <button type="button" class="btn-secondary-action" (click)="resetDemoAlerts()">
+          <button
+            type="button"
+            class="btn-secondary-action"
+            (click)="resetDemoAlerts()"
+          >
             Resetar alertas
           </button>
         </div>
 
         <div class="alerts-stack">
           @for (alert of demoAlerts(); track alert.id) {
-          <orc-alert [severity]="alert.severity" [title]="alert.title" [message]="alert.message" [dismissible]="true"
-            (onClose)="removeAlert(alert.id)">
-            <div alert-actions>
-              <button type="button" class="alert-action-btn">
-                Detalhes
+            <orc-alert
+              [severity]="alert.severity"
+              [title]="alert.title"
+              [message]="alert.message"
+              [dismissible]="true"
+              (onClose)="removeAlert(alert.id)"
+            >
+              <div alert-actions>
+                <button type="button" class="alert-action-btn">Detalhes</button>
+              </div>
+            </orc-alert>
+          } @empty {
+            <div class="empty-state">
+              <p>Todos os alertas foram fechados.</p>
+              <button
+                type="button"
+                class="btn-primary-action"
+                (click)="resetDemoAlerts()"
+              >
+                Restaurar lista de alertas
               </button>
             </div>
-          </orc-alert>
-          } @empty {
-          <div class="empty-state">
-            <p>Todos os alertas foram fechados.</p>
-            <button type="button" class="btn-primary-action" (click)="resetDemoAlerts()">
-              Restaurar lista de alertas
-            </button>
-          </div>
           }
         </div>
       </section>
@@ -267,13 +407,15 @@
                 <td><code>role</code></td>
                 <td><code>string</code></td>
                 <td><code>'alert' | 'status'</code></td>
-                <td>Atributo ARIA role para conformidade de acessibilidade WCAG.</td>
+                <td>
+                  Atributo ARIA role usado para anunciar o alerta ou status.
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div class="table-container" style="margin-top: var(--space-6);">
+        <div class="table-container" style="margin-top: var(--space-6)">
           <table class="api-table">
             <thead>
               <tr>
@@ -286,7 +428,9 @@
               <tr>
                 <td><code>onClose</code></td>
                 <td><code>output&lt;MouseEvent&gt;</code></td>
-                <td>Emitido quando o botão de fechar é acionado pelo usuário.</td>
+                <td>
+                  Emitido quando o botão de fechar é acionado pelo usuário.
+                </td>
               </tr>
               <tr>
                 <td><code>closed</code></td>

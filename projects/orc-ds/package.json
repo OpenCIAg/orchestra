@@ -1,6 +1,6 @@
 {
   "name": "@ciag/orchestra",
-  "version": "20.1.0",
+  "version": "20.2.0",
   "description": "Enterprise Angular Component Framework and Design System",
   "keywords": [
     "angular",
@@ -16,15 +16,50 @@
     "type": "git",
     "url": "https://github.com/OpenCIAg/orchestra"
   },
-  "sideEffects": false,
+  "homepage": "https://orchestra.ciag.org.br",
+  "style": "styles/index.scss",
+  "sass": "styles/index.scss",
+  "sideEffects": [
+    "styles/**/*.scss",
+    "styles/**/*.css"
+  ],
+  "exports": {
+    "./styles": {
+      "sass": "./styles/index.scss",
+      "default": "./styles/index.scss"
+    },
+    "./styles/index": {
+      "sass": "./styles/index.scss",
+      "default": "./styles/index.scss"
+    },
+    "./styles/index.scss": {
+      "sass": "./styles/index.scss",
+      "default": "./styles/index.scss"
+    },
+    "./styles/core": {
+      "sass": "./styles/core.scss",
+      "default": "./styles/core.scss"
+    },
+    "./styles/core.scss": {
+      "sass": "./styles/core.scss",
+      "default": "./styles/core.scss"
+    },
+    "./styles/*": {
+      "sass": "./styles/*",
+      "default": "./styles/*"
+    }
+  },
   "peerDependencies": {
     "@angular/cdk": "^20.0.0",
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0",
     "@angular/forms": "^20.0.0",
+    "@angular/platform-browser": "^20.0.0",
+    "@angular/router": "^20.0.0",
     "rxjs": "^7.8.0"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "dompurify": "^3.4.15"
   }
 }

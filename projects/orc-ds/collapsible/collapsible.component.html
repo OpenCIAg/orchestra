@@ -1,7 +1,39 @@
-<section class="orc-collapsible" [class.orc-collapsible--open]="open()" [class.orc-collapsible--disabled]="disabled()">
-  <button type="button" class="orc-collapsible__trigger" [id]="triggerId()" [attr.aria-controls]="contentId()" [attr.aria-expanded]="open()" [disabled]="disabled()" (click)="toggle()">
-    <span class="orc-collapsible__heading"><strong>{{ title() }}</strong>@if (summary()) { <small>{{ summary() }}</small> }</span>
+<section
+  class="orc-collapsible"
+  [class.orc-collapsible--open]="open()"
+  [class.orc-collapsible--disabled]="disabled()"
+>
+  <button
+    type="button"
+    class="orc-collapsible__trigger"
+    [id]="triggerId()"
+    [attr.aria-label]="triggerAriaLabel()"
+    [attr.aria-controls]="shouldRenderContent() ? contentId() : null"
+    [attr.aria-expanded]="open()"
+    [disabled]="disabled()"
+    (click)="toggle()"
+  >
+    <span class="orc-collapsible__heading"
+      ><strong>{{ title() }}</strong>
+      @if (summary()) {
+        <small>{{ summary() }}</small>
+      }
+    </span>
     <span class="orc-collapsible__chevron" aria-hidden="true">⌄</span>
   </button>
-  @if (open() || !lazy()) { <div class="orc-collapsible__content" [id]="contentId()" role="region" [attr.aria-labelledby]="triggerId()" [hidden]="!open()"><ng-content /></div> }
+  @if (shouldRenderContent()) {
+    <div
+      class="orc-collapsible__content"
+      [id]="contentId()"
+      role="region"
+      [attr.aria-labelledby]="triggerId()"
+      [hidden]="!open()"
+    >
+      @if (lazyContent()) {
+        <ng-container *ngTemplateOutlet="lazyContent()" />
+      } @else {
+        <ng-content />
+      }
+    </div>
+  }
 </section>

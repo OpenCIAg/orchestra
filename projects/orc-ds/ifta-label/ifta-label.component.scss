@@ -1,0 +1,14 @@
+.orc-ifta {
+  position: relative;
+  display: block;
+  padding-top: 0.75rem;
+}
+.orc-ifta ::ng-deep > label {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0.65rem;
+  padding: 0 0.2rem;
+  background: var(--orc-component-surface);
+  color: var(--orc-component-text-muted);
+  font-size: 0.75rem;
+}

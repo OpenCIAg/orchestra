@@ -1,0 +1,23 @@
+<button
+  type="button"
+  class="p-togglebutton p-component orc-toggle-button"
+  [class]="'p-togglebutton p-component orc-toggle-button ' + styleClass()"
+  [class.orc-toggle-button--small]="resolvedSize() === 'sm'"
+  [class.orc-toggle-button--large]="resolvedSize() === 'lg'"
+  [class.orc-toggle-button--fluid]="fluid()"
+  [style]="style()"
+  [class.checked]="checked()"
+  [disabled]="disabled() || cvaDisabled()"
+  [attr.id]="inputId()"
+  [attr.tabindex]="tabindex()"
+  [autofocus]="autofocus()"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-labelledby]="ariaLabelledBy()"
+  [attr.aria-pressed]="checked()"
+  [attr.data-pc-name]="'togglebutton'"
+  (click)="toggle($event)"
+  (blur)="onBlur.emit(); onModelTouched()"
+>
+  {{ checked() ? onIcon() : offIcon() }}
+  {{ checked() ? onLabel() : offLabel() }}<ng-content />
+</button>

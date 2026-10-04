@@ -1,2 +1,2 @@
-export { MeterGroupComponent } from '@ciag/orchestra/p2';
-export type { MeterItem } from '@ciag/orchestra/p2';
+export { MeterGroupComponent } from './meter-group.component';
+export type { MeterItem } from './meter-group.component';

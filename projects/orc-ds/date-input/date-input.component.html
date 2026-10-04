@@ -1,0 +1,51 @@
+<label
+  class="orc-p2-date-input"
+  [class]="styleClass()"
+  [style]="style()"
+  [class.orc-p2-date-input--fluid]="fluid()"
+>
+  @if (label()) {
+    <span [id]="effectiveId() + '-label'"
+      >{{ label() }}
+      @if (required()) {
+        <sup>*</sup>
+      }
+    </span>
+  }
+  <input
+    class="orc-p2-date-input__native"
+    [id]="effectiveId()"
+    [name]="name()"
+    type="date"
+    [value]="value()"
+    [min]="minKey() || null"
+    [max]="maxKey() || null"
+    [required]="required()"
+    [disabled]="effectiveDisabled()"
+    [readonly]="readonly()"
+    [autofocus]="autofocus()"
+    [attr.tabindex]="tabindex()"
+    [attr.aria-label]="ariaLabel() || null"
+    [attr.aria-labelledby]="
+      ariaLabelledBy() || (label() ? effectiveId() + '-label' : null)
+    "
+    [attr.aria-describedby]="
+      error() || rangeInvalid()
+        ? effectiveId() + '-error'
+        : helperText()
+          ? effectiveId() + '-helper'
+          : null
+    "
+    [attr.aria-invalid]="!!(error() || rangeInvalid())"
+    (input)="onInput($event)"
+    (blur)="onTouched()"
+  />
+  @if (error() || rangeInvalid()) {
+    <small class="error" role="alert" [id]="effectiveId() + '-error'">{{
+      error() || invalidRangeMessage()
+    }}</small>
+  }
+  @if (!error() && !rangeInvalid() && helperText()) {
+    <small [id]="effectiveId() + '-helper'">{{ helperText() }}</small>
+  }
+</label>

@@ -1,0 +1,39 @@
+.orc-data-view {
+  display: block;
+}
+.orc-data-view header {
+  padding: 0.7rem;
+  border-bottom: 1px solid var(--orc-component-border);
+  font-weight: 700;
+}
+.content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+.content.list {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.content article {
+  padding: 0.8rem;
+  border: 1px solid var(--orc-component-border);
+  border-radius: 0.5rem;
+}
+.content > p {
+  color: var(--orc-component-text-muted);
+}
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 4rem;
+  margin: 0;
+  color: var(--orc-component-text-secondary);
+}
+.loading-icon {
+  display: inline-block;
+  min-width: 1em;
+  min-height: 1em;
+}

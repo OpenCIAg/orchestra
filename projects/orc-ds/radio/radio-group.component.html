@@ -9,7 +9,9 @@
   role="radiogroup"
   [attr.aria-labelledby]="label() ? labelId : null"
   [attr.aria-label]="!label() && ariaLabel() ? ariaLabel() : null"
-  [attr.aria-describedby]="isError() && errorMessage() ? errorId : (hint() ? hintId : null)"
+  [attr.aria-describedby]="
+    isError() && errorMessage() ? errorId : hint() ? hintId : null
+  "
   [attr.aria-invalid]="isError()"
 >
   <!-- Group Label / Header -->

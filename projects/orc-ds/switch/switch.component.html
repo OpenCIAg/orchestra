@@ -19,12 +19,22 @@
     *ngIf="labelPosition() === 'start' && hasContent()"
     (click)="toggle()"
   >
-    <span class="orc-switch__label" [id]="labelId()" *ngIf="label()">{{ label() }}</span>
+    <span class="orc-switch__label" [id]="labelId()" *ngIf="label().trim()">{{
+      label()
+    }}</span>
     <ng-content></ng-content>
-    <span class="orc-switch__description" [id]="descriptionId()" *ngIf="description() && !errorMessage()">
+    <span
+      class="orc-switch__description"
+      [id]="descriptionId()"
+      *ngIf="description().trim() && !errorMessage().trim()"
+    >
       {{ description() }}
     </span>
-    <span class="orc-switch__error" [id]="errorId()" *ngIf="errorMessage()">
+    <span
+      class="orc-switch__error"
+      [id]="errorId()"
+      *ngIf="errorMessage().trim()"
+    >
       {{ errorMessage() }}
     </span>
   </div>
@@ -37,13 +47,14 @@
     class="p-toggleswitch-input orc-switch__control"
     [id]="inputId() || effectiveId()"
     [attr.aria-checked]="checked()"
-    [disabled]="isDisabled() || readonly()"
+    [disabled]="isDisabled()"
     [attr.tabindex]="tabindex()"
     [autofocus]="autofocus()"
-    [attr.aria-label]="ariaLabel() || null"
-    [attr.aria-labelledby]="ariaLabelledBy() || computedAriaLabelledBy()"
+    [attr.aria-label]="computedAriaLabel()"
+    [attr.aria-labelledby]="computedAriaLabelledBy()"
     [attr.aria-describedby]="computedAriaDescribedBy()"
     [attr.aria-invalid]="isError()"
+    [attr.aria-required]="required() ? 'true' : null"
     [attr.aria-readonly]="readonly() ? 'true' : null"
     (click)="onToggle($event)"
     (focus)="onFocus.emit($event)"
@@ -60,12 +71,22 @@
     *ngIf="labelPosition() === 'end' && hasContent()"
     (click)="toggle()"
   >
-    <span class="orc-switch__label" [id]="labelId()" *ngIf="label()">{{ label() }}</span>
+    <span class="orc-switch__label" [id]="labelId()" *ngIf="label().trim()">{{
+      label()
+    }}</span>
     <ng-content></ng-content>
-    <span class="orc-switch__description" [id]="descriptionId()" *ngIf="description() && !errorMessage()">
+    <span
+      class="orc-switch__description"
+      [id]="descriptionId()"
+      *ngIf="description().trim() && !errorMessage().trim()"
+    >
       {{ description() }}
     </span>
-    <span class="orc-switch__error" [id]="errorId()" *ngIf="errorMessage()">
+    <span
+      class="orc-switch__error"
+      [id]="errorId()"
+      *ngIf="errorMessage().trim()"
+    >
       {{ errorMessage() }}
     </span>
   </div>

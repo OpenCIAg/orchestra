@@ -22,19 +22,21 @@
   line-height: 1.25rem; // 20px
   cursor: pointer;
   user-select: none;
-  transition: background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease);
+  transition:
+    background-color var(--transition-fast, 120ms ease),
+    color var(--transition-fast, 120ms ease);
 
   &:hover {
-    background-color: var(--orc-interactive-soft, var(--bg-subtle, #EDEDED));
+    background-color: var(--orc-interactive-soft, var(--bg-subtle, #ededed));
   }
 }
 
 :host(.is-active) .orc-option-container {
-  background-color: var(--orc-interactive-soft, var(--bg-subtle, #EDEDED));
+  background-color: var(--orc-interactive-soft, var(--bg-subtle, #ededed));
 }
 
 :host(.is-selected) .orc-option-container {
-  background-color: var(--orc-interactive-soft, var(--bg-subtle, #EDEDED));
+  background-color: var(--orc-interactive-soft, var(--bg-subtle, #ededed));
   font-weight: 500;
 }
 

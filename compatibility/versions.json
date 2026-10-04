@@ -4,34 +4,54 @@
     "angularRange": "^22.0.0",
     "primeNg": "22.0.0",
     "packageMajor": 22,
-    "node": "22"
+    "node": "22",
+    "role": "current",
+    "publish": "version-pr",
+    "distTag": "latest"
   },
   "v19": {
     "angular": "19",
     "angularRange": "^19.0.0",
     "primeNg": "19.1.4",
     "packageMajor": 19,
-    "node": "20"
+    "node": "20",
+    "role": "backport",
+    "publish": "tag",
+    "tagGlob": "v19.*",
+    "distTag": "angular19"
   },
   "v20": {
     "angular": "20",
     "angularRange": "^20.0.0",
     "primeNg": "20.4.0",
     "packageMajor": 20,
-    "node": "20"
+    "node": "20",
+    "role": "backport",
+    "publish": "tag",
+    "tagGlob": "v20.*",
+    "distTag": "angular20"
   },
   "v21": {
     "angular": "21",
     "angularRange": "^21.0.0",
     "primeNg": "21.1.9",
     "packageMajor": 21,
-    "node": "22"
+    "node": "22",
+    "role": "backport",
+    "publish": "tag",
+    "tagGlob": "v21.*",
+    "distTag": "angular21"
   },
   "v22": {
     "angular": "22",
     "angularRange": "^22.0.0",
     "primeNg": "22.0.0",
     "packageMajor": 22,
-    "node": "22"
+    "node": "22",
+    "role": "backport",
+    "publish": "patch-tag",
+    "tagGlob": "v22.*",
+    "distTag": "angular22",
+    "note": "Demoted to a frozen backport line (ticket #6): main is the sole publishing owner of Angular 22, so v22 may only publish patch releases (22.2.x) from v22.* tags under the angular22 dist-tag. No minor or major releases flow from this branch."
   }
 }

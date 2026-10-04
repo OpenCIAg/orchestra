@@ -1,0 +1,153 @@
+<section
+  class="orc-date-picker-calendar"
+  [class.orc-date-picker-calendar--embedded]="embedded()"
+  [attr.aria-label]="ariaLabel() || null"
+>
+  <header
+    [class.orc-date-picker-calendar__header--month-navigator]="monthNavigator()"
+    [class.orc-date-picker-calendar__header--year-navigator]="yearNavigator()"
+  >
+    <button
+      type="button"
+      [disabled]="disabled()"
+      [attr.aria-label]="
+        previousMonthLabel() ||
+        (view() === 'date' ? 'Previous month' : 'Previous year')
+      "
+      (click)="shift(-1)"
+    >
+      ‹
+    </button>
+    <strong
+      [id]="titleId"
+      aria-live="polite"
+      [class.orc-date-picker-calendar__title--hidden]="
+        monthNavigator() || yearNavigator()
+      "
+      >{{ monthLabel() }}</strong
+    >
+    @if (monthNavigator()) {
+      <label class="orc-date-picker-calendar__navigator">
+        <span class="orc-date-picker-calendar__visually-hidden">Month</span>
+        <select
+          [value]="monthDate().getMonth()"
+          aria-label="Select month"
+          [disabled]="disabled()"
+          (change)="selectMonth($event)"
+        >
+          @for (month of months(); track month.index) {
+            <option [value]="month.index">{{ month.label }}</option>
+          }
+        </select>
+      </label>
+    }
+    @if (yearNavigator()) {
+      <label class="orc-date-picker-calendar__navigator">
+        <span class="orc-date-picker-calendar__visually-hidden">Year</span>
+        <select
+          [value]="monthDate().getFullYear()"
+          aria-label="Select year"
+          [disabled]="disabled()"
+          (change)="selectYear($event)"
+        >
+          @for (year of navigatorYears(); track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+      </label>
+    }
+    <button
+      type="button"
+      [disabled]="disabled()"
+      [attr.aria-label]="
+        nextMonthLabel() || (view() === 'date' ? 'Next month' : 'Next year')
+      "
+      (click)="shift(1)"
+    >
+      ›
+    </button>
+  </header>
+  @if (view() === 'date') {
+    <table class="days" role="grid" [attr.aria-labelledby]="titleId">
+      <thead>
+        <tr class="weekdays">
+          @if (showWeek()) {
+            <th scope="col" class="week-heading">
+              {{ weekLabel() || 'Week' }}
+            </th>
+          }
+          @for (day of weekdayLabels(); track $index) {
+            <th scope="col">{{ day }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (week of weeks(); track week[0].iso) {
+          <tr>
+            @if (showWeek()) {
+              <th
+                scope="row"
+                class="week-number"
+                [attr.aria-label]="
+                  (weekLabel() || 'Week') + ' ' + week[0].weekNumber
+                "
+              >
+                {{ week[0].weekNumber }}
+              </th>
+            }
+            @for (day of week; track day.iso) {
+              <td [attr.aria-selected]="isSelected(day.iso)">
+                @if (showOtherMonths() || day.inCurrentMonth) {
+                  <button
+                    type="button"
+                    [disabled]="disabled() || day.disabled"
+                    [class.outside]="!day.inCurrentMonth"
+                    [class.unavailable]="day.disabled"
+                    [class.selected]="isSelected(day.iso)"
+                    [attr.aria-label]="day.label"
+                    [attr.data-date]="day.iso"
+                    [attr.data-active]="day.iso === activeDate()"
+                    [tabIndex]="day.iso === activeDate() ? 0 : -1"
+                    (keydown)="onDayKeydown($event, day.iso)"
+                    (click)="select(day.iso)"
+                  >
+                    {{ day.day }}
+                  </button>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <table
+      role="grid"
+      [class]="view() === 'month' ? 'month-grid' : 'year-grid'"
+      [attr.aria-labelledby]="titleId"
+    >
+      <tbody>
+        @for (row of periodRows(); track $index) {
+          <tr>
+            @for (period of row; track period.iso) {
+              <td [attr.aria-selected]="period.selected">
+                <button
+                  type="button"
+                  class="period-button"
+                  [disabled]="!period.selection"
+                  [class.selected]="period.selected"
+                  [attr.data-active]="period.iso === activePeriod()"
+                  [tabIndex]="period.iso === activePeriod() ? 0 : -1"
+                  (keydown)="onPeriodKeydown($event)"
+                  (click)="select(period.iso)"
+                >
+                  {{ period.label }}
+                </button>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

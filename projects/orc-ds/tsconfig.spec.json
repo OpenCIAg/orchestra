@@ -2,16 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": [
-      "jasmine"
-    ],
+    "types": ["jasmine"],
     "paths": {
       "@ciag/orchestra": ["./public-api.ts"],
       "@ciag/orchestra/*": ["./*"]
     }
   },
-  "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
-  ]
+  "include": ["**/*.spec.ts", "**/*.d.ts"]
 }

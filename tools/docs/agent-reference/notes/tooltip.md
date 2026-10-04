@@ -1,0 +1,1 @@
+The tooltip API is a directive. Attach `[orcTooltip]`, `[appTooltip]`, or `[uiTooltip]` with a string. A tooltip is for short supplementary text, never critical information or a form error. `dialog` aliases `ModalComponent`; `pagination` aliases `PaginatorComponent`; `text-input` aliases `InputComponent` as `TextInputComponent`.

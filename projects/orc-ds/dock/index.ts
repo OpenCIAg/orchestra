@@ -1,2 +1,2 @@
-export { DockComponent } from '@ciag/orchestra/p2';
-export type { DockItem } from '@ciag/orchestra/p2';
+export { DockComponent } from './dock.component';
+export type { DockItem } from './dock.component';

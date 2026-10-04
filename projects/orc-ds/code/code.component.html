@@ -1,0 +1,16 @@
+<div class="orc-p2-code">
+  <div class="toolbar">
+    @if (language()) {
+      <span class="language" [attr.aria-label]="'Language: ' + language()">{{
+        language()
+      }}</span>
+    }
+    <button type="button" (click)="copy()">
+      {{ copied() ? copiedLabel() : copyLabel() }}
+    </button>
+  </div>
+  <pre><code [attr.data-language]="language() || null">{{ code() }}</code></pre>
+  <span class="sr-only" aria-live="polite" aria-atomic="true">{{
+    copyStatus()
+  }}</span>
+</div>

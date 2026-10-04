@@ -1,0 +1,76 @@
+:host {
+  display: inline-block;
+}
+
+.orc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.6rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--orc-surface-muted, #f1f5f9);
+  color: var(--orc-text-secondary, #475569);
+
+  &--rounded {
+    border-radius: 999px;
+  }
+
+  &--primary,
+  &--info {
+    background: var(--orc-interactive-soft, #eff6ff);
+    color: var(--orc-interactive-hover, #1d4ed8);
+  }
+
+  &--secondary {
+    background: var(--orc-surface-muted, #f1f5f9);
+    color: var(--orc-text-secondary, #475569);
+    border: 1px solid var(--orc-border-default, #d9d9d9);
+  }
+
+  &--contrast {
+    background: var(--bg-inverse, #141414);
+    color: var(--text-inverse, #fff);
+  }
+
+  &--success {
+    background: var(--orc-status-success-bg, #dcfce7);
+    color: var(--orc-status-success-fg, #166534);
+  }
+
+  &--warning {
+    background: var(--orc-status-warning-bg, #fef3c7);
+    color: var(--orc-status-warning-fg, #92400e);
+  }
+
+  &--danger {
+    background: var(--orc-status-danger-bg, #fee2e2);
+    color: var(--orc-status-danger-fg, #991b1b);
+  }
+}
+
+.orc-tag > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: var(--orc-action-target-size, 1.5rem);
+  min-inline-size: var(--orc-action-target-size, 1.5rem);
+  block-size: var(--orc-action-target-size, 1.5rem);
+  min-block-size: var(--orc-action-target-size, 1.5rem);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--orc-interactive, #1c6aed);
+    outline-offset: 2px;
+  }
+}

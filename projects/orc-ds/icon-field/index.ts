@@ -1,1 +1,1 @@
-export { IconFieldComponent } from '@ciag/orchestra/p2';
+export { IconFieldComponent } from './icon-field.component';

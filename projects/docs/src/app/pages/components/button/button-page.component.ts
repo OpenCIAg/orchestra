@@ -2,13 +2,20 @@ import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ButtonComponent, IconButtonComponent, ButtonVariant, ButtonSize } from '@ciag/orchestra/button';
+import {
+  ButtonComponent,
+  IconButtonComponent,
+  ButtonVariant,
+  ButtonSize,
+} from '@ciag/orchestra/button';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-button-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -47,7 +54,7 @@ export class ButtonPageComponent {
   readonly clickCount = signal<number>(0);
 
   onButtonClick(): void {
-    this.clickCount.update(c => c + 1);
+    this.clickCount.update((c) => c + 1);
   }
 
   resetClicks(): void {

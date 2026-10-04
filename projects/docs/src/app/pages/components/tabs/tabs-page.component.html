@@ -2,14 +2,18 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Navegação</div>
       <h1 class="section-title">Tabs</h1>
       <p class="section-desc">
-        Navegação em abas para alternar entre conteúdos dentro do mesmo contexto, com conformidade total ao padrão
-        WAI-ARIA Tabs e suporte fluido a teclado e temas.
+        Navegação em abas para alternar entre conteúdos dentro do mesmo
+        contexto, com roles de tablist, tab e tabpanel e suporte a teclado e
+        temas.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -18,28 +22,48 @@
         <div class="playground-grid">
           <!-- Preview Panel -->
           <div class="panel preview-panel">
-            <div class="panel__header">Live preview</div>
+            <div class="panel__header">Prévia ao vivo</div>
             <div class="panel__body">
               <div class="preview-box">
-                <orc-tab-group [(selectedIndex)]="playgroundIndex" [variant]="playgroundVariant()"
-                  [size]="playgroundSize()" [fullWidth]="playgroundFullWidth()">
-                  <orc-tab label="Visão Geral" [icon]="playgroundHasIcons() ? 'home' : ''">
+                <orc-tab-group
+                  [(selectedIndex)]="playgroundIndex"
+                  [variant]="playgroundVariant()"
+                  [size]="playgroundSize()"
+                  [fullWidth]="playgroundFullWidth()"
+                >
+                  <orc-tab
+                    label="Visão Geral"
+                    [icon]="playgroundHasIcons() ? 'home' : ''"
+                  >
                     <div class="tab-demo-content">
                       <h3>Painel de Visão Geral</h3>
-                      <p>Conteúdo da primeira aba projetado nativamente via <code>ng-content</code>. Alterne entre as
-                        abas para verificar a animação e acessibilidade.</p>
+                      <p>
+                        Conteúdo da primeira aba projetado nativamente via
+                        <code>ng-content</code>. Alterne entre as abas para
+                        verificar a animação e acessibilidade.
+                      </p>
                     </div>
                   </orc-tab>
 
-                  <orc-tab label="Configurações" [icon]="playgroundHasIcons() ? 'settings' : ''">
+                  <orc-tab
+                    label="Configurações"
+                    [icon]="playgroundHasIcons() ? 'settings' : ''"
+                  >
                     <div class="tab-demo-content">
                       <h3>Painel de Configurações</h3>
-                      <p>Personalize opções e preferências contextuais de forma isolada nesta aba.</p>
+                      <p>
+                        Personalize opções e preferências contextuais de forma
+                        isolada nesta aba.
+                      </p>
                     </div>
                   </orc-tab>
 
-                  <orc-tab label="Alertas" [icon]="playgroundHasIcons() ? 'warning' : ''"
-                    [disabled]="playgroundDisabledTab()" [badge]="3">
+                  <orc-tab
+                    label="Alertas"
+                    [icon]="playgroundHasIcons() ? 'warning' : ''"
+                    [disabled]="playgroundDisabledTab()"
+                    [badge]="3"
+                  >
                     <div class="tab-demo-content">
                       <h3>Central de Alertas</h3>
                       <p>Lista de notificações e avisos de sistema.</p>
@@ -58,11 +82,24 @@
               <div class="control-group">
                 <label class="control-label">Variante visual</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundVariant() === 'line'"
-                    (click)="playgroundVariant.set('line')">Line (Padrão)</button>
-                  <button type="button" class="segment-btn"
-                    [class.segment-btn--active]="playgroundVariant() === 'filled'"
-                    (click)="playgroundVariant.set('filled')">Filled (Alternativa)</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundVariant() === 'line'"
+                    (click)="playgroundVariant.set('line')"
+                  >
+                    Line (Padrão)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'filled'
+                    "
+                    (click)="playgroundVariant.set('filled')"
+                  >
+                    Filled (Alternativa)
+                  </button>
                 </div>
               </div>
 
@@ -70,12 +107,30 @@
               <div class="control-group">
                 <label class="control-label">Tamanho</label>
                 <div class="segmented-control">
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'sm'"
-                    (click)="playgroundSize.set('sm')">SM (36px)</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'md'"
-                    (click)="playgroundSize.set('md')">MD (44px)</button>
-                  <button type="button" class="segment-btn" [class.segment-btn--active]="playgroundSize() === 'lg'"
-                    (click)="playgroundSize.set('lg')">LG (52px)</button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'sm'"
+                    (click)="playgroundSize.set('sm')"
+                  >
+                    SM (36px)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'md'"
+                    (click)="playgroundSize.set('md')"
+                  >
+                    MD (44px)
+                  </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="playgroundSize() === 'lg'"
+                    (click)="playgroundSize.set('lg')"
+                  >
+                    LG (52px)
+                  </button>
                 </div>
               </div>
 
@@ -84,20 +139,35 @@
                 <label class="control-label">Opções</label>
                 <div class="checkbox-row">
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundHasIcons()"
-                      (change)="playgroundHasIcons.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundHasIcons()"
+                      (change)="
+                        playgroundHasIcons.set($any($event.target).checked)
+                      "
+                    />
                     <span>Exibir ícones</span>
                   </label>
 
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundFullWidth()"
-                      (change)="playgroundFullWidth.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundFullWidth()"
+                      (change)="
+                        playgroundFullWidth.set($any($event.target).checked)
+                      "
+                    />
                     <span>Largura total (fullWidth)</span>
                   </label>
 
                   <label class="toggle-label">
-                    <input type="checkbox" [checked]="playgroundDisabledTab()"
-                      (change)="playgroundDisabledTab.set($any($event.target).checked)">
+                    <input
+                      type="checkbox"
+                      [checked]="playgroundDisabledTab()"
+                      (change)="
+                        playgroundDisabledTab.set($any($event.target).checked)
+                      "
+                    />
                     <span>Desabilitar aba "Alertas"</span>
                   </label>
                 </div>
@@ -113,16 +183,22 @@
 
         <!-- Default -->
         <div class="figma-block">
-          <div class="figma-block__label">Default</div>
+          <div class="figma-block__label">Padrão</div>
           <orc-tab-group [(selectedIndex)]="demoIndexDefault" variant="line">
             <orc-tab label="Default">
-              <div class="tab-demo-content">Conteúdo da primeira aba (Default).</div>
+              <div class="tab-demo-content">
+                Conteúdo da primeira aba (Default).
+              </div>
             </orc-tab>
             <orc-tab label="Default">
-              <div class="tab-demo-content">Conteúdo da segunda aba (Default).</div>
+              <div class="tab-demo-content">
+                Conteúdo da segunda aba (Default).
+              </div>
             </orc-tab>
             <orc-tab label="Default">
-              <div class="tab-demo-content">Conteúdo da terceira aba (Default).</div>
+              <div class="tab-demo-content">
+                Conteúdo da terceira aba (Default).
+              </div>
             </orc-tab>
           </orc-tab-group>
         </div>
@@ -131,14 +207,20 @@
         <div class="figma-block" style="margin-top: var(--space-6)">
           <div class="figma-block__label">Com icons</div>
           <orc-tab-group [(selectedIndex)]="demoIndexIcons" variant="line">
-            <orc-tab label="Icon" icon="home">
-              <div class="tab-demo-content">Conteúdo da aba com ícone Home.</div>
+            <orc-tab label="Ícone" icon="home">
+              <div class="tab-demo-content">
+                Conteúdo da aba com ícone Home.
+              </div>
             </orc-tab>
-            <orc-tab label="Icon" icon="settings">
-              <div class="tab-demo-content">Conteúdo da aba com ícone Settings.</div>
+            <orc-tab label="Ícone" icon="settings">
+              <div class="tab-demo-content">
+                Conteúdo da aba com ícone Settings.
+              </div>
             </orc-tab>
-            <orc-tab label="Icon" icon="warning">
-              <div class="tab-demo-content">Conteúdo da aba com ícone Warning.</div>
+            <orc-tab label="Ícone" icon="warning">
+              <div class="tab-demo-content">
+                Conteúdo da aba com ícone Warning.
+              </div>
             </orc-tab>
           </orc-tab-group>
         </div>
@@ -147,13 +229,13 @@
         <div class="figma-block" style="margin-top: var(--space-6)">
           <div class="figma-block__label">Desabilitado</div>
           <orc-tab-group [(selectedIndex)]="demoIndexDisabled" variant="line">
-            <orc-tab label="Icon" icon="home">
+            <orc-tab label="Ícone" icon="home">
               <div class="tab-demo-content">Conteúdo da aba ativa.</div>
             </orc-tab>
-            <orc-tab label="Icon" icon="settings" [disabled]="true">
+            <orc-tab label="Ícone" icon="settings" [disabled]="true">
               <div class="tab-demo-content">Aba desabilitada.</div>
             </orc-tab>
-            <orc-tab label="Icon" [disabled]="true">
+            <orc-tab label="Ícone" [disabled]="true">
               <div class="tab-demo-content">Aba desabilitada.</div>
             </orc-tab>
           </orc-tab-group>
@@ -164,13 +246,19 @@
           <div class="figma-block__label">Tab alternativa</div>
           <orc-tab-group [(selectedIndex)]="demoIndexFilled" variant="filled">
             <orc-tab label="Label 1">
-              <div class="tab-demo-content">Conteúdo do Label 1 no formato pílula.</div>
+              <div class="tab-demo-content">
+                Conteúdo do Label 1 no formato pílula.
+              </div>
             </orc-tab>
             <orc-tab label="Label 2">
-              <div class="tab-demo-content">Conteúdo do Label 2 no formato pílula.</div>
+              <div class="tab-demo-content">
+                Conteúdo do Label 2 no formato pílula.
+              </div>
             </orc-tab>
             <orc-tab label="Label 3">
-              <div class="tab-demo-content">Conteúdo do Label 3 no formato pílula.</div>
+              <div class="tab-demo-content">
+                Conteúdo do Label 3 no formato pílula.
+              </div>
             </orc-tab>
           </orc-tab-group>
         </div>
@@ -193,31 +281,53 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>selectedIndex</code> <span class="badge-tag badge-tag--model">model</span></td>
+                <td>
+                  <code>selectedIndex</code>
+                  <span class="badge-tag badge-tag--model">model</span>
+                </td>
                 <td><code>number</code></td>
                 <td><code>0</code></td>
-                <td>Índice zero-based da aba ativa (two-way binding via Signals).</td>
+                <td>
+                  Índice zero-based da aba ativa (two-way binding via Signals).
+                </td>
               </tr>
               <tr>
-                <td><code>variant</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>variant</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'line' | 'filled'</code></td>
                 <td><code>'line'</code></td>
-                <td>Estilo visual das abas (linha inferior ou formato pílula preenchida).</td>
+                <td>
+                  Estilo visual das abas (linha inferior ou formato pílula
+                  preenchida).
+                </td>
               </tr>
               <tr>
-                <td><code>size</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>size</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'sm' | 'md' | 'lg'</code></td>
                 <td><code>'md'</code></td>
                 <td>Dimensão das abas (36px, 44px ou 52px).</td>
               </tr>
               <tr>
-                <td><code>fullWidth</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>fullWidth</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
-                <td>Se verdadeiro, estende as abas igualmente por toda a largura.</td>
+                <td>
+                  Se verdadeiro, estende as abas igualmente por toda a largura.
+                </td>
               </tr>
               <tr>
-                <td><code>tabChange</code> <span class="badge-tag badge-tag--output">output</span></td>
+                <td>
+                  <code>tabChange</code>
+                  <span class="badge-tag badge-tag--output">output</span>
+                </td>
                 <td><code>TabChangeEvent</code></td>
                 <td>—</td>
                 <td>Evento emitido quando o usuário troca de aba.</td>
@@ -226,7 +336,9 @@
           </table>
         </div>
 
-        <h3 class="api-subheading" style="margin-top: var(--space-6)"><code>&lt;app-tab&gt;</code></h3>
+        <h3 class="api-subheading" style="margin-top: var(--space-6)">
+          <code>&lt;app-tab&gt;</code>
+        </h3>
         <div class="table-container">
           <table class="api-table">
             <thead>
@@ -239,31 +351,49 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>label</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>label</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
                 <td>Texto do rótulo da aba.</td>
               </tr>
               <tr>
-                <td><code>icon</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>icon</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
-                <td>Ícone SVG exibido junto ao rótulo ('home', 'settings', 'warning', etc.).</td>
+                <td>
+                  Ícone SVG exibido junto ao rótulo ('home', 'settings',
+                  'warning', etc.).
+                </td>
               </tr>
               <tr>
-                <td><code>iconPosition</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>iconPosition</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>'start' | 'end'</code></td>
                 <td><code>'start'</code></td>
                 <td>Posicionamento do ícone em relação ao texto da aba.</td>
               </tr>
               <tr>
-                <td><code>disabled</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>disabled</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
                 <td>Desabilita a interação e aplica estilo opaco à aba.</td>
               </tr>
               <tr>
-                <td><code>badge</code> <span class="badge-tag badge-tag--input">input</span></td>
+                <td>
+                  <code>badge</code>
+                  <span class="badge-tag badge-tag--input">input</span>
+                </td>
                 <td><code>string | number</code></td>
                 <td><code>undefined</code></td>
                 <td>Contador ou tag exibida ao lado do rótulo da aba.</td>

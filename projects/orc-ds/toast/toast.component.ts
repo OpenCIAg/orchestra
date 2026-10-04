@@ -8,6 +8,8 @@ import {
   effect,
   DestroyRef,
   inject,
+  ElementRef,
+  untracked,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastItem } from './toast.types';
@@ -20,13 +22,16 @@ import { ToastItem } from './toast.types';
   styleUrl: './toast.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'orc-toast-host',
+    class: 'orc-toast-host',
     '(mouseenter)': 'onMouseEnter()',
     '(mouseleave)': 'onMouseLeave()',
+    '(focusin)': 'onFocusIn()',
+    '(focusout)': 'onFocusOut($event)',
   },
 })
 export class ToastComponent {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
 
   // ── Inputs (Signals API) ──────────────────────────────────
   readonly toast = input.required<ToastItem>();
@@ -35,10 +40,17 @@ export class ToastComponent {
   readonly dismiss = output<string>();
   readonly actionClick = output<ToastItem>();
   readonly onClose = output<{ originalEvent: Event; message: ToastItem }>();
-  readonly onClick = output<{ originalEvent: MouseEvent; message: ToastItem }>();
+  readonly onClick = output<{
+    originalEvent: MouseEvent;
+    message: ToastItem;
+  }>();
 
   // ── Estados Internos Reativos ─────────────────────────────
   readonly isHovered = signal<boolean>(false);
+  readonly isFocused = signal(false);
+  readonly isPaused = computed(
+    () => this.isFocused() || (this.isHovered() && this.toast().pauseOnHover),
+  );
   readonly isExiting = signal<boolean>(false);
   readonly progress = signal<number>(100);
 
@@ -46,7 +58,8 @@ export class ToastComponent {
   private dismissTimeout: ReturnType<typeof setTimeout> | null = null;
   private remainingTime = 0;
   private totalDuration = 0;
-  private lastTick = 0;
+  private deadline = 0;
+  private expiryTimeout: ReturnType<typeof setTimeout> | null = null;
 
   // ── Sinais Computados ─────────────────────────────────────
   readonly computedRole = computed<string>(() => {
@@ -71,7 +84,7 @@ export class ToastComponent {
     // Inicialização do timer reativo de auto-dismiss com suporte a hover pause
     effect(() => {
       const item = this.toast();
-      this.initTimer(item);
+      untracked(() => this.initTimer(item));
     });
 
     this.destroyRef.onDestroy(() => {
@@ -82,43 +95,55 @@ export class ToastComponent {
 
   private initTimer(item: ToastItem): void {
     this.clearTimer();
+    this.clearDismissTimeout();
+    this.isExiting.set(false);
     this.totalDuration = item.duration;
     this.remainingTime = item.duration;
     this.progress.set(100);
+    this.resumeTimer();
+  }
 
-    if (this.totalDuration <= 0 || !isFinite(this.totalDuration)) {
-      return; // Sem auto-dismiss
-    }
-
-    this.lastTick = Date.now();
-    const intervalMs = 25;
-
-    this.timerInterval = setInterval(() => {
-      if (this.isHovered() && item.pauseOnHover) {
-        this.lastTick = Date.now();
-        return;
-      }
-
-      const now = Date.now();
-      const elapsed = now - this.lastTick;
-      this.lastTick = now;
-
-      this.remainingTime -= elapsed;
-      const pct = Math.max(0, (this.remainingTime / this.totalDuration) * 100);
-      this.progress.set(pct);
-
-      if (this.remainingTime <= 0) {
-        this.clearTimer();
+  private resumeTimer(): void {
+    if (
+      this.isPaused() ||
+      this.isExiting() ||
+      this.totalDuration <= 0 ||
+      !Number.isFinite(this.totalDuration)
+    )
+      return;
+    this.clearTimer();
+    this.deadline = Date.now() + this.remainingTime;
+    this.expiryTimeout = setTimeout(
+      () => {
+        this.progress.set(0);
         this.handleClose();
-      }
-    }, intervalMs);
+      },
+      Math.max(0, this.remainingTime),
+    );
+    // Plain notifications need only one deadline timer, with no polling or
+    // reactive updates. Visual progress runs only while it can be seen.
+    if (this.hasProgressBar())
+      this.timerInterval = setInterval(() => {
+        this.progress.set(
+          Math.max(
+            0,
+            ((this.deadline - Date.now()) / this.totalDuration) * 100,
+          ),
+        );
+      }, 50);
+  }
+
+  private pauseTimer(): void {
+    if (this.expiryTimeout !== null)
+      this.remainingTime = Math.max(0, this.deadline - Date.now());
+    this.clearTimer();
   }
 
   private clearTimer(): void {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-      this.timerInterval = null;
-    }
+    if (this.timerInterval !== null) clearInterval(this.timerInterval);
+    this.timerInterval = null;
+    if (this.expiryTimeout !== null) clearTimeout(this.expiryTimeout);
+    this.expiryTimeout = null;
   }
 
   private clearDismissTimeout(): void {
@@ -130,11 +155,28 @@ export class ToastComponent {
 
   onMouseEnter(): void {
     this.isHovered.set(true);
+    if (this.isPaused()) this.pauseTimer();
   }
 
   onMouseLeave(): void {
+    const wasPaused = this.isPaused();
     this.isHovered.set(false);
-    this.lastTick = Date.now();
+    if (wasPaused && !this.isPaused()) this.resumeTimer();
+  }
+
+  onFocusIn(): void {
+    this.isFocused.set(true);
+    this.pauseTimer();
+  }
+
+  onFocusOut(event: FocusEvent): void {
+    if (
+      event.relatedTarget &&
+      this.element.nativeElement.contains(event.relatedTarget as Node)
+    )
+      return;
+    this.isFocused.set(false);
+    if (!this.isPaused()) this.resumeTimer();
   }
 
   handleClose(originalEvent: Event = new Event('close')): void {
@@ -151,7 +193,9 @@ export class ToastComponent {
     }, 200);
   }
 
-  handleToastClick(event: MouseEvent): void { this.onClick.emit({ originalEvent: event, message: this.toast() }); }
+  handleToastClick(event: MouseEvent): void {
+    this.onClick.emit({ originalEvent: event, message: this.toast() });
+  }
 
   handleAction(): void {
     if (this.toast().action) {

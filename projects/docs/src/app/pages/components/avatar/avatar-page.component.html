@@ -2,14 +2,19 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Data Display</div>
       <h1 class="section-title">Avatar</h1>
       <p class="section-desc">
-        Representação visual de usuários, equipes e entidades com suporte a fotos, fallback automático para iniciais ou ícone padrão,
-        indicador de status em tempo real, múltiplos formatos e empilhamento em grupo com contador excedente.
+        Representação visual de usuários, equipes e entidades com suporte a
+        fotos, fallback automático para iniciais ou ícone padrão, indicador de
+        status em tempo real, múltiplos formatos e empilhamento em grupo com
+        contador excedente.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -18,13 +23,15 @@
         <div class="playground-grid">
           <!-- Preview Panel -->
           <div class="panel preview-panel">
-            <div class="panel__header">Live preview</div>
+            <div class="panel__header">Prévia ao vivo</div>
             <div class="panel__body">
               <div class="preview-box">
                 <orc-avatar
                   [src]="playgroundMode() === 'image' ? playgroundSrc() : ''"
                   [name]="playgroundMode() !== 'icon' ? playgroundName() : ''"
-                  [initials]="playgroundMode() === 'initials' ? playgroundInitials() : ''"
+                  [initials]="
+                    playgroundMode() === 'initials' ? playgroundInitials() : ''
+                  "
                   [size]="playgroundSize()"
                   [shape]="playgroundShape()"
                   [status]="playgroundStatus()"
@@ -54,7 +61,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundMode() === 'initials'"
+                    [class.segment-btn--active]="
+                      playgroundMode() === 'initials'
+                    "
                     (click)="setPlaygroundMode('initials')"
                   >
                     Iniciais
@@ -124,7 +133,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundShape() === 'circular'"
+                    [class.segment-btn--active]="
+                      playgroundShape() === 'circular'
+                    "
                     (click)="playgroundShape.set('circular')"
                   >
                     Circular
@@ -132,7 +143,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundShape() === 'rounded'"
+                    [class.segment-btn--active]="
+                      playgroundShape() === 'rounded'
+                    "
                     (click)="playgroundShape.set('rounded')"
                   >
                     Arredondado
@@ -155,7 +168,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundStatus() === undefined"
+                    [class.segment-btn--active]="
+                      playgroundStatus() === undefined
+                    "
                     (click)="playgroundStatus.set(undefined)"
                   >
                     Nenhum
@@ -163,7 +178,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundStatus() === 'online'"
+                    [class.segment-btn--active]="
+                      playgroundStatus() === 'online'
+                    "
                     (click)="playgroundStatus.set('online')"
                   >
                     Online
@@ -187,7 +204,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundStatus() === 'offline'"
+                    [class.segment-btn--active]="
+                      playgroundStatus() === 'offline'
+                    "
                     (click)="playgroundStatus.set('offline')"
                   >
                     Offline
@@ -202,7 +221,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundColorVariant() === 'default'"
+                    [class.segment-btn--active]="
+                      playgroundColorVariant() === 'default'
+                    "
                     (click)="playgroundColorVariant.set('default')"
                   >
                     Padrão
@@ -210,7 +231,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundColorVariant() === 'primary'"
+                    [class.segment-btn--active]="
+                      playgroundColorVariant() === 'primary'
+                    "
                     (click)="playgroundColorVariant.set('primary')"
                   >
                     Azul
@@ -218,7 +241,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundColorVariant() === 'royal'"
+                    [class.segment-btn--active]="
+                      playgroundColorVariant() === 'royal'
+                    "
                     (click)="playgroundColorVariant.set('royal')"
                   >
                     Royal
@@ -226,7 +251,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundColorVariant() === 'orange'"
+                    [class.segment-btn--active]="
+                      playgroundColorVariant() === 'orange'
+                    "
                     (click)="playgroundColorVariant.set('orange')"
                   >
                     Laranja
@@ -234,7 +261,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundColorVariant() === 'purple'"
+                    [class.segment-btn--active]="
+                      playgroundColorVariant() === 'purple'
+                    "
                     (click)="playgroundColorVariant.set('purple')"
                   >
                     Roxo
@@ -255,7 +284,11 @@
               </div>
 
               <div class="control-actions">
-                <button type="button" class="btn btn--secondary" (click)="resetPlayground()">
+                <button
+                  type="button"
+                  class="btn btn--secondary"
+                  (click)="resetPlayground()"
+                >
                   Restaurar padrões
                 </button>
               </div>
@@ -342,7 +375,9 @@
             ></orc-avatar>
             <div class="avatar-card__info">
               <span class="avatar-card__name">Juliana Lima</span>
-              <span class="avatar-card__role">Formato arredondado (rounded)</span>
+              <span class="avatar-card__role"
+                >Formato arredondado (rounded)</span
+              >
             </div>
           </div>
         </div>
@@ -353,17 +388,31 @@
         <h2 class="section-subtitle">Grupo de avatares (AvatarGroup)</h2>
         <div class="group-showcase-card">
           <div class="group-demo-item">
-            <div class="group-demo-title">Padrão do Figma (iniciais coloridas + contador excedente)</div>
-            <orc-avatar-group size="md" [items]="teamMembers" [excessCount]="5"></orc-avatar-group>
+            <div class="group-demo-title">
+              Padrão do Figma (iniciais coloridas + contador excedente)
+            </div>
+            <orc-avatar-group
+              size="md"
+              [items]="teamMembers"
+              [excessCount]="5"
+            ></orc-avatar-group>
           </div>
 
           <div class="group-demo-item">
-            <div class="group-demo-title">Grupo com fotos e status via items com limite max="3"</div>
-            <orc-avatar-group size="lg" [items]="sampleUsers" [max]="3"></orc-avatar-group>
+            <div class="group-demo-title">
+              Grupo com fotos e status via items com limite max="3"
+            </div>
+            <orc-avatar-group
+              size="lg"
+              [items]="sampleUsers"
+              [max]="3"
+            ></orc-avatar-group>
           </div>
 
           <div class="group-demo-item">
-            <div class="group-demo-title">Grupo via projeção de conteúdo com ng-content</div>
+            <div class="group-demo-title">
+              Grupo via projeção de conteúdo com ng-content
+            </div>
             <orc-avatar-group size="md">
               <orc-avatar initials="AS" colorVariant="primary"></orc-avatar>
               <orc-avatar initials="CL" colorVariant="royal"></orc-avatar>
@@ -379,8 +428,12 @@
         <h2 class="section-subtitle">Exemplos de código</h2>
         <div class="code-blocks">
           <div class="code-card">
-            <div class="code-card__title">1. Uso individual com imagem e status</div>
-            <pre class="code-card__snippet"><code>&lt;!-- Avatar com foto e indicador de status online --&gt;
+            <div class="code-card__title">
+              1. Uso individual com imagem e status
+            </div>
+            <pre
+              class="code-card__snippet"
+            ><code>&lt;!-- Avatar com foto e indicador de status online --&gt;
 &lt;app-avatar
   src="https://exemplo.com/foto.jpg"
   name="Juliana Lima"
@@ -397,8 +450,12 @@
           </div>
 
           <div class="code-card">
-            <div class="code-card__title">2. Grupo de avatares com sobreposição e contador excedente</div>
-            <pre class="code-card__snippet"><code>&lt;!-- Grupo automático com lista e contador excedente --&gt;
+            <div class="code-card__title">
+              2. Grupo de avatares com sobreposição e contador excedente
+            </div>
+            <pre
+              class="code-card__snippet"
+            ><code>&lt;!-- Grupo automático com lista e contador excedente --&gt;
 &lt;app-avatar-group
   size="md"
   [items]="teamMembers"
@@ -431,58 +488,105 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>src</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>src</code> <span class="badge badge--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
-                <td>URL da foto do usuário. Se falhar ou não for informada, faz fallback para iniciais.</td>
+                <td>
+                  URL da foto do usuário. Se falhar ou não for informada, faz
+                  fallback para iniciais.
+                </td>
               </tr>
               <tr>
-                <td><code>name</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>name</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
-                <td>Nome completo usado para extrair iniciais e acessibilidade <code>aria-label</code>.</td>
+                <td>
+                  Nome completo usado para extrair iniciais e acessibilidade
+                  <code>aria-label</code>.
+                </td>
               </tr>
               <tr>
-                <td><code>initials</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>initials</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
                 <td>Texto explícito de iniciais (ex: 'AS', 'CL', '+5').</td>
               </tr>
               <tr>
-                <td><code>size</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>size</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>'xs' | 'sm' | 'md' | 'lg' | 'xl'</code></td>
                 <td><code>'md'</code></td>
-                <td>Dimensões: xs (24px), sm (32px), md (40px), lg (48px), xl (64px).</td>
+                <td>
+                  Dimensões: xs (24px), sm (32px), md (40px), lg (48px), xl
+                  (64px).
+                </td>
               </tr>
               <tr>
-                <td><code>shape</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>shape</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>'circular' | 'rounded' | 'square'</code></td>
                 <td><code>'circular'</code></td>
                 <td>Formato geométrico do avatar.</td>
               </tr>
               <tr>
-                <td><code>status</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>status</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>'online' | 'offline' | 'busy' | 'away'</code></td>
                 <td><code>undefined</code></td>
-                <td>Indicador de status do usuário exibido no canto do avatar.</td>
+                <td>
+                  Indicador de status do usuário exibido no canto do avatar.
+                </td>
               </tr>
               <tr>
-                <td><code>colorVariant</code> <span class="badge badge--input">input</span></td>
-                <td><code>'default' | 'primary' | 'royal' | 'orange' | 'purple' | 'auto'</code></td>
+                <td>
+                  <code>colorVariant</code>
+                  <span class="badge badge--input">input</span>
+                </td>
+                <td>
+                  <code
+                    >'default' | 'primary' | 'royal' | 'orange' | 'purple' |
+                    'auto'</code
+                  >
+                </td>
                 <td><code>'default'</code></td>
-                <td>Cor de fundo para iniciais (baseada nas cores da marca Orchestra).</td>
+                <td>
+                  Cor de fundo para iniciais (baseada nas cores da marca
+                  Orchestra).
+                </td>
               </tr>
               <tr>
-                <td><code>bordered</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>bordered</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
                 <td>Aplica borda branca de separação para sobreposições.</td>
               </tr>
               <tr>
-                <td><code>imageError</code> <span class="badge badge--output">output</span></td>
+                <td>
+                  <code>imageError</code>
+                  <span class="badge badge--output">output</span>
+                </td>
                 <td><code>Event</code></td>
                 <td>—</td>
-                <td>Disparado caso a URL da imagem não consiga ser carregada.</td>
+                <td>
+                  Disparado caso a URL da imagem não consiga ser carregada.
+                </td>
               </tr>
             </tbody>
           </table>

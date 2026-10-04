@@ -1,0 +1,72 @@
+.orc-p2-multi-select {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  color: var(--orc-component-text);
+}
+.orc-p2-multi-select.fluid {
+  width: 100%;
+}
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 2.5rem;
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--orc-component-control);
+  color: var(--orc-component-text);
+  text-align: left;
+}
+.options {
+  max-height: 15rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * The detached panel root. The visual chrome moved here from `.options`
+ * when the panel started rendering through the shared list-picker overlay:
+ * the CDK pane owns positioning, so the list scrolls inside the panel.
+ */
+.orc-p2-multi-select-panel {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid var(--orc-component-border-strong);
+  border-radius: 0.5rem;
+  background: var(--orc-component-surface-raised);
+  color: var(--orc-component-text);
+  box-shadow: var(--orc-component-overlay-shadow);
+}
+li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+}
+li:hover,
+li.is-active {
+  background: var(--orc-component-interactive-soft);
+}
+li.is-disabled {
+  color: var(--orc-component-text-muted);
+  cursor: not-allowed;
+}
+.check {
+  width: 1rem;
+  color: var(--orc-component-interactive);
+}
+.empty {
+  color: var(--orc-component-text-muted);
+  cursor: default;
+}

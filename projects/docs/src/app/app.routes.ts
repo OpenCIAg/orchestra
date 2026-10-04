@@ -19,26 +19,36 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/home/home.component').then(m => m.HomeComponent),
-    title: 'Components — Orchestra Design System',
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
+    title: 'Componentes — Orchestra Design System',
     data: {
-      description: 'Browse Orchestra Angular components with live examples, variants, accessibility states, and TypeScript APIs.',
+      description:
+        'Explore os componentes Angular da Orchestra com exemplos ao vivo, variantes, estados de acessibilidade e APIs TypeScript.',
     },
+  },
+  {
+    path: 'sandbox/inside-modal',
+    loadComponent: () =>
+      import('./pages/sandbox/inside-modal-sandbox.component').then(
+        (m) => m.InsideModalSandboxComponent,
+      ),
+    title: 'Sandbox — overlays dentro do modal (temporário)',
   },
   {
     path: 'docs',
     loadComponent: () =>
-      import('./pages/docs/docs.component').then(m => m.DocsComponent),
-    title: 'Documentation — Orchestra Design System',
+      import('./pages/docs/docs.component').then((m) => m.DocsComponent),
+    title: 'Documentação — Orchestra Design System',
     data: {
-      description: 'Read the Orchestra Design System documentation for tokens, typography, accessibility, brand principles, and component usage.',
+      description:
+        'Documentação do Orchestra Design System: tokens, tipografia, acessibilidade, princípios de marca e uso dos componentes.',
     },
   },
   {
     path: 'components/otp-input',
     loadComponent: () =>
       import('./pages/components/otp-input/otp-input-page.component').then(
-        m => m.OtpInputPageComponent
+        (m) => m.OtpInputPageComponent,
       ),
     title: 'OTP Input — Orchestra',
   },
@@ -46,7 +56,7 @@ export const routes: Routes = [
     path: 'components/card',
     loadComponent: () =>
       import('./pages/components/card/card-page.component').then(
-        m => m.CardPageComponent
+        (m) => m.CardPageComponent,
       ),
     title: 'Card — Orchestra',
   },
@@ -54,7 +64,7 @@ export const routes: Routes = [
     path: 'components/radio',
     loadComponent: () =>
       import('./pages/components/radio/radio-page.component').then(
-        m => m.RadioPageComponent
+        (m) => m.RadioPageComponent,
       ),
     title: 'Radio — Orchestra',
   },
@@ -62,7 +72,7 @@ export const routes: Routes = [
     path: 'components/checkbox',
     loadComponent: () =>
       import('./pages/components/checkbox/checkbox-page.component').then(
-        m => m.CheckboxPageComponent
+        (m) => m.CheckboxPageComponent,
       ),
     title: 'Checkbox — Orchestra',
   },
@@ -70,7 +80,7 @@ export const routes: Routes = [
     path: 'components/switch',
     loadComponent: () =>
       import('./pages/components/switch/switch-page.component').then(
-        m => m.SwitchPageComponent
+        (m) => m.SwitchPageComponent,
       ),
     title: 'Switch — Orchestra',
   },
@@ -78,7 +88,7 @@ export const routes: Routes = [
     path: 'components/avatar',
     loadComponent: () =>
       import('./pages/components/avatar/avatar-page.component').then(
-        m => m.AvatarPageComponent
+        (m) => m.AvatarPageComponent,
       ),
     title: 'Avatar — Orchestra',
   },
@@ -86,7 +96,7 @@ export const routes: Routes = [
     path: 'components/accordion',
     loadComponent: () =>
       import('./pages/components/accordion/accordion-page.component').then(
-        m => m.AccordionPageComponent
+        (m) => m.AccordionPageComponent,
       ),
     title: 'Accordion — Orchestra',
   },
@@ -94,7 +104,7 @@ export const routes: Routes = [
     path: 'components/badge',
     loadComponent: () =>
       import('./pages/components/badge/badge-page.component').then(
-        m => m.BadgePageComponent
+        (m) => m.BadgePageComponent,
       ),
     title: 'Badge — Orchestra',
   },
@@ -102,7 +112,7 @@ export const routes: Routes = [
     path: 'components/button',
     loadComponent: () =>
       import('./pages/components/button/button-page.component').then(
-        m => m.ButtonPageComponent
+        (m) => m.ButtonPageComponent,
       ),
     title: 'Button — Orchestra',
   },
@@ -110,7 +120,7 @@ export const routes: Routes = [
     path: 'components/tabs',
     loadComponent: () =>
       import('./pages/components/tabs/tabs-page.component').then(
-        m => m.TabsPageComponent
+        (m) => m.TabsPageComponent,
       ),
     title: 'Tabs — Orchestra',
   },
@@ -118,7 +128,7 @@ export const routes: Routes = [
     path: 'components/breadcrumb',
     loadComponent: () =>
       import('./pages/components/breadcrumb/breadcrumb-page.component').then(
-        m => m.BreadcrumbPageComponent
+        (m) => m.BreadcrumbPageComponent,
       ),
     title: 'Breadcrumb — Orchestra',
   },
@@ -126,7 +136,7 @@ export const routes: Routes = [
     path: 'components/paginator',
     loadComponent: () =>
       import('./pages/components/paginator/paginator-page.component').then(
-        m => m.PaginatorPageComponent
+        (m) => m.PaginatorPageComponent,
       ),
     title: 'Paginator — Orchestra',
   },
@@ -134,7 +144,7 @@ export const routes: Routes = [
     path: 'components/tooltip',
     loadComponent: () =>
       import('./pages/components/tooltip/tooltip-page.component').then(
-        m => m.TooltipPageComponent
+        (m) => m.TooltipPageComponent,
       ),
     title: 'Tooltip — Orchestra',
   },
@@ -142,15 +152,15 @@ export const routes: Routes = [
     path: 'components/spinner',
     loadComponent: () =>
       import('./pages/components/spinner/spinner-page.component').then(
-        m => m.SpinnerPageComponent
+        (m) => m.SpinnerPageComponent,
       ),
-    title: 'Spinner / Loading — Orchestra',
+    title: 'Spinner / Carregamento — Orchestra',
   },
   {
     path: 'components/skeleton',
     loadComponent: () =>
       import('./pages/components/skeleton/skeleton-page.component').then(
-        m => m.SkeletonPageComponent
+        (m) => m.SkeletonPageComponent,
       ),
     title: 'Skeleton — Orchestra',
   },
@@ -158,7 +168,7 @@ export const routes: Routes = [
     path: 'components/alert',
     loadComponent: () =>
       import('./pages/components/alert/alert-page.component').then(
-        m => m.AlertPageComponent
+        (m) => m.AlertPageComponent,
       ),
     title: 'Alert — Orchestra',
   },
@@ -166,15 +176,15 @@ export const routes: Routes = [
     path: 'components/toast',
     loadComponent: () =>
       import('./pages/components/toast/toast-page.component').then(
-        m => m.ToastPageComponent
+        (m) => m.ToastPageComponent,
       ),
-    title: 'Toast / Notifications — Orchestra',
+    title: 'Toast / Notificações — Orchestra',
   },
   {
     path: 'components/progress',
     loadComponent: () =>
       import('./pages/components/progress/progress-page.component').then(
-        m => m.ProgressPageComponent
+        (m) => m.ProgressPageComponent,
       ),
     title: 'Progress — Orchestra',
   },
@@ -182,15 +192,39 @@ export const routes: Routes = [
     path: 'components/table',
     loadComponent: () =>
       import('./pages/components/table/table-page.component').then(
-        m => m.TablePageComponent
+        (m) => m.TablePageComponent,
       ),
     title: 'Table — Orchestra',
+  },
+  {
+    path: 'components/pick-list',
+    loadComponent: () =>
+      import('./pages/components/pick-list/pick-list-page.component').then(
+        (m) => m.PickListPageComponent,
+      ),
+    title: 'PickList — Orchestra',
+  },
+  {
+    path: 'components/order-list',
+    loadComponent: () =>
+      import('./pages/components/order-list/order-list-page.component').then(
+        (m) => m.OrderListPageComponent,
+      ),
+    title: 'OrderList — Orchestra',
+  },
+  {
+    path: 'components/galleria',
+    loadComponent: () =>
+      import('./pages/components/galleria/galleria-page.component').then(
+        (m) => m.GalleriaPageComponent,
+      ),
+    title: 'Galleria — Orchestra',
   },
   {
     path: 'components/input',
     loadComponent: () =>
       import('./pages/components/input/input-page.component').then(
-        m => m.InputPageComponent
+        (m) => m.InputPageComponent,
       ),
     title: 'Input & Textarea — Orchestra',
   },
@@ -198,7 +232,7 @@ export const routes: Routes = [
     path: 'components/chip-input',
     loadComponent: () =>
       import('./pages/components/chip-input/chip-input-page.component').then(
-        m => m.ChipInputPageComponent
+        (m) => m.ChipInputPageComponent,
       ),
     title: 'Chip Input — Orchestra',
   },
@@ -206,7 +240,7 @@ export const routes: Routes = [
     path: 'components/rating',
     loadComponent: () =>
       import('./pages/components/rating/rating-page.component').then(
-        m => m.RatingPageComponent
+        (m) => m.RatingPageComponent,
       ),
     title: 'Rating — Orchestra',
   },
@@ -214,7 +248,7 @@ export const routes: Routes = [
     path: 'components/select',
     loadComponent: () =>
       import('./pages/components/select/select-page.component').then(
-        m => m.SelectPageComponent
+        (m) => m.SelectPageComponent,
       ),
     title: 'Select & Dropdown — Orchestra',
   },
@@ -227,7 +261,7 @@ export const routes: Routes = [
     path: 'components/slider',
     loadComponent: () =>
       import('./pages/components/slider/slider-page.component').then(
-        m => m.SliderPageComponent
+        (m) => m.SliderPageComponent,
       ),
     title: 'Slider — Orchestra',
   },
@@ -235,15 +269,15 @@ export const routes: Routes = [
     path: 'components/modal',
     loadComponent: () =>
       import('./pages/components/modal/modal-page.component').then(
-        m => m.ModalPageComponent
+        (m) => m.ModalPageComponent,
       ),
-    title: 'Modal / Dialog — Orchestra',
+    title: 'Modal / Diálogo — Orchestra',
   },
   {
     path: 'components/file-uploader',
     loadComponent: () =>
       import('./pages/components/file-uploader/file-uploader-page.component').then(
-        m => m.FileUploaderPageComponent
+        (m) => m.FileUploaderPageComponent,
       ),
     title: 'File Uploader — Orchestra',
   },
@@ -251,9 +285,9 @@ export const routes: Routes = [
     path: 'components/:componentId',
     loadComponent: () =>
       import('./pages/components/component-doc/component-doc-page.component').then(
-        m => m.ComponentDocPageComponent
+        (m) => m.ComponentDocPageComponent,
       ),
-    title: 'Component API — Orchestra',
+    title: 'API do Componente — Orchestra',
   },
   {
     path: '**',

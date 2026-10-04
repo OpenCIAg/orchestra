@@ -2,14 +2,19 @@
   <div class="layout">
     <main class="content">
       <div class="back-link-container">
-        <a routerLink="/" class="back-link">← Voltar para a página inicial</a>
+        <a routerLink="/" class="back-link"
+          ><orc-icon name="arrow_back" size="sm" aria-hidden="true" /> Voltar
+          para a página inicial</a
+        >
       </div>
 
       <div class="section-eyebrow">Componentes · Inputs</div>
       <h1 class="section-title">Switch / Toggle</h1>
       <p class="section-desc">
-        Controle de alternância de estado binário (ativado/desativado) com animação fluida, suporte nativo a formulários reativos,
-        Signals API (`model()`, `input()`, `output()`), múltiplos tamanhos, posicionamento de rótulo e total conformidade com WCAG 2.1 AA.
+        Controle de alternância de estado binário (ativado/desativado) com
+        animação fluida, suporte nativo a formulários reativos, Signals API
+        (`model()`, `input()`, `output()`), múltiplos tamanhos, posicionamento
+        de rótulo e interação por teclado.
       </p>
 
       <!-- ── PLAYGROUND INTERATIVO ───────────────────────────── -->
@@ -18,7 +23,7 @@
         <div class="playground-grid">
           <!-- Preview Panel -->
           <div class="panel preview-panel">
-            <div class="panel__header">Live preview</div>
+            <div class="panel__header">Prévia ao vivo</div>
             <div class="panel__body">
               <div class="preview-box">
                 <orc-switch
@@ -29,7 +34,9 @@
                   [description]="playgroundDescription()"
                   [disabled]="playgroundDisabled()"
                   [error]="playgroundError()"
-                  [errorMessage]="playgroundError() ? playgroundErrorMessage() : ''"
+                  [errorMessage]="
+                    playgroundError() ? playgroundErrorMessage() : ''
+                  "
                 ></orc-switch>
               </div>
             </div>
@@ -95,12 +102,16 @@
 
               <!-- Label Position Control -->
               <div class="control-group">
-                <label class="control-label">Posição do rótulo (labelPosition)</label>
+                <label class="control-label"
+                  >Posição do rótulo (labelPosition)</label
+                >
                 <div class="segmented-control">
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundLabelPosition() === 'end'"
+                    [class.segment-btn--active]="
+                      playgroundLabelPosition() === 'end'
+                    "
                     (click)="playgroundLabelPosition.set('end')"
                   >
                     À direita (end)
@@ -108,7 +119,9 @@
                   <button
                     type="button"
                     class="segment-btn"
-                    [class.segment-btn--active]="playgroundLabelPosition() === 'start'"
+                    [class.segment-btn--active]="
+                      playgroundLabelPosition() === 'start'
+                    "
                     (click)="playgroundLabelPosition.set('start')"
                   >
                     À esquerda (start)
@@ -176,7 +189,9 @@
 
               <!-- Description Input -->
               <div class="control-group">
-                <label class="control-label">Texto de apoio (description)</label>
+                <label class="control-label"
+                  >Texto de apoio (description)</label
+                >
                 <input
                   type="text"
                   class="text-input"
@@ -187,7 +202,11 @@
               </div>
 
               <div class="control-actions">
-                <button type="button" class="btn btn--secondary" (click)="resetPlayground()">
+                <button
+                  type="button"
+                  class="btn btn--secondary"
+                  (click)="resetPlayground()"
+                >
                   Restaurar padrões
                 </button>
               </div>
@@ -206,7 +225,10 @@
             </div>
             <div class="state-card__info">
               <span class="state-card__name">Ativado (checked)</span>
-              <span class="state-card__desc">Fundo #1C6AED, thumb branco à direita, 32×18.4px (Figma 382:5036)</span>
+              <span class="state-card__desc"
+                >Fundo #1C6AED, thumb branco à direita, 32×18.4px (Figma
+                382:5036)</span
+              >
             </div>
           </div>
 
@@ -216,27 +238,41 @@
             </div>
             <div class="state-card__info">
               <span class="state-card__name">Desativado (unchecked)</span>
-              <span class="state-card__desc">Fundo #D9D9D9 cinza neutro, thumb branco à esquerda</span>
+              <span class="state-card__desc"
+                >Fundo #D9D9D9 cinza neutro, thumb branco à esquerda</span
+              >
             </div>
           </div>
 
           <div class="state-card">
             <div class="state-card__preview">
-              <orc-switch [checked]="true" [disabled]="true" label="Desabilitado ativo"></orc-switch>
+              <orc-switch
+                [checked]="true"
+                [disabled]="true"
+                label="Desabilitado ativo"
+              ></orc-switch>
             </div>
             <div class="state-card__info">
               <span class="state-card__name">Desabilitado e ativo</span>
-              <span class="state-card__desc">Opacidade 0.5, cursor not-allowed, cores atenuadas</span>
+              <span class="state-card__desc"
+                >Opacidade 0.5, cursor not-allowed, cores atenuadas</span
+              >
             </div>
           </div>
 
           <div class="state-card">
             <div class="state-card__preview">
-              <orc-switch [checked]="false" [disabled]="true" label="Desabilitado inativo"></orc-switch>
+              <orc-switch
+                [checked]="false"
+                [disabled]="true"
+                label="Desabilitado inativo"
+              ></orc-switch>
             </div>
             <div class="state-card__info">
               <span class="state-card__name">Desabilitado e inativo</span>
-              <span class="state-card__desc">Fundo cinza claro atenuado com cursor bloqueado</span>
+              <span class="state-card__desc"
+                >Fundo cinza claro atenuado com cursor bloqueado</span
+              >
             </div>
           </div>
 
@@ -250,7 +286,10 @@
             </div>
             <div class="state-card__info">
               <span class="state-card__name">Validação de erro</span>
-              <span class="state-card__desc">Trilha com cor #FB2C36 e mensagem vinculada por aria-describedby</span>
+              <span class="state-card__desc"
+                >Trilha com cor #FB2C36 e mensagem vinculada por
+                aria-describedby</span
+              >
             </div>
           </div>
 
@@ -264,7 +303,9 @@
             </div>
             <div class="state-card__info">
               <span class="state-card__name">Rótulo à esquerda (start)</span>
-              <span class="state-card__desc">Texto posicionado antes do controle switch</span>
+              <span class="state-card__desc"
+                >Texto posicionado antes do controle switch</span
+              >
             </div>
           </div>
         </div>
@@ -276,28 +317,44 @@
         <div class="sizes-showcase">
           <div class="size-item">
             <span class="size-item__badge">Pequeno (sm)</span>
-            <orc-switch size="sm" [checked]="true" label="Modo compacto"></orc-switch>
+            <orc-switch
+              size="sm"
+              [checked]="true"
+              label="Modo compacto"
+            ></orc-switch>
           </div>
           <div class="size-item">
             <span class="size-item__badge">Médio (md - padrão Figma)</span>
-            <orc-switch size="md" [checked]="true" label="Tamanho regular (32px)"></orc-switch>
+            <orc-switch
+              size="md"
+              [checked]="true"
+              label="Tamanho regular (32px)"
+            ></orc-switch>
           </div>
           <div class="size-item">
             <span class="size-item__badge">Grande (lg)</span>
-            <orc-switch size="lg" [checked]="true" label="Tamanho expandido"></orc-switch>
+            <orc-switch
+              size="lg"
+              [checked]="true"
+              label="Tamanho expandido"
+            ></orc-switch>
           </div>
         </div>
       </section>
 
       <!-- ── REACTIVE FORMS DEMO ─────────────────────────────── -->
       <section class="section">
-        <h2 class="section-subtitle">Integração com formulários reativos (ControlValueAccessor)</h2>
+        <h2 class="section-subtitle">
+          Integração com formulários reativos (ControlValueAccessor)
+        </h2>
         <div class="demo-card">
-          <div class="demo-card__header">
-            Preferências e segurança da conta
-          </div>
+          <div class="demo-card__header">Preferências e segurança da conta</div>
           <div class="demo-card__body">
-            <form [formGroup]="form" (ngSubmit)="onSubmitForm()" class="reactive-form">
+            <form
+              [formGroup]="form"
+              (ngSubmit)="onSubmitForm()"
+              class="reactive-form"
+            >
               <div class="form-item">
                 <orc-switch
                   formControlName="autoSave"
@@ -311,8 +368,14 @@
                   formControlName="twoFactorAuth"
                   label="Autenticação em dois fatores (2FA)"
                   description="Exige código de verificação no login para maior segurança"
-                  [error]="formSubmitted() && form.get('twoFactorAuth')?.invalid"
-                  [errorMessage]="(formSubmitted() && form.get('twoFactorAuth')?.invalid) ? 'A autenticação em 2 fatores é obrigatória nesta conta' : ''"
+                  [error]="
+                    formSubmitted() && form.get('twoFactorAuth')?.invalid
+                  "
+                  [errorMessage]="
+                    formSubmitted() && form.get('twoFactorAuth')?.invalid
+                      ? 'A autenticação em 2 fatores é obrigatória nesta conta'
+                      : ''
+                  "
                 ></orc-switch>
               </div>
 
@@ -325,15 +388,38 @@
               </div>
 
               <div class="form-buttons">
-                <button type="submit" class="btn btn--primary">Salvar preferências</button>
-                <button type="button" class="btn btn--secondary" (click)="resetForm()">Resetar</button>
+                <button type="submit" class="btn btn--primary">
+                  Salvar preferências
+                </button>
+                <button
+                  type="button"
+                  class="btn btn--secondary"
+                  (click)="resetForm()"
+                >
+                  Resetar
+                </button>
               </div>
 
               <div class="form-output" *ngIf="formSubmitted()">
-                <div class="output-header" [class.output-header--error]="form.invalid">
-                  {{ form.valid ? '✓ Preferências salvas com sucesso' : '✕ Erro de validação nos campos obrigatórios' }}
+                <div
+                  class="output-header"
+                  [class.output-header--error]="form.invalid"
+                >
+                  @if (form.valid) {
+                    <orc-icon
+                      name="check_circle"
+                      size="sm"
+                      aria-hidden="true"
+                    />
+                    Preferências salvas com sucesso
+                  } @else {
+                    <orc-icon name="cancel" size="sm" aria-hidden="true" />
+                    Erro de validação nos campos obrigatórios
+                  }
                 </div>
-                <pre class="output-code" *ngIf="formResult()">{{ formResult() | json }}</pre>
+                <pre class="output-code" *ngIf="formResult()">{{
+                  formResult() | json
+                }}</pre>
               </div>
             </form>
           </div>
@@ -345,8 +431,12 @@
         <h2 class="section-subtitle">Exemplos de código</h2>
         <div class="code-blocks">
           <div class="code-card">
-            <div class="code-card__title">1. Uso básico com two-way model signal</div>
-            <pre class="code-card__snippet"><code>&lt;!-- Two-way binding com Signals --&gt;
+            <div class="code-card__title">
+              1. Uso básico com two-way model signal
+            </div>
+            <pre
+              class="code-card__snippet"
+            ><code>&lt;!-- Two-way binding com Signals --&gt;
 &lt;app-switch [(checked)]="notificacoesAtivas" label="Ativar notificações" /&gt;
 
 &lt;!-- Com helper text e tamanho pequeno --&gt;
@@ -359,7 +449,9 @@
           </div>
 
           <div class="code-card">
-            <div class="code-card__title">2. Formulários reativos com ControlValueAccessor</div>
+            <div class="code-card__title">
+              2. Formulários reativos com ControlValueAccessor
+            </div>
             <pre class="code-card__snippet"><code>&lt;app-switch
   formControlName="autenticacaoDoisFatores"
   label="Autenticação em duas etapas"
@@ -369,7 +461,9 @@
           </div>
 
           <div class="code-card">
-            <div class="code-card__title">3. Rótulo à esquerda (labelPosition="start")</div>
+            <div class="code-card__title">
+              3. Rótulo à esquerda (labelPosition="start")
+            </div>
             <pre class="code-card__snippet"><code>&lt;app-switch
   [(checked)]="visibilidadePerfil"
   labelPosition="start"
@@ -381,7 +475,9 @@
 
       <!-- ── TABELA DE API ───────────────────────────────────── -->
       <section class="section">
-        <h2 class="section-subtitle">Referência de API (inputs, models e outputs)</h2>
+        <h2 class="section-subtitle">
+          Referência de API (inputs, models e outputs)
+        </h2>
         <div class="table-container">
           <table class="api-table">
             <thead>
@@ -394,64 +490,111 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>checked</code> <span class="badge badge--model">model</span></td>
+                <td>
+                  <code>checked</code>
+                  <span class="badge badge--model">model</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
-                <td>Estado binário do switch (ativo/inativo). Suporta two-way binding <code>[(checked)]</code>.</td>
+                <td>
+                  Estado binário do switch (ativo/inativo). Suporta two-way
+                  binding <code>[(checked)]</code>.
+                </td>
               </tr>
               <tr>
-                <td><code>size</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>size</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>'sm' | 'md' | 'lg'</code></td>
                 <td><code>'md'</code></td>
-                <td>Tamanho da chave e do thumb (md = 32px conforme especificação do Figma).</td>
+                <td>
+                  Tamanho da chave e do thumb (md = 32px conforme especificação
+                  do Figma).
+                </td>
               </tr>
               <tr>
-                <td><code>labelPosition</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>labelPosition</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>'start' | 'end'</code></td>
                 <td><code>'end'</code></td>
-                <td>Posição do rótulo em relação à chave (à esquerda ou à direita).</td>
+                <td>
+                  Posição do rótulo em relação à chave (à esquerda ou à
+                  direita).
+                </td>
               </tr>
               <tr>
-                <td><code>label</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>label</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
                 <td>Texto do rótulo com clique integrado para alternância.</td>
               </tr>
               <tr>
-                <td><code>description</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>description</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
                 <td>Texto de apoio ou orientação exibido abaixo do rótulo.</td>
               </tr>
               <tr>
-                <td><code>disabled</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>disabled</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
-                <td>Desabilita a interação com o switch e aplica opacidade 0.5.</td>
+                <td>
+                  Desabilita a interação com o switch e aplica opacidade 0.5.
+                </td>
               </tr>
               <tr>
-                <td><code>error</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>error</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>boolean</code></td>
                 <td><code>false</code></td>
-                <td>Ativa o estado visual de erro e <code>aria-invalid="true"</code>.</td>
+                <td>
+                  Ativa o estado visual de erro e
+                  <code>aria-invalid="true"</code>.
+                </td>
               </tr>
               <tr>
-                <td><code>errorMessage</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>errorMessage</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>string</code></td>
                 <td><code>''</code></td>
                 <td>Mensagem de validação de erro exibida abaixo do rótulo.</td>
               </tr>
               <tr>
-                <td><code>value</code> <span class="badge badge--input">input</span></td>
+                <td>
+                  <code>value</code>
+                  <span class="badge badge--input">input</span>
+                </td>
                 <td><code>any</code></td>
                 <td><code>undefined</code></td>
                 <td>Valor associado emitido no evento <code>change</code>.</td>
               </tr>
               <tr>
-                <td><code>change</code> <span class="badge badge--output">output</span></td>
+                <td>
+                  <code>change</code>
+                  <span class="badge badge--output">output</span>
+                </td>
                 <td><code>SwitchChangeEvent</code></td>
                 <td>—</td>
-                <td>Evento disparado na alternância emitindo <code>&#123; checked, value &#125;</code>.</td>
+                <td>
+                  Evento disparado na alternância emitindo
+                  <code>&#123; checked, value &#125;</code>.
+                </td>
               </tr>
             </tbody>
           </table>

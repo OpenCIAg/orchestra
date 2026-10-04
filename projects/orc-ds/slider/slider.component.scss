@@ -89,6 +89,34 @@
   box-sizing: content-box;
 }
 
+.orc-slider-wrapper--vertical .orc-slider-track-container {
+  align-self: flex-start;
+  width: var(--slider-track-height);
+  height: 180px;
+  padding: 0 8px;
+}
+
+.orc-slider-wrapper--vertical .orc-slider-track {
+  width: var(--slider-track-height);
+  height: 100%;
+}
+
+.orc-slider-wrapper--vertical .orc-slider-fill {
+  top: auto;
+  left: 0;
+  width: 100%;
+}
+
+.orc-slider-wrapper--vertical .orc-slider-thumb {
+  top: auto;
+  left: 50%;
+}
+
+.orc-slider-wrapper--vertical .orc-slider-tick {
+  top: auto;
+  left: 50%;
+}
+
 // ── Barra de Fundo (Track) ──────────────────────────────────
 .orc-slider-track {
   position: relative;
@@ -137,7 +165,8 @@
   width: var(--slider-thumb-size);
   height: var(--slider-thumb-size);
   background: var(--orc-surface-raised, var(--fill-modal, #ffffff));
-  border: 1px solid var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+  border: 1px solid
+    var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
   border-radius: var(--radius-full, 200px);
   box-shadow: var(--shadow-sm);
   transform: translate(-50%, -50%);
@@ -145,37 +174,52 @@
   outline: none;
   box-sizing: border-box;
   z-index: 2;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 
   &:hover {
-    box-shadow: 0 0 0 4px var(--orc-interactive-shadow), var(--shadow-sm);
+    box-shadow:
+      0 0 0 4px var(--orc-interactive-shadow),
+      var(--shadow-sm);
     transform: translate(-50%, -50%) scale(1.1);
   }
 
   &--focused,
   &:focus-visible {
-    box-shadow: 0 0 0 4px var(--orc-interactive-shadow), var(--shadow-sm);
-    border-color: var(--orc-interactive, var(--orc-color-azul-eletrico, #1c6aed));
+    box-shadow:
+      0 0 0 4px var(--orc-interactive-shadow),
+      var(--shadow-sm);
+    border-color: var(
+      --orc-interactive,
+      var(--orc-color-azul-eletrico, #1c6aed)
+    );
     transform: translate(-50%, -50%) scale(1.15);
     z-index: 4;
   }
 
   &--active {
     cursor: grabbing;
-    box-shadow: 0 0 0 6px var(--orc-interactive-shadow), var(--shadow-md);
+    box-shadow:
+      0 0 0 6px var(--orc-interactive-shadow),
+      var(--shadow-md);
     transform: translate(-50%, -50%) scale(1.2);
     z-index: 5;
   }
 }
 
 // ── Tooltip Flutuante ───────────────────────────────────────
+// Paired overlay surface tokens (see _light.scss/_dark.scss); the
+// fallbacks stay a token-to-token chain so the surface and text colors
+// can never diverge into white-on-white.
 .orc-slider-tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--bg-inverse, var(--orc-font-main, #141414));
-  color: var(--text-inverse, #ffffff);
+  background: var(--orc-overlay-surface, var(--orc-font-main, #141414));
+  color: var(--orc-overlay-text, var(--orc-bg, #ffffff));
   font-size: 0.6875rem;
   font-weight: 600;
   line-height: 1;
@@ -196,7 +240,8 @@
     transform: translateX(-50%);
     border-width: 4px 4px 0 4px;
     border-style: solid;
-    border-color: var(--bg-inverse, var(--orc-font-main, #141414)) transparent transparent transparent;
+    border-color: var(--orc-overlay-surface, var(--orc-font-main, #141414))
+      transparent transparent transparent;
   }
 }
 

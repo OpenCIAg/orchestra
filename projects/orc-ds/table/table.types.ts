@@ -1,5 +1,3 @@
-import { TemplateRef } from '@angular/core';
-
 export type SortDirection = 'asc' | 'desc' | 'none';
 
 export type ColumnAlign = 'left' | 'center' | 'right';

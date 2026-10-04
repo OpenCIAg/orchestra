@@ -1,2 +1,2 @@
-export { TreeSelectComponent } from '@ciag/orchestra/p2';
-export type { TreeSelectNode } from '@ciag/orchestra/p2';
+export { TreeSelectComponent } from './tree-select.component';
+export type { TreeSelectNode } from './tree-select.component';

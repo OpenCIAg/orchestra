@@ -8,24 +8,46 @@ on:
 
 jobs:
   validate:
-    name: Lint, Test & Build
+    name: Test, Build & Package
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # The deprecation guard compares the deprecated/alias surface
+          # against the PR merge base or the previous commit.
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.22.3
+          node-version-file: .nvmrc
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
+
+      - name: Check library formatting
+        run: npm run format:check
+
+      - name: Lint the workspace
+        run: npm run lint
+
+      - name: Test release tooling
+        run: npm run test:tools
+
+      - name: Guard the 23.0.0 removal surface
+        run: npm run verify:deprecation-guard
 
       - name: Verify Angular compatibility line
         run: npm run verify:compatibility
+
+      - name: Verify component inventory and documentation links
+        run: npm run verify:docs
+
+      - name: Verify generated alias parity spec
+        run: npm run verify:alias-parity
 
       - name: Run library tests
         run: |
@@ -41,14 +63,40 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: v19-test-output
+          name: ${{ github.ref_name }}-test-output
           path: test-output.log
 
       - name: Build library (@ciag/orchestra)
         run: npm run build:lib
 
+      - name: Verify light and dark browser themes
+        run: npm run test:themes:ci
+
       - name: Build documentation app
         run: npm run build:docs
 
+      - name: Test documentation app
+        run: npm run test:docs -- --browsers=ChromeHeadlessCI
+
+      - name: Install cross-browser test engines
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Test critical overlay interactions in Chromium, Firefox and WebKit
+        run: npm run test:browser:interactions
+
+      - name: Build application template
+        run: npm run build:template
+
       - name: Validate package distribution
-        run: npm pack ./dist/orc-ds --dry-run
+        run: |
+          npm run verify:package
+          npm run verify:package:minimum
+
+      - name: Verify server-side rendering
+        run: npm run verify:ssr
+
+      - name: Upload SSR verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.ref_name }}-ssr-verification
+          path: verify-output/

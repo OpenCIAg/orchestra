@@ -10,11 +10,13 @@ import {
   BreadcrumbVariant,
 } from '@ciag/orchestra/breadcrumb';
 import { FooterComponent } from '../../../shared/footer/footer.component';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'app-breadcrumb-page',
   standalone: true,
   imports: [
+    IconComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -55,7 +57,9 @@ export class BreadcrumbPageComponent {
   ];
 
   onItemClick(event: { item: BreadcrumbItemData; index: number }): void {
-    this.clickedItem.set(`Clicou em: "${event.item.label}" (posição ${event.index + 1})`);
+    this.clickedItem.set(
+      `Clicou em: "${event.item.label}" (posição ${event.index + 1})`,
+    );
     setTimeout(() => this.clickedItem.set(null), 3000);
   }
 }

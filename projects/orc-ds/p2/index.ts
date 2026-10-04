@@ -7,6 +7,7 @@ export * from './p2-selection-components';
 export * from './p2-shared';
 export * from './p2-primeng-gap-components';
 export * from './p2-advanced-components';
+export * from './p2-menu-family-components';
 export * from './p2-input-gap-components';
 export * from './p2-hierarchical-components';
 export * from './p2-chart-editor-components';

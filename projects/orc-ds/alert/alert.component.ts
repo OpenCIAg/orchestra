@@ -5,8 +5,10 @@ import {
   output,
   computed,
   signal,
+  effect,
   booleanAttribute,
   numberAttribute,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlertSeverity, AlertVariant } from './alert.types';
@@ -19,11 +21,11 @@ import { AlertSeverity, AlertVariant } from './alert.types';
   styleUrl: './alert.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'orc-alert-host',
+    class: 'orc-alert-host',
     '[class.orc-alert-host--hidden]': '!isVisible()',
   },
 })
-export class AlertComponent {
+export class AlertComponent implements OnDestroy {
   // ── Inputs (Signals API) ──────────────────────────────────────────
   /** Status / Severidade do alerta */
   readonly severity = input<AlertSeverity>('info');
@@ -42,15 +44,25 @@ export class AlertComponent {
   readonly text = input<string | undefined>(undefined);
 
   /** Controla se o ícone do alerta deve ser exibido */
-  readonly showIcon = input<boolean>(true);
+  readonly showIcon = input<boolean, unknown>(true, {
+    transform: booleanAttribute,
+  });
 
   /** Define se o alerta pode ser dispensado pelo usuário exibindo o botão 'X' */
-  readonly dismissible = input<boolean, unknown>(false, { transform: booleanAttribute });
-  readonly closable = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
-  readonly life = input<number | undefined, unknown>(undefined, { transform: numberAttribute });
+  readonly dismissible = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly closable = input<boolean | undefined, unknown>(undefined, {
+    transform: booleanAttribute,
+  });
+  readonly life = input<number | undefined, unknown>(undefined, {
+    transform: numberAttribute,
+  });
   readonly icon = input<string | undefined>(undefined);
   readonly styleClass = input('');
-  readonly style = input<Record<string, string | number> | undefined>(undefined);
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
 
   /** Sobrescreve o atributo role WCAG (padrão: 'alert' para error/warning e 'status' para info/success) */
   readonly role = input<string | undefined>(undefined);
@@ -59,7 +71,7 @@ export class AlertComponent {
   readonly ariaLabel = input<string>('');
 
   /** Rótulo acessível do botão de fechar */
-  readonly closeAriaLabel = input<string>('Fechar alerta');
+  readonly closeAriaLabel = input<string | undefined>(undefined);
 
   // ── Outputs (Signals API) ─────────────────────────────────────────
   /** Emitido quando o usuário clica no botão de fechar */
@@ -70,6 +82,27 @@ export class AlertComponent {
 
   // ── Estado Interno Reativo ────────────────────────────────────────
   readonly isVisible = signal<boolean>(true);
+  private lifeTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    effect(() => {
+      const life = this.life();
+      const visible = this.isVisible();
+      this.clearLifeTimer();
+
+      if (visible && life !== undefined && Number.isFinite(life) && life > 0) {
+        this.lifeTimer = setTimeout(() => {
+          this.lifeTimer = null;
+          this.isVisible.set(false);
+          this.closed.emit();
+        }, life);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.clearLifeTimer();
+  }
 
   // ── Sinais Computados ─────────────────────────────────────────────
   /** Normaliza o tipo de severidade ativo */
@@ -90,14 +123,20 @@ export class AlertComponent {
   /** Computa o atributo role WCAG ideal conforme o tipo de severidade */
   readonly computedRole = computed<string>(() => {
     if (this.role()) return this.role()!;
-    return this.activeSeverity() === 'error' || this.activeSeverity() === 'warning'
+    return this.activeSeverity() === 'error' ||
+      this.activeSeverity() === 'warning' ||
+      this.activeSeverity() === 'warn'
       ? 'alert'
       : 'status';
   });
 
   /** Computa aria-live: 'assertive' para erros críticos e 'polite' para informativos */
   readonly computedAriaLive = computed<'assertive' | 'polite'>(() => {
-    return this.activeSeverity() === 'error' ? 'assertive' : 'polite';
+    return this.activeSeverity() === 'error' ||
+      this.activeSeverity() === 'warning' ||
+      this.activeSeverity() === 'warn'
+      ? 'assertive'
+      : 'polite';
   });
 
   // ── Handlers de Interação ────────────────────────────────────────
@@ -106,5 +145,12 @@ export class AlertComponent {
     this.isVisible.set(false);
     this.onClose.emit(event);
     this.closed.emit();
+  }
+
+  private clearLifeTimer(): void {
+    if (this.lifeTimer !== null) {
+      clearTimeout(this.lifeTimer);
+      this.lifeTimer = null;
+    }
   }
 }

@@ -1,7 +1,9 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ElementRef,
   forwardRef,
+  inject,
   input,
   model,
   output,
@@ -11,7 +13,11 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ORC_RADIO_GROUP, RadioButtonItem, RadioGroupContext } from './radio.types';
+import {
+  ORC_RADIO_GROUP,
+  RadioButtonItem,
+  RadioGroupContext,
+} from './radio.types';
 
 let nextGroupUniqueId = 0;
 
@@ -34,7 +40,9 @@ let nextGroupUniqueId = 0;
     },
   ],
 })
-export class RadioGroupComponent implements ControlValueAccessor, RadioGroupContext {
+export class RadioGroupComponent
+  implements ControlValueAccessor, RadioGroupContext
+{
   // Inputs (Signals API)
   readonly name = input<string>(`orc-radio-group-${++nextGroupUniqueId}`);
   readonly layout = input<'vertical' | 'horizontal'>('vertical');
@@ -50,6 +58,7 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
   readonly onChange = output<{ originalEvent?: Event; value: any }>();
 
   // Estado interno
+  readonly element = inject(ElementRef<HTMLElement>);
   private readonly cvaDisabled = signal<boolean>(false);
   private readonly radios = signal<RadioButtonItem[]>([]);
 
@@ -60,7 +69,7 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
   readonly errorId = `${this.groupId}-error`;
 
   readonly isDisabled = computed(() => this.disabled() || this.cvaDisabled());
-  readonly isError = computed(() => this.error());
+  readonly isError = computed(() => this.error() || !!this.errorMessage());
 
   // Callbacks do ControlValueAccessor
   private onModelChange: (value: any) => void = () => {};
@@ -98,22 +107,23 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
       this.onModelChange(val);
       this.onChange.emit({ originalEvent, value: val });
     }
-    this.onTouched();
   }
 
   hasSelectedRadio(): boolean {
     const currentVal = this.value();
-    return this.radios().some((r) => r.value() === currentVal);
+    return this.radios().some(
+      (r) => !r.isDisabled() && r.value() === currentVal,
+    );
   }
 
   isFirstEnabled(radio: RadioButtonItem): boolean {
-    const enabledRadios = this.radios().filter((r) => !r.isDisabled());
+    const enabledRadios = this.orderedRadios().filter((r) => !r.isDisabled());
     return enabledRadios.length > 0 && enabledRadios[0] === radio;
   }
 
   // Navegação WCAG por setas do teclado
   handleKeydown(event: KeyboardEvent, currentRadio: RadioButtonItem): void {
-    const enabledRadios = this.radios().filter((r) => !r.isDisabled());
+    const enabledRadios = this.orderedRadios().filter((r) => !r.isDisabled());
     if (enabledRadios.length <= 1) return;
 
     const currentIndex = enabledRadios.indexOf(currentRadio);
@@ -128,7 +138,8 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
         break;
       case 'ArrowUp':
       case 'ArrowLeft':
-        nextIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
+        nextIndex =
+          (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
         break;
       default:
         return;
@@ -137,8 +148,30 @@ export class RadioGroupComponent implements ControlValueAccessor, RadioGroupCont
     event.preventDefault();
     const targetRadio = enabledRadios[nextIndex];
     if (targetRadio) {
-      this.select(targetRadio.value());
+      targetRadio.onSelect(event);
       targetRadio.focus();
     }
+  }
+
+  touch(event?: Event): void {
+    const relatedTarget = (event as FocusEvent | undefined)?.relatedTarget;
+    if (
+      relatedTarget &&
+      this.element.nativeElement.contains(relatedTarget as HTMLElement)
+    )
+      return;
+    this.onTouched();
+  }
+
+  private orderedRadios(): RadioButtonItem[] {
+    return [...this.radios()].sort((left, right) => {
+      const position = left.element.nativeElement.compareDocumentPosition(
+        right.element.nativeElement,
+      );
+      if (position & 1) return 0;
+      if (position & 4) return -1;
+      if (position & 2) return 1;
+      return 0;
+    });
   }
 }

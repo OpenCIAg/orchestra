@@ -179,7 +179,11 @@
     align-items: center;
     justify-content: center;
     min-height: 220px;
-    background: radial-gradient(circle at center, var(--bg-subtle) 0%, var(--bg-app) 100%);
+    background: radial-gradient(
+      circle at center,
+      var(--bg-subtle) 0%,
+      var(--bg-app) 100%
+    );
   }
 
   .preview-box {
@@ -414,7 +418,7 @@
 
   &--primary {
     background: var(--orc-color-azul-eletrico, #1c6aed);
-    color: #ffffff;
+    color: var(--orc-on-interactive);
 
     &:hover {
       opacity: 0.9;

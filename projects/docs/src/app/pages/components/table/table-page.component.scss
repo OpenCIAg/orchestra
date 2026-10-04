@@ -197,7 +197,7 @@
   letter-spacing: normal;
   padding: 3px 8px;
   background: var(--orc-color-azul-eletrico, #1c6aed);
-  color: #ffffff;
+  color: var(--orc-on-interactive);
   border-radius: var(--radius-full, 9999px);
 }
 
@@ -215,7 +215,7 @@
 .btn-action-trigger {
   padding: 8px 16px;
   background: var(--orc-font-main, #141414);
-  color: #ffffff;
+  color: var(--orc-on-dark);
   border: none;
   border-radius: var(--radius-md, 8px);
   font-family: var(--font-sans, 'Poppins', sans-serif);
@@ -302,9 +302,9 @@
   }
 
   &--delete:hover {
-    background: #fde8e8;
-    color: #fb2c36;
-    border-color: #fca5a5;
+    background: var(--status-danger-soft-bg);
+    color: var(--color-error);
+    border-color: var(--orc-status-danger-border);
   }
 }
 
@@ -465,7 +465,8 @@
   text-align: left;
   font-size: 0.875rem;
 
-  th, td {
+  th,
+  td {
     padding: var(--space-3, 0.75rem) var(--space-5, 1.25rem);
     border-bottom: 1px solid var(--border-default, #e5e5e5);
   }

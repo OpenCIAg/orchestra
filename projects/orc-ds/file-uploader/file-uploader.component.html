@@ -1,10 +1,15 @@
-<div class="p-fileupload p-component orc-file-uploader" [class]="'p-fileupload p-component orc-file-uploader ' + (styleClass() || '')" [class.orc-file-uploader--disabled]="isDisabled()" [style]="style()" [attr.data-pc-name]="'fileupload'">
-  
-  <input 
+<div
+  class="p-fileupload p-component orc-file-uploader"
+  [class]="'p-fileupload p-component orc-file-uploader ' + (styleClass() || '')"
+  [class.orc-file-uploader--disabled]="isDisabled()"
+  [style]="style()"
+  [attr.data-pc-name]="'fileupload'"
+>
+  <input
     #fileInput
-    type="file" 
-    class="orc-file-uploader__input" 
-    [accept]="accept()" 
+    type="file"
+    class="orc-file-uploader__input"
+    [accept]="accept()"
     [multiple]="multiple()"
     [disabled]="isDisabled() || hasReachedMaxFiles()"
     (change)="onFileSelected($event)"
@@ -12,51 +17,139 @@
     aria-hidden="true"
   />
 
-  <div 
-    class="p-fileupload-content orc-file-uploader__dropzone"
-    [class.orc-file-uploader__dropzone--dragover]="isDragging() || forceDragover()"
-    [class.orc-file-uploader__dropzone--disabled]="isDisabled()"
-    role="button"
-    tabindex="0"
-    (click)="onAreaClick()"
-    (keydown)="onAreaKeyDown($event)"
-    [attr.aria-disabled]="isDisabled() || hasReachedMaxFiles()"
-    aria-label="Área de upload de arquivos"
-  >
-    <div class="orc-file-uploader__dropzone-content">
-      <div class="orc-file-uploader__icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-          <line x1="16" y1="17" x2="8" y2="17"></line>
-          <polyline points="10 9 9 9 8 9"></polyline>
-        </svg>
-      </div>
-      <div class="orc-file-uploader__text">
-        <span class="orc-file-uploader__label">{{ label() }}</span>
-        @if (subLabel()) {
-          <span class="orc-file-uploader__sublabel">{{ subLabel() }}</span>
-        }
+  @if (mode() === 'basic') {
+    <button
+      type="button"
+      class="orc-file-uploader__basic-trigger"
+      [class]="'orc-file-uploader__basic-trigger ' + chooseStyleClass()"
+      [disabled]="isDisabled() || hasReachedMaxFiles()"
+      [attr.aria-label]="
+        dropzoneAriaLabel() || chooseLabel() || label() || 'Choose files'
+      "
+      (click)="onAreaClick()"
+    >
+      @if (chooseIcon()) {
+        <span
+          class="orc-file-uploader__button-icon"
+          [class]="chooseIcon()"
+          aria-hidden="true"
+        ></span>
+      }
+      {{ chooseLabel() || label() || 'Choose files' }}
+    </button>
+  } @else {
+    <div
+      class="p-fileupload-content orc-file-uploader__dropzone"
+      [class.orc-file-uploader__dropzone--dragover]="
+        isDragging() || forceDragover()
+      "
+      [class.orc-file-uploader__dropzone--disabled]="isDisabled()"
+      role="button"
+      [attr.tabindex]="isDisabled() || hasReachedMaxFiles() ? -1 : 0"
+      (click)="onAreaClick()"
+      (keydown)="onAreaKeyDown($event)"
+      [attr.aria-disabled]="isDisabled() || hasReachedMaxFiles()"
+      [attr.aria-label]="
+        dropzoneAriaLabel() || chooseLabel() || label() || 'Choose files'
+      "
+    >
+      <div class="orc-file-uploader__dropzone-content">
+        <div class="orc-file-uploader__icon">
+          @if (chooseIcon()) {
+            <span [class]="chooseIcon()" aria-hidden="true"></span>
+          } @else {
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              ></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          }
+        </div>
+        <div class="orc-file-uploader__text">
+          <span class="orc-file-uploader__label">{{
+            label() || chooseLabel() || 'Choose files'
+          }}</span>
+          @if (subLabel()) {
+            <span class="orc-file-uploader__sublabel">{{ subLabel() }}</span>
+          }
+        </div>
       </div>
     </div>
-  </div>
+  }
 
   @if (files().length > 0) {
-    <div class="orc-file-uploader__list" aria-live="polite">
+    <div class="orc-file-uploader__list" role="list" aria-live="polite">
       @for (file of files(); track file.id) {
-        <orc-file-item 
-          [fileData]="file" 
-          [disabled]="isDisabled()"
-          (remove)="onRemoveFile($event)">
+        <orc-file-item
+          [fileData]="file"
+          [disabled]="isDisabled() || file.status === 'uploading'"
+          [removeAriaLabel]="removeAriaLabel()"
+          [uploadingLabel]="uploadingLabel()"
+          [uploadedLabel]="uploadedLabel()"
+          [errorLabel]="errorLabel()"
+          [pendingLabel]="pendingLabel()"
+          [previewWidth]="previewWidth()"
+          [removeStyleClass]="removeStyleClass()"
+          (remove)="onRemoveFile($event)"
+          (imageError)="handleImageError($event)"
+        >
         </orc-file-item>
       }
     </div>
     @if (!auto()) {
       <div class="orc-file-uploader__actions">
-        @if (showUploadButton()) { <button type="button" (click)="upload()" [disabled]="isDisabled()">{{ uploadLabel() || 'Upload' }}</button> }
-        @if (showCancelButton()) { <button type="button" (click)="clear()" [disabled]="isDisabled()">{{ cancelLabel() || 'Clear' }}</button> }
+        @if (showUploadButton()) {
+          <button
+            type="button"
+            [class]="'orc-file-uploader__upload ' + uploadStyleClass()"
+            (click)="upload()"
+            [disabled]="!canUpload()"
+          >
+            @if (uploadIcon()) {
+              <span
+                class="orc-file-uploader__button-icon"
+                [class]="uploadIcon()"
+                aria-hidden="true"
+              ></span>
+            }
+            {{ uploadLabel() || 'Upload' }}
+          </button>
+        }
+        @if (showCancelButton()) {
+          <button
+            type="button"
+            [class]="'orc-file-uploader__cancel ' + cancelStyleClass()"
+            (click)="clear()"
+            [disabled]="isDisabled()"
+          >
+            @if (cancelIcon()) {
+              <span
+                class="orc-file-uploader__button-icon"
+                [class]="cancelIcon()"
+                aria-hidden="true"
+              ></span>
+            }
+            {{ cancelLabel() || 'Cancel' }}
+          </button>
+        }
       </div>
     }
+  }
+  @if (validationMessage()) {
+    <p class="orc-file-uploader__error" role="alert">
+      {{ validationMessage() }}
+    </p>
   }
 </div>

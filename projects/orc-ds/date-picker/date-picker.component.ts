@@ -1,79 +1,700 @@
-import { ChangeDetectionStrategy, Component, computed, effect, forwardRef, input, model, output, signal, booleanAttribute, numberAttribute, viewChildren } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  DestroyRef,
+  forwardRef,
+  inject,
+  input,
+  model,
+  output,
+  signal,
+  booleanAttribute,
+  numberAttribute,
+  viewChildren,
+  viewChild,
+  Injector,
+  afterNextRender,
+} from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  attachAnchoredPopup,
+  CvaControl,
+  calendarDateKey,
+  calendarFormatDatePattern,
+  calendarMonthKey,
+  calendarNormalizeDateInput,
+  calendarPad,
+  calendarParseDate,
+  calendarParseDateTime,
+  calendarPositiveInteger,
+  calendarSelection,
+  calendarTimeString,
+  eventIsInside,
+  isTopOverlay,
+  listenForOutsideInteraction,
+  normalizeSize,
+  registerOverlay,
+  SizeInput,
+  trapTabKey,
+} from '@ciag/orchestra/internal';
+import { DatePickerCalendarComponent } from './date-picker-calendar.component';
+export { DatePickerCalendarComponent } from './date-picker-calendar.component';
+let nextDatePickerId = 0;
 
-@Component({selector:'orc-date-picker-calendar',standalone:true,template:`<section class="orc-date-picker-calendar" [attr.aria-label]="ariaLabel()"><header><button type="button" aria-label="Previous month" (click)="shift(-1)">‹</button><strong>{{ monthLabel() }}</strong><button type="button" aria-label="Next month" (click)="shift(1)">›</button></header>@if(view() === 'month'){<div class="month-grid" role="grid">@for (month of months(); track month.index) {<button type="button" [class.selected]="isSelected(month.iso)" (click)="select(month.iso)">{{ month.label }}</button>}</div>}@else if(view() === 'year'){<div class="year-grid" role="grid">@for (year of years(); track year) {<button type="button" [class.selected]="isSelected(year + '-01-01')" (click)="select(year + '-01-01')">{{ year }}</button>}</div>}@else {<div class="weekdays" [class.with-week]="showWeek()">@if(showWeek()){<span aria-hidden="true"></span>}@for (day of weekdayLabels(); track day) { <span>{{ day }}</span> }</div><div class="days" [class.with-week]="showWeek()" role="grid">@for (day of days(); track day.iso) { @if(showWeek() && day.weekNumber !== undefined){<span class="week-number" [attr.aria-label]="'Week ' + day.weekNumber">{{ day.weekNumber }}</span>} @if (showOtherMonths() || day.inCurrentMonth) { <button type="button" [disabled]="day.disabled" [class.outside]="!day.inCurrentMonth" [class.selected]="isSelected(day.iso)" [attr.aria-selected]="isSelected(day.iso)" (click)="select(day.iso)">{{ day.day }}</button> } }</div>}</section>`,styles:[`.orc-date-picker-calendar{width:20rem;padding:.75rem;border:1px solid var(--orc-border-default,#cbd5e1);border-radius:.5rem;background:var(--orc-surface-raised,#fff);color:var(--orc-text,#0f172a)}.orc-date-picker-calendar header,.weekdays,.days,.month-grid,.year-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.2rem;align-items:center}.orc-date-picker-calendar header{grid-template-columns:2rem 1fr 2rem;text-align:center}.orc-date-picker-calendar header button{border:0;background:transparent;color:inherit;font-size:1.2rem}.weekdays{color:var(--orc-text-muted,#64748b);font-size:.7rem;text-align:center}.weekdays.with-week,.days.with-week{grid-template-columns:2rem repeat(7,1fr)}.month-grid,.year-grid{grid-template-columns:repeat(3,1fr);padding:.5rem}.month-grid button,.year-grid button{min-height:2.5rem;border:0;border-radius:.3rem;background:transparent;color:inherit}.week-number{color:var(--orc-text-muted,#94a3b8);font-size:.7rem;text-align:center}.days button{min-height:2rem;border:0;border-radius:.3rem;background:transparent;color:inherit}.days button.selected,.month-grid button.selected,.year-grid button.selected{background:var(--orc-interactive,#2563eb);color:var(--orc-on-interactive,#fff)}.days button.outside{color:var(--orc-text-muted,#94a3b8)}`],changeDetection:ChangeDetectionStrategy.OnPush})
-export class DatePickerCalendarComponent {
-  readonly viewDateChange=output<{ month: number; year: number }>();
-  readonly value=model(''); readonly selectedValues=input<string[]>([]); readonly currentMonth=model(this.monthKey(new Date())); readonly min=input(''); readonly max=input(''); readonly disabled=input(false,{transform:booleanAttribute}); readonly disabledDates=input<Date[]>([]); readonly disabledDays=input<number[]>([]); readonly firstDayOfWeek=input(0,{transform:numberAttribute}); readonly showOtherMonths=input(true,{transform:booleanAttribute}); readonly selectOtherMonths=input(false,{transform:booleanAttribute}); readonly showWeek=input(false,{transform:booleanAttribute}); readonly view=input<'date' | 'month' | 'year'>('date'); readonly ariaLabel=input('Calendar'); readonly dateSelected=output<string>(); readonly weekdays=['Su','Mo','Tu','We','Th','Fr','Sa']; readonly weekdayLabels=computed(() => [...this.weekdays.slice(this.firstDayOfWeek()), ...this.weekdays.slice(0, this.firstDayOfWeek())]);
-  readonly monthOffset=input(0,{transform:numberAttribute});
-  private monthKey(date:Date):string{return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;} private monthDate():Date{const [year,month]=this.currentMonth().split('-').map(Number);return new Date(year,month-1+this.monthOffset(),1);} monthLabel():string{return this.monthDate().toLocaleDateString(undefined,{month:'long',year:'numeric'});} shift(delta:number):void{const [year,month]=this.currentMonth().split('-').map(Number);const next=new Date(year,month-1+delta,1);this.currentMonth.set(this.monthKey(next));this.viewDateChange.emit({month:next.getMonth()+1,year:next.getFullYear()});}
-  readonly days=computed(()=>{const month=this.monthDate();const offset=(month.getDay()-this.firstDayOfWeek()+7)%7;const start=new Date(month.getFullYear(),month.getMonth(),1-offset);return Array.from({length:42},(_,index)=>{const date=new Date(start.getFullYear(),start.getMonth(),start.getDate()+index);const iso=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;return {iso,day:date.getDate(),weekNumber:index%7===0?this.weekNumber(date):undefined,inCurrentMonth:date.getMonth()===month.getMonth(),disabled:this.disabled()||!!(this.min()&&iso<this.min())||!!(this.max()&&iso>this.max())||this.disabledDays().includes(date.getDay())||this.disabledDates().some(item=>item.toDateString()===date.toDateString())||(!this.selectOtherMonths()&&date.getMonth()!==month.getMonth())};});});
-  private weekNumber(date:Date):number { const thursday=new Date(date.getFullYear(),date.getMonth(),date.getDate()+((4-date.getDay()+7)%7)); const yearStart=new Date(thursday.getFullYear(),0,1); return Math.ceil((((thursday.getTime()-yearStart.getTime())/86400000)+1)/7); }
-  readonly months=computed(() => Array.from({length:12}, (_, index) => ({index, label:new Date(2000,index,1).toLocaleDateString(undefined,{month:'long'}), iso:`${this.monthDate().getFullYear()}-${String(index+1).padStart(2,'0')}-01`})));
-  readonly years=computed(() => { const year=this.monthDate().getFullYear(); return Array.from({length:12}, (_, index) => year-5+index); });
-  isSelected(iso: string): boolean { return this.selectedValues().includes(iso) || this.value() === iso; }
-  select(iso:string):void{if(!this.days().find(day=>day.iso===iso)?.disabled){this.value.set(iso);this.dateSelected.emit(iso);}}
-}
-
-@Component({selector:'orc-date-picker',standalone:true,imports:[CommonModule, DatePickerCalendarComponent],templateUrl:'./date-picker.component.html',styleUrl:'./date-picker.component.scss',changeDetection:ChangeDetectionStrategy.OnPush,host:{'class':'p-datepicker p-component','[attr.id]':'inputId() || null','[attr.data-pc-name]':"'datepicker'"},providers:[{provide:NG_VALUE_ACCESSOR,useExisting:forwardRef(()=>DatePickerComponent),multi:true}]})
-export class DatePickerComponent implements ControlValueAccessor {
+@Component({
+  selector: 'orc-date-picker',
+  standalone: true,
+  imports: [CommonModule, DatePickerCalendarComponent],
+  templateUrl: './date-picker.component.html',
+  styleUrl: './date-picker.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatePickerComponent),
+      multi: true,
+    },
+  ],
+})
+export class DatePickerComponent extends CvaControl {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly uniqueId = `orc-date-picker-${++nextDatePickerId}`;
   readonly calendars = viewChildren(DatePickerCalendarComponent);
-  readonly maxDateCount=input<number | undefined, unknown>(undefined, { transform: numberAttribute }); readonly hideOnDateTimeSelect=input(true, { transform: booleanAttribute });
+  readonly maxDateCount = input<number | undefined, unknown>(undefined, {
+    transform: numberAttribute,
+  });
+  readonly hideOnDateTimeSelect = input(true, { transform: booleanAttribute });
   /** PrimeNG-compatible value and configuration surface. */
-  readonly value=model<any>(''); readonly label=input(''); readonly min=input(''); readonly max=input(''); readonly helperText=input(''); readonly error=input(''); readonly required=input(false, { transform: booleanAttribute }); readonly disabled=input(false, { transform: booleanAttribute });
-  readonly placeholder=input<string | undefined>(undefined); readonly dateFormat=input<string | undefined>(undefined); readonly selectionMode=input<'single' | 'multiple' | 'range'>('single'); readonly showIcon=input(false, { transform: booleanAttribute }); readonly showButtonBar=input(false, { transform: booleanAttribute }); readonly showClear=input(false, { transform: booleanAttribute }); readonly inline=input(false, { transform: booleanAttribute }); readonly showTime=input(false, { transform: booleanAttribute }); readonly timeOnly=input(false, { transform: booleanAttribute }); readonly showSeconds=input(false, { transform: booleanAttribute }); readonly touchUI=input(false, { transform: booleanAttribute }); readonly showWeek=input(false, { transform: booleanAttribute }); readonly showOtherMonths=input(true, { transform: booleanAttribute }); readonly selectOtherMonths=input(false, { transform: booleanAttribute }); readonly readonlyInput=input(false, { transform: booleanAttribute }); readonly autofocus=input(false, { transform: booleanAttribute }); readonly hourFormat=input('24'); readonly firstDayOfWeek=input(0, { transform: numberAttribute }); readonly numberOfMonths=input(1, { transform: numberAttribute }); readonly minDate=input<Date | null | undefined>(undefined); readonly maxDate=input<Date | null | undefined>(undefined); readonly disabledDates=input<Date[] | undefined>(undefined); readonly disabledDays=input<number[] | undefined>(undefined); readonly view=input<'date' | 'month' | 'year'>('date'); readonly ariaLabel=input<string | undefined>(undefined); readonly ariaLabelledBy=input<string | undefined>(undefined); readonly name=input<string | undefined>(undefined); readonly inputId=input<string | undefined>(undefined); readonly tabindex=input<number | undefined>(undefined); readonly panelStyleClass=input<string | undefined>(undefined); readonly panelStyle=input<Record<string, string | number> | undefined>(undefined); readonly style=input<Record<string, string | number> | undefined>(undefined); readonly styleClass=input<string | undefined>(undefined); readonly inputStyle=input<Record<string, string | number> | undefined>(undefined); readonly inputStyleClass=input<string | undefined>(undefined); readonly dataType=input<'date' | 'string'>('string'); readonly defaultDate=input<Date | null | undefined>(undefined); readonly viewDate=model<Date>(new Date()); readonly showOnFocus=input(true, { transform: booleanAttribute }); readonly keepInvalid=input(false, { transform: booleanAttribute }); readonly appendTo=input<unknown>(undefined); readonly autoZIndex=input(true, { transform: booleanAttribute }); readonly baseZIndex=input(0, { transform: numberAttribute }); readonly focusOnShow=input(true, { transform: booleanAttribute }); readonly focusTrap=input(true, { transform: booleanAttribute }); readonly fluid=input(false, { transform: booleanAttribute }); readonly variant=input<'outlined' | 'filled' | undefined>(undefined); readonly size=input<'small' | 'large' | undefined>(undefined); readonly mask=input(false, { transform: booleanAttribute }); readonly multipleSeparator=input(', '); readonly rangeSeparator=input(' - '); readonly yearNavigator=input(false, { transform: booleanAttribute }); readonly monthNavigator=input(false, { transform: booleanAttribute }); readonly yearRange=input<string | undefined>(undefined); readonly stepHour=input(1, { transform: numberAttribute }); readonly stepMinute=input(1, { transform: numberAttribute }); readonly stepSecond=input(1, { transform: numberAttribute }); readonly showTransitionOptions=input('150ms cubic-bezier(0, 0, 0.2, 1)'); readonly hideTransitionOptions=input('150ms cubic-bezier(0, 0, 0.2, 1)'); readonly clearButtonStyleClass=input<string | undefined>(undefined); readonly todayButtonStyleClass=input<string | undefined>(undefined); readonly icon=input<string | undefined>(undefined); readonly iconAriaLabel=input('Choose date'); readonly iconDisplay=input<'input' | 'button'>('button'); readonly defaultViewDate=input<Date | null | undefined>(undefined);
-  readonly onFocus=output<Event>(); readonly onBlur=output<Event>(); readonly onClose=output<void>(); readonly onSelect=output<any>(); readonly onClear=output<void>(); readonly onInput=output<any>(); readonly onTodayClick=output<Date>(); readonly onClearClick=output<void>(); readonly onShow=output<void>(); readonly onViewDateChange=output<{ month: number; year: number }>(); readonly onMonthChange=output<{ month: number; year: number }>(); readonly onYearChange=output<{ month: number; year: number }>(); readonly onClickOutside=output<MouseEvent>();
+  readonly value = model<any>('');
+  readonly label = input('');
+  readonly min = input('');
+  readonly max = input('');
+  readonly helperText = input('');
+  readonly error = input('');
+  readonly required = input(false, { transform: booleanAttribute });
+  readonly disabled = input(false, { transform: booleanAttribute });
+  readonly placeholder = input<string | undefined>(undefined);
+  readonly dateFormat = input<string | undefined>(undefined);
+  readonly selectionMode = input<'single' | 'multiple' | 'range'>('single');
+  readonly showIcon = input(false, { transform: booleanAttribute });
+  readonly showButtonBar = input(false, { transform: booleanAttribute });
+  readonly showClear = input(false, { transform: booleanAttribute });
+  readonly inline = input(false, { transform: booleanAttribute });
+  readonly showTime = input(false, { transform: booleanAttribute });
+  readonly timeOnly = input(false, { transform: booleanAttribute });
+  readonly showSeconds = input(false, { transform: booleanAttribute });
+  readonly touchUI = input(false, { transform: booleanAttribute });
+  readonly showWeek = input(false, { transform: booleanAttribute });
+  readonly showOtherMonths = input(true, { transform: booleanAttribute });
+  readonly selectOtherMonths = input(false, { transform: booleanAttribute });
+  readonly readonlyInput = input(false, { transform: booleanAttribute });
+  readonly autofocus = input(false, { transform: booleanAttribute });
+  readonly hourFormat = input('24');
+  readonly firstDayOfWeek = input(0, { transform: numberAttribute });
+  readonly numberOfMonths = input(1, { transform: numberAttribute });
+  readonly minDate = input<Date | null | undefined>(undefined);
+  readonly maxDate = input<Date | null | undefined>(undefined);
+  readonly disabledDates = input<Date[] | undefined>(undefined);
+  readonly disabledDays = input<number[] | undefined>(undefined);
+  readonly view = input<'date' | 'month' | 'year'>('date');
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly ariaLabelledBy = input<string | undefined>(undefined);
+  readonly name = input<string | undefined>(undefined);
+  readonly inputId = input<string | undefined>(undefined);
+  readonly tabindex = input<number | undefined>(undefined);
+  readonly panelStyleClass = input<string | undefined>(undefined);
+  readonly panelStyle = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  readonly style = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  readonly styleClass = input<string | undefined>(undefined);
+  readonly inputStyle = input<Record<string, string | number> | undefined>(
+    undefined,
+  );
+  readonly inputStyleClass = input<string | undefined>(undefined);
+  readonly dataType = input<'date' | 'string'>('string');
+  readonly defaultDate = input<Date | null | undefined>(undefined);
+  readonly viewDate = model<Date>(new Date());
+  readonly showOnFocus = input(true, { transform: booleanAttribute });
+  readonly keepInvalid = input(false, { transform: booleanAttribute });
+  readonly appendTo = input<unknown>(undefined);
+  readonly autoZIndex = input(true, { transform: booleanAttribute });
+  readonly baseZIndex = input(0, { transform: numberAttribute });
+  readonly focusOnShow = input(true, { transform: booleanAttribute });
+  readonly focusTrap = input(true, { transform: booleanAttribute });
+  readonly fluid = input(false, { transform: booleanAttribute });
+  readonly variant = input<'outlined' | 'filled' | undefined>(undefined);
+  /**
+   * Visual size on the canonical `sm | md | lg` scale (`md` renders as the
+   * default middle size). Deprecated legacy values (removed at the 23.0.0
+   * gate): `small` → `sm`, `large` → `lg`.
+   */
+  readonly size = input<SizeInput>(undefined);
+  /** Canonical form of the public `size` input (legacy aliases resolved). */
+  readonly resolvedSize = computed(() => normalizeSize(this.size()));
+  /** @deprecated Compatibility-only input; text parsing is controlled by dateFormat and the date value parser. */
+  readonly mask = input(false, { transform: booleanAttribute });
+  readonly multipleSeparator = input(', ');
+  readonly rangeSeparator = input(' - ');
+  readonly yearNavigator = input(false, { transform: booleanAttribute });
+  readonly monthNavigator = input(false, { transform: booleanAttribute });
+  readonly yearRange = input<string | undefined>(undefined);
+  readonly stepHour = input(1, { transform: numberAttribute });
+  readonly stepMinute = input(1, { transform: numberAttribute });
+  readonly stepSecond = input(1, { transform: numberAttribute });
+  /** @deprecated Compatibility-only input; panel visibility has no transition configuration in this implementation. */
+  readonly showTransitionOptions = input('150ms cubic-bezier(0, 0, 0.2, 1)');
+  /** @deprecated Compatibility-only input; panel visibility has no transition configuration in this implementation. */
+  readonly hideTransitionOptions = input('150ms cubic-bezier(0, 0, 0.2, 1)');
+  readonly clearButtonStyleClass = input<string | undefined>(undefined);
+  readonly todayButtonStyleClass = input<string | undefined>(undefined);
+  readonly icon = input<string | undefined>(undefined);
+  readonly iconAriaLabel = input<string | undefined>(undefined);
+  /** @deprecated Compatibility-only input; the icon is rendered as the dedicated trigger button. */
+  readonly iconDisplay = input<'input' | 'button'>('button');
+  readonly defaultViewDate = input<Date | null | undefined>(undefined);
+  readonly locale = input<string | undefined>(undefined);
+  readonly panelAriaLabel = input<string | undefined>(undefined);
+  readonly previousMonthLabel = input<string | undefined>(undefined);
+  readonly nextMonthLabel = input<string | undefined>(undefined);
+  readonly timePickerAriaLabel = input<string | undefined>(undefined);
+  readonly previousHourLabel = input<string | undefined>(undefined);
+  readonly nextHourLabel = input<string | undefined>(undefined);
+  readonly previousMinuteLabel = input<string | undefined>(undefined);
+  readonly nextMinuteLabel = input<string | undefined>(undefined);
+  readonly previousSecondLabel = input<string | undefined>(undefined);
+  readonly nextSecondLabel = input<string | undefined>(undefined);
+  readonly toggleMeridiemLabel = input<string | undefined>(undefined);
+  readonly todayLabel = input<string | undefined>(undefined);
+  readonly clearLabel = input<string | undefined>(undefined);
+  readonly onFocus = output<Event>();
+  readonly onBlur = output<Event>();
+  readonly onClose = output<void>();
+  readonly onSelect = output<any>();
+  readonly onClear = output<void>();
+  readonly onInput = output<any>();
+  readonly onTodayClick = output<Date>();
+  readonly onClearClick = output<void>();
+  readonly onShow = output<void>();
+  readonly onViewDateChange = output<{ month: number; year: number }>();
+  readonly onMonthChange = output<{ month: number; year: number }>();
+  readonly onYearChange = output<{ month: number; year: number }>();
+  readonly onClickOutside = output<MouseEvent>();
   readonly overlayVisible = model(false);
-  private subscribedCalendars = new Set<DatePickerCalendarComponent>();
+  readonly effectiveInputId = computed(() => this.inputId() || this.uniqueId);
+  readonly panelId = computed(() => `${this.effectiveInputId()}-panel`);
+  private readonly injector = inject(Injector);
+  readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
+  readonly anchor = viewChild<ElementRef<HTMLElement>>('anchor');
+  private restoringFocus = false;
+  readonly invalidInput = signal(false);
   private lastCalendarView: { month: number; year: number } | null = null;
-  protected readonly cvaDisabled=signal(false);
-  private onChange:(value:any)=>void=()=>{}; private onTouched:()=>void=()=>{};
-  constructor() { effect(() => { for (const calendar of this.calendars()) { if (this.subscribedCalendars.has(calendar)) continue; this.subscribedCalendars.add(calendar); calendar.viewDateChange.subscribe(view => this.handleCalendarViewDateChange(view)); } }); }
-  private handleCalendarViewDateChange(view: { month: number; year: number }): void { const previous = this.lastCalendarView; this.lastCalendarView = view; this.viewDate.set(new Date(view.year, view.month - 1, 1)); this.onViewDateChange.emit(view); if (!previous || previous.month !== view.month || previous.year !== view.year) this.onMonthChange.emit(view); if (!previous || previous.year !== view.year) this.onYearChange.emit(view); }
-  readonly calendarValue = computed(() => { const value = this.value(); const first = Array.isArray(value) ? value[0] : value; return first instanceof Date ? first.toISOString().slice(0, 10) : String(first ?? ''); });
-  readonly calendarValues = computed(() => { const value = this.value(); const values = Array.isArray(value) ? value : [value]; return values.map(item => item instanceof Date ? item.toISOString().slice(0, 10) : String(item ?? '')).filter(Boolean); });
-  readonly timeParts = computed(() => { const raw = Array.isArray(this.value()) ? this.value()[0] : this.value(); const date = raw instanceof Date ? raw : new Date(String(raw || '1970-01-01T00:00:00')); return Number.isNaN(date.valueOf()) ? { hour: 0, minute: 0, second: 0 } : { hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds() }; });
-  readonly calendarMin = computed(() => this.dateConstraint(this.minDate(), this.min()));
-  readonly calendarMax = computed(() => this.dateConstraint(this.maxDate(), this.max()));
-  readonly monthOffsets = computed(() => Array.from({ length: Math.max(1, this.numberOfMonths()) }, (_, index) => index));
-  writeValue(value:any):void{this.value.set(value??'');} registerOnChange(fn:(value:any)=>void):void{this.onChange=fn;} registerOnTouched(fn:()=>void):void{this.onTouched=fn;} setDisabledState(value:boolean):void{this.cvaDisabled.set(value);}
-  inputValue(): string { const value=this.value(); const format = (item: unknown) => item instanceof Date ? this.formatInputDate(item) : String(item ?? ''); if (Array.isArray(value)) { const separator = this.selectionMode() === 'range' ? this.rangeSeparator() : this.multipleSeparator(); return value.map(format).join(separator); } return value === undefined || value === null ? '' : format(value); }
-  private formatInputDate(date: Date): string { const pad = (value: number) => String(value).padStart(2, '0'); const day = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`; if (!this.showTime() && !this.timeOnly()) return day; const time = `${pad(date.getHours())}:${pad(date.getMinutes())}${this.showSeconds() ? `:${pad(date.getSeconds())}` : ''}`; return this.timeOnly() ? time : `${day}T${time}`; }
-  private parseValue(raw: string): any { const separator = this.selectionMode() === 'range' ? this.rangeSeparator() : this.multipleSeparator(); const values = raw.split(separator || ',').map(item => item.trim()).filter(Boolean); const parsed = this.dataType() === 'date' ? values.map(item => this.timeOnly() ? new Date(`1970-01-01T${item}`) : new Date(this.showTime() ? item : `${item}T00:00:00`)) : values; return this.selectionMode() === 'single' ? (parsed[0] ?? '') : parsed; }
-  private isDateSelectable(date: Date): boolean { const min = this.minDate(); const max = this.maxDate(); const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; if (min && date < min) return false; if (max && date > max) return false; if (this.min() && iso < this.min()) return false; if (this.max() && iso > this.max()) return false; if (this.disabledDays()?.includes(date.getDay())) return false; return !(this.disabledDates() || []).some(disabled => disabled.toDateString() === date.toDateString()); }
-  update(event:Event):void{const raw=(event.target as HTMLInputElement).value; const value = this.parseValue(raw); const values = Array.isArray(value) ? value : [value]; if (this.dataType() === 'date' && values.some(item => item instanceof Date && !Number.isNaN(item.valueOf()) && !this.isDateSelectable(item))) { this.onInput.emit(value); return; } this.value.set(value); this.onChange(value); this.onInput.emit(value); this.onSelect.emit(value);}
-  focus(event:Event):void{this.onFocus.emit(event); if (this.showOnFocus() && !this.readonlyInput()) this.show();} touch(event?:Event):void{if(event)this.onBlur.emit(event);this.onTouched();}
-  onInputKeydown(event: KeyboardEvent): void { if (event.key === 'Escape') { if (this.overlayVisible()) { event.preventDefault(); this.hide(); } } else if ((event.key === 'ArrowDown' || event.key === 'Enter') && !this.overlayVisible() && !this.readonlyInput()) { event.preventDefault(); this.show(); } }
-  show(): void { if (!this.disabled() && !this.cvaDisabled()) { this.overlayVisible.set(true); this.onShow.emit(); } }
-  hide(): void { if (this.overlayVisible()) { this.overlayVisible.set(false); this.onClose.emit(); } }
-  toggle(): void { this.overlayVisible() ? this.hide() : this.show(); }
+  constructor() {
+    super();
+    effect((onCleanup) => {
+      if (this.effectiveDisabled()) {
+        this.hide();
+        return;
+      }
+      if (!this.overlayVisible() || this.inline()) return;
+      const panel = this.panel()?.nativeElement;
+      const anchor = this.anchor()?.nativeElement;
+      if (!panel || !anchor) return;
+      const detach = attachAnchoredPopup(anchor, panel, this.appendTo());
+      if (this.touchUI() && panel.matches(':popover-open')) {
+        panel.hidePopover();
+        panel.removeAttribute('popover');
+      }
+      const applyTouchLayout = () => {
+        if (!this.touchUI() || !panel.isConnected) return;
+        panel.style.setProperty('position', 'fixed', 'important');
+        panel.style.setProperty('top', 'auto', 'important');
+        panel.style.setProperty('right', '0.5rem', 'important');
+        panel.style.setProperty('bottom', '0.5rem', 'important');
+        panel.style.setProperty('left', '0.5rem', 'important');
+      };
+      if (this.touchUI()) applyTouchLayout();
+      const release = registerOverlay(panel, {
+        anchor: this.host.nativeElement,
+        onParentClose: () => this.hide(),
+      });
+      const stop = listenForOutsideInteraction(
+        this.document,
+        () => [this.host.nativeElement, this.panel()?.nativeElement],
+        (event) => this.onDocumentClick(event),
+      );
+      const onDocumentMouseDown = (event: MouseEvent) =>
+        this.onDocumentClick(event);
+      const onDocumentKeydown = (event: KeyboardEvent) => {
+        if (
+          event.key === 'Escape' &&
+          this.overlayVisible() &&
+          this.panel()?.nativeElement &&
+          isTopOverlay(this.panel()!.nativeElement)
+        ) {
+          event.preventDefault();
+          this.hide(true);
+        }
+      };
+      // Preserve the mouse-only interaction contract for consumers that dispatch
+      // mousedown without a corresponding PointerEvent or click.
+      this.document.addEventListener('mousedown', onDocumentMouseDown, true);
+      this.document.addEventListener('keydown', onDocumentKeydown);
+      const onFocus = (event: FocusEvent) => {
+        if (
+          !eventIsInside(event, [
+            this.host.nativeElement,
+            this.panel()?.nativeElement,
+          ])
+        )
+          this.hide();
+      };
+      this.document.addEventListener('focusin', onFocus, true);
+      onCleanup(() => {
+        stop();
+        this.document.removeEventListener(
+          'mousedown',
+          onDocumentMouseDown,
+          true,
+        );
+        this.document.removeEventListener('keydown', onDocumentKeydown);
+        release();
+        this.document.removeEventListener('focusin', onFocus, true);
+        detach();
+        if (this.destroyRef.destroyed) panel.remove();
+      });
+    });
+    effect(() => {
+      const key = this.calendarValue();
+      const selected =
+        calendarParseDate(key) ?? this.defaultViewDate() ?? this.defaultDate();
+      if (selected && Number.isFinite(selected.getTime()))
+        this.viewDate.set(new Date(selected));
+    });
+  }
+  readonly viewMonth = computed(() =>
+    calendarMonthKey(
+      Number.isFinite(this.viewDate().getTime()) ? this.viewDate() : new Date(),
+    ),
+  );
+  handleCalendarViewDateChange(view: { month: number; year: number }): void {
+    const previous = this.lastCalendarView;
+    this.lastCalendarView = view;
+    this.viewDate.set(new Date(view.year, view.month - 1, 1));
+    this.onViewDateChange.emit(view);
+    if (
+      !previous ||
+      previous.month !== view.month ||
+      previous.year !== view.year
+    )
+      this.onMonthChange.emit(view);
+    if (!previous || previous.year !== view.year) this.onYearChange.emit(view);
+  }
+  readonly calendarValue = computed(() => {
+    const value = this.value();
+    return calendarDateKey(Array.isArray(value) ? value[0] : value);
+  });
+  readonly calendarValues = computed(() => {
+    const value = this.value();
+    return (Array.isArray(value) ? value : [value])
+      .map(calendarDateKey)
+      .filter(Boolean);
+  });
+  readonly timeParts = computed(() => {
+    const value = this.value();
+    const date = calendarParseDateTime(
+      Array.isArray(value) ? value[0] : value,
+      this.timeOnly(),
+    );
+    return date
+      ? {
+          hour: date.getHours(),
+          minute: date.getMinutes(),
+          second: date.getSeconds(),
+        }
+      : { hour: 0, minute: 0, second: 0 };
+  });
+  readonly calendarMin = computed(() =>
+    this.dateConstraint(this.minDate(), this.min()),
+  );
+  readonly calendarMax = computed(() =>
+    this.dateConstraint(this.maxDate(), this.max()),
+  );
+  readonly monthOffsets = computed(() =>
+    Array.from(
+      { length: calendarPositiveInteger(this.numberOfMonths(), 1, 12) },
+      (_, index) => index,
+    ),
+  );
+  writeValue(value: any): void {
+    this.invalidInput.set(false);
+    this.value.set(value ?? '');
+  }
+  /** The control's own disabled input, for the shared CVA base. */
+  protected isSelfDisabled(): boolean {
+    return this.disabled();
+  }
+  inputValue(): string {
+    const value = this.value();
+    const format = (item: unknown) => this.formatInputValue(item);
+    if (Array.isArray(value)) {
+      const separator =
+        this.selectionMode() === 'range'
+          ? this.rangeSeparator()
+          : this.multipleSeparator();
+      return value.map(format).join(separator);
+    }
+    return value === undefined || value === null ? '' : format(value);
+  }
+  private formatInputValue(value: unknown): string {
+    if (value instanceof Date)
+      return Number.isNaN(value.valueOf()) ? '' : this.formatInputDate(value);
+    const raw = String(value ?? '');
+    if (!this.showTime() && !this.timeOnly() && /^\d{4}-\d{2}-\d{2}$/.test(raw))
+      return this.formatDateParts(
+        ...(raw.split('-').map(Number) as [number, number, number]),
+      );
+    return raw;
+  }
+  private formatInputDate(date: Date): string {
+    if (!this.showTime() && !this.timeOnly())
+      return this.formatDateParts(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate(),
+      );
+    const day = `${date.getFullYear()}-${calendarPad(date.getMonth() + 1)}-${calendarPad(date.getDate())}`;
+    const time = `${calendarPad(date.getHours())}:${calendarPad(date.getMinutes())}${this.showSeconds() ? `:${calendarPad(date.getSeconds())}` : ''}`;
+    return this.timeOnly() ? time : `${day}T${time}`;
+  }
+  private formatDateParts(year: number, month: number, day: number): string {
+    return calendarFormatDatePattern(
+      this.dateFormat(),
+      this.effectiveLocale,
+      year,
+      month,
+      day,
+    );
+  }
+  /** The locale seam: the configured locale, else the document language. */
+  private get effectiveLocale(): string | undefined {
+    return this.locale() || this.document.documentElement.lang || undefined;
+  }
+  private parseValue(raw: string): any {
+    const separator =
+      this.selectionMode() === 'range'
+        ? this.rangeSeparator()
+        : this.multipleSeparator();
+    const values = raw
+      .split(separator || ',')
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .map((item) => this.normalizeDateInput(item));
+    const parsed =
+      this.dataType() === 'date'
+        ? values.map(
+            (item) => calendarParseDateTime(item, this.timeOnly()) ?? item,
+          )
+        : values;
+    return this.selectionMode() === 'single' ? (parsed[0] ?? '') : parsed;
+  }
+  private normalizeDateInput(value: string): string {
+    if (this.showTime() || this.timeOnly()) return value;
+    return calendarNormalizeDateInput(
+      value,
+      this.dateFormat(),
+      this.effectiveLocale,
+    );
+  }
+  private isDateSelectable(date: Date): boolean {
+    if (!Number.isFinite(date.getTime())) return false;
+    const min = this.minDate();
+    const max = this.maxDate();
+    const key = calendarDateKey(date);
+    if (this.timeOnly()) {
+      const seconds = (item: Date) =>
+        item.getHours() * 3600 + item.getMinutes() * 60 + item.getSeconds();
+      return (
+        (!min || seconds(date) >= seconds(min)) &&
+        (!max || seconds(date) <= seconds(max))
+      );
+    }
+    if (
+      (this.calendarMin() && key < this.calendarMin()) ||
+      (this.calendarMax() && key > this.calendarMax())
+    )
+      return false;
+    if (this.showTime() && ((min && date < min) || (max && date > max)))
+      return false;
+    return (
+      !this.disabledDays()?.includes(date.getDay()) &&
+      !(this.disabledDates() || []).some(
+        (disabled) => calendarDateKey(disabled) === key,
+      )
+    );
+  }
+  update(event: Event): void {
+    if (this.effectiveDisabled() || this.readonlyInput()) return;
+    const raw = (event.target as HTMLInputElement).value;
+    const value = this.parseValue(raw);
+    const values = Array.isArray(value) ? value : value === '' ? [] : [value];
+    const dates = values.map((item) =>
+      calendarParseDateTime(item, this.timeOnly()),
+    );
+    const maxCount = this.maxDateCount();
+    const invalid =
+      dates.some((date) => !date || !this.isDateSelectable(date)) ||
+      (this.selectionMode() === 'range' &&
+        (values.length > 2 ||
+          (values.length === 2 && dates[0]! > dates[1]!))) ||
+      (this.selectionMode() === 'multiple' &&
+        maxCount !== undefined &&
+        values.length > maxCount);
+    this.invalidInput.set(invalid);
+    if (invalid) {
+      if (this.keepInvalid()) {
+        this.value.set(raw);
+        this.cvaOnChange(raw);
+      }
+      this.onInput.emit(raw);
+      return;
+    }
+    this.value.set(value);
+    this.cvaOnChange(value);
+    this.onInput.emit(value);
+    this.onSelect.emit(value);
+  }
+  focus(event: Event): void {
+    this.onFocus.emit(event);
+    if (this.showOnFocus() && !this.restoringFocus) this.show();
+  }
+  touch(event?: Event): void {
+    if (event) this.onBlur.emit(event);
+    this.cvaOnTouched();
+  }
+  onInputKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.overlayVisible()) {
+      event.preventDefault();
+      event.stopPropagation?.();
+      this.hide(true);
+    } else if (
+      event.key === 'ArrowDown' ||
+      (event.key === 'Enter' && !this.overlayVisible())
+    ) {
+      event.preventDefault();
+      this.show();
+      this.focusCalendar();
+    }
+  }
+  onPanelKeydown(event: KeyboardEvent): void {
+    if (this.inline()) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.hide(true);
+    } else if (this.focusTrap() && this.panel())
+      trapTabKey(event, this.panel()!.nativeElement);
+  }
+  private focusCalendar(): void {
+    if (!this.focusOnShow()) return;
+    afterNextRender(
+      () => {
+        if (this.overlayVisible()) {
+          if (this.timeOnly())
+            this.panel()
+              ?.nativeElement.querySelector<HTMLElement>(
+                'button:not(:disabled)',
+              )
+              ?.focus();
+          else this.calendars()[0]?.focusSelected();
+        }
+      },
+      { injector: this.injector },
+    );
+  }
+  show(): void {
+    if (!this.inline() && !this.overlayVisible() && !this.effectiveDisabled()) {
+      this.overlayVisible.set(true);
+      this.onShow.emit();
+    }
+  }
+  hide(restoreFocus = false): void {
+    if (!this.overlayVisible()) return;
+    this.overlayVisible.set(false);
+    this.onClose.emit();
+    this.cvaOnTouched();
+    if (restoreFocus) {
+      this.restoringFocus = true;
+      this.host.nativeElement
+        .querySelector<HTMLInputElement>('input')
+        ?.focus({ preventScroll: true });
+      this.restoringFocus = false;
+    }
+  }
+  toggle(): void {
+    if (this.overlayVisible()) this.hide(true);
+    else {
+      this.show();
+      this.focusCalendar();
+    }
+  }
+  onDocumentClick(event: MouseEvent): void {
+    if (
+      !this.inline() &&
+      this.overlayVisible() &&
+      !eventIsInside(event, [
+        this.host.nativeElement,
+        this.panel()?.nativeElement,
+      ])
+    ) {
+      this.onClickOutside.emit(event);
+      this.hide();
+    }
+  }
   selectCalendarDate(iso: string): void {
-    const selected = this.dataType() === 'date' ? new Date(`${iso}T00:00:00`) : iso;
-    if (this.dataType() === 'date' && !this.isDateSelectable(selected as Date)) return;
+    if (this.effectiveDisabled()) return;
+    const date = calendarParseDate(iso);
+    if (!date) return;
+    if (this.showTime()) {
+      const time = this.timeParts();
+      date.setHours(time.hour, time.minute, time.second);
+    }
+    if (!this.isDateSelectable(date)) return;
+    const selected =
+      this.dataType() === 'date'
+        ? date
+        : this.showTime()
+          ? `${iso}T${calendarTimeString(this.timeParts(), this.showSeconds())}`
+          : iso;
+    this.invalidInput.set(false);
     const mode = this.selectionMode();
     let next: any = selected;
-    if (mode === 'multiple') {
-      const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      const index = current.findIndex(item => this.calendarIso(item) === iso);
-      if (index < 0 && this.maxDateCount() !== undefined && current.length >= this.maxDateCount()!) return;
-      index >= 0 ? current.splice(index, 1) : current.push(selected);
-      next = current;
-    } else if (mode === 'range') {
-      const current = Array.isArray(this.value()) ? [...this.value()] : [];
-      if (current.length !== 1 || this.calendarIso(current[0]) === iso) next = [selected];
-      else next = this.calendarIso(current[0]) < iso ? [current[0], selected] : [selected, current[0]];
+    if (mode !== 'single') {
+      const current: any[] = Array.isArray(this.value())
+        ? [...this.value()]
+        : [];
+      if (
+        mode === 'multiple' &&
+        this.maxDateCount() !== undefined &&
+        !current.some((item) => calendarDateKey(item) === iso) &&
+        current.length >= this.maxDateCount()!
+      )
+        return;
+      const nextKeys = calendarSelection(
+        mode,
+        current.map((item) => calendarDateKey(item)),
+        iso,
+        {
+          restartRangeOnSameDay: true,
+        },
+      );
+      next = nextKeys.map(
+        (key) =>
+          current.find((item) => calendarDateKey(item) === key) ?? selected,
+      );
     }
-    this.value.set(next); this.onChange(next); this.onInput.emit(next); this.onSelect.emit(next);
-    if (this.hideOnDateTimeSelect() && (mode === 'single' || (mode === 'range' && Array.isArray(next) && next.length === 2))) this.hide();
+    this.value.set(next);
+    this.cvaOnChange(next);
+    this.onInput.emit(next);
+    this.onSelect.emit(next);
+    if (
+      this.hideOnDateTimeSelect() &&
+      (mode === 'single' ||
+        (mode === 'range' && Array.isArray(next) && next.length === 2))
+    )
+      this.hide(true);
   }
-  private calendarIso(value: unknown): string { return value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? ''); }
-  displayHour(): number { const hour = this.timeParts().hour; return this.hourFormat() === '12' ? (hour % 12 || 12) : hour; }
-  meridiem(): 'AM' | 'PM' { return this.timeParts().hour >= 12 ? 'PM' : 'AM'; }
-  adjustTime(part: 'hour' | 'minute' | 'second', delta: number): void { const current = this.timeParts(); const step = part === 'hour' ? this.stepHour() : part === 'minute' ? this.stepMinute() : this.stepSecond(); let hour = current.hour; let minute = current.minute; let second = current.second; if (part === 'hour') hour = (hour + delta * step + 24) % 24; if (part === 'minute') minute = (minute + delta * step + 60) % 60; if (part === 'second') second = (second + delta * step + 60) % 60; this.setTime(hour, minute, second); }
-  toggleMeridiem(): void { const current = this.timeParts(); this.setTime((current.hour + 12) % 24, current.minute, current.second); }
-  private setTime(hour: number, minute: number, second: number): void { const current = this.value(); const first = Array.isArray(current) ? current[0] : current; let next: any; if (first instanceof Date) { next = new Date(first); next.setHours(hour, minute, second, 0); } else { const raw = String(first || (this.timeOnly() ? '00:00' : `${new Date().toISOString().slice(0, 10)}T00:00`)); const datePart = this.timeOnly() ? '' : raw.slice(0, 10); const pad = (value: number) => String(value).padStart(2, '0'); next = this.timeOnly() ? `${pad(hour)}:${pad(minute)}${this.showSeconds() ? `:${pad(second)}` : ''}` : `${datePart}T${pad(hour)}:${pad(minute)}${this.showSeconds() ? `:${pad(second)}` : ''}`; } if (Array.isArray(current)) { const values = [...current]; values[0] = next; this.value.set(values); this.onChange(values); this.onInput.emit(values); } else { this.value.set(next); this.onChange(next); this.onInput.emit(next); } }
-  private dateConstraint(date: Date | null | undefined, fallback: string): string { return date instanceof Date && !Number.isNaN(date.valueOf()) ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : fallback; }
-  clear():void{if (this.disabled() || this.cvaDisabled()) return; this.value.set('');this.onChange('');this.onInput.emit('');this.onClear.emit();this.onClearClick.emit();}
-  today():void{const value=new Date(); if (!this.isDateSelectable(value)) return; const next=this.dataType()==='date'?value:value.toISOString().slice(0,10); this.value.set(next);this.onChange(next);this.onInput.emit(next);this.onTodayClick.emit(value);this.onSelect.emit(next);if(this.hideOnDateTimeSelect()&&!this.inline())this.hide();}
+  displayHour(): number {
+    const hour = this.timeParts().hour;
+    return this.hourFormat() === '12' ? hour % 12 || 12 : hour;
+  }
+  meridiem(): 'AM' | 'PM' {
+    return this.timeParts().hour >= 12 ? 'PM' : 'AM';
+  }
+  adjustTime(part: 'hour' | 'minute' | 'second', delta: number): void {
+    const current = this.timeParts();
+    const step =
+      calendarPositiveInteger(
+        part === 'hour'
+          ? this.stepHour()
+          : part === 'minute'
+            ? this.stepMinute()
+            : this.stepSecond(),
+        1,
+      ) % (part === 'hour' ? 24 : 60);
+    let hour = current.hour;
+    let minute = current.minute;
+    let second = current.second;
+    if (part === 'hour') hour = (hour + delta * step + 24) % 24;
+    if (part === 'minute') minute = (minute + delta * step + 60) % 60;
+    if (part === 'second') second = (second + delta * step + 60) % 60;
+    this.setTime(hour, minute, second);
+  }
+  toggleMeridiem(): void {
+    const current = this.timeParts();
+    this.setTime((current.hour + 12) % 24, current.minute, current.second);
+  }
+  private setTime(hour: number, minute: number, second: number): void {
+    if (this.effectiveDisabled()) return;
+    const current = this.value();
+    const first = Array.isArray(current) ? current[0] : current;
+    const date =
+      calendarParseDateTime(first, this.timeOnly()) ??
+      (this.timeOnly() ? calendarParseDate('1970-01-01')! : new Date());
+    date.setHours(hour, minute, second, 0);
+    if (!this.isDateSelectable(date)) return;
+    const text = calendarTimeString(
+      { hour, minute, second },
+      this.showSeconds(),
+    );
+    const next =
+      this.dataType() === 'date'
+        ? date
+        : this.timeOnly()
+          ? text
+          : `${calendarDateKey(date)}T${text}`;
+    const value = Array.isArray(current) ? [next, ...current.slice(1)] : next;
+    this.invalidInput.set(false);
+    this.value.set(value);
+    this.cvaOnChange(value);
+    this.onInput.emit(value);
+  }
+  private dateConstraint(
+    date: Date | null | undefined,
+    fallback: string,
+  ): string {
+    return date instanceof Date && !Number.isNaN(date.valueOf())
+      ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+      : fallback;
+  }
+  clear(): void {
+    if (this.effectiveDisabled()) return;
+    this.invalidInput.set(false);
+    this.value.set('');
+    this.cvaOnChange('');
+    this.cvaOnTouched();
+    this.onInput.emit('');
+    this.onClear.emit();
+    this.onClearClick.emit();
+  }
+  today(): void {
+    if (this.effectiveDisabled()) return;
+    const today = new Date();
+    const day = calendarParseDate(calendarDateKey(today))!;
+    if (this.showTime()) {
+      const time = this.timeParts();
+      day.setHours(time.hour, time.minute, time.second);
+    }
+    if (!this.isDateSelectable(day)) return;
+    this.selectCalendarDate(calendarDateKey(today));
+    this.onTodayClick.emit(today);
+  }
 }

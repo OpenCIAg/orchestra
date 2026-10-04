@@ -5,9 +5,11 @@ import {
   computed,
   output,
   inject,
+  booleanAttribute,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
+import { safeIcon as sanitizeIcon } from './safe-icon';
 import { ButtonVariant, ButtonSize } from './button.types';
 
 @Component({
@@ -22,27 +24,24 @@ export class IconButtonComponent {
   // ── Inputs (Signals API) ──────────────────────────────────────────
   readonly variant = input<ButtonVariant>('primary');
   readonly size = input<ButtonSize>('md');
-  readonly disabled = input<boolean>(false);
-  readonly loading = input<boolean>(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
+  readonly loading = input(false, { transform: booleanAttribute });
   readonly icon = input<string | undefined>(undefined);
-  readonly ariaLabel = input.required<string>(); // Require ariaLabel for accessibility
+  readonly ariaLabel = input.required<string>();
 
+  private readonly document = inject(DOCUMENT);
   private readonly sanitizer = inject(DomSanitizer);
 
   // ── Outputs (Signals API) ─────────────────────────────────────────
-  readonly click = output<MouseEvent>();
+  /** Keep the public property while avoiding a native/output `click` collision. */
+  readonly click = output<MouseEvent>({ alias: 'clicked' });
 
   // ── Computed Signals ──────────────────────────────────────────────
   readonly isDisabled = computed(() => this.disabled() || this.loading());
 
-  readonly safeIcon = computed(() => {
-    const icon = this.icon();
-    if (!icon) return null;
-    if (icon.trim().startsWith('<svg')) {
-      return { isSvg: true, content: this.sanitizer.bypassSecurityTrustHtml(icon) };
-    }
-    return { isSvg: false, content: icon };
-  });
+  readonly safeIcon = computed(() =>
+    sanitizeIcon(this.icon(), this.document, this.sanitizer),
+  );
 
   readonly buttonClasses = computed(() => {
     return {

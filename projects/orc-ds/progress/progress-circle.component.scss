@@ -48,11 +48,11 @@
 // ── Modo Indeterminado ──────────────────────────────────────
 .orc-progress-circle--indeterminate {
   .orc-progress-circle__svg {
-    animation: orc-circle-rotate 1.6s linear infinite;
+    animation: orc-circle-rotate 2s linear infinite;
   }
 
   .orc-progress-circle__fill {
-    animation: orc-circle-dash 1.6s ease-in-out infinite;
+    animation: orc-circle-dash 2s ease-in-out infinite;
     transition: none;
   }
 }
@@ -75,6 +75,14 @@
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -124px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orc-progress-circle-host .orc-progress-circle__svg,
+  .orc-progress-circle-host .orc-progress-circle__fill {
+    animation: none;
+    transition: none;
   }
 }
 
