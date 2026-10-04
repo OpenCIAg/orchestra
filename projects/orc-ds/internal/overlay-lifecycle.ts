@@ -134,14 +134,45 @@ export function eventIsInside(
   );
 }
 
-/** Capture phase also observes interactions inside consumers that stop bubbling events. */
+/**
+ * Capture phase also observes interactions inside consumers that stop bubbling events.
+ *
+ * Pointer-gesture triage: overlays opened from focus (combobox,
+ * autocomplete) arm these listeners in the middle of a pointer gesture.
+ * Once the detached backdrop paints, the release lands on it and the
+ * closing `click` retargets to the nearest common ancestor of the press and
+ * release targets — the native modal dialog, or the body. That completion
+ * click is part of the gesture that OPENED the overlay, never an outside
+ * dismissal, so a click is triaged by the press that started it: an
+ * unobserved pointer press (detail > 0) is ignored, an observed press
+ * inside the roots keeps the interaction, and keyboard- or
+ * programmatic-generated activations (detail 0) keep the plain semantics.
+ */
 export function listenForOutsideInteraction(
   document: Document,
   roots: () => readonly (HTMLElement | null | undefined)[],
   onOutside: (event: MouseEvent) => void,
 ): () => void {
+  let observedPointerDown = false;
+  let pointerDownInside = false;
   const listener = (event: Event) => {
-    if (!eventIsInside(event, roots())) onOutside(event as MouseEvent);
+    if (event.type === 'pointerdown') {
+      observedPointerDown = true;
+      pointerDownInside = eventIsInside(event, roots());
+      if (!pointerDownInside) onOutside(event as MouseEvent);
+      return;
+    }
+    if (observedPointerDown) {
+      if (!pointerDownInside && !eventIsInside(event, roots()))
+        onOutside(event as MouseEvent);
+      return;
+    }
+    const detail = (event as MouseEvent).detail;
+    if (
+      (detail === 0 || detail === undefined) &&
+      !eventIsInside(event, roots())
+    )
+      onOutside(event as MouseEvent);
   };
   document.addEventListener('pointerdown', listener, true);
   document.addEventListener('click', listener, true);

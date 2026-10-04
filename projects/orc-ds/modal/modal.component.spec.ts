@@ -209,6 +209,45 @@ describe('ModalComponent', () => {
       expect(component.isOpen()).toBeFalse();
     });
 
+    it('closes on genuine pointer backdrop clicks (press and release on the mask)', () => {
+      fixture.componentRef.setInput('inline', true);
+      fixture.componentRef.setInput('isOpen', true);
+      fixture.detectChanges();
+      const dialog = fixture.nativeElement.querySelector(
+        'dialog',
+      ) as HTMLDialogElement;
+
+      dialog.dispatchEvent(
+        new PointerEvent('pointerdown', { bubbles: true, detail: 1 }),
+      );
+      dialog.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, detail: 1 }),
+      );
+      expect(component.isOpen()).toBeFalse();
+    });
+
+    it('ignores a completion click that retargets from a control opened mid-gesture', () => {
+      fixture.componentRef.setInput('inline', true);
+      fixture.componentRef.setInput('isOpen', true);
+      fixture.detectChanges();
+      const dialog = fixture.nativeElement.querySelector(
+        'dialog',
+      ) as HTMLDialogElement;
+
+      // A picker inside the modal opens from focus: the press landed on its
+      // input, the detached backdrop painted before the release, so the
+      // closing click retargets to the nearest common ancestor — the dialog.
+      const input = document.createElement('input');
+      dialog.querySelector('.orc-modal__body')!.appendChild(input);
+      input.dispatchEvent(
+        new PointerEvent('pointerdown', { bubbles: true, detail: 1 }),
+      );
+      dialog.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, detail: 1 }),
+      );
+      expect(component.isOpen()).toBeTrue();
+    });
+
     it('does not close on backdrop clicks when dismissableMask is disabled', () => {
       fixture.componentRef.setInput('inline', true);
       fixture.componentRef.setInput('isOpen', true);

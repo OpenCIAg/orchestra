@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ModalComponent } from '@ciag/orchestra/modal';
+import { DrawerComponent } from '@ciag/orchestra/drawer';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { MultiSelectComponent } from '@ciag/orchestra/multi-select';
 import { ComboboxComponent } from '@ciag/orchestra/combobox';
@@ -25,6 +26,7 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
   standalone: true,
   imports: [
     ModalComponent,
+    DrawerComponent,
     ButtonComponent,
     MultiSelectComponent,
     ComboboxComponent,
@@ -124,6 +126,31 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
           </p>
         </div>
       </orc-modal>
+
+      <div class="drawer-section">
+        <span>Gaveta modal (drawer)</span>
+        <orc-button (click)="drawerOpen.set(true)">Abrir drawer</orc-button>
+        <orc-drawer [(open)]="drawerOpen" label="Gaveta" placement="right">
+          <div class="grid">
+            <label class="field">
+              <span>Combobox</span>
+              <orc-combobox
+                placeholder="Buscar"
+                [options]="options"
+                [(value)]="comboValue"
+              />
+            </label>
+            <label class="field">
+              <span>Autocomplete</span>
+              <orc-autocomplete
+                placeholder="Digite para filtrar"
+                [options]="options"
+                [(value)]="autoValue"
+              />
+            </label>
+          </div>
+        </orc-drawer>
+      </div>
     </div>
   `,
   styles: [
@@ -146,11 +173,18 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
       .field > span {
         font-weight: 600;
       }
+      .drawer-section {
+        display: grid;
+        gap: 0.5rem;
+        justify-items: start;
+        font-weight: 600;
+      }
     `,
   ],
 })
 export class InsideModalSandboxComponent {
   readonly open = signal(true);
+  readonly drawerOpen = signal(false);
 
   readonly options = [
     { value: 'angular', label: 'Angular' },

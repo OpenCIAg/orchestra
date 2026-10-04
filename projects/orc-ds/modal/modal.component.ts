@@ -57,6 +57,11 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
   private hasOpenNotification = false;
   private pointerOpener: HTMLElement | null = null;
   private pointerOpenerTimer: ReturnType<typeof setTimeout> | null = null;
+  /** Where the in-flight pointer gesture began, per the dialog capture phase. */
+  private backdropPointerDownTarget: EventTarget | null = null;
+  private readonly captureBackdropPointerDown = (event: Event): void => {
+    this.backdropPointerDownTarget = event.target;
+  };
   private readonly capturePointerOpener = (event: MouseEvent): void => {
     if (event.detail === 0 || this.managedOpen) return;
 
@@ -204,6 +209,11 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
     // constructor effect cannot observe that non-signal assignment, so sync
     // once after the native dialog enters the view.
     this.syncDialogState();
+    this.dialogRef?.nativeElement.addEventListener(
+      'pointerdown',
+      this.captureBackdropPointerDown,
+      true,
+    );
   }
 
   private syncDialogState(): void {
@@ -353,9 +363,22 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
     // Como o conteúdo real está no <div class="orc-modal__container">,
     // clicar no dialog propriamente (se o padding não cobrir a tela) é backdrop.
     // Mas a forma mais segura é checar o target.
-    if (event.target === dialog) {
-      this.onClose();
-    }
+    if (event.target !== dialog) return;
+    // A pointer click dismisses the modal only when the gesture began on
+    // the mask itself. A control opened from focus inside the modal (a
+    // picker panel whose detached backdrop painted between press and
+    // release) retargets its completion click to the dialog element, but
+    // the press actually landed on an inner control — dismissing here
+    // would close the modal for the gesture that merely opened the panel.
+    // Keyboard- and programmatic-generated clicks (detail 0) keep the
+    // plain mask semantics.
+    if (
+      event.detail > 0 &&
+      this.backdropPointerDownTarget !== null &&
+      this.backdropPointerDownTarget !== dialog
+    )
+      return;
+    this.onClose();
   }
 
   show(): void {
@@ -462,6 +485,11 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.document.removeEventListener('click', this.capturePointerOpener, true);
+    this.dialogRef?.nativeElement.removeEventListener(
+      'pointerdown',
+      this.captureBackdropPointerDown,
+      true,
+    );
     this.clearPointerOpener();
     const dialog = this.dialogRef?.nativeElement;
     if (dialog?.open) {
