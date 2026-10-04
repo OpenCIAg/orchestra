@@ -3001,7 +3001,7 @@
       "kind": "Component",
       "selector": "orc-combobox",
       "file": "projects/orc-ds/combobox/combobox.component.ts",
-      "line": 26,
+      "line": 31,
       "inputs": [
         {
           "name": "options",
@@ -3097,6 +3097,7 @@
       ],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/combobox/combobox-dismissal.spec.ts",
         "projects/orc-ds/combobox/combobox-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2/combobox-behavior.spec.ts"
@@ -9086,7 +9087,7 @@
       "kind": "Component",
       "selector": "orc-multi-select",
       "file": "projects/orc-ds/multi-select/multi-select.component.ts",
-      "line": 33,
+      "line": 39,
       "inputs": [
         {
           "name": "options",
@@ -9699,6 +9700,7 @@
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/multi-select-contract.spec.ts",
         "projects/orc-ds/multi-select/multi-select-core-contracts.spec.ts",
+        "projects/orc-ds/multi-select/multi-select-dismissal.spec.ts",
         "projects/orc-ds/multi-select/multi-select-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
@@ -21192,6 +21194,7 @@
         "projects/orc-ds/size-vocabulary-contract.spec.ts",
         "projects/orc-ds/tree-select-contract.spec.ts",
         "projects/orc-ds/tree-select-lifecycle-contract.spec.ts",
+        "projects/orc-ds/tree-select/tree-select-dismissal.spec.ts",
         "projects/orc-ds/tree-select/tree-select-parity.spec.ts"
       ],
       "unresolvedBase": "CvaControl"
@@ -23006,7 +23009,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './in-place-overlay';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -23743,6 +23746,7 @@
     "projects/orc-ds/color-picker/ng-package.json",
     "projects/orc-ds/colorpicker/index.ts",
     "projects/orc-ds/colorpicker/ng-package.json",
+    "projects/orc-ds/combobox/combobox-dismissal.spec.ts",
     "projects/orc-ds/combobox/combobox-parity.spec.ts",
     "projects/orc-ds/combobox/combobox.component.html",
     "projects/orc-ds/combobox/combobox.component.scss",
@@ -24032,6 +24036,8 @@
     "projects/orc-ds/internal/cva-control.spec.ts",
     "projects/orc-ds/internal/cva-control.ts",
     "projects/orc-ds/internal/dom-target.ts",
+    "projects/orc-ds/internal/in-place-overlay.spec.ts",
+    "projects/orc-ds/internal/in-place-overlay.ts",
     "projects/orc-ds/internal/index.ts",
     "projects/orc-ds/internal/list-picker.spec.ts",
     "projects/orc-ds/internal/list-picker.ts",
@@ -24123,6 +24129,7 @@
     "projects/orc-ds/multi-select-contract.spec.ts",
     "projects/orc-ds/multi-select/index.ts",
     "projects/orc-ds/multi-select/multi-select-core-contracts.spec.ts",
+    "projects/orc-ds/multi-select/multi-select-dismissal.spec.ts",
     "projects/orc-ds/multi-select/multi-select-parity.spec.ts",
     "projects/orc-ds/multi-select/multi-select.component.html",
     "projects/orc-ds/multi-select/multi-select.component.scss",
@@ -24589,6 +24596,7 @@
     "projects/orc-ds/tree-select-lifecycle-contract.spec.ts",
     "projects/orc-ds/tree-select/index.ts",
     "projects/orc-ds/tree-select/ng-package.json",
+    "projects/orc-ds/tree-select/tree-select-dismissal.spec.ts",
     "projects/orc-ds/tree-select/tree-select-parity.spec.ts",
     "projects/orc-ds/tree-select/tree-select.component.html",
     "projects/orc-ds/tree-select/tree-select.component.scss",

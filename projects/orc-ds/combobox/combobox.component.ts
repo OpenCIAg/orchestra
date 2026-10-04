@@ -3,15 +3,20 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
+  ElementRef,
   forwardRef,
+  inject,
   input,
   model,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
+  attachInPlaceOverlay,
   CvaControl,
   listPickerActiveId,
   listPickerActiveIndex,
@@ -42,6 +47,9 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
   private static nextId = 0;
   readonly inputId = `orc-combobox-${++ComboboxComponent.nextId}`;
   readonly listId = `${this.inputId}-listbox`;
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
+  private inPlaceRelease: (() => void) | null = null;
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T | null>(null);
   readonly query = model('');
@@ -72,6 +80,10 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
 
   constructor() {
     super();
+    inject(DestroyRef).onDestroy(() => {
+      this.inPlaceRelease?.();
+      this.inPlaceRelease = null;
+    });
     effect(() => {
       const value = this.value();
       const options = this.options();
@@ -133,6 +145,7 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
       this.cvaOnChange(null);
     }
     this.open.set(true);
+    this.ensureOverlay();
     this.activeIndex.set(this.firstEnabledIndex());
   }
 
@@ -140,6 +153,7 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
     if (this.effectiveDisabled()) return;
     this.inputHasFocus = true;
     this.open.set(true);
+    this.ensureOverlay();
     const selectedIndex = this.filteredOptions().findIndex(
       (option) => !option.disabled && Object.is(option.value, this.value()),
     );
@@ -201,6 +215,7 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
       event.preventDefault();
       const delta = event.key === 'ArrowDown' ? 1 : -1;
       this.open.set(true);
+      this.ensureOverlay();
       this.moveActive(delta);
     } else if (
       event.key === 'Enter' &&
@@ -231,7 +246,46 @@ export class ComboboxComponent<T = unknown> extends CvaControl {
   }
 
   private dismiss(): void {
+    if (!this.open()) return;
+    this.inPlaceRelease?.();
+    this.inPlaceRelease = null;
     this.open.set(false);
     this.activeIndex.set(-1);
+  }
+
+  // Signal-driven attachment: direct writes to the open model must arm the
+  // dismissal lifecycle too; idempotent against the open-path attach.
+  private readonly overlayWatcher = effect(() => {
+    if (this.open() && !this.inPlaceRelease) {
+      this.ensureOverlay();
+    } else if (!this.open() && this.inPlaceRelease) {
+      this.inPlaceRelease();
+      this.inPlaceRelease = null;
+    }
+  });
+
+  /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
+  private ensureOverlay(): void {
+    if (this.inPlaceRelease) return;
+    this.inPlaceRelease = attachInPlaceOverlay({
+      host: this.host.nativeElement,
+      panel: () => this.panelRef()?.nativeElement ?? null,
+      onEscape: () => this.dismiss(),
+      onOutside: () => this.dismissFromOutside(),
+      onParentClose: () => this.dismiss(),
+    }).dispose;
+  }
+
+  /**
+   * Outside pointer dismissal. The blur close handles the touched handshake
+   * when focus actually moves; this covers the interactions that never blur
+   * the input, which must still mark the control touched.
+   */
+  private dismissFromOutside(): void {
+    if (!this.open()) return;
+    this.dismiss();
+    if (!this.inputHasFocus) return;
+    this.inputHasFocus = false;
+    this.cvaOnTouched();
   }
 }

@@ -1,16 +1,22 @@
 import {
+  effect,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
+  ElementRef,
   forwardRef,
+  inject,
   input,
   model,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
+  attachInPlaceOverlay,
   CvaControl,
   listPickerActiveId,
   listPickerEnabledIndexes,
@@ -47,6 +53,9 @@ let nextMultiSelectId = 0;
 })
 export class MultiSelectComponent<T = unknown> extends CvaControl {
   private readonly uniqueId = `orc-multiselect-${++nextMultiSelectId}`;
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
+  private inPlaceRelease: (() => void) | null = null;
   readonly options = input<P2Option<T>[]>([]);
   readonly value = model<T[]>([]);
   readonly label = input('');
@@ -210,6 +219,24 @@ export class MultiSelectComponent<T = unknown> extends CvaControl {
     return this.disabled();
   }
 
+  constructor() {
+    super();
+    inject(DestroyRef).onDestroy(() => {
+      this.inPlaceRelease?.();
+      this.inPlaceRelease = null;
+    });
+    // Signal-driven attachment: direct writes to the open model must arm the
+    // dismissal lifecycle too; idempotent against the open-path attach.
+    effect(() => {
+      if (this.open() && !this.inPlaceRelease) {
+        this.ensureOverlay();
+      } else if (!this.open() && this.inPlaceRelease) {
+        this.inPlaceRelease();
+        this.inPlaceRelease = null;
+      }
+    });
+  }
+
   writeValue(value: T[] | null): void {
     this.value.set(Array.isArray(value) ? [...value] : []);
   }
@@ -243,16 +270,43 @@ export class MultiSelectComponent<T = unknown> extends CvaControl {
   }
   toggleOpen(): void {
     if (this.effectiveDisabled() || this.readonly()) return;
-    this.open.update((value) => !value);
-    if (!this.open()) {
-      if (this.resetFilterOnHide()) this.filterValue.set('');
-      this.activeIndex.set(-1);
-    }
     if (this.open()) {
-      this.onPanelShow.emit();
-    } else {
-      this.onPanelHide.emit();
+      this.closePanel();
+      return;
     }
+    this.open.set(true);
+    this.onPanelShow.emit();
+    this.ensureOverlay();
+  }
+
+  /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
+  private ensureOverlay(): void {
+    if (this.inPlaceRelease) return;
+    this.inPlaceRelease = attachInPlaceOverlay({
+      host: this.host.nativeElement,
+      panel: () => this.panelRef()?.nativeElement ?? null,
+      onEscape: () => this.closePanel(true),
+      onOutside: () => {
+        this.closePanel();
+        this.cvaOnTouched();
+      },
+      onParentClose: () => this.closePanel(),
+    }).dispose;
+  }
+  private closePanel(restoreFocus = false): void {
+    if (!this.open()) return;
+    this.inPlaceRelease?.();
+    this.inPlaceRelease = null;
+    this.open.set(false);
+    if (this.resetFilterOnHide()) this.filterValue.set('');
+    this.activeIndex.set(-1);
+    this.onPanelHide.emit();
+    if (restoreFocus) this.focusTrigger();
+  }
+  private focusTrigger(): void {
+    this.host.nativeElement
+      .querySelector<HTMLElement>('.trigger')
+      ?.focus({ preventScroll: true });
   }
   onKeydown(event: KeyboardEvent): void {
     if (this.effectiveDisabled() || this.readonly()) return;
