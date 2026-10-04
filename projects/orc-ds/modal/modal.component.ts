@@ -57,7 +57,13 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
   private hasOpenNotification = false;
   private pointerOpener: HTMLElement | null = null;
   private pointerOpenerTimer: ReturnType<typeof setTimeout> | null = null;
-  /** Where the in-flight pointer gesture began, per the dialog capture phase. */
+  /**
+   * Where the in-flight pointer gesture began, per the document capture
+   * phase. Document-level on purpose: a sibling picker's detached backdrop
+   * is portaled to the body, so a press that lands on it never crosses the
+   * dialog — and the completion click it retargets onto the dialog must not
+   * inherit a stale gesture record from an earlier pointer.
+   */
   private backdropPointerDownTarget: EventTarget | null = null;
   private readonly captureBackdropPointerDown = (event: Event): void => {
     this.backdropPointerDownTarget = event.target;
@@ -209,7 +215,7 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
     // constructor effect cannot observe that non-signal assignment, so sync
     // once after the native dialog enters the view.
     this.syncDialogState();
-    this.dialogRef?.nativeElement.addEventListener(
+    this.document.addEventListener(
       'pointerdown',
       this.captureBackdropPointerDown,
       true,
@@ -370,13 +376,14 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
     // release) retargets its completion click to the dialog element, but
     // the press actually landed on an inner control — dismissing here
     // would close the modal for the gesture that merely opened the panel.
-    // Keyboard- and programmatic-generated clicks (detail 0) keep the
-    // plain mask semantics.
-    if (
-      event.detail > 0 &&
-      this.backdropPointerDownTarget !== null &&
-      this.backdropPointerDownTarget !== dialog
-    )
+    // The same guard covers presses on another layer's backdrop (recorded
+    // at the document level, outside the dialog). Keyboard- and
+    // programmatic-generated clicks (detail 0) keep the plain mask
+    // semantics. The record is consumed per gesture so a stale target can
+    // never arm a later click.
+    const gestureTarget = this.backdropPointerDownTarget;
+    this.backdropPointerDownTarget = null;
+    if (event.detail > 0 && gestureTarget !== null && gestureTarget !== dialog)
       return;
     this.onClose();
   }
@@ -485,7 +492,7 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.document.removeEventListener('click', this.capturePointerOpener, true);
-    this.dialogRef?.nativeElement.removeEventListener(
+    this.document.removeEventListener(
       'pointerdown',
       this.captureBackdropPointerDown,
       true,

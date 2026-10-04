@@ -248,6 +248,30 @@ describe('ModalComponent', () => {
       expect(component.isOpen()).toBeTrue();
     });
 
+    it('does not let a press on another layer’s backdrop (outside the dialog) arm a stale mask dismissal', () => {
+      fixture.componentRef.setInput('inline', true);
+      fixture.componentRef.setInput('isOpen', true);
+      fixture.detectChanges();
+      const dialog = fixture.nativeElement.querySelector(
+        'dialog',
+      ) as HTMLDialogElement;
+
+      // A sibling picker's full-viewport backdrop is portaled to the body:
+      // its pointerdown never crosses the dialog, so the modal must not
+      // fall back to a stale gesture record when the completion click
+      // retargets to the dialog element.
+      const foreignBackdrop = document.createElement('div');
+      document.body.appendChild(foreignBackdrop);
+      foreignBackdrop.dispatchEvent(
+        new PointerEvent('pointerdown', { bubbles: true, detail: 1 }),
+      );
+      dialog.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, detail: 1 }),
+      );
+      expect(component.isOpen()).toBeTrue();
+      foreignBackdrop.remove();
+    });
+
     it('does not close on backdrop clicks when dismissableMask is disabled', () => {
       fixture.componentRef.setInput('inline', true);
       fixture.componentRef.setInput('isOpen', true);
