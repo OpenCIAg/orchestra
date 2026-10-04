@@ -5,7 +5,7 @@ test('Calendar keeps one roving day and commits keyboard selection', async ({
 }) => {
   await page.goto('/components/calendar');
 
-  const calendar = page.locator('orc-calendar');
+  const calendar = page.locator('orc-calendar').first();
   const activeDay = calendar.locator("button[data-date][tabindex='0']");
   await expect(calendar.getByRole('grid')).toBeVisible();
   await expect(activeDay).toHaveCount(1);
