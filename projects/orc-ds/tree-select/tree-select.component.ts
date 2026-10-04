@@ -1,5 +1,6 @@
 import {
   afterNextRender,
+  AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
@@ -14,18 +15,26 @@ import {
   model,
   output,
   signal,
+  TemplateRef,
   viewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
 import {
-  attachInPlaceOverlay,
+  attachListPickerOverlay,
   CvaControl,
+  filterTreeNodes,
   normalizeSize,
+  overlayAttachmentTarget,
+  P2_PANEL_VARS,
   P2_SHARED_VARS,
   SizeInput,
 } from '@ciag/orchestra/internal';
-import { filterTreeNodes } from '@ciag/orchestra/internal';
-import type { P2Option } from '@ciag/orchestra/internal';
+import type {
+  ListPickerOverlayHandle,
+  P2Option,
+} from '@ciag/orchestra/internal';
 
 let nextTreeSelectId = 0;
 
@@ -43,7 +52,7 @@ interface VisibleTreeSelectNode {
   selector: 'orc-tree-select',
   standalone: true,
   templateUrl: './tree-select.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [P2_SHARED_VARS, P2_PANEL_VARS],
   styleUrl: './tree-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -54,13 +63,23 @@ interface VisibleTreeSelectNode {
     },
   ],
 })
-export class TreeSelectComponent extends CvaControl {
+export class TreeSelectComponent
+  extends CvaControl
+  implements AfterViewInit
+{
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly overlay = inject(Overlay);
   private readonly uniqueId = `orc-treeselect-${++nextTreeSelectId}`;
-  private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
-  private inPlaceRelease: (() => void) | null = null;
+  private readonly triggerEl =
+    viewChild<ElementRef<HTMLButtonElement>>('triggerEl');
+  private readonly panelTemplate =
+    viewChild.required<TemplateRef<unknown>>('panelTemplate');
+  /** The panel template is only attachable once the host view exists. */
+  private readonly panelReady = signal(false);
+  private overlayHandle: ListPickerOverlayHandle | null = null;
   readonly styleClass = input('');
   readonly nodes = input<TreeSelectNode[]>([]);
   readonly value = model<string | string[] | null>(null);
@@ -92,7 +111,11 @@ export class TreeSelectComponent extends CvaControl {
   );
   readonly panelStyleClass = input('');
   readonly panelClass = input('');
-  /** @deprecated Compatibility input only; the panel is rendered in place. */
+  /**
+   * Where the detached panel attaches. Defaults to the body (or the
+   * enclosing native modal, so the pane never escapes native inertness);
+   * an element or selector attaches the panel inside that target instead.
+   */
   readonly appendTo = input<unknown>(undefined);
   /** @deprecated Compatibility input only; overlay options are not interpreted. */
   readonly overlayOptions = input<Record<string, unknown> | undefined>(
@@ -101,9 +124,13 @@ export class TreeSelectComponent extends CvaControl {
   constructor() {
     super();
     this.destroyRef.onDestroy(() => {
-      this.inPlaceRelease?.();
-      this.inPlaceRelease = null;
+      this.overlayHandle?.dispose();
+      this.overlayHandle = null;
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.panelReady.set(true);
   }
   readonly scrollHeight = input('16rem');
   readonly filter = input(false, { transform: booleanAttribute });
@@ -298,11 +325,24 @@ export class TreeSelectComponent extends CvaControl {
   }
   onHostFocusOut(event: FocusEvent): void {
     const nextTarget = event.relatedTarget as Node | null;
-    if (nextTarget && this.host.nativeElement.contains(nextTarget)) return;
+    // The detached panel belongs to the control composite even though it
+    // renders in the overlay pane.
+    const overlay = this.overlayHandle?.overlayElement;
+    if (
+      nextTarget &&
+      (this.host.nativeElement.contains(nextTarget) ||
+        (overlay && overlay.contains(nextTarget)))
+    )
+      return;
     queueMicrotask(() => {
       if (this.destroyRef.destroyed) return;
       const activeElement = this.host.nativeElement.ownerDocument.activeElement;
-      if (activeElement && this.host.nativeElement.contains(activeElement))
+      const overlayElement = this.overlayHandle?.overlayElement;
+      if (
+        activeElement &&
+        (this.host.nativeElement.contains(activeElement) ||
+          (overlayElement && overlayElement.contains(activeElement)))
+      )
         return;
       this.controlFocused = false;
       if (this.open()) this.closePanel();
@@ -312,34 +352,77 @@ export class TreeSelectComponent extends CvaControl {
   }
   /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
   private ensureOverlay(): void {
-    if (this.inPlaceRelease) return;
-    this.inPlaceRelease = attachInPlaceOverlay({
-      host: this.host.nativeElement,
-      panel: () => this.panelRef()?.nativeElement ?? null,
+    if (this.overlayHandle || !this.panelReady()) return;
+    const anchor =
+      this.triggerEl()?.nativeElement ?? this.host.nativeElement;
+    const triggerWidth = anchor.getBoundingClientRect().width;
+    this.overlayHandle = attachListPickerOverlay({
+      anchor,
+      content: this.panelTemplate(),
+      viewContainerRef: this.viewContainerRef,
+      overlay: this.overlay,
+      positionStrategy: (origin) => this.createPositionStrategy(origin),
+      minWidth: triggerWidth,
       onEscape: () => this.closePanel(true),
+      onBackdrop: () => this.closePanel(),
+      onParentClose: () => this.closePanel(),
+      documentEscape: () => this.closePanel(true),
+      targets: () =>
+        [this.host.nativeElement, this.overlayHandle?.overlayElement].filter(
+          (element): element is HTMLElement => !!element,
+        ),
       onOutside: () => {
         this.closePanel();
         this.cvaOnTouched();
       },
-      onParentClose: () => this.closePanel(),
-    }).dispose;
+    });
+  }
+
+  private createPositionStrategy(origin: HTMLElement): PositionStrategy {
+    const parent = overlayAttachmentTarget(origin, this.appendTo() ?? 'body');
+    const positions = [
+      {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: 4,
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+        offsetY: -4,
+      },
+    ] as const;
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(origin)
+      .withPopoverLocation(
+        parent === origin.ownerDocument.body
+          ? 'global'
+          : { type: 'parent', element: parent },
+      )
+      .withPositions([...positions])
+      .withPush(true);
   }
 
   // Signal-driven attachment: direct writes to the open model must arm the
   // dismissal lifecycle too; idempotent against the open-path attach.
   private readonly overlayWatcher = effect(() => {
-    if (this.open() && !this.inPlaceRelease) {
+    if (this.open() && this.panelReady() && !this.overlayHandle) {
       this.ensureOverlay();
-    } else if (!this.open() && this.inPlaceRelease) {
-      this.inPlaceRelease();
-      this.inPlaceRelease = null;
+    } else if (!this.open() && this.overlayHandle) {
+      this.overlayHandle.dispose();
+      this.overlayHandle = null;
     }
   });
 
   private closePanel(restoreFocus = false): void {
     if (!this.open()) return;
-    this.inPlaceRelease?.();
-    this.inPlaceRelease = null;
+    this.overlayHandle?.dispose();
+    this.overlayHandle = null;
     this.open.set(false);
     if (this.resetFilterOnHide()) {
       this.filterValue.set('');
@@ -371,9 +454,11 @@ export class TreeSelectComponent extends CvaControl {
     });
   }
   private focusTree(): void {
-    const tree = (this.host.nativeElement as HTMLElement).querySelector(
-      '[role="tree"]',
-    ) as HTMLElement | null;
+    // The tree renders in the detached overlay pane.
+    const tree = (
+      this.overlayHandle?.overlayElement ??
+      (this.host.nativeElement as HTMLElement)
+    ).querySelector('[role="tree"]') as HTMLElement | null;
     tree?.focus({ preventScroll: true });
   }
   onTreeFocusIn(event: FocusEvent): void {

@@ -1,7 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TreeSelectComponent, TreeSelectNode } from './p2-selection-components';
 
 describe('TreeSelect presentation and loading contract', () => {
+  // The panel renders detached from the host view; its elements are
+  // located in the document by the panel id the trigger points at.
+  const panelOf = (fixture: ComponentFixture<TreeSelectComponent>) =>
+    document.getElementById(
+      `${fixture.componentInstance.effectiveId()}-panel`,
+    ) as HTMLElement;
+
+  // The filter input renders in the detached panel wrapper, next to the
+  // element that carries the panel id.
+  const panelRootOf = (fixture: ComponentFixture<TreeSelectComponent>) =>
+    panelOf(fixture)!.closest(
+      '.orc-p2-tree-select-panel',
+    ) as HTMLElement;
+
   it('applies trigger identity, placeholder and root presentation inputs', () => {
     const fixture = TestBed.createComponent(TreeSelectComponent);
     const component = fixture.componentInstance;
@@ -91,13 +105,11 @@ describe('TreeSelect presentation and loading contract', () => {
       const trigger = fixture.nativeElement.querySelector(
         '.trigger',
       ) as HTMLButtonElement;
-      const tree = fixture.nativeElement.querySelector(
-        '[role="tree"]',
-      ) as HTMLElement;
-      const row = fixture.nativeElement.querySelector(
+      const tree = panelOf(fixture);
+      const row = panelOf(fixture).querySelector(
         '[role="treeitem"]',
       ) as HTMLElement;
-      const filter = fixture.nativeElement.querySelector(
+      const filter = panelRootOf(fixture).querySelector(
         'input',
       ) as HTMLInputElement;
       const controls = Array.from(
@@ -150,13 +162,13 @@ describe('TreeSelect presentation and loading contract', () => {
     component.open.set(true);
     fixture.detectChanges();
 
-    const filter = fixture.nativeElement.querySelector(
+    const filter = panelRootOf(fixture).querySelector(
       'input',
     ) as HTMLInputElement;
     const clear = fixture.nativeElement.querySelector(
       'button:not(.trigger)',
     ) as HTMLButtonElement;
-    const expand = fixture.nativeElement.querySelector(
+    const expand = panelOf(fixture).querySelector(
       '.expand',
     ) as HTMLButtonElement;
     expect(filter.placeholder).toBe('Find a team');
@@ -188,12 +200,12 @@ describe('TreeSelect presentation and loading contract', () => {
     component.toggleOpen();
     fixture.detectChanges();
 
-    const filter = fixture.nativeElement.querySelector(
+    const filter = panelRootOf(fixture).querySelector(
       'input',
     ) as HTMLInputElement;
     expect(filter.value).toBe('euro');
     expect(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ).toHaveSize(1);
 
     fixture.destroy();
@@ -223,14 +235,12 @@ describe('TreeSelect presentation and loading contract', () => {
     const root = fixture.nativeElement.querySelector(
       '.orc-p2-tree-select',
     ) as HTMLElement;
-    const status = fixture.nativeElement.querySelector(
-      '[role="status"]',
-    ) as HTMLElement;
+    const status = panelOf(fixture);
     expect(root.getAttribute('aria-busy')).toBe('true');
     expect(status.textContent.trim()).toBe('Loading options');
     expect(status.getAttribute('aria-live')).toBe('polite');
     expect(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ).toHaveSize(0);
 
     const event = new Event('click');
@@ -241,7 +251,7 @@ describe('TreeSelect presentation and loading contract', () => {
     expect(selection).not.toHaveBeenCalled();
     expect(change).not.toHaveBeenCalled();
 
-    const input = fixture.nativeElement.querySelector(
+    const input = panelRootOf(fixture).querySelector(
       'input',
     ) as HTMLInputElement;
     input.value = 'target';
@@ -256,7 +266,7 @@ describe('TreeSelect presentation and loading contract', () => {
       filter: 'target',
     });
     expect(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ).toHaveSize(0);
 
     fixture.destroy();
@@ -272,27 +282,25 @@ describe('TreeSelect presentation and loading contract', () => {
     component.filterValue.set('missing');
     fixture.detectChanges();
 
-    let status = fixture.nativeElement.querySelector(
-      '[role="status"]',
-    ) as HTMLElement;
+    let status = panelOf(fixture);
     expect(status.textContent.trim()).toBe('No matching entries');
     expect(status.getAttribute('aria-live')).toBe('polite');
     expect(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ).toHaveSize(0);
 
     fixture.componentRef.setInput('emptyMessage', undefined);
     fixture.detectChanges();
-    status = fixture.nativeElement.querySelector(
-      '[role="status"]',
-    ) as HTMLElement;
+    status = panelOf(fixture);
     expect(status.textContent.trim()).toBe('No results found');
 
     component.filterValue.set('one');
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[role="status"]')).toBeNull();
     expect(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).matches('[role="status"]'),
+    ).toBeFalse();
+    expect(
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ).toHaveSize(1);
 
     fixture.destroy();
@@ -336,9 +344,7 @@ describe('TreeSelect presentation and loading contract', () => {
     fixture.detectChanges();
 
     const document = fixture.nativeElement.ownerDocument as Document;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     const trigger = fixture.nativeElement.querySelector(
       '.trigger',
     ) as HTMLButtonElement;
@@ -362,7 +368,7 @@ describe('TreeSelect presentation and loading contract', () => {
       component.treeOptionId(1),
     );
     expect(
-      fixture.nativeElement
+      panelOf(fixture)
         .querySelector(`#${component.treeOptionId(1)}`)
         ?.classList.contains('active'),
     ).toBeTrue();
@@ -407,9 +413,7 @@ describe('TreeSelect presentation and loading contract', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     expect(tree).not.toBeNull();
     expect(document.activeElement).toBe(tree);
 
@@ -456,9 +460,7 @@ describe('TreeSelect presentation and loading contract', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     expect(tree).not.toBeNull();
     expect(document.activeElement).toBe(trigger);
 
@@ -479,9 +481,7 @@ describe('TreeSelect presentation and loading contract', () => {
     const label = fixture.nativeElement.querySelector(
       'label',
     ) as HTMLLabelElement;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     expect(label.htmlFor).toBe(trigger.id);
     expect(tree.getAttribute('aria-labelledby')).toBe(trigger.id);
     expect(tree.getAttribute('aria-label')).toBeNull();
@@ -500,9 +500,7 @@ describe('TreeSelect presentation and loading contract', () => {
     const trigger = fixture.nativeElement.querySelector(
       '.trigger',
     ) as HTMLButtonElement;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     expect(trigger.getAttribute('aria-label')).toBe('Browse categories');
     expect(tree.getAttribute('aria-labelledby')).toBe(trigger.id);
     expect(tree.getAttribute('aria-label')).toBeNull();
@@ -526,9 +524,7 @@ describe('TreeSelect presentation and loading contract', () => {
     const trigger = fixture.nativeElement.querySelector(
       '.trigger',
     ) as HTMLButtonElement;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     expect(trigger.getAttribute('aria-labelledby')).toBe(externalLabel.id);
     expect(tree.getAttribute('aria-labelledby')).toBe(externalLabel.id);
     expect(tree.getAttribute('aria-label')).toBeNull();
@@ -547,9 +543,7 @@ describe('TreeSelect presentation and loading contract', () => {
     const trigger = fixture.nativeElement.querySelector(
       '.trigger',
     ) as HTMLButtonElement;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     expect(trigger.getAttribute('aria-label')).toBeNull();
     expect(trigger.getAttribute('aria-labelledby')).toBeNull();
     expect(tree.getAttribute('aria-labelledby')).toBeNull();
@@ -570,9 +564,7 @@ describe('TreeSelect presentation and loading contract', () => {
     fixture.detectChanges();
 
     const document = fixture.nativeElement.ownerDocument as Document;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     const focused = jasmine.createSpy('focused');
     const blurred = jasmine.createSpy('blurred');
     component.onFocus.subscribe(focused);
@@ -626,9 +618,7 @@ describe('TreeSelect presentation and loading contract', () => {
     fixture.detectChanges();
 
     const document = fixture.nativeElement.ownerDocument as Document;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     tree.focus();
     tree.dispatchEvent(
       new KeyboardEvent('keydown', {
@@ -675,7 +665,7 @@ describe('TreeSelect presentation and loading contract', () => {
     fixture.detectChanges();
     expect(component.expanded().has('root')).toBeFalse();
     expect(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ).toHaveSize(1);
     expect(document.activeElement).toBe(tree);
 
@@ -787,24 +777,19 @@ describe('TreeSelect presentation and loading contract', () => {
     fixture.detectChanges();
 
     const activeTreeItem = (): HTMLElement | null => {
-      const tree = fixture.nativeElement.querySelector(
-        '[role="tree"]',
-      ) as HTMLElement;
+      const tree = panelOf(fixture);
       const activeId = tree.getAttribute('aria-activedescendant');
-      return activeId
-        ? fixture.nativeElement.querySelector(`#${activeId}`)
-        : null;
+      return activeId ? tree.querySelector(`#${activeId}`) : null;
     };
     const keydown = (key: string): void => {
-      const tree = fixture.nativeElement.querySelector(
-        '[role="tree"]',
-      ) as HTMLElement;
-      tree.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+      panelOf(fixture).dispatchEvent(
+        new KeyboardEvent('keydown', { key, bubbles: true }),
+      );
       fixture.detectChanges();
     };
     const disabledItems = (): HTMLElement[] =>
       Array.from(
-        fixture.nativeElement.querySelectorAll(
+        panelOf(fixture).querySelectorAll(
           '[role="treeitem"][aria-disabled="true"]',
         ),
       ) as HTMLElement[];
@@ -830,7 +815,7 @@ describe('TreeSelect presentation and loading contract', () => {
     keydown('End');
     expect(activeTreeItem()?.id).toBe(component.treeOptionId(6));
 
-    const filter = fixture.nativeElement.querySelector(
+    const filter = panelRootOf(fixture).querySelector(
       'input',
     ) as HTMLInputElement;
     filter.value = 'target';
@@ -856,9 +841,7 @@ describe('TreeSelect presentation and loading contract', () => {
     filter.value = 'target disabled';
     filter.dispatchEvent(new Event('input', { bubbles: true }));
     fixture.detectChanges();
-    const allDisabledTree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const allDisabledTree = panelOf(fixture);
     expect(allDisabledTree.getAttribute('aria-activedescendant')).toBeNull();
     allDisabledTree.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),

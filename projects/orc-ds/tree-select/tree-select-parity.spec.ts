@@ -30,6 +30,13 @@ describe('TreeSelect behavior parity', () => {
     return fixture;
   };
 
+  // The panel renders detached from the host view; its items are located
+  // in the document by the panel id the trigger points at.
+  const panelOf = (fixture: ReturnType<typeof setup>) =>
+    document.getElementById(
+      `${fixture.componentInstance.effectiveId()}-panel`,
+    ) as HTMLElement;
+
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('opens the panel on trigger click, renders disabled nodes, and closes with onHide', () => {
@@ -47,16 +54,16 @@ describe('TreeSelect behavior parity', () => {
 
     const itemLabels = () =>
       Array.from(
-        (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>(
+        panelOf(fixture).querySelectorAll<HTMLElement>(
           '[role="treeitem"] button.item',
         ),
       ).map((item) => item.textContent?.trim());
     // The panel renders the collapsed roots; children stay hidden until expanded.
     expect(itemLabels()).toEqual(['Department', 'Solo']);
 
-    (fixture.nativeElement as HTMLElement)
-      .querySelectorAll<HTMLButtonElement>('button.expand')[0]!
-      .click();
+    panelOf(fixture).querySelectorAll<HTMLButtonElement>(
+      'button.expand',
+    )[0]!.click();
     fixture.detectChanges();
     expect(itemLabels()).toEqual([
       'Department',
@@ -65,10 +72,9 @@ describe('TreeSelect behavior parity', () => {
       'Solo',
     ]);
     expect(
-      (
-        fixture.nativeElement as HTMLElement
-      ).querySelectorAll<HTMLButtonElement>('[role="treeitem"] button.item')[2]!
-        .disabled,
+      panelOf(fixture).querySelectorAll<HTMLButtonElement>(
+        '[role="treeitem"] button.item',
+      )[2]!.disabled,
     ).toBeTrue();
 
     (fixture.nativeElement as HTMLElement)
@@ -90,9 +96,9 @@ describe('TreeSelect behavior parity', () => {
       .querySelector<HTMLButtonElement>('.trigger')!
       .click();
     fixture.detectChanges();
-    const items = (
-      fixture.nativeElement as HTMLElement
-    ).querySelectorAll<HTMLButtonElement>('[role="treeitem"] button.item');
+    const items = panelOf(fixture).querySelectorAll<HTMLButtonElement>(
+      '[role="treeitem"] button.item',
+    );
     expect(items.length).toBe(2);
     items[1].click();
     fixture.detectChanges();
@@ -110,9 +116,9 @@ describe('TreeSelect behavior parity', () => {
       .querySelector<HTMLButtonElement>('.trigger')!
       .click();
     fixture.detectChanges();
-    const items = (
-      fixture.nativeElement as HTMLElement
-    ).querySelectorAll<HTMLButtonElement>('[role="treeitem"] button.item');
+    const items = panelOf(fixture).querySelectorAll<HTMLButtonElement>(
+      '[role="treeitem"] button.item',
+    );
     items[0].click();
     fixture.detectChanges();
 
@@ -211,9 +217,13 @@ describe('TreeSelect forms integration parity', () => {
     )!;
     select.querySelector<HTMLButtonElement>('.trigger')!.click();
     host.detectChanges();
-    const itemButtons = select.querySelectorAll<HTMLButtonElement>(
-      '[role="treeitem"] button.item',
-    );
+    const itemButtons = document
+      .getElementById(
+        (select.querySelector('.trigger') as HTMLElement).getAttribute(
+          'aria-controls',
+        )!,
+      )!
+      .querySelectorAll<HTMLButtonElement>('[role="treeitem"] button.item');
     expect(itemButtons.length).toBe(2);
     itemButtons[1].click();
     host.detectChanges();

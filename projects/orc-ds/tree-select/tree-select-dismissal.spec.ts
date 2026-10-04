@@ -5,10 +5,11 @@ import { TreeSelectComponent } from '@ciag/orchestra/p2';
 import type { TreeSelectNode } from '@ciag/orchestra/p2';
 
 /**
- * Dismissal-lifecycle pins for the tree-select: the shared in-place overlay
- * lifecycle (outside-interaction dismissal, topmost-aware Escape,
+ * Dismissal-lifecycle pins for the tree-select: the shared detached-picker
+ * overlay lifecycle (outside-interaction dismissal, topmost-aware Escape,
  * overlay-layer registry participation, focus restore) with its documented
- * focusout close preserved.
+ * focusout close preserved. The panel renders detached from the host view,
+ * so panel queries resolve against the document.
  */
 describe('TreeSelect dismissal lifecycle', () => {
   const NODES: TreeSelectNode[] = [
@@ -27,6 +28,12 @@ describe('TreeSelect dismissal lifecycle', () => {
 
   function triggerOf(nativeElement: HTMLElement): HTMLElement {
     return nativeElement.querySelector('.trigger') as HTMLElement;
+  }
+
+  function panelOf(fixture: ReturnType<typeof create>): HTMLElement {
+    return document.getElementById(
+      `${fixture.componentInstance.effectiveId()}-panel`,
+    ) as HTMLElement;
   }
 
   function openPanel(fixture: ReturnType<typeof create>): void {
@@ -60,7 +67,13 @@ describe('TreeSelect dismissal lifecycle', () => {
     settle(fixture);
     expect(fixture.componentInstance.open()).toBeFalse();
     expect(hidden).toEqual([1]);
+    // The host view keeps no panel after dismissal.
     expect(fixture.nativeElement.querySelector('[role="tree"]')).toBeNull();
+    expect(
+      document.querySelector(
+        `[id^="${fixture.componentInstance.effectiveId()}-panel"]`,
+      ),
+    ).toBeNull();
   });
 
   it('keeps a single instance open: opening a second instance closes the first', () => {
@@ -152,9 +165,7 @@ describe('TreeSelect dismissal lifecycle', () => {
     openPanel(fixture);
     settle(fixture);
 
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     tree.focus();
 
     document.dispatchEvent(
@@ -174,11 +185,9 @@ describe('TreeSelect dismissal lifecycle', () => {
     openPanel(fixture);
     settle(fixture);
 
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const tree = panelOf(fixture);
     tree.focus();
-    // Move focus out of the host for real; the host close runs in a
+    // Move focus out of the panel composite for real; the close runs in a
     // microtask after the focusout.
     tree.blur();
     tree.dispatchEvent(

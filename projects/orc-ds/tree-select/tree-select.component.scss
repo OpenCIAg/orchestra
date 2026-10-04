@@ -19,21 +19,26 @@ label {
   padding: 0.5rem 0.7rem;
   text-align: left;
 }
-.tree {
-  position: absolute;
-  z-index: 3;
-  top: 4.2rem;
-  right: 0;
-  left: 0;
-  max-height: 16rem;
-  overflow: auto;
-  margin: 0;
+/*
+ * The detached panel root. The visual chrome moved here from `.tree` when
+ * the panel started rendering through the shared list-picker overlay: the
+ * CDK pane owns positioning, so the tree scrolls inside the panel.
+ */
+.orc-p2-tree-select-panel {
+  display: grid;
+  gap: 0.35rem;
   padding: 0.25rem;
   border: 1px solid var(--orc-component-border-strong);
   border-radius: 0.5rem;
   background: var(--orc-component-surface-raised);
   color: var(--orc-component-text);
   box-shadow: var(--orc-component-overlay-shadow);
+}
+.tree {
+  max-height: 16rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 .tree-state {

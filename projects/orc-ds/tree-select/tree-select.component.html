@@ -18,6 +18,7 @@
   <button
     type="button"
     class="trigger"
+    #triggerEl
     [disabled]="disabled() || cvaDisabled()"
     [attr.id]="effectiveId()"
     [attr.tabindex]="tabindex()"
@@ -40,7 +41,19 @@
       ×
     </button>
   }
-  @if (open()) {
+</div>
+
+<!-- Detached panel: portaled through the shared list-picker overlay so
+     ancestor overflow can never clip it. The wrapper repeats the host's
+     keyboard and focus composites, because tree focus now lives in the
+     overlay pane. -->
+<ng-template #panelTemplate>
+  <div
+    class="orc-p2-tree-select-panel orc-p2-portal-panel"
+    (keydown)="onKeydown($event)"
+    (focusin)="onHostFocusIn($event)"
+    (focusout)="onHostFocusOut($event)"
+  >
     @if (filter()) {
       <input
         [value]="filterValue()"
@@ -52,7 +65,6 @@
     }
     @if (loading()) {
       <div
-        #panel
         class="tree tree-state"
         [class]="'tree tree-state ' + panelClasses()"
         [style]="panelStyle()"
@@ -66,7 +78,6 @@
       </div>
     } @else if (filteredVisibleNodes().length) {
       <ul
-        #panel
         class="tree"
         [class]="'tree ' + panelClasses()"
         [style]="panelStyle()"
@@ -150,7 +161,6 @@
       </ul>
     } @else {
       <div
-        #panel
         class="tree tree-state"
         [class]="'tree tree-state ' + panelClasses()"
         [style]="panelStyle()"
@@ -166,5 +176,5 @@
         }}
       </div>
     }
-  }
-</div>
+  </div>
+</ng-template>

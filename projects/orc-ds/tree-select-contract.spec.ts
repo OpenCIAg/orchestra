@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   TreeSelectComponent,
   TreeSelectNode,
@@ -51,6 +51,17 @@ class TreeSelectBlurHost {
 }
 
 describe('TreeSelect filtering and checkbox semantics', () => {
+  // The panel renders detached from the host view; its items are located
+  // in the document by the panel id the trigger points at.
+  // Resolve the detached panel through the trigger's aria-controls, so
+  // wrapper-host fixtures work the same as direct component fixtures.
+  const panelOf = (fixture: ComponentFixture<unknown>) => {
+    const controlsId = (fixture.nativeElement as HTMLElement)
+      .querySelector('.trigger')
+      ?.getAttribute('aria-controls');
+    return document.getElementById(controlsId!) as HTMLElement;
+  };
+
   it('preserves class identity through focused, legacy, P2, and secondary imports', () => {
     expect(TreeSelectComponent).toBe(FocusedTreeSelectComponent);
     expect(TreeSelectComponent).toBe(P2TreeSelectComponent);
@@ -87,7 +98,7 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     ).toEqual(['department', 'employee']);
     fixture.detectChanges();
     const rendered = Array.from(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ) as HTMLElement[];
     expect(
       rendered.map((item) => item.querySelector('.item')?.textContent?.trim()),
@@ -143,7 +154,7 @@ describe('TreeSelect filtering and checkbox semantics', () => {
 
     component.select(first, new Event('click'));
     fixture.detectChanges();
-    const rootOption = fixture.nativeElement.querySelector(
+    const rootOption = panelOf(fixture).querySelector(
       '[role="treeitem"]',
     ) as HTMLElement;
     expect(component.nodeCheckState(root)).toBe('mixed');
@@ -195,7 +206,7 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     fixture.detectChanges();
     expect(component.value()).toEqual(['root', 'child']);
     expect(
-      fixture.nativeElement
+      panelOf(fixture)
         .querySelector('[role="treeitem"]')
         ?.getAttribute('aria-selected'),
     ).toBe('true');
@@ -259,9 +270,11 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     component.open.set(true);
     fixture.detectChanges();
 
-    const filter = fixture.nativeElement.querySelector(
-      'input',
-    ) as HTMLInputElement;
+    // The filter renders in the detached panel wrapper, next to the
+    // element carrying the panel id.
+    const filter = panelOf(fixture)!.closest(
+      '.orc-p2-tree-select-panel',
+    )!.querySelector('input') as HTMLInputElement;
     const trigger = fixture.nativeElement.querySelector(
       '.trigger',
     ) as HTMLButtonElement;
@@ -299,13 +312,11 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     component.filterValue.set('employee');
     fixture.detectChanges();
 
-    const toggle = fixture.nativeElement.querySelector(
-      '.expand',
-    ) as HTMLButtonElement;
+    const toggle = panelOf(fixture).querySelector('.expand') as HTMLButtonElement;
     expect(toggle.getAttribute('aria-label')).toBe('Collapse Department');
     expect(toggle.disabled).toBeTrue();
     expect(
-      fixture.nativeElement.querySelectorAll('[role="treeitem"]'),
+      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
     ).toHaveSize(2);
   });
 
@@ -332,9 +343,10 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     component.open.set(true);
     fixture.detectChanges();
 
-    const filter = fixture.nativeElement.querySelector(
-      'input',
-    ) as HTMLInputElement;
+    // The filter renders in the detached panel wrapper.
+    const filter = panelOf(fixture)!.closest(
+      '.orc-p2-tree-select-panel',
+    )!.querySelector('input') as HTMLInputElement;
     expect(filter.getAttribute('aria-label')).toBe('Filter options');
 
     fixture.componentRef.setInput('filterAriaLabel', 'Find a department');
@@ -374,12 +386,8 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     const clear = fixture.nativeElement.querySelector(
       'button:not(.trigger)',
     ) as HTMLButtonElement;
-    const expand = fixture.nativeElement.querySelector(
-      '.expand',
-    ) as HTMLButtonElement;
-    const tree = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const expand = panelOf(fixture).querySelector('.expand') as HTMLButtonElement;
+    const tree = panelOf(fixture) as HTMLElement;
     expect(fixture.nativeElement.querySelector('label')).toBeNull();
     expect(trigger.getAttribute('aria-label')).toBeNull();
     expect(trigger.textContent).toContain('Child');
@@ -404,9 +412,7 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     component.open.set(true);
     fixture.detectChanges();
 
-    const panel = fixture.nativeElement.querySelector(
-      '[role="tree"]',
-    ) as HTMLElement;
+    const panel = panelOf(fixture) as HTMLElement;
     expect(panel.classList.contains('primary-panel')).toBeTrue();
     expect(panel.classList.contains('legacy-panel')).toBeTrue();
     expect(panel.classList.contains('shared-panel')).toBeTrue();
@@ -436,9 +442,7 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const option = fixture.nativeElement.querySelector(
-      '.item',
-    ) as HTMLButtonElement;
+    const option = panelOf(fixture).querySelector('.item') as HTMLButtonElement;
     option.click();
     fixture.detectChanges();
     expect(fixture.componentInstance.control.value).toEqual([]);
