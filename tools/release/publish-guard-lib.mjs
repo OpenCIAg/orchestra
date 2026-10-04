@@ -177,11 +177,10 @@ export function resolveReleasePlan(input) {
           'the tag/Release workflow owns its artifacts and the old-line publish path does not apply.',
       );
     }
-    if (version === previousVersion) {
-      return skip(
-        `Tagged commit does not change the package version (${version}); nothing to publish.`,
-      );
-    }
+    // No version-unchanged skip here: the release baseline for a tag is the
+    // registry state of its own line (supplied by the CLI), so a tagged
+    // commit that follows tooling-only commits still publishes, and a
+    // republished version fails the registry collision check below.
     if (tagEntry.publish === 'patch-tag') {
       if (!previousVersion) {
         return fail(

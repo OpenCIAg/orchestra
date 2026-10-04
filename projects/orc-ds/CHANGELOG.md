@@ -151,9 +151,15 @@
 
 - First release of the Angular 22 mainline: established the library layout, the per-Angular-major compatibility release tracks, and the shared component foundation (395357b).
 
-## 21.2.0 (tagged, never published)
+## 21.2.0
 
-- A local `v21.2.0` tag points at a release-preparation commit ("chore(release): prepare orchestra 21.2.0") that a history rewrite orphaned. The version was never published to npm; the tag is a deletion candidate (see RELEASE.md).
+### Minor Changes
+
+- Backport the post-overhaul interaction and quality wave to the Angular 21 line: every option panel (select, dropdown, combobox, multi-select, listbox, list, autocomplete, date-picker) renders through the shared detached-overlay machinery, so panels float above modals and are never clipped by ancestor `overflow`; overlays participate in the layer registry (topmost-aware Escape, parent-overlay close cascades); pointer gestures that open a panel mid-press can no longer dismiss themselves or close a host modal; TreeSelect trigger text shares the Select family typography; date limits are enforced end to end (embedded calendar disables constrained days, DateInput surfaces out-of-range typed values); dark theme remaps status colors and overlay surfaces (chip/tooltip contrast fixes); the picker trigger chevrons render via `orc-icon`.
+
+### Patch Changes
+
+- Tooling parity with mainline: ESLint + repo-wide Prettier gates, Node 22.22.3 alignment, package README shipped in the tarball, alias-identity sweep, inventory/generated-docs gates, and the 23.0.0 gate manifest tooling.
 
 ## 21.1.1
 

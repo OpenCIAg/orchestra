@@ -1,7 +1,7 @@
 {
-  "comment": "Point-in-time snapshot of the npm registry for @ciag/orchestra, taken 2026-10-02 during the ticket #8 changelog backfill. The node --test suite checks the changelog against this fixture (no network in tests); refresh it with: node tools/release/verify-changelog-coverage.mjs --write-fixture",
+  "comment": "Point-in-time snapshot of the npm registry for @ciag/orchestra. The node --test suite checks the changelog against this fixture (no network in tests); refresh with: node tools/release/verify-changelog-coverage.mjs --write-fixture",
   "package": "@ciag/orchestra",
-  "snapshotDate": "2026-10-02",
+  "snapshotDate": "2026-10-04",
   "versions": [
     "0.1.0",
     "19.1.0",
@@ -13,6 +13,10 @@
     "20.1.0",
     "21.0.0",
     "21.0.1",
+    "21.0.10",
+    "21.0.11",
+    "21.0.12",
+    "21.0.13",
     "21.0.2",
     "21.0.3",
     "21.0.4",
@@ -21,10 +25,6 @@
     "21.0.7",
     "21.0.8",
     "21.0.9",
-    "21.0.10",
-    "21.0.11",
-    "21.0.12",
-    "21.0.13",
     "21.1.0",
     "21.1.1",
     "22.0.0",
@@ -33,13 +33,14 @@
     "22.1.0",
     "22.1.1",
     "22.2.0",
-    "22.2.1"
+    "22.2.1",
+    "22.3.0"
   ],
   "distTags": {
-    "latest": "22.2.0",
-    "angular19": "19.3.0",
     "angular20": "20.1.0",
+    "angular19": "19.3.0",
     "angular21": "21.1.1",
+    "latest": "22.3.0",
     "angular22": "22.2.1"
   }
 }

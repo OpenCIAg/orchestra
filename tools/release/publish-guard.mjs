@@ -231,10 +231,6 @@ async function main() {
     fs.readFileSync(path.join(ROOT, PACKAGE_JSON), 'utf8'),
     PACKAGE_JSON,
   );
-  const previousPackage = packageJsonAt('HEAD~1');
-  const previousVersion = previousPackage
-    ? readJson(previousPackage, `HEAD~1:${PACKAGE_JSON}`).version
-    : null;
   const pendingChangesets = countPendingChangesets();
   const registry = await fetchRegistryPackument(args.registry);
 
@@ -249,6 +245,29 @@ async function main() {
       }).trim(),
     tag: args.tag,
   });
+
+  // The release baseline depends on the event. A governed main push compares
+  // against HEAD~1 (the Version-PR shape). A backport tag compares against
+  // the registry state of its own line: the tagged commit may follow
+  // tooling-only commits that never touch the package version, and the tag
+  // itself is the release instruction.
+  let previousVersion = null;
+  if (!args.probeVersion) {
+    if (context.event === 'tag-push') {
+      const tagBranch = resolveBranchForTag(topology, context.tagName);
+      const lineDistTag = tagBranch
+        ? topology[tagBranch]?.distTag ?? null
+        : null;
+      previousVersion = lineDistTag
+        ? registry?.distTags?.[lineDistTag] ?? null
+        : null;
+    } else {
+      const previousPackage = packageJsonAt('HEAD~1');
+      previousVersion = previousPackage
+        ? readJson(previousPackage, `HEAD~1:${PACKAGE_JSON}`).version
+        : null;
+    }
+  }
   const version = args.probeVersion ?? library.version;
 
   const plan = resolveReleasePlan({
