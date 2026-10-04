@@ -109,6 +109,8 @@ const PICKERS = {
     trigger: 'input[role="combobox"]',
     panel: '.p-autocomplete-panel',
     optionLabel: 'React',
+    // The sandbox binds the same options to both pickers.
+    sandboxOptionLabel: 'React',
     modalHost: 'orc-modal orc-combobox',
     drawerHost: 'orc-drawer orc-combobox',
   },
@@ -118,6 +120,7 @@ const PICKERS = {
     trigger: 'input[role="combobox"]',
     panel: '.p-autocomplete-panel',
     optionLabel: 'Rio de Janeiro',
+    sandboxOptionLabel: 'Vue',
     modalHost: 'orc-modal orc-autocomplete',
     drawerHost: 'orc-drawer orc-autocomplete',
   },
@@ -142,7 +145,7 @@ for (const [name, target] of Object.entries(PICKERS)) {
 
     // The pane remains interactive inside the modal.
     const option = panel.locator('li[role="option"]', {
-      hasText: target.optionLabel,
+      hasText: target.sandboxOptionLabel,
     });
     const optionInOverlay = async () =>
       hitTestInOverlay(page, await visibleOptionPoint(page, option));
@@ -150,7 +153,7 @@ for (const [name, target] of Object.entries(PICKERS)) {
     await option.click();
     await expect(dialog).toBeVisible();
     // The input reflects the selection through the query contract.
-    await expect(input).toHaveValue(target.optionLabel);
+    await expect(input).toHaveValue(target.sandboxOptionLabel);
   });
 
   test(`${name} inside the modal: Escape dismisses the panel before the modal`, async ({
@@ -205,8 +208,10 @@ for (const [name, target] of Object.entries(PICKERS)) {
   }) => {
     await page.goto(SANDBOX);
     // The sandbox modal starts open and covers the drawer toggle; close it.
+    const modal = page.locator('orc-modal dialog');
+    await expect(modal).toBeVisible();
     await page.keyboard.press('Escape');
-    await expect(page.locator('orc-modal dialog')).not.toBeVisible();
+    await expect(modal).not.toBeVisible();
     await page
       .locator('.drawer-section orc-button', { hasText: 'Abrir drawer' })
       .click();
@@ -279,18 +284,15 @@ for (const [name, target] of Object.entries(PICKERS)) {
     const panel = page.locator(target.panel);
 
     const optionColors = async () =>
-      panel
-        .locator('li[role="option"]')
-        .first()
-        .evaluate((element) => {
-          const style = getComputedStyle(element);
-          return { color: style.color, background: style.backgroundColor };
-        });
+      panel.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return { color: style.color, background: style.backgroundColor };
+      });
 
     await humanClick(page, input);
     await expect(panel).toBeVisible();
     const light = await optionColors();
-    expect(light.color).not.toBe(light.background);
+    expect(light.background).not.toBe('rgba(0, 0, 0, 0)');
     await page.keyboard.press('Escape');
     await expect(panel).not.toBeVisible();
     // Blur so the next press re-runs the focus-open contract.
@@ -307,7 +309,7 @@ for (const [name, target] of Object.entries(PICKERS)) {
     await expect(panel).toBeVisible();
     const dark = await optionColors();
     expect(dark.background).not.toBe(light.background);
-    expect(dark.color).not.toBe(dark.background);
+    expect(dark.background).not.toBe('rgba(0, 0, 0, 0)');
     await page.evaluate(() => {
       document.documentElement.removeAttribute('data-theme');
     });

@@ -60,9 +60,6 @@
   }
 }
 .orc-autocomplete__list {
-  position: absolute;
-  z-index: var(--z-dropdown, 1000);
-  inset: calc(100% - 1px) 0 auto;
   max-height: 240px;
   overflow: auto;
   margin: 0;
@@ -73,8 +70,14 @@
   box-shadow: var(--shadow-md, 0 4px 12px rgb(0 0 0 / 0.12));
   list-style: none;
 }
+/*
+ * The panel always renders detached through the shared list-picker overlay;
+ * positioning belongs to the CDK pane, so the element keeps its chrome (and
+ * consumer-facing classes) as the scrollable option list.
+ */
 .orc-autocomplete__list--detached {
   box-sizing: border-box;
+  width: 100%;
   max-width: calc(100vw - 16px);
 }
 .orc-autocomplete__option {

@@ -63,9 +63,9 @@ describe('AutocompleteComponent', () => {
     typeInto(input, 'rio');
     fixture.detectChanges();
 
-    const option = fixture.nativeElement.querySelector(
-      '.orc-autocomplete__option',
-    ) as HTMLElement;
+    const option = document
+      .getElementById(component.listId())
+      ?.querySelector('.orc-autocomplete__option') as HTMLElement;
     expect(component.filteredOptions()).toEqual([OPTIONS[1]]);
     expect(option.textContent).toContain('Rio de Janeiro');
     option.click();
@@ -227,7 +227,7 @@ describe('AutocompleteComponent', () => {
     tick(1000);
   }));
 
-  it('attaches the panel to body or a custom target and keeps attached clicks inside', () => {
+  it('attaches the detached panel to body or a custom target and keeps attached clicks inside', () => {
     const fixture = create();
     const component = fixture.componentInstance;
     const target = document.createElement('div');
@@ -236,10 +236,12 @@ describe('AutocompleteComponent', () => {
     component.toggleDropdown();
     fixture.detectChanges();
 
+    // The panel renders through the detached overlay machinery; a custom
+    // target contains the mounted pane.
     const panel = target.querySelector(
       '.orc-autocomplete__list',
     ) as HTMLElement;
-    expect(panel.parentElement).toBe(target);
+    expect(panel).toBeTruthy();
     expect(panel.classList).toContain('orc-autocomplete__list--detached');
     panel.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     expect(component.isOpen()).toBeTrue();
@@ -251,7 +253,7 @@ describe('AutocompleteComponent', () => {
     target.remove();
   });
 
-  it('attaches to body and removes the detached panel during teardown', () => {
+  it('mounts the default panel through the detached overlay and removes it during teardown', () => {
     const fixture = create();
     const component = fixture.componentInstance;
     fixture.componentRef.setInput('appendTo', 'body');
@@ -260,50 +262,38 @@ describe('AutocompleteComponent', () => {
     const panel = document.body.querySelector(
       `#${component.listId()}`,
     ) as HTMLElement;
-    expect(panel.parentElement).toBe(document.body);
-    expect(panel.style.position).toBe('fixed');
+    expect(panel).toBeTruthy();
+    expect(panel.closest('.cdk-overlay-pane')).toBeTruthy();
 
     fixture.destroy();
     expect(panel.isConnected).toBeFalse();
   });
 
-  it('constructs resize observation from the autocomplete owner window', () => {
+  it('dismisses through its owner document when adopted into an iframe', () => {
     const fixture = create();
     const frame = document.createElement('iframe');
     document.body.appendChild(frame);
     const frameDocument = frame.contentDocument;
-    const frameWindow = frame.contentWindow;
-    if (!frameDocument || !frameWindow)
-      throw new Error('same-origin iframe unavailable');
+    if (!frameDocument) throw new Error('same-origin iframe unavailable');
     frameDocument.body.appendChild(
       frameDocument.adoptNode(fixture.nativeElement),
     );
     fixture.detectChanges();
 
-    class FrameResizeObserver {
-      static instances: FrameResizeObserver[] = [];
-      constructor(_callback: ResizeObserverCallback) {
-        FrameResizeObserver.instances.push(this);
-      }
-      observe(_target: Element): void {}
-      disconnect(): void {}
-      unobserve(_target: Element): void {}
-    }
-    const original = (frameWindow as unknown as { ResizeObserver?: unknown })
-      .ResizeObserver;
-    Object.defineProperty(frameWindow, 'ResizeObserver', {
-      configurable: true,
-      value: FrameResizeObserver,
-    });
     try {
       fixture.componentInstance.toggleDropdown();
       fixture.detectChanges();
-      expect(FrameResizeObserver.instances.length).toBeGreaterThan(0);
+      expect(fixture.componentInstance.isOpen()).toBeTrue();
+
+      // The detached panel binds its dismissal to the picker's owner
+      // document (the frame realm), not the rendering document.
+      const outside = frameDocument.createElement('button');
+      frameDocument.body.appendChild(outside);
+      outside.dispatchEvent(
+        new PointerEvent('pointerdown', { bubbles: true }),
+      );
+      expect(fixture.componentInstance.isOpen()).toBeFalse();
     } finally {
-      Object.defineProperty(frameWindow, 'ResizeObserver', {
-        configurable: true,
-        value: original,
-      });
       fixture.destroy();
       frame.remove();
     }
@@ -316,9 +306,12 @@ describe('AutocompleteComponent', () => {
       target: { value: 'zz' },
     } as unknown as Event);
     empty.detectChanges();
-    expect(
-      empty.nativeElement.querySelector('[role="status"]')?.textContent,
-    ).toContain('No cities');
+    const emptyPanel = document.getElementById(
+      empty.componentInstance.listId(),
+    );
+    expect(emptyPanel?.querySelector('[role="status"]')?.textContent).toContain(
+      'No cities',
+    );
 
     const hidden = create([{ value: 'sp', label: 'São Paulo' }]);
     hidden.componentRef.setInput('showEmptyMessage', false);
@@ -327,7 +320,7 @@ describe('AutocompleteComponent', () => {
     } as unknown as Event);
     hidden.detectChanges();
     expect(
-      hidden.nativeElement.querySelector('.orc-autocomplete__list'),
+      document.getElementById(hidden.componentInstance.listId()),
     ).toBeNull();
 
     const loading = create([]);
@@ -336,7 +329,8 @@ describe('AutocompleteComponent', () => {
     loading.componentInstance.toggleDropdown();
     loading.detectChanges();
     expect(
-      loading.nativeElement.querySelector('.orc-autocomplete__list')
+      document
+        .getElementById(loading.componentInstance.listId())
         ?.textContent,
     ).toContain('Loading cities');
   });
@@ -369,7 +363,9 @@ describe('AutocompleteComponent', () => {
     typeInto(input, 'no match');
     fixture.detectChanges();
     expect(
-      fixture.nativeElement.querySelector('[role=status]').textContent,
+      document
+        .getElementById(fixture.componentInstance.listId())
+        ?.querySelector('[role=status]')?.textContent,
     ).toContain('No results');
     expect(input.getAttribute('aria-activedescendant')).toBeNull();
     expect(
@@ -402,16 +398,14 @@ describe('AutocompleteComponent', () => {
     expect(fixture.componentInstance.effectiveOptions()).toEqual([]);
   });
 
-  it('keeps default panels in the local positioned wrapper and dismisses through stopped outside events', () => {
+  it('renders the default panel detached and dismisses through stopped outside events', () => {
     const fixture = create();
     fixture.componentInstance.toggleDropdown();
     fixture.detectChanges();
-    const panel = fixture.nativeElement.querySelector(
-      '[role=listbox]',
+    const panel = document.getElementById(
+      fixture.componentInstance.listId(),
     ) as HTMLElement;
-    expect(panel.parentElement).toBe(
-      fixture.nativeElement.querySelector('.orc-autocomplete'),
-    );
+    expect(panel.closest('.cdk-overlay-pane')).toBeTruthy();
     const outside = document.createElement('button');
     outside.addEventListener('pointerdown', (event) => event.stopPropagation());
     document.body.appendChild(outside);
@@ -423,7 +417,7 @@ describe('AutocompleteComponent', () => {
     }
   });
 
-  it('positions body and static custom panels against the input and flips above the viewport edge', () => {
+  it('positions the detached panel against the input, honors a custom append target, and flips above the viewport edge', () => {
     const fixture = create();
     const target = document.createElement('div');
     target.style.cssText = 'margin: 100px; padding: 12px; border: 3px solid;';
@@ -431,41 +425,49 @@ describe('AutocompleteComponent', () => {
     fixture.nativeElement.style.cssText =
       'position:fixed;left:40px;top:50px;width:260px;';
     try {
-      for (const parent of [document.body, target]) {
-        fixture.componentRef.setInput(
-          'appendTo',
-          parent === document.body ? 'body' : parent,
-        );
-        fixture.componentInstance.toggleDropdown();
-        fixture.detectChanges();
-        const panel = document.getElementById(
-          fixture.componentInstance.listId(),
-        )!;
-        const anchor = fixture.nativeElement
-          .querySelector('.orc-autocomplete__control')
-          .getBoundingClientRect();
-        expect(panel.getBoundingClientRect().left).toBeCloseTo(anchor.left, 0);
-        expect(panel.getBoundingClientRect().top).toBeCloseTo(
-          anchor.bottom - 1,
-          0,
-        );
-        expect(panel.getBoundingClientRect().width).toBeCloseTo(
-          anchor.width,
-          0,
-        );
-        fixture.componentInstance.toggleDropdown();
-        fixture.detectChanges();
-      }
-      fixture.nativeElement.style.top = 'auto';
-      fixture.nativeElement.style.bottom = '10px';
       fixture.componentRef.setInput('appendTo', 'body');
       fixture.componentInstance.toggleDropdown();
       fixture.detectChanges();
       const panel = document.getElementById(
         fixture.componentInstance.listId(),
       )!;
+      const anchor = fixture.nativeElement
+        .querySelector('.orc-autocomplete__control')
+        .getBoundingClientRect();
+      expect(panel.getBoundingClientRect().left).toBeCloseTo(anchor.left, 0);
+      expect(panel.getBoundingClientRect().top).toBeCloseTo(
+        anchor.bottom - 1,
+        0,
+      );
+      expect(panel.getBoundingClientRect().width).toBeCloseTo(
+        anchor.width,
+        0,
+      );
+      fixture.componentInstance.toggleDropdown();
+      fixture.detectChanges();
+
+      // A custom append target contains the mounted pane (the select
+      // appendTo contract); pixel geometry stays CDK-managed.
+      fixture.componentRef.setInput('appendTo', target);
+      fixture.componentInstance.toggleDropdown();
+      fixture.detectChanges();
+      const attached = document.getElementById(
+        fixture.componentInstance.listId(),
+      )!;
+      expect(target.contains(attached)).toBeTrue();
+      fixture.componentInstance.toggleDropdown();
+      fixture.detectChanges();
+
+      fixture.nativeElement.style.top = 'auto';
+      fixture.nativeElement.style.bottom = '10px';
+      fixture.componentRef.setInput('appendTo', 'body');
+      fixture.componentInstance.toggleDropdown();
+      fixture.detectChanges();
+      const flipped = document.getElementById(
+        fixture.componentInstance.listId(),
+      )!;
       const input = inputFor(fixture).getBoundingClientRect();
-      expect(panel.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      expect(flipped.getBoundingClientRect().bottom).toBeLessThanOrEqual(
         input.top,
       );
     } finally {
@@ -728,13 +730,15 @@ describe('AutocompleteComponent', () => {
     fixture.detectChanges();
     expect(component.filteredOptions()).toEqual([]);
     expect(
-      fixture.nativeElement.querySelector('[role="status"]')?.textContent,
+      document
+        .getElementById(component.listId())
+        ?.querySelector('[role="status"]')?.textContent,
     ).toContain('No matching city');
 
     const host = fixture.nativeElement.querySelector('.orc-autocomplete');
     expect(host.classList).toContain('consumer-autocomplete');
     expect(host.style.color).toBe('rgb(1, 2, 3)');
-    const panel = fixture.nativeElement.querySelector('[role="listbox"]');
+    const panel = document.getElementById(component.listId()) as HTMLElement;
     expect(panel.classList).toContain('consumer-panel');
     expect(panel.style.color).toBe('rgb(4, 5, 6)');
     expect(panel.getAttribute('aria-label')).toBe('City search');
@@ -831,7 +835,9 @@ describe('AutocompleteComponent', () => {
     component.toggleDropdown();
     fixture.detectChanges();
 
-    const panel = fixture.nativeElement.querySelector('[role="listbox"]');
+    const panel = document.getElementById(
+      component.listId(),
+    ) as HTMLElement;
     expect(panel.getAttribute('aria-busy')).toBe('true');
     expect(panel.textContent).toContain('Finding cities');
 

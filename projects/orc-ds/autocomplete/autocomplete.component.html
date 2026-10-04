@@ -14,7 +14,7 @@
       }
     </label>
   }
-  <div class="orc-autocomplete__control">
+  <div #controlEl class="orc-autocomplete__control">
     <input
       class="orc-autocomplete__input"
       [id]="effectiveId()"
@@ -73,12 +73,14 @@
       </button>
     }
   </div>
-  @if (panelVisible()) {
+  <!-- Detached option panel: portaled through the shared list-picker overlay
+       so ancestor overflow can never clip it and the panel never escapes its
+       realm's dismissal rules. -->
+  <ng-template #panelTemplate>
     <ul
-      #panel
-      class="p-autocomplete-panel p-component orc-autocomplete__list"
+      class="p-autocomplete-panel p-component orc-autocomplete__list orc-autocomplete__list--detached orc-p2-portal-panel"
       [class]="
-        'p-autocomplete-panel p-component orc-autocomplete__list ' +
+        'p-autocomplete-panel p-component orc-autocomplete__list orc-autocomplete__list--detached orc-p2-portal-panel ' +
         panelStyleClass()
       "
       [style]="panelStyle()"
@@ -116,7 +118,7 @@
         </li>
       }
     </ul>
-  }
+  </ng-template>
   @if (errorMessage() || helperText()) {
     <p
       class="orc-autocomplete__message"

@@ -504,11 +504,14 @@ export function attachListPickerOverlay(
         event.preventDefault();
         config.documentEscape();
         event.stopPropagation();
-      } else {
+      } else if (config.onEscape) {
         event.preventDefault();
-        config.onEscape?.();
+        config.onEscape();
         event.stopPropagation();
       }
+      // With neither callback the picker owns Escape entirely (e.g. the
+      // autocomplete input contract with closeOnEscape); the machinery
+      // must not claim the event.
     });
   // The dispatcher listens on the rendering document's body only; pickers
   // adopted into another realm (an iframe host) still need Escape from

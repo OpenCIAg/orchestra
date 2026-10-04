@@ -1,8 +1,11 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
+  TemplateRef,
+  ViewContainerRef,
   booleanAttribute,
   computed,
   forwardRef,
@@ -16,13 +19,15 @@ import {
   viewChild,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
+  attachListPickerOverlay,
   isTopOverlay,
-  listenForOutsideInteraction,
   overlayAttachmentTarget,
-  registerOverlay,
+  P2_PANEL_VARS,
 } from '@ciag/orchestra/internal';
+import type { ListPickerOverlayHandle } from '@ciag/orchestra/internal';
 import { AutocompleteOption } from './autocomplete.types';
 
 let nextAutocompleteId = 0;
@@ -32,6 +37,7 @@ let nextAutocompleteId = 0;
   standalone: true,
   templateUrl: './autocomplete.component.html',
   styleUrl: './autocomplete.component.scss',
+  styles: [P2_PANEL_VARS],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -41,20 +47,26 @@ let nextAutocompleteId = 0;
     },
   ],
 })
-export class AutocompleteComponent implements ControlValueAccessor {
+export class AutocompleteComponent implements AfterViewInit, ControlValueAccessor {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly overlay = inject(Overlay);
   private readonly uniqueId = `orc-autocomplete-${++nextAutocompleteId}`;
   private lastValue: string | null = null;
   private readonly editing = signal(false);
   private blurTimeout: ReturnType<typeof setTimeout> | null = null;
   private openTimeout: ReturnType<typeof setTimeout> | null = null;
   private composing = false;
-  private readonly panel = viewChild<ElementRef<HTMLUListElement>>('panel');
-  private outsideCleanup: (() => void) | null = null;
-  private layerCleanup: (() => void) | null = null;
-  private positionCleanup: (() => void) | null = null;
+  /** The panel template is only attachable once the host view exists. */
+  private readonly panelReady = signal(false);
+  private overlayHandle: ListPickerOverlayHandle | null = null;
+  private readonly controlEl = viewChild.required<ElementRef<HTMLElement>>(
+    'controlEl',
+  );
+  private readonly panelTemplate =
+    viewChild.required<TemplateRef<unknown>>('panelTemplate');
 
   private get ownerDocument(): Document {
     return this.host.nativeElement.ownerDocument ?? this.document;
@@ -181,76 +193,32 @@ export class AutocompleteComponent implements ControlValueAccessor {
         this.activeIndex.set(-1);
       }
     });
-    effect((onCleanup) => {
-      const panel = this.panel()?.nativeElement;
-      const open = this.isOpen();
-      const unavailable = this.effectiveDisabled() || this.readonly();
-      const requestedParent = this.appendTo();
-      if (unavailable) {
+    effect(() => {
+      if (this.effectiveDisabled() || this.readonly()) {
         this.clearOpenTimeout();
-        if (open) this.closeDropdown();
-        return;
+        if (this.isOpen()) this.closeDropdown();
       }
-      if (!panel || !open) return;
-
-      const parent = overlayAttachmentTarget(
-        this.host.nativeElement,
-        requestedParent,
-        this.host.nativeElement,
-      );
-      if (parent !== this.host.nativeElement && panel.parentElement !== parent)
-        parent.appendChild(panel);
-      this.positionPanel(panel, parent);
-      this.layerCleanup = registerOverlay(panel, {
-        anchor: this.host.nativeElement,
-        onParentClose: () => this.closeDropdown(),
-      });
-      this.outsideCleanup = listenForOutsideInteraction(
-        this.ownerDocument,
-        () => [this.host.nativeElement, panel],
-        () => {
-          if (isTopOverlay(panel)) this.closeDropdown();
-        },
-      );
-      const reposition = () => this.positionPanel(panel, parent);
-      const ResizeObserverConstructor =
-        this.ownerDocument.defaultView?.ResizeObserver;
-      const resize = ResizeObserverConstructor
-        ? new ResizeObserverConstructor(reposition)
-        : null;
-      resize?.observe(panel);
-      resize?.observe(this.host.nativeElement);
-      this.ownerDocument.addEventListener('scroll', reposition, true);
-      this.ownerDocument.defaultView?.addEventListener('resize', reposition);
-      this.positionCleanup = () => {
-        resize?.disconnect();
-        this.ownerDocument.removeEventListener('scroll', reposition, true);
-        this.ownerDocument.defaultView?.removeEventListener(
-          'resize',
-          reposition,
-        );
-      };
-
-      onCleanup(() => {
-        this.positionCleanup?.();
-        this.positionCleanup = null;
-        this.outsideCleanup?.();
-        this.outsideCleanup = null;
-        this.layerCleanup?.();
-        this.layerCleanup = null;
-        this.resetPanelPosition(panel);
-        // Angular tracks the view, but cannot remove a root moved out of its
-        // original parent during every destruction path.
-        if (parent !== this.host.nativeElement) panel.remove();
-      });
+    });
+    // Signal-driven attachment: panel visibility arms and tears down the
+    // detached overlay; idempotent against the open-path attach.
+    effect(() => {
+      if (this.panelVisible() && this.panelReady() && !this.overlayHandle) {
+        this.ensureOverlay();
+      } else if (!this.panelVisible() && this.overlayHandle) {
+        this.overlayHandle.dispose();
+        this.overlayHandle = null;
+      }
     });
     this.destroyRef.onDestroy(() => {
       this.clearBlurTimeout();
       this.clearOpenTimeout();
-      this.outsideCleanup?.();
-      this.layerCleanup?.();
-      this.positionCleanup?.();
+      this.overlayHandle?.dispose();
+      this.overlayHandle = null;
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.panelReady.set(true);
   }
 
   writeValue(value: unknown): void {
@@ -415,24 +383,13 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  onDocumentClick(event: MouseEvent): void {
-    this.clearBlurTimeout();
-    const panel = this.panel()?.nativeElement;
-    if (
-      !this.host.nativeElement.contains(event.target as Node) &&
-      !panel?.contains(event.target as Node) &&
-      (!panel || isTopOverlay(panel))
-    )
-      this.closeDropdown();
-  }
-
   onKeydown(event: KeyboardEvent): void {
     if (this.effectiveDisabled() || this.readonly()) return;
     if (this.composing || event.isComposing || event.keyCode === 229) return;
     const options = this.filteredOptions();
     if (event.key === 'Escape' && this.closeOnEscape() && this.isOpen()) {
-      const panel = this.panel()?.nativeElement;
-      if (panel && !isTopOverlay(panel)) return;
+      const pane = this.overlayHandle?.overlayElement;
+      if (pane && !isTopOverlay(pane)) return;
       event.preventDefault();
       event.stopPropagation();
       this.closeDropdown();
@@ -518,9 +475,86 @@ export class AutocompleteComponent implements ControlValueAccessor {
       this.activeIndex.set(-1);
       return;
     }
+    this.overlayHandle?.dispose();
+    this.overlayHandle = null;
     this.isOpen.set(false);
     this.activeIndex.set(-1);
     if (!this.destroyRef.destroyed) this.onHide.emit();
+  }
+
+  /**
+   * Synchronous attachment: the dismissal contract does not wait for a
+   * render cycle. The panel renders through the shared list-picker overlay
+   * (CDK portal anchored under the control, overlay-layer registry
+   * participation, realm-correct dismissal); `appendTo` is interpreted
+   * like the other detached pickers — body by default, native-modal aware
+   * so the pane never escapes a native dialog's inertness.
+   */
+  private ensureOverlay(): void {
+    if (this.overlayHandle || !this.panelReady()) return;
+    const anchor = this.controlEl().nativeElement;
+    const anchorWidth = anchor.getBoundingClientRect().width;
+    this.overlayHandle = attachListPickerOverlay({
+      anchor,
+      content: this.panelTemplate(),
+      viewContainerRef: this.viewContainerRef,
+      overlay: this.overlay,
+      documentRef: this.ownerDocument,
+      positionStrategy: (origin) => this.createPositionStrategy(origin),
+      minWidth: anchorWidth,
+      // No escape callbacks: keyboard focus always lives in the input (the
+      // panel options are never focusable), so the input's own Escape
+      // contract — closeOnEscape, IME-guarded, topmost-aware — stays the
+      // single authority and the machinery never claims the event.
+      onBackdrop: () => this.closeDropdown(),
+      onParentClose: () => this.closeDropdown(),
+      targets: () =>
+        [this.host.nativeElement, this.overlayHandle?.overlayElement].filter(
+          (element): element is HTMLElement => !!element,
+        ),
+      onOutside: () => {
+        const pane = this.overlayHandle?.overlayElement;
+        if (pane && !isTopOverlay(pane)) return;
+        this.closeDropdown();
+      },
+    });
+  }
+
+  private createPositionStrategy(origin: HTMLElement): PositionStrategy {
+    const parent = overlayAttachmentTarget(origin, this.appendTo() ?? 'body');
+    // The pinned autocomplete geometry: the list overlaps the control's
+    // bottom border by 1px, and flips flush above the control when the
+    // viewport edge would clip it.
+    const positions = [
+      {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: -1,
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+        offsetY: 0,
+      },
+    ] as const;
+    // Flexible dimensions are disabled so the pinned flip contract holds:
+    // the panel flips above the control when its full height does not fit
+    // below, instead of being clamped over the control.
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(origin)
+      .withFlexibleDimensions(false)
+      .withPopoverLocation(
+        parent === origin.ownerDocument.body
+          ? 'global'
+          : { type: 'parent', element: parent },
+      )
+      .withPositions([...positions])
+      .withPush(true);
   }
 
   private setInternalValue(value: string | null): void {
@@ -540,66 +574,5 @@ export class AutocompleteComponent implements ControlValueAccessor {
       clearTimeout(this.openTimeout);
       this.openTimeout = null;
     }
-  }
-
-  private positionPanel(panel: HTMLElement, parent: HTMLElement): void {
-    if (parent === this.host.nativeElement) return;
-    const anchor = this.host.nativeElement
-      .querySelector('.orc-autocomplete__control')!
-      .getBoundingClientRect();
-    const ownerDocument = this.ownerDocument;
-    const isBody = parent === ownerDocument.body;
-    panel.classList.add('orc-autocomplete__list--detached');
-    panel.style.inset = 'auto';
-    panel.style.position = isBody ? 'fixed' : 'absolute';
-    panel.style.width = `${anchor.width}px`;
-    // A custom append target can be statically positioned. Absolute coordinates
-    // belong to the actual containing block, not necessarily the DOM parent.
-    const containingBlock = panel.offsetParent as HTMLElement | null;
-    const parentRect = containingBlock?.getBoundingClientRect();
-    const rootBlock =
-      !containingBlock ||
-      containingBlock === ownerDocument.body ||
-      containingBlock === ownerDocument.documentElement;
-    const offsetLeft = isBody
-      ? 0
-      : rootBlock
-        ? -(ownerDocument.defaultView?.scrollX ?? 0)
-        : parentRect!.left +
-          containingBlock.clientLeft -
-          containingBlock.scrollLeft;
-    const offsetTop = isBody
-      ? 0
-      : rootBlock
-        ? -(ownerDocument.defaultView?.scrollY ?? 0)
-        : parentRect!.top +
-          containingBlock.clientTop -
-          containingBlock.scrollTop;
-    const viewportHeight = ownerDocument.documentElement.clientHeight;
-    const viewportWidth = ownerDocument.documentElement.clientWidth;
-    const height = panel.getBoundingClientRect().height;
-    const top =
-      anchor.bottom + height > viewportHeight - 8 && anchor.top >= height + 8
-        ? anchor.top - height
-        : anchor.bottom - 1;
-    const left = Math.max(
-      8,
-      Math.min(
-        anchor.left,
-        viewportWidth - panel.getBoundingClientRect().width - 8,
-      ),
-    );
-    panel.style.left = `${left - offsetLeft}px`;
-    panel.style.top = `${Math.max(8, top) - offsetTop}px`;
-  }
-
-  private resetPanelPosition(panel: HTMLElement): void {
-    panel.classList.remove('orc-autocomplete__list--detached');
-    panel.style.removeProperty('position');
-    panel.style.removeProperty('left');
-    panel.style.removeProperty('top');
-    panel.style.removeProperty('width');
-    panel.style.removeProperty('right');
-    panel.style.removeProperty('inset');
   }
 }

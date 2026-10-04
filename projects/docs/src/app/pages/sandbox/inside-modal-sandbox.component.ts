@@ -131,7 +131,7 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
         <span>Gaveta modal (drawer)</span>
         <orc-button (click)="drawerOpen.set(true)">Abrir drawer</orc-button>
         <orc-drawer [(open)]="drawerOpen" label="Gaveta" placement="right">
-          <div class="grid">
+          <div class="drawer-grid">
             <label class="field">
               <span>Combobox</span>
               <orc-combobox
@@ -178,6 +178,11 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
         gap: 0.5rem;
         justify-items: start;
         font-weight: 600;
+      }
+      .drawer-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
       }
     `,
   ],
