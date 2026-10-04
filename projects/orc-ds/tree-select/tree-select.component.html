@@ -52,6 +52,7 @@
     }
     @if (loading()) {
       <div
+        #panel
         class="tree tree-state"
         [class]="'tree tree-state ' + panelClasses()"
         [style]="panelStyle()"
@@ -65,6 +66,7 @@
       </div>
     } @else if (filteredVisibleNodes().length) {
       <ul
+        #panel
         class="tree"
         [class]="'tree ' + panelClasses()"
         [style]="panelStyle()"
@@ -148,6 +150,7 @@
       </ul>
     } @else {
       <div
+        #panel
         class="tree tree-state"
         [class]="'tree tree-state ' + panelClasses()"
         [style]="panelStyle()"

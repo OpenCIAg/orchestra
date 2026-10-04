@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   afterNextRender,
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -13,12 +12,13 @@ import {
   Injector,
   input,
   model,
-  OnDestroy,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
+  attachInPlaceOverlay,
   CvaControl,
   normalizeSize,
   P2_SHARED_VARS,
@@ -54,14 +54,13 @@ interface VisibleTreeSelectNode {
     },
   ],
 })
-export class TreeSelectComponent
-  extends CvaControl
-  implements AfterViewInit, OnDestroy
-{
+export class TreeSelectComponent extends CvaControl {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
   private readonly uniqueId = `orc-treeselect-${++nextTreeSelectId}`;
+  private readonly panelRef = viewChild<ElementRef<HTMLElement>>('panel');
+  private inPlaceRelease: (() => void) | null = null;
   readonly styleClass = input('');
   readonly nodes = input<TreeSelectNode[]>([]);
   readonly value = model<string | string[] | null>(null);
@@ -99,19 +98,12 @@ export class TreeSelectComponent
   readonly overlayOptions = input<Record<string, unknown> | undefined>(
     undefined,
   );
-  private ownerDocument: Document | null = null;
-  private readonly documentClick = (event: MouseEvent): void =>
-    this.onDocumentClick(event);
-
-  ngAfterViewInit(): void {
-    const ownerDocument = this.host.nativeElement.ownerDocument;
-    this.ownerDocument = ownerDocument;
-    ownerDocument.addEventListener('click', this.documentClick);
-  }
-
-  ngOnDestroy(): void {
-    this.ownerDocument?.removeEventListener('click', this.documentClick);
-    this.ownerDocument = null;
+  constructor() {
+    super();
+    this.destroyRef.onDestroy(() => {
+      this.inPlaceRelease?.();
+      this.inPlaceRelease = null;
+    });
   }
   readonly scrollHeight = input('16rem');
   readonly filter = input(false, { transform: booleanAttribute });
@@ -290,6 +282,7 @@ export class TreeSelectComponent
       return;
     }
     this.open.set(true);
+    this.ensureOverlay();
     this.onShow.emit();
     afterNextRender(
       () => {
@@ -297,20 +290,6 @@ export class TreeSelectComponent
       },
       { injector: this.injector },
     );
-  }
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.open()) return;
-    const target = event.target;
-    const NodeConstructor =
-      this.host.nativeElement.ownerDocument.defaultView?.Node;
-    if (
-      NodeConstructor &&
-      target instanceof NodeConstructor &&
-      this.host.nativeElement.contains(target)
-    )
-      return;
-    this.closePanel();
-    this.cvaOnTouched();
   }
   onHostFocusIn(event: FocusEvent): void {
     if (this.controlFocused) return;
@@ -331,8 +310,36 @@ export class TreeSelectComponent
       this.onBlur.emit(event);
     });
   }
+  /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
+  private ensureOverlay(): void {
+    if (this.inPlaceRelease) return;
+    this.inPlaceRelease = attachInPlaceOverlay({
+      host: this.host.nativeElement,
+      panel: () => this.panelRef()?.nativeElement ?? null,
+      onEscape: () => this.closePanel(true),
+      onOutside: () => {
+        this.closePanel();
+        this.cvaOnTouched();
+      },
+      onParentClose: () => this.closePanel(),
+    }).dispose;
+  }
+
+  // Signal-driven attachment: direct writes to the open model must arm the
+  // dismissal lifecycle too; idempotent against the open-path attach.
+  private readonly overlayWatcher = effect(() => {
+    if (this.open() && !this.inPlaceRelease) {
+      this.ensureOverlay();
+    } else if (!this.open() && this.inPlaceRelease) {
+      this.inPlaceRelease();
+      this.inPlaceRelease = null;
+    }
+  });
+
   private closePanel(restoreFocus = false): void {
     if (!this.open()) return;
+    this.inPlaceRelease?.();
+    this.inPlaceRelease = null;
     this.open.set(false);
     if (this.resetFilterOnHide()) {
       this.filterValue.set('');

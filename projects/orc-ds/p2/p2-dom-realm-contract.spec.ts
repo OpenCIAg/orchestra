@@ -82,8 +82,18 @@ describe('P2 owner-document DOM contracts', () => {
     (component as unknown as { host: ElementRef<HTMLElement> }).host =
       new ElementRef(host);
 
-    component.onDocumentClick({ target: inside } as unknown as MouseEvent);
-
+    // The shared in-place lifecycle binds to the panel's owner document;
+    // events dispatched inside a foreign realm (an iframe) cannot reach it,
+    // so the panel stays open. The helper-level owner-document contract is
+    // pinned in internal/in-place-overlay.spec.ts.
+    inside.dispatchEvent(
+      new frameDocument.defaultView!.MouseEvent('pointerdown', {
+        bubbles: true,
+      }),
+    );
+    inside.dispatchEvent(
+      new frameDocument.defaultView!.MouseEvent('click', { bubbles: true }),
+    );
     expect(component.open()).toBeTrue();
     frame.remove();
     fixture.destroy();
