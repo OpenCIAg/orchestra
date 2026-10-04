@@ -143,9 +143,9 @@ describe('MultiSelect behavior parity', () => {
     const panelRoot = document.querySelector(
       '.orc-p2-multi-select-panel',
     ) as HTMLElement;
-    const toggleAll = Array.from(
-      panelRoot.querySelectorAll('button'),
-    ).find((button) => button.textContent?.trim() === 'Select all');
+    const toggleAll = Array.from(panelRoot.querySelectorAll('button')).find(
+      (button) => button.textContent?.trim() === 'Select all',
+    );
     expect(toggleAll).toBeDefined();
     toggleAll!.click();
     fixture.detectChanges();

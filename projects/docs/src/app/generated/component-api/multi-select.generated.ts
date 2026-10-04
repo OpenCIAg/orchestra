@@ -115,6 +115,15 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       },
       {
         kind: 'input',
+        name: 'appendTo',
+        type: 'unknown',
+        defaultValue: 'undefined',
+        required: false,
+        description:
+          'Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead.',
+      },
+      {
+        kind: 'input',
         name: 'optionLabel',
         type: 'string | undefined',
         defaultValue: 'undefined',
@@ -301,6 +310,24 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         type: 'boolean',
         defaultValue: 'false',
         required: false,
+      },
+      {
+        kind: 'input',
+        name: 'autoZIndex',
+        type: 'boolean',
+        defaultValue: 'true',
+        required: false,
+        description:
+          'Whether the detached panel applies an automatic layer z-index.',
+      },
+      {
+        kind: 'input',
+        name: 'baseZIndex',
+        type: 'number',
+        defaultValue: '0',
+        required: false,
+        description:
+          'Base z-index added to the panel layer when `autoZIndex` is set.',
       },
       {
         kind: 'model',

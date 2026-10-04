@@ -12,9 +12,7 @@ describe('TreeSelect presentation and loading contract', () => {
   // The filter input renders in the detached panel wrapper, next to the
   // element that carries the panel id.
   const panelRootOf = (fixture: ComponentFixture<TreeSelectComponent>) =>
-    panelOf(fixture)!.closest(
-      '.orc-p2-tree-select-panel',
-    ) as HTMLElement;
+    panelOf(fixture)!.closest('.orc-p2-tree-select-panel') as HTMLElement;
 
   it('applies trigger identity, placeholder and root presentation inputs', () => {
     const fixture = TestBed.createComponent(TreeSelectComponent);
@@ -204,9 +202,9 @@ describe('TreeSelect presentation and loading contract', () => {
       'input',
     ) as HTMLInputElement;
     expect(filter.value).toBe('euro');
-    expect(
-      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
-    ).toHaveSize(1);
+    expect(panelOf(fixture).querySelectorAll('[role="treeitem"]')).toHaveSize(
+      1,
+    );
 
     fixture.destroy();
   });
@@ -239,9 +237,9 @@ describe('TreeSelect presentation and loading contract', () => {
     expect(root.getAttribute('aria-busy')).toBe('true');
     expect(status.textContent.trim()).toBe('Loading options');
     expect(status.getAttribute('aria-live')).toBe('polite');
-    expect(
-      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
-    ).toHaveSize(0);
+    expect(panelOf(fixture).querySelectorAll('[role="treeitem"]')).toHaveSize(
+      0,
+    );
 
     const event = new Event('click');
     component.select(target, event);
@@ -265,9 +263,9 @@ describe('TreeSelect presentation and loading contract', () => {
       originalEvent: filterEvent,
       filter: 'target',
     });
-    expect(
-      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
-    ).toHaveSize(0);
+    expect(panelOf(fixture).querySelectorAll('[role="treeitem"]')).toHaveSize(
+      0,
+    );
 
     fixture.destroy();
   });
@@ -285,9 +283,9 @@ describe('TreeSelect presentation and loading contract', () => {
     let status = panelOf(fixture);
     expect(status.textContent.trim()).toBe('No matching entries');
     expect(status.getAttribute('aria-live')).toBe('polite');
-    expect(
-      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
-    ).toHaveSize(0);
+    expect(panelOf(fixture).querySelectorAll('[role="treeitem"]')).toHaveSize(
+      0,
+    );
 
     fixture.componentRef.setInput('emptyMessage', undefined);
     fixture.detectChanges();
@@ -296,12 +294,10 @@ describe('TreeSelect presentation and loading contract', () => {
 
     component.filterValue.set('one');
     fixture.detectChanges();
-    expect(
-      panelOf(fixture).matches('[role="status"]'),
-    ).toBeFalse();
-    expect(
-      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
-    ).toHaveSize(1);
+    expect(panelOf(fixture).matches('[role="status"]')).toBeFalse();
+    expect(panelOf(fixture).querySelectorAll('[role="treeitem"]')).toHaveSize(
+      1,
+    );
 
     fixture.destroy();
   });
@@ -664,9 +660,9 @@ describe('TreeSelect presentation and loading contract', () => {
     );
     fixture.detectChanges();
     expect(component.expanded().has('root')).toBeFalse();
-    expect(
-      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
-    ).toHaveSize(1);
+    expect(panelOf(fixture).querySelectorAll('[role="treeitem"]')).toHaveSize(
+      1,
+    );
     expect(document.activeElement).toBe(tree);
 
     fixture.destroy();

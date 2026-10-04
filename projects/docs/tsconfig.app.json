@@ -53,6 +53,7 @@
       "@ciag/orchestra/input-group": ["../orc-ds/input-group/index.ts"],
       "@ciag/orchestra/listbox": ["../orc-ds/listbox/index.ts"],
       "@ciag/orchestra/multi-select": ["../orc-ds/multi-select/index.ts"],
+      "@ciag/orchestra/icon": ["../orc-ds/icon/index.ts"],
       "@ciag/orchestra/tags-input": ["../orc-ds/tags-input/index.ts"]
     }
   },

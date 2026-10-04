@@ -61,9 +61,9 @@ describe('TreeSelect behavior parity', () => {
     // The panel renders the collapsed roots; children stay hidden until expanded.
     expect(itemLabels()).toEqual(['Department', 'Solo']);
 
-    panelOf(fixture).querySelectorAll<HTMLButtonElement>(
-      'button.expand',
-    )[0]!.click();
+    panelOf(fixture)
+      .querySelectorAll<HTMLButtonElement>('button.expand')[0]!
+      .click();
     fixture.detectChanges();
     expect(itemLabels()).toEqual([
       'Department',

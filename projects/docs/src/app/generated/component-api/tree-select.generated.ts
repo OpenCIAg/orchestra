@@ -138,6 +138,15 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       },
       {
         kind: 'input',
+        name: 'appendTo',
+        type: 'unknown',
+        defaultValue: 'undefined',
+        required: false,
+        description:
+          'Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead.',
+      },
+      {
+        kind: 'input',
         name: 'scrollHeight',
         type: 'string',
         defaultValue: "'16rem'",

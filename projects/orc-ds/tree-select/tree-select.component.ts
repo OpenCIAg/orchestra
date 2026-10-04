@@ -65,10 +65,7 @@ interface VisibleTreeSelectNode {
     },
   ],
 })
-export class TreeSelectComponent
-  extends CvaControl
-  implements AfterViewInit
-{
+export class TreeSelectComponent extends CvaControl implements AfterViewInit {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
@@ -355,8 +352,7 @@ export class TreeSelectComponent
   /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
   private ensureOverlay(): void {
     if (this.overlayHandle || !this.panelReady()) return;
-    const anchor =
-      this.triggerEl()?.nativeElement ?? this.host.nativeElement;
+    const anchor = this.triggerEl()?.nativeElement ?? this.host.nativeElement;
     const triggerWidth = anchor.getBoundingClientRect().width;
     this.overlayHandle = attachListPickerOverlay({
       anchor,

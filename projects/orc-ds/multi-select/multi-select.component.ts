@@ -39,7 +39,10 @@ import {
   stepListPickerActive,
   toggleListPickerValue,
 } from '@ciag/orchestra/internal';
-import type { ListPickerOverlayHandle, P2Option } from '@ciag/orchestra/internal';
+import type {
+  ListPickerOverlayHandle,
+  P2Option,
+} from '@ciag/orchestra/internal';
 
 let nextMultiSelectId = 0;
 
@@ -308,8 +311,7 @@ export class MultiSelectComponent<T = unknown>
   /** Synchronous attachment: the dismissal contract does not wait for a render cycle. */
   private ensureOverlay(): void {
     if (this.overlayHandle || !this.panelReady()) return;
-    const anchor =
-      this.triggerEl()?.nativeElement ?? this.host.nativeElement;
+    const anchor = this.triggerEl()?.nativeElement ?? this.host.nativeElement;
     const triggerWidth = anchor.getBoundingClientRect().width;
     this.overlayHandle = attachListPickerOverlay({
       anchor,

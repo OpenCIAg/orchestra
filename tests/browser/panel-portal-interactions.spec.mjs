@@ -30,6 +30,12 @@ const CLIP_TARGETS = [
     optionLabel: 'React',
     stateValue: 'react',
     stateProbe: /value = /,
+    // The demo's query mirrors its preselected value; clearing it opens the
+    // panel (focus + input) and renders the full option list. No extra
+    // click: the transparent backdrop would cover the input afterwards.
+    open: async (host, trigger) => {
+      await trigger.fill('');
+    },
   },
   {
     page: '/components/tree-select',
@@ -37,9 +43,15 @@ const CLIP_TARGETS = [
     trigger: 'button.trigger',
     panel: '[role="tree"]',
     option: '[role="treeitem"] button.item',
-    optionLabel: 'Solo',
-    stateValue: 'solo',
+    optionLabel: 'Pacotes',
+    stateValue: 'packages',
     stateProbe: /value = /,
+    open: async (host, trigger, panel) => {
+      await trigger.click();
+      // The leaf sits under the collapsed demo root; the expand control
+      // renders in the detached panel.
+      await panel.locator('button.expand').first().click();
+    },
   },
 ];
 
@@ -99,7 +111,8 @@ for (const target of CLIP_TARGETS) {
     const panel = page.locator(target.panel);
 
     await expect(panel).toHaveCount(0);
-    await trigger.click();
+    if (target.open) await target.open(host, trigger, panel);
+    else await trigger.click();
     await expect(panel).toBeVisible();
 
     // The panel extends past the clip boundary…
@@ -155,7 +168,9 @@ test('multi-select panel opens and dismisses inside a native modal dialog', asyn
   // The pane remains interactive inside the native modal.
   await panel.locator('li[role="option"]', { hasText: 'Angular' }).click();
   await expect(
-    page.locator('[data-panel-portal-example] code').filter({ hasText: /values = / }),
+    page
+      .locator('[data-panel-portal-example] code')
+      .filter({ hasText: /values = / }),
   ).toContainText('angular');
 
   // Escape dismisses the panel; preventDefault keeps the dialog open.

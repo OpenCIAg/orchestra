@@ -62,8 +62,7 @@ export class ComboboxComponent<T = unknown>
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly overlay = inject(Overlay);
-  private readonly inputEl =
-    viewChild<ElementRef<HTMLInputElement>>('inputEl');
+  private readonly inputEl = viewChild<ElementRef<HTMLInputElement>>('inputEl');
   private readonly panelTemplate =
     viewChild.required<TemplateRef<unknown>>('panelTemplate');
   /** The panel template is only attachable once the host view exists. */

@@ -116,9 +116,7 @@ describe('MultiSelect dismissal lifecycle', () => {
     openPanel(fixture);
     settle(fixture);
     // The panel renders detached from the host view.
-    const option = document.querySelector(
-      'li[role="option"]',
-    ) as HTMLElement;
+    const option = document.querySelector('li[role="option"]') as HTMLElement;
     option.dispatchEvent(
       new MouseEvent('pointerdown', { bubbles: true, cancelable: true }),
     );

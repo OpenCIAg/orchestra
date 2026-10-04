@@ -50,9 +50,9 @@ describe('Combobox behavior parity', () => {
     // The panel renders detached from the host view; it is located in the
     // document by the listbox id the input points at.
     const options = Array.from(
-      document.getElementById(
-        fixture.componentInstance.listId,
-      )!.querySelectorAll('li[role="option"]') as NodeListOf<HTMLElement>,
+      document
+        .getElementById(fixture.componentInstance.listId)!
+        .querySelectorAll('li[role="option"]') as NodeListOf<HTMLElement>,
     );
     expect(options.map((option) => option.textContent?.trim())).toEqual([
       'São Paulo',
@@ -160,9 +160,9 @@ describe('Combobox behavior parity', () => {
     // The panel renders detached from the host view; it is located in the
     // document by the listbox id the input points at.
     const options = Array.from(
-      document.getElementById(
-        fixture.componentInstance.listId,
-      )!.querySelectorAll('li[role="option"]') as NodeListOf<HTMLElement>,
+      document
+        .getElementById(fixture.componentInstance.listId)!
+        .querySelectorAll('li[role="option"]') as NodeListOf<HTMLElement>,
     ) as HTMLElement[];
     (options[2] as HTMLElement).click();
     fixture.detectChanges();
@@ -198,9 +198,9 @@ describe('Combobox behavior parity', () => {
     // The panel renders detached from the host view; it is located in the
     // document by the listbox id the input points at.
     const options = Array.from(
-      document.getElementById(
-        fixture.componentInstance.listId,
-      )!.querySelectorAll('li[role="option"]') as NodeListOf<HTMLElement>,
+      document
+        .getElementById(fixture.componentInstance.listId)!
+        .querySelectorAll('li[role="option"]') as NodeListOf<HTMLElement>,
     ) as HTMLElement[];
     options[0].click();
     options[0].click();

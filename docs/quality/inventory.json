@@ -3002,7 +3002,7 @@
       "kind": "Component",
       "selector": "orc-combobox",
       "file": "projects/orc-ds/combobox/combobox.component.ts",
-      "line": 31,
+      "line": 40,
       "inputs": [
         {
           "name": "options",
@@ -9098,7 +9098,7 @@
       "kind": "Component",
       "selector": "orc-multi-select",
       "file": "projects/orc-ds/multi-select/multi-select.component.ts",
-      "line": 39,
+      "line": 49,
       "inputs": [
         {
           "name": "options",
@@ -9238,8 +9238,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly appendTo = input<unknown>(undefined);",
-          "deprecated": true,
-          "description": "Compatibility input only; the panel is rendered in place."
+          "description": "Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead."
         },
         {
           "name": "overlayOptions",
@@ -9634,8 +9633,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly autoZIndex = input(true, { transform: booleanAttribute });",
-          "deprecated": true,
-          "description": "Compatibility input only; in-place panels do not use z-index management."
+          "description": "Whether the detached panel applies an automatic layer z-index."
         },
         {
           "name": "baseZIndex",
@@ -9643,8 +9641,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly baseZIndex = input(0);",
-          "deprecated": true,
-          "description": "Compatibility input only; in-place panels do not use z-index management."
+          "description": "Base z-index added to the panel layer when `autoZIndex` is set."
         },
         {
           "name": "open",
@@ -20794,7 +20791,7 @@
       "kind": "Component",
       "selector": "orc-tree-select",
       "file": "projects/orc-ds/tree-select/tree-select.component.ts",
-      "line": 42,
+      "line": 52,
       "inputs": [
         {
           "name": "styleClass",
@@ -20938,8 +20935,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly appendTo = input<unknown>(undefined);",
-          "deprecated": true,
-          "description": "Compatibility input only; the panel is rendered in place."
+          "description": "Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead."
         },
         {
           "name": "overlayOptions",
@@ -23022,7 +23018,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './in-place-overlay';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -24049,8 +24045,6 @@
     "projects/orc-ds/internal/cva-control.spec.ts",
     "projects/orc-ds/internal/cva-control.ts",
     "projects/orc-ds/internal/dom-target.ts",
-    "projects/orc-ds/internal/in-place-overlay.spec.ts",
-    "projects/orc-ds/internal/in-place-overlay.ts",
     "projects/orc-ds/internal/index.ts",
     "projects/orc-ds/internal/list-picker.spec.ts",
     "projects/orc-ds/internal/list-picker.ts",

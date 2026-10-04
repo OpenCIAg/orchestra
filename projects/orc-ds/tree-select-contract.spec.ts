@@ -272,9 +272,9 @@ describe('TreeSelect filtering and checkbox semantics', () => {
 
     // The filter renders in the detached panel wrapper, next to the
     // element carrying the panel id.
-    const filter = panelOf(fixture)!.closest(
-      '.orc-p2-tree-select-panel',
-    )!.querySelector('input') as HTMLInputElement;
+    const filter = panelOf(fixture)!
+      .closest('.orc-p2-tree-select-panel')!
+      .querySelector('input') as HTMLInputElement;
     const trigger = fixture.nativeElement.querySelector(
       '.trigger',
     ) as HTMLButtonElement;
@@ -312,12 +312,14 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     component.filterValue.set('employee');
     fixture.detectChanges();
 
-    const toggle = panelOf(fixture).querySelector('.expand') as HTMLButtonElement;
+    const toggle = panelOf(fixture).querySelector(
+      '.expand',
+    ) as HTMLButtonElement;
     expect(toggle.getAttribute('aria-label')).toBe('Collapse Department');
     expect(toggle.disabled).toBeTrue();
-    expect(
-      panelOf(fixture).querySelectorAll('[role="treeitem"]'),
-    ).toHaveSize(2);
+    expect(panelOf(fixture).querySelectorAll('[role="treeitem"]')).toHaveSize(
+      2,
+    );
   });
 
   it('renders a labelled clear control without requiring a custom ARIA label', () => {
@@ -344,9 +346,9 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     fixture.detectChanges();
 
     // The filter renders in the detached panel wrapper.
-    const filter = panelOf(fixture)!.closest(
-      '.orc-p2-tree-select-panel',
-    )!.querySelector('input') as HTMLInputElement;
+    const filter = panelOf(fixture)!
+      .closest('.orc-p2-tree-select-panel')!
+      .querySelector('input') as HTMLInputElement;
     expect(filter.getAttribute('aria-label')).toBe('Filter options');
 
     fixture.componentRef.setInput('filterAriaLabel', 'Find a department');
@@ -386,7 +388,9 @@ describe('TreeSelect filtering and checkbox semantics', () => {
     const clear = fixture.nativeElement.querySelector(
       'button:not(.trigger)',
     ) as HTMLButtonElement;
-    const expand = panelOf(fixture).querySelector('.expand') as HTMLButtonElement;
+    const expand = panelOf(fixture).querySelector(
+      '.expand',
+    ) as HTMLButtonElement;
     const tree = panelOf(fixture) as HTMLElement;
     expect(fixture.nativeElement.querySelector('label')).toBeNull();
     expect(trigger.getAttribute('aria-label')).toBeNull();

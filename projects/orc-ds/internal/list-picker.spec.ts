@@ -1,9 +1,4 @@
-import {
-  Component,
-  TemplateRef,
-  inject,
-  viewChild,
-} from '@angular/core';
+import { Component, TemplateRef, inject, viewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Overlay } from '@angular/cdk/overlay';
 import { ViewContainerRef } from '@angular/core';
@@ -233,7 +228,9 @@ describe('list-picker interaction core', () => {
  */
 describe('attachListPickerOverlay lifecycle', () => {
   @Component({
-    template: `<ng-template #content><div class="probe">panel</div></ng-template>`,
+    template: `<ng-template #content
+      ><div class="probe">panel</div></ng-template
+    >`,
   })
   class PortalHost {
     readonly content = viewChild.required<TemplateRef<unknown>>('content');
@@ -320,8 +317,7 @@ describe('attachListPickerOverlay lifecycle', () => {
   }
 
   function click(realm: Document, target: HTMLElement): void {
-    const MouseEventConstructor =
-      realm.defaultView?.MouseEvent ?? MouseEvent;
+    const MouseEventConstructor = realm.defaultView?.MouseEvent ?? MouseEvent;
     target.dispatchEvent(
       new MouseEventConstructor('pointerdown', {
         bubbles: true,
@@ -336,9 +332,7 @@ describe('attachListPickerOverlay lifecycle', () => {
   it('attaches the panel and dismisses for outside pointer interactions', () => {
     const scene = setup({});
     expect(scene.handle.overlayElement).not.toBeNull();
-    expect(
-      scene.handle.overlayElement!.querySelector('.probe'),
-    ).not.toBeNull();
+    expect(scene.handle.overlayElement!.querySelector('.probe')).not.toBeNull();
 
     const stranger = document.createElement('button');
     document.body.appendChild(stranger);

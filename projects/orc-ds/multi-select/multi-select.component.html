@@ -29,11 +29,7 @@
     (blur)="onBlur.emit($event)"
   >
     <span>{{ selectedLabels() || placeholder() }}</span
-    ><orc-icon
-      name="keyboard_arrow_down"
-      size="sm"
-      aria-hidden="true"
-    />
+    ><orc-icon name="keyboard_arrow_down" size="sm" aria-hidden="true" />
   </button>
   @if (showClear() && value().length && !readonly()) {
     <button
