@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { validateTopology } from './topology-lib.mjs';
+import { resolveBranchForTag, validateTopology } from './topology-lib.mjs';
 
 const root = process.cwd();
 const versions = JSON.parse(
@@ -19,8 +19,18 @@ if (topologyErrors.length) {
   process.exit(1);
 }
 
+// On a tag event the checkout is detached: resolve the release line from the
+// tag through the publishing topology (the same routing the publish guard
+// applies), falling back to RELEASE_BRANCH or the checked-out branch.
+function resolveTagBranch() {
+  const ref = process.env.GITHUB_REF ?? '';
+  if (!ref.startsWith('refs/tags/')) return null;
+  return resolveBranchForTag(versions, ref.replace('refs/tags/', ''));
+}
+
 const branch =
   process.env.RELEASE_BRANCH ||
+  resolveTagBranch() ||
   execFileSync('git', ['branch', '--show-current'], {
     encoding: 'utf8',
   }).trim();
