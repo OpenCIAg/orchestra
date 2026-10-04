@@ -247,6 +247,16 @@
 
 - Established the Angular 20 release line: set the package version and aligned the Angular peer range for Angular 20 (c4d2dbb, f9ac52b).
 
+## 19.4.0
+
+### Minor Changes
+
+- Backport the orchestra overhaul to the Angular 19 line. Every option panel (select, dropdown, combobox, multi-select, listbox, list, autocomplete, date-picker) renders through the shared detached-overlay machinery, so panels float above modals and are never clipped by ancestor `overflow`; overlays participate in the layer registry (topmost-aware Escape, parent-overlay close cascades), and pointer gestures that open a panel mid-press can no longer dismiss themselves or close a host modal. The p2-era families moved to canonical per-component directories behind unchanged public entry points, with PrimeNG host-class mimicry (`p-*`, `p-component`, `data-pc-name`) removed from the extracted families; the surviving tier-era compatibility names stay recorded in the 23.0.0 gate manifest. The three date implementations share one internal calendar engine (rollover-safe ISO date parsing, the fixed six-week month-grid generator, the roving-day keyboard state machine, and the single/multiple/range selection algebra), date limits are enforced end to end (embedded calendars disable constrained days, the date-input surfaces out-of-range typed values), TreeSelect trigger text shares the Select family typography, the dark theme remaps brand status tokens and overlay surfaces (chip warning text, tooltip contrast), and the picker trigger chevrons render via `orc-icon`. Public selectors, inputs, outputs, models, and event payloads are unchanged.
+
+### Patch Changes
+
+- Tooling parity with mainline: ESLint flat config with its day-one findings resolved, repo-wide Prettier gates, Node 22.22.3 alignment across `.nvmrc`, `engines`, and CI, the package README shipped in the tarball, the alias-identity sweep, the inventory and generated-docs gates, the 23.0.0 gate-manifest tooling, and the tag-release guard baselining against the line's registry dist-tag.
+
 ## 19.3.0
 
 - Replaced the generated SVG icon catalog with a Google Material Symbols font-backed `orc-icon` on the Angular 19 line (fc0a31d; release bump ef39f38).
