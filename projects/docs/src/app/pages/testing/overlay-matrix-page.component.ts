@@ -22,7 +22,7 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
  * cross-interaction matrix is visually confirmed by the maintainer.
  */
 @Component({
-  selector: 'doc-inside-modal-sandbox',
+  selector: 'doc-overlay-matrix-page',
   standalone: true,
   imports: [
     ModalComponent,
@@ -42,11 +42,10 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="sandbox">
-      <h1>Sandbox — overlays dentro do modal</h1>
+      <h1>Matriz de overlays</h1>
       <p>
-        Página temporária de verificação: abre um modal com todos os controles
-        baseados em overlay. Teste clique-fora, Escape (painel primeiro, modal
-        depois), foco e tema escuro.
+        Página de verificação interna: um modal com todos os controles baseados
+        em overlay para teste de camadas, clique-fora, Escape e tema.
       </p>
       <orc-button (click)="open.set(true)">Abrir modal</orc-button>
 
@@ -187,8 +186,8 @@ import { TooltipDirective } from '@ciag/orchestra/tooltip';
     `,
   ],
 })
-export class InsideModalSandboxComponent {
-  readonly open = signal(true);
+export class OverlayMatrixPageComponent {
+  readonly open = signal(false);
   readonly drawerOpen = signal(false);
 
   readonly options = [

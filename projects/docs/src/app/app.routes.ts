@@ -27,12 +27,12 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'sandbox/inside-modal',
+    path: 'testing/overlay-matrix',
     loadComponent: () =>
-      import('./pages/sandbox/inside-modal-sandbox.component').then(
-        (m) => m.InsideModalSandboxComponent,
+      import('./pages/testing/overlay-matrix-page.component').then(
+        (m) => m.OverlayMatrixPageComponent,
       ),
-    title: 'Sandbox — overlays dentro do modal (temporário)',
+    title: 'Testes internos — Matriz de overlays',
   },
   {
     path: 'docs',

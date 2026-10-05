@@ -15,13 +15,13 @@ import { expect, test } from '@playwright/test';
  * caught.
  *
  * The modal and drawer cells run against the temporary acceptance sandbox
- * (/sandbox/inside-modal) because they need a REAL orc-modal/orc-drawer
+ * (/testing/overlay-matrix) because they need a REAL orc-modal/orc-drawer
  * around the pickers; if that sandbox is ever removed, port them onto a
  * dedicated spec page. The clipper, theme and no-modal cells run against
  * the regular demo pages.
  */
 
-const SANDBOX = '/sandbox/inside-modal';
+const SANDBOX = '/testing/overlay-matrix';
 const HUMAN_PRESS_MS = 140;
 
 /** A press-release pair far enough apart for at least one painted frame. */
@@ -131,6 +131,7 @@ for (const [name, target] of Object.entries(PICKERS)) {
     page,
   }) => {
     await page.goto(SANDBOX);
+    await page.getByRole('button', { name: 'Abrir modal' }).click();
     const dialog = page.locator('orc-modal dialog');
     await expect(dialog).toBeVisible();
 
@@ -160,6 +161,7 @@ for (const [name, target] of Object.entries(PICKERS)) {
     page,
   }) => {
     await page.goto(SANDBOX);
+    await page.getByRole('button', { name: 'Abrir modal' }).click();
     const dialog = page.locator('orc-modal dialog');
     await expect(dialog).toBeVisible();
 
@@ -182,6 +184,7 @@ for (const [name, target] of Object.entries(PICKERS)) {
     page,
   }) => {
     await page.goto(SANDBOX);
+    await page.getByRole('button', { name: 'Abrir modal' }).click();
     const dialog = page.locator('orc-modal dialog');
     await expect(dialog).toBeVisible();
 
@@ -207,7 +210,9 @@ for (const [name, target] of Object.entries(PICKERS)) {
     page,
   }) => {
     await page.goto(SANDBOX);
-    // The sandbox modal starts open and covers the drawer toggle; close it.
+    // Open the modal first, then close it: the drawer is exercised in the
+    // registry state right after a modal open/close cycle.
+    await page.getByRole('button', { name: 'Abrir modal' }).click();
     const modal = page.locator('orc-modal dialog');
     await expect(modal).toBeVisible();
     await page.keyboard.press('Escape');
