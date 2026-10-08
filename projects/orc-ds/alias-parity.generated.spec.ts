@@ -3,7 +3,7 @@
 // (reference identity, not name equality) as its canonical declaration, and
 // every import used below compiles in the spec build. Regenerate with:
 //   npm run generate:alias-parity
-// Alias entry points: 122. Value exports asserted: 153. Type exports resolved: 43.
+// Alias entry points: 119. Value exports asserted: 150. Type exports resolved: 43.
 import { AnimateOnScrollDirective as animate_on_scroll__AnimateOnScrollDirective } from '@ciag/orchestra/animate-on-scroll';
 import { AnimateOnScrollDirective as canonical__p2_p2_utility_more__AnimateOnScrollDirective } from './p2/p2-utility-more';
 import { AnimateOnScrollDirective as animateonscroll__AnimateOnScrollDirective } from '@ciag/orchestra/animateonscroll';
@@ -29,8 +29,6 @@ import { ChartComponent as chart__ChartComponent } from '@ciag/orchestra/chart';
 import { ChartComponent as canonical__p2_p2_chart_editor_components__ChartComponent } from './p2/p2-chart-editor-components';
 import { ChipsComponent as chips__ChipsComponent } from '@ciag/orchestra/chips';
 import { TagsInputComponent as canonical__tags_input_tags_input_component__TagsInputComponent } from './tags-input/tags-input.component';
-import { CloseButtonComponent as close_button__CloseButtonComponent } from '@ciag/orchestra/close-button';
-import { CloseButtonComponent as canonical__p2_p2_overlay_components__CloseButtonComponent } from './p2/p2-overlay-components';
 import { ColorPicker as colorpicker__ColorPicker } from '@ciag/orchestra/colorpicker';
 import { ColorPickerComponent as canonical__color_picker_color_picker_component__ColorPickerComponent } from './color-picker/color-picker.component';
 import { ColorPickerComponent as colorpicker__ColorPickerComponent } from '@ciag/orchestra/colorpicker';
@@ -87,8 +85,6 @@ import { FlexComponent as flex__FlexComponent } from '@ciag/orchestra/flex';
 import { FlexComponent as canonical__p2_p2_layout_components__FlexComponent } from './p2/p2-layout-components';
 import { FloatingActionButtonComponent as floating_action_button__FloatingActionButtonComponent } from '@ciag/orchestra/floating-action-button';
 import { FloatingActionButtonComponent as canonical__p2_p2_overlay_components__FloatingActionButtonComponent } from './p2/p2-overlay-components';
-import { FloatLabelComponent as floatlabel__FloatLabelComponent } from '@ciag/orchestra/floatlabel';
-import { FloatLabelComponent as canonical__float_label_float_label_component__FloatLabelComponent } from './float-label/float-label.component';
 import { FluidComponent as fluid__FluidComponent } from '@ciag/orchestra/fluid';
 import { FluidComponent as canonical__p2_p2_primeng_gap_components__FluidComponent } from './p2/p2-primeng-gap-components';
 import { FocusTrapDirective as focus_trap__FocusTrapDirective } from '@ciag/orchestra/focus-trap';
@@ -208,8 +204,6 @@ import { ScrollPanelComponent as scrollpanel__ScrollPanelComponent } from '@ciag
 import { ScrollTopComponent as scrolltop__ScrollTopComponent } from '@ciag/orchestra/scrolltop';
 import { SelectButtonComponent as selectbutton__SelectButtonComponent } from '@ciag/orchestra/selectbutton';
 import { SelectButtonComponent as canonical__select_button_select_button_component__SelectButtonComponent } from './select-button/select-button.component';
-import { SeparatorComponent as separator__SeparatorComponent } from '@ciag/orchestra/separator';
-import { SeparatorComponent as canonical__p2_p2_layout_components__SeparatorComponent } from './p2/p2-layout-components';
 import { SidebarComponent as sidebar__SidebarComponent } from '@ciag/orchestra/sidebar';
 import { DrawerComponent as canonical__drawer_drawer_component__DrawerComponent } from './drawer/drawer.component';
 import { SpaceComponent as space__SpaceComponent } from '@ciag/orchestra/space';
@@ -442,12 +436,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(canonical__tags_input_tags_input_component__TagsInputComponent);
   });
 
-  it('@ciag/orchestra/close-button re-exports the canonical declarations', () => {
-    expect(close_button__CloseButtonComponent)
-      .withContext('close-button#CloseButtonComponent')
-      .toBe(canonical__p2_p2_overlay_components__CloseButtonComponent);
-  });
-
   // colorpicker.ColorPickerFormat === ./color-picker/color-picker.component#ColorPickerFormat (type-only, checked at generation time)
 
   // colorpicker.ColorPickerSize === ./color-picker/color-picker.component#ColorPickerSize (type-only, checked at generation time)
@@ -647,12 +635,6 @@ describe('Alias entry points (generated identity sweep)', () => {
     expect(floating_action_button__FloatingActionButtonComponent)
       .withContext('floating-action-button#FloatingActionButtonComponent')
       .toBe(canonical__p2_p2_overlay_components__FloatingActionButtonComponent);
-  });
-
-  it('@ciag/orchestra/floatlabel re-exports the canonical declarations', () => {
-    expect(floatlabel__FloatLabelComponent)
-      .withContext('floatlabel#FloatLabelComponent')
-      .toBe(canonical__float_label_float_label_component__FloatLabelComponent);
   });
 
   it('@ciag/orchestra/fluid re-exports the canonical declarations', () => {
@@ -1114,12 +1096,6 @@ describe('Alias entry points (generated identity sweep)', () => {
       .toBe(
         canonical__select_button_select_button_component__SelectButtonComponent,
       );
-  });
-
-  it('@ciag/orchestra/separator re-exports the canonical declarations', () => {
-    expect(separator__SeparatorComponent)
-      .withContext('separator#SeparatorComponent')
-      .toBe(canonical__p2_p2_layout_components__SeparatorComponent);
   });
 
   // sidebar.SidebarPosition === ./drawer/drawer.component#DrawerPlacement (type-only, checked at generation time)

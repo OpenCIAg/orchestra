@@ -9,7 +9,7 @@
       </div>
 
       <div class="section-eyebrow">Componentes · Inputs</div>
-      <h1 class="section-title">Button &amp; Icon Button</h1>
+      <h1 class="section-title">Button</h1>
       <p class="section-desc">
         Elementos de ação com variantes, tamanhos, estados reativos, projeção de
         ícones e suporte a nomes acessíveis e navegação por teclado.
@@ -152,6 +152,16 @@
                   >
                     Danger
                   </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'close'
+                    "
+                    (click)="playgroundVariant.set('close')"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
 
@@ -282,165 +292,9 @@
         </div>
       </section>
 
-      <!-- ── PLAYGROUND INTERATIVO (ICON BUTTON) ───────────────── -->
-      <section class="section">
-        <h2 class="section-subtitle">Playground interativo: Icon Button</h2>
-        <div class="playground-grid">
-          <!-- Preview Panel -->
-          <div class="panel preview-panel">
-            <div class="panel__header">Prévia ao vivo</div>
-            <div class="panel__body">
-              <div class="preview-box">
-                <orc-icon-button
-                  [variant]="iconPlaygroundVariant()"
-                  [size]="iconPlaygroundSize()"
-                  [disabled]="iconPlaygroundDisabled()"
-                  [loading]="iconPlaygroundLoading()"
-                  [icon]="searchIconSvg"
-                  ariaLabel="Buscar conteúdo no site"
-                  (click)="onButtonClick()"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Config Panel -->
-          <div class="panel config-panel">
-            <div class="panel__header">Propriedades e controles</div>
-            <div class="panel__body">
-              <!-- Variant Selection -->
-              <div class="control-group">
-                <label class="control-label">Variante visual</label>
-                <div class="segmented-control">
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="
-                      iconPlaygroundVariant() === 'primary'
-                    "
-                    (click)="iconPlaygroundVariant.set('primary')"
-                  >
-                    Primary
-                  </button>
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="
-                      iconPlaygroundVariant() === 'secondary'
-                    "
-                    (click)="iconPlaygroundVariant.set('secondary')"
-                  >
-                    Secondary
-                  </button>
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="
-                      iconPlaygroundVariant() === 'outline'
-                    "
-                    (click)="iconPlaygroundVariant.set('outline')"
-                  >
-                    Outline
-                  </button>
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="
-                      iconPlaygroundVariant() === 'ghost'
-                    "
-                    (click)="iconPlaygroundVariant.set('ghost')"
-                  >
-                    Ghost
-                  </button>
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="
-                      iconPlaygroundVariant() === 'link'
-                    "
-                    (click)="iconPlaygroundVariant.set('link')"
-                  >
-                    Link
-                  </button>
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="
-                      iconPlaygroundVariant() === 'danger'
-                    "
-                    (click)="iconPlaygroundVariant.set('danger')"
-                  >
-                    Danger
-                  </button>
-                </div>
-              </div>
-
-              <!-- Size Selection -->
-              <div class="control-group">
-                <label class="control-label">Tamanho</label>
-                <div class="segmented-control">
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="iconPlaygroundSize() === 'sm'"
-                    (click)="iconPlaygroundSize.set('sm')"
-                  >
-                    SM (32px)
-                  </button>
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="iconPlaygroundSize() === 'md'"
-                    (click)="iconPlaygroundSize.set('md')"
-                  >
-                    MD (40px)
-                  </button>
-                  <button
-                    type="button"
-                    class="segment-btn"
-                    [class.segment-btn--active]="iconPlaygroundSize() === 'lg'"
-                    (click)="iconPlaygroundSize.set('lg')"
-                  >
-                    LG (48px)
-                  </button>
-                </div>
-              </div>
-
-              <!-- Toggles: Disabled, Loading -->
-              <div class="control-group" style="margin-top: 1rem">
-                <label class="control-label">Opções de Estado</label>
-                <div class="checkbox-row">
-                  <label class="toggle-label">
-                    <input
-                      type="checkbox"
-                      [checked]="iconPlaygroundDisabled()"
-                      (change)="
-                        iconPlaygroundDisabled.set($any($event.target).checked)
-                      "
-                    />
-                    <span>Desabilitado</span>
-                  </label>
-
-                  <label class="toggle-label">
-                    <input
-                      type="checkbox"
-                      [checked]="iconPlaygroundLoading()"
-                      (change)="
-                        iconPlaygroundLoading.set($any($event.target).checked)
-                      "
-                    />
-                    <span>Carregando (loading)</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ── FIGMA DESIGN SYSTEM VARIATIONS ────────────────────── -->
       <section class="section">
-        <h2 class="section-subtitle">Exemplos e estados estáticos (Figma)</h2>
+        <h2 class="section-subtitle">Componentes planos</h2>
 
         <!-- Variantes do Botão -->
         <div class="figma-block">
@@ -452,6 +306,7 @@
             <orc-button variant="ghost">Ghost</orc-button>
             <orc-button variant="link">Link Style</orc-button>
             <orc-button variant="danger">Danger</orc-button>
+            <orc-button variant="close">Close</orc-button>
           </div>
         </div>
 
@@ -462,20 +317,6 @@
             <orc-button size="sm">Small (sm - 32px)</orc-button>
             <orc-button size="md">Medium (md - 40px)</orc-button>
             <orc-button size="lg">Large (lg - 48px)</orc-button>
-          </div>
-        </div>
-
-        <!-- Estados Visuais -->
-        <div class="figma-block">
-          <div class="figma-block__label">Estados especiais</div>
-          <div class="figma-block__row">
-            <orc-button [disabled]="true">Desabilitado</orc-button>
-            <orc-button [loading]="true"
-              >Carregando (fundo preservado)</orc-button
-            >
-            <orc-button variant="danger" [loading]="true"
-              >Carregando Danger</orc-button
-            >
           </div>
         </div>
 
@@ -553,6 +394,12 @@
               size="md"
               [icon]="searchIconSvg"
               ariaLabel="Buscar"
+            />
+            <orc-icon-button
+              variant="close"
+              size="md"
+              [icon]="searchIconSvg"
+              ariaLabel="Fechar"
             />
             <orc-icon-button
               variant="primary"

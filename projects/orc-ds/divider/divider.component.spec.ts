@@ -81,4 +81,27 @@ describe('DividerComponent static DOM behavior', () => {
     expect(children[1].nextElementSibling?.className).toBe('orc-divider__line');
     expect(divider.getAttribute('role')).toBe('separator');
   });
+
+  it('matches orc-separator selector for unified separator usage', () => {
+    @Component({
+      standalone: true,
+      imports: [DividerComponent],
+      template: `<orc-separator
+        orientation="vertical"
+        label="Boundary"
+        [decorative]="false"
+      />`,
+    })
+    class SeparatorHost {}
+
+    const fixture = TestBed.createComponent(SeparatorHost);
+    fixture.detectChanges();
+    const divider = fixture.nativeElement.querySelector(
+      '.orc-divider',
+    ) as HTMLElement;
+    expect(divider).not.toBeNull();
+    expect(divider.getAttribute('role')).toBe('separator');
+    expect(divider.getAttribute('aria-orientation')).toBe('vertical');
+    expect(divider.getAttribute('aria-label')).toBe('Boundary');
+  });
 });

@@ -7,7 +7,7 @@
 
 This document is the machine-oriented companion to [`llms.txt`](./llms.txt). It describes the current workspace package `@ciag/orchestra` and is intentionally explicit: an agent should be able to choose a component, import it, compose it, and wire its state without guessing.
 
-> Version context: Angular 22, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `22.2.0`.
+> Version context: Angular 22, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `22.3.0`.
 
 ## 1. Operating rules for coding agents
 
@@ -125,7 +125,7 @@ The library supplies semantic roles, keyboard behavior, focus-visible states, an
 
 ## 4. Complete package and entry-point map
 
-The root public API exposes 223 secondary entry points, generated from the component inventory. Alias entry points intentionally point at the canonical implementation so applications can migrate terminology without duplicating behavior.
+The root public API exposes 222 secondary entry points, generated from the component inventory. Alias entry points intentionally point at the canonical implementation so applications can migrate terminology without duplicating behavior.
 
 | Entry point              | Primary selectors or export                                                             | Docs                                                                                |
 | ------------------------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -302,7 +302,6 @@ The root public API exposes 223 secondary entry points, generated from the compo
 | `select`                 | `orc-option`, `orc-select`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/select)                 |
 | `select-button`          | `orc-select-button`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/select-button)          |
 | `selectbutton`           | alias of `select-button`                                                                | —                                                                                   |
-| `separator`              | alias of `p2` (`SeparatorComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/separator)              |
 | `sidebar`                | alias of `drawer` (`SidebarComponent`)                                                  | —                                                                                   |
 | `skeleton`               | `orc-skeleton`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/skeleton)               |
 | `slider`                 | `orc-slider`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/slider)                 |
@@ -696,7 +695,7 @@ Implements `ControlValueAccessor`.
 
 If `decorative=false`, provide a meaningful label or aria label. `separator` is a P2 entry point distinct from the P1 `divider`; use the latter when dashed/inset/decorative behavior is needed.
 
-- **DividerComponent (orc-divider)**
+- **DividerComponent (orc-divider, orc-separator)**
   - Inputs: `orientation` (DividerOrientation) default `'horizontal'`, `variant` (DividerVariant) default `'solid'`, `label` (string) default `''`, `inset` (boolean) default `false`, `decorative` (boolean) default `true`, `ariaLabel` (string) default `''`
 - Interactive docs: https://orchestra.ciag.org.br/components/divider
 
@@ -1247,12 +1246,6 @@ Deprecated compatibility inputs with no behavior are `overlayOptions`, `autofocu
   - Models: `value` (T | T[] | null) default `null`
   - Outputs: `valueChangeEvent` (T | T[] | null), `onOptionClick` ({ originalEvent: Event; option: any; index: number; }), `onChange` ({ originalEvent: Event; value: T | T[] | null }), `onFocus` (Event), `onBlur` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/select-button
-
-### Separator — `@ciag/orchestra/separator`
-
-- **SeparatorComponent (orc-separator)**
-  - Inputs: `orientation` (P2Orientation) default `'horizontal'`, `label` (string) default `''`
-- Interactive docs: https://orchestra.ciag.org.br/components/separator
 
 ### Skeleton — `@ciag/orchestra/skeleton`
 

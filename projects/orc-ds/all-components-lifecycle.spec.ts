@@ -13,142 +13,140 @@ import { BreadcrumbItemComponent as Component7 } from './breadcrumb/breadcrumb-i
 import { BreadcrumbComponent as Component8 } from './breadcrumb/breadcrumb.component';
 import { ButtonComponent as Component9 } from './button/button.component';
 import { IconButtonComponent as Component10 } from './button/icon-button.component';
-import { CardBodyComponent as Component11 } from './card/card-body.component';
-import { CardFooterComponent as Component12 } from './card/card-footer.component';
-import { CardHeaderComponent as Component13 } from './card/card-header.component';
-import { CardComponent as Component14 } from './card/card.component';
-import { CarouselComponent as Component15 } from './carousel/carousel.component';
-import { CheckboxComponent as Component16 } from './checkbox/checkbox.component';
-import { ChipInputComponent as Component17 } from './chip-input/chip-input.component';
-import { ChipComponent as Component18 } from './chip/chip.component';
-import { CollapsibleComponent as Component19 } from './collapsible/collapsible.component';
-import { ColorPickerComponent as Component20 } from './color-picker/color-picker.component';
-import { DatePickerCalendarComponent as Component21 } from './date-picker/date-picker-calendar.component';
-import { DatePickerComponent as Component22 } from './date-picker/date-picker.component';
-import { DividerComponent as Component23 } from './divider/divider.component';
-import { DrawerComponent as Component24 } from './drawer/drawer.component';
-import { DropdownComponent as Component25 } from './dropdown/dropdown.component';
-import { EmptyStateComponent as Component26 } from './empty-state/empty-state.component';
-import { FileItemComponent as Component27 } from './file-uploader/file-item/file-item.component';
-import { FileUploaderComponent as Component28 } from './file-uploader/file-uploader.component';
-import { FormFieldComponent as Component29 } from './form-field/form-field.component';
-import { FormComponent as Component30 } from './form/form.component';
-import { IconComponent as Component31 } from './icon/icon.component';
-import { ImageComponent as Component32 } from './image/image.component';
-import { InputComponent as Component33 } from './input/input.component';
-import { TextareaComponent as Component34 } from './input/textarea.component';
-import { ListComponent as Component35 } from './list/list.component';
-import { ModalComponent as Component36 } from './modal/modal.component';
-import { NavigationShellComponent as Component37 } from './navigation/navigation-shell.component';
-import { NavigationItemComponent as Component38 } from './navigation/navigation-shell.component';
-import { NumberInputComponent as Component39 } from './number-input/number-input.component';
-import { OtpGroupComponent as Component40 } from './otp-input/otp-group.component';
-import { OtpInputComponent as Component41 } from './otp-input/otp-input.component';
-import { OtpSeparatorComponent as Component42 } from './otp-input/otp-separator.component';
-import { OtpSlotComponent as Component43 } from './otp-input/otp-slot.component';
-import { OverlayPanelComponent as Component44 } from './overlay-panel/overlay-panel.component';
-import { PopoverComponent as Component45 } from './overlay-panel/overlay-panel.component';
-import { MenuComponent as Component46 } from './p2/p2-advanced-components';
-import { BlockUiComponent as Component47 } from './p2/p2-block-ui-component';
-import { CalendarComponent as Component48 } from './p2/p2-calendar-component';
-import { CascadeSelectComponent as Component49 } from './p2/p2-cascade-select-component';
-import { ChartComponent as Component50 } from './p2/p2-chart-editor-components';
-import { ComboboxComponent as Component51 } from './p2/p2-combobox-component';
-import { CommandMenuComponent as Component52 } from './p2/p2-command-components';
-import { ConfirmDialogComponent as Component53 } from './p2/p2-confirm-dialog-component';
-import { ConfirmPopupComponent as Component54 } from './p2/p2-confirm-popup';
-import { CodeComponent as Component55 } from './p2/p2-data-components';
-import { HoverCardComponent as Component56 } from './p2/p2-data-components';
-import { DataTableComponent as Component57 } from './p2/p2-data-table-component';
-import { DataViewComponent as Component58 } from './p2/p2-data-view-component';
-import { DateInputComponent as Component59 } from './p2/p2-date-input-component';
-import { DockComponent as Component60 } from './p2/p2-dock-scroll-components';
-import { ScrollPanelComponent as Component61 } from './p2/p2-dock-scroll-components';
-import { EditorComponent as Component62 } from './p2/p2-editor-component';
-import { InputGroupComponent as Component63 } from './p2/p2-form-components';
-import { SelectButtonComponent as Component64 } from './p2/p2-form-gap-components';
-import { ToggleButtonComponent as Component65 } from './p2/p2-form-gap-components';
-import { GalleriaComponent as Component66 } from './p2/p2-galleria-component';
-import { ImageCompareComponent as Component67 } from './p2/p2-image-compare-component';
-import { InputGroupAddonComponent as Component68 } from './p2/p2-input-gap-components';
-import { IconFieldComponent as Component69 } from './p2/p2-input-gap-components';
-import { IftaLabelComponent as Component70 } from './p2/p2-input-gap-components';
-import { InplaceComponent as Component71 } from './p2/p2-input-gap-components';
-import { InputColorComponent as Component72 } from './p2/p2-input-more';
-import { ButtonGroupComponent as Component73 } from './p2/p2-layout-components';
-import { GridComponent as Component74 } from './p2/p2-layout-components';
-import { AspectRatioComponent as Component75 } from './p2/p2-layout-components';
-import { ContainerComponent as Component76 } from './p2/p2-layout-components';
-import { FlexComponent as Component77 } from './p2/p2-layout-components';
-import { StackComponent as Component78 } from './p2/p2-layout-components';
-import { SpaceComponent as Component79 } from './p2/p2-layout-components';
-import { BoxComponent as Component80 } from './p2/p2-layout-components';
-import { SeparatorComponent as Component81 } from './p2/p2-layout-components';
-import { VisuallyHiddenComponent as Component82 } from './p2/p2-layout-components';
-import { TypographyComponent as Component83 } from './p2/p2-layout-components';
-import { TextComponent as Component84 } from './p2/p2-layout-components';
-import { KbdComponent as Component85 } from './p2/p2-layout-components';
-import { LinkComponent as Component86 } from './p2/p2-layout-components';
-import { ListboxComponent as Component87 } from './p2/p2-listbox-component';
-import { TieredMenuComponent as Component88 } from './p2/p2-menu-family-components';
-import { PanelMenuComponent as Component89 } from './p2/p2-menu-family-components';
-import { MegaMenuComponent as Component90 } from './p2/p2-menu-family-components';
-import { MenubarComponent as Component91 } from './p2/p2-menubar-component';
-import { MessagesComponent as Component92 } from './p2/p2-message-components';
-import { MultiSelectComponent as Component93 } from './p2/p2-multi-select-component';
-import { OrderListComponent as Component94 } from './p2/p2-order-list-component';
-import { OrganizationChartComponent as Component95 } from './p2/p2-org-knob-components';
-import { KnobComponent as Component96 } from './p2/p2-org-knob-components';
-import { FloatingActionButtonComponent as Component97 } from './p2/p2-overlay-components';
-import { CloseButtonComponent as Component98 } from './p2/p2-overlay-components';
-import { ContextMenuComponent as Component99 } from './p2/p2-overlay-components';
-import { OverlayComponent as Component100 } from './p2/p2-overlay-components';
-import { PickListComponent as Component101 } from './p2/p2-pick-list-component';
-import { PortalComponent as Component102 } from './p2/p2-portal-component';
-import { PanelComponent as Component103 } from './p2/p2-primeng-gap-components';
-import { FieldsetComponent as Component104 } from './p2/p2-primeng-gap-components';
-import { FloatLabelComponent as Component105 } from './p2/p2-primeng-gap-components';
-import { FluidComponent as Component106 } from './p2/p2-primeng-gap-components';
-import { OverlayBadgeComponent as Component107 } from './p2/p2-primeng-gap-components';
-import { MeterGroupComponent as Component108 } from './p2/p2-primeng-gap-components';
-import { PasswordComponent as Component109 } from './p2/p2-primeng-gap-components';
-import { ScrollTopComponent as Component110 } from './p2/p2-primeng-gap-components';
-import { SpeedDialComponent as Component111 } from './p2/p2-speed-dial-component';
-import { SplitButtonComponent as Component112 } from './p2/p2-split-button-component';
-import { SplitterComponent as Component113 } from './p2/p2-splitter-component';
-import { TagsInputComponent as Component114 } from './p2/p2-tags-input-component';
-import { TerminalComponent as Component115 } from './p2/p2-terminal-component';
-import { TreeComponent as Component116 } from './p2/p2-tree-component';
-import { TreeSelectComponent as Component117 } from './p2/p2-tree-select-component';
-import { TreeTableComponent as Component118 } from './p2/p2-tree-table-component';
-import { VirtualScrollerComponent as Component119 } from './p2/p2-virtual-scroller-component';
-import { PaginatorComponent as Component120 } from './paginator/paginator.component';
-import { ProgressBarComponent as Component121 } from './progress/progress-bar.component';
-import { ProgressCircleComponent as Component122 } from './progress/progress-circle.component';
-import { ProgressSpinnerComponent as Component123 } from './progress/progress-spinner.component';
-import { RadioButtonComponent as Component124 } from './radio/radio-button.component';
-import { RadioGroupComponent as Component125 } from './radio/radio-group.component';
-import { RatingComponent as Component126 } from './rating/rating.component';
-import { ScrollAreaComponent as Component127 } from './scroll-area/scroll-area.component';
-import { SegmentedControlComponent as Component128 } from './segmented-control/segmented-control.component';
-import { OptionComponent as Component129 } from './select/option.component';
-import { SelectComponent as Component130 } from './select/select.component';
-import { SkeletonComponent as Component131 } from './skeleton/skeleton.component';
-import { SliderComponent as Component132 } from './slider/slider.component';
-import { LoadingSpinnerComponent as Component133 } from './spinner/spinner.component';
-import { StepperComponent as Component134 } from './stepper/stepper.component';
-import { SwitchComponent as Component135 } from './switch/switch.component';
-import { TabMenuComponent as Component136 } from './tab-menu/tab-menu.component';
-import { TableComponent as Component137 } from './table/table.component';
-import { TabGroupComponent as Component138 } from './tabs/tab-group.component';
-import { TabComponent as Component139 } from './tabs/tab.component';
-import { TagComponent as Component140 } from './tag/tag.component';
-import { TimelineComponent as Component141 } from './timeline/timeline.component';
-import { ToastContainerComponent as Component142 } from './toast/toast-container.component';
-import { ToastComponent as Component143 } from './toast/toast.component';
-import { ToolbarComponent as Component144 } from './toolbar/toolbar.component';
-import { TooltipComponent as Component145 } from './tooltip/tooltip.component';
-import { TreeViewComponent as Component146 } from './tree-view/tree-view.component';
+import { CalendarComponent as Component11 } from './calendar/calendar.component';
+import { CardBodyComponent as Component12 } from './card/card-body.component';
+import { CardFooterComponent as Component13 } from './card/card-footer.component';
+import { CardHeaderComponent as Component14 } from './card/card-header.component';
+import { CardComponent as Component15 } from './card/card.component';
+import { CarouselComponent as Component16 } from './carousel/carousel.component';
+import { CheckboxComponent as Component17 } from './checkbox/checkbox.component';
+import { ChipInputComponent as Component18 } from './chip-input/chip-input.component';
+import { ChipComponent as Component19 } from './chip/chip.component';
+import { CodeComponent as Component20 } from './code/code.component';
+import { CollapsibleComponent as Component21 } from './collapsible/collapsible.component';
+import { ColorPickerComponent as Component22 } from './color-picker/color-picker.component';
+import { ComboboxComponent as Component23 } from './combobox/combobox.component';
+import { ConfirmPopupComponent as Component24 } from './confirm-popup/confirm-popup.component';
+import { ContextMenuComponent as Component25 } from './context-menu/context-menu.component';
+import { DataViewComponent as Component26 } from './data-view/data-view.component';
+import { DateInputComponent as Component27 } from './date-input/date-input.component';
+import { DatePickerCalendarComponent as Component28 } from './date-picker/date-picker-calendar.component';
+import { DatePickerComponent as Component29 } from './date-picker/date-picker.component';
+import { DividerComponent as Component30 } from './divider/divider.component';
+import { DockComponent as Component31 } from './dock/dock.component';
+import { DrawerComponent as Component32 } from './drawer/drawer.component';
+import { DropdownComponent as Component33 } from './dropdown/dropdown.component';
+import { EditorComponent as Component34 } from './editor/editor.component';
+import { EmptyStateComponent as Component35 } from './empty-state/empty-state.component';
+import { FileItemComponent as Component36 } from './file-uploader/file-item/file-item.component';
+import { FileUploaderComponent as Component37 } from './file-uploader/file-uploader.component';
+import { FormFieldComponent as Component39 } from './form-field/form-field.component';
+import { FormComponent as Component40 } from './form/form.component';
+import { GalleriaComponent as Component41 } from './galleria/galleria.component';
+import { HoverCardComponent as Component42 } from './hover-card/hover-card.component';
+import { IconFieldComponent as Component43 } from './icon-field/icon-field.component';
+import { IconComponent as Component44 } from './icon/icon.component';
+import { IftaLabelComponent as Component45 } from './ifta-label/ifta-label.component';
+import { ImageCompareComponent as Component46 } from './image-compare/image-compare.component';
+import { ImageComponent as Component47 } from './image/image.component';
+import { InputGroupAddonComponent as Component48 } from './input-group-addon/input-group-addon.component';
+import { InputGroupComponent as Component49 } from './input-group/input-group.component';
+import { InputComponent as Component50 } from './input/input.component';
+import { TextareaComponent as Component51 } from './input/textarea.component';
+import { KnobComponent as Component52 } from './knob/knob.component';
+import { ListComponent as Component53 } from './list/list.component';
+import { ListboxComponent as Component54 } from './listbox/listbox.component';
+import { MegaMenuComponent as Component55 } from './mega-menu/mega-menu.component';
+import { MenubarComponent as Component56 } from './menubar/menubar.component';
+import { MeterGroupComponent as Component57 } from './meter-group/meter-group.component';
+import { ModalComponent as Component58 } from './modal/modal.component';
+import { MultiSelectComponent as Component59 } from './multi-select/multi-select.component';
+import { NavigationShellComponent as Component60 } from './navigation/navigation-shell.component';
+import { NavigationItemComponent as Component61 } from './navigation/navigation-shell.component';
+import { NumberInputComponent as Component62 } from './number-input/number-input.component';
+import { OrderListComponent as Component63 } from './order-list/order-list.component';
+import { OrganizationChartComponent as Component64 } from './organization-chart/organization-chart.component';
+import { OtpGroupComponent as Component65 } from './otp-input/otp-group.component';
+import { OtpInputComponent as Component66 } from './otp-input/otp-input.component';
+import { OtpSeparatorComponent as Component67 } from './otp-input/otp-separator.component';
+import { OtpSlotComponent as Component68 } from './otp-input/otp-slot.component';
+import { OverlayPanelComponent as Component69 } from './overlay-panel/overlay-panel.component';
+import { PopoverComponent as Component70 } from './overlay-panel/overlay-panel.component';
+import { MenuComponent as Component71 } from './p2/p2-advanced-components';
+import { BlockUiComponent as Component72 } from './p2/p2-block-ui-component';
+import { CascadeSelectComponent as Component73 } from './p2/p2-cascade-select-component';
+import { ChartComponent as Component74 } from './p2/p2-chart-editor-components';
+import { CommandMenuComponent as Component75 } from './p2/p2-command-components';
+import { ConfirmDialogComponent as Component76 } from './p2/p2-confirm-dialog-component';
+import { DataTableComponent as Component77 } from './p2/p2-data-table-component';
+import { ScrollPanelComponent as Component78 } from './p2/p2-dock-scroll-components';
+import { InplaceComponent as Component79 } from './p2/p2-inplace-component';
+import { InputColorComponent as Component80 } from './p2/p2-input-more';
+import { ButtonGroupComponent as Component81 } from './p2/p2-layout-components';
+import { GridComponent as Component82 } from './p2/p2-layout-components';
+import { AspectRatioComponent as Component83 } from './p2/p2-layout-components';
+import { ContainerComponent as Component84 } from './p2/p2-layout-components';
+import { FlexComponent as Component85 } from './p2/p2-layout-components';
+import { StackComponent as Component86 } from './p2/p2-layout-components';
+import { SpaceComponent as Component87 } from './p2/p2-layout-components';
+import { BoxComponent as Component88 } from './p2/p2-layout-components';
+import { VisuallyHiddenComponent as Component89 } from './p2/p2-layout-components';
+import { TypographyComponent as Component90 } from './p2/p2-layout-components';
+import { TextComponent as Component91 } from './p2/p2-layout-components';
+import { KbdComponent as Component92 } from './p2/p2-layout-components';
+import { LinkComponent as Component93 } from './p2/p2-layout-components';
+import { MessagesComponent as Component94 } from './p2/p2-message-components';
+import { FloatingActionButtonComponent as Component95 } from './p2/p2-overlay-components';
+import { CloseButtonComponent as Component96 } from './p2/p2-overlay-components';
+import { OverlayComponent as Component97 } from './p2/p2-overlay-components';
+import { PortalComponent as Component98 } from './p2/p2-portal-component';
+import { PanelComponent as Component99 } from './p2/p2-primeng-gap-components';
+import { FieldsetComponent as Component100 } from './p2/p2-primeng-gap-components';
+import { FluidComponent as Component101 } from './p2/p2-primeng-gap-components';
+import { OverlayBadgeComponent as Component102 } from './p2/p2-primeng-gap-components';
+import { ScrollTopComponent as Component103 } from './p2/p2-primeng-gap-components';
+import { SplitterComponent as Component104 } from './p2/p2-splitter-component';
+import { PaginatorComponent as Component105 } from './paginator/paginator.component';
+import { PanelMenuComponent as Component106 } from './panel-menu/panel-menu.component';
+import { PasswordComponent as Component107 } from './password/password.component';
+import { PickListComponent as Component108 } from './pick-list/pick-list.component';
+import { ProgressBarComponent as Component109 } from './progress/progress-bar.component';
+import { ProgressCircleComponent as Component110 } from './progress/progress-circle.component';
+import { ProgressSpinnerComponent as Component111 } from './progress/progress-spinner.component';
+import { RadioButtonComponent as Component112 } from './radio/radio-button.component';
+import { RadioGroupComponent as Component113 } from './radio/radio-group.component';
+import { RatingComponent as Component114 } from './rating/rating.component';
+import { ScrollAreaComponent as Component115 } from './scroll-area/scroll-area.component';
+import { SegmentedControlComponent as Component116 } from './segmented-control/segmented-control.component';
+import { SelectButtonComponent as Component117 } from './select-button/select-button.component';
+import { OptionComponent as Component118 } from './select/option.component';
+import { SelectComponent as Component119 } from './select/select.component';
+import { SkeletonComponent as Component120 } from './skeleton/skeleton.component';
+import { SliderComponent as Component121 } from './slider/slider.component';
+import { SpeedDialComponent as Component122 } from './speed-dial/speed-dial.component';
+import { LoadingSpinnerComponent as Component123 } from './spinner/spinner.component';
+import { SplitButtonComponent as Component124 } from './split-button/split-button.component';
+import { StepperComponent as Component125 } from './stepper/stepper.component';
+import { SwitchComponent as Component126 } from './switch/switch.component';
+import { TabMenuComponent as Component127 } from './tab-menu/tab-menu.component';
+import { TableComponent as Component128 } from './table/table.component';
+import { TabGroupComponent as Component129 } from './tabs/tab-group.component';
+import { TabComponent as Component130 } from './tabs/tab.component';
+import { TagComponent as Component131 } from './tag/tag.component';
+import { TagsInputComponent as Component132 } from './tags-input/tags-input.component';
+import { TerminalComponent as Component133 } from './terminal/terminal.component';
+import { TieredMenuComponent as Component134 } from './tiered-menu/tiered-menu.component';
+import { TimelineComponent as Component135 } from './timeline/timeline.component';
+import { ToastContainerComponent as Component136 } from './toast/toast-container.component';
+import { ToastComponent as Component137 } from './toast/toast.component';
+import { ToggleButtonComponent as Component138 } from './toggle-button/toggle-button.component';
+import { ToolbarComponent as Component139 } from './toolbar/toolbar.component';
+import { TooltipComponent as Component140 } from './tooltip/tooltip.component';
+import { TreeSelectComponent as Component141 } from './tree-select/tree-select.component';
+import { TreeTableComponent as Component142 } from './tree-table/tree-table.component';
+import { TreeViewComponent as Component143 } from './tree-view/tree-view.component';
+import { TreeComponent as Component144 } from './tree/tree.component';
+import { VirtualScrollerComponent as Component145 } from './virtual-scroller/virtual-scroller.component';
 
 const components = [
   {
@@ -207,683 +205,673 @@ const components = [
     required: ['ariaLabel'],
   },
   {
-    name: 'CardBodyComponent (card)',
+    name: 'CalendarComponent (calendar)',
     type: Component11 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CardFooterComponent (card)',
+    name: 'CardBodyComponent (card)',
     type: Component12 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CardHeaderComponent (card)',
+    name: 'CardFooterComponent (card)',
     type: Component13 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CardComponent (card)',
+    name: 'CardHeaderComponent (card)',
     type: Component14 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CarouselComponent (carousel)',
+    name: 'CardComponent (card)',
     type: Component15 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CheckboxComponent (checkbox)',
+    name: 'CarouselComponent (carousel)',
     type: Component16 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ChipInputComponent (chip-input)',
+    name: 'CheckboxComponent (checkbox)',
     type: Component17 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ChipComponent (chip)',
+    name: 'ChipInputComponent (chip-input)',
     type: Component18 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CollapsibleComponent (collapsible)',
+    name: 'ChipComponent (chip)',
     type: Component19 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ColorPickerComponent (color-picker)',
+    name: 'CodeComponent (code)',
     type: Component20 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DatePickerCalendarComponent (date-picker)',
+    name: 'CollapsibleComponent (collapsible)',
     type: Component21 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DatePickerComponent (date-picker)',
+    name: 'ColorPickerComponent (color-picker)',
     type: Component22 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DividerComponent (divider)',
+    name: 'ComboboxComponent (combobox)',
     type: Component23 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DrawerComponent (drawer)',
+    name: 'ConfirmPopupComponent (confirm-popup)',
     type: Component24 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DropdownComponent (dropdown)',
+    name: 'ContextMenuComponent (context-menu)',
     type: Component25 as Type<unknown>,
     required: [],
   },
   {
-    name: 'EmptyStateComponent (empty-state)',
+    name: 'DataViewComponent (data-view)',
     type: Component26 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FileItemComponent (file-uploader/file-item)',
+    name: 'DateInputComponent (date-input)',
     type: Component27 as Type<unknown>,
-    required: ['fileData'],
+    required: [],
   },
   {
-    name: 'FileUploaderComponent (file-uploader)',
+    name: 'DatePickerCalendarComponent (date-picker)',
     type: Component28 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FormFieldComponent (form-field)',
+    name: 'DatePickerComponent (date-picker)',
     type: Component29 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FormComponent (form)',
+    name: 'DividerComponent (divider)',
     type: Component30 as Type<unknown>,
     required: [],
   },
   {
-    name: 'IconComponent (icon)',
+    name: 'DockComponent (dock)',
     type: Component31 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ImageComponent (image)',
+    name: 'DrawerComponent (drawer)',
     type: Component32 as Type<unknown>,
     required: [],
   },
   {
-    name: 'InputComponent (input)',
+    name: 'DropdownComponent (dropdown)',
     type: Component33 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TextareaComponent (input)',
+    name: 'EditorComponent (editor)',
     type: Component34 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ListComponent (list)',
+    name: 'EmptyStateComponent (empty-state)',
     type: Component35 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ModalComponent (modal)',
+    name: 'FileItemComponent (file-uploader/file-item)',
     type: Component36 as Type<unknown>,
-    required: [],
+    required: ['fileData'],
   },
   {
-    name: 'NavigationShellComponent (navigation)',
+    name: 'FileUploaderComponent (file-uploader)',
     type: Component37 as Type<unknown>,
     required: [],
   },
   {
-    name: 'NavigationItemComponent (navigation)',
-    type: Component38 as Type<unknown>,
-    required: ['item'],
-  },
-  {
-    name: 'NumberInputComponent (number-input)',
+    name: 'FormFieldComponent (form-field)',
     type: Component39 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OtpGroupComponent (otp-input)',
+    name: 'FormComponent (form)',
     type: Component40 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OtpInputComponent (otp-input)',
+    name: 'GalleriaComponent (galleria)',
     type: Component41 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OtpSeparatorComponent (otp-input)',
+    name: 'HoverCardComponent (hover-card)',
     type: Component42 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OtpSlotComponent (otp-input)',
+    name: 'IconFieldComponent (icon-field)',
     type: Component43 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OverlayPanelComponent (overlay-panel)',
+    name: 'IconComponent (icon)',
     type: Component44 as Type<unknown>,
     required: [],
   },
   {
-    name: 'PopoverComponent (overlay-panel)',
+    name: 'IftaLabelComponent (ifta-label)',
     type: Component45 as Type<unknown>,
     required: [],
   },
   {
-    name: 'MenuComponent (p2)',
+    name: 'ImageCompareComponent (image-compare)',
     type: Component46 as Type<unknown>,
     required: [],
   },
   {
-    name: 'BlockUiComponent (p2)',
+    name: 'ImageComponent (image)',
     type: Component47 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CalendarComponent (p2)',
+    name: 'InputGroupAddonComponent (input-group-addon)',
     type: Component48 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CascadeSelectComponent (p2)',
+    name: 'InputGroupComponent (input-group)',
     type: Component49 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ChartComponent (p2)',
+    name: 'InputComponent (input)',
     type: Component50 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ComboboxComponent (p2)',
+    name: 'TextareaComponent (input)',
     type: Component51 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CommandMenuComponent (p2)',
+    name: 'KnobComponent (knob)',
     type: Component52 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ConfirmDialogComponent (p2)',
+    name: 'ListComponent (list)',
     type: Component53 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ConfirmPopupComponent (p2)',
+    name: 'ListboxComponent (listbox)',
     type: Component54 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CodeComponent (p2)',
+    name: 'MegaMenuComponent (mega-menu)',
     type: Component55 as Type<unknown>,
     required: [],
   },
   {
-    name: 'HoverCardComponent (p2)',
+    name: 'MenubarComponent (menubar)',
     type: Component56 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DataTableComponent (p2)',
+    name: 'MeterGroupComponent (meter-group)',
     type: Component57 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DataViewComponent (p2)',
+    name: 'ModalComponent (modal)',
     type: Component58 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DateInputComponent (p2)',
+    name: 'MultiSelectComponent (multi-select)',
     type: Component59 as Type<unknown>,
     required: [],
   },
   {
-    name: 'DockComponent (p2)',
+    name: 'NavigationShellComponent (navigation)',
     type: Component60 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ScrollPanelComponent (p2)',
+    name: 'NavigationItemComponent (navigation)',
     type: Component61 as Type<unknown>,
-    required: [],
+    required: ['item'],
   },
   {
-    name: 'EditorComponent (p2)',
+    name: 'NumberInputComponent (number-input)',
     type: Component62 as Type<unknown>,
     required: [],
   },
   {
-    name: 'InputGroupComponent (p2)',
+    name: 'OrderListComponent (order-list)',
     type: Component63 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SelectButtonComponent (p2)',
+    name: 'OrganizationChartComponent (organization-chart)',
     type: Component64 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ToggleButtonComponent (p2)',
+    name: 'OtpGroupComponent (otp-input)',
     type: Component65 as Type<unknown>,
     required: [],
   },
   {
-    name: 'GalleriaComponent (p2)',
+    name: 'OtpInputComponent (otp-input)',
     type: Component66 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ImageCompareComponent (p2)',
+    name: 'OtpSeparatorComponent (otp-input)',
     type: Component67 as Type<unknown>,
     required: [],
   },
   {
-    name: 'InputGroupAddonComponent (p2)',
+    name: 'OtpSlotComponent (otp-input)',
     type: Component68 as Type<unknown>,
     required: [],
   },
   {
-    name: 'IconFieldComponent (p2)',
+    name: 'OverlayPanelComponent (overlay-panel)',
     type: Component69 as Type<unknown>,
     required: [],
   },
   {
-    name: 'IftaLabelComponent (p2)',
+    name: 'PopoverComponent (overlay-panel)',
     type: Component70 as Type<unknown>,
     required: [],
   },
   {
-    name: 'InplaceComponent (p2)',
+    name: 'MenuComponent (p2)',
     type: Component71 as Type<unknown>,
     required: [],
   },
   {
-    name: 'InputColorComponent (p2)',
+    name: 'BlockUiComponent (p2)',
     type: Component72 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ButtonGroupComponent (p2)',
+    name: 'CascadeSelectComponent (p2)',
     type: Component73 as Type<unknown>,
     required: [],
   },
   {
-    name: 'GridComponent (p2)',
+    name: 'ChartComponent (p2)',
     type: Component74 as Type<unknown>,
     required: [],
   },
   {
-    name: 'AspectRatioComponent (p2)',
+    name: 'CommandMenuComponent (p2)',
     type: Component75 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ContainerComponent (p2)',
+    name: 'ConfirmDialogComponent (p2)',
     type: Component76 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FlexComponent (p2)',
+    name: 'DataTableComponent (p2)',
     type: Component77 as Type<unknown>,
     required: [],
   },
   {
-    name: 'StackComponent (p2)',
+    name: 'ScrollPanelComponent (p2)',
     type: Component78 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SpaceComponent (p2)',
+    name: 'InplaceComponent (p2)',
     type: Component79 as Type<unknown>,
     required: [],
   },
   {
-    name: 'BoxComponent (p2)',
+    name: 'InputColorComponent (p2)',
     type: Component80 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SeparatorComponent (p2)',
+    name: 'ButtonGroupComponent (p2)',
     type: Component81 as Type<unknown>,
     required: [],
   },
   {
-    name: 'VisuallyHiddenComponent (p2)',
+    name: 'GridComponent (p2)',
     type: Component82 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TypographyComponent (p2)',
+    name: 'AspectRatioComponent (p2)',
     type: Component83 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TextComponent (p2)',
+    name: 'ContainerComponent (p2)',
     type: Component84 as Type<unknown>,
     required: [],
   },
   {
-    name: 'KbdComponent (p2)',
+    name: 'FlexComponent (p2)',
     type: Component85 as Type<unknown>,
     required: [],
   },
   {
-    name: 'LinkComponent (p2)',
+    name: 'StackComponent (p2)',
     type: Component86 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ListboxComponent (p2)',
+    name: 'SpaceComponent (p2)',
     type: Component87 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TieredMenuComponent (p2)',
+    name: 'BoxComponent (p2)',
     type: Component88 as Type<unknown>,
     required: [],
   },
   {
-    name: 'PanelMenuComponent (p2)',
+    name: 'VisuallyHiddenComponent (p2)',
     type: Component89 as Type<unknown>,
     required: [],
   },
   {
-    name: 'MegaMenuComponent (p2)',
+    name: 'TypographyComponent (p2)',
     type: Component90 as Type<unknown>,
     required: [],
   },
   {
-    name: 'MenubarComponent (p2)',
+    name: 'TextComponent (p2)',
     type: Component91 as Type<unknown>,
     required: [],
   },
   {
-    name: 'MessagesComponent (p2)',
+    name: 'KbdComponent (p2)',
     type: Component92 as Type<unknown>,
     required: [],
   },
   {
-    name: 'MultiSelectComponent (p2)',
+    name: 'LinkComponent (p2)',
     type: Component93 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OrderListComponent (p2)',
+    name: 'MessagesComponent (p2)',
     type: Component94 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OrganizationChartComponent (p2)',
+    name: 'FloatingActionButtonComponent (p2)',
     type: Component95 as Type<unknown>,
     required: [],
   },
   {
-    name: 'KnobComponent (p2)',
+    name: 'CloseButtonComponent (p2)',
     type: Component96 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FloatingActionButtonComponent (p2)',
+    name: 'OverlayComponent (p2)',
     type: Component97 as Type<unknown>,
     required: [],
   },
   {
-    name: 'CloseButtonComponent (p2)',
+    name: 'PortalComponent (p2)',
     type: Component98 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ContextMenuComponent (p2)',
+    name: 'PanelComponent (p2)',
     type: Component99 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OverlayComponent (p2)',
+    name: 'FieldsetComponent (p2)',
     type: Component100 as Type<unknown>,
     required: [],
   },
   {
-    name: 'PickListComponent (p2)',
+    name: 'FluidComponent (p2)',
     type: Component101 as Type<unknown>,
     required: [],
   },
   {
-    name: 'PortalComponent (p2)',
+    name: 'OverlayBadgeComponent (p2)',
     type: Component102 as Type<unknown>,
     required: [],
   },
   {
-    name: 'PanelComponent (p2)',
+    name: 'ScrollTopComponent (p2)',
     type: Component103 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FieldsetComponent (p2)',
+    name: 'SplitterComponent (p2)',
     type: Component104 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FloatLabelComponent (p2)',
+    name: 'PaginatorComponent (paginator)',
     type: Component105 as Type<unknown>,
     required: [],
   },
   {
-    name: 'FluidComponent (p2)',
+    name: 'PanelMenuComponent (panel-menu)',
     type: Component106 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OverlayBadgeComponent (p2)',
+    name: 'PasswordComponent (password)',
     type: Component107 as Type<unknown>,
     required: [],
   },
   {
-    name: 'MeterGroupComponent (p2)',
+    name: 'PickListComponent (pick-list)',
     type: Component108 as Type<unknown>,
     required: [],
   },
   {
-    name: 'PasswordComponent (p2)',
+    name: 'ProgressBarComponent (progress)',
     type: Component109 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ScrollTopComponent (p2)',
+    name: 'ProgressCircleComponent (progress)',
     type: Component110 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SpeedDialComponent (p2)',
+    name: 'ProgressSpinnerComponent (progress)',
     type: Component111 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SplitButtonComponent (p2)',
+    name: 'RadioButtonComponent (radio)',
     type: Component112 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SplitterComponent (p2)',
+    name: 'RadioGroupComponent (radio)',
     type: Component113 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TagsInputComponent (p2)',
+    name: 'RatingComponent (rating)',
     type: Component114 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TerminalComponent (p2)',
+    name: 'ScrollAreaComponent (scroll-area)',
     type: Component115 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TreeComponent (p2)',
+    name: 'SegmentedControlComponent (segmented-control)',
     type: Component116 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TreeSelectComponent (p2)',
+    name: 'SelectButtonComponent (select-button)',
     type: Component117 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TreeTableComponent (p2)',
+    name: 'OptionComponent (select)',
     type: Component118 as Type<unknown>,
     required: [],
   },
   {
-    name: 'VirtualScrollerComponent (p2)',
+    name: 'SelectComponent (select)',
     type: Component119 as Type<unknown>,
     required: [],
   },
   {
-    name: 'PaginatorComponent (paginator)',
+    name: 'SkeletonComponent (skeleton)',
     type: Component120 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ProgressBarComponent (progress)',
+    name: 'SliderComponent (slider)',
     type: Component121 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ProgressCircleComponent (progress)',
+    name: 'SpeedDialComponent (speed-dial)',
     type: Component122 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ProgressSpinnerComponent (progress)',
+    name: 'LoadingSpinnerComponent (spinner)',
     type: Component123 as Type<unknown>,
     required: [],
   },
   {
-    name: 'RadioButtonComponent (radio)',
+    name: 'SplitButtonComponent (split-button)',
     type: Component124 as Type<unknown>,
     required: [],
   },
   {
-    name: 'RadioGroupComponent (radio)',
+    name: 'StepperComponent (stepper)',
     type: Component125 as Type<unknown>,
     required: [],
   },
   {
-    name: 'RatingComponent (rating)',
+    name: 'SwitchComponent (switch)',
     type: Component126 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ScrollAreaComponent (scroll-area)',
+    name: 'TabMenuComponent (tab-menu)',
     type: Component127 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SegmentedControlComponent (segmented-control)',
+    name: 'TableComponent (table)',
     type: Component128 as Type<unknown>,
     required: [],
   },
   {
-    name: 'OptionComponent (select)',
+    name: 'TabGroupComponent (tabs)',
     type: Component129 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SelectComponent (select)',
+    name: 'TabComponent (tabs)',
     type: Component130 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SkeletonComponent (skeleton)',
+    name: 'TagComponent (tag)',
     type: Component131 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SliderComponent (slider)',
+    name: 'TagsInputComponent (tags-input)',
     type: Component132 as Type<unknown>,
     required: [],
   },
   {
-    name: 'LoadingSpinnerComponent (spinner)',
+    name: 'TerminalComponent (terminal)',
     type: Component133 as Type<unknown>,
     required: [],
   },
   {
-    name: 'StepperComponent (stepper)',
+    name: 'TieredMenuComponent (tiered-menu)',
     type: Component134 as Type<unknown>,
     required: [],
   },
   {
-    name: 'SwitchComponent (switch)',
+    name: 'TimelineComponent (timeline)',
     type: Component135 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TabMenuComponent (tab-menu)',
+    name: 'ToastContainerComponent (toast)',
     type: Component136 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TableComponent (table)',
+    name: 'ToastComponent (toast)',
     type: Component137 as Type<unknown>,
-    required: [],
+    required: ['toast'],
   },
   {
-    name: 'TabGroupComponent (tabs)',
+    name: 'ToggleButtonComponent (toggle-button)',
     type: Component138 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TabComponent (tabs)',
+    name: 'ToolbarComponent (toolbar)',
     type: Component139 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TagComponent (tag)',
+    name: 'TooltipComponent (tooltip)',
     type: Component140 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TimelineComponent (timeline)',
+    name: 'TreeSelectComponent (tree-select)',
     type: Component141 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ToastContainerComponent (toast)',
+    name: 'TreeTableComponent (tree-table)',
     type: Component142 as Type<unknown>,
     required: [],
   },
   {
-    name: 'ToastComponent (toast)',
+    name: 'TreeViewComponent (tree-view)',
     type: Component143 as Type<unknown>,
-    required: ['toast'],
+    required: [],
   },
   {
-    name: 'ToolbarComponent (toolbar)',
+    name: 'TreeComponent (tree)',
     type: Component144 as Type<unknown>,
     required: [],
   },
   {
-    name: 'TooltipComponent (tooltip)',
+    name: 'VirtualScrollerComponent (virtual-scroller)',
     type: Component145 as Type<unknown>,
-    required: [],
-  },
-  {
-    name: 'TreeViewComponent (tree-view)',
-    type: Component146 as Type<unknown>,
     required: [],
   },
 ];

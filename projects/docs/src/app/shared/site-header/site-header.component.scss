@@ -73,6 +73,12 @@
   color: var(--orc-color-azul-royal);
 }
 
+.site-header__theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--space-2);
+}
+
 @media (max-width: 640px) {
   .site-header__inner {
     min-height: 56px;
@@ -86,6 +92,10 @@
   .site-header__link {
     padding-inline: var(--space-2);
     font-size: 0.75rem;
+  }
+
+  .site-header__theme-toggle {
+    margin-left: var(--space-1);
   }
 
   .site-header__logo span {

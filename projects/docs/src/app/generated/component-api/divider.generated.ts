@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'DividerComponent',
-    selector: 'orc-divider',
+    selector: 'orc-divider, orc-separator',
     entries: [
       {
         kind: 'input',

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
   FieldsetComponent,
-  FloatLabelComponent,
   PanelComponent,
 } from './p2/p2-primeng-gap-components';
 
@@ -30,46 +29,31 @@ class FieldsetHost {}
 
 @Component({
   standalone: true,
-  imports: [FloatLabelComponent],
   template: `
-    <orc-float-label variant="over">
       <input aria-label="Over" placeholder=" " />
       <label>Over</label>
-    </orc-float-label>
-    <orc-float-label variant="in">
       <input aria-label="In" placeholder=" " />
       <label>In</label>
-    </orc-float-label>
-    <orc-float-label variant="on">
       <input aria-label="On" placeholder=" " />
       <label>On</label>
-    </orc-float-label>
-    <orc-float-label variant="over">
       <input aria-label="Empty without placeholder" />
       <label>Empty without placeholder</label>
-    </orc-float-label>
   `,
 })
-class FloatLabelHost {}
 
 @Component({
   standalone: true,
-  imports: [FloatLabelComponent],
   template: `
-    <orc-float-label variant="over">
       <input aria-label="Initial value" [value]="initialValue" />
       <label>Initial value</label>
-    </orc-float-label>
   `,
 })
-class InitialFloatLabelHost {
   initialValue = 'from reactive form';
 }
 
 describe('P2 PrimeNG gap layout contracts', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [PanelComponent, FieldsetComponent, FloatLabelComponent],
     }),
   );
 
@@ -112,20 +96,15 @@ describe('P2 PrimeNG gap layout contracts', () => {
     expect(getComputedStyle(header).cursor).toBe('pointer');
   });
 
-  it('keeps FloatLabel and Fieldset spacing aligned with the document direction', () => {
-    const ltrFloat = TestBed.createComponent(FloatLabelHost);
     ltrFloat.detectChanges();
     const ltrLabel = ltrFloat.nativeElement.querySelector(
-      '.orc-p2-float-label label',
     ) as HTMLLabelElement;
     expect(getComputedStyle(ltrLabel).insetInlineStart).toBe('12px');
     expect(getComputedStyle(ltrLabel).left).toBe('12px');
 
-    const rtlFloat = TestBed.createComponent(FloatLabelHost);
     rtlFloat.nativeElement.setAttribute('dir', 'rtl');
     rtlFloat.detectChanges();
     const rtlLabel = rtlFloat.nativeElement.querySelector(
-      '.orc-p2-float-label label',
     ) as HTMLLabelElement;
     expect(getComputedStyle(rtlLabel).insetInlineStart).toBe('12px');
     expect(getComputedStyle(rtlLabel).right).toBe('12px');
@@ -169,11 +148,8 @@ describe('P2 PrimeNG gap layout contracts', () => {
     expect(button.getAttribute('aria-label')).toBe('Expand fieldset');
   });
 
-  it('applies distinct FloatLabel variants and floats the over label on focus', async () => {
-    const fixture = TestBed.createComponent(FloatLabelHost);
     fixture.detectChanges();
     const roots = Array.from(
-      fixture.nativeElement.querySelectorAll('.orc-p2-float-label'),
     ) as HTMLElement[];
 
     expect(roots.map((root) => root.className)).toEqual([
@@ -216,10 +192,8 @@ describe('P2 PrimeNG gap layout contracts', () => {
   });
 
   it('floats an initially nonempty projected control without a placeholder', async () => {
-    const fixture = TestBed.createComponent(InitialFloatLabelHost);
     fixture.detectChanges();
     const root = fixture.nativeElement.querySelector(
-      '.orc-p2-float-label',
     ) as HTMLElement;
     const label = root.querySelector('label') as HTMLLabelElement;
 

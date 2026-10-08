@@ -56,10 +56,10 @@ export const COMPONENT_EXAMPLES: Readonly<
     import('./chip-example.component').then((m) =>
       example(m.ChipExampleComponent)(),
     ),
-  'close-button': () =>
-    import('./close-button-example.component').then((m) =>
-      example(m.CloseButtonExampleComponent)(),
-    ),
+  // 'close-button': () =>
+  //   import('./close-button-example.component').then((m) =>
+  //     example(m.CloseButtonExampleComponent)(),
+  //   ),
   code: () =>
     import('./code-example.component').then((m) =>
       example(m.CodeExampleComponent)(),
@@ -223,10 +223,6 @@ export const COMPONENT_EXAMPLES: Readonly<
   'segmented-control': () =>
     import('./segmented-control-example.component').then((m) =>
       example(m.SegmentedControlExampleComponent)(),
-    ),
-  separator: () =>
-    import('./separator-example.component').then((m) =>
-      example(m.SeparatorExampleComponent)(),
     ),
   space: () =>
     import('./space-example.component').then((m) =>

@@ -120,7 +120,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         defaultValue: 'undefined',
         required: false,
         description:
-          'Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead.',
+          'Where the detached panel attaches. Defaults to the body (or the\r\nenclosing native modal, so the pane never escapes native inertness);\r\nan element or selector attaches the panel inside that target instead.',
       },
       {
         kind: 'input',

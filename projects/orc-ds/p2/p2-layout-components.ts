@@ -215,27 +215,6 @@ export class BoxComponent {
 }
 
 @Component({
-  selector: 'orc-separator',
-  standalone: true,
-  template: `<div
-    class="orc-p2-separator"
-    [class.vertical]="orientation() === 'vertical'"
-    role="separator"
-    [attr.aria-orientation]="orientation()"
-    [attr.aria-label]="label() || null"
-  ></div>`,
-  styles: [
-    P2_SHARED_STYLES +
-      `.orc-p2-separator { width: 100%; height: 1px; background: var(--orc-component-surface-subtle); } .orc-p2-separator.vertical { width: 1px; height: 100%; min-height: 1rem; }`,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class SeparatorComponent {
-  readonly orientation = input<P2Orientation>('horizontal');
-  readonly label = input('');
-}
-
-@Component({
   selector: 'orc-visually-hidden',
   standalone: true,
   template: `<span class="orc-p2-visually-hidden"><ng-content /></span>`,

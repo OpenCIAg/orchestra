@@ -22,6 +22,10 @@
 .toolbar button:hover:not(:disabled) {
   background: var(--orc-component-surface-subtle);
 }
+.toolbar button.active {
+  background: var(--orc-component-surface-raised, #e0e0e0);
+  font-weight: bold;
+}
 .surface {
   min-height: 10rem;
   padding: 0.75rem;

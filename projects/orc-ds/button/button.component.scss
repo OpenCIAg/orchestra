@@ -259,6 +259,22 @@
       filter: brightness(0.9);
     }
   }
+
+  &--variant-close {
+    background-color: transparent;
+    color: var(--orc-text-secondary, var(--text-secondary, #666666));
+    border-color: transparent;
+
+    &:hover:not(:disabled) {
+      background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
+      color: var(--orc-text, var(--text-primary, #141414));
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--orc-surface-muted, var(--bg-muted, #ededed));
+      opacity: 0.8;
+    }
+  }
 }
 
 @keyframes orc-button-spin {

@@ -10,7 +10,7 @@ export type DividerOrientation = 'horizontal' | 'vertical';
 export type DividerVariant = 'solid' | 'dashed' | 'dotted';
 
 @Component({
-  selector: 'orc-divider',
+  selector: 'orc-divider, orc-separator',
   standalone: true,
   templateUrl: './divider.component.html',
   styleUrl: './divider.component.scss',
@@ -31,3 +31,4 @@ export class DividerComponent {
     'orc-divider--labeled': !!this.label(),
   }));
 }
+export { DividerComponent as SeparatorComponent };

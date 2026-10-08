@@ -1,9 +1,6 @@
 :host {
-  position: fixed;
-  top: 72px;
-  right: max(1rem, calc((100vw - 1200px) / 2));
-  z-index: var(--z-fixed);
-  display: block;
+  display: inline-flex;
+  align-items: center;
 }
 
 .theme-toggle {
@@ -50,11 +47,6 @@
 }
 
 @media (max-width: 640px) {
-  :host {
-    top: 64px;
-    right: 1rem;
-  }
-
   .theme-toggle span {
     position: absolute;
     width: 1px;

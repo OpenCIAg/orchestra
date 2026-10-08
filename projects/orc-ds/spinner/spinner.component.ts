@@ -4,7 +4,10 @@ import {
   input,
   computed,
   HostBinding,
+  HostListener,
   booleanAttribute,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -33,6 +36,7 @@ export class LoadingSpinnerComponent {
   readonly fullScreen = input<boolean, unknown>(false, {
     transform: booleanAttribute,
   });
+  @Output() fullScreenChange = new EventEmitter<boolean>();
   readonly backdrop = input<boolean, unknown>(true, {
     transform: booleanAttribute,
   });
@@ -56,4 +60,11 @@ export class LoadingSpinnerComponent {
   readonly accessibleLabel = computed(
     () => this.ariaLabel()?.trim() || this.text().trim() || 'Loading',
   );
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: Event) {
+    if (this.fullScreen()) {
+      this.fullScreenChange.emit(false);
+    }
+  }
 }

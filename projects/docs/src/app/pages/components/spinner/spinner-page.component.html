@@ -34,6 +34,7 @@
                   [text]="playgroundText()"
                   [textPosition]="playgroundTextPosition()"
                   [fullScreen]="playgroundFullScreen()"
+                  (fullScreenChange)="playgroundFullScreen.set($event)"
                 ></orc-spinner>
               </div>
 

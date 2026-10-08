@@ -311,37 +311,6 @@
         </div>
       </section>
 
-      <!-- ── COMPARAÇÃO DE TAMANHOS ──────────────────────────── -->
-      <section class="section">
-        <h2 class="section-subtitle">Tamanhos disponíveis</h2>
-        <div class="sizes-showcase">
-          <div class="size-item">
-            <span class="size-item__badge">Pequeno (sm)</span>
-            <orc-switch
-              size="sm"
-              [checked]="true"
-              label="Modo compacto"
-            ></orc-switch>
-          </div>
-          <div class="size-item">
-            <span class="size-item__badge">Médio (md - padrão Figma)</span>
-            <orc-switch
-              size="md"
-              [checked]="true"
-              label="Tamanho regular (32px)"
-            ></orc-switch>
-          </div>
-          <div class="size-item">
-            <span class="size-item__badge">Grande (lg)</span>
-            <orc-switch
-              size="lg"
-              [checked]="true"
-              label="Tamanho expandido"
-            ></orc-switch>
-          </div>
-        </div>
-      </section>
-
       <!-- ── REACTIVE FORMS DEMO ─────────────────────────────── -->
       <section class="section">
         <h2 class="section-subtitle">
@@ -422,53 +391,6 @@
                 }}</pre>
               </div>
             </form>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── CÓDIGO FONTE E EXEMPLOS DE USO ──────────────────── -->
-      <section class="section">
-        <h2 class="section-subtitle">Exemplos de código</h2>
-        <div class="code-blocks">
-          <div class="code-card">
-            <div class="code-card__title">
-              1. Uso básico com two-way model signal
-            </div>
-            <pre
-              class="code-card__snippet"
-            ><code>&lt;!-- Two-way binding com Signals --&gt;
-&lt;app-switch [(checked)]="notificacoesAtivas" label="Ativar notificações" /&gt;
-
-&lt;!-- Com helper text e tamanho pequeno --&gt;
-&lt;app-switch
-  [(checked)]="modoEconomia"
-  size="sm"
-  label="Modo de economia"
-  description="Reduz o consumo de dados em segundo plano"
-/&gt;</code></pre>
-          </div>
-
-          <div class="code-card">
-            <div class="code-card__title">
-              2. Formulários reativos com ControlValueAccessor
-            </div>
-            <pre class="code-card__snippet"><code>&lt;app-switch
-  formControlName="autenticacaoDoisFatores"
-  label="Autenticação em duas etapas"
-  [error]="form.get('autenticacaoDoisFatores')?.invalid && form.get('autenticacaoDoisFatores')?.touched"
-  errorMessage="Obrigatoriedade de segurança para administradores"
-/&gt;</code></pre>
-          </div>
-
-          <div class="code-card">
-            <div class="code-card__title">
-              3. Rótulo à esquerda (labelPosition="start")
-            </div>
-            <pre class="code-card__snippet"><code>&lt;app-switch
-  [(checked)]="visibilidadePerfil"
-  labelPosition="start"
-  label="Perfil visível publicamente"
-/&gt;</code></pre>
           </div>
         </div>
       </section>

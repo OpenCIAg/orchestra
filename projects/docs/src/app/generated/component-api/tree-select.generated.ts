@@ -106,7 +106,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         defaultValue: 'undefined',
         required: false,
         description:
-          'Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`.',
+          'Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`.',
       },
       {
         kind: 'input',
@@ -143,7 +143,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         defaultValue: 'undefined',
         required: false,
         description:
-          'Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead.',
+          'Where the detached panel attaches. Defaults to the body (or the\r\nenclosing native modal, so the pane never escapes native inertness);\r\nan element or selector attaches the panel inside that target instead.',
       },
       {
         kind: 'input',

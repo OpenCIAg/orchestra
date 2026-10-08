@@ -7,7 +7,6 @@ import {
   ContainerComponent,
   FlexComponent,
   GridComponent,
-  SeparatorComponent,
   SpaceComponent,
   StackComponent,
   TextComponent,
@@ -32,7 +31,6 @@ describe('P2 layout primitive DOM contracts', () => {
         ContainerComponent,
         FlexComponent,
         GridComponent,
-        SeparatorComponent,
         SpaceComponent,
         StackComponent,
         TextComponent,
@@ -192,21 +190,6 @@ describe('P2 layout primitive DOM contracts', () => {
     expect(box.style.background).toBe('rgb(1, 2, 3)');
     expect(box.style.borderRadius).toBe('1rem');
     expect(box.style.width).toBe('20rem');
-  });
-
-  it('exposes Separator orientation and label to assistive technology', () => {
-    const fixture = TestBed.createComponent(SeparatorComponent);
-    fixture.componentRef.setInput('orientation', 'vertical');
-    fixture.componentRef.setInput('label', 'Section boundary');
-    fixture.detectChanges();
-    const separator = fixture.nativeElement.querySelector(
-      '[role="separator"]',
-    ) as HTMLElement;
-
-    expect(separator.getAttribute('aria-orientation')).toBe('vertical');
-    expect(separator.getAttribute('aria-label')).toBe('Section boundary');
-    expect(separator.classList.contains('vertical')).toBeTrue();
-    expect(separator.style.width).toBe('');
   });
 
   it('retains VisuallyHidden content in the accessibility tree while clipping its visual box', () => {

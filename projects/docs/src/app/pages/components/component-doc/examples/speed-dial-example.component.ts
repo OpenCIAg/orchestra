@@ -7,7 +7,7 @@ import {
 import {
   SpeedDialComponent,
   SpeedDialAction,
-} from '@ciag/orchestra/p2-doc-components';
+} from '@ciag/orchestra/speed-dial';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
@@ -15,18 +15,21 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
   standalone: true,
   imports: [SpeedDialComponent],
   template: `
-    <div class="example example--centered">
-      <span class="example__label">Ações secundárias</span>
+    <div style="position: fixed; bottom: 2rem; right: 2rem; z-index: 100;">
       <orc-speed-dial
         [actions]="actions"
         openLabel="Abrir ações"
         closeLabel="Fechar ações"
         (actionSelect)="onActionSelect($event)"
       />
-      @if (message(); as message) {
-        <code>{{ message }}</code>
-      }
     </div>
+    @if (message(); as message) {
+      <div
+        style="position: fixed; bottom: 6rem; right: 2rem; z-index: 100; background: var(--orc-surface-raised); padding: 0.5rem 1rem; border-radius: var(--orc-radius-md); box-shadow: var(--orc-shadow-md);"
+      >
+        <code>{{ message }}</code>
+      </div>
+    }
   `,
   styles: [EXAMPLE_STYLES],
   changeDetection: ChangeDetectionStrategy.OnPush,

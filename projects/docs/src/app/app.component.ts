@@ -2,19 +2,13 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { EasterEggComponent } from './shared/easter-egg/easter-egg.component';
 import { EasterEggService } from './services/easter-egg.service';
-import { ThemeToggleComponent } from './shared/theme-toggle/theme-toggle.component';
 import { SiteHeaderComponent } from './shared/site-header/site-header.component';
 import { SeoService } from './services/seo.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    EasterEggComponent,
-    ThemeToggleComponent,
-    SiteHeaderComponent,
-  ],
+  imports: [RouterOutlet, EasterEggComponent, SiteHeaderComponent],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -103,7 +103,11 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
   readonly debug = input<string | undefined>(undefined);
 
   readonly ariaLabel = input<string | undefined>(undefined);
-  readonly actions = input<EditorAction[]>([]);
+  readonly actions = input<EditorAction[]>([
+    { command: 'bold', label: 'Negrito', icon: 'B' },
+    { command: 'italic', label: 'Itálico', icon: 'I' },
+    { command: 'underline', label: 'Sublinhado', icon: 'U' },
+  ]);
   readonly blur = output<string>();
   readonly onInit = output<unknown>();
   readonly onTextChange = output<{
@@ -124,6 +128,8 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
   private onModelTouched: () => void = () => {};
   private savedSelection: { index: number; length: number } | null = null;
   readonly cvaDisabled = signal(false);
+  readonly activeFormats = signal<Set<string>>(new Set());
+
   writeValue(value: unknown): void {
     this.value.set(this.sanitizeHtml(value == null ? '' : String(value)));
   }
@@ -136,6 +142,24 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
   setDisabledState(disabled: boolean): void {
     this.cvaDisabled.set(disabled);
   }
+
+  private updateActiveFormats(): void {
+    const ownerDocument = this.editorSurface()?.nativeElement.ownerDocument;
+    if (!ownerDocument || typeof ownerDocument.queryCommandState !== 'function') return;
+    
+    const formats = new Set<string>();
+    for (const action of this.actions()) {
+      try {
+        if (ownerDocument.queryCommandState(action.command)) {
+          formats.add(action.command);
+        }
+      } catch {
+        // Ignored
+      }
+    }
+    this.activeFormats.set(formats);
+  }
+
   onInput(event: Event): void {
     if (this.readonly() || this.cvaDisabled()) return;
     const root = event.target as HTMLElement;
@@ -149,6 +173,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
     const text = this.plainText(root);
     this.value.set(html);
     this.onModelChange(html);
+    this.updateActiveFormats();
     this.onTextChange.emit({
       html,
       text,
@@ -159,6 +184,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
   handleBlur(): void {
     this.saveSelection();
     this.onModelTouched();
+    this.updateActiveFormats();
     this.blur.emit(this.value());
   }
   preserveToolbarSelection(event: Event): void {
@@ -172,12 +198,14 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
     if (!root || typeof ownerDocument?.execCommand !== 'function') return;
     this.restoreSelection(root);
     ownerDocument.execCommand(command);
+    this.updateActiveFormats();
   }
   emitSelectionChange(_event: Event): void {
     const root = this.editorSurface()?.nativeElement;
     if (!root) return;
     const range = this.readSelection(root);
     if (range) this.savedSelection = range;
+    this.updateActiveFormats();
     this.onSelectionChange.emit({ range, oldRange: null, source: 'user' });
   }
   ngAfterViewInit(): void {

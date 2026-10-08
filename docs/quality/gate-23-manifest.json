@@ -8,7 +8,7 @@
   "generatedFrom": "library source scan — do not edit by hand",
   "productionScanRef": "notes/06-consumer-scan.md (gestao-de-projetos scan, 2026-10-01)",
   "stats": {
-    "totalEntries": 818,
+    "totalEntries": 816,
     "gate": "23.0.0",
     "byCategory": {
       "deprecated-member": 243,
@@ -16,10 +16,10 @@
       "functional-dual-name": 42,
       "primeng-era-output": 245,
       "tier-entry-point": 1,
-      "tier-artifact": 77,
-      "alias-entry-point": 196
+      "tier-artifact": 76,
+      "alias-entry-point": 195
     },
-    "replacementTbd": 564,
+    "replacementTbd": 563,
     "productionUsed": 25
   },
   "entries": [
@@ -11386,25 +11386,6 @@
       "entryPoint": "@ciag/orchestra/orc-ds",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
       "line": null,
-      "name": "orc-p2-separator",
-      "canonical": null,
-      "canonicalEntryPoint": null,
-      "renamed": false,
-      "legacyValues": null,
-      "occurrenceCount": 3,
-      "replacement": null,
-      "replacementTbd": true,
-      "productionUse": false,
-      "note": "Tier-era state/styling hook used 3× in 1 file(s); rename-or-remove is a gate decision."
-    },
-    {
-      "category": "tier-artifact",
-      "kind": "class-hook",
-      "component": null,
-      "selector": null,
-      "entryPoint": "@ciag/orchestra/orc-ds",
-      "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": null,
       "name": "orc-p2-space",
       "canonical": null,
       "canonicalEntryPoint": null,
@@ -14930,25 +14911,6 @@
       "replacementTbd": false,
       "productionUse": false,
       "note": "Star re-export of `@ciag/orchestra/select-button`; import the canonical entry point directly."
-    },
-    {
-      "category": "alias-entry-point",
-      "kind": "re-export",
-      "component": null,
-      "selector": null,
-      "entryPoint": "@ciag/orchestra/separator",
-      "file": "projects/orc-ds/separator/index.ts",
-      "line": null,
-      "name": "SeparatorComponent",
-      "canonical": "SeparatorComponent",
-      "canonicalEntryPoint": "@ciag/orchestra/p2",
-      "renamed": false,
-      "legacyValues": null,
-      "occurrenceCount": null,
-      "replacement": "`@ciag/orchestra/p2` (`SeparatorComponent`)",
-      "replacementTbd": false,
-      "productionUse": false,
-      "note": "Identity re-export of `@ciag/orchestra/p2`'s `SeparatorComponent`."
     },
     {
       "category": "alias-entry-point",

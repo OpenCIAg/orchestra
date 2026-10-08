@@ -254,8 +254,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/select-button.generated').then(
       (m) => m.COMPONENT_API,
     ),
-  separator: () =>
-    import('./component-api/separator.generated').then((m) => m.COMPONENT_API),
   skeleton: () =>
     import('./component-api/skeleton.generated').then((m) => m.COMPONENT_API),
   slider: () =>
