@@ -13,6 +13,7 @@
       "@ciag/orchestra/tree": ["../orc-ds/tree/index.ts"],
       "@ciag/orchestra/tree-select": ["../orc-ds/tree-select/index.ts"],
       "@ciag/orchestra/tree-table": ["../orc-ds/tree-table/index.ts"],
+      "@ciag/orchestra/core": ["../orc-ds/core/index.ts"],
       "@ciag/orchestra/internal": ["../orc-ds/internal/index.ts"],
       "@ciag/orchestra/overlay-panel": ["../orc-ds/overlay-panel/index.ts"],
       "@ciag/orchestra/paginator": ["../orc-ds/paginator/index.ts"],

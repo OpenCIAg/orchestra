@@ -36,25 +36,30 @@ The library expects Angular 22-compatible `@angular/common`, `@angular/core`, an
 
 Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables.
 
-```scss
-/* src/styles.scss */
-@use '@ciag/orchestra/styles/index';
+```css
+/* src/styles.css (plain CSS, no Sass needed) */
+@import '@ciag/orchestra/styles.css';
+/* optional global reset */
+@import '@ciag/orchestra/reset.css';
 
-/* local overrides belong after the library layer */
+/* local overrides: unlayered app CSS always wins over @layer orc */
 ```
 
-The theme follows system preference by default. A consumer may set `data-theme="dark"` on `html` when its shell owns theme selection. The docs app also exposes a manual theme toggle.
+The theme follows system preference by default. A consumer may set `data-theme="dark"` on `html` (or any subtree) when its shell owns theme selection. The docs app also exposes a manual theme toggle. `orc-icon` does not load fonts: add the Material Symbols `<link>` to `index.html`.
 
-Important tokens include:
+Important tokens (full table in `@ciag/orchestra/styles/TOKENS.md`):
 
-| Group     | Tokens                                                                                                                                                   |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Brand     | `--orc-color-azul-eletrico`, `--orc-color-azul-royal`, `--orc-color-laranja`, `--orc-color-ciano`, `--orc-color-roxo-lavender`, `--orc-color-azul-navy`  |
-| Surfaces  | `--orc-bg`, `--orc-th`, `--orc-fill-input`, `--orc-fill-modal`, `--orc-highlight-cinza-claro`, `--orc-secondary-bg`, `--orc-border`, `--orc-opposite-bw` |
-| Text      | `--orc-font-main`, `--orc-font-secondary`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-inverse`                                        |
-| Semantics | `--color-accent`, `--color-accent-hover`, `--color-accent-fg`, `--color-success`, `--color-error`, `--color-warning`, `--color-info`                     |
-| Aliases   | `--bg-app`, `--bg-subtle`, `--bg-muted`, `--bg-inverse`, `--border-default`, `--border-strong`                                                           |
-| Layout    | `--space-1` through `--space-20`, `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-xl`, `--radius-full`                                            |
+| Group    | Tokens                                                                                                                                                  |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Brand    | `--orc-color-azul-eletrico`, `--orc-color-azul-royal`, `--orc-color-laranja`, `--orc-color-ciano`, `--orc-color-roxo-lavender`, `--orc-color-azul-navy` |
+| Surfaces | `--orc-surface`, `--orc-surface-raised`, `--orc-surface-subtle`, `--orc-surface-muted`, `--orc-surface-control`, `--orc-surface-inverse`, `--orc-scrim` |
+| Text     | `--orc-text`, `--orc-text-secondary`, `--orc-text-muted`, `--orc-on-primary`, `--orc-on-danger`, `--orc-on-inverse`                                     |
+| Borders  | `--orc-border`, `--orc-border-strong`, `--orc-focus-ring-color`                                                                                         |
+| Primary  | `--orc-primary`, `--orc-primary-hover`, `--orc-primary-subtle`                                                                                          |
+| Tones    | `--orc-{info,success,warning,danger}` plus `-fg`, `-bg`, `-border`; `--orc-neutral-{fg,bg,border}`                                                      |
+| Layout   | `--orc-space-1` through `--orc-space-20`, `--orc-radius-{sm,md,lg,xl,full}`, `--orc-shadow-{sm,md,lg,overlay}`, `--orc-z-*`                             |
+| Type     | `--orc-font-sans`, `--orc-font-mono`, `--orc-font-size-*`, `--orc-font-weight-*`, `--orc-line-height-*`                                                 |
+| Motion   | `--orc-duration-{fast,base,slow}`, `--orc-easing-standard`, `--orc-transition-{fast,base,slow}`                                                         |
 
 ### Minimal standalone component
 
@@ -127,112 +132,112 @@ The library supplies semantic roles, keyboard behavior, focus-visible states, an
 
 The root public API exposes 104 secondary entry points, generated from the component inventory. Alias entry points intentionally point at the canonical implementation so applications can migrate terminology without duplicating behavior.
 
-| Entry point          | Primary selectors or export                                           | Docs                                                                            |
-| -------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `accordion`          | `orc-accordion-item`, `orc-accordion`                                 | [interactive docs](https://orchestra.ciag.org.br/components/accordion)          |
-| `alert`              | `orc-alert`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/alert)              |
-| `autocomplete`       | `orc-autocomplete`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/autocomplete)       |
-| `avatar`             | `orc-avatar-group`, `orc-avatar`                                      | [interactive docs](https://orchestra.ciag.org.br/components/avatar)             |
-| `badge`              | `orc-badge`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/badge)              |
-| `breadcrumb`         | `orc-breadcrumb-item`, `orc-breadcrumb`                               | [interactive docs](https://orchestra.ciag.org.br/components/breadcrumb)         |
-| `button`             | `orc-button`, `orc-icon-button`                                       | [interactive docs](https://orchestra.ciag.org.br/components/button)             |
-| `button-group`       | `orc-button-group`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/button-group)       |
-| `calendar`           | `orc-calendar`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/calendar)           |
-| `card`               | `orc-card-body`, `orc-card-footer`, `orc-card-header`, `orc-card`     | [interactive docs](https://orchestra.ciag.org.br/components/card)               |
-| `carousel`           | `orc-carousel`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/carousel)           |
-| `chart`              | `orc-chart`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/chart)              |
-| `checkbox`           | `orc-checkbox`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/checkbox)           |
-| `chip`               | `orc-chip`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/chip)               |
-| `chip-input`         | `orc-chip-input`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/chip-input)         |
-| `close-button`       | `orc-close-button`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/close-button)       |
-| `code`               | `orc-code`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/code)               |
-| `collapsible`        | `orc-collapsible`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/collapsible)        |
-| `color-picker`       | `orc-color-picker`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/color-picker)       |
-| `combobox`           | `orc-combobox`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/combobox)           |
-| `command-menu`       | `orc-command-menu`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/command-menu)       |
-| `confirm-dialog`     | `orc-confirm-dialog`                                                  | [interactive docs](https://orchestra.ciag.org.br/components/confirm-dialog)     |
-| `context-menu`       | `orc-context-menu`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/context-menu)       |
-| `core`               | —                                                                     | —                                                                               |
-| `data-table`         | `orc-data-table`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/data-table)         |
-| `date-input`         | `orc-date-input`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/date-input)         |
-| `date-picker`        | `orc-date-picker-calendar`, `orc-date-picker`                         | [interactive docs](https://orchestra.ciag.org.br/components/date-picker)        |
-| `divider`            | `orc-divider`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/divider)            |
-| `drawer`             | `orc-drawer`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/drawer)             |
-| `dropdown`           | `orc-dropdown`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/dropdown)           |
-| `editor`             | `orc-editor`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/editor)             |
-| `empty-state`        | `orc-empty-state`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/empty-state)        |
-| `fieldset`           | `orc-fieldset`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/fieldset)           |
-| `file-uploader`      | `orc-file-item`, `orc-file-uploader`                                  | [interactive docs](https://orchestra.ciag.org.br/components/file-uploader)      |
-| `form-field`         | `orc-form-field`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/form-field)         |
-| `galleria`           | `orc-galleria`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/galleria)           |
-| `hover-card`         | `orc-hover-card`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/hover-card)         |
-| `icon`               | `orc-icon`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/icon)               |
-| `icon-field`         | `orc-icon-field`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/icon-field)         |
-| `image`              | `orc-image`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/image)              |
-| `image-compare`      | `orc-image-compare`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/image-compare)      |
-| `inplace`            | `orc-inplace`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/inplace)            |
-| `input`              | `orc-input`, `orc-textarea`                                           | [interactive docs](https://orchestra.ciag.org.br/components/input)              |
-| `input-color`        | `orc-input-color`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/input-color)        |
-| `input-group`        | `orc-input-group-addon`, `orc-input-group`                            | [interactive docs](https://orchestra.ciag.org.br/components/input-group)        |
-| `internal`           | —                                                                     | —                                                                               |
-| `kbd`                | `orc-kbd`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/kbd)                |
-| `knob`               | `orc-knob`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/knob)               |
-| `link`               | `orc-link`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/link)               |
-| `list`               | `orc-list`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/list)               |
-| `listbox`            | `orc-listbox`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/listbox)            |
-| `menu`               | `orc-menu`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/menu)               |
-| `menubar`            | `orc-menubar`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/menubar)            |
-| `messages`           | `orc-messages`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/messages)           |
-| `meter-group`        | `orc-meter-group`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/meter-group)        |
-| `modal`              | `orc-modal`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/modal)              |
-| `multi-select`       | `orc-multi-select`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/multi-select)       |
-| `navigation`         | `orc-navigation-shell`, `orc-navigation-item`                         | [interactive docs](https://orchestra.ciag.org.br/components/navigation)         |
-| `number-input`       | `orc-number-input`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/number-input)       |
-| `organization-chart` | `orc-organization-chart`                                              | [interactive docs](https://orchestra.ciag.org.br/components/organization-chart) |
-| `otp-input`          | `orc-otp-group`, `orc-otp-input`, `orc-otp-separator`, `orc-otp-slot` | [interactive docs](https://orchestra.ciag.org.br/components/otp-input)          |
-| `overlay-badge`      | `orc-overlay-badge`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/overlay-badge)      |
-| `overlay-panel`      | `orc-overlay-panel`, `orc-popover`                                    | [interactive docs](https://orchestra.ciag.org.br/components/overlay-panel)      |
-| `paginator`          | `orc-paginator`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/paginator)          |
-| `panel`              | `orc-panel`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/panel)              |
-| `panel-menu`         | `orc-panel-menu`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/panel-menu)         |
-| `password`           | `orc-password`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/password)           |
-| `pick-list`          | `orc-pick-list`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/pick-list)          |
-| `popover`            | —                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/popover)            |
-| `progress`           | `orc-progress-bar`, `orc-progress-circle`, `orc-progress-spinner`     | [interactive docs](https://orchestra.ciag.org.br/components/progress)           |
-| `radio`              | `orc-radio-button`, `orc-radio-group`                                 | [interactive docs](https://orchestra.ciag.org.br/components/radio)              |
-| `rating`             | `orc-rating`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/rating)             |
-| `scroll-area`        | `orc-scroll-area`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/scroll-area)        |
-| `scroll-panel`       | `orc-scroll-panel`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/scroll-panel)       |
-| `segmented-control`  | `orc-segmented-control`                                               | [interactive docs](https://orchestra.ciag.org.br/components/segmented-control)  |
-| `select`             | `orc-option`, `orc-select`                                            | [interactive docs](https://orchestra.ciag.org.br/components/select)             |
-| `select-button`      | `orc-select-button`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/select-button)      |
-| `separator`          | `orc-separator`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/separator)          |
-| `skeleton`           | `orc-skeleton`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/skeleton)           |
-| `slider`             | `orc-slider`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/slider)             |
-| `speed-dial`         | `orc-speed-dial`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/speed-dial)         |
-| `spinner`            | `orc-spinner`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/spinner)            |
-| `splitter`           | `orc-splitter`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/splitter)           |
-| `stepper`            | `orc-stepper`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/stepper)            |
-| `switch`             | `orc-switch`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/switch)             |
-| `tab-menu`           | `orc-tab-menu`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/tab-menu)           |
-| `table`              | `orc-table`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/table)              |
-| `tabs`               | `orc-tab-group`, `orc-tab`                                            | [interactive docs](https://orchestra.ciag.org.br/components/tabs)               |
-| `tag`                | `orc-tag`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/tag)                |
-| `tags-input`         | `orc-tags-input`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/tags-input)         |
-| `terminal`           | `orc-terminal`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/terminal)           |
-| `text`               | `orc-text`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/text)               |
-| `tiered-menu`        | `orc-tiered-menu`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/tiered-menu)        |
-| `timeline`           | `orc-timeline`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/timeline)           |
-| `toast`              | `orc-toast-container`, `orc-toast`                                    | [interactive docs](https://orchestra.ciag.org.br/components/toast)              |
-| `toggle-button`      | `orc-toggle-button`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/toggle-button)      |
-| `toolbar`            | `orc-toolbar`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/toolbar)            |
-| `tooltip`            | `orc-tooltip-overlay`                                                 | [interactive docs](https://orchestra.ciag.org.br/components/tooltip)            |
-| `tree`               | `orc-tree`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/tree)               |
-| `tree-select`        | `orc-tree-select`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/tree-select)        |
-| `tree-table`         | `orc-tree-table`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/tree-table)         |
-| `tree-view`          | `orc-tree-view`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/tree-view)          |
-| `typography`         | `orc-typography`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/typography)         |
-| `visually-hidden`    | `orc-visually-hidden`                                                 | [interactive docs](https://orchestra.ciag.org.br/components/visually-hidden)    |
+| Entry point          | Primary selectors or export                                            | Docs                                                                            |
+| -------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `accordion`          | `orc-accordion-item`, `orc-accordion`                                  | [interactive docs](https://orchestra.ciag.org.br/components/accordion)          |
+| `alert`              | `orc-alert`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/alert)              |
+| `autocomplete`       | `orc-autocomplete`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/autocomplete)       |
+| `avatar`             | `orc-avatar-group`, `orc-avatar`                                       | [interactive docs](https://orchestra.ciag.org.br/components/avatar)             |
+| `badge`              | `orc-badge`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/badge)              |
+| `breadcrumb`         | `orc-breadcrumb-item`, `orc-breadcrumb`                                | [interactive docs](https://orchestra.ciag.org.br/components/breadcrumb)         |
+| `button`             | `orc-button`, `orc-icon-button`                                        | [interactive docs](https://orchestra.ciag.org.br/components/button)             |
+| `button-group`       | `orc-button-group`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/button-group)       |
+| `calendar`           | `orc-calendar`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/calendar)           |
+| `card`               | `orc-card-body`, `orc-card-footer`, `orc-card-header`, `orc-card`      | [interactive docs](https://orchestra.ciag.org.br/components/card)               |
+| `carousel`           | `orc-carousel`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/carousel)           |
+| `chart`              | `orc-chart`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/chart)              |
+| `checkbox`           | `orc-checkbox`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/checkbox)           |
+| `chip`               | `orc-chip`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/chip)               |
+| `chip-input`         | `orc-chip-input`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/chip-input)         |
+| `close-button`       | `orc-close-button`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/close-button)       |
+| `code`               | `orc-code`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/code)               |
+| `collapsible`        | `orc-collapsible`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/collapsible)        |
+| `color-picker`       | `orc-color-picker`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/color-picker)       |
+| `combobox`           | `orc-combobox`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/combobox)           |
+| `command-menu`       | `orc-command-menu`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/command-menu)       |
+| `confirm-dialog`     | `orc-confirm-dialog`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/confirm-dialog)     |
+| `context-menu`       | `orc-context-menu`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/context-menu)       |
+| `core`               | —                                                                      | —                                                                               |
+| `data-table`         | `orc-data-table`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/data-table)         |
+| `date-input`         | `orc-date-input`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/date-input)         |
+| `date-picker`        | `orc-date-picker-calendar`, `orc-date-picker`                          | [interactive docs](https://orchestra.ciag.org.br/components/date-picker)        |
+| `divider`            | `orc-divider`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/divider)            |
+| `drawer`             | `orc-drawer`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/drawer)             |
+| `dropdown`           | `orc-dropdown`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/dropdown)           |
+| `editor`             | `orc-editor`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/editor)             |
+| `empty-state`        | `orc-empty-state`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/empty-state)        |
+| `fieldset`           | `orc-fieldset`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/fieldset)           |
+| `file-uploader`      | `orc-file-item`, `orc-file-uploader`                                   | [interactive docs](https://orchestra.ciag.org.br/components/file-uploader)      |
+| `form-field`         | `orc-form-field`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/form-field)         |
+| `galleria`           | `orc-galleria`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/galleria)           |
+| `hover-card`         | `orc-hover-card`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/hover-card)         |
+| `icon`               | `orc-icon`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/icon)               |
+| `icon-field`         | `orc-icon-field`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/icon-field)         |
+| `image`              | `orc-image`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/image)              |
+| `image-compare`      | `orc-image-compare`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/image-compare)      |
+| `inplace`            | `orc-inplace`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/inplace)            |
+| `input`              | `orc-input`, `orc-textarea`                                            | [interactive docs](https://orchestra.ciag.org.br/components/input)              |
+| `input-color`        | `orc-input-color`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/input-color)        |
+| `input-group`        | `orc-input-group-addon`, `orc-input-group`                             | [interactive docs](https://orchestra.ciag.org.br/components/input-group)        |
+| `internal`           | `OrcFieldContext`, `OrcValueControl`, `OrcModalLayer`, `OrcToastLayer` | —                                                                               |
+| `kbd`                | `orc-kbd`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/kbd)                |
+| `knob`               | `orc-knob`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/knob)               |
+| `link`               | `orc-link`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/link)               |
+| `list`               | `orc-list`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/list)               |
+| `listbox`            | `orc-listbox`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/listbox)            |
+| `menu`               | `orc-menu`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/menu)               |
+| `menubar`            | `orc-menubar`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/menubar)            |
+| `messages`           | `orc-messages`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/messages)           |
+| `meter-group`        | `orc-meter-group`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/meter-group)        |
+| `modal`              | `orc-modal`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/modal)              |
+| `multi-select`       | `orc-multi-select`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/multi-select)       |
+| `navigation`         | `orc-navigation-shell`, `orc-navigation-item`                          | [interactive docs](https://orchestra.ciag.org.br/components/navigation)         |
+| `number-input`       | `orc-number-input`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/number-input)       |
+| `organization-chart` | `orc-organization-chart`                                               | [interactive docs](https://orchestra.ciag.org.br/components/organization-chart) |
+| `otp-input`          | `orc-otp-group`, `orc-otp-input`, `orc-otp-separator`, `orc-otp-slot`  | [interactive docs](https://orchestra.ciag.org.br/components/otp-input)          |
+| `overlay-badge`      | `orc-overlay-badge`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/overlay-badge)      |
+| `overlay-panel`      | `orc-overlay-panel`, `orc-popover`                                     | [interactive docs](https://orchestra.ciag.org.br/components/overlay-panel)      |
+| `paginator`          | `orc-paginator`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/paginator)          |
+| `panel`              | `orc-panel`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/panel)              |
+| `panel-menu`         | `orc-panel-menu`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/panel-menu)         |
+| `password`           | `orc-password`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/password)           |
+| `pick-list`          | `orc-pick-list`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/pick-list)          |
+| `popover`            | —                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/popover)            |
+| `progress`           | `orc-progress-bar`, `orc-progress-circle`, `orc-progress-spinner`      | [interactive docs](https://orchestra.ciag.org.br/components/progress)           |
+| `radio`              | `orc-radio-button`, `orc-radio-group`                                  | [interactive docs](https://orchestra.ciag.org.br/components/radio)              |
+| `rating`             | `orc-rating`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/rating)             |
+| `scroll-area`        | `orc-scroll-area`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/scroll-area)        |
+| `scroll-panel`       | `orc-scroll-panel`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/scroll-panel)       |
+| `segmented-control`  | `orc-segmented-control`                                                | [interactive docs](https://orchestra.ciag.org.br/components/segmented-control)  |
+| `select`             | `orc-option`, `orc-select`                                             | [interactive docs](https://orchestra.ciag.org.br/components/select)             |
+| `select-button`      | `orc-select-button`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/select-button)      |
+| `separator`          | `orc-separator`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/separator)          |
+| `skeleton`           | `orc-skeleton`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/skeleton)           |
+| `slider`             | `orc-slider`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/slider)             |
+| `speed-dial`         | `orc-speed-dial`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/speed-dial)         |
+| `spinner`            | `orc-spinner`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/spinner)            |
+| `splitter`           | `orc-splitter`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/splitter)           |
+| `stepper`            | `orc-stepper`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/stepper)            |
+| `switch`             | `orc-switch`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/switch)             |
+| `tab-menu`           | `orc-tab-menu`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/tab-menu)           |
+| `table`              | `orc-table`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/table)              |
+| `tabs`               | `orc-tab-group`, `orc-tab`                                             | [interactive docs](https://orchestra.ciag.org.br/components/tabs)               |
+| `tag`                | `orc-tag`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/tag)                |
+| `tags-input`         | `orc-tags-input`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/tags-input)         |
+| `terminal`           | `orc-terminal`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/terminal)           |
+| `text`               | `orc-text`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/text)               |
+| `tiered-menu`        | `orc-tiered-menu`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/tiered-menu)        |
+| `timeline`           | `orc-timeline`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/timeline)           |
+| `toast`              | `orc-toast-container`, `orc-toast`                                     | [interactive docs](https://orchestra.ciag.org.br/components/toast)              |
+| `toggle-button`      | `orc-toggle-button`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/toggle-button)      |
+| `toolbar`            | `orc-toolbar`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/toolbar)            |
+| `tooltip`            | `orc-tooltip-overlay`                                                  | [interactive docs](https://orchestra.ciag.org.br/components/tooltip)            |
+| `tree`               | `orc-tree`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/tree)               |
+| `tree-select`        | `orc-tree-select`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/tree-select)        |
+| `tree-table`         | `orc-tree-table`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/tree-table)         |
+| `tree-view`          | `orc-tree-view`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/tree-view)          |
+| `typography`         | `orc-typography`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/typography)         |
+| `visually-hidden`    | `orc-visually-hidden`                                                  | [interactive docs](https://orchestra.ciag.org.br/components/visually-hidden)    |
 
 ## 5. Component reference
 
@@ -1336,7 +1341,7 @@ readonly options = [
 | A custom spinner overlay                               | `orc-spinner` or `orc-progress-*`                                                                     |
 | Stringifying generic options                           | Keep `T` in `orc-combobox<T>`, `orc-listbox<T>`, `orc-multi-select<T>`, or `orc-segmented-control<T>` |
 | Duplicating `ModalComponent` under a new name          | Extend the canonical modal API in the library                                                         |
-| Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-color-azul-eletrico` and `--space-4`                                                       |
+| Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-primary` and `--orc-space-4`                                                               |
 | Removing focus styles to match a screenshot            | Adjust the token while preserving a visible focus indicator                                           |
 
 When migrating from generic controls, keep the domain state in the consuming component and replace only the view/control boundary. The library does not require a global service for basic state; Signals are local and explicit.
@@ -1348,7 +1353,7 @@ When changing a component or using an API not covered by an existing playground:
 1. Confirm the export in the secondary entry-point `index.ts`.
 2. Confirm the selector and public `input`, `model`, `output`, and directive fields in the component source.
 3. Add the component to a standalone consumer's `imports` array.
-4. Load `@ciag/orchestra/styles/index` before app styles.
+4. Load `@ciag/orchestra/styles.css` before app styles.
 5. Check keyboard, focus, error, disabled, loading, empty, and dark-mode states.
 6. Run `npm run build:lib` and `npm run build:docs`.
 7. If the change is a new public API, add a focused unit/accessibility test, update the catalog usage doc, and regenerate this reference (`npm run docs:generate-agent-reference`).

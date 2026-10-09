@@ -7742,6 +7742,63 @@
       "unresolvedBase": "CvaControl"
     },
     {
+      "name": "OrcFieldContext",
+      "kind": "Injectable",
+      "selector": "",
+      "file": "projects/orc-ds/internal/forms/field-context.ts",
+      "line": 47,
+      "inputs": [],
+      "outputs": [],
+      "testReferences": ["projects/orc-ds/internal/forms/forms.spec.ts"]
+    },
+    {
+      "name": "OrcValueControl",
+      "kind": "Directive",
+      "selector": "",
+      "file": "projects/orc-ds/internal/forms/value-control.ts",
+      "line": 44,
+      "inputs": [
+        {
+          "name": "disabled",
+          "publicName": "disabled",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly disabled = input(false, { transform: booleanAttribute });",
+          "description": "Disables the control (merged with the forms API and the field)."
+        },
+        {
+          "name": "required",
+          "publicName": "required",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly required = input(false, { transform: booleanAttribute });",
+          "description": "Marks the control required (merged with validators and the field)."
+        }
+      ],
+      "outputs": [],
+      "testReferences": ["projects/orc-ds/internal/forms/forms.spec.ts"]
+    },
+    {
+      "name": "OrcModalLayer",
+      "kind": "Injectable",
+      "selector": "",
+      "file": "projects/orc-ds/internal/overlay/modal-layer.ts",
+      "line": 129,
+      "inputs": [],
+      "outputs": [],
+      "testReferences": ["projects/orc-ds/internal/overlay/overlay.spec.ts"]
+    },
+    {
+      "name": "OrcToastLayer",
+      "kind": "Injectable",
+      "selector": "",
+      "file": "projects/orc-ds/internal/overlay/toast-layer.ts",
+      "line": 54,
+      "inputs": [],
+      "outputs": [],
+      "testReferences": ["projects/orc-ds/internal/overlay/overlay.spec.ts"]
+    },
+    {
       "name": "KbdComponent",
       "kind": "Component",
       "selector": "orc-kbd",
@@ -19885,7 +19942,7 @@
     {
       "name": "@ciag/orchestra/core",
       "file": "projects/orc-ds/core/index.ts",
-      "exports": "/** Version of the `@ciag/orchestra` package this build belongs to. */\nexport const ORCHESTRA_VERSION = '22.4.0-rc.0';"
+      "exports": "/** `@ciag/orchestra/core`: labels (i18n), shared types and app-level utilities. */\nexport * from './version';\nexport * from './types';\nexport * from './labels';\nexport * from './labels.provider';\nexport * from './id';"
     },
     {
       "name": "@ciag/orchestra/data-table",
@@ -19995,7 +20052,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './shared-styles';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './shared-styles';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';\n// Orchestra 22.4 infrastructure (CDK overlay layers, CVA base, field context, selection).\nexport * from './overlay/index';\nexport * from './forms/index';\nexport * from './selection/index';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -20461,8 +20518,14 @@
     "projects/orc-ds/context-menu/index.ts",
     "projects/orc-ds/context-menu/ng-package.json",
     "projects/orc-ds/controls-repair.spec.ts",
+    "projects/orc-ds/core/core.spec.ts",
+    "projects/orc-ds/core/id.ts",
     "projects/orc-ds/core/index.ts",
+    "projects/orc-ds/core/labels.provider.ts",
+    "projects/orc-ds/core/labels.ts",
     "projects/orc-ds/core/ng-package.json",
+    "projects/orc-ds/core/types.ts",
+    "projects/orc-ds/core/version.ts",
     "projects/orc-ds/data-table/data-table-behavior.spec.ts",
     "projects/orc-ds/data-table/data-table.component.ts",
     "projects/orc-ds/data-table/index.ts",
@@ -20609,6 +20672,11 @@
     "projects/orc-ds/internal/cva-control.spec.ts",
     "projects/orc-ds/internal/cva-control.ts",
     "projects/orc-ds/internal/dom-target.ts",
+    "projects/orc-ds/internal/forms/control-state.ts",
+    "projects/orc-ds/internal/forms/field-context.ts",
+    "projects/orc-ds/internal/forms/forms.spec.ts",
+    "projects/orc-ds/internal/forms/index.ts",
+    "projects/orc-ds/internal/forms/value-control.ts",
     "projects/orc-ds/internal/index.ts",
     "projects/orc-ds/internal/list-picker.spec.ts",
     "projects/orc-ds/internal/list-picker.ts",
@@ -20624,6 +20692,15 @@
     "projects/orc-ds/internal/overlay-lifecycle.ts",
     "projects/orc-ds/internal/overlay-ownership.spec.ts",
     "projects/orc-ds/internal/overlay-position.ts",
+    "projects/orc-ds/internal/overlay/README.md",
+    "projects/orc-ds/internal/overlay/anchored-overlay.ts",
+    "projects/orc-ds/internal/overlay/index.ts",
+    "projects/orc-ds/internal/overlay/modal-layer.ts",
+    "projects/orc-ds/internal/overlay/overlay.spec.ts",
+    "projects/orc-ds/internal/overlay/toast-layer.ts",
+    "projects/orc-ds/internal/selection/index.ts",
+    "projects/orc-ds/internal/selection/selection.spec.ts",
+    "projects/orc-ds/internal/selection/selection.ts",
     "projects/orc-ds/internal/shared-styles.ts",
     "projects/orc-ds/internal/size.spec.ts",
     "projects/orc-ds/internal/size.ts",
@@ -20896,18 +20973,19 @@
     "projects/orc-ds/stepper/stepper.component.spec.ts",
     "projects/orc-ds/stepper/stepper.component.ts",
     "projects/orc-ds/stepper/stepper.types.ts",
-    "projects/orc-ds/styles/_component-base.scss",
+    "projects/orc-ds/styles/TOKENS.md",
+    "projects/orc-ds/styles/_base.scss",
     "projects/orc-ds/styles/_layers.scss",
-    "projects/orc-ds/styles/_mixins.scss",
+    "projects/orc-ds/styles/_legacy-aliases.scss",
     "projects/orc-ds/styles/_tokens.scss",
-    "projects/orc-ds/styles/core.scss",
-    "projects/orc-ds/styles/index.scss",
+    "projects/orc-ds/styles/orchestra.scss",
     "projects/orc-ds/styles/reset.scss",
     "projects/orc-ds/styles/spacing-contract.spec.ts",
     "projects/orc-ds/styles/theme-contract.spec.ts",
     "projects/orc-ds/styles/themes/_dark.scss",
+    "projects/orc-ds/styles/themes/_derived.scss",
+    "projects/orc-ds/styles/themes/_index.scss",
     "projects/orc-ds/styles/themes/_light.scss",
-    "projects/orc-ds/styles/themes/_semantics.scss",
     "projects/orc-ds/switch/index.ts",
     "projects/orc-ds/switch/ng-package.json",
     "projects/orc-ds/switch/switch.component.html",
@@ -21472,7 +21550,6 @@
     "projects/docs/src/index.html",
     "projects/docs/src/main.ts",
     "projects/docs/src/runtime-diagnostics.spec.ts",
-    "projects/docs/src/styles.scss",
     "projects/template/src/app/app.component.html",
     "projects/template/src/app/app.component.scss",
     "projects/template/src/app/app.component.ts",
@@ -21495,7 +21572,6 @@
     "projects/template/src/app/pages/settings/settings-page.component.ts",
     "projects/template/src/index.html",
     "projects/template/src/main.ts",
-    "projects/template/src/styles.scss",
     "orchestra-demo/src/app/app.component.html",
     "orchestra-demo/src/app/app.component.scss",
     "orchestra-demo/src/app/app.component.ts",
@@ -21614,6 +21690,8 @@
     "tools/release/version-packages-lib.mjs",
     "tools/release/version-packages.mjs",
     "tools/release/version-packages.test.mjs",
+    "tools/styles/build-css.mjs",
+    "tools/styles/build-css.test.mjs",
     "compatibility/versions.json"
   ],
   "generatedCatalogs": [
