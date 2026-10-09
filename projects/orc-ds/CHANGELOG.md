@@ -1,5 +1,16 @@
 # @ciag/orchestra
 
+## 22.4.0-rc.0 (release candidate, dist-tag `next`)
+
+### Major Changes
+
+- Overhaul release candidate with breaking changes, published under the `next` dist-tag (`latest` stays on 22.3.0). Decisions and the per-family target API are in `docs/overhaul/DECISOES.md`.
+- The root entry `@ciag/orchestra` exports only `@ciag/orchestra/core` (pt-BR labels via `provideOrcLabels`/`injectOrcLabels`, shared types, `orcId`, `ORCHESTRA_VERSION`). Import each family from its own entry point, e.g. `@ciag/orchestra/button`.
+- Removed families, directives and alias entry points listed in DECISOES.md §1 (layout primitives, split-button, cascade-select, float/ifta-label, form, overlay, block-ui, portal, mega-menu, dock, data-view, order-list, virtual-scroller, scroll-top, the PrimeNG-era directives, `ConfirmPopupService`, `p2/` and every alias entry point).
+- New internal infrastructure in `@ciag/orchestra/internal` (CDK overlay layers, shared ControlValueAccessor base, field context); families adopt it in the next release candidates.
+- Styles ship as plain CSS: `@import '@ciag/orchestra/styles.css'` (optional `@ciag/orchestra/reset.css`). `orc-icon` no longer loads Material Symbols; the app adds the font `<link>`.
+- Install: `npm install @ciag/orchestra@next` (or `@22.4.0-rc.0`). Caret ranges such as `^22.3.0` do not resolve to a prerelease, so existing consumers are unaffected.
+
 ## 22.3.0
 
 ### Minor Changes

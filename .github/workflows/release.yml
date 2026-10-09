@@ -30,6 +30,10 @@ on:
   push:
     branches:
       - main
+      # Release candidates: release/<x.y.z>-rc publishes <x.y.z>-rc.<n> under
+      # the `next` dist-tag only (tools/release/prerelease-guard.mjs). Lives in
+      # this file because npm trusted publishing is bound to release.yml.
+      - 'release/**'
     tags:
       - 'v*'
 
@@ -67,10 +71,20 @@ jobs:
         run: npm ci
 
       - name: Verify Angular compatibility line and publishing topology
+        if: ${{ !startsWith(github.ref_name, 'release/') }}
         run: npm run verify:compatibility
 
       - name: Guard the release trigger and registry state
+        if: ${{ !startsWith(github.ref_name, 'release/') }}
         run: node tools/release/publish-guard.mjs
+
+      - name: Guard the release candidate (release/* -> next dist-tag)
+        if: ${{ startsWith(github.ref_name, 'release/') }}
+        run: node tools/release/prerelease-guard.mjs
+
+      - name: Test the release candidate
+        if: ${{ startsWith(github.ref_name, 'release/') && env.ORCHESTRA_PUBLISH == 'publish' }}
+        run: npm run test:lib:ci
 
       - name: Build library
         run: npm run build:lib
