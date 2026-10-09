@@ -256,10 +256,10 @@ async function main() {
     if (context.event === 'tag-push') {
       const tagBranch = resolveBranchForTag(topology, context.tagName);
       const lineDistTag = tagBranch
-        ? topology[tagBranch]?.distTag ?? null
+        ? (topology[tagBranch]?.distTag ?? null)
         : null;
       previousVersion = lineDistTag
-        ? registry?.distTags?.[lineDistTag] ?? null
+        ? (registry?.distTags?.[lineDistTag] ?? null)
         : null;
     } else {
       const previousPackage = packageJsonAt('HEAD~1');

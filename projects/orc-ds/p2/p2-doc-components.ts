@@ -58,6 +58,7 @@ export {
 export { CascadeSelectComponent } from './p2-cascade-select-component';
 export { EditorComponent } from './p2-editor-component';
 export { MenuComponent } from './p2-advanced-components';
+export { ScrollTopComponent } from './p2-primeng-gap-components';
 
 export type { ContextMenuItem } from './p2-overlay-components';
 export type { SplitterPanel } from './p2-splitter-component';

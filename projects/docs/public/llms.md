@@ -7,7 +7,7 @@
 
 This document is the machine-oriented companion to [`llms.txt`](./llms.txt). It describes the current workspace package `@ciag/orchestra` and is intentionally explicit: an agent should be able to choose a component, import it, compose it, and wire its state without guessing.
 
-> Version context: Angular 22, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `22.2.0`.
+> Version context: Angular 22, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `22.3.0`.
 
 ## 1. Operating rules for coding agents
 
@@ -1207,7 +1207,7 @@ Use readonly for display-only scores; use `clearable` only when zero is a meanin
 ### Scroll Top — `@ciag/orchestra/scroll-top`
 
 - **ScrollTopComponent (orc-scroll-top)**
-  - Inputs: `threshold` (number) default `200`, `target` ('window' | 'parent') default `'window'`, `behavior` ('auto' | 'smooth') default `'smooth'`, `icon` (string) default `'↑'`, `styleClass` (string) default `''`, `style` (Record<string, any> | null | undefined) default `undefined`, `buttonAriaLabel` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
+  - Inputs: `threshold` (number) default `200`, `target` ('window' | 'parent') default `'window'`, `direction` ('up' | 'down') default `'up'`, `behavior` ('auto' | 'smooth') default `'smooth'`, `icon` (string) default `''`, `styleClass` (string) default `''`, `style` (Record<string, any> | null | undefined) default `undefined`, `buttonAriaLabel` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
   - Models: `visible` (boolean) default `false`
   - Outputs: `clicked` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/scroll-top
@@ -1295,7 +1295,8 @@ Keep labels and ordering stable.
 Use full-screen only for an application-level blocking state.
 
 - **LoadingSpinnerComponent (orc-spinner)**
-  - Inputs: `size` (SpinnerSize) default `'md'`, `customSize` (string | number) default `''`, `variant` (SpinnerVariant) default `'primary'`, `type` (SpinnerType) default `'ring'`, `text` (string) default `''`, `textPosition` (SpinnerTextPosition) default `'right'`, `fullScreen` (boolean) default `false`, `backdrop` (boolean) default `true`, `strokeWidth` (number) default `3`, `fill` (string) default `'none'`, `animation` ('spin' | 'none') default `'spin'`, `styleClass` (string) default `''`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
+  - Inputs: `size` (SpinnerSize) default `'md'`, `customSize` (string | number) default `''`, `variant` (SpinnerVariant) default `'primary'`, `type` (SpinnerType) default `'ring'`, `text` (string) default `''`, `textPosition` (SpinnerTextPosition) default `'right'`, `fullScreen` (boolean) default `false`, `closeOnEscape` (boolean) default `false`, `backdrop` (boolean) default `true`, `strokeWidth` (number) default `3`, `fill` (string) default `'none'`, `animation` ('spin' | 'none') default `'spin'`, `styleClass` (string) default `''`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
+  - Outputs: `fullScreenChange` (boolean)
 - Interactive docs: https://orchestra.ciag.org.br/components/spinner
 
 ### Split Button — `@ciag/orchestra/split-button`

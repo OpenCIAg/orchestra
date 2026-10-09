@@ -5,6 +5,7 @@ import {
   computed,
   HostBinding,
   booleanAttribute,
+  output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -21,6 +22,9 @@ import {
   templateUrl: './spinner.component.html',
   styleUrl: './spinner.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:keydown.escape)': 'handleEscape()',
+  },
 })
 export class LoadingSpinnerComponent {
   // ── Inputs (Signals API) ──────────────────────────────────
@@ -33,6 +37,14 @@ export class LoadingSpinnerComponent {
   readonly fullScreen = input<boolean, unknown>(false, {
     transform: booleanAttribute,
   });
+  /**
+   * Opt-in: lets Escape request leaving the full-screen overlay. The spinner never
+   * hides itself; it emits `fullScreenChange(false)` so `[(fullScreen)]` callers decide.
+   */
+  readonly closeOnEscape = input<boolean, unknown>(false, {
+    transform: booleanAttribute,
+  });
+  readonly fullScreenChange = output<boolean>();
   readonly backdrop = input<boolean, unknown>(true, {
     transform: booleanAttribute,
   });
@@ -56,4 +68,10 @@ export class LoadingSpinnerComponent {
   readonly accessibleLabel = computed(
     () => this.ariaLabel()?.trim() || this.text().trim() || 'Loading',
   );
+
+  handleEscape(): void {
+    if (this.fullScreen() && this.closeOnEscape()) {
+      this.fullScreenChange.emit(false);
+    }
+  }
 }

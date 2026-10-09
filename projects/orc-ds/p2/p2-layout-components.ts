@@ -214,6 +214,10 @@ export class BoxComponent {
   readonly width = input('');
 }
 
+/**
+ * @deprecated Use `DividerComponent` (`orc-divider` from `@ciag/orchestra/divider`) with
+ * `[decorative]="false"` for a named separator. Removed at the 23.0.0 gate.
+ */
 @Component({
   selector: 'orc-separator',
   standalone: true,

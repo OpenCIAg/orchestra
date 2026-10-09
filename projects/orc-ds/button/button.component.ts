@@ -87,6 +87,13 @@ export class ButtonComponent {
       (this.iconPos() === 'right' ? this.icon() : undefined),
   );
 
+  /** `variant="close"` draws the close glyph unless an explicit icon is supplied. */
+  readonly showCloseGlyph = computed(
+    () =>
+      this.variant() === 'close' &&
+      !this.safeIconLeft() &&
+      !this.safeIconRight(),
+  );
   readonly safeIconLeft = computed(() =>
     safeIcon(this.effectiveIconLeft(), this.document, this.sanitizer),
   );

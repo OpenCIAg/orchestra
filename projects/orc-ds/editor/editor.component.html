@@ -11,6 +11,8 @@
     @for (action of actions(); track action.command) {
       <button
         type="button"
+        [class.active]="activeFormats().has(action.command)"
+        [attr.aria-pressed]="activeFormats().has(action.command)"
         [disabled]="readonly() || cvaDisabled()"
         (mousedown)="preserveToolbarSelection($event)"
         (click)="exec(action.command)"

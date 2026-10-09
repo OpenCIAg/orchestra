@@ -59,6 +59,15 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       },
       {
         kind: 'input',
+        name: 'closeOnEscape',
+        type: 'boolean',
+        defaultValue: 'false',
+        required: false,
+        description:
+          'Opt-in: lets Escape request leaving the full-screen overlay. The spinner never\nhides itself; it emits `fullScreenChange(false)` so `[(fullScreen)]` callers decide.',
+      },
+      {
+        kind: 'input',
         name: 'backdrop',
         type: 'boolean',
         defaultValue: 'true',
@@ -104,6 +113,13 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         name: 'ariaLabel',
         type: 'string | undefined',
         defaultValue: 'undefined',
+        required: false,
+      },
+      {
+        kind: 'output',
+        name: 'fullScreenChange',
+        type: 'boolean',
+        defaultValue: null,
         required: false,
       },
     ],

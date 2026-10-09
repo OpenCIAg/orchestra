@@ -262,7 +262,7 @@ export function librarySourceFiles(repoRoot) {
           !file.endsWith('.d.ts') &&
           !file.endsWith('.spec.ts') &&
           !file.endsWith('icon-catalog.ts')) ||
-        file.endsWith('/ng-package.json'),
+        file.replace(/\\/g, '/').endsWith('/ng-package.json'),
     )
     .reduce((map, file) => {
       const key = path.relative(repoRoot, file).split(path.sep).join('/');

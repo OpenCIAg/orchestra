@@ -14,6 +14,7 @@ import {
   output,
 } from '@angular/core';
 import { P2_SHARED_STYLES } from './p2-shared';
+import { IconComponent } from '@ciag/orchestra/icon';
 
 @Component({
   selector: 'orc-panel',
@@ -247,6 +248,7 @@ export { SplitButtonComponent } from './p2-split-button-component';
 @Component({
   selector: 'orc-scroll-top',
   standalone: true,
+  imports: [IconComponent],
   template: `@if (visible()) {
     <button
       type="button"
@@ -259,7 +261,13 @@ export { SplitButtonComponent } from './p2-split-button-component';
       (blur)="onButtonBlur()"
       (click)="scroll()"
     >
-      {{ icon() }}
+      @if (icon()) {
+        {{ icon() }}
+      } @else {
+        <orc-icon
+          [name]="direction() === 'up' ? 'arrow_upward' : 'arrow_downward'"
+        />
+      }
     </button>
   }`,
   styles: [
@@ -271,8 +279,11 @@ export { SplitButtonComponent } from './p2-split-button-component';
 export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
   readonly threshold = input(200);
   readonly target = input<'window' | 'parent'>('window');
+  /** `down` jumps to the end of the target and shows while there is content below. */
+  readonly direction = input<'up' | 'down'>('up');
   readonly behavior = input<'auto' | 'smooth'>('smooth');
-  readonly icon = input('↑');
+  /** Custom glyph rendered as text; when empty, a Material arrow matching `direction`. */
+  readonly icon = input('');
   readonly styleClass = input('');
   readonly style = input<Record<string, any> | null | undefined>(undefined);
   readonly buttonAriaLabel = input<string | undefined>(undefined);
@@ -333,7 +344,7 @@ export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
     return (
       this.buttonAriaLabel()?.trim() ||
       this.ariaLabel()?.trim() ||
-      'Scroll to top'
+      (this.direction() === 'up' ? 'Scroll to top' : 'Scroll to bottom')
     );
   }
   ngOnDestroy(): void {
@@ -367,7 +378,22 @@ export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.refreshVisibility();
   }
   private updateVisibility(scrollOffset: number): void {
-    this.visible.set(scrollOffset > this.threshold() || this.buttonFocused);
+    if (this.buttonFocused) {
+      this.visible.set(true);
+      return;
+    }
+    if (this.direction() === 'up') {
+      this.visible.set(scrollOffset > this.threshold());
+    } else {
+      let maxScroll = 0;
+      if (this.target() === 'parent' && this.parent) {
+        maxScroll = this.parent.scrollHeight - this.parent.clientHeight;
+      } else {
+        const doc = this.host.nativeElement.ownerDocument.documentElement;
+        maxScroll = doc.scrollHeight - doc.clientHeight;
+      }
+      this.visible.set(scrollOffset < maxScroll - this.threshold());
+    }
   }
   private effectiveScrollBehavior(): ScrollBehavior {
     const behavior = this.behavior();
@@ -378,16 +404,22 @@ export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
       : behavior;
   }
   scroll(): void {
-    if (this.target() === 'parent')
-      this.host.nativeElement.parentElement?.scrollTo?.({
-        top: 0,
+    const isUp = this.direction() === 'up';
+    if (this.target() === 'parent') {
+      const parent = this.host.nativeElement.parentElement;
+      const top = isUp ? 0 : parent?.scrollHeight;
+      parent?.scrollTo?.({
+        top,
         behavior: this.effectiveScrollBehavior(),
       });
-    else
+    } else {
+      const doc = this.host.nativeElement.ownerDocument.documentElement;
+      const top = isUp ? 0 : doc.scrollHeight;
       this.host.nativeElement.ownerDocument.defaultView?.scrollTo?.({
-        top: 0,
+        top,
         behavior: this.effectiveScrollBehavior(),
       });
+    }
     this.clicked.emit();
   }
 }

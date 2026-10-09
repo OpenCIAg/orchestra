@@ -152,6 +152,16 @@
                   >
                     Danger
                   </button>
+                  <button
+                    type="button"
+                    class="segment-btn"
+                    [class.segment-btn--active]="
+                      playgroundVariant() === 'close'
+                    "
+                    (click)="playgroundVariant.set('close')"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
 

@@ -1496,6 +1496,7 @@
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/button/button-behavior.spec.ts",
+        "projects/orc-ds/button/button-close-variant.spec.ts",
         "projects/orc-ds/button/button-input-contract.spec.ts",
         "projects/orc-ds/button/button.component.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -5441,6 +5442,7 @@
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/editor-selection-contract.spec.ts",
+        "projects/orc-ds/editor/editor-active-format.spec.ts",
         "projects/orc-ds/editor/editor-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
       ]
@@ -12842,7 +12844,7 @@
       "kind": "Component",
       "selector": "orc-separator",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 217,
+      "line": 221,
       "inputs": [
         {
           "name": "orientation",
@@ -12871,7 +12873,7 @@
       "kind": "Component",
       "selector": "orc-visually-hidden",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 238,
+      "line": 242,
       "inputs": [],
       "outputs": [],
       "testReferences": [
@@ -12885,7 +12887,7 @@
       "kind": "Component",
       "selector": "orc-typography",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 250,
+      "line": 254,
       "inputs": [
         {
           "name": "as",
@@ -12936,7 +12938,7 @@
       "kind": "Component",
       "selector": "orc-text",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 304,
+      "line": 308,
       "inputs": [
         {
           "name": "size",
@@ -12972,7 +12974,7 @@
       "kind": "Component",
       "selector": "orc-kbd",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 325,
+      "line": 329,
       "inputs": [
         {
           "name": "keys",
@@ -13001,7 +13003,7 @@
       "kind": "Component",
       "selector": "orc-link",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 356,
+      "line": 360,
       "inputs": [
         {
           "name": "href",
@@ -13189,7 +13191,7 @@
       "kind": "Component",
       "selector": "orc-close-button",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 50,
+      "line": 54,
       "inputs": [
         {
           "name": "ariaLabel",
@@ -13238,7 +13240,7 @@
       "kind": "Component",
       "selector": "orc-overlay",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 87,
+      "line": 91,
       "inputs": [
         {
           "name": "visible",
@@ -13389,7 +13391,7 @@
       "kind": "Component",
       "selector": "orc-panel",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 18,
+      "line": 19,
       "inputs": [
         {
           "name": "header",
@@ -13490,7 +13492,7 @@
       "kind": "Component",
       "selector": "orc-fieldset",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 109,
+      "line": 110,
       "inputs": [
         {
           "name": "legend",
@@ -13573,7 +13575,7 @@
       "kind": "Component",
       "selector": "orc-fluid",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 188,
+      "line": 189,
       "inputs": [
         {
           "name": "styleClass",
@@ -13595,7 +13597,7 @@
       "kind": "Component",
       "selector": "orc-overlay-badge",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 207,
+      "line": 208,
       "inputs": [
         {
           "name": "value",
@@ -13624,7 +13626,7 @@
       "kind": "Component",
       "selector": "orc-scroll-top",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 247,
+      "line": 248,
       "inputs": [
         {
           "name": "threshold",
@@ -13641,6 +13643,14 @@
           "declaration": "readonly target = input<'window' | 'parent'>('window');"
         },
         {
+          "name": "direction",
+          "publicName": "direction",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly direction = input<'up' | 'down'>('up');",
+          "description": "`down` jumps to the end of the target and shows while there is content below."
+        },
+        {
           "name": "behavior",
           "publicName": "behavior",
           "kind": "signal",
@@ -13652,7 +13662,8 @@
           "publicName": "icon",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly icon = input('↑');"
+          "declaration": "readonly icon = input('');",
+          "description": "Custom glyph rendered as text; when empty, a Material arrow matching `direction`."
         },
         {
           "name": "styleClass",
@@ -13719,6 +13730,7 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
+        "projects/orc-ds/scrolltop/scroll-top-direction.spec.ts",
         "projects/orc-ds/scrolltop/scroll-top.component.spec.ts"
       ]
     },
@@ -17475,7 +17487,7 @@
       "kind": "Component",
       "selector": "orc-spinner",
       "file": "projects/orc-ds/spinner/spinner.component.ts",
-      "line": 17,
+      "line": 18,
       "inputs": [
         {
           "name": "size",
@@ -17527,6 +17539,14 @@
           "declaration": "readonly fullScreen = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
+          "name": "closeOnEscape",
+          "publicName": "closeOnEscape",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly closeOnEscape = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
+          "description": "Opt-in: lets Escape request leaving the full-screen overlay. The spinner never\nhides itself; it emits `fullScreenChange(false)` so `[(fullScreen)]` callers decide."
+        },
+        {
           "name": "backdrop",
           "publicName": "backdrop",
           "kind": "signal",
@@ -17576,11 +17596,18 @@
           "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
         }
       ],
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "fullScreenChange",
+          "kind": "output",
+          "declaration": "readonly fullScreenChange = output<boolean>();"
+        }
+      ],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/navigation-toolbar-contract.spec.ts",
-        "projects/orc-ds/size-vocabulary-contract.spec.ts"
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
+        "projects/orc-ds/spinner/spinner-escape.spec.ts"
       ]
     },
     {
@@ -23660,6 +23687,7 @@
     "projects/orc-ds/button-group/index.ts",
     "projects/orc-ds/button-group/ng-package.json",
     "projects/orc-ds/button/button-behavior.spec.ts",
+    "projects/orc-ds/button/button-close-variant.spec.ts",
     "projects/orc-ds/button/button-input-contract.spec.ts",
     "projects/orc-ds/button/button.component.html",
     "projects/orc-ds/button/button.component.scss",
@@ -23862,6 +23890,7 @@
     "projects/orc-ds/dynamicdialog/index.ts",
     "projects/orc-ds/dynamicdialog/ng-package.json",
     "projects/orc-ds/editor-selection-contract.spec.ts",
+    "projects/orc-ds/editor/editor-active-format.spec.ts",
     "projects/orc-ds/editor/editor-parity.spec.ts",
     "projects/orc-ds/editor/editor.component.html",
     "projects/orc-ds/editor/editor.component.scss",
@@ -24383,6 +24412,7 @@
     "projects/orc-ds/scrollpanel/ng-package.json",
     "projects/orc-ds/scrolltop/index.ts",
     "projects/orc-ds/scrolltop/ng-package.json",
+    "projects/orc-ds/scrolltop/scroll-top-direction.spec.ts",
     "projects/orc-ds/scrolltop/scroll-top.component.spec.ts",
     "projects/orc-ds/segmented-control/index.ts",
     "projects/orc-ds/segmented-control/ng-package.json",
@@ -24444,6 +24474,7 @@
     "projects/orc-ds/speeddial/ng-package.json",
     "projects/orc-ds/spinner/index.ts",
     "projects/orc-ds/spinner/ng-package.json",
+    "projects/orc-ds/spinner/spinner-escape.spec.ts",
     "projects/orc-ds/spinner/spinner.component.html",
     "projects/orc-ds/spinner/spinner.component.scss",
     "projects/orc-ds/spinner/spinner.component.ts",
@@ -25093,7 +25124,7 @@
     "projects/docs/src/app/pages/home/home.component.scss",
     "projects/docs/src/app/pages/home/home.component.spec.ts",
     "projects/docs/src/app/pages/home/home.component.ts",
-    "projects/docs/src/app/pages/sandbox/inside-modal-sandbox.component.ts",
+    "projects/docs/src/app/pages/testing/overlay-matrix-page.component.ts",
     "projects/docs/src/app/services/component-catalog.service.ts",
     "projects/docs/src/app/services/easter-egg.service.ts",
     "projects/docs/src/app/services/seo.service.ts",

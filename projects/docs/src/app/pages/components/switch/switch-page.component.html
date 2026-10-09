@@ -437,10 +437,10 @@
             <pre
               class="code-card__snippet"
             ><code>&lt;!-- Two-way binding com Signals --&gt;
-&lt;app-switch [(checked)]="notificacoesAtivas" label="Ativar notificações" /&gt;
+&lt;orc-switch [(checked)]="notificacoesAtivas" label="Ativar notificações" /&gt;
 
 &lt;!-- Com helper text e tamanho pequeno --&gt;
-&lt;app-switch
+&lt;orc-switch
   [(checked)]="modoEconomia"
   size="sm"
   label="Modo de economia"
@@ -452,7 +452,7 @@
             <div class="code-card__title">
               2. Formulários reativos com ControlValueAccessor
             </div>
-            <pre class="code-card__snippet"><code>&lt;app-switch
+            <pre class="code-card__snippet"><code>&lt;orc-switch
   formControlName="autenticacaoDoisFatores"
   label="Autenticação em duas etapas"
   [error]="form.get('autenticacaoDoisFatores')?.invalid && form.get('autenticacaoDoisFatores')?.touched"
@@ -464,7 +464,7 @@
             <div class="code-card__title">
               3. Rótulo à esquerda (labelPosition="start")
             </div>
-            <pre class="code-card__snippet"><code>&lt;app-switch
+            <pre class="code-card__snippet"><code>&lt;orc-switch
   [(checked)]="visibilidadePerfil"
   labelPosition="start"
   label="Perfil visível publicamente"

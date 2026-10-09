@@ -247,4 +247,15 @@
   </div>
 
   <app-footer />
+
+  @if (entry()?.id === 'scroll-top') {
+    <!-- Live demo on the page itself: the preview above scrolls a contained box. -->
+    <orc-scroll-top target="window" [threshold]="200" />
+    <orc-scroll-top
+      target="window"
+      [threshold]="200"
+      direction="down"
+      [style]="{ bottom: 'auto', top: '5rem', right: '1.25rem' }"
+    />
+  }
 </div>

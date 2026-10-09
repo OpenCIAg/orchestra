@@ -47,6 +47,10 @@ export class FloatingActionButtonComponent {
   readonly clicked = output<MouseEvent>();
 }
 
+/**
+ * @deprecated Use `ButtonComponent` (`orc-button` from `@ciag/orchestra/button`) with
+ * `variant="close"`. Removed at the 23.0.0 gate.
+ */
 @Component({
   selector: 'orc-close-button',
   standalone: true,
