@@ -17,36 +17,19 @@
     "url": "https://github.com/OpenCIAg/orchestra"
   },
   "homepage": "https://orchestra.ciag.org.br",
-  "style": "styles/index.scss",
-  "sass": "styles/index.scss",
+  "style": "styles.css",
   "sideEffects": [
-    "styles/**/*.scss",
-    "styles/**/*.css"
+    "styles.css",
+    "reset.css"
   ],
   "exports": {
-    "./styles": {
-      "sass": "./styles/index.scss",
-      "default": "./styles/index.scss"
+    "./styles.css": {
+      "style": "./styles.css",
+      "default": "./styles.css"
     },
-    "./styles/index": {
-      "sass": "./styles/index.scss",
-      "default": "./styles/index.scss"
-    },
-    "./styles/index.scss": {
-      "sass": "./styles/index.scss",
-      "default": "./styles/index.scss"
-    },
-    "./styles/core": {
-      "sass": "./styles/core.scss",
-      "default": "./styles/core.scss"
-    },
-    "./styles/core.scss": {
-      "sass": "./styles/core.scss",
-      "default": "./styles/core.scss"
-    },
-    "./styles/*": {
-      "sass": "./styles/*",
-      "default": "./styles/*"
+    "./reset.css": {
+      "style": "./reset.css",
+      "default": "./reset.css"
     }
   },
   "peerDependencies": {

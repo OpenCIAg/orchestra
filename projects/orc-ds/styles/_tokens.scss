@@ -1,5 +1,8 @@
-@layer orchestra.tokens {
+// Tokens independentes de tema. Os tokens de cor semântica ficam em
+// themes/_light.scss e themes/_dark.scss. Tabela completa: TOKENS.md.
+@layer orc.tokens {
   :root {
+    // Primitivos da marca CIAg (não variam com o tema).
     --orc-color-azul-eletrico: #1c6aed;
     --orc-color-azul-royal: #0406ab;
     --orc-color-laranja: #ff6a1c;
@@ -7,69 +10,88 @@
     --orc-color-roxo-lavender: #6a1ced;
     --orc-color-azul-navy: #004b77;
 
-    --color-success: #006f4a;
-    --color-error: #fb2c36;
-    --color-warning: #fe9a00;
-    --color-info: #2b7fff;
+    // Série categórica para gráficos, derivada da marca.
+    --orc-chart-1: var(--orc-color-azul-eletrico);
+    --orc-chart-2: var(--orc-color-laranja);
+    --orc-chart-3: var(--orc-color-ciano);
+    --orc-chart-4: var(--orc-color-roxo-lavender);
+    --orc-chart-5: var(--orc-color-azul-royal);
+    --orc-chart-6: var(--orc-color-azul-navy);
 
-    --font-sans:
+    // Tipografia.
+    --orc-font-sans:
       'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
       Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+    --orc-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+    --orc-font-size-xs: 0.75rem;
+    --orc-font-size-sm: 0.875rem;
+    --orc-font-size-md: 1rem;
+    --orc-font-size-lg: 1.125rem;
+    --orc-font-size-xl: 1.25rem;
+    --orc-font-size-2xl: 1.5rem;
+    --orc-font-weight-regular: 400;
+    --orc-font-weight-medium: 500;
+    --orc-font-weight-semibold: 600;
+    --orc-font-weight-bold: 700;
+    --orc-line-height-tight: 1.25;
+    --orc-line-height-base: 1.5;
+    --orc-line-height-relaxed: 1.6;
 
-    --space-1: 0.25rem;
-    --space-2: 0.5rem;
-    --space-3: 0.75rem;
-    --space-4: 1rem;
-    --space-5: 1.25rem;
-    --space-6: 1.5rem;
-    --space-8: 2rem;
-    --space-10: 2.5rem;
-    --space-12: 3rem;
-    --space-16: 4rem;
-    --space-20: 5rem;
+    // Espaçamento (escala de 4px).
+    --orc-space-1: 0.25rem;
+    --orc-space-2: 0.5rem;
+    --orc-space-3: 0.75rem;
+    --orc-space-4: 1rem;
+    --orc-space-5: 1.25rem;
+    --orc-space-6: 1.5rem;
+    --orc-space-8: 2rem;
+    --orc-space-10: 2.5rem;
+    --orc-space-12: 3rem;
+    --orc-space-16: 4rem;
+    --orc-space-20: 5rem;
 
+    // Dimensões de controle e alvo mínimo de ação.
     --orc-control-height-sm: 2.25rem;
     --orc-control-height-md: 2.75rem;
     --orc-control-height-lg: 3.25rem;
     --orc-action-target-size: 1.5rem;
 
-    --radius-sm: 0.375rem;
-    --radius-md: 0.625rem;
-    --radius-lg: 0.875rem;
-    --radius-xl: 1.25rem;
-    --radius-full: 9999px;
+    // Raio.
+    --orc-radius-sm: 0.375rem;
+    --orc-radius-md: 0.625rem;
+    --orc-radius-lg: 0.875rem;
+    --orc-radius-xl: 1.25rem;
+    --orc-radius-full: 9999px;
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-md:
-      0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-    --shadow-lg:
-      0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --orc-shadow-color: rgb(15 23 42 / 0.14);
-    --orc-interactive-shadow: rgb(37 99 235 / 0.25);
+    // Foco (a cor é por tema: --orc-focus-ring-color).
+    --orc-focus-ring-width: 2px;
+    --orc-focus-ring-offset: 2px;
 
+    // Camadas de empilhamento.
+    --orc-z-dropdown: 1000;
+    --orc-z-sticky: 1020;
+    --orc-z-fixed: 1030;
+    --orc-z-modal-backdrop: 1040;
+    --orc-z-modal: 1050;
+    --orc-z-popover: 1060;
+    --orc-z-tooltip: 1070;
+    --orc-z-toast: 1080;
+
+    // Movimento.
+    --orc-duration-fast: 120ms;
+    --orc-duration-base: 200ms;
+    --orc-duration-slow: 300ms;
+    --orc-easing-standard: ease;
+    --orc-transition-fast: var(--orc-duration-fast) var(--orc-easing-standard);
+    --orc-transition-base: var(--orc-duration-base) var(--orc-easing-standard);
+    --orc-transition-slow: var(--orc-duration-slow) var(--orc-easing-standard);
+
+    // Blocos de código: sempre escuros, nos dois temas.
     --orc-code-surface: #0f172a;
     --orc-code-surface-raised: #1e293b;
     --orc-code-border: #334155;
     --orc-code-text: #e2e8f0;
     --orc-code-muted: #94a3b8;
     --orc-code-accent: #4ade80;
-
-    --transition-fast: 120ms ease;
-    --transition-base: 200ms ease;
-    --transition-slow: 300ms ease;
-
-    --z-dropdown: 1000;
-    --z-sticky: 1020;
-    --z-fixed: 1030;
-    --z-modal-backdrop: 1040;
-    --z-modal: 1050;
-    --z-popover: 1060;
-    --z-tooltip: 1070;
-    --z-toast: 1080;
-
-    --orc-on-interactive: #ffffff;
-    --orc-on-danger: #ffffff;
-    --orc-on-dark: #ffffff;
   }
 }

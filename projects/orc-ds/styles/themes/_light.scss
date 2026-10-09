@@ -1,61 +1,60 @@
-@use './semantics';
+// Valores do tema claro (padrão). Só valores literais aqui; tokens derivados
+// ficam em _derived.scss e são redeclarados em cada fronteira de tema.
+@mixin values {
+  color-scheme: light;
 
-@layer orchestra.tokens {
-  :root,
-  [data-theme='light'],
-  .theme-light:not([data-theme='dark']) {
-    color-scheme: light;
-    --orc-bg: #ffffff;
-    --orc-font-main: #141414;
-    --orc-secondary-bg: #d9d9d9;
-    --orc-font-secondary: #666666;
-    --orc-border: #d9d9d9;
-    --orc-fill-input: #ffffff;
-    --orc-th: #f9f9f9;
-    --orc-fill-modal: #ffffff;
-    --orc-highlight-cinza-claro: #ededed;
-    --orc-opposite-bw: #ffffff;
-    --orc-overlay-surface: #141414;
-    --orc-overlay-text: #ffffff;
-    --color-accent: #141414;
-    --color-accent-hover: #2a2a2a;
-    --color-accent-fg: #ffffff;
-    // Re-declared from _tokens.scss so a light-scoped subtree keeps the
-    // light status palette even when the OS prefers dark and no root
-    // theme attribute narrows _dark.scss's media query away.
-    --color-success: #006f4a;
-    --color-error: #fb2c36;
-    --color-warning: #fe9a00;
-    --color-info: #2b7fff;
-    --color-warning-text: #8b4c00;
-    --text-muted: #666666;
-    --status-neutral-soft-bg: #eceef2;
-    --status-neutral-soft-fg: #141414;
-    --status-info-soft-bg: #e1eaf6;
-    --status-info-soft-fg: #1d4ed8;
-    --status-success-soft-bg: #b8e7d7;
-    --status-success-soft-fg: #006f4a;
-    --status-warning-soft-bg: #f6ecdd;
-    --status-warning-soft-fg: #92400e;
-    --status-danger-soft-bg: #f6d7d8;
-    --status-danger-soft-fg: #b91c1c;
-    --skeleton-base: #f1f5f9;
-    --skeleton-highlight: #e2e8f0;
-    --orc-interactive: #1c6aed;
-    --orc-interactive-hover: #1556be;
-    --orc-interactive-soft: #eff6ff;
-    --orc-on-interactive: #ffffff;
-    --orc-on-danger: #ffffff;
-    --orc-on-dark: #ffffff;
-    --orc-scrim: rgb(15 23 42 / 0.56);
-    --orc-shadow-color: rgb(15 23 42 / 0.14);
-    --orc-interactive-shadow: rgb(37 99 235 / 0.25);
-    --orc-danger: #c8192c;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-md:
-      0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-    --shadow-lg:
-      0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    @include semantics.aliases;
-  }
+  // Superfícies.
+  --orc-surface: #ffffff;
+  --orc-surface-raised: #ffffff;
+  --orc-surface-subtle: #f9f9f9;
+  --orc-surface-muted: #ededed;
+  --orc-surface-control: #ffffff;
+  --orc-surface-inverse: #141414;
+  --orc-scrim: rgb(15 23 42 / 0.56);
+
+  // Texto.
+  --orc-text: #141414;
+  --orc-text-secondary: #666666;
+  --orc-text-muted: #666666;
+  --orc-on-primary: #ffffff;
+  --orc-on-danger: #ffffff;
+  --orc-on-inverse: #ffffff;
+
+  // Bordas.
+  --orc-border: #d9d9d9;
+  --orc-border-strong: #d9d9d9;
+
+  // Primária (interação).
+  --orc-primary: #1c6aed;
+  --orc-primary-hover: #1556be;
+  --orc-primary-subtle: #eff6ff;
+  --orc-primary-shadow: rgb(28 106 237 / 0.25);
+
+  // Tons de feedback.
+  --orc-neutral-fg: #141414;
+  --orc-neutral-bg: #eceef2;
+  --orc-info: #2b7fff;
+  --orc-info-fg: #1d4ed8;
+  --orc-info-bg: #e1eaf6;
+  --orc-success: #006f4a;
+  --orc-success-fg: #006f4a;
+  --orc-success-bg: #b8e7d7;
+  --orc-warning: #fe9a00;
+  --orc-warning-fg: #92400e;
+  --orc-warning-bg: #f6ecdd;
+  --orc-danger: #c8192c;
+  --orc-danger-fg: #b91c1c;
+  --orc-danger-bg: #f6d7d8;
+
+  // Sombras.
+  --orc-shadow-color: rgb(15 23 42 / 0.14);
+  --orc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --orc-shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --orc-shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  // Skeleton.
+  --orc-skeleton-base: #f1f5f9;
+  --orc-skeleton-highlight: #e2e8f0;
 }

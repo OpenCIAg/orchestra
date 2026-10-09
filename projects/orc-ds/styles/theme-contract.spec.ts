@@ -17,7 +17,7 @@ import { TooltipComponent } from '../tooltip/tooltip.component';
     TagComponent,
     TooltipComponent,
   ],
-  styleUrl: './core.scss',
+  styleUrl: './orchestra.scss',
   encapsulation: ViewEncapsulation.None,
   template: `<section
       class="theme-scope"
@@ -323,5 +323,94 @@ describe('Theme and component style contracts without the global reset', () => {
       (owned.firstElementChild as HTMLElement).getBoundingClientRect().width,
     ).toBe(60);
     expect(application.getBoundingClientRect().width).toBe(124);
+  });
+
+  function token(element: Element, name: string): string {
+    return getComputedStyle(element).getPropertyValue(name).trim();
+  }
+
+  it('exposes the CIAg identity through the canonical --orc-* vocabulary per theme', () => {
+    const { fixture, host } = setup();
+    const surface = fixture.nativeElement.querySelector('.surface');
+    const nested = fixture.nativeElement.querySelector('.nested');
+    expect(token(surface, '--orc-primary')).toBe('#1c6aed');
+    expect(token(surface, '--orc-color-azul-eletrico')).toBe('#1c6aed');
+    expect(token(surface, '--orc-surface')).toBe('#ffffff');
+    expect(token(surface, '--orc-text')).toBe('#141414');
+    expect(token(nested, '--orc-surface')).toBe('#1f1f1f');
+    expect(token(nested, '--orc-primary')).toBe('#60a5fa');
+    for (const name of [
+      '--orc-space-4',
+      '--orc-radius-md',
+      '--orc-font-sans',
+      '--orc-z-modal',
+      '--orc-duration-fast',
+      '--orc-focus-ring-width',
+      '--orc-shadow-overlay',
+    ])
+      expect(token(surface, name)).withContext(name).not.toBe('');
+    for (const tone of ['info', 'success', 'warning', 'danger'])
+      for (const part of ['', '-fg', '-bg', '-border'])
+        expect(token(nested, `--orc-${tone}${part}`))
+          .withContext(`--orc-${tone}${part}`)
+          .not.toBe('');
+    host.theme.set('dark');
+    host.nested.set('light');
+    fixture.detectChanges();
+    expect(token(surface, '--orc-primary')).toBe('#60a5fa');
+    expect(token(nested, '--orc-primary')).toBe('#1c6aed');
+  });
+
+  it('draws the focus ring with the interaction color, not the near-black accent', () => {
+    const { fixture } = setup();
+    const probe = document.createElement('div');
+    probe.style.outline =
+      'var(--orc-focus-ring-width) solid var(--orc-focus-ring-color)';
+    fixture.nativeElement.querySelector('.surface').appendChild(probe);
+    expect(getComputedStyle(probe).outlineColor).toBe('rgb(28, 106, 237)');
+    expect(getComputedStyle(probe).outlineWidth).toBe('2px');
+  });
+
+  it('keeps the internal legacy aliases resolving to the canonical tokens at each theme boundary', () => {
+    const { fixture } = setup();
+    for (const selector of ['.surface', '.nested']) {
+      const element = fixture.nativeElement.querySelector(selector);
+      const probe = document.createElement('div');
+      element.appendChild(probe);
+      for (const [legacy, canonical] of [
+        ['--bg-app', '--orc-surface'],
+        ['--orc-bg', '--orc-surface'],
+        ['--text-primary', '--orc-text'],
+        ['--orc-font-main', '--orc-text'],
+        ['--border-default', '--orc-border'],
+        ['--orc-interactive', '--orc-primary'],
+        ['--status-danger-soft-fg', '--orc-danger-fg'],
+        ['--orc-status-warning-border', '--orc-warning-border'],
+        ['--shadow-lg', '--orc-shadow-lg'],
+        ['--space-4', '--orc-space-4'],
+        ['--radius-md', '--orc-radius-md'],
+        ['--transition-fast', '--orc-transition-fast'],
+      ]) {
+        // Custom properties compute with var() substituted, so equal
+        // computed values mean the alias resolves to the canonical token.
+        probe.style.setProperty('--probe-a', `var(${legacy})`);
+        probe.style.setProperty('--probe-b', `var(${canonical})`);
+        expect(token(probe, '--probe-a'))
+          .withContext(`${selector} ${legacy}`)
+          .not.toBe('');
+        expect(token(probe, '--probe-a'))
+          .withContext(`${selector} ${legacy}`)
+          .toBe(token(probe, '--probe-b'));
+      }
+    }
+  });
+
+  it('leaves application elements outside components unreset', () => {
+    const { fixture } = setup();
+    const heading = document.createElement('h1');
+    heading.textContent = 'App heading';
+    fixture.nativeElement.appendChild(heading);
+    expect(getComputedStyle(heading).marginTop).not.toBe('0px');
+    expect(getComputedStyle(document.body).fontFamily).not.toContain('Poppins');
   });
 });

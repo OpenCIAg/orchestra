@@ -62,7 +62,7 @@
                 "output": "/"
               }
             ],
-            "styles": ["projects/docs/src/styles.scss"],
+            "styles": ["projects/docs/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -123,7 +123,7 @@
                 "output": "/"
               }
             ],
-            "styles": ["projects/docs/src/styles.scss"],
+            "styles": ["projects/docs/src/styles.css"],
             "scripts": []
           }
         }
@@ -156,7 +156,11 @@
                 "output": "/"
               }
             ],
-            "styles": ["projects/template/src/styles.scss"],
+            "styles": [
+              "@ciag/orchestra/reset.css",
+              "@ciag/orchestra/styles.css",
+              "projects/template/src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {

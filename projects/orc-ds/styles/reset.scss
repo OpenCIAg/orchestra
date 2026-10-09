@@ -1,4 +1,9 @@
-@layer orchestra.base {
+// Fonte de `@ciag/orchestra/reset.css`: reset global OPCIONAL, nunca incluído
+// em styles.css. Fica na camada `orc.reset`, abaixo de tudo da Orchestra e de
+// qualquer CSS sem camada do app.
+@use './layers';
+
+@layer orc.reset {
   *,
   *::before,
   *::after {
@@ -15,10 +20,10 @@
   }
 
   body {
-    font-family: var(--font-sans);
-    background-color: var(--bg-app);
-    color: var(--text-primary);
-    line-height: 1.6;
+    font-family: var(--orc-font-sans);
+    background-color: var(--orc-surface);
+    color: var(--orc-text);
+    line-height: var(--orc-line-height-relaxed);
     min-height: 100vh;
   }
 
@@ -32,16 +37,16 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
-    border-radius: var(--radius-full);
+    background: var(--orc-border-strong);
+    border-radius: var(--orc-radius-full);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: var(--orc-focus-ring-width) solid var(--orc-focus-ring-color);
+    outline-offset: var(--orc-focus-ring-offset);
   }
 
   ::selection {
-    background: var(--orc-highlight-cinza-claro);
+    background: var(--orc-surface-muted);
   }
 }

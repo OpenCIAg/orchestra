@@ -71,7 +71,7 @@ readonly options = [
 | A custom spinner overlay                               | `orc-spinner` or `orc-progress-*`                                                                     |
 | Stringifying generic options                           | Keep `T` in `orc-combobox<T>`, `orc-listbox<T>`, `orc-multi-select<T>`, or `orc-segmented-control<T>` |
 | Duplicating `ModalComponent` under a new name          | Use `dialog` alias or extend the canonical modal API in the library                                   |
-| Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-color-azul-eletrico` and `--space-4`                                                       |
+| Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-primary` and `--orc-space-4`                                                               |
 | Removing focus styles to match a screenshot            | Adjust the token while preserving a visible focus indicator                                           |
 
 When migrating from generic controls, keep the domain state in the consuming component and replace only the view/control boundary. The library does not require a global service for basic state; Signals are local and explicit.
@@ -83,7 +83,7 @@ When changing a component or using an API not covered by an existing playground:
 1. Confirm the export in `projects/orc-ds/public-api.ts` or the secondary entry-point `index.ts`.
 2. Confirm the selector and public `input`, `model`, `output`, and directive fields in the component source.
 3. Add the component to a standalone consumer's `imports` array.
-4. Load `@ciag/orchestra/styles/index` before app styles.
+4. Load `@ciag/orchestra/styles.css` before app styles.
 5. Check keyboard, focus, error, disabled, loading, empty, and dark-mode states.
 6. Run `npm run build:lib` and `npm run build:docs`.
 7. If the change is a new public API, add a focused unit/accessibility test, update the catalog usage doc, and regenerate this reference (`npm run docs:generate-agent-reference`).

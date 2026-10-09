@@ -1,0 +1,8 @@
+// Fonte de `@ciag/orchestra/styles.css`, compilado no build da lib
+// (tools/styles/build-css.mjs). O consumidor importa o CSS, não este arquivo.
+@use './layers';
+@use './tokens';
+@use './themes';
+@use './base';
+// LEGACY-ALIASES: temporário da migração 22.4; remover junto com o arquivo.
+@use './legacy-aliases';

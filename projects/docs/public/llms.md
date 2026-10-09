@@ -36,25 +36,30 @@ The library expects Angular 22-compatible `@angular/common`, `@angular/core`, an
 
 Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables.
 
-```scss
-/* src/styles.scss */
-@use '@ciag/orchestra/styles/index';
+```css
+/* src/styles.css (plain CSS, no Sass needed) */
+@import '@ciag/orchestra/styles.css';
+/* optional global reset */
+@import '@ciag/orchestra/reset.css';
 
-/* local overrides belong after the library layer */
+/* local overrides: unlayered app CSS always wins over @layer orc */
 ```
 
-The theme follows system preference by default. A consumer may set `data-theme="dark"` on `html` when its shell owns theme selection. The docs app also exposes a manual theme toggle.
+The theme follows system preference by default. A consumer may set `data-theme="dark"` on `html` (or any subtree) when its shell owns theme selection. The docs app also exposes a manual theme toggle. `orc-icon` does not load fonts: add the Material Symbols `<link>` to `index.html`.
 
-Important tokens include:
+Important tokens (full table in `@ciag/orchestra/styles/TOKENS.md`):
 
-| Group     | Tokens                                                                                                                                                   |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Brand     | `--orc-color-azul-eletrico`, `--orc-color-azul-royal`, `--orc-color-laranja`, `--orc-color-ciano`, `--orc-color-roxo-lavender`, `--orc-color-azul-navy`  |
-| Surfaces  | `--orc-bg`, `--orc-th`, `--orc-fill-input`, `--orc-fill-modal`, `--orc-highlight-cinza-claro`, `--orc-secondary-bg`, `--orc-border`, `--orc-opposite-bw` |
-| Text      | `--orc-font-main`, `--orc-font-secondary`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-inverse`                                        |
-| Semantics | `--color-accent`, `--color-accent-hover`, `--color-accent-fg`, `--color-success`, `--color-error`, `--color-warning`, `--color-info`                     |
-| Aliases   | `--bg-app`, `--bg-subtle`, `--bg-muted`, `--bg-inverse`, `--border-default`, `--border-strong`                                                           |
-| Layout    | `--space-1` through `--space-20`, `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-xl`, `--radius-full`                                            |
+| Group    | Tokens                                                                                                                                                  |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Brand    | `--orc-color-azul-eletrico`, `--orc-color-azul-royal`, `--orc-color-laranja`, `--orc-color-ciano`, `--orc-color-roxo-lavender`, `--orc-color-azul-navy` |
+| Surfaces | `--orc-surface`, `--orc-surface-raised`, `--orc-surface-subtle`, `--orc-surface-muted`, `--orc-surface-control`, `--orc-surface-inverse`, `--orc-scrim` |
+| Text     | `--orc-text`, `--orc-text-secondary`, `--orc-text-muted`, `--orc-on-primary`, `--orc-on-danger`, `--orc-on-inverse`                                     |
+| Borders  | `--orc-border`, `--orc-border-strong`, `--orc-focus-ring-color`                                                                                         |
+| Primary  | `--orc-primary`, `--orc-primary-hover`, `--orc-primary-subtle`                                                                                          |
+| Tones    | `--orc-{info,success,warning,danger}` plus `-fg`, `-bg`, `-border`; `--orc-neutral-{fg,bg,border}`                                                      |
+| Layout   | `--orc-space-1` through `--orc-space-20`, `--orc-radius-{sm,md,lg,xl,full}`, `--orc-shadow-{sm,md,lg,overlay}`, `--orc-z-*`                             |
+| Type     | `--orc-font-sans`, `--orc-font-mono`, `--orc-font-size-*`, `--orc-font-weight-*`, `--orc-line-height-*`                                                 |
+| Motion   | `--orc-duration-{fast,base,slow}`, `--orc-easing-standard`, `--orc-transition-{fast,base,slow}`                                                         |
 
 ### Minimal standalone component
 
@@ -1593,7 +1598,7 @@ readonly options = [
 | A custom spinner overlay                               | `orc-spinner` or `orc-progress-*`                                                                     |
 | Stringifying generic options                           | Keep `T` in `orc-combobox<T>`, `orc-listbox<T>`, `orc-multi-select<T>`, or `orc-segmented-control<T>` |
 | Duplicating `ModalComponent` under a new name          | Use `dialog` alias or extend the canonical modal API in the library                                   |
-| Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-color-azul-eletrico` and `--space-4`                                                       |
+| Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-primary` and `--orc-space-4`                                                               |
 | Removing focus styles to match a screenshot            | Adjust the token while preserving a visible focus indicator                                           |
 
 When migrating from generic controls, keep the domain state in the consuming component and replace only the view/control boundary. The library does not require a global service for basic state; Signals are local and explicit.
@@ -1605,7 +1610,7 @@ When changing a component or using an API not covered by an existing playground:
 1. Confirm the export in `projects/orc-ds/public-api.ts` or the secondary entry-point `index.ts`.
 2. Confirm the selector and public `input`, `model`, `output`, and directive fields in the component source.
 3. Add the component to a standalone consumer's `imports` array.
-4. Load `@ciag/orchestra/styles/index` before app styles.
+4. Load `@ciag/orchestra/styles.css` before app styles.
 5. Check keyboard, focus, error, disabled, loading, empty, and dark-mode states.
 6. Run `npm run build:lib` and `npm run build:docs`.
 7. If the change is a new public API, add a focused unit/accessibility test, update the catalog usage doc, and regenerate this reference (`npm run docs:generate-agent-reference`).

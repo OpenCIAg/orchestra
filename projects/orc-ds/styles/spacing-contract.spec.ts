@@ -20,7 +20,7 @@ import { focusElement } from '../../../tools/quality/test-focus-events';
     SelectComponent,
     TagComponent,
   ],
-  styleUrl: './core.scss',
+  styleUrl: './orchestra.scss',
   encapsulation: ViewEncapsulation.None,
   template: `
     <section>

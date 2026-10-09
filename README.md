@@ -20,30 +20,29 @@ npm install @ciag/orchestra @angular/cdk
 
 ## Styling & Design Tokens
 
-Include Orchestra's multi-tier design tokens, CSS layers, and themes in your application's `styles.scss`:
+Orchestra ships plain CSS; no Sass is required. Import it from your application's `styles.css`:
 
-```scss
-@use '@ciag/orchestra/styles/index';
+```css
+@import '@ciag/orchestra/styles.css'; /* tokens, light/dark themes, component base */
+@import '@ciag/orchestra/reset.css'; /* optional global reset */
 ```
 
-`styles/index` preserves Orchestra's legacy global reset for existing applications. New applications that own their CSS reset can load the tokens, themes, layers, and mixins without that global reset:
-
-```scss
-@use '@ciag/orchestra/styles/core';
-```
-
-Both style entries apply border-box sizing within component-owned `.orc-*` subtrees. The core entry leaves unrelated application boxes, typography, margins and padding alone. Theme boundaries can use `data-theme="light"`, `data-theme="dark"`, `.theme-light` or `.theme-dark`; an explicit data attribute takes precedence over a conflicting class, and explicit themes override the system preference. Nested themes resolve their own semantic colors and shadows.
-
-`npm run test:themes:ci` checks the compiled core styles in separate browser runs with light and dark preferences, including nested themes, status text contrast and component sizing without the global reset.
-
-Or add the shipped Sass entry directly to `angular.json`:
+Or list the files in `angular.json`:
 
 ```json
 "styles": [
-  "node_modules/@ciag/orchestra/styles/index.scss",
-  "src/styles.scss"
+  "@ciag/orchestra/styles.css",
+  "src/styles.css"
 ]
 ```
+
+- `styles.css` holds the single `--orc-*` token vocabulary, the light/dark themes and a minimal base that only applies border-box sizing inside component-owned `.orc-*` subtrees. It never touches application typography, margins or padding.
+- `reset.css` is the optional global reset (zeroed margins, body font/colors, scrollbars, focus ring). Import it only if the app has no reset of its own.
+- Everything lives under the `orc` cascade layer (`@layer orc.reset, orc.tokens, orc.base, orc.components`), so unlayered application CSS always wins.
+- Themes: light by default, `prefers-color-scheme: dark` when the root has no explicit theme, and `data-theme="light" | "dark"` on any element (nestable). `.theme-light`/`.theme-dark` remain accepted.
+- `orc-icon` does not download fonts: load Material Symbols in `index.html` (see the docs app) or self-host it.
+
+The full token table lives in [`projects/orc-ds/styles/TOKENS.md`](projects/orc-ds/styles/TOKENS.md) (shipped as `styles/TOKENS.md`). `npm run test:themes:ci` checks the compiled styles in separate light and dark browser runs.
 
 ### Theme Switching
 
