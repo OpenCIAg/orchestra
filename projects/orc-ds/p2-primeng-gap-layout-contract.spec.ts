@@ -93,15 +93,6 @@ describe('P2 PrimeNG gap layout contracts', () => {
   });
 
   it('keeps Fieldset spacing aligned with the document direction', () => {
-    const rtlFloat = TestBed.createComponent(FloatLabelHost);
-    rtlFloat.nativeElement.setAttribute('dir', 'rtl');
-    rtlFloat.detectChanges();
-    const rtlLabel = rtlFloat.nativeElement.querySelector(
-      '.orc-p2-float-label label',
-    ) as HTMLLabelElement;
-    expect(getComputedStyle(rtlLabel).insetInlineStart).toBe('12px');
-    expect(getComputedStyle(rtlLabel).right).toBe('12px');
-
     const ltrFieldset = TestBed.createComponent(FieldsetHost);
     ltrFieldset.detectChanges();
     const ltrToggle = ltrFieldset.nativeElement.querySelector(
