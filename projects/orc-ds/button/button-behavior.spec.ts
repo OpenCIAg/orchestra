@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { IconComponent } from '@ciag/orchestra/icon';
 import { ButtonComponent } from './button.component';
 
 @Component({
@@ -19,6 +20,14 @@ class ProjectedButton {
   iconOnly = signal(false);
   clicks = 0;
 }
+
+@Component({
+  imports: [ButtonComponent, IconComponent],
+  template: `<orc-button iconOnly size="sm" ariaLabel="Salvar"
+    ><orc-icon name="check"
+  /></orc-button>`,
+})
+class DefaultSlotIconOnlyButton {}
 
 describe('Button layout and browser interaction', () => {
   it('normalizes projected SVG size and leaves exactly one gap before the label', () => {
@@ -108,7 +117,21 @@ describe('Button layout and browser interaction', () => {
       fixture.nativeElement.querySelector('button');
     const text: HTMLElement =
       fixture.nativeElement.querySelector('.orc-button__text');
-    expect(getComputedStyle(text).display).toBe('none');
+    expect(text.querySelector('span')!.getBoundingClientRect().width).toBe(0);
     expect(button.getAttribute('aria-label')).toBe('Save');
+  });
+
+  it('keeps an orc-icon projected in the default slot visible in icon-only mode (21.x contract)', () => {
+    const fixture = TestBed.createComponent(DefaultSlotIconOnlyButton);
+    fixture.detectChanges();
+    const root: HTMLElement = fixture.nativeElement;
+    const glyph = root.querySelector('orc-icon .orc-icon') as HTMLElement;
+    expect(getComputedStyle(glyph).fontSize).toBe('16px');
+    const box = glyph.getBoundingClientRect();
+    expect(box.width).toBeGreaterThan(0);
+    expect(box.height).toBeGreaterThan(0);
+    expect(root.querySelector('button')!.getAttribute('aria-label')).toBe(
+      'Salvar',
+    );
   });
 });

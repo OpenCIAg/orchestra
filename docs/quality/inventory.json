@@ -6708,6 +6708,7 @@
       "outputs": [],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/button/button-behavior.spec.ts",
         "projects/orc-ds/icon/icon.component.spec.ts",
         "projects/orc-ds/size-vocabulary-contract.spec.ts"
       ]

@@ -1,5 +1,11 @@
 # @ciag/orchestra
 
+## 22.4.0-rc.2 (release candidate, dist-tag `next`)
+
+### Patch Changes
+
+- `orc-button` with `iconOnly`: an `<orc-icon>` projected in the default slot is visible again (21.x contract). Since 22.2.0 icon-only hid the whole default slot with `display: none`, so only icons in the `iconLeft`/`iconRight` slots rendered. Loose text in the default slot stays visually hidden; the accessible name still comes from `ariaLabel`.
+
 ## 22.4.0-rc.1 (release candidate, dist-tag `next`)
 
 ### Minor Changes

@@ -377,8 +377,15 @@
   padding: 0;
   aspect-ratio: 1;
 }
+// Icon-only keeps projected elements (the 21.x contract: `<orc-icon>` in the
+// default slot) and hides only loose text nodes. `orc-icon` sets its own
+// font-size, so `font-size: 0` collapses text without hiding the glyph.
 .orc-button--icon-only .orc-button__text {
-  display: none;
+  font-size: 0;
+  gap: 0;
+}
+.orc-button--icon-only .orc-button__text ::ng-deep orc-icon .orc-icon {
+  font-size: var(--orc-button-icon-size) !important;
 }
 .orc-button--icon-only.orc-button--size-sm {
   width: 2rem;
