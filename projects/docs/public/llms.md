@@ -34,11 +34,11 @@ The library expects Angular 22-compatible `@angular/common`, `@angular/core`, an
 
 ### Load the design tokens
 
-Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables.
+Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables. Since 22.4 the styles ship as plain CSS (tokens as CSS custom properties inside `@layer`); consumers do not need Sass.
 
-```scss
-/* src/styles.scss */
-@use '@ciag/orchestra/styles/index';
+```css
+/* src/styles.css */
+@import '@ciag/orchestra/styles.css';
 
 /* local overrides belong after the library layer */
 ```
@@ -325,6 +325,22 @@ Content: button label is projected between tags. SVG strings may be passed to `i
 ```html
 <orc-button variant="primary" [loading]="saving" (click)="save()">Save</orc-button> <orc-icon-button icon="search" ariaLabel="Search" variant="ghost" />
 ```
+
+Dispara uma ação: enviar um formulário, abrir um diálogo, confirmar uma operação. Tem variantes de ênfase, três tamanhos, ícones e estado de carregamento.
+
+Quando usar (pt-BR):
+
+- Para a ação principal de um formulário ou diálogo, com `variant="primary"` e no máximo uma ação primária por área.
+- Para ações secundárias ao lado da principal, com ênfase menor (`secondary`, `outline` ou `ghost`).
+- Para ações destrutivas, com `variant="danger"`, de preferência confirmadas em um modal.
+- Para ações compactas em barras de ferramentas, só com ícone (`iconOnly` e `ariaLabel`).
+
+Quando não usar (pt-BR):
+
+- Para navegar para outra rota ou página. Um botão não é link: use `<a routerLink>`. Use `link`.
+- Para ligar e desligar um estado que permanece visível. Use `toggle-button`.
+- Para escolher uma entre poucas opções mutuamente exclusivas. Use `segmented-control`.
+- Para esconder várias ações secundárias atrás de um único gatilho. Use `menu`.
 
 - **ButtonComponent (orc-button)**
   - Inputs: `variant` (ButtonVariant) default `'primary'`, `severity` (ButtonVariant | undefined) default `undefined`, `size` (ButtonSize) default `'md'`, `disabled` (boolean) default `false`, `loading` (boolean) default `false`, `fullWidth` (boolean) default `false`, `text` (boolean) default `false`, `outlined` (boolean) default `false`, `raised` (boolean) default `false`, `rounded` (boolean) default `false`, `plain` (boolean) default `false`, `fluid` (boolean) default `false`, `link` (boolean) default `false`, `icon` (string | undefined) default `undefined`, `iconPos` ('left' | 'right' | 'top' | 'bottom') default `'left'`, `loadingIcon` (string | undefined) default `undefined`, `id` (string | undefined) default `undefined`, `tabindex` (number | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `ariaExpanded` (boolean | undefined) default `undefined`, `ariaControls` (string | undefined) default `undefined`, `form` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `badge` (string | number | undefined) default `undefined`, `badgeClass` (string) default `''`, `iconLeft` (string | undefined) default `undefined`, `iconRight` (string | undefined) default `undefined`, `iconOnly` (boolean) default `false`, `type` ('button' | 'submit' | 'reset') default `'button'`, `ariaLabel` (string | undefined) default `undefined`
@@ -764,9 +780,24 @@ Compatibility no-ops `selectOnFocus`, `autoOptionFocus`, `searchMessage`, `selec
   - Inputs: `values` (MeterItem[]) default `[]`, `value` (MeterItem[] | undefined) default `undefined`, `min` (number) default `0`, `max` (number) default `100`, `color` (string) default `'#3b82f6'`, `label` (string) default `''`, `labelPosition` ('start' | 'end') default `'end'`, `labelOrientation` ('horizontal' | 'vertical') default `'horizontal'`, `orientation` ('horizontal' | 'vertical') default `'horizontal'`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `ariaLabel` (string | undefined) default `undefined`
 - Interactive docs: https://orchestra.ciag.org.br/components/meter-group
 
-### Modal / Dialog — `@ciag/orchestra/modal`
+### Modal — `@ciag/orchestra/modal`
 
 The visibility models are `isOpen` and the PrimeNG-compatible `visible` (use only one for a given instance); `maximized` is also a two-way model. The native dialog's previous active element is restored on close. Use `modal-header`, `modal-body`, and `modal-footer` slots. Deprecated no-op compatibility inputs include dragging/resizing, attachment, breakpoint sizing, mask styling, custom viewport bounds, transition timing, and explicit RTL.
+
+Janela de diálogo sobre a página, com fundo escurecido, foco preso dentro dela e fechamento por Esc. Para decisões e tarefas curtas que pedem atenção total.
+
+Quando usar (pt-BR):
+
+- Para confirmar uma ação destrutiva ou irreversível antes de executá-la.
+- Para uma tarefa curta e focada (editar um item, preencher poucos campos) sem sair da tela.
+- Para informações bloqueantes que a pessoa precisa reconhecer antes de continuar.
+
+Quando não usar (pt-BR):
+
+- Para conteúdo longo ou fluxos de várias etapas ao lado da página: prefira um painel lateral. Use `drawer`.
+- Para avisos que não exigem resposta (salvo com sucesso, erro de rede). Use `toast`.
+- Para detalhes contextuais ancorados a um elemento. Use `popover`.
+- Para mensagens permanentes na própria página. Use `alert`.
 
 - **ModalComponent (orc-modal)**
   - Inputs: `header` (string | undefined) default `undefined`, `modal` (boolean) default `true`, `closeOnEscape` (boolean) default `true`, `dismissableMask` (boolean) default `true`, `closable` (boolean) default `true`, `maximizable` (boolean) default `false`, `focusOnShow` (boolean) default `true`, `focusTrap` (boolean) default `true`, `blockScroll` (boolean) default `true`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `1000`, `position` (| 'center' | 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright') default `'center'`, `style` (string | Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `contentStyle` (Record<string, string | number> | undefined) default `undefined`, `contentStyleClass` (string) default `''`, `role` (string) default `'dialog'`, `showHeader` (boolean) default `true`, `closeIcon` (string) default `'×'`, `closeAriaLabel` (string | undefined) default `undefined`, `minimizeIcon` (string) default `'−'`, `maximizeIcon` (string) default `'+'`, `restoreAriaLabel` (string | undefined) default `undefined`, `maximizeAriaLabel` (string | undefined) default `undefined`, `closeTabindex` (string) default `'0'`, `size` (ModalSize) default `'md'`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `status` (ModalStatus) default `'neutral'`, `inline` (boolean) default `false`, `closeOnBackdropClick` (boolean) default `true`, `showCloseButton` (boolean) default `true`, `ariaLabelledBy` (string) default `''`, `ariaDescribedBy` (string) default `''`, `zIndex` (number) default `1000`
@@ -959,6 +990,21 @@ Set `filter` or `searchable` to enable the search field; when `filter` is omitte
 The `name` input creates native hidden form fields for the selected value; multiple selection creates one field per selected option, and disabled controls submit no value. The trigger and portaled search panel form one focus boundary for CVA `updateOn: 'blur'`; internal focus changes do not mark touched or emit blur, and leaving the composite does so once. `lazy` and `virtualScroll` emit one initial `onLazyLoad` range when the panel opens; incremental loading and virtualized rendering are not implemented. A supplied `loadingIcon` is rendered as CSS classes. `orc-option` inputs are `id`, `label`, `value`, `description`, `icon`, `avatarUrl`, and `disabled`. Project plain text or presentational content inside an option; nested buttons and links have no supported listbox interaction model.
 
 Deprecated compatibility inputs with no behavior are `overlayOptions`, `autofocusFilter`, `editable`, `checkmark`, `optionGroupLabel`, `optionGroupChildren`, `autoDisplayFirst`, `group`, `virtualScrollItemSize`, `virtualScrollOptions`, `itemSize`, `selectOnFocus`, `showTransitionOptions`, `hideTransitionOptions`, `tooltip`, `tooltipPosition`, `tooltipPositionStyle`, and `tooltipStyleClass`.
+
+Campo para escolher uma ou várias opções de uma lista fechada. Abre um painel com navegação por teclado, busca opcional e integração com formulários do Angular.
+
+Quando usar (pt-BR):
+
+- Para escolher um valor de uma lista conhecida com mais de cinco opções (projeto, estado, responsável).
+- Para seleção múltipla compacta com `multiple`, quando a lista não cabe em checkboxes.
+- Em formulários: funciona com `formControlName`, `ngModel` e `[(value)]`.
+
+Quando não usar (pt-BR):
+
+- Para até cinco opções sempre visíveis, em que comparar as escolhas importa. Use `radio`.
+- Quando a pessoa digita para buscar em uma lista grande ou remota. Use `autocomplete`.
+- Quando os itens são texto livre criado pela própria pessoa (etiquetas). Use `tags-input`.
+- Para disparar ações em vez de escolher um valor. Use `menu`.
 
 - **OptionComponent (orc-option)**
   - Inputs: `id` (string) default `''`, `value` (any) default `undefined`, `label` (string) default `''`, `description` (string | undefined) default `undefined`, `icon` (string | undefined) default `undefined`, `avatarUrl` (string | undefined) default `undefined`, `disabled` (boolean) default `false`

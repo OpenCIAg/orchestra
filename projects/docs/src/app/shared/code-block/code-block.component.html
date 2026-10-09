@@ -1,0 +1,29 @@
+<div class="code-block">
+  <div class="code-block__bar">
+    <span class="code-block__file">{{ filename() }}</span>
+    <button
+      type="button"
+      class="code-block__copy"
+      [attr.aria-label]="
+        (copied() ? ui.copied : ui.copy) + (filename() ? ': ' + filename() : '')
+      "
+      (click)="copy()"
+    >
+      <orc-icon
+        [name]="copied() ? 'check' : 'content_copy'"
+        size="sm"
+        aria-hidden="true"
+      />
+      <span>{{ copied() ? ui.copied : ui.copy }}</span>
+    </button>
+    <span class="code-block__live" aria-live="polite">{{
+      copied() ? ui.copied : ''
+    }}</span>
+  </div>
+  <pre
+    class="code-block__pre"
+    tabindex="0"
+    role="region"
+    [attr.aria-label]="label() || filename() || ui.code"
+  ><code>{{ code() }}</code></pre>
+</div>

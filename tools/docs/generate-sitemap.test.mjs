@@ -18,14 +18,14 @@ const catalogEntries = [
 test('buildUrlEntries orders static pages first, then catalog routes', () => {
   const entries = buildUrlEntries(catalogEntries);
   assert.deepEqual(
-    entries.slice(0, 4).map((entry) => entry.path),
-    ['/', '/docs', '/llms.txt', '/llms.md'],
+    entries.slice(0, 5).map((entry) => entry.path),
+    ['/', '/primeiros-passos', '/docs', '/llms.txt', '/llms.md'],
   );
   assert.deepEqual(
-    entries.slice(4).map((entry) => entry.path),
+    entries.slice(5).map((entry) => entry.path),
     ['/components/accordion', '/components/button', '/components/chip#demo'],
   );
-  assert.equal(staticPages().length, 4);
+  assert.equal(staticPages().length, 5);
 });
 
 test('renderSitemap emits canonical URLs with lastmod, changefreq and priority', () => {
@@ -42,7 +42,7 @@ test('renderSitemap emits canonical URLs with lastmod, changefreq and priority',
     xml,
     /<loc>https:\/\/orchestra\.ciag\.org\.br\/components\/chip#demo<\/loc>/,
   );
-  assert.equal(xml.split('<url>').length - 1, 7);
+  assert.equal(xml.split('<url>').length - 1, 8);
   assert.match(xml, /<\/urlset>\n$/);
 });
 
@@ -65,6 +65,7 @@ test('lastmodSources pins each URL to its backing sources', () => {
   assert.deepEqual(options, [
     '/repo/projects/docs/src/app/pages/home',
     '/repo/projects/docs/src/app/catalog',
+    '/repo/projects/docs/src/app/content/components',
   ]);
   const llms = lastmodSources(root, { path: '/llms.md' });
   assert.ok(llms.some((source) => source.endsWith('agent-reference')));
@@ -73,6 +74,7 @@ test('lastmodSources pins each URL to its backing sources', () => {
     catalogId: 'button',
   });
   assert.deepEqual(component, [
+    '/repo/projects/docs/src/app/content/components/button',
     '/repo/projects/docs/src/app/catalog/button.catalog.ts',
     '/repo/projects/docs/src/app/pages/components/button',
   ]);

@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
+import { loadDocsRegistry } from '../docs/docs-registry-lib.mjs';
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -241,7 +242,25 @@ for (const row of directiveServiceLedgerRows) {
   }
 }
 
+// Registro da docs: conteúdo novo válido e entry points que existem.
+const docsRegistry = loadDocsRegistry(root);
+const entryPointNames = new Set(
+  (inventory.entryPoints ?? []).map((entryPoint) => entryPoint.name),
+);
+const docsRegistryProblems = [
+  ...docsRegistry.problems,
+  ...docsRegistry.content
+    .filter((family) => !entryPointNames.has(family.doc.packagePath))
+    .map(
+      (family) =>
+        `content/components/${family.id}: packagePath ${family.doc.packagePath} não é um entry point inventariado`,
+    ),
+];
+
 const result = {
+  docsRegistryEntries: docsRegistry.entries.length,
+  docsRegistryContentFamilies: docsRegistry.content.length,
+  docsRegistryProblems,
   qualityMarkdown: qualityFiles.length,
   localMarkdownLinks: qualityLocalLinks,
   publicLlmsLocalLinks: publicGuideLocalLinks,
@@ -262,6 +281,7 @@ const result = {
 };
 console.log(JSON.stringify(result, null, 2));
 if (
+  docsRegistryProblems.length ||
   unresolved.length ||
   sourceAnchorsOutOfDate.length ||
   ledgerMissing.length ||

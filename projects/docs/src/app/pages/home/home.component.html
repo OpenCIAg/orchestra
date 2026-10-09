@@ -3,12 +3,34 @@
   <main class="main">
     <!-- Hero -->
     <div class="hero">
-      <div class="hero__eyebrow">Biblioteca de Componentes · v22.2.0 RC</div>
-      <h1 class="hero__title">O que você quer construir?</h1>
+      <div class="hero__eyebrow">Orchestra 22.4 · release candidate</div>
+      <h1 class="hero__title">Componentes Angular com a identidade da CIAg</h1>
       <p class="hero__subtitle">
-        Componentes Angular acessíveis, fortemente tipados e prontos para
-        produção.
+        Acessíveis, em pt-BR, feitos com Signals e tokens CSS. Instale o pacote,
+        importe o CSS e use só o que precisar.
       </p>
+      <div class="hero__actions">
+        <a class="hero__cta hero__cta--primary" routerLink="/primeiros-passos"
+          >Primeiros passos</a
+        >
+        <a class="hero__cta" routerLink="/" fragment="results"
+          >Ver componentes</a
+        >
+      </div>
+      <ul class="principles" aria-label="Princípios">
+        @for (principle of principles; track principle.title) {
+          <li class="principles__item">
+            <orc-icon
+              class="principles__icon"
+              [name]="principle.icon"
+              size="sm"
+              aria-hidden="true"
+            />
+            <span class="principles__title">{{ principle.title }}</span>
+            <span class="principles__text">{{ principle.text }}</span>
+          </li>
+        }
+      </ul>
     </div>
 
     <!-- Search -->
@@ -68,7 +90,7 @@
           >"</span
         >
       } @else {
-        <span>{{ resultCount() }} componentes</span>
+        <span>{{ resultCount() }} famílias de componentes</span>
       }
     </div>
 

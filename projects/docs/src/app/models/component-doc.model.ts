@@ -1,4 +1,16 @@
+import type { Type } from '@angular/core';
 import type { ComponentEntry } from './component-entry.model';
+
+/**
+ * Exemplo ao vivo da página genérica antiga (formato legacy). O índice é
+ * gerado em `generated/docs-registry/legacy-examples.generated.ts`.
+ */
+export interface ComponentExample {
+  readonly type: Type<unknown>;
+  readonly inputs?: Readonly<Record<string, unknown>>;
+}
+
+export type ComponentExampleLoader = () => Promise<ComponentExample>;
 
 export interface ComponentVariation {
   label: string;

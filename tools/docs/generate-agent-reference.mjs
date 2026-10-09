@@ -6,7 +6,7 @@
  *                                  entry-point map and component reference)
  *   projects/docs/public/llms.txt (generated manifest with canonical links)
  *
- * Inputs are committed data: the colocated docs catalog, the component
+ * Inputs are committed data: the docs registry (docs-registry-lib.mjs), the component
  * inventory, and the hand-written narrative in tools/docs/agent-reference/.
  * Outputs are committed so the docs build needs no prebuild step; drift is
  * caught in CI via --check (part of verify:docs).
@@ -21,17 +21,16 @@ import { fileURLToPath } from 'node:url';
 import prettier from 'prettier';
 import {
   buildReferenceContext,
-  loadCatalogEntries,
   renderAgentReference,
   renderLlmsTxt,
 } from './agent-reference-lib.mjs';
+import { loadDocsRegistry } from './docs-registry-lib.mjs';
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   '../..',
 );
 const canonicalBase = 'https://orchestra.ciag.org.br';
-const catalogDir = path.join(root, 'projects/docs/src/app/catalog');
 const narrativeDir = path.join(root, 'tools/docs/agent-reference');
 const notesDir = path.join(narrativeDir, 'notes');
 const llmsMdPath = path.join(root, 'projects/docs/public/llms.md');
@@ -42,7 +41,22 @@ const check = process.argv.includes('--check');
 const inventory = JSON.parse(
   fs.readFileSync(path.join(root, 'docs/quality/inventory.json'), 'utf8'),
 );
-const { entries, usageDocs } = loadCatalogEntries(catalogDir);
+const registry = loadDocsRegistry(root);
+if (registry.problems.length) {
+  console.error(
+    'Docs registry is invalid; run `npm run verify:docs-registry` for details.',
+  );
+  process.exit(1);
+}
+const entries = registry.entries;
+const usageDocs = Object.fromEntries(
+  entries
+    .filter((entry) => entry.packagePath)
+    .map((entry) => [entry.id, { packagePath: entry.packagePath }]),
+);
+const contentDocs = Object.fromEntries(
+  registry.content.map((family) => [family.id, family.doc.i18n['pt-BR']]),
+);
 const packageVersion = JSON.parse(
   fs.readFileSync(path.join(root, 'projects/orc-ds/package.json'), 'utf8'),
 ).version;
@@ -67,6 +81,7 @@ const context = buildReferenceContext(
   entries,
   canonicalBase,
   usageDocs,
+  contentDocs,
 );
 
 const generatedHeader = [

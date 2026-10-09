@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * CI gate: every inventoried component family must have a colocated catalog
- * entry and a resolvable documentation page route. Usage:
+ * CI gate: every inventoried component family must have an entry in the docs
+ * registry (content/components/<id>/ or, during the 22.4 transition, a legacy
+ * catalog/<id>.catalog.ts) and a resolvable documentation route. Usage:
  *   node tools/quality/check-docs-coverage.mjs
  * Exits non-zero when the catalog does not cover the inventory.
  */
@@ -10,62 +11,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { evaluateCoverage } from './docs-coverage-lib.mjs';
+import { loadDocsRegistry } from '../docs/docs-registry-lib.mjs';
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   '../..',
 );
-
-function evaluateLiteral(node, source) {
-  if (ts.isStringLiteralLike(node)) return node.text;
-  if (ts.isArrayLiteralExpression(node))
-    return node.elements.map((element) => evaluateLiteral(element, source));
-  if (ts.isObjectLiteralExpression(node)) {
-    const value = {};
-    for (const property of node.properties) {
-      if (!ts.isPropertyAssignment(property)) continue;
-      const name = property.name.getText(source).replace(/^['"]|['"]$/g, '');
-      value[name] = evaluateLiteral(property.initializer, source);
-    }
-    return value;
-  }
-  throw new Error(
-    `Unsupported literal in catalog entry: ${node.getText(source)}`,
-  );
-}
-
-function readCatalogEntries(catalogDir) {
-  const entries = [];
-  const problems = [];
-  for (const file of fs
-    .readdirSync(catalogDir)
-    .filter((name) => name.endsWith('.catalog.ts'))
-    .sort()) {
-    const text = fs.readFileSync(path.join(catalogDir, file), 'utf8');
-    const source = ts.createSourceFile(
-      file,
-      text,
-      ts.ScriptTarget.Latest,
-      true,
-    );
-    for (const statement of source.statements) {
-      if (!ts.isVariableStatement(statement)) continue;
-      for (const declaration of statement.declarationList.declarations) {
-        if (!ts.isObjectLiteralExpression(declaration.initializer)) continue;
-        if (!declaration.name.getText(source).endsWith('_CATALOG_ENTRY'))
-          continue;
-        const entry = evaluateLiteral(declaration.initializer, source);
-        const expectedFile = `${entry.id}.catalog.ts`;
-        if (file !== expectedFile)
-          problems.push(
-            `${file} must be named ${expectedFile} to match its entry id`,
-          );
-        entries.push(entry);
-      }
-    }
-  }
-  return { entries, problems };
-}
 
 function readRoutePaths(routesFile) {
   const text = fs.readFileSync(routesFile, 'utf8');
@@ -89,23 +40,24 @@ function readRoutePaths(routesFile) {
   return paths;
 }
 
-const catalogDir = path.join(root, 'projects/docs/src/app/catalog');
-if (!fs.existsSync(catalogDir)) {
-  console.error(
-    `Catalog directory not found: ${path.relative(root, catalogDir)}`,
-  );
-  process.exit(1);
-}
-const { entries, problems } = readCatalogEntries(catalogDir);
+const registry = loadDocsRegistry(root);
+const entries = registry.entries;
+const problems = registry.problems;
 const inventory = JSON.parse(
   fs.readFileSync(path.join(root, 'docs/quality/inventory.json'), 'utf8'),
 );
 const declarations = inventory.declarations.filter(
   (declaration) => declaration.kind === 'Component',
 );
-const routePaths = readRoutePaths(
-  path.join(root, 'projects/docs/src/app/app.routes.ts'),
-);
+const routePaths = [
+  ...readRoutePaths(path.join(root, 'projects/docs/src/app/app.routes.ts')),
+  ...readRoutePaths(
+    path.join(
+      root,
+      'projects/docs/src/app/generated/docs-registry/routes.generated.ts',
+    ),
+  ),
+];
 const coverage = evaluateCoverage({
   declarations,
   catalogEntries: entries,
@@ -133,13 +85,14 @@ const report = {
   totalComponents: coverage.totalComponents,
   coveredComponents: coverage.coveredComponents,
   catalogEntries: entries.length,
+  contentFamilies: registry.content.length,
   families: coverage.families.length,
   problems: problemsAll,
 };
 console.log(JSON.stringify(report, null, 2));
 if (problemsAll.length) {
   console.error(
-    '\nDocumentation coverage gate failed. Add a catalog/<id>.catalog.ts entry for each missing family.',
+    '\nDocumentation coverage gate failed. Add content/components/<id>/ for each missing family (docs/overhaul/GUIA-DOCS.md) and run npm run docs:generate-registry.',
   );
   process.exit(1);
 }

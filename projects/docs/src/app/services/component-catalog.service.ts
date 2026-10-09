@@ -1,14 +1,17 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { ComponentEntry } from '../models/component-entry.model';
 import { CATALOG_ENTRIES, COMPONENT_USAGE_DOCS } from '../catalog';
+import { docsUi } from '../i18n/docs-ui';
+import type { RegistryEntry } from '../models/component-entry.model';
+import {
+  FAMILY_GROUP_ORDER,
+  type FamilyGroup,
+} from '../models/component-page.model';
 
-/**
- * Category values double as filter identifiers, so they stay stable; only the
- * display label is translated. Terms adopted by Brazilian design vocabulary
- * (Layout, Overlay, Feedback) keep their loanword form.
- */
-const CATEGORY_LABELS: Record<string, string> = {
-  All: 'Todos',
+/** Valor do filtro "todas as categorias". */
+export const ALL_GROUPS = 'all';
+
+/** Rótulos das categorias antigas (`category`), ainda exibidos pela página genérica. */
+const LEGACY_CATEGORY_LABELS: Record<string, string> = {
   Inputs: 'Entradas',
   Navigation: 'Navegação',
   Feedback: 'Feedback',
@@ -19,51 +22,55 @@ const CATEGORY_LABELS: Record<string, string> = {
   Utility: 'Utilitários',
 };
 
+/** Rótulo pt-BR de um grupo de navegação ou de uma categoria antiga. */
 export function categoryLabel(category: string): string {
-  return CATEGORY_LABELS[category] ?? category;
+  if (category === ALL_GROUPS) return 'Todos';
+  const groups = docsUi().groups as Record<string, string>;
+  return groups[category] ?? LEGACY_CATEGORY_LABELS[category] ?? category;
 }
 
 /**
- * Loads the colocated per-component catalog modules (src/app/catalog). The
- * data spine is enforced by tools/quality/check-docs-coverage.mjs: every
- * inventoried component family must have a `<id>.catalog.ts` entry and a
- * resolvable documentation route.
+ * Catálogo pesquisável da home e da página genérica antiga. Os dados vêm do
+ * registro gerado (`npm run docs:generate-registry`), nunca de listas à mão.
  */
 @Injectable({ providedIn: 'root' })
 export class ComponentCatalogService {
   private readonly _query = signal('');
-  private readonly _selectedCategory = signal<string>('All');
+  private readonly _selectedCategory = signal<string>(ALL_GROUPS);
 
   readonly query = this._query.asReadonly();
   readonly selectedCategory = this._selectedCategory.asReadonly();
 
-  private readonly entriesById = new Map<string, ComponentEntry>(
+  private readonly entriesById = new Map<string, RegistryEntry>(
     CATALOG_ENTRIES.map((entry) => [entry.id, entry]),
   );
 
-  readonly allCategories = computed(() => {
-    const cats = ['All', ...new Set(CATALOG_ENTRIES.map((c) => c.category))];
-    return cats;
-  });
+  /** `all` + os grupos com ao menos uma família, na ordem da navegação. */
+  readonly allCategories = computed<string[]>(() => [
+    ALL_GROUPS,
+    ...FAMILY_GROUP_ORDER.filter((group) =>
+      CATALOG_ENTRIES.some((entry) => entry.group === group),
+    ),
+  ]);
 
   readonly filteredComponents = computed(() => {
     const q = this._query().toLowerCase().trim();
-    const cat = this._selectedCategory();
+    const group = this._selectedCategory();
 
     return CATALOG_ENTRIES.filter((component) => {
-      const matchesCategory = cat === 'All' || component.category === cat;
-      if (!q) return matchesCategory;
+      const matchesGroup = group === ALL_GROUPS || component.group === group;
+      if (!q) return matchesGroup;
 
       const matchesSearch =
         component.name.toLowerCase().includes(q) ||
         component.description.toLowerCase().includes(q) ||
         component.tags.some((tag) => tag.toLowerCase().includes(q));
 
-      return matchesCategory && matchesSearch;
+      return matchesGroup && matchesSearch;
     });
   });
 
-  byId(id: string): ComponentEntry | undefined {
+  byId(id: string): RegistryEntry | undefined {
     return this.entriesById.get(id);
   }
 
@@ -75,7 +82,7 @@ export class ComponentCatalogService {
     this._query.set(q);
   }
 
-  setCategory(cat: string): void {
+  setCategory(cat: FamilyGroup | typeof ALL_GROUPS | string): void {
     this._selectedCategory.set(cat);
   }
 }
