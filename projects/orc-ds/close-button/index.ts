@@ -1,1 +1,1 @@
-export { CloseButtonComponent } from '@ciag/orchestra/p2';
+export { CloseButtonComponent } from './close-button.component';

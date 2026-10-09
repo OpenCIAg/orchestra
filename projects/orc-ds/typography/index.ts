@@ -1,1 +1,1 @@
-export { TypographyComponent } from '@ciag/orchestra/p2';
+export { TypographyComponent } from './typography.component';

@@ -1,1 +1,1 @@
-export { ButtonGroupComponent } from '@ciag/orchestra/p2';
+export { ButtonGroupComponent } from './button-group.component';

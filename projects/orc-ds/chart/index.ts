@@ -1,2 +1,2 @@
-export { ChartComponent } from '@ciag/orchestra/p2';
-export type { ChartData, ChartDataset, ChartType } from '@ciag/orchestra/p2';
+export { ChartComponent } from './chart.component';
+export type { ChartData, ChartDataset, ChartType } from './chart.component';

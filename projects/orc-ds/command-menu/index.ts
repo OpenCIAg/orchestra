@@ -1,2 +1,2 @@
-export { CommandMenuComponent } from '@ciag/orchestra/p2';
-export type { CommandItem } from '@ciag/orchestra/p2';
+export { CommandMenuComponent } from './command-menu.component';
+export type { CommandItem } from './command-menu.component';

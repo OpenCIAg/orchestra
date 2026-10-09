@@ -1,1 +1,1 @@
-export { TextComponent } from '@ciag/orchestra/p2';
+export { TextComponent } from './text.component';

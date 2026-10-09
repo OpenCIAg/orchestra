@@ -1,2 +1,5 @@
-export { SplitterComponent } from '@ciag/orchestra/p2';
-export type { SplitterPanel } from '@ciag/orchestra/p2';
+export {
+  SplitterComponent,
+  SplitterPanelContentDirective,
+} from './splitter.component';
+export type { SplitterPanel } from './splitter.component';

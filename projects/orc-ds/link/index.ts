@@ -1,1 +1,1 @@
-export { LinkComponent } from '@ciag/orchestra/p2';
+export { LinkComponent } from './link.component';

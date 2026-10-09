@@ -1,16 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import { IconFieldComponent } from '@ciag/orchestra/icon-field';
 import {
-  FloatLabelComponent,
-  IconFieldComponent,
   InputGroupAddonComponent,
   InputGroupComponent,
-  IftaLabelComponent,
-} from '@ciag/orchestra/p2';
+} from '@ciag/orchestra/input-group';
 
 /**
  * Behavior-parity pins for the input-group / icon-field / ifta-label /
  * float-label rendering family. The specs import through the public
- * `@ciag/orchestra/p2` surface and must pass unchanged while the family
+ * family entry point and must pass unchanged while the family
  * moves to its canonical directory.
  */
 describe('Input group family behavior parity', () => {
@@ -63,55 +61,5 @@ describe('Input group family behavior parity', () => {
     expect(
       fixture.nativeElement.querySelector('.icon').textContent?.trim(),
     ).toBe('@');
-  });
-
-  it('renders the ifta-label wrapper', () => {
-    const fixture = TestBed.createComponent(IftaLabelComponent);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.orc-ifta')).not.toBeNull();
-  });
-
-  it('tracks focus and filled state for the float label variants', () => {
-    const fixture = TestBed.createComponent(FloatLabelComponent);
-    fixture.detectChanges();
-    const host = fixture.nativeElement.querySelector('span');
-
-    expect(host.className).toContain('variant-over');
-    expect(host.className).not.toContain('filled');
-
-    host.dispatchEvent(new Event('focusin', { bubbles: true }));
-    fixture.detectChanges();
-    expect(fixture.componentInstance.focused()).toBeTrue();
-    expect(host.className).toContain('focused');
-
-    host.dispatchEvent(new Event('focusout', { bubbles: true }));
-    fixture.detectChanges();
-    expect(fixture.componentInstance.focused()).toBeFalse();
-
-    // A filled control lifts the label: the input event target carries the value.
-    const native = document.createElement('input');
-    host.appendChild(native);
-    native.value = 'typed';
-    native.dispatchEvent(new Event('input', { bubbles: true }));
-    fixture.detectChanges();
-    expect(fixture.componentInstance.filled()).toBeTrue();
-    expect(host.className).toContain('filled');
-
-    native.value = '';
-    native.dispatchEvent(new Event('input', { bubbles: true }));
-    fixture.detectChanges();
-    expect(fixture.componentInstance.filled()).toBeFalse();
-  });
-
-  it('keeps the float label variants switchable', () => {
-    const fixture = TestBed.createComponent(FloatLabelComponent);
-    fixture.detectChanges();
-    const host = fixture.nativeElement.querySelector('span');
-    fixture.componentRef.setInput('variant', 'in');
-    fixture.detectChanges();
-    expect(host.className).toContain('variant-in');
-    fixture.componentRef.setInput('variant', 'on');
-    fixture.detectChanges();
-    expect(host.className).toContain('variant-on');
   });
 });

@@ -1,1 +1,1 @@
-export { VisuallyHiddenComponent } from '@ciag/orchestra/p2';
+export { VisuallyHiddenComponent } from './visually-hidden.component';

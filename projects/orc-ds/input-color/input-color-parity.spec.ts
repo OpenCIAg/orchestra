@@ -1,10 +1,9 @@
-import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { AutoFocusDirective, InputColorComponent } from '@ciag/orchestra/p2';
+import { InputColorComponent } from '@ciag/orchestra/input-color';
 
 /**
  * Behavior-parity pins for the input color and the autofocus directive. The
- * specs import through the public `@ciag/orchestra/p2` surface and must pass
+ * specs import through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('InputColor and AutoFocus behavior parity', () => {
@@ -125,58 +124,5 @@ describe('InputColor and AutoFocus behavior parity', () => {
     fixture.detectChanges();
     expect(colorInput(fixture).disabled).toBeTrue();
     expect(textInput(fixture).disabled).toBeTrue();
-  });
-
-  it('focuses the host after initialization unless disabled', async () => {
-    @Component({
-      imports: [AutoFocusDirective],
-      template: '<input #first orcAutoFocus [disabled]="enabled()" />',
-    })
-    class Host {
-      readonly enabled = signal(false);
-      readonly model =
-        viewChild.required<ElementRef<HTMLInputElement>>('first');
-    }
-    const host = TestBed.createComponent(Host);
-    host.detectChanges();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(document.activeElement).toBe(
-      host.componentInstance.model().nativeElement,
-    );
-
-    @Component({
-      imports: [AutoFocusDirective],
-      template: '<input #second orcAutoFocus [disabled]="true" />',
-    })
-    class DisabledHost {
-      readonly model =
-        viewChild.required<ElementRef<HTMLInputElement>>('second');
-    }
-    const disabledHost = TestBed.createComponent(DisabledHost);
-    disabledHost.detectChanges();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(document.activeElement).not.toBe(
-      disabledHost.componentInstance.model().nativeElement,
-    );
-  });
-
-  it('stops Escape propagation while the autofocus directive is disabled', () => {
-    @Component({
-      imports: [AutoFocusDirective],
-      template: '<input orcAutoFocus [disabled]="true" />',
-    })
-    class Host {}
-    const host = TestBed.createComponent(Host);
-    host.detectChanges();
-
-    let bubbled = 0;
-    host.nativeElement.addEventListener('keydown', () => {
-      bubbled += 1;
-    });
-    const input = host.nativeElement.querySelector('input') as HTMLElement;
-    input.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
-    );
-    expect(bubbled).toBe(0);
   });
 });

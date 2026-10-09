@@ -1,1 +1,1 @@
-export { SeparatorComponent } from '@ciag/orchestra/p2';
+export { SeparatorComponent } from './separator.component';

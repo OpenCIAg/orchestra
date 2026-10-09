@@ -1,1 +1,1 @@
-export { PanelComponent } from '@ciag/orchestra/p2';
+export { PanelComponent } from './panel.component';

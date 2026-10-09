@@ -1,1 +1,1 @@
-export { InplaceComponent } from '@ciag/orchestra/p2';
+export { InplaceComponent } from './inplace.component';

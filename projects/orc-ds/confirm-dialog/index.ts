@@ -1,5 +1,5 @@
 export {
   ConfirmDialogComponent,
   ConfirmationService,
-} from '@ciag/orchestra/p2';
-export type { ConfirmationRequest } from '@ciag/orchestra/p2';
+} from './confirm-dialog.component';
+export type { ConfirmationRequest } from './confirm-dialog.component';

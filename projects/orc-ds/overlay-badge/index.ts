@@ -1,1 +1,1 @@
-export { OverlayBadgeComponent } from '@ciag/orchestra/p2';
+export { OverlayBadgeComponent } from './overlay-badge.component';

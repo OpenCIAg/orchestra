@@ -1,1 +1,1 @@
-export { FieldsetComponent } from '@ciag/orchestra/p2';
+export { FieldsetComponent } from './fieldset.component';

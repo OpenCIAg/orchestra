@@ -1,1 +1,1 @@
-export { ScrollPanelComponent } from '@ciag/orchestra/p2';
+export { ScrollPanelComponent } from './scroll-panel.component';

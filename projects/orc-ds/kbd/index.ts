@@ -1,1 +1,1 @@
-export { KbdComponent } from '@ciag/orchestra/p2';
+export { KbdComponent } from './kbd.component';

@@ -1,1 +1,1 @@
-export { InputColorComponent } from '@ciag/orchestra/p2';
+export { InputColorComponent } from './input-color.component';

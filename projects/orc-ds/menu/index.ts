@@ -1,2 +1,2 @@
-export { MenuComponent } from '@ciag/orchestra/p2';
-export type { PrimeMenuItem as MenuItem } from '@ciag/orchestra/p2';
+export { MenuComponent } from './menu.component';
+export type { PrimeMenuItem as MenuItem } from '@ciag/orchestra/internal';
