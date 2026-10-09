@@ -3,8 +3,11 @@
  * llms manifest (`projects/docs/public/llms.txt`) from committed data instead
  * of hand-maintained lists:
  *
- * - catalog entries (`projects/docs/src/app/catalog/<id>.catalog.ts`) supply
- *   the documented families, routes, and usage guidance anchors;
+ * - the docs registry (`tools/docs/docs-registry-lib.mjs`: the new
+ *   `content/components/<id>/<id>.doc.ts` sources plus the legacy
+ *   `catalog/<id>.catalog.ts` entries still in transition) supplies the
+ *   documented families, routes, package paths and, for migrated families,
+ *   the pt-BR description and "when to use" guidance;
  * - `docs/quality/inventory.json` supplies every secondary entry point with
  *   its export statements and every component declaration with its selector;
  * - the same family grouping as the docs renderer
@@ -149,6 +152,7 @@ export function buildReferenceContext(
   catalogEntries,
   canonicalBase,
   usageDocs = {},
+  contentDocs = {},
 ) {
   const declarations = inventory.declarations;
   const declarationsByDir = new Map();
@@ -170,6 +174,7 @@ export function buildReferenceContext(
     catalogById: new Map(catalogEntries.map((entry) => [entry.id, entry])),
     catalogOrder: catalogEntries,
     usageDocs,
+    contentDocs,
     declarationsByDir,
     declarationsByName,
     familyApi: buildComponentApi(inventory),
@@ -320,6 +325,22 @@ export function renderAgentReference({
       lines.push(note.trimEnd());
       lines.push('');
     }
+    const content = context.contentDocs?.[entry.id];
+    if (content) {
+      lines.push(`${content.description}`);
+      lines.push('');
+      lines.push('Quando usar (pt-BR):');
+      lines.push('');
+      for (const item of content.whenToUse) lines.push(`- ${item}`);
+      lines.push('');
+      lines.push('Quando não usar (pt-BR):');
+      lines.push('');
+      for (const item of content.whenNotToUse)
+        lines.push(
+          `- ${item.text}${item.alternative ? ` Use \`${item.alternative}\`.` : ''}`,
+        );
+      lines.push('');
+    }
     const members =
       context.familyApi[CATALOG_ID_FAMILY_ALIASES[entry.id] ?? entry.id] ?? [];
     if (members.length) {
@@ -360,6 +381,6 @@ Use the links below as the canonical reading order for coding agents. Prefer the
 - Render Orchestra components with their \`orc-*\` selectors; do not replace them with generic buttons, inputs, cards, alerts, tabs, or layout primitives when an Orchestra component exists.
 - Treat \`input()\` as a one-way input, \`model()\` as a two-way signal (\`[value]\`/\`(valueChange)\` or \`[(value)]\`), and \`output()\` as an event (\`(eventName)\`).
 - Preserve labels, helper/error text, keyboard behavior, focus rings, and ARIA properties when composing controls.
-- Load the token stylesheet before application styles: \`@use '@ciag/orchestra/styles/index';\`.
+- Load the plain-CSS token stylesheet before application styles: \`@import '@ciag/orchestra/styles.css';\`.
 `;
 }

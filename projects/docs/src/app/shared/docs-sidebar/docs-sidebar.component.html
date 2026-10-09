@@ -1,0 +1,41 @@
+<nav class="sidebar" [attr.aria-label]="ui.nav.label">
+  <details class="sidebar__mobile">
+    <summary class="sidebar__summary">
+      <span>{{ ui.nav.toggle }}</span>
+      @if (currentName()) {
+        <span class="sidebar__current">{{ currentName() }}</span>
+      }
+    </summary>
+    <ng-container *ngTemplateOutlet="list" />
+  </details>
+  <div class="sidebar__desktop">
+    <ng-container *ngTemplateOutlet="list" />
+  </div>
+</nav>
+
+<ng-template #list>
+  @for (group of groups; track group.id) {
+    <div class="sidebar__group">
+      <h2 class="sidebar__heading">{{ group.label }}</h2>
+      <ul class="sidebar__list" role="list">
+        @for (entry of group.entries; track entry.id) {
+          <li>
+            <a
+              class="sidebar__link"
+              [routerLink]="entry.route"
+              routerLinkActive="sidebar__link--active"
+              ariaCurrentWhenActive="page"
+            >
+              <span>{{ entry.name }}</span>
+              @if (entry.status === 'experimental') {
+                <span class="sidebar__flag">{{
+                  ui.status['experimental']
+                }}</span>
+              }
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</ng-template>

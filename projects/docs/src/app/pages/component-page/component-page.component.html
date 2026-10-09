@@ -1,0 +1,366 @@
+<div class="page">
+  <div class="layout">
+    <aside class="layout__nav">
+      <app-docs-sidebar [currentId]="doc().id" />
+    </aside>
+
+    <main class="layout__main" id="conteudo">
+      <article class="doc">
+        <!-- Cabeçalho -->
+        <header class="doc__header">
+          <nav class="doc__breadcrumb" aria-label="Trilha">
+            <a routerLink="/" fragment="results">{{
+              ui.page.breadcrumbRoot
+            }}</a>
+            <orc-icon name="chevron_right" size="sm" aria-hidden="true" />
+            <span>{{ groupLabel() }}</span>
+          </nav>
+          <div class="doc__title-row">
+            <h1 class="doc__title">{{ doc().name }}</h1>
+            @if (experimental()) {
+              <span class="doc__badge doc__badge--experimental">{{
+                ui.status['experimental']
+              }}</span>
+            }
+          </div>
+          <p class="doc__lead"><app-doc-text [text]="text().description" /></p>
+          @if (experimental()) {
+            <p class="doc__notice" role="note">
+              <orc-icon name="science" size="sm" aria-hidden="true" />
+              {{ ui.page.experimentalNotice }}
+            </p>
+          }
+          <app-code-block
+            class="doc__import"
+            [code]="importSnippet()"
+            [filename]="doc().packagePath"
+            [label]="ui.page.copyImport"
+          />
+        </header>
+
+        <!-- Quando usar / não usar -->
+        <section class="doc__section" [id]="sections.usage">
+          <h2 class="doc__h2">{{ ui.page.sections.usage }}</h2>
+          <div class="usage">
+            <div class="usage__card usage__card--do">
+              <h3 class="usage__title">
+                <orc-icon name="check_circle" size="sm" aria-hidden="true" />
+                {{ ui.page.sections.whenToUse }}
+              </h3>
+              <ul class="usage__list">
+                @for (item of text().whenToUse; track $index) {
+                  <li><app-doc-text [text]="item" /></li>
+                }
+              </ul>
+            </div>
+            <div class="usage__card usage__card--dont">
+              <h3 class="usage__title">
+                <orc-icon name="block" size="sm" aria-hidden="true" />
+                {{ ui.page.sections.whenNotToUse }}
+              </h3>
+              <ul class="usage__list">
+                @for (item of text().whenNotToUse; track $index) {
+                  <li>
+                    <app-doc-text [text]="item.text" />
+                    @if (item.alternative) {
+                      <span class="usage__alt">
+                        {{ ui.page.useInstead }}
+                        <a [routerLink]="['/components', item.alternative]">{{
+                          alternativeName(item.alternative)
+                        }}</a
+                        >.
+                      </span>
+                    }
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Exemplos -->
+        <section class="doc__section" [id]="sections.examples">
+          <h2 class="doc__h2">{{ ui.page.sections.examples }}</h2>
+          @for (example of examples(); track example.slug) {
+            @let exampleText = text().examples[example.slug];
+            <div class="example" [id]="exampleAnchor(example.slug)">
+              <h3 class="example__title">{{ exampleText.title }}</h3>
+              <p class="example__desc">
+                <app-doc-text [text]="exampleText.description" />
+              </p>
+              <div class="example__frame">
+                <div
+                  class="example__tabs"
+                  role="tablist"
+                  [attr.aria-label]="exampleText.title"
+                >
+                  @for (tab of exampleTabs; track tab) {
+                    @let active = view(example.slug) === tab;
+                    <button
+                      type="button"
+                      role="tab"
+                      class="example__tab"
+                      [class.example__tab--active]="active"
+                      [attr.data-view]="tab"
+                      [id]="example.slug + '-tab-' + tab"
+                      [attr.aria-selected]="active"
+                      [attr.aria-controls]="example.slug + '-panel-' + tab"
+                      [attr.tabindex]="active ? 0 : -1"
+                      (click)="setView(example.slug, tab)"
+                      (keydown)="onTabKeydown($event, example.slug)"
+                    >
+                      {{ tab === 'code' ? ui.page.code : ui.page.preview }}
+                    </button>
+                  }
+                </div>
+                <div
+                  class="example__preview"
+                  role="tabpanel"
+                  [id]="example.slug + '-panel-preview'"
+                  [attr.aria-labelledby]="example.slug + '-tab-preview'"
+                  [hidden]="view(example.slug) !== 'preview'"
+                >
+                  <ng-container *ngComponentOutlet="example.component" />
+                </div>
+                <div
+                  class="example__code"
+                  role="tabpanel"
+                  [id]="example.slug + '-panel-code'"
+                  [attr.aria-labelledby]="example.slug + '-tab-code'"
+                  [hidden]="view(example.slug) !== 'code'"
+                >
+                  <app-code-block
+                    [code]="example.source"
+                    [filename]="example.file"
+                  />
+                </div>
+              </div>
+            </div>
+          }
+        </section>
+
+        <!-- Anatomia -->
+        <section class="doc__section" [id]="sections.anatomy">
+          <h2 class="doc__h2">{{ ui.page.sections.anatomy }}</h2>
+          <dl class="anatomy">
+            @for (part of text().anatomy; track part.part) {
+              <div class="anatomy__row">
+                <dt>
+                  <code>{{ part.part }}</code>
+                </dt>
+                <dd><app-doc-text [text]="part.description" /></dd>
+              </div>
+            }
+          </dl>
+        </section>
+
+        <!-- API -->
+        <section class="doc__section" [id]="sections.api">
+          <h2 class="doc__h2">{{ ui.page.sections.api }}</h2>
+          <p class="doc__muted">{{ ui.page.apiIntro }}</p>
+          @for (member of api(); track member.component) {
+            <h3 class="api__member">
+              <code>{{ member.selector ?? member.component }}</code>
+              <span class="api__class">{{ member.component }}</span>
+            </h3>
+            @for (kind of apiKinds; track kind) {
+              @let rows = entriesOf(member, kind);
+              @if (rows.length) {
+                <div
+                  class="table-wrap"
+                  tabindex="0"
+                  role="region"
+                  [attr.aria-label]="
+                    member.component + ' — ' + ui.page.apiKinds[kind]
+                  "
+                >
+                  <table class="table">
+                    <caption>
+                      {{
+                        ui.page.apiKinds[kind]
+                      }}
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">{{ ui.page.apiName }}</th>
+                        <th scope="col">{{ ui.page.apiType }}</th>
+                        <th scope="col">{{ ui.page.apiDefault }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of rows; track row.name) {
+                        <tr>
+                          <th scope="row">
+                            <code>{{ row.name }}</code>
+                            @if (row.required) {
+                              <span class="api__required">{{
+                                ui.page.required
+                              }}</span>
+                            }
+                            @if (row.description) {
+                              <span class="api__desc">{{
+                                row.description
+                              }}</span>
+                            }
+                          </th>
+                          <td>
+                            <code class="api__type">{{ row.type ?? '—' }}</code>
+                          </td>
+                          <td>
+                            @if (row.defaultValue !== null) {
+                              <code>{{ row.defaultValue }}</code>
+                            } @else {
+                              —
+                            }
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            }
+          } @empty {
+            <p class="doc__muted">{{ ui.page.apiEmpty }}</p>
+          }
+        </section>
+
+        <!-- Acessibilidade -->
+        <section class="doc__section" [id]="sections.accessibility">
+          <h2 class="doc__h2">{{ ui.page.sections.accessibility }}</h2>
+          <h3 class="doc__h3">{{ ui.page.keyboard }}</h3>
+          @if (text().accessibility.keyboard.length) {
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ ui.page.keys }}</th>
+                    <th scope="col">{{ ui.page.action }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of text().accessibility.keyboard; track $index) {
+                    <tr>
+                      <td class="keys">
+                        @for (part of keyParts(row.keys); track $index) {
+                          <kbd>{{ part.key }}</kbd>
+                          @if (part.separator) {
+                            <span class="keys__sep">{{ part.separator }}</span>
+                          }
+                        }
+                      </td>
+                      <td><app-doc-text [text]="row.action" /></td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="doc__muted">{{ ui.page.noKeyboard }}</p>
+          }
+          <h3 class="doc__h3">{{ ui.page.aria }}</h3>
+          <ul class="doc__list">
+            @for (item of text().accessibility.aria; track $index) {
+              <li><app-doc-text [text]="item" /></li>
+            }
+          </ul>
+          @if (text().accessibility.notes?.length) {
+            <h3 class="doc__h3">{{ ui.page.consumerNotes }}</h3>
+            <ul class="doc__list">
+              @for (item of text().accessibility.notes; track $index) {
+                <li><app-doc-text [text]="item" /></li>
+              }
+            </ul>
+          }
+        </section>
+
+        <!-- Migração -->
+        <section class="doc__section" [id]="sections.migration">
+          <h2 class="doc__h2">{{ ui.page.sections.migration }}</h2>
+          <p class="doc__muted">{{ ui.page.migrationIntro }}</p>
+          <div class="table-wrap">
+            <table class="table table--migration">
+              <thead>
+                <tr>
+                  <th scope="col">{{ ui.page.before }}</th>
+                  <th scope="col">{{ ui.page.after }}</th>
+                  <th scope="col">{{ ui.page.note }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of text().migration; track $index) {
+                  <tr>
+                    <td><app-doc-text [text]="row.before" /></td>
+                    <td><app-doc-text [text]="row.after" /></td>
+                    <td>
+                      @if (row.note) {
+                        <app-doc-text [text]="row.note" />
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <footer class="doc__footer">
+          <nav class="pager" aria-label="Navegação entre componentes">
+            @if (neighbours().previous; as previous) {
+              <a class="pager__link" [routerLink]="previous.route">
+                <span class="pager__hint">{{ ui.page.previous }}</span>
+                <span class="pager__name">
+                  <orc-icon name="arrow_back" size="sm" aria-hidden="true" />
+                  {{ previous.name }}
+                </span>
+              </a>
+            }
+            @if (neighbours().next; as next) {
+              <a
+                class="pager__link pager__link--next"
+                [routerLink]="next.route"
+              >
+                <span class="pager__hint">{{ ui.page.next }}</span>
+                <span class="pager__name">
+                  {{ next.name }}
+                  <orc-icon name="arrow_forward" size="sm" aria-hidden="true" />
+                </span>
+              </a>
+            }
+          </nav>
+          <p class="doc__source">
+            {{ ui.page.editHint }}: <code>{{ sourceDir() }}</code>
+          </p>
+        </footer>
+      </article>
+
+      <aside class="toc" [attr.aria-label]="ui.page.onThisPage">
+        <p class="toc__title">{{ ui.page.onThisPage }}</p>
+        <ul class="toc__list">
+          @for (item of toc(); track item.id) {
+            <li>
+              <a class="toc__link" routerLink="." [fragment]="item.id">{{
+                item.label
+              }}</a>
+              @if (item.children.length) {
+                <ul class="toc__list toc__list--nested">
+                  @for (child of item.children; track child.id) {
+                    <li>
+                      <a
+                        class="toc__link"
+                        routerLink="."
+                        [fragment]="child.id"
+                        >{{ child.label }}</a
+                      >
+                    </li>
+                  }
+                </ul>
+              }
+            </li>
+          }
+        </ul>
+      </aside>
+    </main>
+  </div>
+  <app-footer />
+</div>

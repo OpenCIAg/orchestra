@@ -53,7 +53,12 @@
       "@ciag/orchestra/listbox": ["../orc-ds/listbox/index.ts"],
       "@ciag/orchestra/multi-select": ["../orc-ds/multi-select/index.ts"],
       "@ciag/orchestra/icon": ["../orc-ds/icon/index.ts"],
-      "@ciag/orchestra/tags-input": ["../orc-ds/tags-input/index.ts"]
+      "@ciag/orchestra/tags-input": ["../orc-ds/tags-input/index.ts"],
+      "@ciag/orchestra/spinner": ["../orc-ds/spinner/index.ts"],
+      "@ciag/orchestra/scroll-top": ["../orc-ds/scroll-top/index.ts"],
+      "@ciag/orchestra/float-label": ["../orc-ds/float-label/index.ts"],
+      "@ciag/orchestra/password": ["../orc-ds/password/index.ts"],
+      "@ciag/orchestra/meter-group": ["../orc-ds/meter-group/index.ts"]
     },
     "types": ["jasmine"]
   },

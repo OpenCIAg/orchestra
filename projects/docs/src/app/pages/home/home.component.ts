@@ -17,7 +17,11 @@ import {
   ComponentCatalogService,
   categoryLabel,
 } from '../../services/component-catalog.service';
-import { ComponentEntry } from '../../models/component-entry.model';
+import type {
+  ComponentEntry,
+  RegistryEntry,
+} from '../../models/component-entry.model';
+import { FAMILY_GROUP_ORDER } from '../../models/component-page.model';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { ScrollTopComponent } from '@ciag/orchestra/scroll-top';
 
@@ -42,6 +46,30 @@ export class HomeComponent {
 
   protected readonly catalog = inject(ComponentCatalogService);
 
+  /** Os quatro princípios da biblioteca (detalhes em /primeiros-passos). */
+  protected readonly principles = [
+    {
+      icon: 'palette',
+      title: 'Identidade',
+      text: 'Cores, tipografia e tokens da CIAg em todos os componentes.',
+    },
+    {
+      icon: 'extension',
+      title: 'Composição',
+      text: 'Slots e tokens CSS no lugar de dezenas de inputs de configuração.',
+    },
+    {
+      icon: 'code',
+      title: 'Angular idiomático',
+      text: 'Signals, OnPush, formulários nativos e CDK para overlays e foco.',
+    },
+    {
+      icon: 'speed',
+      title: 'Performance',
+      text: 'Um entry point por família: você só carrega o que importa.',
+    },
+  ] as const;
+
   protected readonly searchValue = this.catalog.query;
   protected readonly isFocused = signal(false);
   protected readonly hoveredId = signal<string | null>(null);
@@ -57,18 +85,17 @@ export class HomeComponent {
 
   protected readonly resultCount = computed(() => this.results().length);
 
-  protected readonly groupedResults = computed(() => {
-    const map = new Map<string, ComponentEntry[]>();
-    for (const comp of this.results()) {
-      const list = map.get(comp.category) ?? [];
-      list.push(comp);
-      map.set(comp.category, list);
-    }
-    return map;
-  });
-
+  /** Resultados agrupados na ordem da navegação lateral. */
   protected readonly groupedEntries = computed(() =>
-    Array.from(this.groupedResults().entries()),
+    FAMILY_GROUP_ORDER.map(
+      (group) =>
+        [
+          group,
+          this.results()
+            .filter((entry) => entry.group === group)
+            .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR')),
+        ] as [string, RegistryEntry[]],
+    ).filter(([, entries]) => entries.length > 0),
   );
 
   protected onSearch(value: string): void {

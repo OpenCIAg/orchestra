@@ -5,8 +5,8 @@
  *                                      pages, with lastmod dates
  *   projects/docs/public/robots.txt  — canonical crawl policy
  *
- * Routes come from the colocated docs catalog (the same source the coverage
- * gate enforces), so a component documented in the app is always discoverable
+ * Routes come from the docs registry (docs-registry-lib.mjs: content/ plus
+ * the legacy catalog, the same source the coverage gate enforces), so a component documented in the app is always discoverable
  * and nothing hand-maintained can drift. `lastmod` is the newest git commit
  * date among the sources that back each URL (catalog file, page directory,
  * narrative sources); it falls back to the generation date when git history
@@ -18,19 +18,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { loadCatalogEntries } from './agent-reference-lib.mjs';
+import { loadDocsRegistry } from './docs-registry-lib.mjs';
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   '../..',
 );
 const canonicalBase = 'https://orchestra.ciag.org.br';
-const catalogDir = path.join(root, 'projects/docs/src/app/catalog');
 
 /** URL entries for the static pages outside the catalog. */
 export function staticPages() {
   return [
     { path: '/', changefreq: 'weekly', priority: '1.0' },
+    { path: '/primeiros-passos', changefreq: 'monthly', priority: '0.9' },
     { path: '/docs', changefreq: 'monthly', priority: '0.9' },
     { path: '/llms.txt', changefreq: 'monthly', priority: '0.8' },
     { path: '/llms.md', changefreq: 'monthly', priority: '0.8' },
@@ -85,10 +85,17 @@ export function lastmodSources(rootPath, entry) {
   const appDir = path.join(rootPath, 'projects/docs/src/app');
   const catalogDir = path.join(appDir, 'catalog');
   if (entry.path === '/') {
-    return [path.join(appDir, 'pages/home'), catalogDir];
+    return [
+      path.join(appDir, 'pages/home'),
+      catalogDir,
+      path.join(appDir, 'content/components'),
+    ];
   }
   if (entry.path === '/docs') {
     return [path.join(appDir, 'pages/docs')];
+  }
+  if (entry.path === '/primeiros-passos') {
+    return [path.join(appDir, 'pages/getting-started')];
   }
   if (entry.path === '/llms.txt' || entry.path === '/llms.md') {
     return [
@@ -98,6 +105,7 @@ export function lastmodSources(rootPath, entry) {
     ];
   }
   return [
+    path.join(appDir, 'content/components', entry.catalogId),
     path.join(catalogDir, `${entry.catalogId}.catalog.ts`),
     path.join(appDir, 'pages/components', entry.catalogId),
   ];
@@ -146,7 +154,7 @@ export function buildSitemap(rootPath, catalogEntries, { fallbackDate } = {}) {
 }
 
 export function loadCatalogEntriesForSitemap() {
-  return loadCatalogEntries(catalogDir).entries;
+  return loadDocsRegistry(root).entries;
 }
 
 export const CANONICAL_BASE = canonicalBase;

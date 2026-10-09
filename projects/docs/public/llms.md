@@ -34,11 +34,11 @@ The library expects Angular 22-compatible `@angular/common`, `@angular/core`, an
 
 ### Load the design tokens
 
-Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables.
+Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables. Since 22.4 the styles ship as plain CSS (tokens as CSS custom properties inside `@layer`); consumers do not need Sass.
 
-```scss
-/* src/styles.scss */
-@use '@ciag/orchestra/styles/index';
+```css
+/* src/styles.css */
+@import '@ciag/orchestra/styles.css';
 
 /* local overrides belong after the library layer */
 ```
@@ -467,6 +467,22 @@ Content: button label is projected between tags. SVG strings may be passed to `i
 <orc-button variant="primary" [loading]="saving" (click)="save()">Save</orc-button> <orc-icon-button icon="search" ariaLabel="Search" variant="ghost" />
 ```
 
+Dispara uma ação: enviar um formulário, abrir um diálogo, confirmar uma operação. Tem variantes de ênfase, três tamanhos, ícones e estado de carregamento.
+
+Quando usar (pt-BR):
+
+- Para a ação principal de um formulário ou diálogo, com `variant="primary"` e no máximo uma ação primária por área.
+- Para ações secundárias ao lado da principal, com ênfase menor (`secondary`, `outline` ou `ghost`).
+- Para ações destrutivas, com `variant="danger"`, de preferência confirmadas em um modal.
+- Para ações compactas em barras de ferramentas, só com ícone (`iconOnly` e `ariaLabel`).
+
+Quando não usar (pt-BR):
+
+- Para navegar para outra rota ou página. Um botão não é link: use `<a routerLink>`. Use `link`.
+- Para ligar e desligar um estado que permanece visível. Use `toggle-button`.
+- Para escolher uma entre poucas opções mutuamente exclusivas. Use `segmented-control`.
+- Para esconder várias ações secundárias atrás de um único gatilho. Use `menu`.
+
 - **ButtonComponent (orc-button)**
   - Inputs: `variant` (ButtonVariant) default `'primary'`, `severity` (ButtonVariant | undefined) default `undefined`, `size` (ButtonSize) default `'md'`, `disabled` (boolean) default `false`, `loading` (boolean) default `false`, `fullWidth` (boolean) default `false`, `text` (boolean) default `false`, `outlined` (boolean) default `false`, `raised` (boolean) default `false`, `rounded` (boolean) default `false`, `plain` (boolean) default `false`, `fluid` (boolean) default `false`, `link` (boolean) default `false`, `icon` (string | undefined) default `undefined`, `iconPos` ('left' | 'right' | 'top' | 'bottom') default `'left'`, `loadingIcon` (string | undefined) default `undefined`, `id` (string | undefined) default `undefined`, `tabindex` (number | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `ariaExpanded` (boolean | undefined) default `undefined`, `ariaControls` (string | undefined) default `undefined`, `form` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `badge` (string | number | undefined) default `undefined`, `badgeClass` (string) default `''`, `iconLeft` (string | undefined) default `undefined`, `iconRight` (string | undefined) default `undefined`, `iconOnly` (boolean) default `false`, `type` ('button' | 'submit' | 'reset') default `'button'`, `ariaLabel` (string | undefined) default `undefined`
   - Outputs: `click` (MouseEvent), `onFocus` (FocusEvent), `onBlur` (FocusEvent)
@@ -605,7 +621,7 @@ Values are 3- or 6-digit hexadecimal strings.
   - Outputs: `optionSelected` (P2Option<T>)
 - Interactive docs: https://orchestra.ciag.org.br/components/combobox
 
-### CommandMenu — `@ciag/orchestra/command-menu`
+### CommandMenu — `@ciag/orchestra/p2`
 
 - **CommandMenuComponent (orc-command-menu)**
   - Inputs: `items` (CommandItem[]) default `[]`, `label` (string | undefined) default `undefined`, `placeholder` (string | undefined) default `undefined`, `searchAriaLabel` (string | undefined) default `undefined`, `emptyText` (string | undefined) default `undefined`
@@ -651,7 +667,7 @@ Use for page-width boundaries, not arbitrary per-section margins.
   - Outputs: `rowClick` (Record<string, unknown>), `selectionChange` (Record<string, unknown>[]), `sortChange` ({ key: string; direction: 'ascending' | 'descending'; }), `onSort` ({ key: string; direction: 'ascending' | 'descending'; }), `onPage` ({ first: number; rows: number }), `onLazyLoad` ({ first: number; rows: number }), `rowSelect` (Record<string, unknown>), `rowUnselect` (Record<string, unknown>), `onRowHover` (Record<string, unknown>), `onFilter` ({ value: string }), `onHeaderCheckboxToggle` ({ checked: boolean })
 - Interactive docs: https://orchestra.ciag.org.br/components/data-table
 
-### DataView — `@ciag/orchestra/data-view`
+### DataView — `@ciag/orchestra/p2`
 
 - **DataViewComponent (orc-data-view)**
   - Inputs: `value` (T[]) default `[]`, `header` (string) default `''`, `emptyMessage` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `itemTemplate` (TemplateRef<{ $implicit: T }> | null) default `null`, `style` (Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `gridStyleClass` (string) default `''`, `listStyleClass` (string) default `''`, `trackBy` (((index: number, item: T) =), `paginator` (boolean) default `false`, `rows` (number) default `10`, `totalRecords` (number | undefined) default `undefined`, `pageLinks` (number) default `5`, `rowsPerPageOptions` (number[] | undefined) default `undefined`, `paginatorPosition` ('top' | 'bottom' | 'both') default `'bottom'`, `paginatorStyleClass` (string) default `''`, `alwaysShowPaginator` (boolean) default `true`, `currentPageReportTemplate` (string | undefined) default `undefined`, `showCurrentPageReport` (boolean) default `false`, `showJumpToPageDropdown` (boolean) default `false`, `showFirstLastIcon` (boolean) default `false`, `showPageLinks` (boolean) default `true`, `lazy` (boolean) default `false`, `lazyLoadOnInit` (boolean) default `false`, `loading` (boolean) default `false`, `loadingIcon` (string | undefined) default `undefined`, `loadingMessage` (string | undefined) default `undefined`, `filterBy` (string | undefined) default `undefined`, `filterAriaLabel` (string | undefined) default `undefined`, `paginatorAriaLabel` (string | undefined) default `undefined`, `filterLocale` (string | undefined) default `undefined`, `dataKey` (string | undefined) default `undefined`
@@ -966,7 +982,7 @@ Compatibility no-ops `selectOnFocus`, `autoOptionFocus`, `searchMessage`, `selec
   - Outputs: `optionSelected` (any), `onChange` ({ originalEvent: Event; value: T | T[] | null }), `onClick` ({ originalEvent: Event; option: any }), `onDblClick` ({ originalEvent: Event; option: any }), `onFilter` ({ originalEvent: Event; filter: string }), `onFocus` (Event), `onBlur` (Event)
 - Interactive docs: https://orchestra.ciag.org.br/components/listbox
 
-### MegaMenu — `@ciag/orchestra/mega-menu`
+### MegaMenu — `@ciag/orchestra/p2`
 
 - **MegaMenuComponent (orc-mega-menu)**
   - Inputs: `items` (PrimeMenuItem[]) default `[]`, `model` (PrimeMenuItem[] | undefined) default `undefined`, `orientation` ('horizontal' | 'vertical') default `'horizontal'`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `tabindex` (number) default `0`, `disabled` (boolean) default `false`
@@ -1004,9 +1020,24 @@ Compatibility no-ops `selectOnFocus`, `autoOptionFocus`, `searchMessage`, `selec
   - Inputs: `values` (MeterItem[]) default `[]`, `value` (MeterItem[] | undefined) default `undefined`, `min` (number) default `0`, `max` (number) default `100`, `color` (string) default `'#3b82f6'`, `label` (string) default `''`, `labelPosition` ('start' | 'end') default `'end'`, `labelOrientation` ('horizontal' | 'vertical') default `'horizontal'`, `orientation` ('horizontal' | 'vertical') default `'horizontal'`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `ariaLabel` (string | undefined) default `undefined`
 - Interactive docs: https://orchestra.ciag.org.br/components/meter-group
 
-### Modal / Dialog — `@ciag/orchestra/modal`
+### Modal — `@ciag/orchestra/modal`
 
 The visibility models are `isOpen` and the PrimeNG-compatible `visible` (use only one for a given instance); `maximized` is also a two-way model. The native dialog's previous active element is restored on close. Use `modal-header`, `modal-body`, and `modal-footer` slots. Deprecated no-op compatibility inputs include dragging/resizing, attachment, breakpoint sizing, mask styling, custom viewport bounds, transition timing, and explicit RTL.
+
+Janela de diálogo sobre a página, com fundo escurecido, foco preso dentro dela e fechamento por Esc. Para decisões e tarefas curtas que pedem atenção total.
+
+Quando usar (pt-BR):
+
+- Para confirmar uma ação destrutiva ou irreversível antes de executá-la.
+- Para uma tarefa curta e focada (editar um item, preencher poucos campos) sem sair da tela.
+- Para informações bloqueantes que a pessoa precisa reconhecer antes de continuar.
+
+Quando não usar (pt-BR):
+
+- Para conteúdo longo ou fluxos de várias etapas ao lado da página: prefira um painel lateral. Use `drawer`.
+- Para avisos que não exigem resposta (salvo com sucesso, erro de rede). Use `toast`.
+- Para detalhes contextuais ancorados a um elemento. Use `popover`.
+- Para mensagens permanentes na própria página. Use `alert`.
 
 - **ModalComponent (orc-modal, orc-dialog, orc-dynamic-dialog)**
   - Inputs: `header` (string | undefined) default `undefined`, `modal` (boolean) default `true`, `closeOnEscape` (boolean) default `true`, `dismissableMask` (boolean) default `true`, `closable` (boolean) default `true`, `maximizable` (boolean) default `false`, `focusOnShow` (boolean) default `true`, `focusTrap` (boolean) default `true`, `blockScroll` (boolean) default `true`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `1000`, `position` (| 'center' | 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright') default `'center'`, `style` (string | Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `contentStyle` (Record<string, string | number> | undefined) default `undefined`, `contentStyleClass` (string) default `''`, `role` (string) default `'dialog'`, `showHeader` (boolean) default `true`, `closeIcon` (string) default `'×'`, `closeAriaLabel` (string | undefined) default `undefined`, `minimizeIcon` (string) default `'−'`, `maximizeIcon` (string) default `'+'`, `restoreAriaLabel` (string | undefined) default `undefined`, `maximizeAriaLabel` (string | undefined) default `undefined`, `closeTabindex` (string) default `'0'`, `size` (ModalSize) default `'md'`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `status` (ModalStatus) default `'neutral'`, `inline` (boolean) default `false`, `closeOnBackdropClick` (boolean) default `true`, `showCloseButton` (boolean) default `true`, `ariaLabelledBy` (string) default `''`, `ariaDescribedBy` (string) default `''`, `zIndex` (number) default `1000`
@@ -1112,7 +1143,7 @@ Compound exports `orc-otp-group`, `orc-otp-slot`, and `orc-otp-separator`; use t
   - Outputs: `onBeforeToggle` ({ collapsed: boolean }), `onAfterToggle` ({ collapsed: boolean })
 - Interactive docs: https://orchestra.ciag.org.br/components/panel
 
-### PanelMenu — `@ciag/orchestra/panel-menu`
+### PanelMenu — `@ciag/orchestra/p2`
 
 - **PanelMenuComponent (orc-panel-menu)**
   - Inputs: `items` (PrimeMenuItem[]) default `[]`, `model` (PrimeMenuItem[] | undefined) default `undefined`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `id` (string | undefined) default `undefined`, `tabindex` (number) default `0`, `ariaLabel` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `multiple` (boolean) default `false`
@@ -1231,6 +1262,21 @@ Set `filter` or `searchable` to enable the search field; when `filter` is omitte
 The `name` input creates native hidden form fields for the selected value; multiple selection creates one field per selected option, and disabled controls submit no value. The trigger and portaled search panel form one focus boundary for CVA `updateOn: 'blur'`; internal focus changes do not mark touched or emit blur, and leaving the composite does so once. `lazy` and `virtualScroll` emit one initial `onLazyLoad` range when the panel opens; incremental loading and virtualized rendering are not implemented. A supplied `loadingIcon` is rendered as CSS classes. `orc-option` inputs are `id`, `label`, `value`, `description`, `icon`, `avatarUrl`, and `disabled`. Project plain text or presentational content inside an option; nested buttons and links have no supported listbox interaction model.
 
 Deprecated compatibility inputs with no behavior are `overlayOptions`, `autofocusFilter`, `editable`, `checkmark`, `optionGroupLabel`, `optionGroupChildren`, `autoDisplayFirst`, `group`, `virtualScrollItemSize`, `virtualScrollOptions`, `itemSize`, `selectOnFocus`, `showTransitionOptions`, `hideTransitionOptions`, `tooltip`, `tooltipPosition`, `tooltipPositionStyle`, and `tooltipStyleClass`.
+
+Campo para escolher uma ou várias opções de uma lista fechada. Abre um painel com navegação por teclado, busca opcional e integração com formulários do Angular.
+
+Quando usar (pt-BR):
+
+- Para escolher um valor de uma lista conhecida com mais de cinco opções (projeto, estado, responsável).
+- Para seleção múltipla compacta com `multiple`, quando a lista não cabe em checkboxes.
+- Em formulários: funciona com `formControlName`, `ngModel` e `[(value)]`.
+
+Quando não usar (pt-BR):
+
+- Para até cinco opções sempre visíveis, em que comparar as escolhas importa. Use `radio`.
+- Quando a pessoa digita para buscar em uma lista grande ou remota. Use `autocomplete`.
+- Quando os itens são texto livre criado pela própria pessoa (etiquetas). Use `tags-input`.
+- Para disparar ações em vez de escolher um valor. Use `menu`.
 
 - **OptionComponent (orc-option)**
   - Inputs: `id` (string) default `''`, `value` (any) default `undefined`, `label` (string) default `''`, `description` (string | undefined) default `undefined`, `icon` (string | undefined) default `undefined`, `avatarUrl` (string | undefined) default `undefined`, `disabled` (boolean) default `false`
@@ -1411,7 +1457,7 @@ Use for compact copy, not headings.
   - Inputs: `size` ('sm' | 'md' | 'lg') default `'md'`, `muted` (boolean) default `false`, `truncate` (boolean) default `false`
 - Interactive docs: https://orchestra.ciag.org.br/components/text
 
-### TieredMenu — `@ciag/orchestra/tiered-menu`
+### TieredMenu — `@ciag/orchestra/p2`
 
 - **TieredMenuComponent (orc-tiered-menu)**
   - Inputs: `items` (PrimeMenuItem[]) default `[]`, `model` (PrimeMenuItem[] | undefined) default `undefined`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `0`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `id` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `popup` (boolean) default `false`, `tabindex` (number) default `0`
@@ -1461,7 +1507,7 @@ The tooltip API is a directive. Attach `[orcTooltip]`, `[appTooltip]`, or `[uiTo
 - **TooltipComponent (orc-tooltip-overlay)**
 - Interactive docs: https://orchestra.ciag.org.br/components/tooltip
 
-### Tree — `@ciag/orchestra/tree`
+### Tree — `@ciag/orchestra/p2`
 
 - **TreeComponent (orc-tree)**
   - Inputs: `id` (string | undefined) default `undefined`, `nodes` (HierarchyNode<T>[]) default `[]`, `value` (HierarchyNode<T>[] | undefined) default `undefined`, `label` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `selectionMode` ('single' | 'multiple' | 'checkbox') default `'single'`, `propagateSelectionUp` (boolean) default `false`, `propagateSelectionDown` (boolean) default `false`, `filter` (boolean) default `false`, `filterPlaceholder` (string | undefined) default `undefined`, `filterAriaLabel` (string | undefined) default `undefined`, `filterBy` (string) default `'label'`, `filterMode` (string) default `'lenient'`, `filterLocale` (string | undefined) default `undefined`, `emptyText` (string | undefined) default `undefined`, `loading` (boolean) default `false`, `loadingMessage` (string | undefined) default `undefined`, `expandAriaLabel` (string | undefined) default `undefined`, `collapseAriaLabel` (string | undefined) default `undefined`, `style` (Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `scrollHeight` (string | undefined) default `undefined`, `indentation` (number) default `1`
@@ -1479,7 +1525,7 @@ Multiple mode toggles selected nodes independently; checkbox mode applies the co
   - Outputs: `nodeSelect` (TreeSelectNode), `onChange` ({ originalEvent: Event; value: string | string[] | null; }), `onShow` (void), `onHide` (void), `onClear` (Event), `onFilter` ({ originalEvent: Event; filter: string }), `onFocus` (Event), `onBlur` (Event), `onNodeExpand` (TreeSelectNode), `onNodeCollapse` (TreeSelectNode), `nodeUnselect` (TreeSelectNode)
 - Interactive docs: https://orchestra.ciag.org.br/components/tree-select
 
-### TreeTable — `@ciag/orchestra/tree-table`
+### TreeTable — `@ciag/orchestra/p2`
 
 - **TreeTableComponent (orc-tree-table)**
   - Inputs: `id` (string | undefined) default `undefined`, `selectionMode` ('single' | 'multiple' | 'checkbox') default `'multiple'`, `propagateSelectionUp` (boolean) default `false`, `propagateSelectionDown` (boolean) default `false`, `value` (HierarchyNode<T>[]) default `[]`, `columns` (TreeTableColumn[]) default `[]`, `label` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `treeColumnHeader` (string | undefined) default `undefined`, `emptyText` (string | undefined) default `undefined`, `filterable` (boolean) default `false`, `filterLabel` (string) default `'Filter'`, `filterAriaLabel` (string | undefined) default `undefined`, `rowsPerPageLabel` (string) default `'Top-level items per page'`, `paginatorAriaLabel` (string) default `'Tree table pagination'`, `firstPageLabel` (string) default `'First page'`, `previousPageLabel` (string) default `'Previous page'`, `nextPageLabel` (string) default `'Next page'`, `lastPageLabel` (string) default `'Last page'`, `loading` (boolean) default `false`, `expandAriaLabel` (string | undefined) default `undefined`, `collapseAriaLabel` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `tableStyle` (Record<string, string | number> | undefined) default `undefined`, `tableStyleClass` (string) default `''`, `autoLayout` (boolean) default `false`, `lazy` (boolean) default `false`, `lazyLoadOnInit` (boolean) default `true`, `paginator` (boolean) default `false`, `rowsPerPageOptions` (number[] | undefined) default `undefined`, `currentPageReportTemplate` (string | undefined) default `undefined`, `defaultSortOrder` (1 | -1) default `1`, `resetPageOnSort` (boolean) default `true`, `rowHover` (boolean) default `false`, `scrollable` (boolean) default `false`, `scrollHeight` (string | undefined) default `undefined`, `showGridlines` (boolean) default `false`, `globalFilterFields` (string[]) default `[]`, `filterMode` (string) default `'lenient'`, `filterLocale` (string | undefined) default `undefined`

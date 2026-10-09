@@ -1,0 +1,79 @@
+<div class="page">
+  <div class="layout">
+    <article class="guide">
+      <header class="guide__header">
+        <h1 class="guide__title">{{ content.title }}</h1>
+        <p class="guide__lead"><app-doc-text [text]="content.lead" /></p>
+      </header>
+
+      <section class="guide__section" id="principios">
+        <h2 class="guide__h2">{{ content.principlesTitle }}</h2>
+        <ul class="principles">
+          @for (principle of content.principles; track principle.title) {
+            <li class="principles__item">
+              <orc-icon
+                class="principles__icon"
+                [name]="principle.icon"
+                size="md"
+                aria-hidden="true"
+              />
+              <h3 class="principles__title">{{ principle.title }}</h3>
+              <p class="principles__text">
+                <app-doc-text [text]="principle.text" />
+              </p>
+            </li>
+          }
+        </ul>
+      </section>
+
+      @for (section of content.sections; track section.id) {
+        <section class="guide__section" [id]="section.id">
+          <h2 class="guide__h2">
+            {{ section.title }}
+            @if (section.since) {
+              <span class="since">{{ content.sinceLabel }}</span>
+            }
+          </h2>
+          @for (block of section.blocks; track $index) {
+            @if (block.text) {
+              <p class="guide__p"><app-doc-text [text]="block.text" /></p>
+            }
+            @if (block.items) {
+              <ul class="guide__list">
+                @for (item of block.items; track $index) {
+                  <li><app-doc-text [text]="item" /></li>
+                }
+              </ul>
+            }
+            @if (block.code) {
+              <app-code-block
+                class="guide__code"
+                [code]="block.code.source"
+                [filename]="block.code.file"
+              />
+            }
+          }
+        </section>
+      }
+    </article>
+
+    <aside class="toc" [attr.aria-label]="content.onThisPage">
+      <p class="toc__title">{{ content.onThisPage }}</p>
+      <ul class="toc__list">
+        <li>
+          <a class="toc__link" routerLink="." fragment="principios">{{
+            content.principlesTitle
+          }}</a>
+        </li>
+        @for (section of content.sections; track section.id) {
+          <li>
+            <a class="toc__link" routerLink="." [fragment]="section.id">{{
+              section.title
+            }}</a>
+          </li>
+        }
+      </ul>
+    </aside>
+  </div>
+  <app-footer />
+</div>

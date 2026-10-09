@@ -21,9 +21,12 @@ import {
   categoryLabel,
 } from '../../../services/component-catalog.service';
 import { COMPONENT_API_LOADERS } from '../../../generated/component-api.registry.generated';
-import { COMPONENT_EXAMPLES } from './examples';
+import { COMPONENT_EXAMPLES } from '../../../generated/docs-registry/legacy-examples.generated';
 import type { ComponentApiMember } from '../../../models/component-api.model';
-import type { ComponentEntry } from '../../../models/component-entry.model';
+import type {
+  ComponentEntry,
+  RegistryEntry,
+} from '../../../models/component-entry.model';
 import type { ComponentUsageDoc } from '../../../models/component-doc.model';
 import { ScrollTopComponent } from '@ciag/orchestra/scroll-top';
 
@@ -88,7 +91,7 @@ export class ComponentDocPageComponent {
   readonly componentId = computed(
     () => this.routeParams().get('componentId') ?? '',
   );
-  readonly entry = computed<ComponentEntry | undefined>(() =>
+  readonly entry = computed<RegistryEntry | undefined>(() =>
     this.catalog.byId(this.componentId()),
   );
   readonly usageDoc = computed<ComponentUsageDoc | undefined>(() =>
