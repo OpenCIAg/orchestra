@@ -93,7 +93,8 @@ const PT_BR: GettingStartedContent = {
         {
           code: {
             file: 'src/styles.css',
-            source: "@import '@ciag/orchestra/styles.css';",
+            source:
+              "@import '@ciag/orchestra/styles.css'; /* tokens, temas e base */\n@import '@ciag/orchestra/reset.css'; /* opcional: reset global */",
           },
         },
         {
@@ -109,13 +110,13 @@ const PT_BR: GettingStartedContent = {
       title: 'Ícones',
       blocks: [
         {
-          text: 'O `orc-icon` usa a fonte Material Symbols, que o app carrega. Com o Google Fonts, adicione o link no `index.html` (ou hospede a fonte junto com o app):',
+          text: 'O `orc-icon` usa a fonte Material Symbols, e a biblioteca não baixa fontes: o app carrega a fonte. Com o Google Fonts, adicione o link no `index.html` (ou hospede a fonte junto com o app). Se o app usar só a família padrão (`rounded`), basta carregar essa.',
         },
         {
           code: {
             file: 'src/index.html',
             source:
-              '<link\n  rel="stylesheet"\n  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"\n/>',
+              '<link\n  rel="stylesheet"\n  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"\n/>',
           },
         },
       ],
@@ -148,11 +149,11 @@ const PT_BR: GettingStartedContent = {
           code: {
             file: 'src/app/app.config.ts',
             source:
-              "import { ApplicationConfig } from '@angular/core';\nimport { provideOrcLabels } from '@ciag/orchestra/core';\n\nexport const appConfig: ApplicationConfig = {\n  providers: [\n    // Só as chaves que você quer mudar; o resto continua em pt-BR.\n    provideOrcLabels({ close: 'Fechar janela' }),\n  ],\n};",
+              "import { ApplicationConfig } from '@angular/core';\nimport { provideOrcLabels } from '@ciag/orchestra/core';\n\nexport const appConfig: ApplicationConfig = {\n  providers: [\n    // Só as chaves que você quer mudar; o resto continua em pt-BR.\n    provideOrcLabels({\n      common: { close: 'Sair' },\n      table: { empty: 'Nenhum projeto cadastrado' },\n    }),\n  ],\n};",
           },
         },
         {
-          text: 'As chaves disponíveis são tipadas; o editor completa os nomes a partir de `@ciag/orchestra/core`.',
+          text: 'Os rótulos são agrupados por família (`common`, `dialog`, `select`, `table`…) e tipados por `OrcLabels`, então o editor completa as chaves. `provideOrcLabels` também vale no `providers` de um componente (só aquela subárvore) e aceita um signal ou uma função de fábrica, para trocar o idioma em tempo de execução.',
         },
       ],
     },
