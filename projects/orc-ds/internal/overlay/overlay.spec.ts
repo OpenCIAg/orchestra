@@ -226,12 +226,20 @@ describe('internal/overlay', () => {
       expect(panel?.getAttribute('role')).toBe('dialog');
       expect(panel?.contains(content)).toBeTrue();
       expect(panel?.classList).toContain('orc-overlay-pane');
-      // Placed under the anchor (bottom-start).
+      // Placed under the anchor (bottom-start) or flipped above it.
       const anchorRect = trigger.getBoundingClientRect();
       const panelRect = panel!.getBoundingClientRect();
-      expect(Math.round(panelRect.top)).toBeGreaterThanOrEqual(
-        Math.round(anchorRect.bottom),
-      );
+      if (panel!.classList.contains('orc-overlay-pane--bottom-start')) {
+        expect(Math.round(panelRect.top)).toBeGreaterThanOrEqual(
+          Math.floor(anchorRect.bottom),
+        );
+      } else {
+        expect(panel!.classList).toContain('orc-overlay-pane--top-start');
+        expect(Math.floor(panelRect.bottom)).toBeLessThanOrEqual(
+          Math.ceil(anchorRect.top),
+        );
+      }
+      expect(Math.round(panelRect.left)).toBe(Math.round(anchorRect.left));
     });
 
     it('closes on Escape and returns focus to the trigger', async () => {

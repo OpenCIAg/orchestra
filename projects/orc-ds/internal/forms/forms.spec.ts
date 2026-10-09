@@ -14,6 +14,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { expectConsoleWarning } from '../../../../tools/quality/browser-diagnostics';
 import { provideOrcField, OrcFieldContext } from './field-context';
 import { OrcValueControl } from './value-control';
 
@@ -189,6 +190,8 @@ describe('internal/forms', () => {
     });
 
     it('is zoneless-compatible', async () => {
+      // The suite loads zone.js; Angular warns once when zoneless is enabled.
+      expectConsoleWarning(/NG0914/);
       TestBed.configureTestingModule({
         providers: [provideZonelessChangeDetection()],
       });
