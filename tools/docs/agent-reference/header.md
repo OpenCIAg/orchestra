@@ -29,11 +29,11 @@ The library expects Angular 22-compatible `@angular/common`, `@angular/core`, an
 
 ### Load the design tokens
 
-Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables. Since 22.4 the styles ship as plain CSS (tokens as CSS custom properties inside `@layer`); consumers do not need Sass.
+Load the token layer before local application styles. The token layer supplies the brand values, semantic aliases, spacing scale, radii, shadows, transitions, light/dark values, and component variables.
 
-```css
-/* src/styles.css */
-@import '@ciag/orchestra/styles.css';
+```scss
+/* src/styles.scss */
+@use '@ciag/orchestra/styles/index';
 
 /* local overrides belong after the library layer */
 ```

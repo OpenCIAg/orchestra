@@ -341,6 +341,6 @@ Use the links below as the canonical reading order for coding agents. Prefer the
 - Render Orchestra components with their \`orc-*\` selectors; do not replace them with generic buttons, inputs, cards, alerts, tabs, or layout primitives when an Orchestra component exists.
 - Treat \`input()\` as a one-way input, \`model()\` as a two-way signal (\`[value]\`/\`(valueChange)\` or \`[(value)]\`), and \`output()\` as an event (\`(eventName)\`).
 - Preserve labels, helper/error text, keyboard behavior, focus rings, and ARIA properties when composing controls.
-- Load the plain-CSS token stylesheet before application styles: \`@import '@ciag/orchestra/styles.css';\`.
+- Load the token stylesheet before application styles: \`@use '@ciag/orchestra/styles/index';\`.
 `;
 }

@@ -40,13 +40,13 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--orc-interactive);
+    outline: 2px solid var(--orc-primary, var(--orc-interactive));
     outline-offset: -2px;
   }
 }
 
 .sidebar__link--active {
-  background: var(--orc-interactive-soft);
+  background: var(--orc-primary-subtle, var(--orc-interactive-soft));
   color: var(--orc-text);
   font-weight: 600;
 }
@@ -55,8 +55,8 @@
   flex: none;
   padding: 0 0.375rem;
   border-radius: 999px;
-  background: var(--orc-status-warning-bg);
-  color: var(--orc-status-warning-fg);
+  background: var(--orc-warning-bg, var(--orc-status-warning-bg));
+  color: var(--orc-warning-fg, var(--orc-status-warning-fg));
   font-size: 0.6875rem;
   font-weight: 500;
   line-height: 1.5;
@@ -87,7 +87,7 @@
   cursor: pointer;
 
   &:focus-visible {
-    outline: 2px solid var(--orc-interactive);
+    outline: 2px solid var(--orc-primary, var(--orc-interactive));
     outline-offset: 2px;
     border-radius: 0.75rem;
   }
