@@ -116,6 +116,23 @@ test('readContentFamily rejects non-literal DOC values', () => {
   );
 });
 
+test('loadDocsRegistry flags legacy examples whose family left the catalog', () => {
+  const root = scaffold();
+  const dir = path.join(
+    root,
+    'projects/docs/src/app/pages/components/component-doc/examples',
+  );
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'gone-example.component.ts'),
+    EXAMPLE.replace('DemoBasicExampleComponent', 'GoneExampleComponent'),
+  );
+  assert.match(
+    loadDocsRegistry(root).problems.join('\n'),
+    /gone-example\.component\.ts: exemplo sem família no catálogo/,
+  );
+});
+
 test('the committed registry is valid and renders every generated module', () => {
   const registry = loadDocsRegistry(repoRoot);
   assert.deepEqual(registry.problems, []);

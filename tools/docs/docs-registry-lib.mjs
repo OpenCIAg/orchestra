@@ -560,6 +560,19 @@ export function loadDocsRegistry(root) {
         `${LEGACY_EXAMPLES_DIR}/${example.module}.ts: "${example.id}" já tem content/; apague o exemplo antigo`,
       );
 
+  // Arquivos antigos sem entrada no catálogo: família removida ou renomeada.
+  const legacyIds = new Set(legacyCatalog.entries.map((item) => item.entry.id));
+  for (const page of legacyPages)
+    if (!contentSet.has(page.id) && !legacyIds.has(page.id))
+      problems.push(
+        `${LEGACY_PAGES_DIR}/${page.id}/: página sem família no catálogo (apague ou crie content/components/${page.id}/)`,
+      );
+  for (const example of legacyExamples)
+    if (!contentSet.has(example.id) && !legacyIds.has(example.id))
+      problems.push(
+        `${LEGACY_EXAMPLES_DIR}/${example.module}.ts: exemplo sem família no catálogo (apague ou crie content/components/${example.id}/)`,
+      );
+
   const entries = [];
   for (const family of content) {
     if (!family.doc) continue;
