@@ -50,7 +50,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         defaultValue: 'false',
         required: false,
         description:
-          'Controls whether the content region is initially omitted. Angular still\r\ninstantiates ordinary projected children eagerly; use lazyContent when\r\nchild creation must be deferred until the first open.',
+          'Controls whether the content region is initially omitted. Angular still\ninstantiates ordinary projected children eagerly; use lazyContent when\nchild creation must be deferred until the first open.',
       },
       {
         kind: 'input',

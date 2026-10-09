@@ -232,7 +232,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         defaultValue: null,
         required: false,
         description:
-          'The native button already bubbles a `click` event through the host.\r\nKeep the TypeScript property for consumers, but expose the component\r\noutput under a distinct alias so `(click)` is not delivered twice.',
+          'The native button already bubbles a `click` event through the host.\nKeep the TypeScript property for consumers, but expose the component\noutput under a distinct alias so `(click)` is not delivered twice.',
       },
       {
         kind: 'output',

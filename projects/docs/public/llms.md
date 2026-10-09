@@ -125,7 +125,7 @@ The library supplies semantic roles, keyboard behavior, focus-visible states, an
 
 ## 4. Complete package and entry-point map
 
-The root public API exposes 222 secondary entry points, generated from the component inventory. Alias entry points intentionally point at the canonical implementation so applications can migrate terminology without duplicating behavior.
+The root public API exposes 223 secondary entry points, generated from the component inventory. Alias entry points intentionally point at the canonical implementation so applications can migrate terminology without duplicating behavior.
 
 | Entry point              | Primary selectors or export                                                             | Docs                                                                                |
 | ------------------------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -302,6 +302,7 @@ The root public API exposes 222 secondary entry points, generated from the compo
 | `select`                 | `orc-option`, `orc-select`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/select)                 |
 | `select-button`          | `orc-select-button`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/select-button)          |
 | `selectbutton`           | alias of `select-button`                                                                | —                                                                                   |
+| `separator`              | alias of `p2` (`SeparatorComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/separator)              |
 | `sidebar`                | alias of `drawer` (`SidebarComponent`)                                                  | —                                                                                   |
 | `skeleton`               | `orc-skeleton`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/skeleton)               |
 | `slider`                 | `orc-slider`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/slider)                 |
@@ -695,7 +696,7 @@ Implements `ControlValueAccessor`.
 
 If `decorative=false`, provide a meaningful label or aria label. `separator` is a P2 entry point distinct from the P1 `divider`; use the latter when dashed/inset/decorative behavior is needed.
 
-- **DividerComponent (orc-divider, orc-separator)**
+- **DividerComponent (orc-divider)**
   - Inputs: `orientation` (DividerOrientation) default `'horizontal'`, `variant` (DividerVariant) default `'solid'`, `label` (string) default `''`, `inset` (boolean) default `false`, `decorative` (boolean) default `true`, `ariaLabel` (string) default `''`
 - Interactive docs: https://orchestra.ciag.org.br/components/divider
 
@@ -1206,7 +1207,7 @@ Use readonly for display-only scores; use `clearable` only when zero is a meanin
 ### Scroll Top — `@ciag/orchestra/scroll-top`
 
 - **ScrollTopComponent (orc-scroll-top)**
-  - Inputs: `threshold` (number) default `200`, `target` ('window' | 'parent') default `'window'`, `behavior` ('auto' | 'smooth') default `'smooth'`, `icon` (string) default `'↑'`, `styleClass` (string) default `''`, `style` (Record<string, any> | null | undefined) default `undefined`, `buttonAriaLabel` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
+  - Inputs: `threshold` (number) default `200`, `target` ('window' | 'parent') default `'window'`, `direction` ('up' | 'down') default `'up'`, `behavior` ('auto' | 'smooth') default `'smooth'`, `icon` (string) default `''`, `styleClass` (string) default `''`, `style` (Record<string, any> | null | undefined) default `undefined`, `buttonAriaLabel` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
   - Models: `visible` (boolean) default `false`
   - Outputs: `clicked` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/scroll-top
@@ -1246,6 +1247,12 @@ Deprecated compatibility inputs with no behavior are `overlayOptions`, `autofocu
   - Models: `value` (T | T[] | null) default `null`
   - Outputs: `valueChangeEvent` (T | T[] | null), `onOptionClick` ({ originalEvent: Event; option: any; index: number; }), `onChange` ({ originalEvent: Event; value: T | T[] | null }), `onFocus` (Event), `onBlur` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/select-button
+
+### Separator — `@ciag/orchestra/separator`
+
+- **SeparatorComponent (orc-separator)**
+  - Inputs: `orientation` (P2Orientation) default `'horizontal'`, `label` (string) default `''`
+- Interactive docs: https://orchestra.ciag.org.br/components/separator
 
 ### Skeleton — `@ciag/orchestra/skeleton`
 
@@ -1288,7 +1295,8 @@ Keep labels and ordering stable.
 Use full-screen only for an application-level blocking state.
 
 - **LoadingSpinnerComponent (orc-spinner)**
-  - Inputs: `size` (SpinnerSize) default `'md'`, `customSize` (string | number) default `''`, `variant` (SpinnerVariant) default `'primary'`, `type` (SpinnerType) default `'ring'`, `text` (string) default `''`, `textPosition` (SpinnerTextPosition) default `'right'`, `fullScreen` (boolean) default `false`, `backdrop` (boolean) default `true`, `strokeWidth` (number) default `3`, `fill` (string) default `'none'`, `animation` ('spin' | 'none') default `'spin'`, `styleClass` (string) default `''`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
+  - Inputs: `size` (SpinnerSize) default `'md'`, `customSize` (string | number) default `''`, `variant` (SpinnerVariant) default `'primary'`, `type` (SpinnerType) default `'ring'`, `text` (string) default `''`, `textPosition` (SpinnerTextPosition) default `'right'`, `fullScreen` (boolean) default `false`, `closeOnEscape` (boolean) default `false`, `backdrop` (boolean) default `true`, `strokeWidth` (number) default `3`, `fill` (string) default `'none'`, `animation` ('spin' | 'none') default `'spin'`, `styleClass` (string) default `''`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
+  - Outputs: `fullScreenChange` (boolean)
 - Interactive docs: https://orchestra.ciag.org.br/components/spinner
 
 ### Split Button — `@ciag/orchestra/split-button`

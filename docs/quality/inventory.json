@@ -151,7 +151,7 @@
           "publicName": "multiple",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly multiple = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly multiple = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "value",
@@ -165,7 +165,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "variant",
@@ -319,7 +319,7 @@
           "publicName": "showIcon",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showIcon = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showIcon = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });",
           "description": "Controla se o ícone do alerta deve ser exibido"
         },
         {
@@ -327,7 +327,7 @@
           "publicName": "dismissible",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly dismissible = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly dismissible = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Define se o alerta pode ser dispensado pelo usuário exibindo o botão 'X'"
         },
         {
@@ -335,14 +335,14 @@
           "publicName": "closable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly closable = input<boolean | undefined, unknown>(undefined, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly closable = input<boolean | undefined, unknown>(undefined, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "life",
           "publicName": "life",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly life = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly life = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "icon",
@@ -363,7 +363,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "role",
@@ -493,7 +493,7 @@
           "publicName": "minLength",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly minLength = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly minLength = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "clearable",
@@ -507,7 +507,7 @@
           "publicName": "showClear",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showClear = input<boolean | undefined, unknown>(undefined, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showClear = input<boolean | undefined, unknown>(undefined, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "loading",
@@ -598,7 +598,7 @@
           "publicName": "panelStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly panelStyle = input<Record<string, any> | null | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly panelStyle = input<Record<string, any> | null | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "panelStyleClass",
@@ -877,14 +877,14 @@
           "publicName": "bordered",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly bordered = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly bordered = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "clickable",
           "publicName": "clickable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly clickable = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly clickable = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "id",
@@ -989,35 +989,35 @@
           "publicName": "dot",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly dot = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly dot = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showDefaultIcon",
           "publicName": "showDefaultIcon",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showDefaultIcon = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showDefaultIcon = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "dismissible",
           "publicName": "dismissible",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly dismissible = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly dismissible = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "liveRegion",
           "publicName": "liveRegion",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly liveRegion = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly liveRegion = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "pill",
           "publicName": "pill",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly pill = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly pill = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "id",
@@ -1283,21 +1283,21 @@
           "publicName": "disabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly disabled = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly disabled = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "loading",
           "publicName": "loading",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly loading = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly loading = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "fullWidth",
           "publicName": "fullWidth",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly fullWidth = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly fullWidth = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "text",
@@ -1423,7 +1423,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "badge",
@@ -1480,7 +1480,7 @@
           "name": "click",
           "kind": "output",
           "declaration": "readonly click = output<MouseEvent>({ alias: 'clicked' });",
-          "description": "The native button already bubbles a `click` event through the host.\r\nKeep the TypeScript property for consumers, but expose the component\r\noutput under a distinct alias so `(click)` is not delivered twice."
+          "description": "The native button already bubbles a `click` event through the host.\nKeep the TypeScript property for consumers, but expose the component\noutput under a distinct alias so `(click)` is not delivered twice."
         },
         {
           "name": "onFocus",
@@ -1496,6 +1496,7 @@
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/button/button-behavior.spec.ts",
+        "projects/orc-ds/button/button-close-variant.spec.ts",
         "projects/orc-ds/button/button-input-contract.spec.ts",
         "projects/orc-ds/button/button.component.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts",
@@ -1629,7 +1630,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "ariaLabel",
@@ -1939,7 +1940,7 @@
           "publicName": "value",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly value = input<CarouselItem[] | undefined>(undefined, {\r\n    alias: 'value',\r\n  });"
+          "declaration": "readonly value = input<CarouselItem[] | undefined>(undefined, {\n    alias: 'value',\n  });"
         },
         {
           "name": "activeIndex",
@@ -1995,7 +1996,7 @@
           "publicName": "circular",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly circular = input<boolean | undefined, unknown>(undefined, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly circular = input<boolean | undefined, unknown>(undefined, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "autoplay",
@@ -2009,7 +2010,7 @@
           "publicName": "autoplayInterval",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly autoplayInterval = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly autoplayInterval = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "pauseOnHover",
@@ -2037,7 +2038,7 @@
           "publicName": "showNavigators",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showNavigators = input<boolean | undefined, unknown>(undefined, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showNavigators = input<boolean | undefined, unknown>(undefined, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showIndicators",
@@ -2091,7 +2092,7 @@
         {
           "name": "onPage",
           "kind": "output",
-          "declaration": "readonly onPage = output<{\r\n    first: number;\r\n    last: number;\r\n    page: number;\r\n    pageCount: number;\r\n  }>();"
+          "declaration": "readonly onPage = output<{\n    first: number;\n    last: number;\n    page: number;\n    pageCount: number;\n  }>();"
         },
         {
           "name": "onPlay",
@@ -2258,7 +2259,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "autofocus",
@@ -2402,21 +2403,21 @@
           "publicName": "allowDuplicate",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly allowDuplicate = input<boolean | undefined, unknown>(undefined, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly allowDuplicate = input<boolean | undefined, unknown>(undefined, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "maxChips",
           "publicName": "maxChips",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly maxChips = input<number | undefined, unknown>(undefined, {\r\n    transform: (val: unknown) =>\r\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\r\n  });"
+          "declaration": "readonly maxChips = input<number | undefined, unknown>(undefined, {\n    transform: (val: unknown) =>\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\n  });"
         },
         {
           "name": "max",
           "publicName": "max",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly max = input<number | undefined, unknown>(undefined, {\r\n    transform: (val: unknown) =>\r\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\r\n  });"
+          "declaration": "readonly max = input<number | undefined, unknown>(undefined, {\n    transform: (val: unknown) =>\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\n  });"
         },
         {
           "name": "separator",
@@ -2444,7 +2445,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "ariaLabel",
@@ -2472,7 +2473,7 @@
           "publicName": "addAnnouncement",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly addAnnouncement = input<\r\n    ((item: string) => string | undefined) | undefined\r\n  >(undefined);",
+          "declaration": "readonly addAnnouncement = input<\n    ((item: string) => string | undefined) | undefined\n  >(undefined);",
           "description": "Optional localized announcements for assistive technology."
         },
         {
@@ -2480,7 +2481,7 @@
           "publicName": "removeAnnouncement",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly removeAnnouncement = input<\r\n    ((item: string) => string | undefined) | undefined\r\n  >(undefined);"
+          "declaration": "readonly removeAnnouncement = input<\n    ((item: string) => string | undefined) | undefined\n  >(undefined);"
         }
       ],
       "outputs": [
@@ -2585,7 +2586,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "disabled",
@@ -2754,7 +2755,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly lazy = input(false, { transform: booleanAttribute });",
-          "description": "Controls whether the content region is initially omitted. Angular still\r\ninstantiates ordinary projected children eagerly; use lazyContent when\r\nchild creation must be deferred until the first open."
+          "description": "Controls whether the content region is initially omitted. Angular still\ninstantiates ordinary projected children eagerly; use lazyContent when\nchild creation must be deferred until the first open."
         },
         {
           "name": "lazyContent",
@@ -3086,7 +3087,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         }
       ],
       "outputs": [
@@ -3344,7 +3345,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -3372,7 +3373,7 @@
           "publicName": "trackBy",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly trackBy = input<((index: number, item: T) => unknown) | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly trackBy = input<((index: number, item: T) => unknown) | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "paginator",
@@ -3449,14 +3450,14 @@
           "publicName": "showCurrentPageReport",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showCurrentPageReport = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showCurrentPageReport = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showJumpToPageDropdown",
           "publicName": "showJumpToPageDropdown",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showJumpToPageDropdown = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showJumpToPageDropdown = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showFirstLastIcon",
@@ -3721,7 +3722,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "fluid",
@@ -3954,7 +3955,7 @@
           "publicName": "maxDateCount",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly maxDateCount = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly maxDateCount = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "hideOnDateTimeSelect",
@@ -4235,14 +4236,14 @@
           "publicName": "panelStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly panelStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly panelStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "style",
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -4256,7 +4257,7 @@
           "publicName": "inputStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly inputStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly inputStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "inputStyleClass",
@@ -4355,7 +4356,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "mask",
@@ -4692,7 +4693,7 @@
     {
       "name": "DividerComponent",
       "kind": "Component",
-      "selector": "orc-divider, orc-separator",
+      "selector": "orc-divider",
       "file": "projects/orc-ds/divider/divider.component.ts",
       "line": 12,
       "inputs": [
@@ -4793,14 +4794,14 @@
           "publicName": "orcDraggable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly scope = input<string | string[] | undefined>(undefined, {\r\n    alias: 'orcDraggable',\r\n  });"
+          "declaration": "readonly scope = input<string | string[] | undefined>(undefined, {\n    alias: 'orcDraggable',\n  });"
         },
         {
           "name": "pScope",
           "publicName": "pDraggable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly pScope = input<string | string[] | undefined>(undefined, {\r\n    alias: 'pDraggable',\r\n  });"
+          "declaration": "readonly pScope = input<string | string[] | undefined>(undefined, {\n    alias: 'pDraggable',\n  });"
         },
         {
           "name": "dragEffect",
@@ -4821,14 +4822,14 @@
           "publicName": "orcDraggableDisabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly disabled = input(false, {\r\n    alias: 'orcDraggableDisabled',\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly disabled = input(false, {\n    alias: 'orcDraggableDisabled',\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "pDisabled",
           "publicName": "pDraggableDisabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly pDisabled = input(false, {\r\n    alias: 'pDraggableDisabled',\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly pDisabled = input(false, {\n    alias: 'pDraggableDisabled',\n    transform: booleanAttribute,\n  });"
         }
       ],
       "outputs": [
@@ -4867,28 +4868,28 @@
           "publicName": "orcDroppable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly scope = input<string | string[] | undefined>(undefined, {\r\n    alias: 'orcDroppable',\r\n  });"
+          "declaration": "readonly scope = input<string | string[] | undefined>(undefined, {\n    alias: 'orcDroppable',\n  });"
         },
         {
           "name": "pScope",
           "publicName": "pDroppable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly pScope = input<string | string[] | undefined>(undefined, {\r\n    alias: 'pDroppable',\r\n  });"
+          "declaration": "readonly pScope = input<string | string[] | undefined>(undefined, {\n    alias: 'pDroppable',\n  });"
         },
         {
           "name": "disabled",
           "publicName": "orcDroppableDisabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly disabled = input(false, {\r\n    alias: 'orcDroppableDisabled',\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly disabled = input(false, {\n    alias: 'orcDroppableDisabled',\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "pDisabled",
           "publicName": "pDroppableDisabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly pDisabled = input(false, {\r\n    alias: 'pDroppableDisabled',\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly pDisabled = input(false, {\n    alias: 'pDroppableDisabled',\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "dropEffect",
@@ -5111,7 +5112,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "placement",
@@ -5147,7 +5148,7 @@
           "publicName": "optionDisabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly optionDisabled = input<\r\n    string | ((option: unknown) => boolean) | undefined\r\n  >(undefined);"
+          "declaration": "readonly optionDisabled = input<\n    string | ((option: unknown) => boolean) | undefined\n  >(undefined);"
         },
         {
           "name": "placeholder",
@@ -5388,7 +5389,7 @@
           "publicName": "scrollingContainer",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly scrollingContainer = input<HTMLElement | string | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly scrollingContainer = input<HTMLElement | string | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility-only no-op; scrolling is managed by the surrounding layout."
         },
@@ -5430,17 +5431,18 @@
         {
           "name": "onTextChange",
           "kind": "output",
-          "declaration": "readonly onTextChange = output<{\r\n    html: string;\r\n    text: string;\r\n    delta?: unknown;\r\n    source?: string;\r\n    editor?: unknown;\r\n  }>();"
+          "declaration": "readonly onTextChange = output<{\n    html: string;\n    text: string;\n    delta?: unknown;\n    source?: string;\n    editor?: unknown;\n  }>();"
         },
         {
           "name": "onSelectionChange",
           "kind": "output",
-          "declaration": "readonly onSelectionChange = output<{\r\n    range: { index: number; length: number } | null;\r\n    oldRange?: { index: number; length: number } | null;\r\n    source?: string;\r\n  }>();"
+          "declaration": "readonly onSelectionChange = output<{\n    range: { index: number; length: number } | null;\n    oldRange?: { index: number; length: number } | null;\n    source?: string;\n  }>();"
         }
       ],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/editor-selection-contract.spec.ts",
+        "projects/orc-ds/editor/editor-active-format.spec.ts",
         "projects/orc-ds/editor/editor-parity.spec.ts",
         "projects/orc-ds/p2-expansion.spec.ts"
       ]
@@ -5478,7 +5480,7 @@
           "publicName": "actionLabel",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly actionLabel = input<string, string | undefined>('', {\r\n    transform: (value) => value?.trim() ?? '',\r\n  });"
+          "declaration": "readonly actionLabel = input<string, string | undefined>('', {\n    transform: (value) => value?.trim() ?? '',\n  });"
         },
         {
           "name": "ariaLabel",
@@ -5661,14 +5663,14 @@
           "publicName": "maxFiles",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly maxFiles = input<number, unknown>(10, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly maxFiles = input<number, unknown>(10, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "fileLimit",
           "publicName": "fileLimit",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly fileLimit = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly fileLimit = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "maxFileSize",
@@ -5710,7 +5712,7 @@
           "publicName": "invalidFileLimitMessageSummary",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly invalidFileLimitMessageSummary = input<string | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly invalidFileLimitMessageSummary = input<string | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "invalidFileLimitMessageDetail",
@@ -5822,7 +5824,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<string | Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<string | Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "chooseIcon",
@@ -5913,7 +5915,7 @@
         {
           "name": "onSelect",
           "kind": "output",
-          "declaration": "readonly onSelect = output<{\r\n    originalEvent: Event;\r\n    files: File[];\r\n    currentFiles: File[];\r\n  }>();"
+          "declaration": "readonly onSelect = output<{\n    originalEvent: Event;\n    files: File[];\n    currentFiles: File[];\n  }>();"
         },
         {
           "name": "onRemove",
@@ -5963,7 +5965,7 @@
         {
           "name": "onRemoveUploadedFile",
           "kind": "output",
-          "declaration": "readonly onRemoveUploadedFile = output<{\r\n    file: File;\r\n    originalEvent: Event;\r\n  }>();"
+          "declaration": "readonly onRemoveUploadedFile = output<{\n    file: File;\n    originalEvent: Event;\n  }>();"
         }
       ],
       "testReferences": [
@@ -6209,28 +6211,28 @@
           "publicName": "showThumbnailNavigators",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showThumbnailNavigators = input(true, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showThumbnailNavigators = input(true, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showItemNavigatorsOnHover",
           "publicName": "showItemNavigatorsOnHover",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showItemNavigatorsOnHover = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showItemNavigatorsOnHover = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "changeItemOnIndicatorHover",
           "publicName": "changeItemOnIndicatorHover",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly changeItemOnIndicatorHover = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly changeItemOnIndicatorHover = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "shouldStopAutoplayByClick",
           "publicName": "shouldStopAutoplayByClick",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly shouldStopAutoplayByClick = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly shouldStopAutoplayByClick = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "circular",
@@ -6265,7 +6267,7 @@
           "publicName": "thumbnailsPosition",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly thumbnailsPosition = input<'bottom' | 'top' | 'left' | 'right'>(\r\n    'bottom',\r\n  );"
+          "declaration": "readonly thumbnailsPosition = input<'bottom' | 'top' | 'left' | 'right'>(\n    'bottom',\n  );"
         },
         {
           "name": "showIndicators",
@@ -6286,7 +6288,7 @@
           "publicName": "indicatorsPosition",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly indicatorsPosition = input<'bottom' | 'top' | 'left' | 'right'>(\r\n    'bottom',\r\n  );"
+          "declaration": "readonly indicatorsPosition = input<'bottom' | 'top' | 'left' | 'right'>(\n    'bottom',\n  );"
         },
         {
           "name": "baseZIndex",
@@ -6314,7 +6316,7 @@
           "publicName": "containerStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly containerStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly containerStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "numVisible",
@@ -6779,7 +6781,7 @@
           "publicName": "imageStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly imageStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly imageStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "appendTo",
@@ -6936,7 +6938,7 @@
           "required": false,
           "declaration": "readonly showClear = input(false, { transform: booleanAttribute });",
           "deprecated": true,
-          "description": "Compatibility-only no-op. InputMaskDirective does not render\r\na clear action; wrap the native input and provide a clear button/action."
+          "description": "Compatibility-only no-op. InputMaskDirective does not render\na clear action; wrap the native input and provide a clear button/action."
         },
         {
           "name": "unmask",
@@ -6957,9 +6959,9 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
-          "description": "Compatibility-only no-op. Apply inline styles directly to\r\nthe native host input instead."
+          "description": "Compatibility-only no-op. Apply inline styles directly to\nthe native host input instead."
         },
         {
           "name": "styleClass",
@@ -6968,7 +6970,7 @@
           "required": false,
           "declaration": "readonly styleClass = input('');",
           "deprecated": true,
-          "description": "Compatibility-only no-op. Add CSS classes directly to the\r\nnative host input instead."
+          "description": "Compatibility-only no-op. Add CSS classes directly to the\nnative host input instead."
         },
         {
           "name": "inputId",
@@ -6990,7 +6992,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "maxlength",
@@ -7258,14 +7260,14 @@
           "publicName": "maxLength",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly maxLength = input<number | undefined, unknown>(undefined, {\r\n    transform: (val: unknown) =>\r\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\r\n  });"
+          "declaration": "readonly maxLength = input<number | undefined, unknown>(undefined, {\n    transform: (val: unknown) =>\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\n  });"
         },
         {
           "name": "minLength",
           "publicName": "minLength",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly minLength = input<number | undefined, unknown>(undefined, {\r\n    transform: (val: unknown) =>\r\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\r\n  });"
+          "declaration": "readonly minLength = input<number | undefined, unknown>(undefined, {\n    transform: (val: unknown) =>\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\n  });"
         },
         {
           "name": "min",
@@ -7335,7 +7337,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "variant",
@@ -7533,14 +7535,14 @@
           "publicName": "rows",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly rows = input<number, unknown>(4, {\r\n    transform: (val: unknown) => numberAttribute(val, 4),\r\n  });"
+          "declaration": "readonly rows = input<number, unknown>(4, {\n    transform: (val: unknown) => numberAttribute(val, 4),\n  });"
         },
         {
           "name": "cols",
           "publicName": "cols",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly cols = input<number | undefined, unknown>(undefined, {\r\n    transform: (val: unknown) =>\r\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\r\n  });"
+          "declaration": "readonly cols = input<number | undefined, unknown>(undefined, {\n    transform: (val: unknown) =>\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\n  });"
         },
         {
           "name": "resize",
@@ -7561,14 +7563,14 @@
           "publicName": "maxLength",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly maxLength = input<number | undefined, unknown>(undefined, {\r\n    transform: (val: unknown) =>\r\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\r\n  });"
+          "declaration": "readonly maxLength = input<number | undefined, unknown>(undefined, {\n    transform: (val: unknown) =>\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\n  });"
         },
         {
           "name": "minLength",
           "publicName": "minLength",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly minLength = input<number | undefined, unknown>(undefined, {\r\n    transform: (val: unknown) =>\r\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\r\n  });"
+          "declaration": "readonly minLength = input<number | undefined, unknown>(undefined, {\n    transform: (val: unknown) =>\n      val !== undefined && val !== null ? numberAttribute(val) : undefined,\n  });"
         },
         {
           "name": "showCharCount",
@@ -7596,7 +7598,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "variant",
@@ -7687,7 +7689,7 @@
           "publicName": "pValidateOnly",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly validateOnly = input(false, {\r\n    transform: booleanAttribute,\r\n    alias: 'pValidateOnly',\r\n  });"
+          "declaration": "readonly validateOnly = input(false, {\n    transform: booleanAttribute,\n    alias: 'pValidateOnly',\n  });"
         }
       ],
       "outputs": [
@@ -8136,7 +8138,7 @@
           "publicName": "virtualScrollOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility input only; virtualized rendering is not implemented."
         },
@@ -8166,7 +8168,7 @@
           "publicName": "optionDisabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly optionDisabled = input<\r\n    string | ((option: any) => boolean) | undefined\r\n  >(undefined);"
+          "declaration": "readonly optionDisabled = input<\n    string | ((option: any) => boolean) | undefined\n  >(undefined);"
         },
         {
           "name": "optionGroupLabel",
@@ -8226,7 +8228,7 @@
           "publicName": "filterMatchMode",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly filterMatchMode = input<\r\n    | 'contains'\r\n    | 'startsWith'\r\n    | 'endsWith'\r\n    | 'equals'\r\n    | 'notEquals'\r\n    | 'in'\r\n    | 'lt'\r\n    | 'lte'\r\n    | 'gt'\r\n    | 'gte'\r\n    | string\r\n  >('contains');"
+          "declaration": "readonly filterMatchMode = input<\n    | 'contains'\n    | 'startsWith'\n    | 'endsWith'\n    | 'equals'\n    | 'notEquals'\n    | 'in'\n    | 'lt'\n    | 'lte'\n    | 'gt'\n    | 'gte'\n    | string\n  >('contains');"
         },
         {
           "name": "filterLocale",
@@ -8310,7 +8312,7 @@
         {
           "name": "onSelectAllChange",
           "kind": "output",
-          "declaration": "readonly onSelectAllChange = output<{\r\n    originalEvent: Event;\r\n    checked: boolean;\r\n  }>();",
+          "declaration": "readonly onSelectAllChange = output<{\n    originalEvent: Event;\n    checked: boolean;\n  }>();",
           "deprecated": true,
           "description": "Compatibility output only; select-all controls are not implemented."
         },
@@ -8792,14 +8794,14 @@
           "publicName": "position",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly position = input<\r\n    | 'center'\r\n    | 'top'\r\n    | 'bottom'\r\n    | 'left'\r\n    | 'right'\r\n    | 'topleft'\r\n    | 'topright'\r\n    | 'bottomleft'\r\n    | 'bottomright'\r\n  >('center');"
+          "declaration": "readonly position = input<\n    | 'center'\n    | 'top'\n    | 'bottom'\n    | 'left'\n    | 'right'\n    | 'topleft'\n    | 'topright'\n    | 'bottomleft'\n    | 'bottomright'\n  >('center');"
         },
         {
           "name": "style",
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<string | Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<string | Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -8813,7 +8815,7 @@
           "publicName": "maskStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly maskStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly maskStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Native dialog backdrops do not consume this input."
         },
@@ -8831,7 +8833,7 @@
           "publicName": "contentStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly contentStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly contentStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "contentStyleClass",
@@ -8954,21 +8956,21 @@
           "publicName": "inline",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly inline = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly inline = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "closeOnBackdropClick",
           "publicName": "closeOnBackdropClick",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly closeOnBackdropClick = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly closeOnBackdropClick = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showCloseButton",
           "publicName": "showCloseButton",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showCloseButton = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showCloseButton = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "ariaLabelledBy",
@@ -9023,7 +9025,7 @@
           "publicName": "transitionOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly transitionOptions = input<string>(\r\n    '150ms cubic-bezier(0, 0, 0.2, 1)',\r\n  );",
+          "declaration": "readonly transitionOptions = input<string>(\n    '150ms cubic-bezier(0, 0, 0.2, 1)',\n  );",
           "deprecated": true,
           "description": "Transition timing is fixed by the component stylesheet."
         },
@@ -9238,14 +9240,14 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly appendTo = input<unknown>(undefined);",
-          "description": "Where the detached panel attaches. Defaults to the body (or the\r\nenclosing native modal, so the pane never escapes native inertness);\r\nan element or selector attaches the panel inside that target instead."
+          "description": "Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead."
         },
         {
           "name": "overlayOptions",
           "publicName": "overlayOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly overlayOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly overlayOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility input only; overlay options are not interpreted."
         },
@@ -9351,7 +9353,7 @@
           "publicName": "filterMatchMode",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly filterMatchMode = input<\r\n    | 'contains'\r\n    | 'startsWith'\r\n    | 'endsWith'\r\n    | 'equals'\r\n    | 'notEquals'\r\n    | 'in'\r\n    | 'lt'\r\n    | 'lte'\r\n    | 'gt'\r\n    | 'gte'\r\n  >('contains');"
+          "declaration": "readonly filterMatchMode = input<\n    | 'contains'\n    | 'startsWith'\n    | 'endsWith'\n    | 'equals'\n    | 'notEquals'\n    | 'in'\n    | 'lt'\n    | 'lte'\n    | 'gt'\n    | 'gte'\n  >('contains');"
         },
         {
           "name": "ariaFilterLabel",
@@ -9499,7 +9501,7 @@
           "publicName": "virtualScrollOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility input only; virtual scrolling is not implemented."
         },
@@ -9589,7 +9591,7 @@
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
           "deprecated": true,
-          "description": "Compatibility input only; this implementation has no size\r\nstyling. Accepts the canonical `sm | md | lg` vocabulary; the legacy\r\n`small`/`large` values are deprecated aliases (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Compatibility input only; this implementation has no size\nstyling. Accepts the canonical `sm | md | lg` vocabulary; the legacy\n`small`/`large` values are deprecated aliases (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "tooltip",
@@ -9605,7 +9607,7 @@
           "publicName": "tooltipPosition",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>(\r\n    'right',\r\n  );",
+          "declaration": "readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>(\n    'right',\n  );",
           "deprecated": true,
           "description": "Compatibility input only; tooltip rendering is not provided."
         },
@@ -9670,7 +9672,7 @@
         {
           "name": "onSelectAllChange",
           "kind": "output",
-          "declaration": "readonly onSelectAllChange = output<{\r\n    originalEvent: Event;\r\n    checked: boolean;\r\n  }>();"
+          "declaration": "readonly onSelectAllChange = output<{\n    originalEvent: Event;\n    checked: boolean;\n  }>();"
         },
         {
           "name": "onFocus",
@@ -9868,14 +9870,14 @@
           "publicName": "min",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly min = input<number | undefined, unknown>(undefined, {\r\n    transform: (value: unknown) =>\r\n      value === undefined || value === null || value === ''\r\n        ? undefined\r\n        : numberAttribute(value),\r\n  });"
+          "declaration": "readonly min = input<number | undefined, unknown>(undefined, {\n    transform: (value: unknown) =>\n      value === undefined || value === null || value === ''\n        ? undefined\n        : numberAttribute(value),\n  });"
         },
         {
           "name": "max",
           "publicName": "max",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly max = input<number | undefined, unknown>(undefined, {\r\n    transform: (value: unknown) =>\r\n      value === undefined || value === null || value === ''\r\n        ? undefined\r\n        : numberAttribute(value),\r\n  });"
+          "declaration": "readonly max = input<number | undefined, unknown>(undefined, {\n    transform: (value: unknown) =>\n      value === undefined || value === null || value === ''\n        ? undefined\n        : numberAttribute(value),\n  });"
         },
         {
           "name": "step",
@@ -9889,7 +9891,7 @@
           "publicName": "precision",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly precision = input<number | undefined, unknown>(undefined, {\r\n    transform: (value: unknown) =>\r\n      value === undefined || value === null || value === ''\r\n        ? undefined\r\n        : numberAttribute(value),\r\n  });"
+          "declaration": "readonly precision = input<number | undefined, unknown>(undefined, {\n    transform: (value: unknown) =>\n      value === undefined || value === null || value === ''\n        ? undefined\n        : numberAttribute(value),\n  });"
         },
         {
           "name": "prefix",
@@ -9952,7 +9954,7 @@
           "publicName": "buttonLayout",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly buttonLayout = input<'stacked' | 'horizontal' | 'vertical'>(\r\n    'stacked',\r\n  );"
+          "declaration": "readonly buttonLayout = input<'stacked' | 'horizontal' | 'vertical'>(\n    'stacked',\n  );"
         },
         {
           "name": "styleClass",
@@ -9966,14 +9968,14 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "inputStyle",
           "publicName": "inputStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly inputStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly inputStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "inputStyleClass",
@@ -10558,7 +10560,7 @@
           "publicName": "length",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly length = input<number, unknown>(6, {\r\n    transform: (value: unknown) =>\r\n      Math.max(\r\n        1,\r\n        Number.isFinite(Number(value)) ? Math.floor(Number(value)) : 6,\r\n      ),\r\n  });"
+          "declaration": "readonly length = input<number, unknown>(6, {\n    transform: (value: unknown) =>\n      Math.max(\n        1,\n        Number.isFinite(Number(value)) ? Math.floor(Number(value)) : 6,\n      ),\n  });"
         },
         {
           "name": "placeholder",
@@ -10629,7 +10631,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "inputMode",
@@ -10828,7 +10830,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -11044,7 +11046,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );",
           "inheritedFrom": "projects/orc-ds/overlay-panel/overlay-panel.component.ts"
         },
         {
@@ -11578,7 +11580,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "variant",
@@ -11707,7 +11709,7 @@
         {
           "name": "onDataSelect",
           "kind": "output",
-          "declaration": "readonly onDataSelect = output<{\r\n    index: number;\r\n    originalEvent?: Event;\r\n    datasetIndex?: number;\r\n  }>();"
+          "declaration": "readonly onDataSelect = output<{\n    index: number;\n    originalEvent?: Event;\n    datasetIndex?: number;\n  }>();"
         }
       ],
       "testReferences": [
@@ -11892,7 +11894,7 @@
           "publicName": "defaultFocus",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly defaultFocus = input<'accept' | 'reject' | 'close' | 'none'>(\r\n    'accept',\r\n  );"
+          "declaration": "readonly defaultFocus = input<'accept' | 'reject' | 'close' | 'none'>(\n    'accept',\n  );"
         }
       ],
       "outputs": [
@@ -12025,7 +12027,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "sortMode",
@@ -12218,7 +12220,7 @@
           "publicName": "selection",
           "kind": "decorator",
           "required": false,
-          "declaration": "@Input('selection') set selectionAlias(value: Record<string, unknown>[]) {\r\n    this.selected.set(value ?? []);\r\n  }"
+          "declaration": "@Input('selection') set selectionAlias(value: Record<string, unknown>[]) {\n    this.selected.set(value ?? []);\n  }"
         }
       ],
       "outputs": [
@@ -12235,12 +12237,12 @@
         {
           "name": "sortChange",
           "kind": "output",
-          "declaration": "readonly sortChange = output<{\r\n    key: string;\r\n    direction: 'ascending' | 'descending';\r\n  }>();"
+          "declaration": "readonly sortChange = output<{\n    key: string;\n    direction: 'ascending' | 'descending';\n  }>();"
         },
         {
           "name": "onSort",
           "kind": "output",
-          "declaration": "readonly onSort = output<{\r\n    key: string;\r\n    direction: 'ascending' | 'descending';\r\n  }>();"
+          "declaration": "readonly onSort = output<{\n    key: string;\n    direction: 'ascending' | 'descending';\n  }>();"
         },
         {
           "name": "onPage",
@@ -12326,7 +12328,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "contentId",
@@ -12576,7 +12578,7 @@
           "publicName": "alignItems",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly alignItems = input<'start' | 'center' | 'stretch' | 'end'>(\r\n    'stretch',\r\n  );"
+          "declaration": "readonly alignItems = input<'start' | 'center' | 'stretch' | 'end'>(\n    'stretch',\n  );"
         },
         {
           "name": "label",
@@ -12670,7 +12672,7 @@
           "publicName": "direction",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly direction = input<\r\n    'row' | 'row-reverse' | 'column' | 'column-reverse'\r\n  >('row');"
+          "declaration": "readonly direction = input<\n    'row' | 'row-reverse' | 'column' | 'column-reverse'\n  >('row');"
         },
         {
           "name": "gap",
@@ -12684,14 +12686,14 @@
           "publicName": "align",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly align = input<'start' | 'center' | 'end' | 'stretch' | 'baseline'>(\r\n    'stretch',\r\n  );"
+          "declaration": "readonly align = input<'start' | 'center' | 'end' | 'stretch' | 'baseline'>(\n    'stretch',\n  );"
         },
         {
           "name": "justify",
           "publicName": "justify",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly justify = input<\r\n    | 'start'\r\n    | 'center'\r\n    | 'end'\r\n    | 'space-between'\r\n    | 'space-around'\r\n    | 'space-evenly'\r\n  >('start');"
+          "declaration": "readonly justify = input<\n    | 'start'\n    | 'center'\n    | 'end'\n    | 'space-between'\n    | 'space-around'\n    | 'space-evenly'\n  >('start');"
         },
         {
           "name": "wrap",
@@ -12741,7 +12743,7 @@
           "publicName": "justify",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly justify = input<'start' | 'center' | 'end' | 'space-between'>(\r\n    'start',\r\n  );"
+          "declaration": "readonly justify = input<'start' | 'center' | 'end' | 'space-between'>(\n    'start',\n  );"
         }
       ],
       "outputs": [],
@@ -12838,11 +12840,40 @@
       ]
     },
     {
+      "name": "SeparatorComponent",
+      "kind": "Component",
+      "selector": "orc-separator",
+      "file": "projects/orc-ds/p2/p2-layout-components.ts",
+      "line": 221,
+      "inputs": [
+        {
+          "name": "orientation",
+          "publicName": "orientation",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly orientation = input<P2Orientation>('horizontal');"
+        },
+        {
+          "name": "label",
+          "publicName": "label",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly label = input('');"
+        }
+      ],
+      "outputs": [],
+      "testReferences": [
+        "projects/orc-ds/alias-parity.generated.spec.ts",
+        "projects/orc-ds/all-components-lifecycle.spec.ts",
+        "projects/orc-ds/p2-layout-primitives-contract.spec.ts"
+      ]
+    },
+    {
       "name": "VisuallyHiddenComponent",
       "kind": "Component",
       "selector": "orc-visually-hidden",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 218,
+      "line": 242,
       "inputs": [],
       "outputs": [],
       "testReferences": [
@@ -12856,7 +12887,7 @@
       "kind": "Component",
       "selector": "orc-typography",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 230,
+      "line": 254,
       "inputs": [
         {
           "name": "as",
@@ -12907,7 +12938,7 @@
       "kind": "Component",
       "selector": "orc-text",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 284,
+      "line": 308,
       "inputs": [
         {
           "name": "size",
@@ -12943,7 +12974,7 @@
       "kind": "Component",
       "selector": "orc-kbd",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 305,
+      "line": 329,
       "inputs": [
         {
           "name": "keys",
@@ -12972,7 +13003,7 @@
       "kind": "Component",
       "selector": "orc-link",
       "file": "projects/orc-ds/p2/p2-layout-components.ts",
-      "line": 336,
+      "line": 360,
       "inputs": [
         {
           "name": "href",
@@ -13160,7 +13191,7 @@
       "kind": "Component",
       "selector": "orc-close-button",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 50,
+      "line": 54,
       "inputs": [
         {
           "name": "ariaLabel",
@@ -13209,7 +13240,7 @@
       "kind": "Component",
       "selector": "orc-overlay",
       "file": "projects/orc-ds/p2/p2-overlay-components.ts",
-      "line": 87,
+      "line": 91,
       "inputs": [
         {
           "name": "visible",
@@ -13360,7 +13391,7 @@
       "kind": "Component",
       "selector": "orc-panel",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 18,
+      "line": 19,
       "inputs": [
         {
           "name": "header",
@@ -13461,7 +13492,7 @@
       "kind": "Component",
       "selector": "orc-fieldset",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 109,
+      "line": 110,
       "inputs": [
         {
           "name": "legend",
@@ -13544,7 +13575,7 @@
       "kind": "Component",
       "selector": "orc-fluid",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 188,
+      "line": 189,
       "inputs": [
         {
           "name": "styleClass",
@@ -13566,7 +13597,7 @@
       "kind": "Component",
       "selector": "orc-overlay-badge",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 207,
+      "line": 208,
       "inputs": [
         {
           "name": "value",
@@ -13595,7 +13626,7 @@
       "kind": "Component",
       "selector": "orc-scroll-top",
       "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
-      "line": 247,
+      "line": 248,
       "inputs": [
         {
           "name": "threshold",
@@ -13612,6 +13643,14 @@
           "declaration": "readonly target = input<'window' | 'parent'>('window');"
         },
         {
+          "name": "direction",
+          "publicName": "direction",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly direction = input<'up' | 'down'>('up');",
+          "description": "`down` jumps to the end of the target and shows while there is content below."
+        },
+        {
           "name": "behavior",
           "publicName": "behavior",
           "kind": "signal",
@@ -13623,7 +13662,8 @@
           "publicName": "icon",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly icon = input('↑');"
+          "declaration": "readonly icon = input('');",
+          "description": "Custom glyph rendered as text; when empty, a Material arrow matching `direction`."
         },
         {
           "name": "styleClass",
@@ -13690,6 +13730,7 @@
         "projects/orc-ds/alias-parity.generated.spec.ts",
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/p2-repair.spec.ts",
+        "projects/orc-ds/scrolltop/scroll-top-direction.spec.ts",
         "projects/orc-ds/scrolltop/scroll-top.component.spec.ts"
       ]
     },
@@ -13946,7 +13987,7 @@
           "publicName": "orcUseStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly styles = input<Record<string, string | number>>(\r\n    {},\r\n    { alias: 'orcUseStyle' },\r\n  );"
+          "declaration": "readonly styles = input<Record<string, string | number>>(\n    {},\n    { alias: 'orcUseStyle' },\n  );"
         }
       ],
       "outputs": [],
@@ -14023,7 +14064,7 @@
           "publicName": "pageIndex",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly pageIndexInput = input<number | undefined>(undefined, {\r\n    alias: 'pageIndex',\r\n  });",
+          "declaration": "readonly pageIndexInput = input<number | undefined>(undefined, {\n    alias: 'pageIndex',\n  });",
           "description": "Optional controlled zero-indexed page alias."
         },
         {
@@ -14039,14 +14080,14 @@
           "publicName": "rowsPerPageOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly rowsPerPageOptions = input<number[] | undefined>(undefined, {\r\n    alias: 'rowsPerPageOptions',\r\n  });"
+          "declaration": "readonly rowsPerPageOptions = input<number[] | undefined>(undefined, {\n    alias: 'rowsPerPageOptions',\n  });"
         },
         {
           "name": "showPageSizeSelector",
           "publicName": "showPageSizeSelector",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showPageSizeSelector = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showPageSizeSelector = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });",
           "description": "Se deve exibir o seletor de quantidade de itens por página"
         },
         {
@@ -14054,7 +14095,7 @@
           "publicName": "showFirstLastButtons",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showFirstLastButtons = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showFirstLastButtons = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Se deve exibir os botões de Primeira e Última página"
         },
         {
@@ -14069,7 +14110,7 @@
           "publicName": "showPrevNextButtons",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showPrevNextButtons = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showPrevNextButtons = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });",
           "description": "Se deve exibir os botões Anterior e Próximo"
         },
         {
@@ -14077,7 +14118,7 @@
           "publicName": "showTotalInfo",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showTotalInfo = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showTotalInfo = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Se deve exibir o texto informativo de total (ex: 1-20 de 100 itens)"
         },
         {
@@ -14085,7 +14126,7 @@
           "publicName": "showCurrentPageReport",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showCurrentPageReport = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showCurrentPageReport = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "currentPageReportTemplate",
@@ -14113,7 +14154,7 @@
           "publicName": "showJumpToPageDropdown",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showJumpToPageDropdown = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showJumpToPageDropdown = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showJumpToPageInput",
@@ -14134,9 +14175,9 @@
           "publicName": "dropdownAppendTo",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly dropdownAppendTo = input<HTMLElement | string | null | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly dropdownAppendTo = input<HTMLElement | string | null | undefined>(\n    undefined,\n  );",
           "deprecated": true,
-          "description": "Accepted for PrimeNG template compatibility. Paginator uses\r\nan in-flow native select, so it has no overlay to attach elsewhere."
+          "description": "Accepted for PrimeNG template compatibility. Paginator uses\nan in-flow native select, so it has no overlay to attach elsewhere."
         },
         {
           "name": "appendTo",
@@ -14145,7 +14186,7 @@
           "required": false,
           "declaration": "readonly appendTo = input<HTMLElement | string | null | undefined>(undefined);",
           "deprecated": true,
-          "description": "Accepted for PrimeNG template compatibility. Paginator uses\r\nin-flow native controls and does not create a movable overlay."
+          "description": "Accepted for PrimeNG template compatibility. Paginator uses\nin-flow native controls and does not create a movable overlay."
         },
         {
           "name": "dropdownScrollHeight",
@@ -14154,7 +14195,7 @@
           "required": false,
           "declaration": "readonly dropdownScrollHeight = input('200px');",
           "deprecated": true,
-          "description": "Accepted for PrimeNG template compatibility. Native select\r\npopup dimensions are controlled by the browser or operating system."
+          "description": "Accepted for PrimeNG template compatibility. Native select\npopup dimensions are controlled by the browser or operating system."
         },
         {
           "name": "templateLeft",
@@ -14163,7 +14204,7 @@
           "required": false,
           "declaration": "readonly templateLeft = input<unknown>(undefined);",
           "deprecated": true,
-          "description": "Accepted for PrimeNG template compatibility. The native\r\npaginator has no custom template outlet on the left side."
+          "description": "Accepted for PrimeNG template compatibility. The native\npaginator has no custom template outlet on the left side."
         },
         {
           "name": "templateRight",
@@ -14172,7 +14213,7 @@
           "required": false,
           "declaration": "readonly templateRight = input<unknown>(undefined);",
           "deprecated": true,
-          "description": "Accepted for PrimeNG template compatibility. The native\r\npaginator has no custom template outlet on the right side."
+          "description": "Accepted for PrimeNG template compatibility. The native\npaginator has no custom template outlet on the right side."
         },
         {
           "name": "style",
@@ -14193,7 +14234,7 @@
           "publicName": "disabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly disabled = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly disabled = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Se o componente está desabilitado"
         },
         {
@@ -14217,7 +14258,7 @@
           "publicName": "pageLinkSize",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly pageLinkSizeInput = input<number | undefined>(undefined, {\r\n    alias: 'pageLinkSize',\r\n  });"
+          "declaration": "readonly pageLinkSizeInput = input<number | undefined>(undefined, {\n    alias: 'pageLinkSize',\n  });"
         },
         {
           "name": "previousLabel",
@@ -14543,7 +14584,7 @@
           "publicName": "inputStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly inputStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly inputStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -14557,7 +14598,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "fluid",
@@ -14579,7 +14620,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "maxLength",
@@ -14718,7 +14759,7 @@
           "publicName": "strongRegex",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly strongRegex = input(\r\n    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[^A-Za-z\\\\d]).{8,}$',\r\n  );"
+          "declaration": "readonly strongRegex = input(\n    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[^A-Za-z\\\\d]).{8,}$',\n  );"
         }
       ],
       "outputs": [
@@ -14913,14 +14954,14 @@
           "publicName": "sourceStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly sourceStyle = input<Record<string, any> | null | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly sourceStyle = input<Record<string, any> | null | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "targetStyle",
           "publicName": "targetStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly targetStyle = input<Record<string, any> | null | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly targetStyle = input<Record<string, any> | null | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "dragdrop",
@@ -14981,7 +15022,7 @@
         {
           "name": "selectionChange",
           "kind": "output",
-          "declaration": "readonly selectionChange = output<{\r\n    source: ReadonlySet<T['value']>;\r\n    target: ReadonlySet<T['value']>;\r\n  }>();"
+          "declaration": "readonly selectionChange = output<{\n    source: ReadonlySet<T['value']>;\n    target: ReadonlySet<T['value']>;\n  }>();"
         },
         {
           "name": "onMoveToTarget",
@@ -14996,12 +15037,12 @@
         {
           "name": "onMoveAllToTarget",
           "kind": "output",
-          "declaration": "readonly onMoveAllToTarget = output<{\r\n    items: T[];\r\n    source: T[];\r\n    target: T[];\r\n  }>();"
+          "declaration": "readonly onMoveAllToTarget = output<{\n    items: T[];\n    source: T[];\n    target: T[];\n  }>();"
         },
         {
           "name": "onMoveAllToSource",
           "kind": "output",
-          "declaration": "readonly onMoveAllToSource = output<{\r\n    items: T[];\r\n    source: T[];\r\n    target: T[];\r\n  }>();"
+          "declaration": "readonly onMoveAllToSource = output<{\n    items: T[];\n    source: T[];\n    target: T[];\n  }>();"
         },
         {
           "name": "onSourceReorder",
@@ -15076,7 +15117,7 @@
           "publicName": "showValue",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showValue = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showValue = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Exibe a porcentagem numérica no topo à direita"
         },
         {
@@ -15137,7 +15178,7 @@
           "publicName": "rounded",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly rounded = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly rounded = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });",
           "description": "Cantos arredondados tipo pílula (padrão Figma: true)"
         },
         {
@@ -15250,7 +15291,7 @@
           "publicName": "size",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly size = input<ProgressSize | number, ProgressSize | number | string>(\r\n    'md',\r\n    { transform: normalizeCircleSize },\r\n  );",
+          "declaration": "readonly size = input<ProgressSize | number, ProgressSize | number | string>(\n    'md',\n    { transform: normalizeCircleSize },\n  );",
           "description": "Dimensão do círculo: 'sm' (32px) | 'md' (48px) | 'lg' (64px) | 'xl' (96px) ou número em px"
         },
         {
@@ -15273,7 +15314,7 @@
           "publicName": "showValue",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showValue = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showValue = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Exibe o valor numérico centralizado dentro do círculo"
         },
         {
@@ -15309,7 +15350,7 @@
           "publicName": "rounded",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly rounded = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly rounded = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });",
           "description": "Cantos arredondados na ponta do arco (stroke-linecap: round)"
         },
         {
@@ -15438,7 +15479,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | null | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | null | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -15567,7 +15608,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         }
       ],
       "outputs": [
@@ -15709,7 +15750,7 @@
           "publicName": "stars",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly stars = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly stars = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "allowHalf",
@@ -15758,7 +15799,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "ariaLabel",
@@ -15793,14 +15834,14 @@
           "publicName": "iconOnStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly iconOnStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly iconOnStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "iconOffStyle",
           "publicName": "iconOffStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly iconOffStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly iconOffStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "autofocus",
@@ -15976,7 +16017,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "disabled",
@@ -16121,7 +16162,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "autofocus",
@@ -16154,7 +16195,7 @@
         {
           "name": "onOptionClick",
           "kind": "output",
-          "declaration": "readonly onOptionClick = output<{\r\n    originalEvent: Event;\r\n    option: any;\r\n    index: number;\r\n  }>();"
+          "declaration": "readonly onOptionClick = output<{\n    originalEvent: Event;\n    option: any;\n    index: number;\n  }>();"
         },
         {
           "name": "onChange",
@@ -16392,7 +16433,7 @@
           "publicName": "filter",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly filter = input<boolean | undefined, unknown>(undefined, {\r\n    transform: (value: unknown) =>\r\n      value === undefined || value === null\r\n        ? undefined\r\n        : booleanAttribute(value),\r\n  });"
+          "declaration": "readonly filter = input<boolean | undefined, unknown>(undefined, {\n    transform: (value: unknown) =>\n      value === undefined || value === null\n        ? undefined\n        : booleanAttribute(value),\n  });"
         },
         {
           "name": "filterPlaceholder",
@@ -16427,7 +16468,7 @@
           "publicName": "filterMatchMode",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly filterMatchMode = input<\r\n    | 'contains'\r\n    | 'startsWith'\r\n    | 'endsWith'\r\n    | 'equals'\r\n    | 'notEquals'\r\n    | 'in'\r\n    | 'lt'\r\n    | 'lte'\r\n    | 'gt'\r\n    | 'gte'\r\n  >('contains');"
+          "declaration": "readonly filterMatchMode = input<\n    | 'contains'\n    | 'startsWith'\n    | 'endsWith'\n    | 'equals'\n    | 'notEquals'\n    | 'in'\n    | 'lt'\n    | 'lte'\n    | 'gt'\n    | 'gte'\n  >('contains');"
         },
         {
           "name": "emptyFilterMessage",
@@ -16497,9 +16538,9 @@
           "publicName": "overlayOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly overlayOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly overlayOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
-          "description": "Compatibility input only; overlay options are not interpreted\r\nby this implementation. Use the supported `appendTo` input for placement."
+          "description": "Compatibility input only; overlay options are not interpreted\nby this implementation. Use the supported `appendTo` input for placement."
         },
         {
           "name": "tabindex",
@@ -16521,7 +16562,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SelectSize | undefined>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "fluid",
@@ -16656,7 +16697,7 @@
           "publicName": "virtualScrollOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility input only; virtual scrolling is not implemented."
         },
@@ -16759,7 +16800,7 @@
           "publicName": "tooltipPosition",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>(\r\n    'right',\r\n  );",
+          "declaration": "readonly tooltipPosition = input<'top' | 'left' | 'right' | 'bottom'>(\n    'right',\n  );",
           "deprecated": true,
           "description": "Compatibility input only; tooltip rendering is not provided."
         },
@@ -16963,7 +17004,7 @@
           "publicName": "shape",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly shape = input<'rectangle' | 'square' | 'circle' | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly shape = input<'rectangle' | 'square' | 'circle' | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "size",
@@ -17019,7 +17060,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "ariaLabel",
@@ -17097,7 +17138,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "autofocus",
@@ -17126,21 +17167,21 @@
           "publicName": "min",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly min = input<number, unknown>(0, {\r\n    transform: (v: unknown) => numericInput(v, 0),\r\n  });"
+          "declaration": "readonly min = input<number, unknown>(0, {\n    transform: (v: unknown) => numericInput(v, 0),\n  });"
         },
         {
           "name": "max",
           "publicName": "max",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly max = input<number, unknown>(100, {\r\n    transform: (v: unknown) => numericInput(v, 100),\r\n  });"
+          "declaration": "readonly max = input<number, unknown>(100, {\n    transform: (v: unknown) => numericInput(v, 100),\n  });"
         },
         {
           "name": "step",
           "publicName": "step",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly step = input<number, unknown>(1, {\r\n    transform: (v: unknown) => numericInput(v, 1),\r\n  });"
+          "declaration": "readonly step = input<number, unknown>(1, {\n    transform: (v: unknown) => numericInput(v, 1),\n  });"
         },
         {
           "name": "size",
@@ -17175,7 +17216,7 @@
           "publicName": "marks",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly marks = input<\r\n    Record<number, string> | SliderMark[] | number[] | undefined\r\n  >(undefined);"
+          "declaration": "readonly marks = input<\n    Record<number, string> | SliderMark[] | number[] | undefined\n  >(undefined);"
         },
         {
           "name": "showTooltip",
@@ -17203,7 +17244,7 @@
           "publicName": "valueFormatter",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly valueFormatter = input<((val: number) => string) | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly valueFormatter = input<((val: number) => string) | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "label",
@@ -17312,7 +17353,7 @@
           "publicName": "type",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>(\r\n    'linear',\r\n  );"
+          "declaration": "readonly type = input<'linear' | 'circle' | 'semi-circle' | 'quarter-circle'>(\n    'linear',\n  );"
         },
         {
           "name": "radius",
@@ -17446,7 +17487,7 @@
       "kind": "Component",
       "selector": "orc-spinner",
       "file": "projects/orc-ds/spinner/spinner.component.ts",
-      "line": 17,
+      "line": 18,
       "inputs": [
         {
           "name": "size",
@@ -17495,14 +17536,22 @@
           "publicName": "fullScreen",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly fullScreen = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly fullScreen = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
+        },
+        {
+          "name": "closeOnEscape",
+          "publicName": "closeOnEscape",
+          "kind": "signal",
+          "required": false,
+          "declaration": "readonly closeOnEscape = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
+          "description": "Opt-in: lets Escape request leaving the full-screen overlay. The spinner never\nhides itself; it emits `fullScreenChange(false)` so `[(fullScreen)]` callers decide."
         },
         {
           "name": "backdrop",
           "publicName": "backdrop",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly backdrop = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly backdrop = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "strokeWidth",
@@ -17547,11 +17596,18 @@
           "declaration": "readonly ariaLabel = input<string | undefined>(undefined);"
         }
       ],
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "fullScreenChange",
+          "kind": "output",
+          "declaration": "readonly fullScreenChange = output<boolean>();"
+        }
+      ],
       "testReferences": [
         "projects/orc-ds/all-components-lifecycle.spec.ts",
         "projects/orc-ds/navigation-toolbar-contract.spec.ts",
-        "projects/orc-ds/size-vocabulary-contract.spec.ts"
+        "projects/orc-ds/size-vocabulary-contract.spec.ts",
+        "projects/orc-ds/spinner/spinner-escape.spec.ts"
       ]
     },
     {
@@ -17566,7 +17622,7 @@
           "publicName": "model",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly model = input<\r\n    Array<{\r\n      label: string;\r\n      icon?: string;\r\n      disabled?: boolean;\r\n      visible?: boolean;\r\n      command?: () => void;\r\n    }>\r\n  >([]);"
+          "declaration": "readonly model = input<\n    Array<{\n      label: string;\n      icon?: string;\n      disabled?: boolean;\n      visible?: boolean;\n      command?: () => void;\n    }>\n  >([]);"
         },
         {
           "name": "label",
@@ -17688,7 +17744,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "severity",
@@ -17856,7 +17912,7 @@
           "publicName": "clickable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly clickable = input<boolean, unknown>(true, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly clickable = input<boolean, unknown>(true, {\n    transform: booleanAttribute,\n  });",
           "description": "Permite que o usuário clique nos passos para navegar"
         },
         {
@@ -17864,7 +17920,7 @@
           "publicName": "selectOnFocus",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly selectOnFocus = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly selectOnFocus = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Automatically activate a step when it receives keyboard focus."
         },
         {
@@ -17880,7 +17936,7 @@
           "publicName": "linear",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly linear = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly linear = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });",
           "description": "Modo linear: impede pular etapas à frente"
         }
       ],
@@ -18148,7 +18204,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -18178,7 +18234,7 @@
           "required": false,
           "declaration": "readonly popup = input(false, { transform: booleanAttribute });",
           "deprecated": true,
-          "description": "Popup mode has no trigger or open-state API and therefore has no effect.\r\nUse MenuComponent for popup navigation."
+          "description": "Popup mode has no trigger or open-state API and therefore has no effect.\nUse MenuComponent for popup navigation."
         }
       ],
       "outputs": [
@@ -18459,7 +18515,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "tableStyleClass",
@@ -18473,7 +18529,7 @@
           "publicName": "tableStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly tableStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly tableStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "rowHover",
@@ -18502,7 +18558,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "responsiveLayout",
@@ -18543,7 +18599,7 @@
           "publicName": "scrollDirection",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly scrollDirection = input<'vertical' | 'horizontal' | 'both'>(\r\n    'vertical',\r\n  );",
+          "declaration": "readonly scrollDirection = input<'vertical' | 'horizontal' | 'both'>(\n    'vertical',\n  );",
           "deprecated": true,
           "description": "Only the wrapper's existing horizontal overflow behavior is supported."
         },
@@ -18577,7 +18633,7 @@
           "publicName": "virtualScrollOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Virtual row-window rendering is not implemented."
         },
@@ -18691,7 +18747,7 @@
           "publicName": "rowTrackBy",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly rowTrackBy = input<((index: number, row: T) => unknown) | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly rowTrackBy = input<((index: number, row: T) => unknown) | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "contextMenuSelection",
@@ -18822,7 +18878,7 @@
           "publicName": "paginator",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly paginator = input(false, {\r\n    alias: 'paginator',\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly paginator = input(false, {\n    alias: 'paginator',\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "pageSize",
@@ -18867,7 +18923,7 @@
           "publicName": "totalRecords",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly totalRecords = input<number | undefined>(undefined, {\r\n    alias: 'totalRecords',\r\n  });"
+          "declaration": "readonly totalRecords = input<number | undefined>(undefined, {\n    alias: 'totalRecords',\n  });"
         },
         {
           "name": "pageSizeOptions",
@@ -18882,7 +18938,7 @@
           "publicName": "rowsPerPageOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly rowsPerPageOptions = input<number[] | undefined>(undefined, {\r\n    alias: 'rowsPerPageOptions',\r\n  });"
+          "declaration": "readonly rowsPerPageOptions = input<number[] | undefined>(undefined, {\n    alias: 'rowsPerPageOptions',\n  });"
         },
         {
           "name": "pageLinks",
@@ -18924,14 +18980,14 @@
           "publicName": "showCurrentPageReport",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showCurrentPageReport = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showCurrentPageReport = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showJumpToPageDropdown",
           "publicName": "showJumpToPageDropdown",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showJumpToPageDropdown = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly showJumpToPageDropdown = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "showJumpToPageInput",
@@ -18989,7 +19045,7 @@
           "publicName": "rowSelectable",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly rowSelectable = input<\r\n    ((row: { data: T; index: number }) => boolean) | undefined\r\n  >(undefined);"
+          "declaration": "readonly rowSelectable = input<\n    ((row: { data: T; index: number }) => boolean) | undefined\n  >(undefined);"
         },
         {
           "name": "paginatorDropdownAppendTo",
@@ -19268,7 +19324,7 @@
           "publicName": "value",
           "kind": "model",
           "required": false,
-          "declaration": "readonly value = model<string | number | undefined>(undefined, {\r\n    alias: 'value',\r\n  });"
+          "declaration": "readonly value = model<string | number | undefined>(undefined, {\n    alias: 'value',\n  });"
         },
         {
           "name": "variant",
@@ -19352,7 +19408,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -19402,7 +19458,7 @@
         {
           "name": "onClose",
           "kind": "output",
-          "declaration": "readonly onClose = output<{\r\n    originalEvent: Event;\r\n    index: number;\r\n    tab: TabComponent;\r\n  }>();"
+          "declaration": "readonly onClose = output<{\n    originalEvent: Event;\n    index: number;\n    tab: TabComponent;\n  }>();"
         }
       ],
       "testReferences": [
@@ -19446,7 +19502,7 @@
           "publicName": "disabled",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly disabled = input<boolean, unknown>(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly disabled = input<boolean, unknown>(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "closable",
@@ -19488,7 +19544,7 @@
           "publicName": "headerStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly headerStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly headerStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "headerStyleClass",
@@ -19694,7 +19750,7 @@
           "publicName": "maxLength",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly maxLength = input<number | undefined, unknown>(undefined, {\r\n    transform: (value) => {\r\n      if (value === undefined || value === null) return undefined;\r\n      const limit = numberAttribute(value);\r\n      return Number.isFinite(limit) && limit >= 0\r\n        ? Math.floor(limit)\r\n        : undefined;\r\n    },\r\n  });"
+          "declaration": "readonly maxLength = input<number | undefined, unknown>(undefined, {\n    transform: (value) => {\n      if (value === undefined || value === null) return undefined;\n      const limit = numberAttribute(value);\n      return Number.isFinite(limit) && limit >= 0\n        ? Math.floor(limit)\n        : undefined;\n    },\n  });"
         },
         {
           "name": "disabled",
@@ -19715,7 +19771,7 @@
           "publicName": "caseSensitiveDuplication",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly caseSensitiveDuplication = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly caseSensitiveDuplication = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "addOnTab",
@@ -19771,7 +19827,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "inputId",
@@ -19822,7 +19878,7 @@
         {
           "name": "onChipClick",
           "kind": "output",
-          "declaration": "readonly onChipClick = output<{\r\n    value: string;\r\n    index: number;\r\n    originalEvent: Event;\r\n  }>();"
+          "declaration": "readonly onChipClick = output<{\n    value: string;\n    index: number;\n    originalEvent: Event;\n  }>();"
         },
         {
           "name": "onClear",
@@ -20217,14 +20273,14 @@
           "publicName": "preventOpenDuplicates",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly preventOpenDuplicates = input<boolean | undefined, unknown>(\r\n    undefined,\r\n    {\r\n      transform: (value) =>\r\n        value == null ? undefined : booleanAttribute(value),\r\n    },\r\n  );"
+          "declaration": "readonly preventOpenDuplicates = input<boolean | undefined, unknown>(\n    undefined,\n    {\n      transform: (value) =>\n        value == null ? undefined : booleanAttribute(value),\n    },\n  );"
         },
         {
           "name": "preventDuplicates",
           "publicName": "preventDuplicates",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly preventDuplicates = input<boolean | undefined, unknown>(undefined, {\r\n    transform: (value) => (value == null ? undefined : booleanAttribute(value)),\r\n  });"
+          "declaration": "readonly preventDuplicates = input<boolean | undefined, unknown>(undefined, {\n    transform: (value) => (value == null ? undefined : booleanAttribute(value)),\n  });"
         },
         {
           "name": "automatic",
@@ -20315,7 +20371,7 @@
         {
           "name": "onClick",
           "kind": "output",
-          "declaration": "readonly onClick = output<{\r\n    originalEvent: MouseEvent;\r\n    message: ToastItem;\r\n  }>();"
+          "declaration": "readonly onClick = output<{\n    originalEvent: MouseEvent;\n    message: ToastItem;\n  }>();"
         }
       ],
       "testReferences": [
@@ -20420,7 +20476,7 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "style",
@@ -20583,21 +20639,21 @@
           "publicName": "appTooltip",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly appTooltip = input<string | null | undefined>('', {\r\n    alias: 'appTooltip',\r\n  });"
+          "declaration": "readonly appTooltip = input<string | null | undefined>('', {\n    alias: 'appTooltip',\n  });"
         },
         {
           "name": "uiTooltip",
           "publicName": "uiTooltip",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly uiTooltip = input<string | null | undefined>('', {\r\n    alias: 'uiTooltip',\r\n  });"
+          "declaration": "readonly uiTooltip = input<string | null | undefined>('', {\n    alias: 'uiTooltip',\n  });"
         },
         {
           "name": "orcTooltip",
           "publicName": "orcTooltip",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly orcTooltip = input<string | null | undefined>('', {\r\n    alias: 'orcTooltip',\r\n  });"
+          "declaration": "readonly orcTooltip = input<string | null | undefined>('', {\n    alias: 'orcTooltip',\n  });"
         },
         {
           "name": "tooltipPosition",
@@ -20632,14 +20688,14 @@
           "publicName": "showDelay",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showDelay = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly showDelay = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "hideDelay",
           "publicName": "hideDelay",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly hideDelay = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly hideDelay = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "tooltipEvent",
@@ -20681,7 +20737,7 @@
           "publicName": "life",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly life = input<number | undefined, unknown>(undefined, {\r\n    transform: numberAttribute,\r\n  });"
+          "declaration": "readonly life = input<number | undefined, unknown>(undefined, {\n    transform: numberAttribute,\n  });"
         },
         {
           "name": "fitContent",
@@ -20702,9 +20758,9 @@
           "publicName": "tooltipOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly tooltipOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly tooltipOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
-          "description": "This compatibility input is not applied. Use the individual\r\nTooltipDirective inputs to configure position, theme, delays, and state."
+          "description": "This compatibility input is not applied. Use the individual\nTooltipDirective inputs to configure position, theme, delays, and state."
         },
         {
           "name": "position",
@@ -20870,21 +20926,21 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly size = input<SizeInput>(undefined);",
-          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\r\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\r\ngate): `small` → `sm`, `large` → `lg`."
+          "description": "Visual size on the canonical `sm | md | lg` scale (`md` renders as the\ndefault middle size). Deprecated legacy values (removed at the 23.0.0\ngate): `small` → `sm`, `large` → `lg`."
         },
         {
           "name": "style",
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "panelStyle",
           "publicName": "panelStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly panelStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly panelStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "panelStyleClass",
@@ -20906,14 +20962,14 @@
           "kind": "signal",
           "required": false,
           "declaration": "readonly appendTo = input<unknown>(undefined);",
-          "description": "Where the detached panel attaches. Defaults to the body (or the\r\nenclosing native modal, so the pane never escapes native inertness);\r\nan element or selector attaches the panel inside that target instead."
+          "description": "Where the detached panel attaches. Defaults to the body (or the\nenclosing native modal, so the pane never escapes native inertness);\nan element or selector attaches the panel inside that target instead."
         },
         {
           "name": "overlayOptions",
           "publicName": "overlayOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly overlayOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly overlayOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility input only; overlay options are not interpreted."
         },
@@ -21022,7 +21078,7 @@
           "publicName": "propagateSelectionDown",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly propagateSelectionDown = input(true, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly propagateSelectionDown = input(true, {\n    transform: booleanAttribute,\n  });",
           "description": "Applies to checkbox selection; multiple mode keeps each node independent."
         },
         {
@@ -21056,7 +21112,7 @@
           "publicName": "virtualScrollOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility input only; virtual scrolling is not implemented."
         },
@@ -21116,7 +21172,7 @@
         {
           "name": "onChange",
           "kind": "output",
-          "declaration": "readonly onChange = output<{\r\n    originalEvent: Event;\r\n    value: string | string[] | null;\r\n  }>();"
+          "declaration": "readonly onChange = output<{\n    originalEvent: Event;\n    value: string | string[] | null;\n  }>();"
         },
         {
           "name": "onShow",
@@ -21198,7 +21254,7 @@
           "publicName": "selectionMode",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly selectionMode = input<'single' | 'multiple' | 'checkbox'>(\r\n    'multiple',\r\n  );"
+          "declaration": "readonly selectionMode = input<'single' | 'multiple' | 'checkbox'>(\n    'multiple',\n  );"
         },
         {
           "name": "propagateSelectionUp",
@@ -21212,7 +21268,7 @@
           "publicName": "propagateSelectionDown",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly propagateSelectionDown = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly propagateSelectionDown = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "value",
@@ -21395,14 +21451,14 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "tableStyle",
           "publicName": "tableStyle",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly tableStyle = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly tableStyle = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "tableStyleClass",
@@ -21512,7 +21568,7 @@
           "publicName": "showCurrentPageReport",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showCurrentPageReport = input(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showCurrentPageReport = input(false, {\n    transform: booleanAttribute,\n  });",
           "deprecated": true,
           "description": "Compatibility input only; the local page report is always shown."
         },
@@ -21521,7 +21577,7 @@
           "publicName": "showJumpToPageDropdown",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly showJumpToPageDropdown = input(false, {\r\n    transform: booleanAttribute,\r\n  });",
+          "declaration": "readonly showJumpToPageDropdown = input(false, {\n    transform: booleanAttribute,\n  });",
           "deprecated": true,
           "description": "Compatibility input only; paginator controls are not rendered."
         },
@@ -21598,7 +21654,7 @@
           "publicName": "compareSelectionBy",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly compareSelectionBy = input<'equals' | 'deepEquals' | string>(\r\n    'equals',\r\n  );",
+          "declaration": "readonly compareSelectionBy = input<'equals' | 'deepEquals' | string>(\n    'equals',\n  );",
           "deprecated": true,
           "description": "Compatibility input only; selection comparison uses node keys."
         },
@@ -21664,7 +21720,7 @@
           "publicName": "virtualScrollOptions",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\r\n    undefined,\r\n  );",
+          "declaration": "readonly virtualScrollOptions = input<Record<string, unknown> | undefined>(\n    undefined,\n  );",
           "deprecated": true,
           "description": "Compatibility input only; virtual scrolling is not implemented."
         },
@@ -21825,7 +21881,7 @@
         {
           "name": "onContextMenuSelect",
           "kind": "output",
-          "declaration": "readonly onContextMenuSelect = output<{\r\n    data: HierarchyNode<T>;\r\n    originalEvent: Event;\r\n  }>();",
+          "declaration": "readonly onContextMenuSelect = output<{\n    data: HierarchyNode<T>;\n    originalEvent: Event;\n  }>();",
           "deprecated": true,
           "description": "Compatibility output; context-menu selection is not implemented."
         },
@@ -22017,7 +22073,7 @@
           "publicName": "propagateSelectionDown",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly propagateSelectionDown = input(false, {\r\n    transform: booleanAttribute,\r\n  });"
+          "declaration": "readonly propagateSelectionDown = input(false, {\n    transform: booleanAttribute,\n  });"
         },
         {
           "name": "filter",
@@ -22135,7 +22191,7 @@
           "publicName": "style",
           "kind": "signal",
           "required": false,
-          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\r\n    undefined,\r\n  );"
+          "declaration": "readonly style = input<Record<string, string | number> | undefined>(\n    undefined,\n  );"
         },
         {
           "name": "styleClass",
@@ -22439,12 +22495,12 @@
     {
       "name": "@ciag/orchestra/accordion",
       "file": "projects/orc-ds/accordion/index.ts",
-      "exports": "export * from './accordion.component';\r\nexport * from './accordion-item.component';\r\nexport * from './accordion.types';"
+      "exports": "export * from './accordion.component';\nexport * from './accordion-item.component';\nexport * from './accordion.types';"
     },
     {
       "name": "@ciag/orchestra/alert",
       "file": "projects/orc-ds/alert/index.ts",
-      "exports": "export * from './alert.component';\r\nexport * from './alert.types';"
+      "exports": "export * from './alert.component';\nexport * from './alert.types';"
     },
     {
       "name": "@ciag/orchestra/animate-on-scroll",
@@ -22464,7 +22520,7 @@
     {
       "name": "@ciag/orchestra/autocomplete",
       "file": "projects/orc-ds/autocomplete/index.ts",
-      "exports": "export * from './autocomplete.types';\r\nexport * from './autocomplete.component';"
+      "exports": "export * from './autocomplete.types';\nexport * from './autocomplete.component';"
     },
     {
       "name": "@ciag/orchestra/autofocus",
@@ -22474,12 +22530,12 @@
     {
       "name": "@ciag/orchestra/avatar-group",
       "file": "projects/orc-ds/avatar-group/index.ts",
-      "exports": "export { AvatarGroupComponent } from '@ciag/orchestra/avatar';\r\nexport type { AvatarItem } from '@ciag/orchestra/avatar';"
+      "exports": "export { AvatarGroupComponent } from '@ciag/orchestra/avatar';\nexport type { AvatarItem } from '@ciag/orchestra/avatar';"
     },
     {
       "name": "@ciag/orchestra/avatar",
       "file": "projects/orc-ds/avatar/index.ts",
-      "exports": "export * from './avatar.component';\r\nexport * from './avatar-group.component';\r\nexport * from './avatar.types';"
+      "exports": "export * from './avatar.component';\nexport * from './avatar-group.component';\nexport * from './avatar.types';"
     },
     {
       "name": "@ciag/orchestra/avatargroup",
@@ -22489,12 +22545,12 @@
     {
       "name": "@ciag/orchestra/badge",
       "file": "projects/orc-ds/badge/index.ts",
-      "exports": "export * from './badge.component';\r\nexport * from './badge.types';"
+      "exports": "export * from './badge.component';\nexport * from './badge.types';"
     },
     {
       "name": "@ciag/orchestra/block-ui",
       "file": "projects/orc-ds/block-ui/index.ts",
-      "exports": "export { BlockUiComponent } from '@ciag/orchestra/p2';\r\nexport type { BlockUiTarget } from '@ciag/orchestra/p2';"
+      "exports": "export { BlockUiComponent } from '@ciag/orchestra/p2';\nexport type { BlockUiTarget } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/blockui",
@@ -22509,7 +22565,7 @@
     {
       "name": "@ciag/orchestra/breadcrumb",
       "file": "projects/orc-ds/breadcrumb/index.ts",
-      "exports": "export * from './breadcrumb.component';\r\nexport * from './breadcrumb-item.component';\r\nexport * from './breadcrumb.types';"
+      "exports": "export * from './breadcrumb.component';\nexport * from './breadcrumb-item.component';\nexport * from './breadcrumb.types';"
     },
     {
       "name": "@ciag/orchestra/button-group",
@@ -22519,7 +22575,7 @@
     {
       "name": "@ciag/orchestra/button",
       "file": "projects/orc-ds/button/index.ts",
-      "exports": "export * from './button.component';\r\nexport * from './icon-button.component';\r\nexport * from './button.types';"
+      "exports": "export * from './button.component';\nexport * from './icon-button.component';\nexport * from './button.types';"
     },
     {
       "name": "@ciag/orchestra/buttongroup",
@@ -22529,22 +22585,22 @@
     {
       "name": "@ciag/orchestra/calendar",
       "file": "projects/orc-ds/calendar/index.ts",
-      "exports": "export { CalendarComponent } from './calendar.component';\r\nexport type { CalendarDay } from './calendar.component';"
+      "exports": "export { CalendarComponent } from './calendar.component';\nexport type { CalendarDay } from './calendar.component';"
     },
     {
       "name": "@ciag/orchestra/card",
       "file": "projects/orc-ds/card/index.ts",
-      "exports": "export * from './card.component';\r\nexport * from './card-header.component';\r\nexport * from './card-body.component';\r\nexport * from './card-footer.component';"
+      "exports": "export * from './card.component';\nexport * from './card-header.component';\nexport * from './card-body.component';\nexport * from './card-footer.component';"
     },
     {
       "name": "@ciag/orchestra/carousel",
       "file": "projects/orc-ds/carousel/index.ts",
-      "exports": "export * from './carousel.types';\r\nexport * from './carousel.component';"
+      "exports": "export * from './carousel.types';\nexport * from './carousel.component';"
     },
     {
       "name": "@ciag/orchestra/cascade-select",
       "file": "projects/orc-ds/cascade-select/index.ts",
-      "exports": "export { CascadeSelectComponent } from '@ciag/orchestra/p2';\r\nexport type { CascadeOption } from '@ciag/orchestra/p2';"
+      "exports": "export { CascadeSelectComponent } from '@ciag/orchestra/p2';\nexport type { CascadeOption } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/cascadeselect",
@@ -22554,12 +22610,12 @@
     {
       "name": "@ciag/orchestra/chart",
       "file": "projects/orc-ds/chart/index.ts",
-      "exports": "export { ChartComponent } from '@ciag/orchestra/p2';\r\nexport type { ChartData, ChartDataset, ChartType } from '@ciag/orchestra/p2';"
+      "exports": "export { ChartComponent } from '@ciag/orchestra/p2';\nexport type { ChartData, ChartDataset, ChartType } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/checkbox",
       "file": "projects/orc-ds/checkbox/index.ts",
-      "exports": "export * from './checkbox.component';\r\nexport * from './checkbox.types';"
+      "exports": "export * from './checkbox.component';\nexport * from './checkbox.types';"
     },
     {
       "name": "@ciag/orchestra/chip-input",
@@ -22569,7 +22625,7 @@
     {
       "name": "@ciag/orchestra/chip",
       "file": "projects/orc-ds/chip/index.ts",
-      "exports": "export * from './chip.types';\r\nexport * from './chip.component';"
+      "exports": "export * from './chip.types';\nexport * from './chip.component';"
     },
     {
       "name": "@ciag/orchestra/chips",
@@ -22594,7 +22650,7 @@
     {
       "name": "@ciag/orchestra/color-picker",
       "file": "projects/orc-ds/color-picker/index.ts",
-      "exports": "export * from './color-picker.component';\r\nexport { ColorPickerComponent as ColorPicker } from './color-picker.component';"
+      "exports": "export * from './color-picker.component';\nexport { ColorPickerComponent as ColorPicker } from './color-picker.component';"
     },
     {
       "name": "@ciag/orchestra/colorpicker",
@@ -22604,12 +22660,12 @@
     {
       "name": "@ciag/orchestra/combobox",
       "file": "projects/orc-ds/combobox/index.ts",
-      "exports": "export { ComboboxComponent } from './combobox.component';\r\nexport type { P2Option as ComboboxOption } from '@ciag/orchestra/internal';"
+      "exports": "export { ComboboxComponent } from './combobox.component';\nexport type { P2Option as ComboboxOption } from '@ciag/orchestra/internal';"
     },
     {
       "name": "@ciag/orchestra/command-menu",
       "file": "projects/orc-ds/command-menu/index.ts",
-      "exports": "export { CommandMenuComponent } from '@ciag/orchestra/p2';\r\nexport type { CommandItem } from '@ciag/orchestra/p2';"
+      "exports": "export { CommandMenuComponent } from '@ciag/orchestra/p2';\nexport type { CommandItem } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/compare",
@@ -22619,12 +22675,12 @@
     {
       "name": "@ciag/orchestra/confirm-dialog",
       "file": "projects/orc-ds/confirm-dialog/index.ts",
-      "exports": "export {\r\n  ConfirmDialogComponent,\r\n  ConfirmationService,\r\n} from '@ciag/orchestra/p2';\r\nexport type { ConfirmationRequest } from '@ciag/orchestra/p2';"
+      "exports": "export {\n  ConfirmDialogComponent,\n  ConfirmationService,\n} from '@ciag/orchestra/p2';\nexport type { ConfirmationRequest } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/confirm-popup",
       "file": "projects/orc-ds/confirm-popup/index.ts",
-      "exports": "export {\r\n  ConfirmPopupComponent,\r\n  ConfirmPopupService,\r\n} from './confirm-popup.component';\r\nexport type { PopupConfirmation } from './confirm-popup.component';"
+      "exports": "export {\n  ConfirmPopupComponent,\n  ConfirmPopupService,\n} from './confirm-popup.component';\nexport type { PopupConfirmation } from './confirm-popup.component';"
     },
     {
       "name": "@ciag/orchestra/confirmdialog",
@@ -22644,7 +22700,7 @@
     {
       "name": "@ciag/orchestra/context-menu",
       "file": "projects/orc-ds/context-menu/index.ts",
-      "exports": "export { ContextMenuComponent } from './context-menu.component';\r\nexport type { ContextMenuItem } from './context-menu.component';"
+      "exports": "export { ContextMenuComponent } from './context-menu.component';\nexport type { ContextMenuItem } from './context-menu.component';"
     },
     {
       "name": "@ciag/orchestra/contextmenu",
@@ -22654,7 +22710,7 @@
     {
       "name": "@ciag/orchestra/data-table",
       "file": "projects/orc-ds/data-table/index.ts",
-      "exports": "export { DataTableComponent } from '@ciag/orchestra/p2';\r\nexport type { DataTableColumn } from '@ciag/orchestra/p2';"
+      "exports": "export { DataTableComponent } from '@ciag/orchestra/p2';\nexport type { DataTableColumn } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/data-view",
@@ -22679,7 +22735,7 @@
     {
       "name": "@ciag/orchestra/datepicker",
       "file": "projects/orc-ds/datepicker/index.ts",
-      "exports": "export { DatePickerComponent as DatepickerComponent } from '@ciag/orchestra/date-picker';\r\nexport { DatePickerComponent as DatePicker } from '@ciag/orchestra/date-picker';"
+      "exports": "export { DatePickerComponent as DatepickerComponent } from '@ciag/orchestra/date-picker';\nexport { DatePickerComponent as DatePicker } from '@ciag/orchestra/date-picker';"
     },
     {
       "name": "@ciag/orchestra/defer",
@@ -22689,7 +22745,7 @@
     {
       "name": "@ciag/orchestra/dialog",
       "file": "projects/orc-ds/dialog/index.ts",
-      "exports": "export { ModalComponent as DialogComponent } from '@ciag/orchestra/modal';\r\nexport { ModalService as DialogService } from '@ciag/orchestra/modal';\r\nexport { ModalRef as DialogRef } from '@ciag/orchestra/modal';\r\nexport { ModalComponent as Dialog } from '@ciag/orchestra/modal';"
+      "exports": "export { ModalComponent as DialogComponent } from '@ciag/orchestra/modal';\nexport { ModalService as DialogService } from '@ciag/orchestra/modal';\nexport { ModalRef as DialogRef } from '@ciag/orchestra/modal';\nexport { ModalComponent as Dialog } from '@ciag/orchestra/modal';"
     },
     {
       "name": "@ciag/orchestra/divider",
@@ -22699,7 +22755,7 @@
     {
       "name": "@ciag/orchestra/dock",
       "file": "projects/orc-ds/dock/index.ts",
-      "exports": "export { DockComponent } from './dock.component';\r\nexport type { DockItem } from './dock.component';"
+      "exports": "export { DockComponent } from './dock.component';\nexport type { DockItem } from './dock.component';"
     },
     {
       "name": "@ciag/orchestra/drag-drop",
@@ -22719,12 +22775,12 @@
     {
       "name": "@ciag/orchestra/dropdown",
       "file": "projects/orc-ds/dropdown/index.ts",
-      "exports": "export * from './dropdown.component';\r\nexport * from './dropdown.types';"
+      "exports": "export * from './dropdown.component';\nexport * from './dropdown.types';"
     },
     {
       "name": "@ciag/orchestra/dynamic-dialog",
       "file": "projects/orc-ds/dynamic-dialog/index.ts",
-      "exports": "export {\r\n  ModalComponent as DynamicDialogComponent,\r\n  ModalService as DynamicDialogService,\r\n  ModalRef as DynamicDialogRef,\r\n} from '@ciag/orchestra/modal';"
+      "exports": "export {\n  ModalComponent as DynamicDialogComponent,\n  ModalService as DynamicDialogService,\n  ModalRef as DynamicDialogRef,\n} from '@ciag/orchestra/modal';"
     },
     {
       "name": "@ciag/orchestra/dynamicdialog",
@@ -22734,7 +22790,7 @@
     {
       "name": "@ciag/orchestra/editor",
       "file": "projects/orc-ds/editor/index.ts",
-      "exports": "export { EditorComponent } from './editor.component';\r\nexport type { EditorAction } from './editor.component';"
+      "exports": "export { EditorComponent } from './editor.component';\nexport type { EditorAction } from './editor.component';"
     },
     {
       "name": "@ciag/orchestra/empty-state",
@@ -22749,12 +22805,12 @@
     {
       "name": "@ciag/orchestra/file-upload",
       "file": "projects/orc-ds/file-upload/index.ts",
-      "exports": "export { FileUploaderComponent as FileUploadComponent } from '@ciag/orchestra/file-uploader';\r\nexport { FileUploaderComponent as FileUpload } from '@ciag/orchestra/file-uploader';"
+      "exports": "export { FileUploaderComponent as FileUploadComponent } from '@ciag/orchestra/file-uploader';\nexport { FileUploaderComponent as FileUpload } from '@ciag/orchestra/file-uploader';"
     },
     {
       "name": "@ciag/orchestra/file-uploader",
       "file": "projects/orc-ds/file-uploader/index.ts",
-      "exports": "export * from './file-uploader.types';\r\nexport * from './file-uploader.component';\r\nexport * from './file-item/file-item.component';"
+      "exports": "export * from './file-uploader.types';\nexport * from './file-uploader.component';\nexport * from './file-item/file-item.component';"
     },
     {
       "name": "@ciag/orchestra/fileupload",
@@ -22809,7 +22865,7 @@
     {
       "name": "@ciag/orchestra/galleria",
       "file": "projects/orc-ds/galleria/index.ts",
-      "exports": "export { GalleriaComponent } from './galleria.component';\r\nexport type { GalleryImage } from './galleria.component';"
+      "exports": "export { GalleriaComponent } from './galleria.component';\nexport type { GalleryImage } from './galleria.component';"
     },
     {
       "name": "@ciag/orchestra/gallery",
@@ -22834,7 +22890,7 @@
     {
       "name": "@ciag/orchestra/icon",
       "file": "projects/orc-ds/icon/index.ts",
-      "exports": "export * from './icon.types';\r\nexport * from './icon.component';"
+      "exports": "export * from './icon.types';\nexport * from './icon.component';"
     },
     {
       "name": "@ciag/orchestra/iconfield",
@@ -22909,17 +22965,17 @@
     {
       "name": "@ciag/orchestra/input-number",
       "file": "projects/orc-ds/input-number/index.ts",
-      "exports": "export { NumberInputComponent as InputNumberComponent } from '@ciag/orchestra/number-input';\r\nexport { NumberInputComponent as InputNumber } from '@ciag/orchestra/number-input';"
+      "exports": "export { NumberInputComponent as InputNumberComponent } from '@ciag/orchestra/number-input';\nexport { NumberInputComponent as InputNumber } from '@ciag/orchestra/number-input';"
     },
     {
       "name": "@ciag/orchestra/input-otp",
       "file": "projects/orc-ds/input-otp/index.ts",
-      "exports": "export { OtpInputComponent as InputOtpComponent } from '@ciag/orchestra/otp-input';\r\nexport { OtpInputComponent as InputOtp } from '@ciag/orchestra/otp-input';"
+      "exports": "export { OtpInputComponent as InputOtpComponent } from '@ciag/orchestra/otp-input';\nexport { OtpInputComponent as InputOtp } from '@ciag/orchestra/otp-input';"
     },
     {
       "name": "@ciag/orchestra/input-password",
       "file": "projects/orc-ds/input-password/index.ts",
-      "exports": "export { PasswordComponent as InputPasswordComponent } from '@ciag/orchestra/p2';\r\nexport { PasswordComponent as InputPassword } from '@ciag/orchestra/p2';"
+      "exports": "export { PasswordComponent as InputPasswordComponent } from '@ciag/orchestra/p2';\nexport { PasswordComponent as InputPassword } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/input-tags",
@@ -22929,7 +22985,7 @@
     {
       "name": "@ciag/orchestra/input-text",
       "file": "projects/orc-ds/input-text/index.ts",
-      "exports": "export { InputComponent as InputTextComponent } from '@ciag/orchestra/input';\r\nexport { InputComponent as InputText } from '@ciag/orchestra/input';"
+      "exports": "export { InputComponent as InputTextComponent } from '@ciag/orchestra/input';\nexport { InputComponent as InputText } from '@ciag/orchestra/input';"
     },
     {
       "name": "@ciag/orchestra/input-textarea",
@@ -22939,7 +22995,7 @@
     {
       "name": "@ciag/orchestra/input",
       "file": "projects/orc-ds/input/index.ts",
-      "exports": "export * from './input.types';\r\nexport * from './input-mask.util';\r\nexport * from './input.component';\r\nexport * from './textarea.component';"
+      "exports": "export * from './input.types';\nexport * from './input-mask.util';\nexport * from './input.component';\nexport * from './textarea.component';"
     },
     {
       "name": "@ciag/orchestra/inputgroup",
@@ -22989,7 +23045,7 @@
     {
       "name": "@ciag/orchestra/internal",
       "file": "projects/orc-ds/internal/index.ts",
-      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\r\nexport * from './overlay-lifecycle';\r\nexport * from './overlay-attachment';\r\nexport * from './overlay-position';\r\nexport * from './anchored-popup';\r\nexport * from './cva-control';\r\nexport * from './menu-keyboard';\r\nexport * from './menu-item';\r\nexport * from './p2-shared';\r\nexport * from './size';\r\nexport * from './tree-filter';\r\nexport * from './table-engine';\r\nexport * from './list-picker';\r\nexport * from './calendar-engine';\r\nexport * from './dom-target';"
+      "exports": "/** Shared implementation helpers. This entry point is not a public component API. */\nexport * from './overlay-lifecycle';\nexport * from './overlay-attachment';\nexport * from './overlay-position';\nexport * from './anchored-popup';\nexport * from './cva-control';\nexport * from './menu-keyboard';\nexport * from './menu-item';\nexport * from './p2-shared';\nexport * from './size';\nexport * from './tree-filter';\nexport * from './table-engine';\nexport * from './list-picker';\nexport * from './calendar-engine';\nexport * from './dom-target';"
     },
     {
       "name": "@ciag/orchestra/kbd",
@@ -23029,12 +23085,12 @@
     {
       "name": "@ciag/orchestra/listbox",
       "file": "projects/orc-ds/listbox/index.ts",
-      "exports": "export { ListboxComponent } from './listbox.component';\r\nexport type { P2Option as ListboxOption } from '@ciag/orchestra/internal';"
+      "exports": "export { ListboxComponent } from './listbox.component';\nexport type { P2Option as ListboxOption } from '@ciag/orchestra/internal';"
     },
     {
       "name": "@ciag/orchestra/mega-menu",
       "file": "projects/orc-ds/mega-menu/index.ts",
-      "exports": "export { MegaMenuComponent } from './mega-menu.component';\r\nexport type { PrimeMenuItem } from './mega-menu.component';"
+      "exports": "export { MegaMenuComponent } from './mega-menu.component';\nexport type { PrimeMenuItem } from './mega-menu.component';"
     },
     {
       "name": "@ciag/orchestra/megamenu",
@@ -23044,17 +23100,17 @@
     {
       "name": "@ciag/orchestra/menu",
       "file": "projects/orc-ds/menu/index.ts",
-      "exports": "export { MenuComponent } from '@ciag/orchestra/p2';\r\nexport type { PrimeMenuItem as MenuItem } from '@ciag/orchestra/p2';"
+      "exports": "export { MenuComponent } from '@ciag/orchestra/p2';\nexport type { PrimeMenuItem as MenuItem } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/menubar",
       "file": "projects/orc-ds/menubar/index.ts",
-      "exports": "export { MenubarComponent } from './menubar.component';\r\nexport type { MenubarItem } from './menubar.component';"
+      "exports": "export { MenubarComponent } from './menubar.component';\nexport type { MenubarItem } from './menubar.component';"
     },
     {
       "name": "@ciag/orchestra/message",
       "file": "projects/orc-ds/message/index.ts",
-      "exports": "export { AlertComponent as MessageComponent } from '@ciag/orchestra/alert';\r\nexport { MessagesComponent } from '@ciag/orchestra/p2';\r\nexport type { P2Message as MessageItem } from '@ciag/orchestra/p2';"
+      "exports": "export { AlertComponent as MessageComponent } from '@ciag/orchestra/alert';\nexport { MessagesComponent } from '@ciag/orchestra/p2';\nexport type { P2Message as MessageItem } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/messages",
@@ -23064,7 +23120,7 @@
     {
       "name": "@ciag/orchestra/meter-group",
       "file": "projects/orc-ds/meter-group/index.ts",
-      "exports": "export { MeterGroupComponent } from './meter-group.component';\r\nexport type { MeterItem } from './meter-group.component';"
+      "exports": "export { MeterGroupComponent } from './meter-group.component';\nexport type { MeterItem } from './meter-group.component';"
     },
     {
       "name": "@ciag/orchestra/metergroup",
@@ -23074,12 +23130,12 @@
     {
       "name": "@ciag/orchestra/modal",
       "file": "projects/orc-ds/modal/index.ts",
-      "exports": "export * from './modal.component';\r\nexport * from './modal.service';\r\nexport * from './modal-ref';"
+      "exports": "export * from './modal.component';\nexport * from './modal.service';\nexport * from './modal-ref';"
     },
     {
       "name": "@ciag/orchestra/multi-select",
       "file": "projects/orc-ds/multi-select/index.ts",
-      "exports": "export { MultiSelectComponent } from './multi-select.component';\r\nexport type { P2Option as MultiSelectOption } from '@ciag/orchestra/internal';"
+      "exports": "export { MultiSelectComponent } from './multi-select.component';\nexport type { P2Option as MultiSelectOption } from '@ciag/orchestra/internal';"
     },
     {
       "name": "@ciag/orchestra/multiselect",
@@ -23089,7 +23145,7 @@
     {
       "name": "@ciag/orchestra/navigation",
       "file": "projects/orc-ds/navigation/index.ts",
-      "exports": "export * from './navigation.types';\r\nexport * from './navigation-shell.component';"
+      "exports": "export * from './navigation.types';\nexport * from './navigation-shell.component';"
     },
     {
       "name": "@ciag/orchestra/number-input",
@@ -23109,7 +23165,7 @@
     {
       "name": "@ciag/orchestra/organization-chart",
       "file": "projects/orc-ds/organization-chart/index.ts",
-      "exports": "export { OrganizationChartComponent } from './organization-chart.component';\r\nexport type { OrganizationNode } from './organization-chart.component';"
+      "exports": "export { OrganizationChartComponent } from './organization-chart.component';\nexport type { OrganizationNode } from './organization-chart.component';"
     },
     {
       "name": "@ciag/orchestra/organizationchart",
@@ -23119,7 +23175,7 @@
     {
       "name": "@ciag/orchestra/otp-input",
       "file": "projects/orc-ds/otp-input/index.ts",
-      "exports": "export * from './otp-input.component';\r\nexport * from './otp-slot.component';\r\nexport * from './otp-separator.component';\r\nexport * from './otp-group.component';\r\nexport * from './otp.types';"
+      "exports": "export * from './otp-input.component';\nexport * from './otp-slot.component';\nexport * from './otp-separator.component';\nexport * from './otp-group.component';\nexport * from './otp.types';"
     },
     {
       "name": "@ciag/orchestra/overlay-badge",
@@ -23149,22 +23205,22 @@
     {
       "name": "@ciag/orchestra/p2",
       "file": "projects/orc-ds/p2/index.ts",
-      "exports": "export * from './p2-form-components';\r\nexport * from './p2-layout-components';\r\nexport * from './p2-data-components';\r\nexport * from './p2-overlay-components';\r\nexport * from './p2-message-components';\r\nexport * from './p2-selection-components';\r\nexport * from './p2-shared';\r\nexport * from './p2-primeng-gap-components';\r\nexport * from './p2-advanced-components';\r\nexport * from './p2-menu-family-components';\r\nexport * from './p2-input-gap-components';\r\nexport * from './p2-hierarchical-components';\r\nexport * from './p2-chart-editor-components';\r\nexport * from './p2-list-gallery-components';\r\nexport * from './p2-form-gap-components';\r\nexport * from './p2-org-knob-components';\r\nexport * from './p2-utility-directives';\r\nexport * from './p2-input-more';\r\nexport * from './p2-dock-scroll-components';\r\nexport * from './p2-command-components';\r\nexport * from './p2-utility-more';\r\nexport * from './p2-confirm-popup';"
+      "exports": "export * from './p2-form-components';\nexport * from './p2-layout-components';\nexport * from './p2-data-components';\nexport * from './p2-overlay-components';\nexport * from './p2-message-components';\nexport * from './p2-selection-components';\nexport * from './p2-shared';\nexport * from './p2-primeng-gap-components';\nexport * from './p2-advanced-components';\nexport * from './p2-menu-family-components';\nexport * from './p2-input-gap-components';\nexport * from './p2-hierarchical-components';\nexport * from './p2-chart-editor-components';\nexport * from './p2-list-gallery-components';\nexport * from './p2-form-gap-components';\nexport * from './p2-org-knob-components';\nexport * from './p2-utility-directives';\nexport * from './p2-input-more';\nexport * from './p2-dock-scroll-components';\nexport * from './p2-command-components';\nexport * from './p2-utility-more';\nexport * from './p2-confirm-popup';"
     },
     {
       "name": "@ciag/orchestra/pagination",
       "file": "projects/orc-ds/pagination/index.ts",
-      "exports": "export { PaginatorComponent as PaginationComponent } from '@ciag/orchestra/paginator';\r\nexport type { PageChangeEvent as PaginationPageEvent } from '@ciag/orchestra/paginator';"
+      "exports": "export { PaginatorComponent as PaginationComponent } from '@ciag/orchestra/paginator';\nexport type { PageChangeEvent as PaginationPageEvent } from '@ciag/orchestra/paginator';"
     },
     {
       "name": "@ciag/orchestra/paginator",
       "file": "projects/orc-ds/paginator/index.ts",
-      "exports": "export * from './paginator.component';\r\nexport * from './paginator.types';\r\nexport { PaginatorComponent } from './paginator.component';\r\nexport { PaginatorComponent as Paginator } from './paginator.component';"
+      "exports": "export * from './paginator.component';\nexport * from './paginator.types';\nexport { PaginatorComponent } from './paginator.component';\nexport { PaginatorComponent as Paginator } from './paginator.component';"
     },
     {
       "name": "@ciag/orchestra/panel-menu",
       "file": "projects/orc-ds/panel-menu/index.ts",
-      "exports": "export { PanelMenuComponent } from './panel-menu.component';\r\nexport type { PrimeMenuItem } from './panel-menu.component';"
+      "exports": "export { PanelMenuComponent } from './panel-menu.component';\nexport type { PrimeMenuItem } from './panel-menu.component';"
     },
     {
       "name": "@ciag/orchestra/panel",
@@ -23184,7 +23240,7 @@
     {
       "name": "@ciag/orchestra/pick-list",
       "file": "projects/orc-ds/pick-list/index.ts",
-      "exports": "export { PickListComponent } from './pick-list.component';\r\nexport type { P2Option } from '@ciag/orchestra/internal';"
+      "exports": "export { PickListComponent } from './pick-list.component';\nexport type { P2Option } from '@ciag/orchestra/internal';"
     },
     {
       "name": "@ciag/orchestra/picklist",
@@ -23209,12 +23265,12 @@
     {
       "name": "@ciag/orchestra/progress-spinner",
       "file": "projects/orc-ds/progress-spinner/index.ts",
-      "exports": "export { ProgressSpinnerComponent } from '@ciag/orchestra/progress';\r\nexport { ProgressSpinnerComponent as ProgressSpinner } from '@ciag/orchestra/progress';"
+      "exports": "export { ProgressSpinnerComponent } from '@ciag/orchestra/progress';\nexport { ProgressSpinnerComponent as ProgressSpinner } from '@ciag/orchestra/progress';"
     },
     {
       "name": "@ciag/orchestra/progress",
       "file": "projects/orc-ds/progress/index.ts",
-      "exports": "export * from './progress.types';\r\nexport * from './progress-bar.component';\r\nexport * from './progress-circle.component';\r\nexport * from './progress-spinner.component';"
+      "exports": "export * from './progress.types';\nexport * from './progress-bar.component';\nexport * from './progress-circle.component';\nexport * from './progress-spinner.component';"
     },
     {
       "name": "@ciag/orchestra/progressbar",
@@ -23229,12 +23285,12 @@
     {
       "name": "@ciag/orchestra/radio-button",
       "file": "projects/orc-ds/radio-button/index.ts",
-      "exports": "export { RadioButtonComponent } from '@ciag/orchestra/radio';\r\nexport { RadioButtonComponent as RadioButton } from '@ciag/orchestra/radio';"
+      "exports": "export { RadioButtonComponent } from '@ciag/orchestra/radio';\nexport { RadioButtonComponent as RadioButton } from '@ciag/orchestra/radio';"
     },
     {
       "name": "@ciag/orchestra/radio",
       "file": "projects/orc-ds/radio/index.ts",
-      "exports": "export * from './radio-button.component';\r\nexport * from './radio-group.component';\r\nexport * from './radio.types';"
+      "exports": "export * from './radio-button.component';\nexport * from './radio-group.component';\nexport * from './radio.types';"
     },
     {
       "name": "@ciag/orchestra/radiobutton",
@@ -23294,7 +23350,7 @@
     {
       "name": "@ciag/orchestra/select",
       "file": "projects/orc-ds/select/index.ts",
-      "exports": "export * from './select.component';\r\nexport * from './option.component';\r\nexport * from './select.types';\r\nexport * from './select-option.model';\r\nexport * from './select.tokens';"
+      "exports": "export * from './select.component';\nexport * from './option.component';\nexport * from './select.types';\nexport * from './select-option.model';\nexport * from './select.tokens';"
     },
     {
       "name": "@ciag/orchestra/selectbutton",
@@ -23302,19 +23358,24 @@
       "exports": "export * from '@ciag/orchestra/select-button';"
     },
     {
+      "name": "@ciag/orchestra/separator",
+      "file": "projects/orc-ds/separator/index.ts",
+      "exports": "export { SeparatorComponent } from '@ciag/orchestra/p2';"
+    },
+    {
       "name": "@ciag/orchestra/sidebar",
       "file": "projects/orc-ds/sidebar/index.ts",
-      "exports": "export { DrawerComponent as SidebarComponent } from '@ciag/orchestra/drawer';\r\nexport type { DrawerPlacement as SidebarPosition } from '@ciag/orchestra/drawer';"
+      "exports": "export { DrawerComponent as SidebarComponent } from '@ciag/orchestra/drawer';\nexport type { DrawerPlacement as SidebarPosition } from '@ciag/orchestra/drawer';"
     },
     {
       "name": "@ciag/orchestra/skeleton",
       "file": "projects/orc-ds/skeleton/index.ts",
-      "exports": "export * from './skeleton.types';\r\nexport * from './skeleton.component';"
+      "exports": "export * from './skeleton.types';\nexport * from './skeleton.component';"
     },
     {
       "name": "@ciag/orchestra/slider",
       "file": "projects/orc-ds/slider/index.ts",
-      "exports": "export * from './slider.types';\r\nexport * from './slider.component';"
+      "exports": "export * from './slider.types';\nexport * from './slider.component';"
     },
     {
       "name": "@ciag/orchestra/space",
@@ -23324,7 +23385,7 @@
     {
       "name": "@ciag/orchestra/speed-dial",
       "file": "projects/orc-ds/speed-dial/index.ts",
-      "exports": "export { SpeedDialComponent } from './speed-dial.component';\r\nexport type { SpeedDialAction } from './speed-dial.component';"
+      "exports": "export { SpeedDialComponent } from './speed-dial.component';\nexport type { SpeedDialAction } from './speed-dial.component';"
     },
     {
       "name": "@ciag/orchestra/speeddial",
@@ -23334,7 +23395,7 @@
     {
       "name": "@ciag/orchestra/spinner",
       "file": "projects/orc-ds/spinner/index.ts",
-      "exports": "export * from './spinner.types';\r\nexport * from './spinner.component';"
+      "exports": "export * from './spinner.types';\nexport * from './spinner.component';"
     },
     {
       "name": "@ciag/orchestra/split-button",
@@ -23349,7 +23410,7 @@
     {
       "name": "@ciag/orchestra/splitter",
       "file": "projects/orc-ds/splitter/index.ts",
-      "exports": "export { SplitterComponent } from '@ciag/orchestra/p2';\r\nexport type { SplitterPanel } from '@ciag/orchestra/p2';"
+      "exports": "export { SplitterComponent } from '@ciag/orchestra/p2';\nexport type { SplitterPanel } from '@ciag/orchestra/p2';"
     },
     {
       "name": "@ciag/orchestra/stack",
@@ -23359,7 +23420,7 @@
     {
       "name": "@ciag/orchestra/stepper",
       "file": "projects/orc-ds/stepper/index.ts",
-      "exports": "export * from './stepper.types';\r\nexport * from './stepper.component';"
+      "exports": "export * from './stepper.types';\nexport * from './stepper.component';"
     },
     {
       "name": "@ciag/orchestra/steps",
@@ -23379,7 +23440,7 @@
     {
       "name": "@ciag/orchestra/switch",
       "file": "projects/orc-ds/switch/index.ts",
-      "exports": "export * from './switch.component';\r\nexport * from './switch.types';"
+      "exports": "export * from './switch.component';\nexport * from './switch.types';"
     },
     {
       "name": "@ciag/orchestra/tab-menu",
@@ -23389,7 +23450,7 @@
     {
       "name": "@ciag/orchestra/table",
       "file": "projects/orc-ds/table/index.ts",
-      "exports": "export * from './table.types';\r\nexport * from './table-cell-def.directive';\r\nexport * from './table-column.directive';\r\nexport * from './table-slots.directive';\r\nexport * from './table.component';"
+      "exports": "export * from './table.types';\nexport * from './table-cell-def.directive';\nexport * from './table-column.directive';\nexport * from './table-slots.directive';\nexport * from './table.component';"
     },
     {
       "name": "@ciag/orchestra/tabmenu",
@@ -23399,7 +23460,7 @@
     {
       "name": "@ciag/orchestra/tabs",
       "file": "projects/orc-ds/tabs/index.ts",
-      "exports": "export * from './tab-group.component';\r\nexport * from './tab.component';\r\nexport * from './tabs.types';"
+      "exports": "export * from './tab-group.component';\nexport * from './tab.component';\nexport * from './tabs.types';"
     },
     {
       "name": "@ciag/orchestra/tabview",
@@ -23419,7 +23480,7 @@
     {
       "name": "@ciag/orchestra/terminal",
       "file": "projects/orc-ds/terminal/index.ts",
-      "exports": "export { TerminalComponent } from './terminal.component';\r\nexport type { TerminalLine } from './terminal.component';"
+      "exports": "export { TerminalComponent } from './terminal.component';\nexport type { TerminalLine } from './terminal.component';"
     },
     {
       "name": "@ciag/orchestra/text-input",
@@ -23439,7 +23500,7 @@
     {
       "name": "@ciag/orchestra/tiered-menu",
       "file": "projects/orc-ds/tiered-menu/index.ts",
-      "exports": "export { TieredMenuComponent } from './tiered-menu.component';\r\nexport type { PrimeMenuItem } from './tiered-menu.component';"
+      "exports": "export { TieredMenuComponent } from './tiered-menu.component';\nexport type { PrimeMenuItem } from './tiered-menu.component';"
     },
     {
       "name": "@ciag/orchestra/tieredmenu",
@@ -23449,12 +23510,12 @@
     {
       "name": "@ciag/orchestra/timeline",
       "file": "projects/orc-ds/timeline/index.ts",
-      "exports": "export * from './timeline.types';\r\nexport * from './timeline.component';"
+      "exports": "export * from './timeline.types';\nexport * from './timeline.component';"
     },
     {
       "name": "@ciag/orchestra/toast",
       "file": "projects/orc-ds/toast/index.ts",
-      "exports": "export * from './toast.types';\r\nexport * from './toast.service';\r\nexport * from './toast.component';\r\nexport * from './toast-container.component';"
+      "exports": "export * from './toast.types';\nexport * from './toast.service';\nexport * from './toast.component';\nexport * from './toast-container.component';"
     },
     {
       "name": "@ciag/orchestra/toggle-button",
@@ -23464,7 +23525,7 @@
     {
       "name": "@ciag/orchestra/toggle-switch",
       "file": "projects/orc-ds/toggle-switch/index.ts",
-      "exports": "export { SwitchComponent as ToggleSwitchComponent } from '@ciag/orchestra/switch';\r\nexport { SwitchComponent as ToggleSwitch } from '@ciag/orchestra/switch';"
+      "exports": "export { SwitchComponent as ToggleSwitchComponent } from '@ciag/orchestra/switch';\nexport { SwitchComponent as ToggleSwitch } from '@ciag/orchestra/switch';"
     },
     {
       "name": "@ciag/orchestra/toggle",
@@ -23489,17 +23550,17 @@
     {
       "name": "@ciag/orchestra/tooltip",
       "file": "projects/orc-ds/tooltip/index.ts",
-      "exports": "export * from './tooltip.types';\r\nexport * from './tooltip.component';\r\nexport * from './tooltip.directive';"
+      "exports": "export * from './tooltip.types';\nexport * from './tooltip.component';\nexport * from './tooltip.directive';"
     },
     {
       "name": "@ciag/orchestra/tree-select",
       "file": "projects/orc-ds/tree-select/index.ts",
-      "exports": "export { TreeSelectComponent } from './tree-select.component';\r\nexport type { TreeSelectNode } from './tree-select.component';"
+      "exports": "export { TreeSelectComponent } from './tree-select.component';\nexport type { TreeSelectNode } from './tree-select.component';"
     },
     {
       "name": "@ciag/orchestra/tree-table",
       "file": "projects/orc-ds/tree-table/index.ts",
-      "exports": "export { TreeTableComponent } from './tree-table.component';\r\nexport type {\r\n  TreeTableColumn,\r\n  TreeTableSortEvent,\r\n} from './tree-table.component';\r\nexport type { HierarchyNode } from '@ciag/orchestra/tree';"
+      "exports": "export { TreeTableComponent } from './tree-table.component';\nexport type {\n  TreeTableColumn,\n  TreeTableSortEvent,\n} from './tree-table.component';\nexport type { HierarchyNode } from '@ciag/orchestra/tree';"
     },
     {
       "name": "@ciag/orchestra/tree-view",
@@ -23509,7 +23570,7 @@
     {
       "name": "@ciag/orchestra/tree",
       "file": "projects/orc-ds/tree/index.ts",
-      "exports": "export { TreeComponent } from './tree.component';\r\nexport type { HierarchyNode } from './tree.component';"
+      "exports": "export { TreeComponent } from './tree.component';\nexport type { HierarchyNode } from './tree.component';"
     },
     {
       "name": "@ciag/orchestra/treeselect",
@@ -23626,6 +23687,7 @@
     "projects/orc-ds/button-group/index.ts",
     "projects/orc-ds/button-group/ng-package.json",
     "projects/orc-ds/button/button-behavior.spec.ts",
+    "projects/orc-ds/button/button-close-variant.spec.ts",
     "projects/orc-ds/button/button-input-contract.spec.ts",
     "projects/orc-ds/button/button.component.html",
     "projects/orc-ds/button/button.component.scss",
@@ -23828,6 +23890,7 @@
     "projects/orc-ds/dynamicdialog/index.ts",
     "projects/orc-ds/dynamicdialog/ng-package.json",
     "projects/orc-ds/editor-selection-contract.spec.ts",
+    "projects/orc-ds/editor/editor-active-format.spec.ts",
     "projects/orc-ds/editor/editor-parity.spec.ts",
     "projects/orc-ds/editor/editor.component.html",
     "projects/orc-ds/editor/editor.component.scss",
@@ -24349,6 +24412,7 @@
     "projects/orc-ds/scrollpanel/ng-package.json",
     "projects/orc-ds/scrolltop/index.ts",
     "projects/orc-ds/scrolltop/ng-package.json",
+    "projects/orc-ds/scrolltop/scroll-top-direction.spec.ts",
     "projects/orc-ds/scrolltop/scroll-top.component.spec.ts",
     "projects/orc-ds/segmented-control/index.ts",
     "projects/orc-ds/segmented-control/ng-package.json",
@@ -24380,6 +24444,8 @@
     "projects/orc-ds/select/select.types.ts",
     "projects/orc-ds/selectbutton/index.ts",
     "projects/orc-ds/selectbutton/ng-package.json",
+    "projects/orc-ds/separator/index.ts",
+    "projects/orc-ds/separator/ng-package.json",
     "projects/orc-ds/sidebar/index.ts",
     "projects/orc-ds/sidebar/ng-package.json",
     "projects/orc-ds/size-vocabulary-contract.spec.ts",
@@ -24408,6 +24474,7 @@
     "projects/orc-ds/speeddial/ng-package.json",
     "projects/orc-ds/spinner/index.ts",
     "projects/orc-ds/spinner/ng-package.json",
+    "projects/orc-ds/spinner/spinner-escape.spec.ts",
     "projects/orc-ds/spinner/spinner.component.html",
     "projects/orc-ds/spinner/spinner.component.scss",
     "projects/orc-ds/spinner/spinner.component.ts",
@@ -24719,6 +24786,7 @@
     "projects/docs/src/app/catalog/segmented-control.catalog.ts",
     "projects/docs/src/app/catalog/select-button.catalog.ts",
     "projects/docs/src/app/catalog/select.catalog.ts",
+    "projects/docs/src/app/catalog/separator.catalog.ts",
     "projects/docs/src/app/catalog/skeleton.catalog.ts",
     "projects/docs/src/app/catalog/slider.catalog.ts",
     "projects/docs/src/app/catalog/space.catalog.ts",
@@ -24845,6 +24913,7 @@
     "projects/docs/src/app/generated/component-api/segmented-control.generated.ts",
     "projects/docs/src/app/generated/component-api/select-button.generated.ts",
     "projects/docs/src/app/generated/component-api/select.generated.ts",
+    "projects/docs/src/app/generated/component-api/separator.generated.ts",
     "projects/docs/src/app/generated/component-api/skeleton.generated.ts",
     "projects/docs/src/app/generated/component-api/slider.generated.ts",
     "projects/docs/src/app/generated/component-api/space.generated.ts",
@@ -24960,6 +25029,7 @@
     "projects/docs/src/app/pages/components/component-doc/examples/portal-example.component.ts",
     "projects/docs/src/app/pages/components/component-doc/examples/scroll-area-example.component.ts",
     "projects/docs/src/app/pages/components/component-doc/examples/segmented-control-example.component.ts",
+    "projects/docs/src/app/pages/components/component-doc/examples/separator-example.component.ts",
     "projects/docs/src/app/pages/components/component-doc/examples/space-example.component.ts",
     "projects/docs/src/app/pages/components/component-doc/examples/speed-dial-example.component.ts",
     "projects/docs/src/app/pages/components/component-doc/examples/splitter-example.component.ts",

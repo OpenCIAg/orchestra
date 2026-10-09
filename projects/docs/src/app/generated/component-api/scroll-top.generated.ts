@@ -24,6 +24,15 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       },
       {
         kind: 'input',
+        name: 'direction',
+        type: "'up' | 'down'",
+        defaultValue: "'up'",
+        required: false,
+        description:
+          '`down` jumps to the end of the target and shows while there is content below.',
+      },
+      {
+        kind: 'input',
         name: 'behavior',
         type: "'auto' | 'smooth'",
         defaultValue: "'smooth'",
@@ -33,8 +42,10 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
         kind: 'input',
         name: 'icon',
         type: 'string',
-        defaultValue: "'↑'",
+        defaultValue: "''",
         required: false,
+        description:
+          'Custom glyph rendered as text; when empty, a Material arrow matching `direction`.',
       },
       {
         kind: 'input',
