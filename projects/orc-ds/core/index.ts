@@ -1,2 +1,6 @@
-/** Version of the `@ciag/orchestra` package this build belongs to. */
-export const ORCHESTRA_VERSION = '22.4.0-rc.0';
+/** `@ciag/orchestra/core`: labels (i18n), shared types and app-level utilities. */
+export * from './version';
+export * from './types';
+export * from './labels';
+export * from './labels.provider';
+export * from './id';

@@ -13,3 +13,7 @@ export * from './table-engine';
 export * from './list-picker';
 export * from './calendar-engine';
 export * from './dom-target';
+// Orchestra 22.4 infrastructure (CDK overlay layers, CVA base, field context, selection).
+export * from './overlay/index';
+export * from './forms/index';
+export * from './selection/index';
