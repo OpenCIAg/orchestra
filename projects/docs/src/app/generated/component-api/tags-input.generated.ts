@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'TagsInputComponent',
-    selector: 'orc-tags-input, orc-chips, orc-input-chips',
+    selector: 'orc-tags-input',
     entries: [
       {
         kind: 'model',

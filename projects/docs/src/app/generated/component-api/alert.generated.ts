@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'AlertComponent',
-    selector: 'orc-alert, orc-message',
+    selector: 'orc-alert',
     entries: [
       {
         kind: 'input',

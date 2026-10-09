@@ -89,7 +89,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   },
   {
     component: 'FileUploaderComponent',
-    selector: 'orc-file-uploader, orc-file-upload',
+    selector: 'orc-file-uploader',
     entries: [
       {
         kind: 'input',

@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'GalleriaComponent',
-    selector: 'orc-galleria, orc-gallery',
+    selector: 'orc-galleria',
     entries: [
       {
         kind: 'input',

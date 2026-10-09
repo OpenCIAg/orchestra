@@ -11,7 +11,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       {
         kind: 'input',
         name: 'options',
-        type: 'P2Option<T>[]',
+        type: 'OrcOption<T>[]',
         defaultValue: '[]',
         required: false,
       },
@@ -339,7 +339,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       {
         kind: 'output',
         name: 'optionSelected',
-        type: 'P2Option<T>',
+        type: 'OrcOption<T>',
         defaultValue: null,
         required: false,
       },

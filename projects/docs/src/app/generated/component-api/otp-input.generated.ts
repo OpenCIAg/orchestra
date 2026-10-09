@@ -11,7 +11,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   },
   {
     component: 'OtpInputComponent',
-    selector: 'orc-otp-input, orc-input-otp',
+    selector: 'orc-otp-input',
     entries: [
       {
         kind: 'input',

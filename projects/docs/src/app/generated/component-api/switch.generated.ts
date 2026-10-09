@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'SwitchComponent',
-    selector: 'orc-switch, orc-toggle-switch, orc-toggle',
+    selector: 'orc-switch',
     entries: [
       {
         kind: 'input',

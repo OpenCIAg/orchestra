@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'PasswordComponent',
-    selector: 'orc-password, orc-input-password',
+    selector: 'orc-password',
     entries: [
       {
         kind: 'model',

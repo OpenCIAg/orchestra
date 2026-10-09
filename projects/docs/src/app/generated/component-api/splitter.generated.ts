@@ -18,7 +18,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       {
         kind: 'input',
         name: 'orientation',
-        type: 'P2Orientation',
+        type: 'OrcOrientation',
         defaultValue: "'horizontal'",
         required: false,
       },

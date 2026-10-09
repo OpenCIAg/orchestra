@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'ModalComponent',
-    selector: 'orc-modal, orc-dialog, orc-dynamic-dialog',
+    selector: 'orc-modal',
     entries: [
       {
         kind: 'model',

@@ -11,7 +11,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       {
         kind: 'model',
         name: 'messages',
-        type: 'P2Message[]',
+        type: 'MessageItem[]',
         defaultValue: '[]',
         required: false,
       },
@@ -53,7 +53,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
       {
         kind: 'output',
         name: 'messageClose',
-        type: 'P2Message',
+        type: 'MessageItem',
         defaultValue: null,
         required: false,
       },

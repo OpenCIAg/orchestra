@@ -12,7 +12,7 @@ This document is the machine-oriented companion to [`llms.txt`](./llms.txt). It 
 ## 1. Operating rules for coding agents
 
 1. Search this reference and the interactive catalog before creating a new control. If a matching `orc-*` component exists, use it.
-2. Import the narrowest secondary entry point. Importing from `@ciag/orchestra/p2` is correct for the P2 primitives; importing from the component-specific entry point is preferred for stable components. The root `@ciag/orchestra` export is available when convenience is more important than bundle granularity.
+2. Import each family from its own secondary entry point (`@ciag/orchestra/<family>`). There are no alias entry points, and the root `@ciag/orchestra` entry exports only the core surface, not the families.
 3. Every consumer should be a standalone Angular component. Put library components and directives in the consumer component's `imports` array.
 4. Do not treat a component's public signal as a normal property. `input()` is read by the component; `model()` supports two-way binding; `output()` is an event. In templates use `[property]`, `[(property)]`, and `(eventName)` respectively.
 5. Keep the component's label and accessible name when adding custom visuals. A decorative icon is not a replacement for `label`, `ariaLabel`, `ariaLabelledby`, or `ariaDescribedby`.
@@ -125,233 +125,114 @@ The library supplies semantic roles, keyboard behavior, focus-visible states, an
 
 ## 4. Complete package and entry-point map
 
-The root public API exposes 223 secondary entry points, generated from the component inventory. Alias entry points intentionally point at the canonical implementation so applications can migrate terminology without duplicating behavior.
+The root public API exposes 104 secondary entry points, generated from the component inventory. Alias entry points intentionally point at the canonical implementation so applications can migrate terminology without duplicating behavior.
 
-| Entry point              | Primary selectors or export                                                             | Docs                                                                                |
-| ------------------------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `accordion`              | `orc-accordion-item`, `orc-accordion`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/accordion)              |
-| `alert`                  | `orc-alert`                                                                             | [interactive docs](https://orchestra.ciag.org.br/components/alert)                  |
-| `animate-on-scroll`      | alias of `p2` (`AnimateOnScrollDirective`)                                              | —                                                                                   |
-| `animateonscroll`        | alias of `animate-on-scroll`                                                            | —                                                                                   |
-| `aspect-ratio`           | alias of `p2` (`AspectRatioComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/aspect-ratio)           |
-| `autocomplete`           | `orc-autocomplete`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/autocomplete)           |
-| `autofocus`              | alias of `p2` (`AutoFocusDirective`)                                                    | —                                                                                   |
-| `avatar`                 | `orc-avatar-group`, `orc-avatar`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/avatar)                 |
-| `avatar-group`           | alias of `avatar` (`AvatarGroupComponent`)                                              | [interactive docs](https://orchestra.ciag.org.br/components/avatar)                 |
-| `avatargroup`            | alias of `avatar-group`                                                                 | —                                                                                   |
-| `badge`                  | `orc-badge`                                                                             | [interactive docs](https://orchestra.ciag.org.br/components/badge)                  |
-| `block-ui`               | alias of `p2` (`BlockUiComponent`)                                                      | [interactive docs](https://orchestra.ciag.org.br/components/block-ui)               |
-| `blockui`                | alias of `block-ui`                                                                     | —                                                                                   |
-| `box`                    | alias of `p2` (`BoxComponent`)                                                          | [interactive docs](https://orchestra.ciag.org.br/components/box)                    |
-| `breadcrumb`             | `orc-breadcrumb-item`, `orc-breadcrumb`                                                 | [interactive docs](https://orchestra.ciag.org.br/components/breadcrumb)             |
-| `button`                 | `orc-button`, `orc-icon-button`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/button)                 |
-| `button-group`           | alias of `p2` (`ButtonGroupComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/button-group)           |
-| `buttongroup`            | alias of `button-group`                                                                 | —                                                                                   |
-| `calendar`               | `orc-calendar`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/calendar)               |
-| `card`                   | `orc-card-body`, `orc-card-footer`, `orc-card-header`, `orc-card`                       | [interactive docs](https://orchestra.ciag.org.br/components/card)                   |
-| `carousel`               | `orc-carousel`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/carousel)               |
-| `cascade-select`         | alias of `p2` (`CascadeSelectComponent`)                                                | [interactive docs](https://orchestra.ciag.org.br/components/cascade-select)         |
-| `cascadeselect`          | alias of `cascade-select`                                                               | —                                                                                   |
-| `chart`                  | alias of `p2` (`ChartComponent`)                                                        | [interactive docs](https://orchestra.ciag.org.br/components/chart)                  |
-| `checkbox`               | `orc-checkbox`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/checkbox)               |
-| `chip`                   | `orc-chip`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/chip)                   |
-| `chip-input`             | `orc-chip-input`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/chip-input)             |
-| `chips`                  | alias of `p2` (`ChipsComponent`)                                                        | —                                                                                   |
-| `close-button`           | alias of `p2` (`CloseButtonComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/close-button)           |
-| `code`                   | `orc-code`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/code)                   |
-| `collapsible`            | `orc-collapsible`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/collapsible)            |
-| `color-picker`           | `orc-color-picker`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/color-picker)           |
-| `colorpicker`            | alias of `color-picker`                                                                 | —                                                                                   |
-| `combobox`               | `orc-combobox`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/combobox)               |
-| `command-menu`           | alias of `p2` (`CommandMenuComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/command-menu)           |
-| `compare`                | alias of `p2` (`CompareComponent`)                                                      | —                                                                                   |
-| `confirm-dialog`         | alias of `p2` (`ConfirmDialogComponent`, `ConfirmationService`)                         | [interactive docs](https://orchestra.ciag.org.br/components/confirm-dialog)         |
-| `confirm-popup`          | `orc-confirm-popup`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/confirm-popup)          |
-| `confirmdialog`          | alias of `confirm-dialog`                                                               | —                                                                                   |
-| `confirmpopup`           | alias of `confirm-popup`                                                                | —                                                                                   |
-| `container`              | alias of `p2` (`ContainerComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/container)              |
-| `context-menu`           | `orc-context-menu`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/context-menu)           |
-| `contextmenu`            | alias of `context-menu`                                                                 | —                                                                                   |
-| `data-table`             | alias of `p2` (`DataTableComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/data-table)             |
-| `data-view`              | `orc-data-view`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/data-view)              |
-| `dataview`               | alias of `data-view`                                                                    | —                                                                                   |
-| `date-input`             | `orc-date-input`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/date-input)             |
-| `date-picker`            | `orc-date-picker-calendar`, `orc-date-picker`                                           | [interactive docs](https://orchestra.ciag.org.br/components/date-picker)            |
-| `datepicker`             | alias of `date-picker` (`DatepickerComponent`, `DatePicker`)                            | —                                                                                   |
-| `defer`                  | `DeferDirective`                                                                        | —                                                                                   |
-| `dialog`                 | alias of `modal` (`DialogComponent`, `DialogService`, `DialogRef`, `Dialog`)            | —                                                                                   |
-| `divider`                | `orc-divider`                                                                           | [interactive docs](https://orchestra.ciag.org.br/components/divider)                |
-| `dock`                   | `orc-dock`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/dock)                   |
-| `drag-drop`              | `DraggableDirective`, `DroppableDirective`                                              | —                                                                                   |
-| `dragdrop`               | alias of `drag-drop`                                                                    | —                                                                                   |
-| `drawer`                 | `orc-drawer`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/drawer)                 |
-| `dropdown`               | `orc-dropdown`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/dropdown)               |
-| `dynamic-dialog`         | alias of `modal` (`DynamicDialogComponent`, `DynamicDialogService`, `DynamicDialogRef`) | —                                                                                   |
-| `dynamicdialog`          | alias of `dynamic-dialog`                                                               | —                                                                                   |
-| `editor`                 | `orc-editor`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/editor)                 |
-| `empty-state`            | `orc-empty-state`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/empty-state)            |
-| `fieldset`               | alias of `p2` (`FieldsetComponent`)                                                     | [interactive docs](https://orchestra.ciag.org.br/components/fieldset)               |
-| `file-upload`            | alias of `file-uploader` (`FileUploadComponent`, `FileUpload`)                          | —                                                                                   |
-| `file-uploader`          | `orc-file-item`, `orc-file-uploader`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/file-uploader)          |
-| `fileupload`             | alias of `file-upload`                                                                  | —                                                                                   |
-| `flex`                   | alias of `p2` (`FlexComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/flex)                   |
-| `float-label`            | `orc-float-label`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/float-label)            |
-| `floating-action-button` | alias of `p2` (`FloatingActionButtonComponent`)                                         | [interactive docs](https://orchestra.ciag.org.br/components/floating-action-button) |
-| `floatlabel`             | alias of `float-label`                                                                  | —                                                                                   |
-| `fluid`                  | alias of `p2` (`FluidComponent`)                                                        | [interactive docs](https://orchestra.ciag.org.br/components/fluid)                  |
-| `focus-trap`             | alias of `p2` (`FocusTrapDirective`)                                                    | —                                                                                   |
-| `focustrap`              | alias of `focus-trap`                                                                   | —                                                                                   |
-| `form`                   | `orc-form`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/form)                   |
-| `form-field`             | `orc-form-field`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/form-field)             |
-| `galleria`               | `orc-galleria`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/galleria)               |
-| `gallery`                | alias of `p2` (`GalleryComponent`)                                                      | —                                                                                   |
-| `grid`                   | alias of `p2` (`GridComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/grid)                   |
-| `hover-card`             | `orc-hover-card`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/hover-card)             |
-| `icon`                   | `orc-icon`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/icon)                   |
-| `icon-field`             | `orc-icon-field`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/icon-field)             |
-| `iconfield`              | alias of `icon-field`                                                                   | —                                                                                   |
-| `icons`                  | —                                                                                       | —                                                                                   |
-| `ifta-label`             | `orc-ifta-label`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/ifta-label)             |
-| `iftalabel`              | alias of `ifta-label`                                                                   | —                                                                                   |
-| `image`                  | `orc-image`                                                                             | [interactive docs](https://orchestra.ciag.org.br/components/image)                  |
-| `image-compare`          | `orc-image-compare`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/image-compare)          |
-| `imagecompare`           | alias of `image-compare`                                                                | —                                                                                   |
-| `inplace`                | alias of `p2` (`InplaceComponent`)                                                      | [interactive docs](https://orchestra.ciag.org.br/components/inplace)                |
-| `input`                  | `orc-input`, `orc-textarea`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/input)                  |
-| `input-chips`            | alias of `p2` (`InputChipsComponent`)                                                   | —                                                                                   |
-| `input-color`            | alias of `p2` (`InputColorComponent`)                                                   | [interactive docs](https://orchestra.ciag.org.br/components/input-color)            |
-| `input-group`            | `orc-input-group`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/input-group)            |
-| `input-group-addon`      | `orc-input-group-addon`                                                                 | [interactive docs](https://orchestra.ciag.org.br/components/input-group)            |
-| `input-icon`             | alias of `p2` (`InputIconComponent`)                                                    | —                                                                                   |
-| `input-mask`             | `InputMaskDirective`                                                                    | —                                                                                   |
-| `input-number`           | alias of `number-input` (`InputNumberComponent`, `InputNumber`)                         | —                                                                                   |
-| `input-otp`              | alias of `otp-input` (`InputOtpComponent`, `InputOtp`)                                  | —                                                                                   |
-| `input-password`         | alias of `p2` (`InputPasswordComponent`, `InputPassword`)                               | —                                                                                   |
-| `input-tags`             | alias of `p2` (`InputTagsComponent`)                                                    | —                                                                                   |
-| `input-text`             | alias of `input` (`InputTextComponent`, `InputText`)                                    | —                                                                                   |
-| `input-textarea`         | alias of `input` (`InputTextareaComponent`)                                             | —                                                                                   |
-| `inputgroup`             | alias of `input-group`                                                                  | —                                                                                   |
-| `inputgroupaddon`        | alias of `input-group-addon`                                                            | —                                                                                   |
-| `inputicon`              | alias of `input-icon`                                                                   | —                                                                                   |
-| `inputmask`              | alias of `input-mask`                                                                   | —                                                                                   |
-| `inputnumber`            | alias of `input-number`                                                                 | —                                                                                   |
-| `inputotp`               | alias of `input-otp`                                                                    | —                                                                                   |
-| `inputswitch`            | alias of `switch`                                                                       | —                                                                                   |
-| `inputtext`              | alias of `input-text`                                                                   | —                                                                                   |
-| `inputtextarea`          | alias of `input-textarea`                                                               | —                                                                                   |
-| `internal`               | —                                                                                       | —                                                                                   |
-| `kbd`                    | alias of `p2` (`KbdComponent`)                                                          | [interactive docs](https://orchestra.ciag.org.br/components/kbd)                    |
-| `key-filter`             | `KeyFilterDirective`                                                                    | —                                                                                   |
-| `keyfilter`              | alias of `key-filter`                                                                   | —                                                                                   |
-| `knob`                   | `orc-knob`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/knob)                   |
-| `label`                  | alias of `form-field` (`LabelComponent`)                                                | —                                                                                   |
-| `link`                   | alias of `p2` (`LinkComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/link)                   |
-| `list`                   | `orc-list`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/list)                   |
-| `listbox`                | `orc-listbox`                                                                           | [interactive docs](https://orchestra.ciag.org.br/components/listbox)                |
-| `mega-menu`              | `orc-mega-menu`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/mega-menu)              |
-| `megamenu`               | alias of `mega-menu`                                                                    | —                                                                                   |
-| `menu`                   | alias of `p2` (`MenuComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/menu)                   |
-| `menubar`                | `orc-menubar`                                                                           | [interactive docs](https://orchestra.ciag.org.br/components/menubar)                |
-| `message`                | alias of `alert` (`MessageComponent`, `MessagesComponent`)                              | [interactive docs](https://orchestra.ciag.org.br/components/messages)               |
-| `messages`               | alias of `message`                                                                      | —                                                                                   |
-| `meter-group`            | `orc-meter-group`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/meter-group)            |
-| `metergroup`             | alias of `meter-group`                                                                  | —                                                                                   |
-| `modal`                  | `orc-modal`                                                                             | [interactive docs](https://orchestra.ciag.org.br/components/modal)                  |
-| `multi-select`           | `orc-multi-select`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/multi-select)           |
-| `multiselect`            | alias of `multi-select`                                                                 | —                                                                                   |
-| `navigation`             | `orc-navigation-shell`, `orc-navigation-item`                                           | [interactive docs](https://orchestra.ciag.org.br/components/navigation)             |
-| `number-input`           | `orc-number-input`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/number-input)           |
-| `order-list`             | `orc-order-list`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/order-list)             |
-| `orderlist`              | alias of `order-list`                                                                   | —                                                                                   |
-| `organization-chart`     | `orc-organization-chart`                                                                | [interactive docs](https://orchestra.ciag.org.br/components/organization-chart)     |
-| `organizationchart`      | alias of `organization-chart`                                                           | —                                                                                   |
-| `otp-input`              | `orc-otp-group`, `orc-otp-input`, `orc-otp-separator`, `orc-otp-slot`                   | [interactive docs](https://orchestra.ciag.org.br/components/otp-input)              |
-| `overlay`                | alias of `p2` (`OverlayComponent`)                                                      | [interactive docs](https://orchestra.ciag.org.br/components/overlay)                |
-| `overlay-badge`          | alias of `p2` (`OverlayBadgeComponent`)                                                 | [interactive docs](https://orchestra.ciag.org.br/components/overlay-badge)          |
-| `overlay-panel`          | `orc-overlay-panel`, `orc-popover`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/overlay-panel)          |
-| `overlaybadge`           | alias of `overlay-badge`                                                                | —                                                                                   |
-| `overlaypanel`           | alias of `p2` (`OverlayPanelComponent`)                                                 | [interactive docs](https://orchestra.ciag.org.br/components/overlay-panel)          |
-| `p2`                     | every P2 expansion component; prefer the per-family entry points listed below           | —                                                                                   |
-| `pagination`             | alias of `paginator` (`PaginationComponent`)                                            | —                                                                                   |
-| `paginator`              | `orc-paginator`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/paginator)              |
-| `panel`                  | alias of `p2` (`PanelComponent`)                                                        | [interactive docs](https://orchestra.ciag.org.br/components/panel)                  |
-| `panel-menu`             | `orc-panel-menu`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/panel-menu)             |
-| `panelmenu`              | alias of `panel-menu`                                                                   | —                                                                                   |
-| `password`               | `orc-password`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/password)               |
-| `pick-list`              | `orc-pick-list`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/pick-list)              |
-| `picklist`               | alias of `pick-list`                                                                    | —                                                                                   |
-| `popover`                | —                                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/popover)                |
-| `portal`                 | alias of `p2` (`PortalComponent`)                                                       | [interactive docs](https://orchestra.ciag.org.br/components/portal)                 |
-| `progress`               | `orc-progress-bar`, `orc-progress-circle`, `orc-progress-spinner`                       | [interactive docs](https://orchestra.ciag.org.br/components/progress)               |
-| `progress-bar`           | alias of `progress` (`ProgressBarComponent`)                                            | [interactive docs](https://orchestra.ciag.org.br/components/progress)               |
-| `progress-spinner`       | alias of `progress` (`ProgressSpinnerComponent`, `ProgressSpinner`)                     | [interactive docs](https://orchestra.ciag.org.br/components/progress)               |
-| `progressbar`            | alias of `progress-bar`                                                                 | —                                                                                   |
-| `progressspinner`        | alias of `progress-spinner`                                                             | —                                                                                   |
-| `radio`                  | `orc-radio-button`, `orc-radio-group`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/radio)                  |
-| `radio-button`           | alias of `radio` (`RadioButtonComponent`, `RadioButton`)                                | [interactive docs](https://orchestra.ciag.org.br/components/radio)                  |
-| `radiobutton`            | alias of `radio-button`                                                                 | —                                                                                   |
-| `rating`                 | `orc-rating`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/rating)                 |
-| `ripple`                 | alias of `p2` (`RippleDirective`)                                                       | —                                                                                   |
-| `scroll-area`            | `orc-scroll-area`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/scroll-area)            |
-| `scroll-panel`           | alias of `p2` (`ScrollPanelComponent`)                                                  | [interactive docs](https://orchestra.ciag.org.br/components/scroll-panel)           |
-| `scroll-top`             | alias of `p2` (`ScrollTopComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/scroll-top)             |
-| `scroller`               | alias of `virtual-scroller` (`ScrollerComponent`)                                       | —                                                                                   |
-| `scrollpanel`            | alias of `scroll-panel`                                                                 | —                                                                                   |
-| `scrolltop`              | alias of `scroll-top`                                                                   | —                                                                                   |
-| `segmented-control`      | `orc-segmented-control`                                                                 | [interactive docs](https://orchestra.ciag.org.br/components/segmented-control)      |
-| `select`                 | `orc-option`, `orc-select`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/select)                 |
-| `select-button`          | `orc-select-button`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/select-button)          |
-| `selectbutton`           | alias of `select-button`                                                                | —                                                                                   |
-| `separator`              | alias of `p2` (`SeparatorComponent`)                                                    | [interactive docs](https://orchestra.ciag.org.br/components/separator)              |
-| `sidebar`                | alias of `drawer` (`SidebarComponent`)                                                  | —                                                                                   |
-| `skeleton`               | `orc-skeleton`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/skeleton)               |
-| `slider`                 | `orc-slider`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/slider)                 |
-| `space`                  | alias of `p2` (`SpaceComponent`)                                                        | [interactive docs](https://orchestra.ciag.org.br/components/space)                  |
-| `speed-dial`             | `orc-speed-dial`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/speed-dial)             |
-| `speeddial`              | alias of `speed-dial`                                                                   | —                                                                                   |
-| `spinner`                | `orc-spinner`                                                                           | [interactive docs](https://orchestra.ciag.org.br/components/spinner)                |
-| `split-button`           | `orc-split-button`                                                                      | [interactive docs](https://orchestra.ciag.org.br/components/split-button)           |
-| `splitbutton`            | alias of `split-button`                                                                 | —                                                                                   |
-| `splitter`               | alias of `p2` (`SplitterComponent`)                                                     | [interactive docs](https://orchestra.ciag.org.br/components/splitter)               |
-| `stack`                  | alias of `p2` (`StackComponent`)                                                        | [interactive docs](https://orchestra.ciag.org.br/components/stack)                  |
-| `stepper`                | `orc-stepper`                                                                           | [interactive docs](https://orchestra.ciag.org.br/components/stepper)                |
-| `steps`                  | alias of `stepper` (`StepsComponent`)                                                   | —                                                                                   |
-| `style-class`            | alias of `p2` (`StyleClassDirective`)                                                   | —                                                                                   |
-| `styleclass`             | alias of `style-class`                                                                  | —                                                                                   |
-| `switch`                 | `orc-switch`                                                                            | [interactive docs](https://orchestra.ciag.org.br/components/switch)                 |
-| `tab-menu`               | `orc-tab-menu`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/tab-menu)               |
-| `table`                  | `orc-table`                                                                             | [interactive docs](https://orchestra.ciag.org.br/components/table)                  |
-| `tabmenu`                | alias of `tab-menu`                                                                     | —                                                                                   |
-| `tabs`                   | `orc-tab-group`, `orc-tab`                                                              | [interactive docs](https://orchestra.ciag.org.br/components/tabs)                   |
-| `tabview`                | alias of `tabs`                                                                         | —                                                                                   |
-| `tag`                    | `orc-tag`                                                                               | [interactive docs](https://orchestra.ciag.org.br/components/tag)                    |
-| `tags-input`             | `orc-tags-input`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/tags-input)             |
-| `terminal`               | `orc-terminal`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/terminal)               |
-| `text`                   | alias of `p2` (`TextComponent`)                                                         | [interactive docs](https://orchestra.ciag.org.br/components/text)                   |
-| `text-input`             | —                                                                                       | —                                                                                   |
-| `textarea`               | alias of `input` (`Textarea`)                                                           | —                                                                                   |
-| `tiered-menu`            | `orc-tiered-menu`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/tiered-menu)            |
-| `tieredmenu`             | alias of `tiered-menu`                                                                  | —                                                                                   |
-| `timeline`               | `orc-timeline`                                                                          | [interactive docs](https://orchestra.ciag.org.br/components/timeline)               |
-| `toast`                  | `orc-toast-container`, `orc-toast`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/toast)                  |
-| `toggle`                 | —                                                                                       | —                                                                                   |
-| `toggle-button`          | `orc-toggle-button`                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/toggle-button)          |
-| `toggle-switch`          | alias of `switch` (`ToggleSwitchComponent`, `ToggleSwitch`)                             | —                                                                                   |
-| `togglebutton`           | alias of `toggle-button`                                                                | —                                                                                   |
-| `toggleswitch`           | alias of `toggle-switch`                                                                | —                                                                                   |
-| `toolbar`                | `orc-toolbar`                                                                           | [interactive docs](https://orchestra.ciag.org.br/components/toolbar)                |
-| `tooltip`                | `orc-tooltip-overlay`                                                                   | [interactive docs](https://orchestra.ciag.org.br/components/tooltip)                |
-| `tree`                   | `orc-tree`                                                                              | [interactive docs](https://orchestra.ciag.org.br/components/tree)                   |
-| `tree-select`            | `orc-tree-select`                                                                       | [interactive docs](https://orchestra.ciag.org.br/components/tree-select)            |
-| `tree-table`             | `orc-tree-table`                                                                        | [interactive docs](https://orchestra.ciag.org.br/components/tree-table)             |
-| `tree-view`              | `orc-tree-view`                                                                         | [interactive docs](https://orchestra.ciag.org.br/components/tree-view)              |
-| `treeselect`             | alias of `tree-select`                                                                  | —                                                                                   |
-| `treetable`              | alias of `tree-table`                                                                   | —                                                                                   |
-| `typography`             | alias of `p2` (`TypographyComponent`)                                                   | [interactive docs](https://orchestra.ciag.org.br/components/typography)             |
-| `use-style`              | alias of `p2` (`UseStyleDirective`)                                                     | —                                                                                   |
-| `usestyle`               | alias of `use-style`                                                                    | —                                                                                   |
-| `virtual-scroller`       | `orc-virtual-scroller`                                                                  | [interactive docs](https://orchestra.ciag.org.br/components/virtual-scroller)       |
-| `visually-hidden`        | alias of `p2` (`VisuallyHiddenComponent`)                                               | [interactive docs](https://orchestra.ciag.org.br/components/visually-hidden)        |
+| Entry point          | Primary selectors or export                                           | Docs                                                                            |
+| -------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `accordion`          | `orc-accordion-item`, `orc-accordion`                                 | [interactive docs](https://orchestra.ciag.org.br/components/accordion)          |
+| `alert`              | `orc-alert`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/alert)              |
+| `autocomplete`       | `orc-autocomplete`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/autocomplete)       |
+| `avatar`             | `orc-avatar-group`, `orc-avatar`                                      | [interactive docs](https://orchestra.ciag.org.br/components/avatar)             |
+| `badge`              | `orc-badge`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/badge)              |
+| `breadcrumb`         | `orc-breadcrumb-item`, `orc-breadcrumb`                               | [interactive docs](https://orchestra.ciag.org.br/components/breadcrumb)         |
+| `button`             | `orc-button`, `orc-icon-button`                                       | [interactive docs](https://orchestra.ciag.org.br/components/button)             |
+| `button-group`       | `orc-button-group`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/button-group)       |
+| `calendar`           | `orc-calendar`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/calendar)           |
+| `card`               | `orc-card-body`, `orc-card-footer`, `orc-card-header`, `orc-card`     | [interactive docs](https://orchestra.ciag.org.br/components/card)               |
+| `carousel`           | `orc-carousel`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/carousel)           |
+| `chart`              | `orc-chart`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/chart)              |
+| `checkbox`           | `orc-checkbox`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/checkbox)           |
+| `chip`               | `orc-chip`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/chip)               |
+| `chip-input`         | `orc-chip-input`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/chip-input)         |
+| `close-button`       | `orc-close-button`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/close-button)       |
+| `code`               | `orc-code`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/code)               |
+| `collapsible`        | `orc-collapsible`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/collapsible)        |
+| `color-picker`       | `orc-color-picker`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/color-picker)       |
+| `combobox`           | `orc-combobox`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/combobox)           |
+| `command-menu`       | `orc-command-menu`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/command-menu)       |
+| `confirm-dialog`     | `orc-confirm-dialog`                                                  | [interactive docs](https://orchestra.ciag.org.br/components/confirm-dialog)     |
+| `context-menu`       | `orc-context-menu`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/context-menu)       |
+| `core`               | —                                                                     | —                                                                               |
+| `data-table`         | `orc-data-table`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/data-table)         |
+| `date-input`         | `orc-date-input`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/date-input)         |
+| `date-picker`        | `orc-date-picker-calendar`, `orc-date-picker`                         | [interactive docs](https://orchestra.ciag.org.br/components/date-picker)        |
+| `divider`            | `orc-divider`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/divider)            |
+| `drawer`             | `orc-drawer`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/drawer)             |
+| `dropdown`           | `orc-dropdown`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/dropdown)           |
+| `editor`             | `orc-editor`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/editor)             |
+| `empty-state`        | `orc-empty-state`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/empty-state)        |
+| `fieldset`           | `orc-fieldset`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/fieldset)           |
+| `file-uploader`      | `orc-file-item`, `orc-file-uploader`                                  | [interactive docs](https://orchestra.ciag.org.br/components/file-uploader)      |
+| `form-field`         | `orc-form-field`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/form-field)         |
+| `galleria`           | `orc-galleria`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/galleria)           |
+| `hover-card`         | `orc-hover-card`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/hover-card)         |
+| `icon`               | `orc-icon`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/icon)               |
+| `icon-field`         | `orc-icon-field`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/icon-field)         |
+| `image`              | `orc-image`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/image)              |
+| `image-compare`      | `orc-image-compare`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/image-compare)      |
+| `inplace`            | `orc-inplace`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/inplace)            |
+| `input`              | `orc-input`, `orc-textarea`                                           | [interactive docs](https://orchestra.ciag.org.br/components/input)              |
+| `input-color`        | `orc-input-color`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/input-color)        |
+| `input-group`        | `orc-input-group-addon`, `orc-input-group`                            | [interactive docs](https://orchestra.ciag.org.br/components/input-group)        |
+| `internal`           | —                                                                     | —                                                                               |
+| `kbd`                | `orc-kbd`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/kbd)                |
+| `knob`               | `orc-knob`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/knob)               |
+| `link`               | `orc-link`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/link)               |
+| `list`               | `orc-list`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/list)               |
+| `listbox`            | `orc-listbox`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/listbox)            |
+| `menu`               | `orc-menu`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/menu)               |
+| `menubar`            | `orc-menubar`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/menubar)            |
+| `messages`           | `orc-messages`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/messages)           |
+| `meter-group`        | `orc-meter-group`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/meter-group)        |
+| `modal`              | `orc-modal`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/modal)              |
+| `multi-select`       | `orc-multi-select`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/multi-select)       |
+| `navigation`         | `orc-navigation-shell`, `orc-navigation-item`                         | [interactive docs](https://orchestra.ciag.org.br/components/navigation)         |
+| `number-input`       | `orc-number-input`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/number-input)       |
+| `organization-chart` | `orc-organization-chart`                                              | [interactive docs](https://orchestra.ciag.org.br/components/organization-chart) |
+| `otp-input`          | `orc-otp-group`, `orc-otp-input`, `orc-otp-separator`, `orc-otp-slot` | [interactive docs](https://orchestra.ciag.org.br/components/otp-input)          |
+| `overlay-badge`      | `orc-overlay-badge`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/overlay-badge)      |
+| `overlay-panel`      | `orc-overlay-panel`, `orc-popover`                                    | [interactive docs](https://orchestra.ciag.org.br/components/overlay-panel)      |
+| `paginator`          | `orc-paginator`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/paginator)          |
+| `panel`              | `orc-panel`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/panel)              |
+| `panel-menu`         | `orc-panel-menu`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/panel-menu)         |
+| `password`           | `orc-password`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/password)           |
+| `pick-list`          | `orc-pick-list`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/pick-list)          |
+| `popover`            | —                                                                     | [interactive docs](https://orchestra.ciag.org.br/components/popover)            |
+| `progress`           | `orc-progress-bar`, `orc-progress-circle`, `orc-progress-spinner`     | [interactive docs](https://orchestra.ciag.org.br/components/progress)           |
+| `radio`              | `orc-radio-button`, `orc-radio-group`                                 | [interactive docs](https://orchestra.ciag.org.br/components/radio)              |
+| `rating`             | `orc-rating`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/rating)             |
+| `scroll-area`        | `orc-scroll-area`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/scroll-area)        |
+| `scroll-panel`       | `orc-scroll-panel`                                                    | [interactive docs](https://orchestra.ciag.org.br/components/scroll-panel)       |
+| `segmented-control`  | `orc-segmented-control`                                               | [interactive docs](https://orchestra.ciag.org.br/components/segmented-control)  |
+| `select`             | `orc-option`, `orc-select`                                            | [interactive docs](https://orchestra.ciag.org.br/components/select)             |
+| `select-button`      | `orc-select-button`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/select-button)      |
+| `separator`          | `orc-separator`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/separator)          |
+| `skeleton`           | `orc-skeleton`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/skeleton)           |
+| `slider`             | `orc-slider`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/slider)             |
+| `speed-dial`         | `orc-speed-dial`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/speed-dial)         |
+| `spinner`            | `orc-spinner`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/spinner)            |
+| `splitter`           | `orc-splitter`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/splitter)           |
+| `stepper`            | `orc-stepper`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/stepper)            |
+| `switch`             | `orc-switch`                                                          | [interactive docs](https://orchestra.ciag.org.br/components/switch)             |
+| `tab-menu`           | `orc-tab-menu`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/tab-menu)           |
+| `table`              | `orc-table`                                                           | [interactive docs](https://orchestra.ciag.org.br/components/table)              |
+| `tabs`               | `orc-tab-group`, `orc-tab`                                            | [interactive docs](https://orchestra.ciag.org.br/components/tabs)               |
+| `tag`                | `orc-tag`                                                             | [interactive docs](https://orchestra.ciag.org.br/components/tag)                |
+| `tags-input`         | `orc-tags-input`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/tags-input)         |
+| `terminal`           | `orc-terminal`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/terminal)           |
+| `text`               | `orc-text`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/text)               |
+| `tiered-menu`        | `orc-tiered-menu`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/tiered-menu)        |
+| `timeline`           | `orc-timeline`                                                        | [interactive docs](https://orchestra.ciag.org.br/components/timeline)           |
+| `toast`              | `orc-toast-container`, `orc-toast`                                    | [interactive docs](https://orchestra.ciag.org.br/components/toast)              |
+| `toggle-button`      | `orc-toggle-button`                                                   | [interactive docs](https://orchestra.ciag.org.br/components/toggle-button)      |
+| `toolbar`            | `orc-toolbar`                                                         | [interactive docs](https://orchestra.ciag.org.br/components/toolbar)            |
+| `tooltip`            | `orc-tooltip-overlay`                                                 | [interactive docs](https://orchestra.ciag.org.br/components/tooltip)            |
+| `tree`               | `orc-tree`                                                            | [interactive docs](https://orchestra.ciag.org.br/components/tree)               |
+| `tree-select`        | `orc-tree-select`                                                     | [interactive docs](https://orchestra.ciag.org.br/components/tree-select)        |
+| `tree-table`         | `orc-tree-table`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/tree-table)         |
+| `tree-view`          | `orc-tree-view`                                                       | [interactive docs](https://orchestra.ciag.org.br/components/tree-view)          |
+| `typography`         | `orc-typography`                                                      | [interactive docs](https://orchestra.ciag.org.br/components/typography)         |
+| `visually-hidden`    | `orc-visually-hidden`                                                 | [interactive docs](https://orchestra.ciag.org.br/components/visually-hidden)    |
 
 ## 5. Component reference
 
@@ -360,7 +241,7 @@ The following sections list every documented component family with its public in
 The shared generic option shape is:
 
 ```ts
-export interface P2Option<T = string> {
+export interface OrcOption<T = string> {
   value: T;
   label: string;
   description?: string;
@@ -386,16 +267,10 @@ export interface P2Option<T = string> {
 
 Inline feedback with semantic live-region behavior. `status` is an alias that overrides severity. Use `error`/`warning` for urgent validation or risk; use `info` for guidance. Project content when a message string is not enough.
 
-- **AlertComponent (orc-alert, orc-message)**
+- **AlertComponent (orc-alert)**
   - Inputs: `severity` (AlertSeverity) default `'info'`, `status` (AlertSeverity | undefined) default `undefined`, `variant` (AlertVariant) default `'subtle'`, `title` (string) default `''`, `message` (string) default `''`, `text` (string | undefined) default `undefined`, `showIcon` (boolean) default `true`, `dismissible` (boolean) default `false`, `closable` (boolean | undefined) default `undefined`, `life` (number | undefined) default `undefined`, `icon` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `role` (string | undefined) default `undefined`, `ariaLabel` (string) default `''`, `closeAriaLabel` (string | undefined) default `undefined`
   - Outputs: `onClose` (MouseEvent), `closed` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/alert
-
-### Aspect Ratio — `@ciag/orchestra/aspect-ratio`
-
-- **AspectRatioComponent (orc-aspect-ratio)**
-  - Inputs: `ratio` (string) default `'16 / 9'`, `overflow` ('hidden' | 'visible') default `'hidden'`
-- Interactive docs: https://orchestra.ciag.org.br/components/aspect-ratio
 
 ### Autocomplete — `@ciag/orchestra/autocomplete`
 
@@ -426,22 +301,6 @@ Compact status/count, not a replacement for a button. `count` renders `+maxCount
   - Inputs: `variant` (BadgeVariant) default `'soft'`, `status` (BadgeStatus) default `'primary'`, `severity` (BadgeStatus | undefined) default `undefined`, `size` (BadgeSize) default `'md'`, `text` (string) default `''`, `value` (string | number | undefined) default `undefined`, `count` (number | undefined) default `undefined`, `maxCount` (number) default `99`, `dot` (boolean) default `false`, `showDefaultIcon` (boolean) default `false`, `dismissible` (boolean) default `false`, `liveRegion` (boolean) default `false`, `pill` (boolean) default `false`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `removeAriaLabel` (string | undefined) default `undefined`, `styleClass` (string) default `''`
   - Outputs: `dismiss` (MouseEvent)
 - Interactive docs: https://orchestra.ciag.org.br/components/badge
-
-### Block UI — `@ciag/orchestra/block-ui`
-
-- **BlockUiComponent (orc-block-ui)**
-  - Inputs: `target` (BlockUiTarget) default `null`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `0`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `message` (string | undefined) default `undefined`
-  - Models: `blocked` (boolean) default `false`
-  - Outputs: `onBlock` (void), `onUnblock` (void)
-- Interactive docs: https://orchestra.ciag.org.br/components/block-ui
-
-### Box — `@ciag/orchestra/box`
-
-Use it for tokenized surface composition; do not use it to hide an interaction.
-
-- **BoxComponent (orc-box)**
-  - Inputs: `padding` (string) default `'0'`, `margin` (string) default `'0'`, `background` (string) default `''`, `radius` (string) default `'.5rem'`, `width` (string) default `''`
-- Interactive docs: https://orchestra.ciag.org.br/components/box
 
 ### Breadcrumb — `@ciag/orchestra/breadcrumb`
 
@@ -480,7 +339,7 @@ Content: button label is projected between tags. SVG strings may be passed to `i
 Project `orc-button` children; use `attached` only when the actions form one visual control.
 
 - **ButtonGroupComponent (orc-button-group)**
-  - Inputs: `orientation` (P2Orientation) default `'horizontal'`, `attached` (boolean) default `false`, `label` (string | undefined) default `undefined`
+  - Inputs: `orientation` (OrcOrientation) default `'horizontal'`, `attached` (boolean) default `false`, `label` (string | undefined) default `undefined`
 - Interactive docs: https://orchestra.ciag.org.br/components/button-group
 
 ### Calendar — `@ciag/orchestra/calendar`
@@ -514,14 +373,6 @@ A `CarouselItem` has `label`, optional `id`, `description`, `image`, `alt`, and 
   - Models: `activeIndex` (number) default `0`, `page` (number) default `0`
   - Outputs: `slideChange` ({ index: number; item: CarouselItem }), `onPage` ({ first: number; last: number; page: number; pageCount: number; }), `onPlay` (void), `onPause` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/carousel
-
-### Cascade Select — `@ciag/orchestra/cascade-select`
-
-- **CascadeSelectComponent (orc-cascade-select)**
-  - Inputs: `options` (CascadeOption[]) default `[]`, `label` (string | undefined) default `undefined`, `placeholder` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `optionLabel` (string | undefined) default `undefined`, `optionValue` (string | undefined) default `undefined`, `optionDisabled` (string | undefined) default `undefined`, `inputId` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `tabindex` (number) default `0`, `readonly` (boolean) default `false`, `required` (boolean) default `false`, `autofocus` (boolean) default `false`, `styleClass` (string) default `''`, `panelStyleClass` (string) default `''`, `filter` (boolean) default `false`, `filterPlaceholder` (string | undefined) default `undefined`, `filterAriaLabel` (string | undefined) default `undefined`, `clearAriaLabel` (string | undefined) default `undefined`, `showClear` (boolean) default `false`, `loading` (boolean) default `false`, `size` (SizeInput) default `undefined`, `variant` ('outlined' | 'filled' | undefined) default `undefined`
-  - Models: `value` (string | null) default `null`, `open` (boolean) default `false`, `filterValue` (string) default `''`
-  - Outputs: `optionSelect` (CascadeOption), `onChange` ({ value: string | null }), `onShow` (void), `onHide` (void), `onClear` (void)
-- Interactive docs: https://orchestra.ciag.org.br/components/cascade-select
 
 ### Chart — `@ciag/orchestra/chart`
 
@@ -600,9 +451,9 @@ Values are 3- or 6-digit hexadecimal strings.
 ### Combobox — `@ciag/orchestra/combobox`
 
 - **ComboboxComponent (orc-combobox)**
-  - Inputs: `options` (P2Option<T>[]) default `[]`, `label` (string) default `''`, `placeholder` (string | undefined) default `undefined`, `helperText` (string) default `''`, `emptyText` (string | undefined) default `undefined`, `clearAriaLabel` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`
+  - Inputs: `options` (OrcOption<T>[]) default `[]`, `label` (string) default `''`, `placeholder` (string | undefined) default `undefined`, `helperText` (string) default `''`, `emptyText` (string | undefined) default `undefined`, `clearAriaLabel` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`
   - Models: `value` (T | null) default `null`, `query` (string) default `''`, `open` (boolean) default `false`
-  - Outputs: `optionSelected` (P2Option<T>)
+  - Outputs: `optionSelected` (OrcOption<T>)
 - Interactive docs: https://orchestra.ciag.org.br/components/combobox
 
 ### CommandMenu — `@ciag/orchestra/command-menu`
@@ -619,19 +470,6 @@ Values are 3- or 6-digit hexadecimal strings.
   - Inputs: `closable` (boolean) default `true`, `closeOnEscape` (boolean) default `true`, `dismissableMask` (boolean) default `true`, `blockScroll` (boolean) default `true`, `rtl` (boolean) default `false`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `0`, `styleClass` (string) default `''`, `maskStyleClass` (string) default `''`, `closeAriaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `defaultFocus` ('accept' | 'reject' | 'close' | 'none') default `'accept'`
   - Outputs: `onHide` (void), `onAccept` (void), `onReject` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/confirm-dialog
-
-### Confirm Popup — `@ciag/orchestra/confirm-popup`
-
-- **ConfirmPopupComponent (orc-confirm-popup)**
-- Interactive docs: https://orchestra.ciag.org.br/components/confirm-popup
-
-### Container — `@ciag/orchestra/container`
-
-Use for page-width boundaries, not arbitrary per-section margins.
-
-- **ContainerComponent (orc-container)**
-  - Inputs: `maxWidth` (string) default `'72rem'`, `padding` (string) default `'1rem'`, `fluid` (boolean) default `false`
-- Interactive docs: https://orchestra.ciag.org.br/components/container
 
 ### Context Menu — `@ciag/orchestra/context-menu`
 
@@ -650,14 +488,6 @@ Use for page-width boundaries, not arbitrary per-section margins.
   - Models: `first` (number) default `0`, `sortField` (string) default `''`, `sortOrder` (number) default `0`, `filter` (string) default `''`, `page` (number) default `0`, `selected` (Record<string, unknown>[]) default `[]`
   - Outputs: `rowClick` (Record<string, unknown>), `selectionChange` (Record<string, unknown>[]), `sortChange` ({ key: string; direction: 'ascending' | 'descending'; }), `onSort` ({ key: string; direction: 'ascending' | 'descending'; }), `onPage` ({ first: number; rows: number }), `onLazyLoad` ({ first: number; rows: number }), `rowSelect` (Record<string, unknown>), `rowUnselect` (Record<string, unknown>), `onRowHover` (Record<string, unknown>), `onFilter` ({ value: string }), `onHeaderCheckboxToggle` ({ checked: boolean })
 - Interactive docs: https://orchestra.ciag.org.br/components/data-table
-
-### DataView — `@ciag/orchestra/data-view`
-
-- **DataViewComponent (orc-data-view)**
-  - Inputs: `value` (T[]) default `[]`, `header` (string) default `''`, `emptyMessage` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `itemTemplate` (TemplateRef<{ $implicit: T }> | null) default `null`, `style` (Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `gridStyleClass` (string) default `''`, `listStyleClass` (string) default `''`, `trackBy` (((index: number, item: T) =), `paginator` (boolean) default `false`, `rows` (number) default `10`, `totalRecords` (number | undefined) default `undefined`, `pageLinks` (number) default `5`, `rowsPerPageOptions` (number[] | undefined) default `undefined`, `paginatorPosition` ('top' | 'bottom' | 'both') default `'bottom'`, `paginatorStyleClass` (string) default `''`, `alwaysShowPaginator` (boolean) default `true`, `currentPageReportTemplate` (string | undefined) default `undefined`, `showCurrentPageReport` (boolean) default `false`, `showJumpToPageDropdown` (boolean) default `false`, `showFirstLastIcon` (boolean) default `false`, `showPageLinks` (boolean) default `true`, `lazy` (boolean) default `false`, `lazyLoadOnInit` (boolean) default `false`, `loading` (boolean) default `false`, `loadingIcon` (string | undefined) default `undefined`, `loadingMessage` (string | undefined) default `undefined`, `filterBy` (string | undefined) default `undefined`, `filterAriaLabel` (string | undefined) default `undefined`, `paginatorAriaLabel` (string | undefined) default `undefined`, `filterLocale` (string | undefined) default `undefined`, `dataKey` (string | undefined) default `undefined`
-  - Models: `layout` ('list' | 'grid') default `'grid'`, `first` (number) default `0`, `filterValue` (string) default `''`, `sortField` (string | undefined) default `undefined`, `sortOrder` (1 | -1) default `1`
-  - Outputs: `onPage` ({ first: number; rows: number }), `onLazyLoad` ({ first: number; rows: number }), `onSort` ({ sortField: string; sortOrder: 1 | -1 }), `onLayoutChange` ('list' | 'grid'), `onChangeLayout` ('list' | 'grid')
-- Interactive docs: https://orchestra.ciag.org.br/components/data-view
 
 ### Date Input — `@ciag/orchestra/date-input`
 
@@ -700,17 +530,11 @@ If `decorative=false`, provide a meaningful label or aria label. `separator` is 
   - Inputs: `orientation` (DividerOrientation) default `'horizontal'`, `variant` (DividerVariant) default `'solid'`, `label` (string) default `''`, `inset` (boolean) default `false`, `decorative` (boolean) default `true`, `ariaLabel` (string) default `''`
 - Interactive docs: https://orchestra.ciag.org.br/components/divider
 
-### Dock — `@ciag/orchestra/dock`
-
-- **DockComponent (orc-dock)**
-  - Inputs: `items` (DockItem[]) default `[]`, `position` ('top' | 'bottom') default `'bottom'`, `label` (string | undefined) default `undefined`
-- Interactive docs: https://orchestra.ciag.org.br/components/dock
-
 ### Drawer — `@ciag/orchestra/drawer`
 
 Use `drawer-title` and `drawer-actions` slots. A non-dismissible drawer must still expose a clear internal close action.
 
-- **DrawerComponent (orc-drawer, orc-sidebar)**
+- **DrawerComponent (orc-drawer)**
   - Inputs: `placement` (DrawerPlacement) default `'right'`, `label` (string | undefined) default `undefined`, `closeOnBackdrop` (boolean) default `true`, `dismissible` (boolean) default `true`, `closeOnEscape` (boolean) default `true`, `modal` (boolean) default `true`, `id` (string) default `''`, `ariaLabel` (string) default `''`, `ariaLabelledBy` (string) default `''`, `closable` (boolean) default `true`, `showCloseIcon` (boolean) default `true`, `closeAriaLabel` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | null) default `null`, `baseZIndex` (number) default `1000`
   - Models: `open` (boolean) default `false`, `visible` (boolean) default `false`
   - Outputs: `closed` (void), `onShow` (void), `onHide` (void)
@@ -751,16 +575,6 @@ The region name uses `ariaLabel`, then the trimmed title, then `Empty state`; bl
   - Outputs: `onBeforeToggle` ({ collapsed: boolean }), `onAfterToggle` ({ collapsed: boolean })
 - Interactive docs: https://orchestra.ciag.org.br/components/fieldset
 
-### File Upload — `@ciag/orchestra/file-uploader`
-
-- **FileItemComponent (orc-file-item)**
-  - Inputs: `fileData` (FileItemData) required, `disabled` (boolean) default `false`, `removeAriaLabel` (string | undefined) default `undefined`, `uploadingLabel` (string | undefined) default `undefined`, `uploadedLabel` (string | undefined) default `undefined`, `errorLabel` (string | undefined) default `undefined`, `pendingLabel` (string | undefined) default `undefined`, `previewWidth` (number) default `100`, `removeStyleClass` (string) default `''`
-  - Outputs: `remove` (string), `imageError` ({ file: File; originalEvent: Event })
-- **FileUploaderComponent (orc-file-uploader, orc-file-upload)**
-  - Inputs: `accept` (string) default `''`, `name` (string | undefined) default `undefined`, `url` (string | undefined) default `undefined`, `method` ('post' | 'put') default `'post'`, `headers` (HttpHeaders | undefined) default `undefined`, `multiple` (boolean) default `true`, `auto` (boolean) default `false`, `withCredentials` (boolean) default `false`, `maxFiles` (number) default `10`, `fileLimit` (number | undefined) default `undefined`, `maxFileSize` default `5 * 1024 * 1024`, `invalidFileSizeMessageSummary` (string | undefined) default `undefined`, `invalidFileSizeMessageDetail` (string | undefined) default `undefined`, `invalidFileTypeMessageSummary` (string | undefined) default `undefined`, `invalidFileTypeMessageDetail` (string | undefined) default `undefined`, `invalidFileLimitMessageSummary` (string | undefined) default `undefined`, `invalidFileLimitMessageDetail` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `label` (string | undefined) default `undefined`, `subLabel` (string | undefined) default `undefined`, `dropzoneAriaLabel` (string | undefined) default `undefined`, `chooseLabel` (string | undefined) default `undefined`, `uploadLabel` (string | undefined) default `undefined`, `cancelLabel` (string | undefined) default `undefined`, `removeAriaLabel` (string | undefined) default `undefined`, `uploadingLabel` (string | undefined) default `undefined`, `uploadedLabel` (string | undefined) default `undefined`, `errorLabel` (string | undefined) default `undefined`, `pendingLabel` (string | undefined) default `undefined`, `previewWidth` (number) default `100`, `styleClass` (string | undefined) default `undefined`, `style` (string | Record<string, string | number> | undefined) default `undefined`, `chooseIcon` (string | undefined) default `undefined`, `uploadIcon` (string | undefined) default `undefined`, `cancelIcon` (string | undefined) default `undefined`, `showUploadButton` (boolean) default `true`, `showCancelButton` (boolean) default `true`, `mode` ('advanced' | 'basic') default `'advanced'`, `customUpload` (boolean) default `false`, `uploadStyleClass` (string) default `''`, `cancelStyleClass` (string) default `''`, `chooseStyleClass` (string) default `''`, `removeStyleClass` (string) default `''`, `forceDragover` (boolean) default `false`
-  - Outputs: `onSelect` ({ originalEvent: Event; files: File[]; currentFiles: File[]; }), `onRemove` ({ originalEvent: Event; file: File }), `onClear` (Event), `onUpload` ({ originalEvent: unknown; files: File[] }), `onError` ({ files: File[]; error?: ErrorEvent }), `onProgress` ({ originalEvent: unknown; progress: number }), `onBeforeUpload` ({ formData: FormData }), `uploadHandler` ({ files: File[] }), `onSend` ({ originalEvent: unknown; formData: FormData }), `onImageError` ({ file: File; originalEvent: Event }), `onRemoveUploadedFile` ({ file: File; originalEvent: Event; })
-- Interactive docs: https://orchestra.ciag.org.br/components/file-upload
-
 ### File Uploader — `@ciag/orchestra/file-uploader`
 
 `FileItemData` includes `id`, `file`, `name`, `size`, `formattedSize`, `type`, `progress`, `status: pending | uploading | success | error`, optional `errorMessage` and `previewUrl`. The family composes with `orc-file-item`, whose input is `disabled` and whose output is `remove: string`.
@@ -768,46 +582,10 @@ The region name uses `ariaLabel`, then the trimmed title, then `Empty state`; bl
 - **FileItemComponent (orc-file-item)**
   - Inputs: `fileData` (FileItemData) required, `disabled` (boolean) default `false`, `removeAriaLabel` (string | undefined) default `undefined`, `uploadingLabel` (string | undefined) default `undefined`, `uploadedLabel` (string | undefined) default `undefined`, `errorLabel` (string | undefined) default `undefined`, `pendingLabel` (string | undefined) default `undefined`, `previewWidth` (number) default `100`, `removeStyleClass` (string) default `''`
   - Outputs: `remove` (string), `imageError` ({ file: File; originalEvent: Event })
-- **FileUploaderComponent (orc-file-uploader, orc-file-upload)**
+- **FileUploaderComponent (orc-file-uploader)**
   - Inputs: `accept` (string) default `''`, `name` (string | undefined) default `undefined`, `url` (string | undefined) default `undefined`, `method` ('post' | 'put') default `'post'`, `headers` (HttpHeaders | undefined) default `undefined`, `multiple` (boolean) default `true`, `auto` (boolean) default `false`, `withCredentials` (boolean) default `false`, `maxFiles` (number) default `10`, `fileLimit` (number | undefined) default `undefined`, `maxFileSize` default `5 * 1024 * 1024`, `invalidFileSizeMessageSummary` (string | undefined) default `undefined`, `invalidFileSizeMessageDetail` (string | undefined) default `undefined`, `invalidFileTypeMessageSummary` (string | undefined) default `undefined`, `invalidFileTypeMessageDetail` (string | undefined) default `undefined`, `invalidFileLimitMessageSummary` (string | undefined) default `undefined`, `invalidFileLimitMessageDetail` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `label` (string | undefined) default `undefined`, `subLabel` (string | undefined) default `undefined`, `dropzoneAriaLabel` (string | undefined) default `undefined`, `chooseLabel` (string | undefined) default `undefined`, `uploadLabel` (string | undefined) default `undefined`, `cancelLabel` (string | undefined) default `undefined`, `removeAriaLabel` (string | undefined) default `undefined`, `uploadingLabel` (string | undefined) default `undefined`, `uploadedLabel` (string | undefined) default `undefined`, `errorLabel` (string | undefined) default `undefined`, `pendingLabel` (string | undefined) default `undefined`, `previewWidth` (number) default `100`, `styleClass` (string | undefined) default `undefined`, `style` (string | Record<string, string | number> | undefined) default `undefined`, `chooseIcon` (string | undefined) default `undefined`, `uploadIcon` (string | undefined) default `undefined`, `cancelIcon` (string | undefined) default `undefined`, `showUploadButton` (boolean) default `true`, `showCancelButton` (boolean) default `true`, `mode` ('advanced' | 'basic') default `'advanced'`, `customUpload` (boolean) default `false`, `uploadStyleClass` (string) default `''`, `cancelStyleClass` (string) default `''`, `chooseStyleClass` (string) default `''`, `removeStyleClass` (string) default `''`, `forceDragover` (boolean) default `false`
   - Outputs: `onSelect` ({ originalEvent: Event; files: File[]; currentFiles: File[]; }), `onRemove` ({ originalEvent: Event; file: File }), `onClear` (Event), `onUpload` ({ originalEvent: unknown; files: File[] }), `onError` ({ files: File[]; error?: ErrorEvent }), `onProgress` ({ originalEvent: unknown; progress: number }), `onBeforeUpload` ({ formData: FormData }), `uploadHandler` ({ files: File[] }), `onSend` ({ originalEvent: unknown; formData: FormData }), `onImageError` ({ file: File; originalEvent: Event }), `onRemoveUploadedFile` ({ file: File; originalEvent: Event; })
 - Interactive docs: https://orchestra.ciag.org.br/components/file-uploader
-
-### Flex — `@ciag/orchestra/flex`
-
-- **FlexComponent (orc-flex)**
-  - Inputs: `direction` ('row' | 'row-reverse' | 'column' | 'column-reverse') default `'row'`, `gap` (string) default `'1rem'`, `align` ('start' | 'center' | 'end' | 'stretch' | 'baseline') default `'stretch'`, `justify` (| 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly') default `'start'`, `wrap` (boolean) default `false`
-- Interactive docs: https://orchestra.ciag.org.br/components/flex
-
-### Float Label — `@ciag/orchestra/float-label`
-
-- **FloatLabelComponent (orc-float-label)**
-  - Inputs: `variant` ('in' | 'over' | 'on') default `'over'`, `styleClass` (string) default `''`
-- Interactive docs: https://orchestra.ciag.org.br/components/float-label
-
-### Floating Action Button — `@ciag/orchestra/floating-action-button`
-
-Use one primary floating action per context.
-
-- **FloatingActionButtonComponent (orc-floating-action-button)**
-  - Inputs: `label` (string) default `''`, `icon` (string) default `'+'`, `ariaLabel` (string | undefined) default `undefined`, `extended` (boolean) default `false`, `loading` (boolean) default `false`, `disabled` (boolean) default `false`
-  - Outputs: `clicked` (MouseEvent)
-- Interactive docs: https://orchestra.ciag.org.br/components/floating-action-button
-
-### Fluid — `@ciag/orchestra/fluid`
-
-- **FluidComponent (orc-fluid)**
-  - Inputs: `styleClass` (string) default `''`
-- Interactive docs: https://orchestra.ciag.org.br/components/fluid
-
-### Form — `@ciag/orchestra/form`
-
-Invalid submissions always emit `formSubmit` with `valid=false`; the default `novalidate=true` keeps browser validation UI closed, while false calls `reportValidity()` and shows native feedback. A `formnovalidate` submitter bypasses that feedback and still emits the current validity result. Its `submit()` method uses `requestSubmit()` and is a no-op when disabled; native `form.submit()` bypasses submit events and validation.
-
-- **FormComponent (orc-form)**
-  - Inputs: `layout` (FormLayout) default `'stacked'`, `name` (string) default `''`, `ariaLabel` (string | undefined) default `'Formulário'`, `disabled` (boolean) default `false`, `novalidate` (boolean) default `true`
-  - Outputs: `formSubmit` (FormSubmitEvent), `formReset` (void)
-- Interactive docs: https://orchestra.ciag.org.br/components/form
 
 ### Form Field — `@ciag/orchestra/form-field`
 
@@ -819,17 +597,11 @@ Invalid submissions always emit `formSubmit` with `valid=false`; the default `no
 
 ### Galleria — `@ciag/orchestra/galleria`
 
-- **GalleriaComponent (orc-galleria, orc-gallery)**
+- **GalleriaComponent (orc-galleria)**
   - Inputs: `images` (GalleryImage[]) default `[]`, `label` (string | undefined) default `undefined`, `roleDescription` (string | undefined) default `undefined`, `closeLabel` (string | undefined) default `undefined`, `previousLabel` (string | undefined) default `undefined`, `nextLabel` (string | undefined) default `undefined`, `thumbnailLabel` (string | undefined) default `undefined`, `showItemNavigators` (boolean) default `true`, `showThumbnailNavigators` (boolean) default `true`, `showItemNavigatorsOnHover` (boolean) default `false`, `changeItemOnIndicatorHover` (boolean) default `false`, `shouldStopAutoplayByClick` (boolean) default `false`, `circular` (boolean) default `false`, `autoPlay` (boolean) default `false`, `transitionInterval` (number) default `0`, `showThumbnails` (boolean) default `true`, `thumbnailsPosition` ('bottom' | 'top' | 'left' | 'right') default `'bottom'`, `showIndicators` (boolean) default `true`, `showIndicatorsOnItem` (boolean) default `false`, `indicatorsPosition` ('bottom' | 'top' | 'left' | 'right') default `'bottom'`, `baseZIndex` (number) default `0`, `maskClass` (string) default `''`, `containerClass` (string) default `''`, `containerStyle` (Record<string, string | number> | undefined) default `undefined`
   - Models: `activeIndex` (number) default `0`, `fullScreen` (boolean) default `false`, `visible` (boolean) default `true`
   - Outputs: `imageChange` ({ index: number; image: GalleryImage })
 - Interactive docs: https://orchestra.ciag.org.br/components/galleria
-
-### Grid — `@ciag/orchestra/grid`
-
-- **GridComponent (orc-grid)**
-  - Inputs: `columns` (number) default `0`, `minColumnWidth` (string) default `'12rem'`, `gap` (string) default `'1rem'`, `alignItems` ('start' | 'center' | 'stretch' | 'end') default `'stretch'`, `label` (string) default `''`
-- Interactive docs: https://orchestra.ciag.org.br/components/grid
 
 ### Hover Card — `@ciag/orchestra/hover-card`
 
@@ -842,7 +614,7 @@ Use for non-critical preview content on hover or focus, never for content that c
 
 ### Icon — `@ciag/orchestra/icon`
 
-`orc-icon` renders Google Material Symbols by ligature name. Its complete generated catalog is exported from `@ciag/orchestra/icons` as `ORC_MATERIAL_SYMBOLS`; use any Google snake_case name, including `pin` (the Google symbol tagged `pushpin`). The component loads the Google Fonts CSS internally; consumers do not add a stylesheet, but their CSP/network must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are Apache 2.0 licensed; see the [official guide](https://developers.google.com/fonts/docs/material_symbols) and the package third-party notice.
+`orc-icon` renders Google Material Symbols by ligature name. Use any Google snake_case name, including `pin` (the Google symbol tagged `pushpin`). The component loads the Google Fonts CSS internally; consumers do not add a stylesheet, but their CSP/network must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are Apache 2.0 licensed; see the [official guide](https://developers.google.com/fonts/docs/material_symbols) and the package third-party notice.
 
 - **IconComponent (orc-icon)**
   - Inputs: `name` (IconName) default `'circle'`, `family` (IconFamily) default `'rounded'`, `size` (IconSize) default `'md'`, `fill` (IconFill) default `'outline'`, `weight` (IconWeight) default `400`, `grade` (IconGrade) default `0`, `opticalSize` (IconOpticalSize) default `'auto'`, `ariaLabel` (string) default `''`, `title` (string) default `''`
@@ -853,11 +625,6 @@ Use for non-critical preview content on hover or focus, never for content that c
 - **IconFieldComponent (orc-icon-field)**
   - Inputs: `icon` (string) default `'⌕'`
 - Interactive docs: https://orchestra.ciag.org.br/components/icon-field
-
-### Ifta Label — `@ciag/orchestra/ifta-label`
-
-- **IftaLabelComponent (orc-ifta-label)**
-- Interactive docs: https://orchestra.ciag.org.br/components/ifta-label
 
 ### Image — `@ciag/orchestra/image`
 
@@ -894,11 +661,11 @@ Variations: helper vs error (error wins), disabled vs readonly, clearable/search
 <orc-input label="Email" type="email" [(value)]="email" required clearable helperText="Use your work address." /> <orc-textarea label="Description" [(value)]="description" [maxLength]="240" showCharCount />
 ```
 
-- **InputComponent (orc-input, orc-input-text)**
+- **InputComponent (orc-input)**
   - Inputs: `id` (string) default `''`, `inputId` (string | undefined) default `undefined`, `name` (string) default `''`, `type` (InputType) default `'text'`, `size` (InputSize) default `'md'`, `status` (InputStatus) default `'default'`, `placeholder` (string | undefined) default `undefined`, `label` (string) default `''`, `helperText` (string) default `''`, `errorMessage` (string) default `''`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `required` (boolean) default `false`, `clearable` (boolean) default `false`, `mask` (string) default `''`, `unmaskValue` (boolean) default `false`, `maxLength` (number | undefined) default `undefined`, `minLength` (number | undefined) default `undefined`, `min` (number | string | undefined) default `undefined`, `max` (number | string | undefined) default `undefined`, `step` (number | string | undefined) default `undefined`, `showCharCount` (boolean) default `false`, `prefixText` (string) default `''`, `suffixText` (string) default `''`, `autocomplete` (string) default `'off'`, `autofocus` (boolean) default `false`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `variant` ('filled' | 'outlined' | undefined) default `undefined`, `fluid` (boolean) default `false`, `ariaLabel` (string) default `''`, `clearAriaLabel` (string | undefined) default `undefined`, `showPasswordAriaLabel` (string | undefined) default `undefined`, `hidePasswordAriaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `ariaDescribedby` (string) default `''`
   - Models: `value` (string | number) default `''`
   - Outputs: `inputChange` (string | number), `blur` (FocusEvent), `focus` (FocusEvent), `clear` (void)
-- **TextareaComponent (orc-textarea, orc-input-textarea)**
+- **TextareaComponent (orc-textarea)**
   - Inputs: `id` (string) default `''`, `inputId` (string | undefined) default `undefined`, `name` (string) default `''`, `size` (InputSize) default `'md'`, `status` (InputStatus) default `'default'`, `placeholder` (string | undefined) default `undefined`, `label` (string) default `''`, `helperText` (string) default `''`, `errorMessage` (string) default `''`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `required` (boolean) default `false`, `rows` (number) default `4`, `cols` (number | undefined) default `undefined`, `resize` (TextareaResize) default `'vertical'`, `autoResize` (boolean) default `false`, `maxLength` (number | undefined) default `undefined`, `minLength` (number | undefined) default `undefined`, `showCharCount` (boolean) default `false`, `autofocus` (boolean) default `false`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `variant` ('filled' | 'outlined' | undefined) default `undefined`, `fluid` (boolean) default `false`, `ariaLabel` (string) default `''`, `ariaLabelledBy` (string | undefined) default `undefined`, `ariaDescribedby` (string) default `''`
   - Models: `value` (string) default `''`
   - Outputs: `inputChange` (string), `blur` (FocusEvent), `focus` (FocusEvent)
@@ -966,13 +733,6 @@ Compatibility no-ops `selectOnFocus`, `autoOptionFocus`, `searchMessage`, `selec
   - Outputs: `optionSelected` (any), `onChange` ({ originalEvent: Event; value: T | T[] | null }), `onClick` ({ originalEvent: Event; option: any }), `onDblClick` ({ originalEvent: Event; option: any }), `onFilter` ({ originalEvent: Event; filter: string }), `onFocus` (Event), `onBlur` (Event)
 - Interactive docs: https://orchestra.ciag.org.br/components/listbox
 
-### MegaMenu — `@ciag/orchestra/mega-menu`
-
-- **MegaMenuComponent (orc-mega-menu)**
-  - Inputs: `items` (PrimeMenuItem[]) default `[]`, `model` (PrimeMenuItem[] | undefined) default `undefined`, `orientation` ('horizontal' | 'vertical') default `'horizontal'`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `tabindex` (number) default `0`, `disabled` (boolean) default `false`
-  - Outputs: `itemSelect` (PrimeMenuItem), `onItemClick` (PrimeMenuItem), `onFocus` (Event), `onBlur` (Event)
-- Interactive docs: https://orchestra.ciag.org.br/components/mega-menu
-
 ### Menu — `@ciag/orchestra/menu`
 
 - **MenuComponent (orc-menu)**
@@ -994,8 +754,8 @@ Compatibility no-ops `selectOnFocus`, `autoOptionFocus`, `searchMessage`, `selec
 
 - **MessagesComponent (orc-messages)**
   - Inputs: `closable` (boolean) default `true`, `ariaLabel` (string | undefined) default `undefined`, `ariaLive` ('polite' | 'assertive') default `'polite'`, `closeLabel` (string | undefined) default `undefined`, `styleClass` (string) default `''`
-  - Models: `messages` (P2Message[]) default `[]`
-  - Outputs: `messageClose` (P2Message), `clear` (void)
+  - Models: `messages` (MessageItem[]) default `[]`
+  - Outputs: `messageClose` (MessageItem), `clear` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/messages
 
 ### Meter Group — `@ciag/orchestra/meter-group`
@@ -1008,7 +768,7 @@ Compatibility no-ops `selectOnFocus`, `autoOptionFocus`, `searchMessage`, `selec
 
 The visibility models are `isOpen` and the PrimeNG-compatible `visible` (use only one for a given instance); `maximized` is also a two-way model. The native dialog's previous active element is restored on close. Use `modal-header`, `modal-body`, and `modal-footer` slots. Deprecated no-op compatibility inputs include dragging/resizing, attachment, breakpoint sizing, mask styling, custom viewport bounds, transition timing, and explicit RTL.
 
-- **ModalComponent (orc-modal, orc-dialog, orc-dynamic-dialog)**
+- **ModalComponent (orc-modal)**
   - Inputs: `header` (string | undefined) default `undefined`, `modal` (boolean) default `true`, `closeOnEscape` (boolean) default `true`, `dismissableMask` (boolean) default `true`, `closable` (boolean) default `true`, `maximizable` (boolean) default `false`, `focusOnShow` (boolean) default `true`, `focusTrap` (boolean) default `true`, `blockScroll` (boolean) default `true`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `1000`, `position` (| 'center' | 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright') default `'center'`, `style` (string | Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `contentStyle` (Record<string, string | number> | undefined) default `undefined`, `contentStyleClass` (string) default `''`, `role` (string) default `'dialog'`, `showHeader` (boolean) default `true`, `closeIcon` (string) default `'×'`, `closeAriaLabel` (string | undefined) default `undefined`, `minimizeIcon` (string) default `'−'`, `maximizeIcon` (string) default `'+'`, `restoreAriaLabel` (string | undefined) default `undefined`, `maximizeAriaLabel` (string | undefined) default `undefined`, `closeTabindex` (string) default `'0'`, `size` (ModalSize) default `'md'`, `id` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `status` (ModalStatus) default `'neutral'`, `inline` (boolean) default `false`, `closeOnBackdropClick` (boolean) default `true`, `showCloseButton` (boolean) default `true`, `ariaLabelledBy` (string) default `''`, `ariaDescribedBy` (string) default `''`, `zIndex` (number) default `1000`
   - Models: `isOpen` (boolean) default `false`, `visible` (boolean) default `false`, `maximized` (boolean) default `false`
   - Outputs: `closed` (void), `onShow` (void), `onHide` (void), `onMaximize` ({ maximized: boolean })
@@ -1017,9 +777,9 @@ The visibility models are `isOpen` and the PrimeNG-compatible `visible` (use onl
 ### Multi Select — `@ciag/orchestra/multi-select`
 
 - **MultiSelectComponent (orc-multi-select)**
-  - Inputs: `options` (P2Option<T>[]) default `[]`, `label` (string) default `''`, `placeholder` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `fluid` (boolean) default `false`, `inputId` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `tabindex` (number | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string> | undefined) default `undefined`, `panelStyle` (Record<string, string> | undefined) default `undefined`, `panelStyleClass` (string) default `''`, `appendTo` (unknown) default `undefined`, `optionLabel` (string | undefined) default `undefined`, `optionValue` (string | undefined) default `undefined`, `optionDisabled` (string | undefined) default `undefined`, `dataKey` (string | undefined) default `undefined`, `filter` (boolean) default `false`, `filterPlaceholder` (string | undefined) default `undefined`, `filterBy` (string | undefined) default `undefined`, `filterFields` (string[] | undefined) default `undefined`, `filterLocale` (string | undefined) default `undefined`, `filterMatchMode` (| 'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte') default `'contains'`, `ariaFilterLabel` (string | undefined) default `undefined`, `clearAriaLabel` (string | undefined) default `undefined`, `selectAllLabel` (string | undefined) default `undefined`, `clearAllLabel` (string | undefined) default `undefined`, `showClear` (boolean) default `false`, `showToggleAll` (boolean) default `true`, `showHeader` (boolean) default `true`, `maxSelectedLabels` (number | undefined) default `undefined`, `selectedItemsLabel` (string | undefined) default `undefined`, `selectionLimit` (number | undefined) default `undefined`, `emptyFilterMessage` (string | undefined) default `undefined`, `emptyMessage` (string | undefined) default `undefined`, `resetFilterOnHide` (boolean) default `true`, `loading` (boolean) default `false`, `loadingMessage` (string | undefined) default `undefined`, `autofocusFilter` (boolean) default `false`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `0`
+  - Inputs: `options` (OrcOption<T>[]) default `[]`, `label` (string) default `''`, `placeholder` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `fluid` (boolean) default `false`, `inputId` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `tabindex` (number | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string> | undefined) default `undefined`, `panelStyle` (Record<string, string> | undefined) default `undefined`, `panelStyleClass` (string) default `''`, `appendTo` (unknown) default `undefined`, `optionLabel` (string | undefined) default `undefined`, `optionValue` (string | undefined) default `undefined`, `optionDisabled` (string | undefined) default `undefined`, `dataKey` (string | undefined) default `undefined`, `filter` (boolean) default `false`, `filterPlaceholder` (string | undefined) default `undefined`, `filterBy` (string | undefined) default `undefined`, `filterFields` (string[] | undefined) default `undefined`, `filterLocale` (string | undefined) default `undefined`, `filterMatchMode` (| 'contains' | 'startsWith' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte') default `'contains'`, `ariaFilterLabel` (string | undefined) default `undefined`, `clearAriaLabel` (string | undefined) default `undefined`, `selectAllLabel` (string | undefined) default `undefined`, `clearAllLabel` (string | undefined) default `undefined`, `showClear` (boolean) default `false`, `showToggleAll` (boolean) default `true`, `showHeader` (boolean) default `true`, `maxSelectedLabels` (number | undefined) default `undefined`, `selectedItemsLabel` (string | undefined) default `undefined`, `selectionLimit` (number | undefined) default `undefined`, `emptyFilterMessage` (string | undefined) default `undefined`, `emptyMessage` (string | undefined) default `undefined`, `resetFilterOnHide` (boolean) default `true`, `loading` (boolean) default `false`, `loadingMessage` (string | undefined) default `undefined`, `autofocusFilter` (boolean) default `false`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `0`
   - Models: `value` (T[]) default `[]`, `filterValue` (string) default `''`, `open` (boolean) default `false`
-  - Outputs: `optionSelected` (P2Option<T>), `onChange` ({ originalEvent: Event; value: T[] }), `onFilter` ({ originalEvent: Event; filter: string }), `onSelectAllChange` ({ originalEvent: Event; checked: boolean; }), `onFocus` (Event), `onBlur` (Event), `onClear` (Event), `onPanelShow` (void), `onPanelHide` (void), `onRemove` ({ value: T; originalEvent: Event })
+  - Outputs: `optionSelected` (OrcOption<T>), `onChange` ({ originalEvent: Event; value: T[] }), `onFilter` ({ originalEvent: Event; filter: string }), `onSelectAllChange` ({ originalEvent: Event; checked: boolean; }), `onFocus` (Event), `onBlur` (Event), `onClear` (Event), `onPanelShow` (void), `onPanelHide` (void), `onRemove` ({ value: T; originalEvent: Event })
 - Interactive docs: https://orchestra.ciag.org.br/components/multi-select
 
 ### Navigation Shell — `@ciag/orchestra/navigation`
@@ -1036,19 +796,11 @@ The visibility models are `isOpen` and the PrimeNG-compatible `visible` (use onl
 
 Values are clamped to min/max and formatted to precision for presentation.
 
-- **NumberInputComponent (orc-number-input, orc-input-number)**
+- **NumberInputComponent (orc-number-input)**
   - Inputs: `id` (string) default `''`, `name` (string) default `''`, `label` (string) default `''`, `placeholder` (string | undefined) default `undefined`, `helperText` (string) default `''`, `errorMessage` (string) default `''`, `status` (NumberInputStatus) default `'default'`, `size` (NumberInputSize) default `'md'`, `min` (number | undefined) default `undefined`, `max` (number | undefined) default `undefined`, `step` (number) default `1`, `precision` (number | undefined) default `undefined`, `prefix` (string) default `''`, `suffix` (string) default `''`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `required` (boolean) default `false`, `showControls` (boolean) default `true`, `showButtons` (boolean) default `true`, `format` (boolean) default `true`, `buttonLayout` ('stacked' | 'horizontal' | 'vertical') default `'stacked'`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `inputStyle` (Record<string, string | number> | undefined) default `undefined`, `inputStyleClass` (string) default `''`, `incrementButtonClass` (string) default `''`, `decrementButtonClass` (string) default `''`, `incrementButtonIcon` (string) default `'+'`, `decrementButtonIcon` (string) default `'−'`, `inputId` (string | undefined) default `undefined`, `tabindex` (number | undefined) default `0`, `ariaLabelledBy` (string | undefined) default `undefined`, `ariaDescribedBy` (string | undefined) default `undefined`, `autofocus` (boolean) default `false`, `showClear` (boolean) default `false`, `allowEmpty` (boolean) default `true`, `locale` (string | undefined) default `undefined`, `mode` ('decimal' | 'currency') default `'decimal'`, `currency` (string | undefined) default `undefined`, `currencyDisplay` ('symbol' | 'code' | 'name') default `'symbol'`, `useGrouping` (boolean) default `true`, `minFractionDigits` (number | undefined) default `undefined`, `maxFractionDigits` (number | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `clearAriaLabel` (string | undefined) default `undefined`, `incrementButtonAriaLabel` (string | undefined) default `undefined`, `decrementButtonAriaLabel` (string | undefined) default `undefined`, `ariaRequired` (boolean | undefined) default `undefined`, `title` (string | undefined) default `undefined`, `maxlength` (number | undefined) default `undefined`, `autocomplete` (string | undefined) default `undefined`, `localeMatcher` ('lookup' | 'best fit') default `'best fit'`, `variant` ('filled' | 'outlined' | undefined) default `undefined`, `fluid` (boolean) default `false`
   - Models: `value` (number | null) default `null`
   - Outputs: `blur` (FocusEvent), `onInput` ({ originalEvent: Event; value: number | null }), `onFocus` (Event), `onBlur` (FocusEvent), `onKeyDown` (KeyboardEvent), `onClear` (void)
 - Interactive docs: https://orchestra.ciag.org.br/components/number-input
-
-### OrderList — `@ciag/orchestra/order-list`
-
-- **OrderListComponent (orc-order-list)**
-  - Inputs: `label` (string | undefined) default `undefined`, `header` (string | undefined) default `undefined`, `emptyText` (string | undefined) default `undefined`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `tabindex` (number) default `0`, `ariaLabelledBy` (string | undefined) default `undefined`, `ariaFilterLabel` (string | undefined) default `undefined`, `moveUpLabel` (string | undefined) default `undefined`, `moveDownLabel` (string | undefined) default `undefined`, `listStyle` (Record<string, any> | null | undefined) default `undefined`, `filterBy` (string | undefined) default `undefined`, `filterPlaceholder` (string | undefined) default `undefined`, `filterLocale` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `selectionMode` ('single' | 'multiple') default `'single'`
-  - Models: `value` (T[]) default `[]`, `filter` (string) default `''`, `selectedIndex` (number) default `-1`, `selection` (T | T[] | null) default `null`
-  - Outputs: `valueChangeEvent` (T[]), `reorder` ({ value: T[]; direction: 'up' | 'down' }), `onReorder` ({ value: T[]; direction: 'up' | 'down' }), `onFilterEvent` ({ filter: string }), `onFocus` (Event), `onBlur` (Event)
-- Interactive docs: https://orchestra.ciag.org.br/components/order-list
 
 ### Organization Chart — `@ciag/orchestra/organization-chart`
 
@@ -1063,7 +815,7 @@ Values are clamped to min/max and formatted to precision for presentation.
 Compound exports `orc-otp-group`, `orc-otp-slot`, and `orc-otp-separator`; use those when each slot needs custom composition.
 
 - **OtpGroupComponent (orc-otp-group)**
-- **OtpInputComponent (orc-otp-input, orc-input-otp)**
+- **OtpInputComponent (orc-otp-input)**
   - Inputs: `length` (number) default `6`, `placeholder` (string) default `''`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `tabindex` (number | null) default `0`, `styleClass` (string | undefined) default `undefined`, `mask` (boolean) default `false`, `integerOnly` (boolean) default `false`, `autofocus` (boolean) default `false`, `variant` ('outlined' | 'filled' | undefined) default `undefined`, `size` (SizeInput) default `undefined`, `inputMode` ('numeric' | 'text') default `'numeric'`, `ariaLabel` (string | undefined) default `undefined`
   - Models: `value` (string) default `''`
   - Outputs: `completed` (string), `onChange` ({ value: string }), `onFocus` (Event), `onBlur` (Event)
@@ -1071,14 +823,6 @@ Compound exports `orc-otp-group`, `orc-otp-slot`, and `orc-otp-separator`; use t
 - **OtpSlotComponent (orc-otp-slot)**
   - Inputs: `index` (number) default `0`, `placeholder` (string) default `''`, `disabled` (boolean) default `false`, `isFirst` (boolean) default `false`, `isLast` (boolean) default `false`
 - Interactive docs: https://orchestra.ciag.org.br/components/otp-input
-
-### Overlay — `@ciag/orchestra/overlay`
-
-- **OverlayComponent (orc-overlay)**
-  - Inputs: `style` (Record<string, string> | null) default `null`, `styleClass` (string) default `''`
-  - Models: `visible` (boolean) default `false`
-  - Outputs: `onShow` (void), `onHide` (void)
-- Interactive docs: https://orchestra.ciag.org.br/components/overlay
 
 ### Overlay Badge — `@ciag/orchestra/overlay-badge`
 
@@ -1098,7 +842,7 @@ Compound exports `orc-otp-group`, `orc-otp-slot`, and `orc-otp-separator`; use t
 
 `PageChangeEvent` includes page, pageSize, totalPages, startIndex, endIndex, and totalItems.
 
-- **PaginatorComponent (orc-paginator, orc-pagination)**
+- **PaginatorComponent (orc-paginator)**
   - Inputs: `totalItems` (number) default `0`, `totalRecords` (number | undefined) default `undefined`, `rows` (number | undefined) default `undefined`, `page` (number | undefined) default `undefined`, `pageIndex` (number | undefined) default `undefined`, `pageSizeOptions` (number[]) default `[10, 20, 50]`, `rowsPerPageOptions` (number[] | undefined) default `undefined`, `showPageSizeSelector` (boolean) default `true`, `showFirstLastButtons` (boolean) default `false`, `showFirstLastIcon` (boolean) default `false`, `showPrevNextButtons` (boolean) default `true`, `showTotalInfo` (boolean) default `false`, `showCurrentPageReport` (boolean) default `false`, `currentPageReportTemplate` (string | undefined) default `undefined`, `alwaysShow` (boolean) default `false`, `showPageLinks` (boolean) default `true`, `showJumpToPageDropdown` (boolean) default `false`, `showJumpToPageInput` (boolean) default `false`, `locale` (string | undefined) default `'pt-BR'`, `style` (Record<string, string> | null) default `null`, `styleClass` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `size` (PaginatorSize) default `'md'`, `maxVisiblePages` (number) default `7`, `pageLinkSize` (number | undefined) default `undefined`, `previousLabel` (string | undefined) default `undefined`, `nextLabel` (string | undefined) default `undefined`, `firstLabel` (string | undefined) default `undefined`, `lastLabel` (string | undefined) default `undefined`, `itemsPerPageLabel` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `jumpAriaLabel` (string | undefined) default `undefined`, `pageAriaLabel` (string | undefined) default `undefined`, `pageNumberAriaLabel` (string | undefined) default `undefined`, `pageSizeAriaLabel` (string | undefined) default `undefined`
   - Models: `pageSize` (number) default `10`, `first` (number) default `0`, `currentPage` (number) default `1`, `jumpPageInput` (string) default `''`
   - Outputs: `pageChange` (PageChangeEvent), `onPageChange` (PageChangeEvent)
@@ -1122,7 +866,7 @@ Compound exports `orc-otp-group`, `orc-otp-slot`, and `orc-otp-separator`; use t
 
 ### Password — `@ciag/orchestra/password`
 
-- **PasswordComponent (orc-password, orc-input-password)**
+- **PasswordComponent (orc-password)**
   - Inputs: `placeholder` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `readonly` (boolean) default `false`, `required` (boolean) default `false`, `ariaLabel` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `label` (string | undefined) default `undefined`, `inputId` (string | undefined) default `undefined`, `inputStyleClass` (string) default `''`, `inputStyle` (Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `fluid` (boolean) default `false`, `variant` ('filled' | 'outlined') default `'outlined'`, `size` (SizeInput) default `undefined`, `maxLength` (number | undefined) default `undefined`, `autocomplete` (string) default `'off'`, `autofocus` (boolean) default `false`, `tabindex` (number | undefined) default `undefined`, `feedback` (boolean) default `true`, `toggleMask` (boolean) default `true`, `showClear` (boolean) default `false`, `clearAriaLabel` (string | undefined) default `undefined`, `hidePasswordLabel` (string | undefined) default `'Hide password'`, `showPasswordLabel` (string | undefined) default `'Show password'`, `promptLabel` (string | undefined) default `undefined`, `weakLabel` (string | undefined) default `undefined`, `mediumLabel` (string | undefined) default `undefined`, `strongLabel` (string | undefined) default `undefined`, `mediumRegex` (string) default `'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}$'`, `strongRegex` (string) default `'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}$'`
   - Models: `value` (string) default `''`, `visible` (boolean) default `false`
   - Outputs: `onFocus` (Event), `onBlur` (Event), `onClear` (void)
@@ -1144,14 +888,6 @@ The trigger is projected with `[popover-trigger]`. It closes on Escape/outside i
   - Inputs: `modal` (boolean) default `false`, `dismissable` (boolean) default `true`, `closable` (boolean) default `false`, `showCloseIcon` (boolean) default `false`, `closeOnEscape` (boolean) default `true`, `ariaLabel` (string | undefined) default `undefined`, `id` (string | undefined) default `undefined`, `ariaLabelledBy` (string | undefined) default `undefined`, `closeLabel` (string | undefined) default `undefined`, `ariaCloseLabel` (string | undefined) default `undefined`, `style` (Record<string, string | number> | undefined) default `undefined`, `styleClass` (string) default `''`, `appendTo` (unknown) default `undefined`, `autoZIndex` (boolean) default `true`, `baseZIndex` (number) default `0`, `focusOnShow` (boolean) default `true`, `showTransitionOptions` (string) default `'150ms cubic-bezier(0, 0, 0.2, 1)'`, `hideTransitionOptions` (string) default `'100ms linear'`, `placement` (OverlayPanelPlacement) default `'bottom'`, `align` (OverlayPanelAlign) default `'start'`, `label` (string | undefined) default `undefined`, `header` (string) default `''`
   - Models: `visible` (boolean) default `false`, `open` (boolean) default `false`
 - Interactive docs: https://orchestra.ciag.org.br/components/popover
-
-### Portal — `@ciag/orchestra/portal`
-
-An `HTMLElement` target moves projected content directly; a string is a CSS selector resolved against the host's owner document. Until a valid selector matches, content stays inside the Portal host and moves when the target is later added. Invalid selectors and `null` keep content local. Use only when a composition explicitly needs another render target; overlays already own their portal/lifecycle behavior.
-
-- **PortalComponent (orc-portal)**
-  - Inputs: `target` (HTMLElement | string | null) default `null`
-- Interactive docs: https://orchestra.ciag.org.br/components/portal
 
 ### Progress — `@ciag/orchestra/progress`
 
@@ -1204,14 +940,6 @@ Use readonly for display-only scores; use `clearable` only when zero is a meanin
   - Outputs: `onScroll` (Event)
 - Interactive docs: https://orchestra.ciag.org.br/components/scroll-panel
 
-### Scroll Top — `@ciag/orchestra/scroll-top`
-
-- **ScrollTopComponent (orc-scroll-top)**
-  - Inputs: `threshold` (number) default `200`, `target` ('window' | 'parent') default `'window'`, `direction` ('up' | 'down') default `'up'`, `behavior` ('auto' | 'smooth') default `'smooth'`, `icon` (string) default `''`, `styleClass` (string) default `''`, `style` (Record<string, any> | null | undefined) default `undefined`, `buttonAriaLabel` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`
-  - Models: `visible` (boolean) default `false`
-  - Outputs: `clicked` (void)
-- Interactive docs: https://orchestra.ciag.org.br/components/scroll-top
-
 ### Segmented Control — `@ciag/orchestra/segmented-control`
 
 Use when the set is short and mutually exclusive.
@@ -1251,7 +979,7 @@ Deprecated compatibility inputs with no behavior are `overlayOptions`, `autofocu
 ### Separator — `@ciag/orchestra/separator`
 
 - **SeparatorComponent (orc-separator)**
-  - Inputs: `orientation` (P2Orientation) default `'horizontal'`, `label` (string) default `''`
+  - Inputs: `orientation` (OrcOrientation) default `'horizontal'`, `label` (string) default `''`
 - Interactive docs: https://orchestra.ciag.org.br/components/separator
 
 ### Skeleton — `@ciag/orchestra/skeleton`
@@ -1272,14 +1000,6 @@ Set `range` when the model is a tuple.
   - Outputs: `sliderChange` (SliderValue), `sliderInput` (SliderValue), `onChange` ({ originalEvent?: Event; value: SliderValue }), `onSlideEnd` ({ originalEvent?: Event; value: SliderValue })
 - Interactive docs: https://orchestra.ciag.org.br/components/slider
 
-### Space — `@ciag/orchestra/space`
-
-Prefer this over empty spacer elements.
-
-- **SpaceComponent (orc-space)**
-  - Inputs: `size` (string) default `'1rem'`, `direction` ('row' | 'column') default `'row'`, `wrap` (boolean) default `false`
-- Interactive docs: https://orchestra.ciag.org.br/components/space
-
 ### Speed Dial — `@ciag/orchestra/speed-dial`
 
 Keep labels and ordering stable.
@@ -1299,35 +1019,21 @@ Use full-screen only for an application-level blocking state.
   - Outputs: `fullScreenChange` (boolean)
 - Interactive docs: https://orchestra.ciag.org.br/components/spinner
 
-### Split Button — `@ciag/orchestra/split-button`
-
-- **SplitButtonComponent (orc-split-button)**
-  - Inputs: `model` (Array<{ label: string; icon?: string; disabled?: boolean; visible?: boolean; command?: () => void; }), `label` (string | undefined) default `undefined`, `ariaLabel` (string | undefined) default `undefined`, `icon` (string) default `''`, `iconPos` ('left' | 'right') default `'left'`, `style` (Record<string, any> | null | undefined) default `undefined`, `styleClass` (string) default `''`, `menuStyle` (Record<string, any> | null | undefined) default `undefined`, `menuStyleClass` (string) default `''`, `expandAriaLabel` (string | undefined) default `undefined`, `tooltip` (string | undefined) default `undefined`, `disabled` (boolean) default `false`, `buttonDisabled` (boolean) default `false`, `menuButtonDisabled` (boolean) default `false`, `loading` (boolean) default `false`, `closeOnEscape` (boolean) default `true`, `size` (SizeInput) default `undefined`, `severity` (string | undefined) default `undefined`, `autofocus` (boolean) default `false`, `tabindex` (number) default `0`
-  - Models: `open` (boolean) default `false`
-  - Outputs: `primaryClick` (Event), `onClick` (Event), `dropdownClick` (Event), `onDropdownClick` (Event), `onMenuShow` (void), `onMenuHide` (void)
-- Interactive docs: https://orchestra.ciag.org.br/components/split-button
-
 ### Splitter — `@ciag/orchestra/splitter`
 
 `onResizeEnd` carries a `KeyboardEvent` for keyboard resizing and `onPointerResizeEnd` a `PointerEvent` for pointer-up or cancellation. A `SplitterPanel` describes each panel id and sizing constraints.
 
 - **SplitterComponent (orc-splitter)**
-  - Inputs: `panels` (SplitterPanel[]) default `[]`, `orientation` (P2Orientation) default `'horizontal'`, `label` (string | undefined) default `undefined`, `resizeLabel` (string | undefined) default `undefined`
+  - Inputs: `panels` (SplitterPanel[]) default `[]`, `orientation` (OrcOrientation) default `'horizontal'`, `label` (string | undefined) default `undefined`, `resizeLabel` (string | undefined) default `undefined`
   - Models: `sizes` (number[]) default `[]`
   - Outputs: `onResizeStart` ({ index: number }), `onResizeEnd` (KeyboardEvent), `onPointerResizeEnd` (PointerEvent), `onResize` ({ index: number; sizes: number[] })
 - Interactive docs: https://orchestra.ciag.org.br/components/splitter
-
-### Stack — `@ciag/orchestra/stack`
-
-- **StackComponent (orc-stack)**
-  - Inputs: `direction` ('row' | 'column') default `'column'`, `gap` (string) default `'1rem'`, `align` ('start' | 'center' | 'end' | 'stretch') default `'stretch'`, `justify` ('start' | 'center' | 'end' | 'space-between') default `'start'`
-- Interactive docs: https://orchestra.ciag.org.br/components/stack
 
 ### Stepper — `@ciag/orchestra/stepper`
 
 A step has `title`, optional `subtitle`, `description`, `icon`, `status: pending | active | completed | loading | error`, `progress`, and `disabled`.
 
-- **StepperComponent (orc-stepper, orc-steps)**
+- **StepperComponent (orc-stepper)**
   - Inputs: `steps` (StepItem[]) default `[]`, `model` (StepItem[] | undefined) default `undefined`, `readonly` (boolean) default `false`, `id` (string | undefined) default `undefined`, `style` (Record<string, string> | null) default `null`, `styleClass` (string) default `''`, `orientation` (StepperOrientation) default `'horizontal'`, `type` (StepperType) default `'numeric'`, `clickable` (boolean) default `true`, `selectOnFocus` (boolean) default `false`, `ariaLabel` (string | undefined) default `undefined`, `linear` (boolean) default `false`
   - Models: `currentStep` (number) default `0`, `activeIndex` (number) default `0`
   - Outputs: `stepChange` ({ step: StepItem; index: number }), `onChange` ({ index: number; step: StepItem }), `completed` (void)
@@ -1337,7 +1043,7 @@ A step has `title`, optional `subtitle`, `description`, `icon`, `status: pending
 
 `toggle` is an alias entry point exporting `ToggleComponent` from the switch implementation. Prefer `@ciag/orchestra/switch` and `orc-switch` for new code.
 
-- **SwitchComponent (orc-switch, orc-toggle-switch, orc-toggle)**
+- **SwitchComponent (orc-switch)**
   - Inputs: `id` (string) default `''`, `name` (string) default `''`, `value` (any) default `undefined`, `inputId` (string | undefined) default `undefined`, `tabindex` (number | undefined) default `0`, `readonly` (boolean) default `false`, `trueValue` (any) default `true`, `falseValue` (any) default `false`, `label` (string) default `''`, `description` (string) default `''`, `size` (SwitchSize) default `'md'`, `labelPosition` (SwitchLabelPosition) default `'end'`, `disabled` (boolean) default `false`, `required` (boolean) default `false`, `error` (boolean) default `false`, `errorMessage` (string) default `''`, `ariaLabel` (string) default `''`, `ariaLabelledby` (string) default `''`, `ariaLabelledBy` (string | undefined) default `undefined`, `autofocus` (boolean) default `false`, `ariaDescribedby` (string) default `''`, `styleClass` (string) default `''`, `variant` ('filled' | 'outlined') default `'outlined'`
   - Models: `checked` (boolean) default `false`
   - Outputs: `change` (SwitchChangeEvent), `onChange` (SwitchChangeEvent), `onFocus` (Event), `onBlur` (Event)
@@ -1387,7 +1093,7 @@ Use `orc-chip` when selection is part of the interaction; use `orc-tag` for enti
 
 Enter adds a tag by default; `separator` adds configured string or regular-expression key separators. Implements `ControlValueAccessor`.
 
-- **TagsInputComponent (orc-tags-input, orc-chips, orc-input-chips)**
+- **TagsInputComponent (orc-tags-input)**
   - Inputs: `label` (string) default `''`, `placeholder` (string | undefined) default `undefined`, `helperText` (string) default `''`, `suggestions` (string[]) default `[]`, `maxTags` (number | undefined) default `undefined`, `max` (number | undefined) default `undefined`, `maxLength` (number | undefined) default `undefined`, `disabled` (boolean) default `false`, `allowDuplicate` (boolean) default `false`, `caseSensitiveDuplication` (boolean) default `false`, `addOnTab` (boolean) default `false`, `addOnBlur` (boolean) default `false`, `separator` (string | RegExp | undefined) default `undefined`, `showClear` (boolean) default `false`, `removeAriaLabel` (string | undefined) default `undefined`, `clearAriaLabel` (string | undefined) default `undefined`, `styleClass` (string) default `''`, `style` (Record<string, string | number> | undefined) default `undefined`, `inputId` (string | undefined) default `undefined`, `ariaLabel` (string) default `''`
   - Models: `value` (string[]) default `[]`
   - Outputs: `tagAdded` (string), `tagRemoved` (string), `onAdd` ({ value: string }), `onRemove` ({ value: string; index: number }), `onFocus` (Event), `onBlur` (Event), `onChipClick` ({ value: string; index: number; originalEvent: Event; }), `onClear` (Event)
@@ -1504,15 +1210,6 @@ Choose the semantic `as` separately from visual size.
   - Inputs: `as` ('span' | 'p' | 'h1' | 'h2' | 'h3') default `'span'`, `size` ('xs' | 'sm' | 'md' | 'lg' | 'xl') default `'md'`, `weight` (number | string) default `400`, `color` (string) default `''`, `truncate` (boolean) default `false`
 - Interactive docs: https://orchestra.ciag.org.br/components/typography
 
-### Virtual Scroller — `@ciag/orchestra/virtual-scroller`
-
-Keep item height stable; it is the basis for range calculation.
-
-- **VirtualScrollerComponent (orc-virtual-scroller, orc-scroller)**
-  - Inputs: `items` (unknown[]) default `[]`, `itemHeight` (number) default `40`, `viewportHeight` (string) default `'240px'`, `overscan` (number) default `4`, `label` (string) default `'Scrollable list'`, `loadingMessage` (string | undefined) default `undefined`, `itemLabelKey` (string) default `'label'`, `lazy` (boolean) default `false`, `loading` (boolean) default `false`
-  - Outputs: `rangeChange` ({ start: number; end: number }), `onLazyLoad` ({ first: number; last: number })
-- Interactive docs: https://orchestra.ciag.org.br/components/virtual-scroller
-
 ### Visually Hidden — `@ciag/orchestra/visually-hidden`
 
 Project content that should remain available to assistive technology but visually clipped.
@@ -1592,7 +1289,7 @@ readonly options = [
 | A generic red `<span>` for status                      | `orc-badge` or `orc-alert` with semantic status                                                       |
 | A custom spinner overlay                               | `orc-spinner` or `orc-progress-*`                                                                     |
 | Stringifying generic options                           | Keep `T` in `orc-combobox<T>`, `orc-listbox<T>`, `orc-multi-select<T>`, or `orc-segmented-control<T>` |
-| Duplicating `ModalComponent` under a new name          | Use `dialog` alias or extend the canonical modal API in the library                                   |
+| Duplicating `ModalComponent` under a new name          | Extend the canonical modal API in the library                                                         |
 | Hard-coded `#1C6AED` or `16px` in app components       | Use `--orc-color-azul-eletrico` and `--space-4`                                                       |
 | Removing focus styles to match a screenshot            | Adjust the token while preserving a visible focus indicator                                           |
 
@@ -1602,7 +1299,7 @@ When migrating from generic controls, keep the domain state in the consuming com
 
 When changing a component or using an API not covered by an existing playground:
 
-1. Confirm the export in `projects/orc-ds/public-api.ts` or the secondary entry-point `index.ts`.
+1. Confirm the export in the secondary entry-point `index.ts`.
 2. Confirm the selector and public `input`, `model`, `output`, and directive fields in the component source.
 3. Add the component to a standalone consumer's `imports` array.
 4. Load `@ciag/orchestra/styles/index` before app styles.
@@ -1612,6 +1309,6 @@ When changing a component or using an API not covered by an existing playground:
 
 The interactive catalog is the visual reference. Its stable docs route is `/docs`; the component index is `/`; individual demonstrations use `/components/<id>`. The static machine-readable files are `/llms.txt` and `/llms.md`.
 
-## 9. The 23.0.0 gate (compatibility window end)
+## 9. Release candidate 22.4.0-rc.0
 
-The next Angular-major release (23.0.0) removes the compatibility surface: every `@deprecated` no-op input/output, the legacy `small | large` size values, the functional dual names (table `[value]`, modal `[visible]`, select `[searchable]`, duplicated `blur`/`onBlur`-style outputs), the PrimeNG-era `onXxx` outputs, the alias entry points, and the `@ciag/orchestra/p2` tier entry point. The machine-readable manifest is `docs/quality/gate-23-manifest.json` and the human migration guide is `docs/quality/gate-23-migration.md`; both are generated from source by `npm run generate:gate-manifest` — never edit them by hand, and never grow the surface: a new `@deprecated` member or alias export without a changeset fails `npm run verify:deprecation-guard`.
+`22.4.0-rc.0` removes the compatibility surface ahead of Angular 23: the alias entry points, the former `p2` tier and the families listed as removed in `docs/overhaul/DECISOES.md`. Import every family from its own entry point.

@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'DrawerComponent',
-    selector: 'orc-drawer, orc-sidebar',
+    selector: 'orc-drawer',
     entries: [
       {
         kind: 'model',

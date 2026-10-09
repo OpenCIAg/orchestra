@@ -10,10 +10,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/accordion.generated').then((m) => m.COMPONENT_API),
   alert: () =>
     import('./component-api/alert.generated').then((m) => m.COMPONENT_API),
-  'aspect-ratio': () =>
-    import('./component-api/aspect-ratio.generated').then(
-      (m) => m.COMPONENT_API,
-    ),
   autocomplete: () =>
     import('./component-api/autocomplete.generated').then(
       (m) => m.COMPONENT_API,
@@ -22,10 +18,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/avatar.generated').then((m) => m.COMPONENT_API),
   badge: () =>
     import('./component-api/badge.generated').then((m) => m.COMPONENT_API),
-  'block-ui': () =>
-    import('./component-api/block-ui.generated').then((m) => m.COMPONENT_API),
-  box: () =>
-    import('./component-api/box.generated').then((m) => m.COMPONENT_API),
   breadcrumb: () =>
     import('./component-api/breadcrumb.generated').then((m) => m.COMPONENT_API),
   button: () =>
@@ -40,10 +32,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/card.generated').then((m) => m.COMPONENT_API),
   carousel: () =>
     import('./component-api/carousel.generated').then((m) => m.COMPONENT_API),
-  'cascade-select': () =>
-    import('./component-api/cascade-select.generated').then(
-      (m) => m.COMPONENT_API,
-    ),
   chart: () =>
     import('./component-api/chart.generated').then((m) => m.COMPONENT_API),
   checkbox: () =>
@@ -76,20 +64,12 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/confirm-dialog.generated').then(
       (m) => m.COMPONENT_API,
     ),
-  'confirm-popup': () =>
-    import('./component-api/confirm-popup.generated').then(
-      (m) => m.COMPONENT_API,
-    ),
-  container: () =>
-    import('./component-api/container.generated').then((m) => m.COMPONENT_API),
   'context-menu': () =>
     import('./component-api/context-menu.generated').then(
       (m) => m.COMPONENT_API,
     ),
   'data-table': () =>
     import('./component-api/data-table.generated').then((m) => m.COMPONENT_API),
-  'data-view': () =>
-    import('./component-api/data-view.generated').then((m) => m.COMPONENT_API),
   'date-input': () =>
     import('./component-api/date-input.generated').then((m) => m.COMPONENT_API),
   'date-picker': () =>
@@ -98,8 +78,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     ),
   divider: () =>
     import('./component-api/divider.generated').then((m) => m.COMPONENT_API),
-  dock: () =>
-    import('./component-api/dock.generated').then((m) => m.COMPONENT_API),
   drawer: () =>
     import('./component-api/drawer.generated').then((m) => m.COMPONENT_API),
   dropdown: () =>
@@ -116,34 +94,16 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/file-uploader.generated').then(
       (m) => m.COMPONENT_API,
     ),
-  flex: () =>
-    import('./component-api/flex.generated').then((m) => m.COMPONENT_API),
-  'float-label': () =>
-    import('./component-api/float-label.generated').then(
-      (m) => m.COMPONENT_API,
-    ),
-  'floating-action-button': () =>
-    import('./component-api/floating-action-button.generated').then(
-      (m) => m.COMPONENT_API,
-    ),
-  fluid: () =>
-    import('./component-api/fluid.generated').then((m) => m.COMPONENT_API),
-  form: () =>
-    import('./component-api/form.generated').then((m) => m.COMPONENT_API),
   'form-field': () =>
     import('./component-api/form-field.generated').then((m) => m.COMPONENT_API),
   galleria: () =>
     import('./component-api/galleria.generated').then((m) => m.COMPONENT_API),
-  grid: () =>
-    import('./component-api/grid.generated').then((m) => m.COMPONENT_API),
   'hover-card': () =>
     import('./component-api/hover-card.generated').then((m) => m.COMPONENT_API),
   icon: () =>
     import('./component-api/icon.generated').then((m) => m.COMPONENT_API),
   'icon-field': () =>
     import('./component-api/icon-field.generated').then((m) => m.COMPONENT_API),
-  'ifta-label': () =>
-    import('./component-api/ifta-label.generated').then((m) => m.COMPONENT_API),
   image: () =>
     import('./component-api/image.generated').then((m) => m.COMPONENT_API),
   'image-compare': () =>
@@ -172,8 +132,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/list.generated').then((m) => m.COMPONENT_API),
   listbox: () =>
     import('./component-api/listbox.generated').then((m) => m.COMPONENT_API),
-  'mega-menu': () =>
-    import('./component-api/mega-menu.generated').then((m) => m.COMPONENT_API),
   menu: () =>
     import('./component-api/menu.generated').then((m) => m.COMPONENT_API),
   menubar: () =>
@@ -196,16 +154,12 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/number-input.generated').then(
       (m) => m.COMPONENT_API,
     ),
-  'order-list': () =>
-    import('./component-api/order-list.generated').then((m) => m.COMPONENT_API),
   'organization-chart': () =>
     import('./component-api/organization-chart.generated').then(
       (m) => m.COMPONENT_API,
     ),
   'otp-input': () =>
     import('./component-api/otp-input.generated').then((m) => m.COMPONENT_API),
-  overlay: () =>
-    import('./component-api/overlay.generated').then((m) => m.COMPONENT_API),
   'overlay-badge': () =>
     import('./component-api/overlay-badge.generated').then(
       (m) => m.COMPONENT_API,
@@ -226,8 +180,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/pick-list.generated').then((m) => m.COMPONENT_API),
   popover: () =>
     import('./component-api/popover.generated').then((m) => m.COMPONENT_API),
-  portal: () =>
-    import('./component-api/portal.generated').then((m) => m.COMPONENT_API),
   progress: () =>
     import('./component-api/progress.generated').then((m) => m.COMPONENT_API),
   radio: () =>
@@ -242,8 +194,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/scroll-panel.generated').then(
       (m) => m.COMPONENT_API,
     ),
-  'scroll-top': () =>
-    import('./component-api/scroll-top.generated').then((m) => m.COMPONENT_API),
   'segmented-control': () =>
     import('./component-api/segmented-control.generated').then(
       (m) => m.COMPONENT_API,
@@ -260,20 +210,12 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/skeleton.generated').then((m) => m.COMPONENT_API),
   slider: () =>
     import('./component-api/slider.generated').then((m) => m.COMPONENT_API),
-  space: () =>
-    import('./component-api/space.generated').then((m) => m.COMPONENT_API),
   'speed-dial': () =>
     import('./component-api/speed-dial.generated').then((m) => m.COMPONENT_API),
   spinner: () =>
     import('./component-api/spinner.generated').then((m) => m.COMPONENT_API),
-  'split-button': () =>
-    import('./component-api/split-button.generated').then(
-      (m) => m.COMPONENT_API,
-    ),
   splitter: () =>
     import('./component-api/splitter.generated').then((m) => m.COMPONENT_API),
-  stack: () =>
-    import('./component-api/stack.generated').then((m) => m.COMPONENT_API),
   stepper: () =>
     import('./component-api/stepper.generated').then((m) => m.COMPONENT_API),
   switch: () =>
@@ -320,10 +262,6 @@ export const COMPONENT_API_LOADERS: Readonly<
     import('./component-api/tree-view.generated').then((m) => m.COMPONENT_API),
   typography: () =>
     import('./component-api/typography.generated').then((m) => m.COMPONENT_API),
-  'virtual-scroller': () =>
-    import('./component-api/virtual-scroller.generated').then(
-      (m) => m.COMPONENT_API,
-    ),
   'visually-hidden': () =>
     import('./component-api/visually-hidden.generated').then(
       (m) => m.COMPONENT_API,

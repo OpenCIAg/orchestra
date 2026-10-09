@@ -6,7 +6,7 @@ import type { ComponentApiMember } from '../../models/component-api.model';
 export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   {
     component: 'InputComponent',
-    selector: 'orc-input, orc-input-text',
+    selector: 'orc-input',
     entries: [
       {
         kind: 'input',
@@ -301,7 +301,7 @@ export const COMPONENT_API: Readonly<ComponentApiMember[]> = [
   },
   {
     component: 'TextareaComponent',
-    selector: 'orc-textarea, orc-input-textarea',
+    selector: 'orc-textarea',
     entries: [
       {
         kind: 'input',
