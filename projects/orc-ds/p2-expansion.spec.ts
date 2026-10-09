@@ -89,7 +89,10 @@ import {
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
 import { ChipComponent } from './chip/chip.component';
-import { MeterGroupComponent } from './p2/p2-primeng-gap-components';
+import {
+  FloatLabelComponent,
+  MeterGroupComponent,
+} from './p2/p2-primeng-gap-components';
 import {
   ImageCompareComponent,
   InplaceComponent,
@@ -1582,7 +1585,9 @@ describe('P2 expansion components', () => {
     terminal.command.set('help');
     terminal.submit(new Event('submit'));
     expect(terminal.history()[0].command).toBe('help');
-    expect().toBe('over');
+    expect(
+      TestBed.createComponent(FloatLabelComponent).componentInstance.variant(),
+    ).toBe('over');
   });
 
   it('supports PrimeNG chart and editor lifecycle aliases', () => {

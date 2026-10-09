@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import {
+  FloatLabelComponent,
   IconFieldComponent,
   InputGroupAddonComponent,
   InputGroupComponent,
@@ -8,6 +9,7 @@ import {
 
 /**
  * Behavior-parity pins for the input-group / icon-field / ifta-label /
+ * float-label rendering family. The specs import through the public
  * `@ciag/orchestra/p2` surface and must pass unchanged while the family
  * moves to its canonical directory.
  */
@@ -70,6 +72,7 @@ describe('Input group family behavior parity', () => {
   });
 
   it('tracks focus and filled state for the float label variants', () => {
+    const fixture = TestBed.createComponent(FloatLabelComponent);
     fixture.detectChanges();
     const host = fixture.nativeElement.querySelector('span');
 
@@ -101,6 +104,7 @@ describe('Input group family behavior parity', () => {
   });
 
   it('keeps the float label variants switchable', () => {
+    const fixture = TestBed.createComponent(FloatLabelComponent);
     fixture.detectChanges();
     const host = fixture.nativeElement.querySelector('span');
     fixture.componentRef.setInput('variant', 'in');

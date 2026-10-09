@@ -21,6 +21,7 @@ export {
   GridComponent,
   KbdComponent,
   LinkComponent,
+  SeparatorComponent,
   SpaceComponent,
   StackComponent,
   TextComponent,
@@ -37,6 +38,7 @@ export {
 } from './p2-data-components';
 export { DataTableComponent } from './p2-data-table-component';
 export {
+  CloseButtonComponent,
   ContextMenuComponent,
   FloatingActionButtonComponent,
 } from './p2-overlay-components';

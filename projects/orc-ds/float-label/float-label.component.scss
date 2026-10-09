@@ -1,0 +1,46 @@
+.orc-p2-float-label {
+  position: relative;
+  display: block;
+}
+.orc-p2-float-label > label {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  inset-inline-start: 0.75rem;
+  transform: translateY(-50%);
+  padding: 0 0.2rem;
+  color: var(--orc-component-text-muted);
+  background: var(--orc-component-surface);
+  pointer-events: none;
+  transition: 0.15s;
+}
+.orc-p2-float-label.variant-over.focused label,
+.orc-p2-float-label.variant-over.filled label,
+.orc-p2-float-label.variant-over:has(
+    > .filled,
+    > input[value]:not([value='']),
+    > textarea[value]:not([value='']),
+    > input[placeholder]:not(:placeholder-shown),
+    > textarea[placeholder]:not(:placeholder-shown),
+    > select
+  )
+  label {
+  top: 0;
+  font-size: 0.75rem;
+  color: var(--orc-component-interactive);
+}
+.orc-p2-float-label.variant-in > label {
+  top: 0.35rem;
+  transform: none;
+  font-size: 0.75rem;
+  color: var(--orc-component-text-muted);
+}
+.orc-p2-float-label.variant-in :is(input, textarea, select) {
+  padding-top: 1.35rem;
+}
+.orc-p2-float-label.variant-on > label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--orc-component-interactive);
+}
