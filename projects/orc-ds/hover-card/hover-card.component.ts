@@ -9,12 +9,12 @@ import {
   model,
   Renderer2,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 @Component({
   selector: 'orc-hover-card',
   standalone: true,
   templateUrl: './hover-card.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './hover-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

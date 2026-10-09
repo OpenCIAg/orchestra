@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ImageCompareComponent } from './p2/p2-input-gap-components';
+import { ImageCompareComponent } from '@ciag/orchestra/image-compare';
 
 describe('ImageCompareComponent accessibility and slider contract', () => {
   let fixture: ComponentFixture<ImageCompareComponent>;

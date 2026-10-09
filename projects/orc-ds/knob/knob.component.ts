@@ -10,13 +10,13 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { ORC_SHARED_STYLES } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-knob',
   standalone: true,
   templateUrl: './knob.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './knob.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

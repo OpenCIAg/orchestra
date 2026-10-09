@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { ContextMenuComponent } from '@ciag/orchestra/p2';
-import type { ContextMenuItem } from '@ciag/orchestra/p2';
+import { ContextMenuComponent } from '@ciag/orchestra/context-menu';
+import type { ContextMenuItem } from '@ciag/orchestra/context-menu';
 
 /**
  * Behavior-parity pins for the context menu. Imported through the public
- * `@ciag/orchestra/p2` surface; must pass unchanged across the family move.
+ * family entry point; must pass unchanged across the family move.
  */
 describe('ContextMenu behavior parity', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

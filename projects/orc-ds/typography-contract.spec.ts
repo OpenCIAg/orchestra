@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TypographyComponent } from './p2/p2-layout-components';
+import { TypographyComponent } from '@ciag/orchestra/typography';
 
 describe('TypographyComponent DOM contract', () => {
   beforeEach(() =>

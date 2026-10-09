@@ -12,13 +12,13 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-terminal',
   standalone: true,
   templateUrl: './terminal.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './terminal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

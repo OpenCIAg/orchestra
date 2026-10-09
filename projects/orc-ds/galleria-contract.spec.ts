@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  GalleriaComponent,
-  GalleryImage,
-} from './p2/p2-list-gallery-components';
+import { GalleriaComponent, GalleryImage } from '@ciag/orchestra/galleria';
 
 describe('GalleriaComponent DOM contract', () => {
   const images: GalleryImage[] = [

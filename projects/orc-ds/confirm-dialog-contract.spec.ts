@@ -7,23 +7,7 @@ import {
 import {
   ConfirmDialogComponent,
   ConfirmationService,
-} from './p2/p2-advanced-components';
-import type { ConfirmationRequest } from './p2/p2-advanced-components';
-import {
-  ConfirmDialogComponent as FocusedConfirmDialogComponent,
-  ConfirmationService as FocusedConfirmationService,
-} from './p2/p2-confirm-dialog-component';
-import type { ConfirmationRequest as FocusedConfirmationRequest } from './p2/p2-confirm-dialog-component';
-import {
-  ConfirmDialogComponent as P2ConfirmDialogComponent,
-  ConfirmationService as P2ConfirmationService,
-} from '@ciag/orchestra/p2';
-import type { ConfirmationRequest as P2ConfirmationRequest } from '@ciag/orchestra/p2';
-import {
-  ConfirmDialogComponent as SecondaryConfirmDialogComponent,
-  ConfirmationService as SecondaryConfirmationService,
 } from '@ciag/orchestra/confirm-dialog';
-import type { ConfirmationRequest as SecondaryConfirmationRequest } from '@ciag/orchestra/confirm-dialog';
 import { lockDocumentScroll } from './internal/overlay-lifecycle';
 
 describe('ConfirmDialog policy contract', () => {
@@ -31,23 +15,6 @@ describe('ConfirmDialog policy contract', () => {
   let service: ConfirmationService;
   let originalOverflow: string;
   let originalPriority: string;
-
-  it('preserves component and service identity plus request types through focused, compatibility, P2, and secondary imports', () => {
-    expect(ConfirmDialogComponent).toBe(FocusedConfirmDialogComponent);
-    expect(ConfirmDialogComponent).toBe(P2ConfirmDialogComponent);
-    expect(ConfirmDialogComponent).toBe(SecondaryConfirmDialogComponent);
-    expect(ConfirmationService).toBe(FocusedConfirmationService);
-    expect(ConfirmationService).toBe(P2ConfirmationService);
-    expect(ConfirmationService).toBe(SecondaryConfirmationService);
-
-    const focusedRequest: FocusedConfirmationRequest = {
-      message: 'Continue?',
-    };
-    const compatibilityRequest: ConfirmationRequest = focusedRequest;
-    const p2Request: P2ConfirmationRequest = compatibilityRequest;
-    const secondaryRequest: SecondaryConfirmationRequest = p2Request;
-    expect(secondaryRequest).toEqual({ message: 'Continue?' });
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

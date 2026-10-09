@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { HoverCardComponent } from '@ciag/orchestra/p2';
+import { HoverCardComponent } from '@ciag/orchestra/hover-card';
 
 /**
  * Behavior-parity pins for the hover card family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 @Component({

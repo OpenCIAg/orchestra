@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { registerOverlay } from '@ciag/orchestra/internal';
-import { TreeSelectComponent } from '@ciag/orchestra/p2';
-import type { TreeSelectNode } from '@ciag/orchestra/p2';
+import { TreeSelectComponent } from '@ciag/orchestra/tree-select';
+import type { TreeSelectNode } from '@ciag/orchestra/tree-select';
 
 /**
  * Dismissal-lifecycle pins for the tree-select: the shared detached-picker

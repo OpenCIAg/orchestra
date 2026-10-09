@@ -28,18 +28,18 @@ import {
   filterTreeNodes,
   normalizeSize,
   overlayAttachmentTarget,
-  P2_PANEL_VARS,
-  P2_SHARED_VARS,
+  ORC_PANEL_VARS,
+  ORC_SHARED_VARS,
   SizeInput,
 } from '@ciag/orchestra/internal';
 import type {
   ListPickerOverlayHandle,
-  P2Option,
+  OrcOption,
 } from '@ciag/orchestra/internal';
 
 let nextTreeSelectId = 0;
 
-export interface TreeSelectNode extends P2Option<string> {
+export interface TreeSelectNode extends OrcOption<string> {
   data?: unknown;
   children?: TreeSelectNode[];
 }
@@ -54,7 +54,7 @@ interface VisibleTreeSelectNode {
   standalone: true,
   imports: [IconComponent],
   templateUrl: './tree-select.component.html',
-  styles: [P2_SHARED_VARS, P2_PANEL_VARS],
+  styles: [ORC_SHARED_VARS, ORC_PANEL_VARS],
   styleUrl: './tree-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

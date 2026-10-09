@@ -1,41 +1,10 @@
-import { Component, signal } from '@angular/core';
 import {
-  ComponentFixture,
   TestBed,
   fakeAsync,
   flushMicrotasks,
   tick,
 } from '@angular/core/testing';
-import { CodeComponent } from './p2/p2-data-components';
-import { OverlayComponent } from './p2/p2-overlay-components';
-
-@Component({
-  standalone: true,
-  imports: [OverlayComponent],
-  template: `
-    <orc-overlay
-      [(visible)]="open"
-      styleClass="consumer-overlay"
-      [style]="surfaceStyle"
-      (onShow)="recordShow()"
-      (onHide)="recordHide()"
-    >
-      <button type="button">Projected action</button>
-    </orc-overlay>
-  `,
-})
-class OverlayHost {
-  readonly open = signal(false);
-  shown = 0;
-  hidden = 0;
-  surfaceStyle = { color: 'rgb(10, 20, 30)' };
-  recordShow(): void {
-    this.shown += 1;
-  }
-  recordHide(): void {
-    this.hidden += 1;
-  }
-}
+import { CodeComponent } from '@ciag/orchestra/code';
 
 describe('Code and Overlay contracts', () => {
   let clipboardDescriptor: PropertyDescriptor | undefined;
@@ -46,7 +15,7 @@ describe('Code and Overlay contracts', () => {
       'clipboard',
     );
     await TestBed.configureTestingModule({
-      imports: [CodeComponent, OverlayComponent, OverlayHost],
+      imports: [CodeComponent],
     }).compileComponents();
   });
 
@@ -203,52 +172,6 @@ describe('Code and Overlay contracts', () => {
     tick(1200);
     expect(instance.copied()).toBeTrue();
   }));
-
-  it('controls Overlay visibility idempotently, emits for model changes, handles Escape, and preserves projected content', () => {
-    const fixture: ComponentFixture<OverlayHost> =
-      TestBed.createComponent(OverlayHost);
-    fixture.detectChanges();
-    const overlay = fixture.debugElement.children[0]
-      .componentInstance as OverlayComponent;
-    const section = fixture.nativeElement.querySelector(
-      'section',
-    ) as HTMLElement;
-    expect(section.hidden).toBeTrue();
-    expect(section.getAttribute('role')).toBe('presentation');
-    expect(section.classList).toContain('orc-p2-overlay');
-    expect(section.classList).toContain('consumer-overlay');
-    expect(section.style.color).toBe('rgb(10, 20, 30)');
-    expect(fixture.nativeElement.textContent).toContain('Projected action');
-
-    overlay.show();
-    fixture.detectChanges();
-    expect(section.hidden).toBeFalse();
-    expect(fixture.componentInstance.open()).toBeTrue();
-    expect(fixture.componentInstance.shown).toBe(1);
-    overlay.show();
-    fixture.detectChanges();
-    expect(fixture.componentInstance.shown).toBe(1);
-
-    fixture.componentInstance.open.set(false);
-    fixture.detectChanges();
-    expect(section.hidden).toBeTrue();
-    expect(fixture.componentInstance.hidden).toBe(1);
-    fixture.componentInstance.open.set(true);
-    fixture.detectChanges();
-    expect(fixture.componentInstance.shown).toBe(2);
-
-    section.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Escape',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    fixture.detectChanges();
-    expect(section.hidden).toBeTrue();
-    expect(fixture.componentInstance.hidden).toBe(2);
-    fixture.destroy();
-  });
 });
 
 function setClipboard(writeText: jasmine.Spy): void {

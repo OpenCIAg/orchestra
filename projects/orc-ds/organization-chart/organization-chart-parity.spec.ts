@@ -2,11 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import {
   OrganizationChartComponent,
   OrganizationNode,
-} from '@ciag/orchestra/p2';
+} from '@ciag/orchestra/organization-chart';
 
 /**
  * Behavior-parity pins for the organization chart family. The specs import
- * the component through the public `@ciag/orchestra/p2` surface and must
+ * the component through the family entry point and must
  * pass unchanged while the family moves to its canonical directory.
  */
 describe('OrganizationChart behavior parity', () => {

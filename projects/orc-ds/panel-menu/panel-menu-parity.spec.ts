@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { PanelMenuComponent } from '@ciag/orchestra/p2';
-import type { PrimeMenuItem } from '@ciag/orchestra/p2';
+import { PanelMenuComponent } from '@ciag/orchestra/panel-menu';
+import type { PrimeMenuItem } from '@ciag/orchestra/internal';
 
 /**
  * Behavior-parity pins for the panel menu. Imported through the public
- * `@ciag/orchestra/p2` surface; must pass unchanged across the family move.
+ * family entry point; must pass unchanged across the family move.
  */
 describe('PanelMenu behavior parity', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

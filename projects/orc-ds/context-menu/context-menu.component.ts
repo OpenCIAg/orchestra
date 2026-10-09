@@ -15,17 +15,17 @@ import {
   signal,
 } from '@angular/core';
 import {
-  P2_SHARED_VARS,
+  ORC_SHARED_VARS,
   listenForOutsideInteraction,
   menuFocusTargets,
   stepMenuIndex,
 } from '@ciag/orchestra/internal';
-import type { P2Option } from '@ciag/orchestra/internal';
+import type { OrcOption } from '@ciag/orchestra/internal';
 import { isElementTarget } from '@ciag/orchestra/internal';
 
-export type { P2Option };
+export type { OrcOption };
 
-export interface ContextMenuItem extends P2Option<string> {
+export interface ContextMenuItem extends OrcOption<string> {
   danger?: boolean;
   shortcut?: string;
   visible?: boolean;
@@ -80,7 +80,7 @@ export interface ContextMenuItem extends P2Option<string> {
     }
   </div>`,
   styles: [
-    P2_SHARED_VARS +
+    ORC_SHARED_VARS +
       `.orc-p2-context-menu-host { position: relative; min-height: 2rem; } .orc-p2-context-menu { position: fixed; z-index: 10; display: grid; min-width: 12rem; padding: .25rem; border: 1px solid var(--orc-component-border-strong); border-radius: .55rem; background: var(--orc-component-surface); box-shadow: 0 12px 28px var(--orc-component-shadow-color); } .orc-p2-context-menu button { display: flex; justify-content: space-between; border: 0; border-radius: .35rem; background: transparent; padding: .55rem .7rem; text-align: left; } .orc-p2-context-menu button:hover, .orc-p2-context-menu button.active { background: var(--orc-component-interactive-soft); } .orc-p2-context-menu button.danger { color: var(--orc-component-danger); } small { color: var(--orc-component-text-muted); }`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

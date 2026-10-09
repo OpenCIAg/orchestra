@@ -1,12 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { NavigationShellComponent } from './navigation/navigation-shell.component';
-import {
-  ContextMenuComponent,
-  SpeedDialComponent,
-} from './p2/p2-overlay-components';
-import { SplitButtonComponent } from './p2/p2-primeng-gap-components';
-import { TreeSelectComponent } from './p2/p2-selection-components';
+import { ContextMenuComponent } from '@ciag/orchestra/context-menu';
+import { SpeedDialComponent } from '@ciag/orchestra/speed-dial';
+import { TreeSelectComponent } from '@ciag/orchestra/tree-select';
 
 describe('owner-document global interaction listeners', () => {
   beforeEach(() =>
@@ -16,7 +13,6 @@ describe('owner-document global interaction listeners', () => {
         NavigationShellComponent,
         ContextMenuComponent,
         SpeedDialComponent,
-        SplitButtonComponent,
         TreeSelectComponent,
       ],
     }),
@@ -68,7 +64,7 @@ describe('owner-document global interaction listeners', () => {
     frame.remove();
   });
 
-  it('dismisses ContextMenu, SpeedDial, TreeSelect, and SplitButton in their owner document', () => {
+  it('dismisses ContextMenu, SpeedDial, and TreeSelect in their owner document', () => {
     const context = TestBed.createComponent(ContextMenuComponent);
     const contextRealm = iframe();
     contextRealm.document.body.appendChild(
@@ -105,25 +101,11 @@ describe('owner-document global interaction listeners', () => {
     );
     expect(tree.componentInstance.open()).toBeFalse();
 
-    const split = TestBed.createComponent(SplitButtonComponent);
-    const splitRealm = iframe();
-    splitRealm.document.body.appendChild(
-      splitRealm.document.adoptNode(split.nativeElement),
-    );
-    split.detectChanges();
-    split.componentInstance.open.set(true);
-    splitRealm.document.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
-    expect(split.componentInstance.isMenuOpen()).toBeFalse();
-
     context.destroy();
     speed.destroy();
     tree.destroy();
-    split.destroy();
     contextRealm.frame.remove();
     speedRealm.frame.remove();
     treeRealm.frame.remove();
-    splitRealm.frame.remove();
   });
 });

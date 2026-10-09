@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { ORC_SHARED_STYLES } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-icon-field',
@@ -8,7 +8,7 @@ import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
     <span class="icon" aria-hidden="true">{{ icon() }}</span
     ><ng-content />
   </div>`,
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './icon-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -4,34 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   TreeSelectComponent,
   TreeSelectNode,
-} from './p2/p2-selection-components';
-import {
-  TreeSelectComponent as FocusedTreeSelectComponent,
-  TreeSelectNode as FocusedTreeSelectNode,
-} from './p2/p2-tree-select-component';
-import {
-  TreeSelectComponent as P2TreeSelectComponent,
-  TreeSelectNode as P2TreeSelectNode,
-} from '@ciag/orchestra/p2';
-import {
-  TreeSelectComponent as SecondaryTreeSelectComponent,
-  TreeSelectNode as SecondaryTreeSelectNode,
 } from '@ciag/orchestra/tree-select';
-
-type EqualTypes<Left, Right> =
-  (<Value>() => Value extends Left ? 1 : 2) extends <
-    Value,
-  >() => Value extends Right ? 1 : 2
-    ? true
-    : false;
-type Assert<Type extends true> = Type;
-// Deliberate compile-time export identity assertion; never read at runtime,
-// but the two branches must both compile.
-export type TreeSelectNodeExportIdentity = [
-  Assert<EqualTypes<TreeSelectNode, FocusedTreeSelectNode>>,
-  Assert<EqualTypes<TreeSelectNode, P2TreeSelectNode>>,
-  Assert<EqualTypes<TreeSelectNode, SecondaryTreeSelectNode>>,
-];
 
 @Component({
   standalone: true,
@@ -61,12 +34,6 @@ describe('TreeSelect filtering and checkbox semantics', () => {
       ?.getAttribute('aria-controls');
     return document.getElementById(controlsId!) as HTMLElement;
   };
-
-  it('preserves class identity through focused, legacy, P2, and secondary imports', () => {
-    expect(TreeSelectComponent).toBe(FocusedTreeSelectComponent);
-    expect(TreeSelectComponent).toBe(P2TreeSelectComponent);
-    expect(TreeSelectComponent).toBe(SecondaryTreeSelectComponent);
-  });
 
   it('filters collapsed descendants by configured nested fields and locale', () => {
     const fixture = TestBed.createComponent(TreeSelectComponent);

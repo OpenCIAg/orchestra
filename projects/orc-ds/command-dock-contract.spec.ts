@@ -1,9 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { CommandMenuComponent } from './p2/p2-command-components';
-import {
-  DockComponent,
-  ScrollPanelComponent,
-} from './p2/p2-dock-scroll-components';
+import { CommandMenuComponent } from '@ciag/orchestra/command-menu';
+import { ScrollPanelComponent } from '@ciag/orchestra/scroll-panel';
 
 describe('CommandMenuComponent keyboard and listbox contract', () => {
   it('keeps the active option valid while filtering, skipping disabled items, and selecting by keyboard', () => {
@@ -87,56 +84,6 @@ describe('CommandMenuComponent keyboard and listbox contract', () => {
     fixture.componentInstance.setQuery('open');
     fixture.componentInstance.keydown(modified);
     expect(modified.defaultPrevented).toBeFalse();
-  });
-});
-
-describe('DockComponent toolbar contract', () => {
-  it('uses one roving tab stop, skips disabled items, and invokes an item command', () => {
-    const fixture = TestBed.createComponent(DockComponent);
-    const run = jasmine.createSpy('run');
-    fixture.componentRef.setInput('label', 'Workspace shortcuts');
-    fixture.componentRef.setInput('position', 'top');
-    fixture.componentRef.setInput('items', [
-      { value: 'home', label: 'Home', icon: '⌂' },
-      { value: 'disabled', label: 'Disabled', disabled: true },
-      { value: 'settings', label: 'Settings', command: run },
-    ]);
-    fixture.detectChanges();
-
-    const toolbar = fixture.nativeElement.querySelector(
-      '[role="toolbar"]',
-    ) as HTMLElement;
-    const buttons = fixture.nativeElement.querySelectorAll(
-      'button',
-    ) as NodeListOf<HTMLButtonElement>;
-    expect(toolbar.getAttribute('aria-label')).toBe('Workspace shortcuts');
-    expect(toolbar.classList.contains('top')).toBeTrue();
-    expect([...buttons].map((button) => button.tabIndex)).toEqual([0, -1, -1]);
-    expect(buttons[0].querySelector('span')?.getAttribute('aria-hidden')).toBe(
-      'true',
-    );
-
-    buttons[0].focus();
-    const next = new KeyboardEvent('keydown', {
-      key: 'ArrowRight',
-      bubbles: true,
-      cancelable: true,
-    });
-    buttons[0].dispatchEvent(next);
-    fixture.detectChanges();
-    expect(next.defaultPrevented).toBeTrue();
-    expect(document.activeElement).toBe(buttons[2]);
-    expect(buttons[2].tabIndex).toBe(0);
-
-    buttons[2].click();
-    expect(run).toHaveBeenCalledTimes(1);
-    const wrap = new KeyboardEvent('keydown', {
-      key: 'ArrowRight',
-      bubbles: true,
-      cancelable: true,
-    });
-    buttons[2].dispatchEvent(wrap);
-    expect(document.activeElement).toBe(buttons[0]);
   });
 });
 

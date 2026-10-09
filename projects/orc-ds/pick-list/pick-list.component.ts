@@ -14,19 +14,19 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
-import type { P2Option } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
+import type { OrcOption } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-pick-list',
   standalone: true,
   templateUrl: './pick-list.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './pick-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PickListComponent<
-  T extends P2Option = P2Option,
+  T extends OrcOption = OrcOption,
 > implements OnDestroy {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly injector = inject(Injector);

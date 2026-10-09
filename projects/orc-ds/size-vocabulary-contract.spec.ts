@@ -25,17 +25,13 @@ import { TableComponent } from './table/table.component';
 import { RadioButtonComponent } from './radio/radio-button.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { OtpInputComponent } from './otp-input/otp-input.component';
-import { InputMaskDirective } from './input-mask/input-mask.directive';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { SelectButtonComponent } from './select-button/select-button.component';
 import { ToggleButtonComponent } from './toggle-button/toggle-button.component';
-import { SplitButtonComponent } from './split-button/split-button.component';
 import { TreeSelectComponent } from './tree-select/tree-select.component';
 import { PasswordComponent } from './password/password.component';
-import { CascadeSelectComponent } from './p2/p2-cascade-select-component';
-import { DataTableComponent } from './p2/p2-data-table-component';
-import { Component } from '@angular/core';
+import { DataTableComponent } from '@ciag/orchestra/data-table';
 
 /**
  * Size-vocabulary contract (ticket: unify the size vocabulary).
@@ -137,12 +133,6 @@ describe('Size vocabulary contract', () => {
         largeMarker: 'orc-toggle-button--large',
       },
       {
-        name: 'split-button',
-        component: SplitButtonComponent,
-        smallMarker: 'size-small',
-        largeMarker: 'size-large',
-      },
-      {
         name: 'tree-select',
         component: TreeSelectComponent,
         smallMarker: 'orc-p2-tree-select--small',
@@ -153,12 +143,6 @@ describe('Size vocabulary contract', () => {
         component: PasswordComponent,
         smallMarker: 'size-small',
         largeMarker: 'size-large',
-      },
-      {
-        name: 'cascade-select',
-        component: CascadeSelectComponent,
-        smallMarker: 'orc-cascade--small',
-        largeMarker: 'orc-cascade--large',
       },
       {
         name: 'data-table',
@@ -198,38 +182,6 @@ describe('Size vocabulary contract', () => {
         });
       });
     }
-  });
-
-  describe('input-mask directive (host-bound size)', () => {
-    @Component({
-      standalone: true,
-      imports: [InputMaskDirective],
-      template: `<input orcInputMask [size]="size" />`,
-    })
-    class MaskHost {
-      size: string | undefined = undefined;
-    }
-
-    const renderHost = (size: string | undefined) => {
-      const fixture = TestBed.createComponent(MaskHost);
-      fixture.componentInstance.size = size;
-      fixture.detectChanges();
-      return classMatrix(fixture);
-    };
-
-    it('renders the deprecated `small` value identically to canonical `sm`', () => {
-      expect(renderHost('sm')).toEqual(renderHost('small'));
-      expect(renderHost('small').flat()).toContain('orc-input-mask--small');
-    });
-
-    it('renders the deprecated `large` value identically to canonical `lg`', () => {
-      expect(renderHost('lg')).toEqual(renderHost('large'));
-      expect(renderHost('large').flat()).toContain('orc-input-mask--large');
-    });
-
-    it('renders canonical `md` as the default (middle) size', () => {
-      expect(renderHost('md')).toEqual(renderHost(undefined));
-    });
   });
 
   describe('canonical controls accept the canonical vocabulary everywhere', () => {

@@ -1,16 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MultiSelectComponent } from './p2/p2-form-components';
-import { MultiSelectComponent as FocusedMultiSelectComponent } from './p2/p2-multi-select-component';
-import { MultiSelectComponent as P2MultiSelectComponent } from '@ciag/orchestra/p2';
-import { MultiSelectComponent as SecondaryMultiSelectComponent } from './multi-select';
+import { MultiSelectComponent } from '@ciag/orchestra/multi-select';
 
 describe('MultiSelect public contract', () => {
-  it('preserves one component class across legacy, focused, p2, and secondary imports', () => {
-    expect(MultiSelectComponent).toBe(FocusedMultiSelectComponent);
-    expect(MultiSelectComponent).toBe(P2MultiSelectComponent);
-    expect(MultiSelectComponent).toBe(SecondaryMultiSelectComponent);
-  });
-
   let fixture: ComponentFixture<MultiSelectComponent<string>>;
   let component: MultiSelectComponent<string>;
 

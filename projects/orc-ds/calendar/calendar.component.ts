@@ -15,7 +15,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   CvaControl,
-  P2_SHARED_STYLES,
+  ORC_SHARED_STYLES,
   calendarActiveDay,
   calendarDateKey,
   calendarLocaleFirstDay,
@@ -49,7 +49,7 @@ const isIsoTime = (value: string): boolean =>
   selector: 'orc-calendar',
   standalone: true,
   templateUrl: './calendar.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './calendar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

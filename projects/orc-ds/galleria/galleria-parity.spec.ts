@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { GalleriaComponent, GalleryImage } from '@ciag/orchestra/p2';
+import { GalleriaComponent, GalleryImage } from '@ciag/orchestra/galleria';
 
 /**
  * Behavior-parity pins for the galleria family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('Galleria behavior parity', () => {

@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {
-  SelectButtonComponent,
-  ToggleButtonComponent,
-} from '@ciag/orchestra/p2';
+import { SelectButtonComponent } from '@ciag/orchestra/select-button';
+import { ToggleButtonComponent } from '@ciag/orchestra/toggle-button';
 
 /**
  * Behavior-parity pins for the select-button and toggle-button. The specs
- * import the components through the public `@ciag/orchestra/p2` surface and
+ * import the components through the family entry point and
  * must pass unchanged while the family moves to its canonical directory.
  */
 describe('SelectButton and ToggleButton behavior parity', () => {

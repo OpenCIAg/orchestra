@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { registerOverlay } from '@ciag/orchestra/internal';
-import { MultiSelectComponent } from '@ciag/orchestra/p2';
-import type { P2Option } from '@ciag/orchestra/p2';
+import { MultiSelectComponent } from '@ciag/orchestra/multi-select';
+import type { OrcOption } from '@ciag/orchestra/internal';
 
 /**
  * Dismissal-lifecycle pins for the multi-select: outside-interaction
@@ -11,7 +11,7 @@ import type { P2Option } from '@ciag/orchestra/p2';
  * participation (topmost-aware Escape and parent-close) and focus restore.
  */
 describe('MultiSelect dismissal lifecycle', () => {
-  const OPTIONS: P2Option<string>[] = [
+  const OPTIONS: OrcOption<string>[] = [
     { value: 'a', label: 'Alpha' },
     { value: 'b', label: 'Beta' },
   ];

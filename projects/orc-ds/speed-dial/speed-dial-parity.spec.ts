@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { SpeedDialComponent } from '@ciag/orchestra/p2';
-import type { SpeedDialAction } from '@ciag/orchestra/p2';
+import { SpeedDialComponent } from '@ciag/orchestra/speed-dial';
+import type { SpeedDialAction } from '@ciag/orchestra/speed-dial';
 
 /**
  * Behavior-parity pins for the speed dial. Imported through the public
- * `@ciag/orchestra/p2` surface; must pass unchanged across the family move.
+ * family entry point; must pass unchanged across the family move.
  */
 describe('SpeedDial behavior parity', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

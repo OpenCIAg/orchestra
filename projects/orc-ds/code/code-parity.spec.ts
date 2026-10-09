@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { CodeComponent } from '@ciag/orchestra/p2';
+import { CodeComponent } from '@ciag/orchestra/code';
 
 /**
  * Behavior-parity pins for the code viewer family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('Code behavior parity', () => {

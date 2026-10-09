@@ -1,5 +1,5 @@
 import { fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
-import { TreeSelectComponent } from './p2/p2-tree-select-component';
+import { TreeSelectComponent } from '@ciag/orchestra/tree-select';
 
 describe('TreeSelect lifecycle contract', () => {
   it('cancels deferred blur work when the component is destroyed', fakeAsync(() => {

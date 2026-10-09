@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
-import { MultiSelectComponent } from '@ciag/orchestra/p2';
-import type { P2Option } from '@ciag/orchestra/p2';
+import { MultiSelectComponent } from '@ciag/orchestra/multi-select';
+import type { OrcOption } from '@ciag/orchestra/internal';
 
 /**
  * Behavior-parity pins for the multi-select. The specs import the component
- * through the public `@ciag/orchestra/p2` surface and must pass unchanged
+ * through the family entry point and must pass unchanged
  * while the family moves to its canonical directory.
  */
 describe('MultiSelect behavior parity', () => {
-  const OPTIONS: P2Option<string>[] = [
+  const OPTIONS: OrcOption<string>[] = [
     { value: 'a', label: 'Alpha' },
     { value: 'b', label: 'Beta', disabled: true },
     { value: 'c', label: 'Gamma' },

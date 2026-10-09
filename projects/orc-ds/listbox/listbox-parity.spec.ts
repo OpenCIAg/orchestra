@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { ListboxComponent } from '@ciag/orchestra/p2';
-import type { P2Option } from '@ciag/orchestra/p2';
+import { ListboxComponent } from '@ciag/orchestra/listbox';
+import type { OrcOption } from '@ciag/orchestra/internal';
 
 /**
  * Behavior-parity pins for the listbox. The specs import the component
- * through the public `@ciag/orchestra/p2` surface and must pass unchanged
+ * through the family entry point and must pass unchanged
  * while the family moves to its canonical directory.
  */
 describe('Listbox behavior parity', () => {
-  const OPTIONS: P2Option<string>[] = [
+  const OPTIONS: OrcOption<string>[] = [
     { value: 'a', label: 'Alpha' },
     { value: 'b', label: 'Beta', disabled: true },
     { value: 'c', label: 'Gamma' },
@@ -113,7 +113,7 @@ describe('Listbox behavior parity', () => {
     fixture.componentRef.setInput('options', [
       { value: 'a', label: 'Alpha', tags: ['hydrogen', 'light'] },
       { value: 'b', label: 'Beta', tags: ['helium'] },
-    ] as unknown as P2Option<string>[]);
+    ] as unknown as OrcOption<string>[]);
     fixture.componentRef.setInput('filter', true);
     fixture.detectChanges();
 

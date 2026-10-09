@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { TieredMenuComponent } from '@ciag/orchestra/p2';
-import type { PrimeMenuItem } from '@ciag/orchestra/p2';
+import { TieredMenuComponent } from '@ciag/orchestra/tiered-menu';
+import type { PrimeMenuItem } from '@ciag/orchestra/internal';
 
 /**
  * Behavior-parity pins for the tiered menu family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('TieredMenu behavior parity', () => {

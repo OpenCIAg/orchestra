@@ -1,29 +1,22 @@
+import { TreeSelectComponent } from '@ciag/orchestra/tree-select';
+import { PickListComponent } from '@ciag/orchestra/pick-list';
 import { TestBed } from '@angular/core/testing';
-import { CalendarComponent, DateInputComponent } from './p2/p2-form-components';
-import { ComboboxComponent } from './p2/p2-form-components';
-import {
-  ListboxComponent,
-  MultiSelectComponent,
-} from './p2/p2-form-components';
-import { TagsInputComponent } from './p2/p2-form-components';
-import { DataTableComponent } from './p2/p2-data-components';
-import { VirtualScrollerComponent } from './p2/p2-data-components';
-import {
-  SegmentedControlComponent,
-  TreeSelectComponent,
-} from './p2/p2-selection-components';
-import { CascadeSelectComponent } from './p2/p2-form-gap-components';
-import { DataViewComponent } from './p2/p2-advanced-components';
-import { ToggleButtonComponent } from './p2/p2-form-gap-components';
+import { CalendarComponent } from '@ciag/orchestra/calendar';
+import { DateInputComponent } from '@ciag/orchestra/date-input';
+import { ComboboxComponent } from '@ciag/orchestra/combobox';
+import { ListboxComponent } from '@ciag/orchestra/listbox';
+import { MultiSelectComponent } from '@ciag/orchestra/multi-select';
+import { TagsInputComponent } from '@ciag/orchestra/tags-input';
+import { DataTableComponent } from '@ciag/orchestra/data-table';
+import { SegmentedControlComponent } from '@ciag/orchestra/segmented-control';
+import { ToggleButtonComponent } from '@ciag/orchestra/toggle-button';
 import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SwitchComponent } from './switch/switch.component';
 import { SliderComponent } from './slider/slider.component';
 import { RatingComponent } from './rating/rating.component';
-import {
-  KnobComponent,
-  OrganizationChartComponent,
-} from './p2/p2-org-knob-components';
+import { KnobComponent } from '@ciag/orchestra/knob';
+import { OrganizationChartComponent } from '@ciag/orchestra/organization-chart';
 import { ProgressBarComponent } from './progress/progress-bar.component';
 import { ProgressCircleComponent } from './progress/progress-circle.component';
 import { ProgressSpinnerComponent } from './progress/progress-spinner.component';
@@ -32,78 +25,50 @@ import { AlertComponent } from './alert/alert.component';
 import { CardComponent } from './card/card.component';
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
-import {
-  DraggableDirective,
-  DroppableDirective,
-} from './drag-drop/drag-drop.directive';
-import {
-  TreeComponent,
-  TreeTableComponent,
-} from './p2/p2-hierarchical-components';
-import {
-  OverlayPanelComponent,
-  PopoverComponent,
-} from './p2/p2-overlay-components';
+import { TreeComponent } from '@ciag/orchestra/tree';
+import { TreeTableComponent } from '@ciag/orchestra/tree-table';
+import { OverlayPanelComponent } from '@ciag/orchestra/overlay-panel';
+import { PopoverComponent } from '@ciag/orchestra/popover';
 import { StepperComponent } from './stepper/stepper.component';
 import { TableComponent } from './table/table.component';
-import {
-  FieldsetComponent,
-  PanelComponent,
-} from './p2/p2-primeng-gap-components';
+import { FieldsetComponent } from '@ciag/orchestra/fieldset';
+import { PanelComponent } from '@ciag/orchestra/panel';
 import { DrawerComponent } from './drawer/drawer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import {
   DatePickerCalendarComponent,
   DatePickerComponent,
 } from './date-picker/date-picker.component';
-import {
-  GalleriaComponent,
-  OrderListComponent,
-  PickListComponent,
-} from './p2/p2-list-gallery-components';
-import { MessagesComponent } from './p2/p2-message-components';
+import { GalleriaComponent } from '@ciag/orchestra/galleria';
+import { MessagesComponent } from '@ciag/orchestra/messages';
 import {
   ContextMenuComponent,
   ContextMenuItem,
-} from './p2/p2-overlay-components';
-import { SplitterComponent } from './p2/p2-overlay-components';
+} from '@ciag/orchestra/context-menu';
+import { SplitterComponent } from '@ciag/orchestra/splitter';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { AvatarComponent } from './avatar/avatar.component';
 import { AvatarGroupComponent } from './avatar/avatar-group.component';
 import { ModalRef } from './modal/modal-ref';
 import { BadgeComponent } from './badge/badge.component';
-import { MenubarComponent, TagComponent } from './p2/p2-data-components';
+import { MenubarComponent } from '@ciag/orchestra/menubar';
+import { TagComponent } from '@ciag/orchestra/tag';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ToastService } from './toast/toast.service';
 import { ToastComponent } from './toast/toast.component';
 import {
   ConfirmDialogComponent,
   ConfirmationService,
-  MenuComponent,
-} from './p2/p2-advanced-components';
-import {
-  PanelMenuComponent,
-  TieredMenuComponent,
-} from './p2/p2-menu-family-components';
+} from '@ciag/orchestra/confirm-dialog';
+import { MenuComponent } from '@ciag/orchestra/menu';
+import { PanelMenuComponent } from '@ciag/orchestra/panel-menu';
+import { TieredMenuComponent } from '@ciag/orchestra/tiered-menu';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
 import { ChipComponent } from './chip/chip.component';
-import {
-  FloatLabelComponent,
-  MeterGroupComponent,
-} from './p2/p2-primeng-gap-components';
-import {
-  ImageCompareComponent,
-  InplaceComponent,
-  TerminalComponent,
-} from './p2/p2-input-gap-components';
-import { BlockUiComponent } from './p2/p2-advanced-components';
-import { SpeedDialComponent } from './p2/p2-overlay-components';
-import {
-  ChartComponent,
-  EditorComponent,
-} from './p2/p2-chart-editor-components';
+import { ChartComponent } from '@ciag/orchestra/chart';
+import { EditorComponent } from '@ciag/orchestra/editor';
 import { TabComponent, TabGroupComponent } from './tabs';
 import { ImageComponent } from './image/image.component';
 
@@ -467,22 +432,6 @@ describe('P2 expansion components', () => {
     expect(input.max).toBe('2025-12-31');
   });
 
-  it('paginates and sorts data view items', () => {
-    const fixture = TestBed.createComponent(
-      DataViewComponent<{ name: string }>,
-    );
-    fixture.componentRef.setInput('value', [
-      { name: 'Beta' },
-      { name: 'Alpha' },
-    ]);
-    fixture.componentRef.setInput('sortField', 'name');
-    fixture.componentRef.setInput('paginator', true);
-    fixture.componentRef.setInput('rows', 1);
-    expect(fixture.componentInstance.pageItems()[0].name).toBe('Alpha');
-    fixture.componentInstance.goToPage(1);
-    expect(fixture.componentInstance.pageItems()[0].name).toBe('Beta');
-  });
-
   it('supports toggle button ControlValueAccessor updates', () => {
     const fixture = TestBed.createComponent(ToggleButtonComponent);
     const component = fixture.componentInstance;
@@ -828,61 +777,6 @@ describe('P2 expansion components', () => {
     expect(component.selected()).toEqual([first]);
   });
 
-  it('calculates a virtualized range and expands a tree select', () => {
-    const scroller = TestBed.createComponent(VirtualScrollerComponent);
-    scroller.componentRef.setInput(
-      'items',
-      Array.from({ length: 100 }, (_, index) => `Item ${index}`),
-    );
-    scroller.componentInstance.onScroll({
-      target: { scrollTop: 400 },
-    } as unknown as Event);
-    expect(scroller.componentInstance.startIndex()).toBeGreaterThan(0);
-    expect(scroller.componentInstance.visibleItems().length).toBeGreaterThan(0);
-    scroller.componentRef.setInput('lazy', true);
-    scroller.componentInstance.onScroll({
-      target: { scrollTop: 800 },
-    } as unknown as Event);
-    expect(scroller.componentInstance.startIndex()).toBeGreaterThan(0);
-
-    const tree = TestBed.createComponent(TreeSelectComponent);
-    const root = {
-      value: 'root',
-      label: 'Root',
-      children: [{ value: 'child', label: 'Child' }],
-    };
-    tree.componentRef.setInput('nodes', [root]);
-    tree.componentInstance.toggle(root);
-    expect(tree.componentInstance.visibleNodes()).toHaveSize(2);
-    tree.componentInstance.select(root.children[0]);
-    expect(tree.componentInstance.value()).toBe('child');
-    let hidden = false;
-    tree.componentInstance.onHide.subscribe(() => (hidden = true));
-    tree.componentInstance.open.set(true);
-    tree.componentInstance.select(root.children[0], new Event('click'));
-    expect(hidden).toBeTrue();
-    // Start checkbox assertions from an empty multiple-selection value; the
-    // earlier scalar value was selected in single mode.
-    tree.componentInstance.value.set(null);
-    tree.componentRef.setInput('selectionMode', 'checkbox');
-    tree.componentInstance.select(root, new Event('click'));
-    expect(tree.componentInstance.value()).toEqual(['root', 'child']);
-    tree.componentInstance.select(root, new Event('click'));
-    expect(tree.componentInstance.value()).toEqual([]);
-
-    const upward = TestBed.createComponent(TreeSelectComponent);
-    upward.componentRef.setInput('nodes', [root]);
-    upward.componentRef.setInput('selectionMode', 'checkbox');
-    upward.componentInstance.select(root.children[0], new Event('click'));
-    expect(upward.componentInstance.value()).toEqual(['child', 'root']);
-    upward.componentInstance.select(root, new Event('click'));
-    expect(upward.componentInstance.value()).toEqual([]);
-    upward.componentInstance.select(root.children[0], new Event('click'));
-    expect(upward.componentInstance.value()).toEqual(['child', 'root']);
-    upward.componentInstance.select(root.children[0], new Event('click'));
-    expect(upward.componentInstance.value()).toEqual([]);
-  });
-
   it('updates a segmented control value', () => {
     const fixture = TestBed.createComponent(SegmentedControlComponent<string>);
     fixture.componentRef.setInput('options', [
@@ -891,313 +785,6 @@ describe('P2 expansion components', () => {
     ]);
     fixture.componentInstance.select(fixture.componentInstance.options()[1]);
     expect(fixture.componentInstance.value()).toBe('list');
-  });
-
-  it('supports CascadeSelect ControlValueAccessor synchronization', () => {
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    const component = fixture.componentInstance;
-    fixture.componentRef.setInput('options', [
-      {
-        value: 'br',
-        label: 'Brazil',
-        children: [{ value: 'sp', label: 'São Paulo' }],
-      },
-    ]);
-    component.writeValue('sp');
-    expect(component.value()).toBe('sp');
-    expect(component.selectedLabel()).toContain('São Paulo');
-    let changed: string | null = 'sp';
-    component.registerOnChange((value) => (changed = value));
-    component.clear();
-    expect(changed).toBeNull();
-  });
-
-  it('exposes CascadeSelect listbox semantics and supports keyboard navigation and dismissal', async () => {
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    fixture.componentRef.setInput('inputId', 'region');
-    fixture.componentRef.setInput('label', 'Region');
-    fixture.componentRef.setInput('options', [
-      {
-        value: 'br',
-        label: 'Brazil',
-        children: [{ value: 'sp', label: 'São Paulo' }],
-      },
-      { value: 'ca', label: 'Canada' },
-    ]);
-    fixture.componentRef.setInput('filter', true);
-    fixture.componentInstance.open.set(false);
-    fixture.detectChanges();
-
-    const trigger = fixture.nativeElement.querySelector(
-      '.trigger',
-    ) as HTMLButtonElement;
-    trigger.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
-    );
-    fixture.detectChanges();
-    await Promise.resolve();
-    fixture.detectChanges();
-    expect(fixture.componentInstance.open()).toBeTrue();
-    const listbox = fixture.nativeElement.querySelector(
-      '[role="listbox"]',
-    ) as HTMLElement;
-    const options = Array.from(
-      fixture.nativeElement.querySelectorAll('[role="option"]'),
-    ) as HTMLButtonElement[];
-    expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
-    expect(trigger.getAttribute('aria-controls')).toBe('region-listbox-0');
-    expect(listbox.getAttribute('aria-label')).toBe('Region, level 1');
-    expect(
-      fixture.nativeElement.querySelector('input')?.getAttribute('aria-label'),
-    ).toBe('Region');
-    expect(options[0].getAttribute('aria-selected')).toBe('false');
-    expect(document.activeElement).toBe(options[0]);
-    options[0].focus();
-    options[0].dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
-    );
-    expect(document.activeElement).toBe(options[1]);
-    options[1].dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
-    );
-    expect(fixture.componentInstance.open()).toBeFalse();
-    expect(document.activeElement).toBe(trigger);
-    trigger.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
-    );
-    fixture.detectChanges();
-    const filterInput = fixture.nativeElement.querySelector(
-      'input',
-    ) as HTMLInputElement;
-    filterInput.focus();
-    filterInput.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
-    );
-    expect(fixture.componentInstance.open()).toBeFalse();
-    expect(document.activeElement).toBe(trigger);
-  });
-
-  it('keeps disabled CascadeSelect options inert and clears selection and filter together', () => {
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    const component = fixture.componentInstance;
-    const options = [
-      {
-        value: 'br',
-        label: 'Brazil',
-        children: [{ value: 'sp', label: 'São Paulo' }],
-      },
-      { value: 'xx', label: 'Unavailable', disabled: true },
-    ];
-    fixture.componentRef.setInput('options', options);
-    fixture.componentRef.setInput('filter', true);
-    fixture.componentRef.setInput('showClear', true);
-    component.open.set(true);
-    fixture.detectChanges();
-    const disabledOption = fixture.nativeElement.querySelector(
-      '[role="option"][disabled]',
-    ) as HTMLButtonElement;
-    expect(disabledOption.getAttribute('aria-disabled')).toBe('true');
-    disabledOption.click();
-    expect(component.value()).toBeNull();
-    component.setDisabledState(true);
-    fixture.detectChanges();
-    const cvaDisabledOption = fixture.nativeElement.querySelector(
-      '[role="option"]',
-    ) as HTMLButtonElement;
-    expect(cvaDisabledOption.disabled).toBeTrue();
-    expect(cvaDisabledOption.getAttribute('aria-disabled')).toBe('true');
-    component.setDisabledState(false);
-    fixture.detectChanges();
-    component.choose(options[1], 0);
-    expect(component.value()).toBeNull();
-    component.choose(options[0], 0);
-    component.choose(options[0].children![0], 1);
-    component.filterValue.set('paul');
-    component.open.set(true);
-    fixture.detectChanges();
-    expect(component.value()).toBe('sp');
-    expect(
-      fixture.nativeElement.querySelector('input')?.getAttribute('aria-label'),
-    ).toBe('Filter options');
-    (
-      fixture.nativeElement.querySelector(
-        '[aria-label="Clear selection"]',
-      ) as HTMLButtonElement
-    ).click();
-    fixture.detectChanges();
-    expect(component.value()).toBeNull();
-    expect(component.selected()).toEqual([]);
-    expect(component.filterValue()).toBe('');
-    component.writeValue('sp');
-    fixture.componentRef.setInput('readonly', true);
-    component.open.set(true);
-    fixture.detectChanges();
-    const readonlyOption = fixture.nativeElement.querySelector(
-      '[role="option"]',
-    ) as HTMLButtonElement;
-    expect(readonlyOption.disabled).toBeTrue();
-    expect(readonlyOption.getAttribute('aria-disabled')).toBe('true');
-    const readonlyClear = fixture.nativeElement.querySelector(
-      '[aria-label="Clear selection"]',
-    ) as HTMLButtonElement;
-    expect(readonlyClear.disabled).toBeTrue();
-    readonlyClear.click();
-    expect(component.value()).toBe('sp');
-  });
-
-  it('announces when CascadeSelect filtering returns no options', () => {
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    fixture.componentRef.setInput('filter', true);
-    fixture.componentRef.setInput('options', [
-      { value: 'br', label: 'Brazil' },
-    ]);
-    fixture.componentInstance.open.set(true);
-    fixture.componentInstance.filterValue.set('missing');
-    fixture.detectChanges();
-    expect(
-      fixture.nativeElement
-        .querySelector('[role="status"]')
-        ?.textContent.trim(),
-    ).toBe('No results found');
-  });
-
-  it('gives unnamed CascadeSelect instances unique listbox ids and accessible trigger names', () => {
-    const first = TestBed.createComponent(CascadeSelectComponent);
-    const second = TestBed.createComponent(CascadeSelectComponent);
-    for (const fixture of [first, second]) {
-      fixture.componentRef.setInput('options', [
-        { value: 'one', label: 'One' },
-      ]);
-      fixture.componentInstance.open.set(true);
-      fixture.detectChanges();
-    }
-    const firstTrigger = first.nativeElement.querySelector(
-      '.trigger',
-    ) as HTMLButtonElement;
-    const secondTrigger = second.nativeElement.querySelector(
-      '.trigger',
-    ) as HTMLButtonElement;
-    const firstListbox = first.nativeElement.querySelector(
-      '[role="listbox"]',
-    ) as HTMLElement;
-    const secondListbox = second.nativeElement.querySelector(
-      '[role="listbox"]',
-    ) as HTMLElement;
-    expect(firstTrigger.getAttribute('aria-label')).toBe('Select an option');
-    expect(secondTrigger.getAttribute('aria-label')).toBe('Select an option');
-    expect(firstTrigger.getAttribute('aria-controls')).toBe(firstListbox.id);
-    expect(secondTrigger.getAttribute('aria-controls')).toBe(secondListbox.id);
-    expect(firstListbox.id).not.toBe(secondListbox.id);
-  });
-
-  it('applies CascadeSelect size and surface variant classes while preserving the default size', () => {
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    fixture.componentRef.setInput('options', [
-      { value: 'br', label: 'Brazil' },
-    ]);
-    fixture.componentRef.setInput('size', 'small');
-    fixture.componentRef.setInput('variant', 'filled');
-    fixture.componentInstance.open.set(true);
-    fixture.detectChanges();
-    const root = fixture.nativeElement.querySelector(
-      '.orc-cascade',
-    ) as HTMLElement;
-    let trigger = fixture.nativeElement.querySelector(
-      '.trigger',
-    ) as HTMLButtonElement;
-    expect(root.classList.contains('orc-cascade--small')).toBeTrue();
-    expect(root.classList.contains('orc-cascade--filled')).toBeTrue();
-    expect(getComputedStyle(trigger).minHeight).toBe('32px');
-    expect(getComputedStyle(trigger).fontSize).toBe('14px');
-
-    fixture.componentRef.setInput('size', 'large');
-    fixture.componentRef.setInput('variant', 'outlined');
-    fixture.detectChanges();
-    trigger = fixture.nativeElement.querySelector(
-      '.trigger',
-    ) as HTMLButtonElement;
-    expect(root.classList.contains('orc-cascade--large')).toBeTrue();
-    expect(root.classList.contains('orc-cascade--outlined')).toBeTrue();
-    expect(root.classList.contains('orc-cascade--small')).toBeFalse();
-    expect(getComputedStyle(trigger).minHeight).toBe('48px');
-    expect(getComputedStyle(trigger).fontSize).toBe('18px');
-
-    fixture.componentRef.setInput('size', undefined);
-    fixture.componentRef.setInput('variant', undefined);
-    fixture.detectChanges();
-    trigger = fixture.nativeElement.querySelector(
-      '.trigger',
-    ) as HTMLButtonElement;
-    expect(root.classList.contains('orc-cascade--large')).toBeFalse();
-    expect(root.classList.contains('orc-cascade--outlined')).toBeFalse();
-    expect(getComputedStyle(trigger).minHeight).toBe('40px');
-  });
-
-  it('announces loading and blocks CascadeSelect option selection until loading finishes', () => {
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    const component = fixture.componentInstance;
-    const option = { value: 'br', label: 'Brazil' };
-    fixture.componentRef.setInput('options', [option]);
-    fixture.componentRef.setInput('loading', true);
-    component.open.set(true);
-    fixture.detectChanges();
-    expect(
-      (
-        fixture.nativeElement.querySelector('.trigger') as HTMLButtonElement
-      ).getAttribute('aria-busy'),
-    ).toBe('true');
-    expect(
-      fixture.nativeElement
-        .querySelector('[role="status"]')
-        ?.textContent.trim(),
-    ).toBe('Loading options');
-    expect(
-      (
-        fixture.nativeElement.querySelector(
-          '[role="option"]',
-        ) as HTMLButtonElement
-      ).disabled,
-    ).toBeTrue();
-    component.choose(option, 0);
-    expect(component.value()).toBeNull();
-  });
-
-  it('dismisses an open CascadeSelect panel on outside pointer interaction', () => {
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    fixture.componentInstance.open.set(true);
-    fixture.detectChanges();
-    document.body.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
-    expect(fixture.componentInstance.open()).toBeFalse();
-  });
-
-  it('registers CascadeSelect outside-pointer handling only while open and cleans it up', () => {
-    const addListener = spyOn(document, 'addEventListener').and.callThrough();
-    const removeListener = spyOn(
-      document,
-      'removeEventListener',
-    ).and.callThrough();
-    const fixture = TestBed.createComponent(CascadeSelectComponent);
-    fixture.detectChanges();
-    const pointerAdds = () =>
-      addListener.calls.allArgs().filter(([type]) => type === 'pointerdown');
-    const pointerRemoves = () =>
-      removeListener.calls.allArgs().filter(([type]) => type === 'pointerdown');
-    expect(pointerAdds()).toHaveSize(0);
-
-    fixture.componentInstance.open.set(true);
-    fixture.detectChanges();
-    expect(pointerAdds()).toHaveSize(1);
-    fixture.componentInstance.open.set(false);
-    fixture.detectChanges();
-    expect(pointerRemoves()).toHaveSize(1);
-
-    fixture.componentInstance.open.set(true);
-    fixture.detectChanges();
-    expect(pointerAdds()).toHaveSize(2);
-    fixture.destroy();
-    expect(pointerRemoves()).toHaveSize(2);
   });
 
   it('honors ToggleButton allowEmpty when already active', () => {
@@ -1293,51 +880,6 @@ describe('P2 expansion components', () => {
     component.onLazyLoad.subscribe((event) => (request = event));
     component.ngOnInit();
     expect(request).toEqual({ first: 0, rows: 25 });
-  });
-
-  it('emits DataView layout and initial lazy-load lifecycle events', () => {
-    const fixture = TestBed.createComponent(DataViewComponent);
-    const component = fixture.componentInstance as DataViewComponent<{
-      id: number;
-    }>;
-    fixture.componentRef.setInput('lazy', true);
-    fixture.componentRef.setInput('lazyLoadOnInit', true);
-    const lazy = jasmine.createSpy('lazy');
-    const layout = jasmine.createSpy('layout');
-    component.onLazyLoad.subscribe(lazy);
-    component.onChangeLayout.subscribe(layout);
-    component.ngOnInit();
-    component.setLayout('list');
-    expect(lazy).toHaveBeenCalledWith({ first: 0, rows: 10 });
-    expect(layout).toHaveBeenCalledWith('list');
-  });
-
-  it('supports OrderList multiple selection and PickList selection events', () => {
-    const order = TestBed.createComponent(OrderListComponent<string>);
-    const orderComponent = order.componentInstance;
-    order.componentRef.setInput('value', ['A', 'B']);
-    order.componentRef.setInput('selectionMode', 'multiple');
-    orderComponent.select(0);
-    orderComponent.select(1);
-    expect(orderComponent.selection()).toEqual(['A', 'B']);
-    orderComponent.select(0);
-    expect(orderComponent.selection()).toEqual(['B']);
-    const pick = TestBed.createComponent(PickListComponent);
-    const pickComponent = pick.componentInstance;
-    pick.componentRef.setInput('source', [{ value: 'a', label: 'A' }]);
-    pickComponent.toggleSource({ value: 'a', label: 'A' });
-    expect(pickComponent.sourceSelected().has('a')).toBeTrue();
-  });
-
-  it('supports OrderList ControlValueAccessor reorder propagation', () => {
-    const fixture = TestBed.createComponent(OrderListComponent<string>);
-    const component = fixture.componentInstance;
-    component.writeValue(['A', 'B']);
-    component.selectedIndex.set(0);
-    let changed: string[] = [];
-    component.registerOnChange((value) => (changed = value));
-    component.move(1);
-    expect(changed).toEqual(['B', 'A']);
   });
 
   it('supports Galleria PrimeNG navigation configuration and keyboard navigation', () => {
@@ -1544,52 +1086,6 @@ describe('P2 expansion components', () => {
     expect(component.rows()).toBe(10);
   });
 
-  it('supports remaining PrimeNG structural and utility aliases', () => {
-    const block = TestBed.createComponent(BlockUiComponent).componentInstance;
-    expect(block.blocked()).toBeFalse();
-    block.block();
-    expect(block.blocked()).toBeTrue();
-    block.unblock();
-    expect(block.blocked()).toBeFalse();
-    const meter = TestBed.createComponent(MeterGroupComponent);
-    meter.componentRef.setInput('value', [{ value: 25, label: 'CPU' }]);
-    expect(meter.componentInstance.total()).toBe(25);
-    expect(
-      meter.componentInstance.percent(
-        meter.componentInstance.effectiveValues()[0],
-      ),
-    ).toBe(25);
-    const inplace = TestBed.createComponent(InplaceComponent).componentInstance;
-    inplace.activate();
-    expect(inplace.active()).toBeTrue();
-    inplace.deactivate();
-    const dialFixture = TestBed.createComponent(SpeedDialComponent);
-    const dial = dialFixture.componentInstance;
-    dialFixture.detectChanges();
-    dial.show();
-    expect(dial.open()).toBeTrue();
-    document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-    expect(dial.open()).toBeFalse();
-    dial.show();
-    dialFixture.componentRef.setInput('hideOnClickOutside', false);
-    document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-    expect(dial.open()).toBeTrue();
-    dial.hide();
-    const compare = TestBed.createComponent(
-      ImageCompareComponent,
-    ).componentInstance;
-    compare.setPosition(120);
-    expect(compare.position()).toBe(100);
-    const terminal =
-      TestBed.createComponent(TerminalComponent).componentInstance;
-    terminal.command.set('help');
-    terminal.submit(new Event('submit'));
-    expect(terminal.history()[0].command).toBe('help');
-    expect(
-      TestBed.createComponent(FloatLabelComponent).componentInstance.variant(),
-    ).toBe('over');
-  });
-
   it('supports PrimeNG chart and editor lifecycle aliases', () => {
     const chart = TestBed.createComponent(ChartComponent).componentInstance;
     chart.refresh();
@@ -1676,25 +1172,6 @@ describe('P2 expansion components', () => {
     expect(component.activeIndex()).toBe(1);
     component.next();
     expect(component.activeIndex()).toBe(0);
-  });
-
-  it('supports OrderList reorder and PickList transfer events', () => {
-    const order = TestBed.createComponent(
-      OrderListComponent<string>,
-    ).componentInstance;
-    order.value.set(['a', 'b']);
-    order.select(1);
-    order.move(-1);
-    expect(order.value()).toEqual(['b', 'a']);
-
-    const pick = TestBed.createComponent(
-      PickListComponent<{ value: string; label: string }>,
-    ).componentInstance;
-    pick.source.set([{ value: 'a', label: 'A' }]);
-    pick.toggleSource(pick.source()[0]);
-    pick.transferSelected();
-    expect(pick.source()).toEqual([]);
-    expect(pick.target()[0].value).toBe('a');
   });
 
   it('supports Messages removal and clear lifecycle', () => {
@@ -2234,8 +1711,61 @@ describe('P2 expansion components', () => {
     expect(group.nextButtonAriaLabel()).toBeUndefined();
   });
 
-  it('exposes PrimeNG drag/drop standalone directives', () => {
-    expect(DraggableDirective).toBeTruthy();
-    expect(DroppableDirective).toBeTruthy();
+  it('expands a tree select', () => {
+    const tree = TestBed.createComponent(TreeSelectComponent);
+    const root = {
+      value: 'root',
+      label: 'Root',
+      children: [{ value: 'child', label: 'Child' }],
+    };
+    tree.componentRef.setInput('nodes', [root]);
+    tree.componentInstance.toggle(root);
+    expect(tree.componentInstance.visibleNodes()).toHaveSize(2);
+    tree.componentInstance.select(root.children[0]);
+    expect(tree.componentInstance.value()).toBe('child');
+    let hidden = false;
+    tree.componentInstance.onHide.subscribe(() => (hidden = true));
+    tree.componentInstance.open.set(true);
+    tree.componentInstance.select(root.children[0], new Event('click'));
+    expect(hidden).toBeTrue();
+    // Start checkbox assertions from an empty multiple-selection value; the
+    // earlier scalar value was selected in single mode.
+    tree.componentInstance.value.set(null);
+    tree.componentRef.setInput('selectionMode', 'checkbox');
+    tree.componentInstance.select(root, new Event('click'));
+    expect(tree.componentInstance.value()).toEqual(['root', 'child']);
+    tree.componentInstance.select(root, new Event('click'));
+    expect(tree.componentInstance.value()).toEqual([]);
+
+    const upward = TestBed.createComponent(TreeSelectComponent);
+    upward.componentRef.setInput('nodes', [root]);
+    upward.componentRef.setInput('selectionMode', 'checkbox');
+    upward.componentInstance.select(root.children[0], new Event('click'));
+    expect(upward.componentInstance.value()).toEqual(['child', 'root']);
+    upward.componentInstance.select(root, new Event('click'));
+    expect(upward.componentInstance.value()).toEqual([]);
+    upward.componentInstance.select(root.children[0], new Event('click'));
+    expect(upward.componentInstance.value()).toEqual(['child', 'root']);
+    upward.componentInstance.select(root.children[0], new Event('click'));
+    expect(upward.componentInstance.value()).toEqual([]);
+  });
+
+  it('supports PickList selection events', () => {
+    const pick = TestBed.createComponent(PickListComponent);
+    const pickComponent = pick.componentInstance;
+    pick.componentRef.setInput('source', [{ value: 'a', label: 'A' }]);
+    pickComponent.toggleSource({ value: 'a', label: 'A' });
+    expect(pickComponent.sourceSelected().has('a')).toBeTrue();
+  });
+
+  it('supports PickList transfer events', () => {
+    const pick = TestBed.createComponent(
+      PickListComponent<{ value: string; label: string }>,
+    ).componentInstance;
+    pick.source.set([{ value: 'a', label: 'A' }]);
+    pick.toggleSource(pick.source()[0]);
+    pick.transferSelected();
+    expect(pick.source()).toEqual([]);
+    expect(pick.target()[0].value).toBe('a');
   });
 });

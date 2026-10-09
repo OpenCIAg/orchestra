@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import {
   OrganizationChartComponent,
   OrganizationNode,
-} from './p2/p2-org-knob-components';
+} from '@ciag/orchestra/organization-chart';
 
 @Component({
   standalone: true,

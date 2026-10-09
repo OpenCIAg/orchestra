@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { SegmentedControlComponent } from './segmented-control.component';
-import { SegmentedControlComponent as P2SegmentedControl } from '../p2/p2-selection-components';
 import {
   blurElement,
   focusElement,
@@ -25,7 +24,6 @@ describe('Segmented control selection contract', () => {
   }
 
   it('shares one implementation between import paths and supports both output contracts', () => {
-    expect(P2SegmentedControl).toBe(SegmentedControlComponent);
     const { component, buttons } = setup();
     const change = jasmine.createSpy('change');
     const compatibility = jasmine.createSpy('compatibility');

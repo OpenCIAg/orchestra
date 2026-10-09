@@ -7,7 +7,7 @@ import {
   model,
   output,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 export interface OrganizationNode {
   key: string;
   label: string;
@@ -26,7 +26,7 @@ interface FlatOrganizationNode {
   selector: 'orc-organization-chart',
   standalone: true,
   templateUrl: './organization-chart.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './organization-chart.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

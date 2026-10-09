@@ -20,7 +20,7 @@ import {
   listPickerOptionValue,
   listPickerReadField,
   listPickerRowMatchesFilter,
-  P2_SHARED_STYLES,
+  ORC_SHARED_STYLES,
   stepListPickerActive,
   toggleListPickerValue,
 } from '@ciag/orchestra/internal';
@@ -29,7 +29,7 @@ import {
   selector: 'orc-listbox',
   standalone: true,
   templateUrl: './listbox.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './listbox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

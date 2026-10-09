@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {
-  SelectButtonComponent,
-  ToggleButtonComponent,
-} from './p2/p2-form-gap-components';
+import { SelectButtonComponent } from '@ciag/orchestra/select-button';
+import { ToggleButtonComponent } from '@ciag/orchestra/toggle-button';
 
 type Choice = { value: string; label: string; disabled?: boolean };
 

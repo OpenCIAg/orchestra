@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { PickListComponent, P2Option } from '@ciag/orchestra/p2';
+import { PickListComponent } from '@ciag/orchestra/pick-list';
+import { OrcOption } from '@ciag/orchestra/internal';
 
 /**
  * Behavior-parity pins for the pick list family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('PickList behavior parity', () => {
-  const items: P2Option<string>[] = [
+  const items: OrcOption<string>[] = [
     { value: 'alpha', label: 'Alpha' },
     { value: 'beta', label: 'Beta' },
     { value: 'blocked', label: 'Blocked', disabled: true },

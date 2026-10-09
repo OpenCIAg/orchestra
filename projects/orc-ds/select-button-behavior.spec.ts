@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { focusElement } from '../../tools/quality/test-focus-events';
-import { SelectButtonComponent } from './p2/p2-form-gap-components';
+import { SelectButtonComponent } from '@ciag/orchestra/select-button';
 
 type Choice = { id: string; text: string; disabled?: boolean };
 

@@ -4,7 +4,7 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 export interface MeterItem {
   value: number;
   label?: string;
@@ -14,7 +14,7 @@ export interface MeterItem {
   selector: 'orc-meter-group',
   standalone: true,
   templateUrl: './meter-group.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './meter-group.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

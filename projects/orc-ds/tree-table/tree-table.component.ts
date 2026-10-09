@@ -14,7 +14,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 import { filterTreeNodes } from '@ciag/orchestra/internal';
 import type { HierarchyNode } from '@ciag/orchestra/tree';
 
@@ -38,7 +38,7 @@ export interface TreeTableSortEvent {
   selector: 'orc-tree-table',
   standalone: true,
   templateUrl: './tree-table.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './tree-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

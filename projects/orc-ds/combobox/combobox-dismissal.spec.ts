@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { registerOverlay } from '@ciag/orchestra/internal';
-import { ComboboxComponent } from '@ciag/orchestra/p2';
-import type { P2Option } from '@ciag/orchestra/p2';
+import { ComboboxComponent } from '@ciag/orchestra/combobox';
+import type { OrcOption } from '@ciag/orchestra/internal';
 
 /**
  * Dismissal-lifecycle pins for the combobox: document-level outside
@@ -12,7 +12,7 @@ import type { P2Option } from '@ciag/orchestra/p2';
  * overlay-layer registry participation and truthful aria-expanded.
  */
 describe('Combobox dismissal lifecycle', () => {
-  const OPTIONS: P2Option<string>[] = [
+  const OPTIONS: OrcOption<string>[] = [
     { value: 'a', label: 'Alpha' },
     { value: 'b', label: 'Beta' },
   ];

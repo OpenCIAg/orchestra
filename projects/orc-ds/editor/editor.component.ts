@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { ORC_SHARED_STYLES } from '@ciag/orchestra/internal';
 
 export interface EditorAction {
   command: string;
@@ -72,7 +72,7 @@ const EDITOR_BLOCK_TAGS = new Set([
   selector: 'orc-editor',
   standalone: true,
   templateUrl: './editor.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './editor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

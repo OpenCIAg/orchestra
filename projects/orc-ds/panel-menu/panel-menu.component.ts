@@ -7,7 +7,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 import type { PrimeMenuItem } from '@ciag/orchestra/internal';
 
 export type { PrimeMenuItem };
@@ -198,7 +198,7 @@ interface PanelTreeEntry {
     </div>
   `,
   styles: [
-    P2_SHARED_VARS +
+    ORC_SHARED_VARS +
       `.orc-panel-menu{display:grid;width:100%;border:1px solid var(--orc-component-border);border-radius:.5rem;overflow:hidden}.orc-panel-menu>button,.orc-panel-menu> a,.children button,.children a{display:flex;justify-content:space-between;gap:.5rem;border:0;border-bottom:1px solid var(--orc-component-border);background:var(--orc-component-surface);padding:.65rem .8rem;text-align:start;color:inherit;text-decoration:none}.children{display:grid;padding-inline-start:1rem;background:var(--orc-component-surface-subtle)}.children button,.children a{background:transparent}.menu-item-content{display:inline-flex;align-items:center;gap:.5rem;min-width:0}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

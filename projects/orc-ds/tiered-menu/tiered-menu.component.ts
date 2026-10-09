@@ -19,7 +19,7 @@ import {
   focusMenuTarget,
   listenForOutsideInteraction,
   menuFocusTargets,
-  P2_SHARED_VARS,
+  ORC_SHARED_VARS,
   stepMenuIndex,
 } from '@ciag/orchestra/internal';
 import type { PrimeMenuItem } from '@ciag/orchestra/internal';
@@ -219,7 +219,7 @@ let nextTieredMenuId = 0;
     }
   `,
   styles: [
-    P2_SHARED_VARS +
+    ORC_SHARED_VARS +
       `.orc-advanced-menu{position:relative;display:grid;min-width:12rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color)}.orc-advanced-menu button,.orc-advanced-menu a{display:flex;justify-content:space-between;gap:1.5rem;border:0;border-radius:.35rem;background:transparent;padding:.55rem .7rem;text-align:start;color:inherit;text-decoration:none}.orc-advanced-menu button:hover:not(:disabled),.orc-advanced-menu a:hover:not([aria-disabled="true"]){background:var(--orc-component-interactive-soft)}.orc-advanced-menu hr{width:100%;border:0;border-top:1px solid var(--orc-component-border)}.submenu{position:absolute;z-index:2;inset-inline-start:calc(100% - .25rem);top:2rem;display:grid;min-width:12rem;padding:.35rem;border:1px solid var(--orc-component-border);border-radius:.5rem;background:var(--orc-component-surface);box-shadow:0 10px 24px var(--orc-component-shadow-color)}.submenu-hidden{visibility:hidden;pointer-events:none}`,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

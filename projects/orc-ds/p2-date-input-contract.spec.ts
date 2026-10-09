@@ -1,12 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import {
-  CalendarComponent as LegacyCalendarComponent,
-  DateInputComponent as LegacyDateInputComponent,
-} from './p2/p2-form-components';
-import { CalendarComponent } from './p2/p2-calendar-component';
-import { DateInputComponent } from './p2/p2-date-input-component';
+import { CalendarComponent } from '@ciag/orchestra/calendar';
+import { DateInputComponent } from '@ciag/orchestra/date-input';
 
 @Component({
   standalone: true,
@@ -52,11 +48,6 @@ class CalendarModelOutputHost {
 }
 
 describe('P2 Calendar and DateInput date contracts', () => {
-  it('preserves Calendar and DateInput class identity through legacy form exports', () => {
-    expect(LegacyCalendarComponent).toBe(CalendarComponent);
-    expect(LegacyDateInputComponent).toBe(DateInputComponent);
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [

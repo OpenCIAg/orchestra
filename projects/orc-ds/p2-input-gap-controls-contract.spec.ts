@@ -1,11 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { InputGroupComponent } from './p2/p2-form-components';
 import {
-  IconFieldComponent,
+  InputGroupComponent,
   InputGroupAddonComponent,
-  IftaLabelComponent,
-} from './p2/p2-input-gap-components';
+} from '@ciag/orchestra/input-group';
+import { IconFieldComponent } from '@ciag/orchestra/icon-field';
 
 @Component({
   standalone: true,
@@ -44,29 +43,10 @@ class IconFieldHost {
   readonly icon = signal('⌕');
 }
 
-@Component({
-  standalone: true,
-  imports: [IftaLabelComponent],
-  template: `
-    <div dir="rtl">
-      <orc-ifta-label>
-        <label for="account-name">Account name</label>
-        <input id="account-name" />
-      </orc-ifta-label>
-    </div>
-  `,
-})
-class IftaLabelHost {}
-
 describe('P2 input-gap control DOM contracts', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [
-        InputGroupHost,
-        InputGroupAddonHost,
-        IconFieldHost,
-        IftaLabelHost,
-      ],
+      imports: [InputGroupHost, InputGroupAddonHost, IconFieldHost],
     }),
   );
 
@@ -136,21 +116,5 @@ describe('P2 input-gap control DOM contracts', () => {
     fixture.componentInstance.icon.set('⌖');
     fixture.detectChanges();
     expect(icon.textContent?.trim()).toBe('⌖');
-  });
-
-  it('preserves label association and applies floating-label layout to projected children in RTL', () => {
-    const fixture = TestBed.createComponent(IftaLabelHost);
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-    const wrapper = root.querySelector('.orc-ifta') as HTMLElement;
-    const label = root.querySelector('label') as HTMLLabelElement;
-    const input = root.querySelector('input') as HTMLInputElement;
-
-    expect(wrapper.tagName).toBe('DIV');
-    expect(label.htmlFor).toBe(input.id);
-    expect(Array.from(input.labels ?? [])).toContain(label);
-    expect(getComputedStyle(label).position).toBe('absolute');
-    expect(parseFloat(getComputedStyle(label).right)).toBeLessThan(20);
-    expect(getComputedStyle(wrapper).paddingTop).toBe('12px');
   });
 });

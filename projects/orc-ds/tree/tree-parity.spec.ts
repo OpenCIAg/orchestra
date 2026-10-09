@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { TreeComponent, HierarchyNode } from '@ciag/orchestra/p2';
+import { TreeComponent } from '@ciag/orchestra/tree';
+import { HierarchyNode } from '@ciag/orchestra/tree-table';
 
 /**
  * Behavior-parity pins for the tree family. The specs import the component
- * through the public `@ciag/orchestra/p2` surface and must pass unchanged
+ * through the family entry point and must pass unchanged
  * while the family moves to its canonical directory.
  */
 describe('Tree behavior parity', () => {

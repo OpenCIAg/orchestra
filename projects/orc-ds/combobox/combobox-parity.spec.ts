@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
-import { ComboboxComponent } from '@ciag/orchestra/p2';
-import type { P2Option } from '@ciag/orchestra/p2';
+import { ComboboxComponent } from '@ciag/orchestra/combobox';
+import type { OrcOption } from '@ciag/orchestra/internal';
 
 /**
  * Behavior-parity pins for the combobox. The specs import the component
- * through the public `@ciag/orchestra/p2` surface and must pass unchanged
+ * through the family entry point and must pass unchanged
  * while the family moves to its canonical directory.
  */
 describe('Combobox behavior parity', () => {
-  const OPTIONS: P2Option<string>[] = [
+  const OPTIONS: OrcOption<string>[] = [
     { value: 'sp', label: 'São Paulo' },
     { value: 'blocked', label: 'Blocked city', disabled: true },
     { value: 'rj', label: 'Rio de Janeiro' },
@@ -18,7 +18,7 @@ describe('Combobox behavior parity', () => {
 
   beforeEach(() => TestBed.configureTestingModule({}));
 
-  function create(options: P2Option<string>[] = OPTIONS) {
+  function create(options: OrcOption<string>[] = OPTIONS) {
     const fixture = TestBed.createComponent(ComboboxComponent<string>);
     fixture.componentRef.setInput('options', options);
     fixture.componentRef.setInput('clearAriaLabel', 'Clear city');

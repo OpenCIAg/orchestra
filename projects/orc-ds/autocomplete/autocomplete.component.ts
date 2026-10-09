@@ -25,7 +25,7 @@ import {
   attachListPickerOverlay,
   isTopOverlay,
   overlayAttachmentTarget,
-  P2_PANEL_VARS,
+  ORC_PANEL_VARS,
 } from '@ciag/orchestra/internal';
 import type { ListPickerOverlayHandle } from '@ciag/orchestra/internal';
 import { AutocompleteOption } from './autocomplete.types';
@@ -37,7 +37,7 @@ let nextAutocompleteId = 0;
   standalone: true,
   templateUrl: './autocomplete.component.html',
   styleUrl: './autocomplete.component.scss',
-  styles: [P2_PANEL_VARS],
+  styles: [ORC_PANEL_VARS],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {

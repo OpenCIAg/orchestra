@@ -14,7 +14,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   normalizeSize,
-  P2_SHARED_STYLES,
+  ORC_SHARED_STYLES,
   SizeInput,
 } from '@ciag/orchestra/internal';
 
@@ -22,7 +22,7 @@ import {
   selector: 'orc-select-button',
   standalone: true,
   templateUrl: './select-button.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './select-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

@@ -28,13 +28,13 @@ import {
   listPickerFirstEnabled,
   listPickerValueMatchesFilter,
   overlayAttachmentTarget,
-  P2_PANEL_VARS,
-  P2_SHARED_STYLES,
+  ORC_PANEL_VARS,
+  ORC_SHARED_STYLES,
   stepListPickerActive,
 } from '@ciag/orchestra/internal';
 import type {
   ListPickerOverlayHandle,
-  P2Option,
+  OrcOption,
 } from '@ciag/orchestra/internal';
 
 @Component({
@@ -48,7 +48,7 @@ import type {
     },
   ],
   templateUrl: './combobox.component.html',
-  styles: [P2_SHARED_STYLES, P2_PANEL_VARS],
+  styles: [ORC_SHARED_STYLES, ORC_PANEL_VARS],
   styleUrl: './combobox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -68,7 +68,7 @@ export class ComboboxComponent<T = unknown>
   /** The panel template is only attachable once the host view exists. */
   private readonly panelReady = signal(false);
   private overlayHandle: ListPickerOverlayHandle | null = null;
-  readonly options = input<P2Option<T>[]>([]);
+  readonly options = input<OrcOption<T>[]>([]);
   readonly value = model<T | null>(null);
   readonly query = model('');
   readonly open = model(false);
@@ -82,7 +82,7 @@ export class ComboboxComponent<T = unknown>
   readonly style = input<Record<string, string | number> | undefined>(
     undefined,
   );
-  readonly optionSelected = output<P2Option<T>>();
+  readonly optionSelected = output<OrcOption<T>>();
   readonly activeIndex = signal(-1);
   readonly activeOptionIndex = computed(() =>
     listPickerActiveIndex(
@@ -190,7 +190,7 @@ export class ComboboxComponent<T = unknown>
     this.cvaOnTouched();
   }
 
-  select(option: P2Option<T>): void {
+  select(option: OrcOption<T>): void {
     if (
       option.disabled ||
       this.effectiveDisabled() ||
@@ -220,7 +220,7 @@ export class ComboboxComponent<T = unknown>
     if (previousValue !== null) this.cvaOnChange(null);
   }
 
-  isSelected(option: P2Option<T>): boolean {
+  isSelected(option: OrcOption<T>): boolean {
     return Object.is(this.value(), option.value);
   }
 

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ChartComponent, ChartData } from './p2/p2-chart-editor-components';
+import { ChartComponent, ChartData } from '@ciag/orchestra/chart';
 
 describe('ChartComponent contract', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

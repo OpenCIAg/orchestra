@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { TerminalComponent } from '@ciag/orchestra/p2';
+import { TerminalComponent } from '@ciag/orchestra/terminal';
 
 /**
  * Behavior-parity pins for the terminal family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('Terminal behavior parity', () => {

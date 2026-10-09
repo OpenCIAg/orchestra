@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
-import { PasswordComponent } from '@ciag/orchestra/p2';
+import { PasswordComponent } from '@ciag/orchestra/password';
 
 /**
  * Behavior-parity pins for the password input. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('Password behavior parity', () => {

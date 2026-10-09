@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { MenubarComponent } from '@ciag/orchestra/p2';
-import type { MenubarItem } from '@ciag/orchestra/p2';
+import { MenubarComponent } from '@ciag/orchestra/menubar';
+import type { MenubarItem } from '@ciag/orchestra/menubar';
 
 /**
  * Behavior-parity pins for the menubar. Imported through the public
- * `@ciag/orchestra/p2` surface; must pass unchanged across the family move.
+ * family entry point; must pass unchanged across the family move.
  */
 describe('Menubar behavior parity', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

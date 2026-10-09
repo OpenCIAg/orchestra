@@ -2,17 +2,9 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
 import {
-  SplitterComponent as CompatibilitySplitterComponent,
-  SplitterPanelContentDirective as CompatibilityPanelDirective,
-} from './p2/p2-overlay-components';
-import {
   SplitterComponent,
   SplitterPanelContentDirective,
-} from './p2/p2-splitter-component';
-import {
-  SplitterComponent as P2SplitterComponent,
-  SplitterPanelContentDirective as P2PanelDirective,
-} from './p2';
+} from '@ciag/orchestra/splitter';
 
 @Component({
   standalone: true,
@@ -41,13 +33,6 @@ class SplitterHost {
 }
 
 describe('Splitter panel/content contract', () => {
-  it('preserves component and directive identity through compatibility and P2 imports', () => {
-    expect(CompatibilitySplitterComponent).toBe(SplitterComponent);
-    expect(P2SplitterComponent).toBe(SplitterComponent);
-    expect(CompatibilityPanelDirective).toBe(SplitterPanelContentDirective);
-    expect(P2PanelDirective).toBe(SplitterPanelContentDirective);
-  });
-
   function createFixture(
     orientation: 'horizontal' | 'vertical' = 'horizontal',
   ) {

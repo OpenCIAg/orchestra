@@ -11,7 +11,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   CvaControl,
-  P2_SHARED_STYLES,
+  ORC_SHARED_STYLES,
   calendarDateKey,
   calendarParseDate,
 } from '@ciag/orchestra/internal';
@@ -22,7 +22,7 @@ let nextDateInputId = 0;
   selector: 'orc-date-input',
   standalone: true,
   templateUrl: './date-input.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './date-input.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

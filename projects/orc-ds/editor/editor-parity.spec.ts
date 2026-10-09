@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { EditorComponent } from '@ciag/orchestra/p2';
-import type { EditorAction } from '@ciag/orchestra/p2';
+import { EditorComponent } from '@ciag/orchestra/editor';
+import type { EditorAction } from '@ciag/orchestra/editor';
 import { expectConsoleWarning } from '../../../tools/quality/browser-diagnostics';
 
 /**
  * Behavior-parity pins for the editor. The specs import the component
- * through the public `@ciag/orchestra/p2` surface and must pass unchanged
+ * through the family entry point and must pass unchanged
  * while the family moves to its canonical directory.
  */
 describe('Editor behavior parity', () => {

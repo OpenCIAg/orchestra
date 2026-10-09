@@ -1,15 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HierarchyNode,
-  TreeTableComponent,
-} from './p2/p2-hierarchical-components';
-import { TreeTableComponent as FocusedTreeTableComponent } from './p2/p2-tree-table-component';
+import { HierarchyNode, TreeTableComponent } from '@ciag/orchestra/tree-table';
 
 describe('TreeTable accessible filtering, layout and selection contracts', () => {
-  it('keeps the focused TreeTable module and compatibility barrel on one component identity', () => {
-    expect(TreeTableComponent).toBe(FocusedTreeTableComponent);
-  });
-
   it('applies public identity, labeling, style, loading, and page-report inputs', () => {
     const fixture = TestBed.createComponent(TreeTableComponent);
     fixture.componentRef.setInput('id', 'inventory-tree');

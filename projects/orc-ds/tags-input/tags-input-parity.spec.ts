@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { TagsInputComponent } from '@ciag/orchestra/p2';
+import { TagsInputComponent } from '@ciag/orchestra/tags-input';
 
 /**
  * Behavior-parity pins for the tags input. The specs import the component
- * through the public `@ciag/orchestra/p2` surface and must pass unchanged
+ * through the family entry point and must pass unchanged
  * while the family moves to its canonical directory.
  */
 describe('TagsInput behavior parity', () => {

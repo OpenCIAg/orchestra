@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PopoverComponent } from './popover.component';
 import { OverlayPanelComponent } from '../overlay-panel/overlay-panel.component';
-import { PopoverComponent as P2Popover } from '../p2/p2-overlay-components';
 
 @Component({
   imports: [PopoverComponent],
@@ -64,7 +63,6 @@ describe('Popover trigger, attachment and lifecycle', () => {
   }
 
   it('uses one implementation and places trigger semantics on the projected native button', () => {
-    expect(P2Popover).toBe(PopoverComponent);
     const { fixture, component, trigger, panel } = setup();
     expect(component instanceof OverlayPanelComponent).toBeTrue();
     expect(trigger.parentElement?.getAttribute('role')).toBeNull();

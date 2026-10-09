@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   SpeedDialAction,
   SpeedDialComponent,
-} from './p2/p2-overlay-components';
-import { SpeedDialComponent as FocusedSpeedDialComponent } from './p2/p2-speed-dial-component';
+} from '@ciag/orchestra/speed-dial';
 
 describe('SpeedDialComponent contract', () => {
   const actions: SpeedDialAction[] = [
@@ -17,10 +16,6 @@ describe('SpeedDialComponent contract', () => {
       imports: [SpeedDialComponent],
     }),
   );
-
-  it('keeps the previous P2 module path as an identity-preserving re-export', () => {
-    expect(SpeedDialComponent).toBe(FocusedSpeedDialComponent);
-  });
 
   function open(fixture: ComponentFixture<SpeedDialComponent>): void {
     fixture.detectChanges();

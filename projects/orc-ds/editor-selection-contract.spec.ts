@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EditorComponent } from './p2/p2-chart-editor-components';
+import { EditorComponent } from '@ciag/orchestra/editor';
 import { expectConsoleWarning } from '../../tools/quality/browser-diagnostics';
 
 function textNodes(root: HTMLElement): Text[] {

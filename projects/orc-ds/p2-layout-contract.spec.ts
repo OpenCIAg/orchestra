@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { KbdComponent, LinkComponent } from './p2/p2-layout-components';
+import { KbdComponent } from '@ciag/orchestra/kbd';
+import { LinkComponent } from '@ciag/orchestra/link';
 
 describe('P2 layout component DOM contracts', () => {
   beforeEach(() =>

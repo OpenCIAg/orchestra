@@ -33,15 +33,15 @@ import {
   listPickerOptionValue,
   listPickerValueMatchesFilter,
   overlayAttachmentTarget,
-  P2_PANEL_VARS,
-  P2_SHARED_STYLES,
+  ORC_PANEL_VARS,
+  ORC_SHARED_STYLES,
   SizeInput,
   stepListPickerActive,
   toggleListPickerValue,
 } from '@ciag/orchestra/internal';
 import type {
   ListPickerOverlayHandle,
-  P2Option,
+  OrcOption,
 } from '@ciag/orchestra/internal';
 
 let nextMultiSelectId = 0;
@@ -51,7 +51,7 @@ let nextMultiSelectId = 0;
   standalone: true,
   imports: [IconComponent],
   templateUrl: './multi-select.component.html',
-  styles: [P2_SHARED_STYLES, P2_PANEL_VARS],
+  styles: [ORC_SHARED_STYLES, ORC_PANEL_VARS],
   styleUrl: './multi-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -77,7 +77,7 @@ export class MultiSelectComponent<T = unknown>
   /** The panel template is only attachable once the host view exists. */
   private readonly panelReady = signal(false);
   private overlayHandle: ListPickerOverlayHandle | null = null;
-  readonly options = input<P2Option<T>[]>([]);
+  readonly options = input<OrcOption<T>[]>([]);
   readonly value = model<T[]>([]);
   readonly label = input('');
   readonly placeholder = input<string | undefined>(undefined);
@@ -203,7 +203,7 @@ export class MultiSelectComponent<T = unknown>
   readonly baseZIndex = input(0);
   readonly open = model(false);
   readonly activeIndex = signal(-1);
-  readonly optionSelected = output<P2Option<T>>();
+  readonly optionSelected = output<OrcOption<T>>();
   readonly onChange = output<{ originalEvent: Event; value: T[] }>();
   readonly onFilter = output<{ originalEvent: Event; filter: string }>();
   readonly onSelectAllChange = output<{
@@ -282,7 +282,7 @@ export class MultiSelectComponent<T = unknown>
   private sameValue(left: any, right: any): boolean {
     return listPickerEquality(this.dataKey(), 'both-sides')(left, right);
   }
-  isSelected(option: P2Option<T>): boolean {
+  isSelected(option: OrcOption<T>): boolean {
     return this.value().some((item) =>
       this.sameValue(item, this.getOptionValue(option)),
     );
@@ -415,7 +415,7 @@ export class MultiSelectComponent<T = unknown>
       this.toggleOpen();
     }
   }
-  select(option: P2Option<T>, event?: Event): void {
+  select(option: OrcOption<T>, event?: Event): void {
     if (
       this.isOptionDisabled(option) ||
       this.effectiveDisabled() ||
@@ -471,7 +471,7 @@ export class MultiSelectComponent<T = unknown>
       selectable.every((option) => this.isSelected(option))
     );
   }
-  private toggleAllOptions(): P2Option<T>[] {
+  private toggleAllOptions(): OrcOption<T>[] {
     const selectable = this.options().filter(
       (option) => !this.isOptionDisabled(option),
     );

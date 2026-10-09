@@ -6,13 +6,13 @@ import {
   model,
   output,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 
 @Component({
   selector: 'orc-image-compare',
   standalone: true,
   templateUrl: './image-compare.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './image-compare.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -12,7 +12,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   normalizeSize,
-  P2_SHARED_STYLES,
+  ORC_SHARED_STYLES,
   SizeInput,
 } from '@ciag/orchestra/internal';
 
@@ -20,7 +20,7 @@ import {
   selector: 'orc-toggle-button',
   standalone: true,
   templateUrl: './toggle-button.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './toggle-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { PickListComponent } from './p2/p2-pick-list-component';
-import { P2Option } from './p2/p2-shared';
+import { PickListComponent } from '@ciag/orchestra/pick-list';
+import { OrcOption } from '@ciag/orchestra/internal';
 
 describe('PickListComponent public input behavior', () => {
-  const items: P2Option<string>[] = [
+  const items: OrcOption<string>[] = [
     { value: 'alpha', label: 'Alpha' },
     { value: 'beta', label: 'Beta' },
     { value: 'disabled', label: 'Disabled', disabled: true },

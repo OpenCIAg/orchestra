@@ -1,15 +1,8 @@
 import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
-import { TagsInputComponent as LegacyTagsInputComponent } from './p2/p2-form-components';
-import { TagsInputComponent as P2TagsInputComponent } from './p2';
-import { TagsInputComponent } from './p2/p2-tags-input-component';
+import { TagsInputComponent } from '@ciag/orchestra/tags-input';
 
 describe('TagsInput limits, suggestions, and separator contract', () => {
-  it('preserves class identity through the legacy P2 exports', () => {
-    expect(LegacyTagsInputComponent).toBe(TagsInputComponent);
-    expect(P2TagsInputComponent).toBe(TagsInputComponent);
-  });
-
   function createFixture(inputs: Record<string, unknown> = {}) {
     const fixture = TestBed.createComponent(TagsInputComponent);
     for (const [name, value] of Object.entries(inputs)) {

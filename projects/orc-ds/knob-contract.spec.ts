@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
-import { KnobComponent } from './p2/p2-org-knob-components';
+import { KnobComponent } from '@ciag/orchestra/knob';
 
 describe('Knob geometry, readonly, and CVA contract', () => {
   function createFixture() {

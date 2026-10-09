@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { focusElement } from '../../tools/quality/test-focus-events';
-import { TreeComponent, HierarchyNode } from './p2/p2-hierarchical-components';
-import { TreeComponent as FocusedTreeComponent } from './p2/p2-tree-component';
+import { TreeComponent } from '@ciag/orchestra/tree';
+import { HierarchyNode } from '@ciag/orchestra/tree-table';
 
 @Component({
   standalone: true,
@@ -52,10 +52,6 @@ class ControlledTreeFilterHost {
 }
 
 describe('Tree naming, filtering and scroll contract', () => {
-  it('preserves the old P2 import path for the extracted implementation', () => {
-    expect(TreeComponent).toBe(FocusedTreeComponent);
-  });
-
   it('uses the visible label when the explicit accessible name is blank', () => {
     const fixture = TestBed.createComponent(TreeComponent);
     fixture.componentRef.setInput('label', 'Asset hierarchy');

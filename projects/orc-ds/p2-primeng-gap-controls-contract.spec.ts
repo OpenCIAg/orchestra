@@ -1,13 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
-import {
-  FluidComponent,
-  OverlayBadgeComponent,
-  PasswordComponent,
-  SplitButtonComponent,
-} from './p2/p2-primeng-gap-components';
-import { SplitButtonComponent as FocusedSplitButtonComponent } from './p2/p2-split-button-component';
+import { OverlayBadgeComponent } from '@ciag/orchestra/overlay-badge';
+import { PasswordComponent } from '@ciag/orchestra/password';
 
 @Component({
   standalone: true,
@@ -44,35 +39,9 @@ class PasswordFormHost {
 describe('P2 PrimeNG gap control contracts', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [
-        FluidComponent,
-        OverlayBadgeComponent,
-        PasswordComponent,
-        SplitButtonComponent,
-        ReactiveFormsModule,
-      ],
+      imports: [OverlayBadgeComponent, PasswordComponent, ReactiveFormsModule],
     }),
   );
-
-  it('keeps the focused SplitButton module and compatibility barrel on one component identity', () => {
-    expect(SplitButtonComponent).toBe(FocusedSplitButtonComponent);
-  });
-
-  it('preserves Fluid base classes while adding caller classes and vertical spacing', () => {
-    const fixture = TestBed.createComponent(FluidComponent);
-    fixture.componentRef.setInput('styleClass', 'checkout-fields');
-    fixture.detectChanges();
-    const wrapper = fixture.nativeElement.querySelector(
-      '.orc-p2-fluid',
-    ) as HTMLElement;
-
-    expect(wrapper.classList.contains('p-fluid')).toBeTrue();
-    expect(wrapper.classList.contains('p-component')).toBeTrue();
-    expect(wrapper.classList.contains('checkout-fields')).toBeTrue();
-    expect(getComputedStyle(wrapper).display).toBe('flex');
-    expect(getComputedStyle(wrapper).flexDirection).toBe('column');
-    expect(getComputedStyle(wrapper).gap).toBe('16px');
-  });
 
   it('shows numeric zero as an accessible badge instead of converting it to a dot', () => {
     const fixture = TestBed.createComponent(OverlayBadgeComponent);
@@ -185,195 +154,5 @@ describe('P2 PrimeNG gap control contracts', () => {
         ) as HTMLButtonElement
       ).disabled,
     ).toBeTrue();
-  });
-
-  it('opens a labeled menu from ArrowDown and supports arrow, Home, End, and Escape focus', async () => {
-    const fixture = TestBed.createComponent(SplitButtonComponent);
-    fixture.componentRef.setInput('label', 'Save');
-    fixture.componentRef.setInput('model', [
-      { label: 'First action' },
-      { label: 'Unavailable', disabled: true },
-      { label: 'Last action' },
-    ]);
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-    const trigger = root.querySelector('.arrow') as HTMLButtonElement;
-
-    expect(trigger.getAttribute('aria-haspopup')).toBe('menu');
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    expect(trigger.getAttribute('aria-label')).toBe('More options');
-
-    trigger.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowDown',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const menu = root.querySelector('[role="menu"]') as HTMLElement;
-    const first = menu.querySelector('[role="menuitem"]') as HTMLButtonElement;
-    const last =
-      menu.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')[2];
-    expect(menu).not.toBeNull();
-    expect(trigger.getAttribute('aria-expanded')).toBe('true');
-    expect(document.activeElement).toBe(first);
-
-    first.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowDown',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    expect(document.activeElement).toBe(last);
-    last.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Home',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    expect(document.activeElement).toBe(first);
-    first.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'End',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    expect(document.activeElement).toBe(last);
-
-    document.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Escape',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    fixture.detectChanges();
-    expect(root.querySelector('[role="menu"]')).toBeNull();
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    expect(document.activeElement).toBe(
-      root.querySelector('.orc-p2-split__primary'),
-    );
-
-    fixture.componentRef.setInput('closeOnEscape', false);
-    trigger.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowUp',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    fixture.detectChanges();
-    const reopenedMenu = root.querySelector('[role="menu"]') as HTMLElement;
-    const enabledItems = reopenedMenu.querySelectorAll<HTMLElement>(
-      '[role="menuitem"]:not([disabled])',
-    );
-    expect(document.activeElement).toBe(enabledItems[1]);
-    document.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Escape',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    fixture.detectChanges();
-    expect(root.querySelector('[role="menu"]')).not.toBeNull();
-    document.body.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
-    fixture.detectChanges();
-    expect(root.querySelector('[role="menu"]')).toBeNull();
-  });
-
-  it('dismisses SplitButton outside, calls visible enabled items once, and returns focus', () => {
-    const command = jasmine.createSpy('command');
-    const fixture = TestBed.createComponent(SplitButtonComponent);
-    fixture.componentRef.setInput('model', [
-      { label: 'Run', command },
-      { label: 'Hidden', visible: false, command: jasmine.createSpy('hidden') },
-    ]);
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-    const trigger = root.querySelector('.arrow') as HTMLButtonElement;
-    const primary = root.querySelector(
-      '.orc-p2-split__primary',
-    ) as HTMLButtonElement;
-    const hide = jasmine.createSpy('onMenuHide');
-    fixture.componentInstance.onMenuHide.subscribe(hide);
-
-    trigger.click();
-    fixture.detectChanges();
-    const item = root.querySelector('[role="menuitem"]') as HTMLButtonElement;
-    item.click();
-    fixture.detectChanges();
-    expect(command).toHaveBeenCalledOnceWith();
-    expect(root.querySelector('[role="menu"]')).toBeNull();
-    expect(document.activeElement).toBe(primary);
-    expect(hide).toHaveBeenCalledTimes(1);
-
-    trigger.click();
-    fixture.detectChanges();
-    document.body.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
-    fixture.detectChanges();
-    expect(root.querySelector('[role="menu"]')).toBeNull();
-    expect(hide).toHaveBeenCalledTimes(2);
-
-    trigger.click();
-    fixture.detectChanges();
-    (root.querySelector('.orc-p2-split') as HTMLElement).dispatchEvent(
-      new FocusEvent('focusout', {
-        bubbles: true,
-        relatedTarget: document.body,
-      }),
-    );
-    fixture.detectChanges();
-    expect(root.querySelector('[role="menu"]')).toBeNull();
-    expect(hide).toHaveBeenCalledTimes(3);
-  });
-
-  it('uses SplitButton icon position, tooltip, severity, and size props and respects disabled states', () => {
-    const fixture = TestBed.createComponent(SplitButtonComponent);
-    fixture.componentRef.setInput('label', 'Archive');
-    fixture.componentRef.setInput('icon', 'box');
-    fixture.componentRef.setInput('iconPos', 'right');
-    fixture.componentRef.setInput('tooltip', 'Archive current record');
-    fixture.componentRef.setInput('size', 'small');
-    fixture.componentRef.setInput('severity', 'danger');
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-    const primary = root.querySelector(
-      '.orc-p2-split__primary',
-    ) as HTMLButtonElement;
-    const trigger = root.querySelector('.arrow') as HTMLButtonElement;
-
-    expect(primary.title).toBe('Archive current record');
-    expect(primary.classList.contains('icon-right')).toBeTrue();
-    expect(primary.textContent?.indexOf('Archive')).toBeLessThan(
-      primary.textContent?.indexOf('box') ?? -1,
-    );
-    expect(
-      root.querySelector('.orc-p2-split')?.classList.contains('size-small'),
-    ).toBeTrue();
-    expect(
-      root
-        .querySelector('.orc-p2-split')
-        ?.classList.contains('severity-danger'),
-    ).toBeTrue();
-
-    fixture.componentRef.setInput('loading', true);
-    fixture.detectChanges();
-    expect(primary.getAttribute('aria-busy')).toBe('true');
-    expect(primary.textContent).toContain('…');
-    expect(primary.disabled).toBeTrue();
-    expect(trigger.disabled).toBeTrue();
-    trigger.click();
-    fixture.detectChanges();
-    expect(root.querySelector('[role="menu"]')).toBeNull();
   });
 });

@@ -7,12 +7,12 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 @Component({
   selector: 'orc-code',
   standalone: true,
   templateUrl: './code.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './code.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

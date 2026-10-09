@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
-import { DateInputComponent } from '@ciag/orchestra/p2';
+import { DateInputComponent } from '@ciag/orchestra/date-input';
 
 /**
  * Behavior-parity pins for the date input. The specs import the component
- * through the public `@ciag/orchestra/p2` surface and must pass unchanged
+ * through the family entry point and must pass unchanged
  * while the family moves to its canonical directory.
  */
 describe('DateInput behavior parity', () => {

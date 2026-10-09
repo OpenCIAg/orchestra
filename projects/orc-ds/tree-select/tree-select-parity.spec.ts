@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
-import { TreeSelectComponent, TreeSelectNode } from '@ciag/orchestra/p2';
+import {
+  TreeSelectComponent,
+  TreeSelectNode,
+} from '@ciag/orchestra/tree-select';
 
 /**
  * Behavior-parity pins for the tree select family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 const parityNodes: TreeSelectNode[] = [

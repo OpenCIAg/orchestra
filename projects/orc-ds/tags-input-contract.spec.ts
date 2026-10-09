@@ -3,7 +3,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
 import { focusElement } from '../../tools/quality/test-focus-events';
-import { TagsInputComponent } from './p2/p2-form-components';
+import { TagsInputComponent } from '@ciag/orchestra/tags-input';
 
 @Component({
   standalone: true,

@@ -2,40 +2,19 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { BreadcrumbItemData } from './breadcrumb/breadcrumb.types';
-import { TimelineComponent } from './timeline/timeline.component';
-import {
-  DataViewComponent,
-  MenuComponent,
-  PrimeMenuItem,
-} from './p2/p2-advanced-components';
-import {
-  MegaMenuComponent,
-  PanelMenuComponent,
-} from './p2/p2-menu-family-components';
-import { SpeedDialComponent } from './p2/p2-overlay-components';
-import {
-  OrderListComponent,
-  PickListComponent,
-} from './p2/p2-list-gallery-components';
-import { SplitButtonComponent } from './p2/p2-primeng-gap-components';
-import { TerminalComponent } from './p2/p2-input-gap-components';
-import {
-  HierarchyNode,
-  TreeComponent,
-  TreeTableComponent,
-  TreeTableColumn,
-} from './p2/p2-hierarchical-components';
-import { P2Option } from './p2/p2-shared';
-import { TimelineItem } from './timeline/timeline.types';
+import { MenuComponent } from '@ciag/orchestra/menu';
+import { PrimeMenuItem, OrcOption } from '@ciag/orchestra/internal';
+import { PickListComponent } from '@ciag/orchestra/pick-list';
+import { TerminalComponent } from '@ciag/orchestra/terminal';
 import {
   blurElement,
   focusElement,
 } from '../../tools/quality/test-focus-events';
 
 type TransferPayload = {
-  items: P2Option[];
-  source: P2Option[];
-  target: P2Option[];
+  items: OrcOption[];
+  source: OrcOption[];
+  target: OrcOption[];
 };
 type SelectionSnapshot = {
   source: ReadonlySet<string>;
@@ -55,25 +34,6 @@ class MenuConsumer {
   items: PrimeMenuItem[] = [{ label: 'Open' }];
   canonical: PrimeMenuItem[] = [];
   alias: PrimeMenuItem[] = [];
-}
-
-@Component({
-  standalone: true,
-  imports: [SplitButtonComponent],
-  template: `<orc-split-button
-    label="Save"
-    expandAriaLabel="More"
-    (primaryClick)="primary.push($event)"
-    (onClick)="clickAlias.push($event)"
-    (dropdownClick)="dropdown.push($event)"
-    (onDropdownClick)="dropdownAlias.push($event)"
-  />`,
-})
-class SplitButtonConsumer {
-  primary: Event[] = [];
-  clickAlias: Event[] = [];
-  dropdown: Event[] = [];
-  dropdownAlias: Event[] = [];
 }
 
 @Component({
@@ -125,13 +85,13 @@ class BreadcrumbConsumer {
   />`,
 })
 class PickListConsumer {
-  @ViewChild('pick') pick!: PickListComponent<P2Option>;
-  source: P2Option[] = [
+  @ViewChild('pick') pick!: PickListComponent<OrcOption>;
+  source: OrcOption[] = [
     { value: 'a', label: 'Alpha' },
     { value: 'locked', label: 'Locked', disabled: true },
     { value: 'b', label: 'Beta' },
   ];
-  target: P2Option[] = [{ value: 'c', label: 'Gamma' }];
+  target: OrcOption[] = [{ value: 'c', label: 'Gamma' }];
   selectedForward: TransferPayload[] = [];
   selectedBack: TransferPayload[] = [];
   allForward: TransferPayload[] = [];
@@ -146,8 +106,8 @@ class PickListConsumer {
   template: `<orc-pick-list [source]="source" [target]="target" />`,
 })
 class DefaultPickListConsumer {
-  source: P2Option[] = [{ value: 'a', label: 'Alpha' }];
-  target: P2Option[] = [{ value: 'b', label: 'Beta' }];
+  source: OrcOption[] = [{ value: 'a', label: 'Alpha' }];
+  target: OrcOption[] = [{ value: 'b', label: 'Beta' }];
 }
 
 @Component({
@@ -161,61 +121,15 @@ class DefaultPickListConsumer {
   />`,
 })
 class DisabledPickListConsumer {
-  source: P2Option[] = [
+  source: OrcOption[] = [
     { value: 'locked', label: 'Locked', disabled: true },
     { value: 'b', label: 'Beta' },
   ];
-  target: P2Option[] = [{ value: 'c', label: 'Gamma' }];
+  target: OrcOption[] = [{ value: 'c', label: 'Gamma' }];
   disabled = true;
 }
 
-@Component({
-  standalone: true,
-  imports: [DataViewComponent],
-  template: `<orc-data-view
-      #view
-      (onLayoutChange)="canonical.push($event)"
-      (onChangeLayout)="alias.push($event)"
-    /><button type="button" (click)="view.setLayout('list')">List</button>`,
-})
-class DataViewConsumer {
-  @ViewChild('view') view!: DataViewComponent;
-  canonical: Array<'list' | 'grid'> = [];
-  alias: Array<'list' | 'grid'> = [];
-}
-
 describe('public output bindings', () => {
-  it('registers every supported compatibility output in Angular metadata', () => {
-    const expected: Array<[unknown, string]> = [
-      [MenuComponent, 'onItemClick'],
-      [PanelMenuComponent, 'onNodeSelect'],
-      [PanelMenuComponent, 'onNodeExpand'],
-      [PanelMenuComponent, 'onNodeCollapse'],
-      [MegaMenuComponent, 'onItemClick'],
-      [DataViewComponent, 'onChangeLayout'],
-      [SpeedDialComponent, 'onVisibleChange'],
-      [OrderListComponent, 'onReorder'],
-      [TerminalComponent, 'onCommand'],
-      [TreeComponent, 'onNodeSelect'],
-      [TreeComponent, 'onNodeUnselect'],
-      [TreeComponent, 'onNodeExpand'],
-      [TreeComponent, 'onNodeCollapse'],
-      [TreeTableComponent, 'onNodeSelect'],
-      [TreeTableComponent, 'onNodeUnselect'],
-      [TimelineComponent, 'onItemClick'],
-      [BreadcrumbComponent, 'onItemClick'],
-      [SplitButtonComponent, 'onClick'],
-      [SplitButtonComponent, 'onDropdownClick'],
-      [PickListComponent, 'onMoveAllToTarget'],
-      [PickListComponent, 'onMoveAllToSource'],
-    ];
-    for (const [type, name] of expected) {
-      const outputs = (type as { ɵcmp?: { outputs?: Record<string, string> } })
-        .ɵcmp?.outputs;
-      expect(outputs?.[name]).toBe(name);
-    }
-  });
-
   it('binds Menu aliases through a real consumer click exactly once with the same item', () => {
     const fixture = TestBed.createComponent(MenuConsumer);
     fixture.detectChanges();
@@ -226,24 +140,6 @@ describe('public output bindings', () => {
     expect(fixture.componentInstance.alias).toEqual([command]);
     expect(fixture.componentInstance.canonical[0]).toBe(
       fixture.componentInstance.alias[0],
-    );
-  });
-
-  it('binds SplitButton aliases through native primary and dropdown actions', () => {
-    const fixture = TestBed.createComponent(SplitButtonConsumer);
-    fixture.detectChanges();
-    const buttons = fixture.nativeElement.querySelectorAll('button');
-    buttons[0].click();
-    buttons[1].click();
-    expect(fixture.componentInstance.primary).toHaveSize(1);
-    expect(fixture.componentInstance.clickAlias).toHaveSize(1);
-    expect(fixture.componentInstance.clickAlias[0]).toBe(
-      fixture.componentInstance.primary[0],
-    );
-    expect(fixture.componentInstance.dropdown).toHaveSize(1);
-    expect(fixture.componentInstance.dropdownAlias).toHaveSize(1);
-    expect(fixture.componentInstance.dropdownAlias[0]).toBe(
-      fixture.componentInstance.dropdown[0],
     );
   });
 
@@ -271,294 +167,6 @@ describe('public output bindings', () => {
       breadcrumb.componentInstance.alias[0],
     );
     expect(breadcrumb.componentInstance.canonical[0].item.label).toBe('Home');
-  });
-
-  it('keeps canonical programmatic subscriptions while fanning out all same-event aliases', () => {
-    const panel = TestBed.createComponent(PanelMenuComponent);
-    const parent = { label: 'Parent', items: [{ label: 'Child' }] };
-    panel.componentRef.setInput('model', [parent]);
-    const expanded: unknown[] = [];
-    const expandedAlias: unknown[] = [];
-    panel.componentInstance.onItemExpand.subscribe((value) =>
-      expanded.push(value),
-    );
-    panel.componentInstance.onNodeExpand.subscribe((value) =>
-      expandedAlias.push(value),
-    );
-    panel.componentInstance.toggle(parent);
-    expect(expanded).toEqual([parent]);
-    expect(expandedAlias).toEqual([parent]);
-
-    const dataView = TestBed.createComponent(DataViewConsumer);
-    dataView.detectChanges();
-    (
-      dataView.nativeElement.querySelector('button') as HTMLButtonElement
-    ).click();
-    expect(dataView.componentInstance.canonical).toEqual(['list']);
-    expect(dataView.componentInstance.alias).toEqual(['list']);
-
-    const tree = TestBed.createComponent(TreeComponent);
-    const node = { key: 'one', label: 'One' };
-    const selected: unknown[] = [];
-    const selectedAlias: unknown[] = [];
-    tree.componentInstance.nodeSelect.subscribe((value) =>
-      selected.push(value),
-    );
-    tree.componentInstance.onNodeSelect.subscribe((value) =>
-      selectedAlias.push(value),
-    );
-    tree.componentInstance.select(node);
-    expect(selected).toEqual([node]);
-    expect(selectedAlias).toEqual([node]);
-  });
-
-  it('covers each repaired output branch through configured DOM interactions', () => {
-    const parent: PrimeMenuItem = {
-      label: 'Parent',
-      items: [{ label: 'Child' }],
-    };
-    const panel = TestBed.createComponent(PanelMenuComponent);
-    panel.componentRef.setInput('model', [parent]);
-    const panelExpand: PrimeMenuItem[] = [];
-    const panelExpandAlias: PrimeMenuItem[] = [];
-    const panelCollapse: PrimeMenuItem[] = [];
-    const panelCollapseAlias: PrimeMenuItem[] = [];
-    const panelSelect: PrimeMenuItem[] = [];
-    const panelSelectAlias: PrimeMenuItem[] = [];
-    panel.componentInstance.onItemExpand.subscribe((value) =>
-      panelExpand.push(value),
-    );
-    panel.componentInstance.onNodeExpand.subscribe((value) =>
-      panelExpandAlias.push(value),
-    );
-    panel.componentInstance.onItemCollapse.subscribe((value) =>
-      panelCollapse.push(value),
-    );
-    panel.componentInstance.onNodeCollapse.subscribe((value) =>
-      panelCollapseAlias.push(value),
-    );
-    panel.componentInstance.itemSelect.subscribe((value) =>
-      panelSelect.push(value),
-    );
-    panel.componentInstance.onNodeSelect.subscribe((value) =>
-      panelSelectAlias.push(value),
-    );
-    panel.detectChanges();
-    let panelButton = panel.nativeElement.querySelector(
-      'button',
-    ) as HTMLButtonElement;
-    panelButton.click();
-    panel.detectChanges();
-    panelButton = panel.nativeElement.querySelector(
-      'button',
-    ) as HTMLButtonElement;
-    panelButton.click();
-    panel.detectChanges();
-    panelButton.click();
-    panel.detectChanges();
-    (
-      panel.nativeElement.querySelector('.children button') as HTMLButtonElement
-    ).click();
-    expect(panelExpand).toHaveSize(2);
-    expect(
-      panelExpandAlias.every((value, index) => value === panelExpand[index]),
-    ).toBeTrue();
-    expect(panelCollapse).toHaveSize(1);
-    expect(panelCollapseAlias).toHaveSize(1);
-    expect(panelCollapseAlias[0]).toBe(panelCollapse[0]);
-    expect(panelSelect).toHaveSize(1);
-    expect(panelSelectAlias).toHaveSize(1);
-    expect(panelSelectAlias[0]).toBe(panelSelect[0]);
-
-    const megaItem: PrimeMenuItem = { label: 'Dashboard' };
-    const mega = TestBed.createComponent(MegaMenuComponent);
-    mega.componentRef.setInput('model', [{ label: 'Main', items: [megaItem] }]);
-    const megaSelected: PrimeMenuItem[] = [];
-    const megaAlias: PrimeMenuItem[] = [];
-    mega.componentInstance.itemSelect.subscribe((value) =>
-      megaSelected.push(value),
-    );
-    mega.componentInstance.onItemClick.subscribe((value) =>
-      megaAlias.push(value),
-    );
-    mega.detectChanges();
-    (mega.nativeElement.querySelector('button') as HTMLButtonElement).click();
-    expect(megaSelected).toHaveSize(1);
-    expect(megaAlias).toHaveSize(1);
-    expect(megaAlias[0]).toBe(megaSelected[0]);
-
-    const dataView = TestBed.createComponent(DataViewConsumer);
-    dataView.detectChanges();
-    (
-      dataView.nativeElement.querySelector('button') as HTMLButtonElement
-    ).click();
-    expect(dataView.componentInstance.canonical).toEqual(['list']);
-    expect(dataView.componentInstance.alias).toEqual(['list']);
-
-    const speedDial = TestBed.createComponent(SpeedDialComponent);
-    const visibility: boolean[] = [];
-    const visibilityAliases: boolean[] = [];
-    speedDial.componentInstance.visibleChange.subscribe((value) =>
-      visibility.push(value),
-    );
-    speedDial.componentInstance.onVisibleChange.subscribe((value) =>
-      visibilityAliases.push(value),
-    );
-    speedDial.detectChanges();
-    const speedTrigger = speedDial.nativeElement.querySelector(
-      '.trigger',
-    ) as HTMLButtonElement;
-    speedTrigger.click();
-    speedTrigger.click();
-    expect(visibility).toEqual([true, false]);
-    expect(visibilityAliases).toEqual(visibility);
-
-    const orderList = TestBed.createComponent(OrderListComponent<string>);
-    orderList.componentRef.setInput('value', ['one', 'two']);
-    orderList.componentRef.setInput('moveUpLabel', 'Move up');
-    orderList.componentInstance.selectedIndex.set(1);
-    const reordered: Array<{ value: string[]; direction: 'up' | 'down' }> = [];
-    const reorderAliases: Array<{ value: string[]; direction: 'up' | 'down' }> =
-      [];
-    orderList.componentInstance.reorder.subscribe((value) =>
-      reordered.push(value),
-    );
-    orderList.componentInstance.onReorder.subscribe((value) =>
-      reorderAliases.push(value),
-    );
-    orderList.detectChanges();
-    (
-      orderList.nativeElement.querySelector(
-        'button[aria-label="Move up"]',
-      ) as HTMLButtonElement
-    ).click();
-    expect(reordered).toHaveSize(1);
-    expect(reorderAliases).toHaveSize(1);
-    expect(reorderAliases[0]).toBe(reordered[0]);
-
-    const treeNode: HierarchyNode<Record<string, unknown>> = {
-      key: 'root',
-      label: 'Root',
-      children: [{ key: 'child', label: 'Child' }],
-    };
-    const tree = TestBed.createComponent(
-      TreeComponent<Record<string, unknown>>,
-    );
-    tree.componentRef.setInput('nodes', [treeNode]);
-    const treeExpand: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const treeExpandAliases: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const treeCollapse: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const treeCollapseAliases: Array<HierarchyNode<Record<string, unknown>>> =
-      [];
-    const treeSelect: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const treeSelectAliases: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const treeUnselect: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const treeUnselectAliases: Array<HierarchyNode<Record<string, unknown>>> =
-      [];
-    tree.componentInstance.nodeExpand.subscribe((value) =>
-      treeExpand.push(value),
-    );
-    tree.componentInstance.onNodeExpand.subscribe((value) =>
-      treeExpandAliases.push(value),
-    );
-    tree.componentInstance.nodeCollapse.subscribe((value) =>
-      treeCollapse.push(value),
-    );
-    tree.componentInstance.onNodeCollapse.subscribe((value) =>
-      treeCollapseAliases.push(value),
-    );
-    tree.componentInstance.nodeSelect.subscribe((value) =>
-      treeSelect.push(value),
-    );
-    tree.componentInstance.onNodeSelect.subscribe((value) =>
-      treeSelectAliases.push(value),
-    );
-    tree.componentInstance.nodeUnselect.subscribe((value) =>
-      treeUnselect.push(value),
-    );
-    tree.componentInstance.onNodeUnselect.subscribe((value) =>
-      treeUnselectAliases.push(value),
-    );
-    tree.detectChanges();
-    (tree.nativeElement.querySelector('.toggle') as HTMLButtonElement).click();
-    tree.detectChanges();
-    (tree.nativeElement.querySelector('.toggle') as HTMLButtonElement).click();
-    tree.detectChanges();
-    const treeLabel = tree.nativeElement.querySelector(
-      '.label',
-    ) as HTMLButtonElement;
-    treeLabel.click();
-    treeLabel.click();
-    expect(treeExpand).toHaveSize(1);
-    expect(treeExpandAliases).toHaveSize(1);
-    expect(treeExpandAliases[0]).toBe(treeExpand[0]);
-    expect(treeCollapse).toHaveSize(1);
-    expect(treeCollapseAliases).toHaveSize(1);
-    expect(treeCollapseAliases[0]).toBe(treeCollapse[0]);
-    expect(treeSelect).toHaveSize(1);
-    expect(treeSelectAliases).toHaveSize(1);
-    expect(treeSelectAliases[0]).toBe(treeSelect[0]);
-    expect(treeUnselect).toHaveSize(1);
-    expect(treeUnselectAliases).toHaveSize(1);
-    expect(treeUnselectAliases[0]).toBe(treeUnselect[0]);
-
-    const treeTable = TestBed.createComponent(
-      TreeTableComponent<Record<string, unknown>>,
-    );
-    const tableNode: HierarchyNode<Record<string, unknown>> = {
-      key: 'row',
-      label: 'Row',
-    };
-    treeTable.componentRef.setInput('value', [tableNode]);
-    treeTable.componentRef.setInput('columns', [] as TreeTableColumn[]);
-    const tableSelect: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const tableAliases: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const tableUnselect: Array<HierarchyNode<Record<string, unknown>>> = [];
-    const tableUnselectAliases: Array<HierarchyNode<Record<string, unknown>>> =
-      [];
-    treeTable.componentInstance.nodeSelect.subscribe((value) =>
-      tableSelect.push(value),
-    );
-    treeTable.componentInstance.onNodeSelect.subscribe((value) =>
-      tableAliases.push(value),
-    );
-    treeTable.componentInstance.nodeUnselect.subscribe((value) =>
-      tableUnselect.push(value),
-    );
-    treeTable.componentInstance.onNodeUnselect.subscribe((value) =>
-      tableUnselectAliases.push(value),
-    );
-    treeTable.detectChanges();
-    const checkbox = treeTable.nativeElement.querySelector(
-      'input[type="checkbox"]',
-    ) as HTMLInputElement;
-    checkbox.checked = true;
-    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-    checkbox.checked = false;
-    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-    expect(tableSelect).toHaveSize(1);
-    expect(tableAliases).toHaveSize(1);
-    expect(tableAliases[0]).toBe(tableSelect[0]);
-    expect(tableUnselect).toHaveSize(1);
-    expect(tableUnselectAliases).toHaveSize(1);
-    expect(tableUnselectAliases[0]).toBe(tableUnselect[0]);
-
-    const timeline = TestBed.createComponent(TimelineComponent);
-    const timelineItem: TimelineItem = { title: 'Milestone' };
-    timeline.componentRef.setInput('items', [timelineItem]);
-    const timelineSelected: Array<{ item: TimelineItem; index: number }> = [];
-    const timelineAliases: Array<{ item: TimelineItem; index: number }> = [];
-    timeline.componentInstance.itemSelect.subscribe((value) =>
-      timelineSelected.push(value),
-    );
-    timeline.componentInstance.onItemClick.subscribe((value) =>
-      timelineAliases.push(value),
-    );
-    timeline.detectChanges();
-    (
-      timeline.nativeElement.querySelector('.orc-timeline__item') as HTMLElement
-    ).click();
-    expect(timelineAliases[0]).toBe(timelineSelected[0]);
   });
 
   it('supports PickList selected and all transfers as distinct consumer events', () => {

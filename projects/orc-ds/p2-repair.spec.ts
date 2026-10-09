@@ -1,26 +1,18 @@
 import { Component } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { MenuComponent } from '@ciag/orchestra/menu';
 import {
-  MenuComponent,
   ConfirmDialogComponent,
   ConfirmationService,
-} from './p2/p2-advanced-components';
+} from '@ciag/orchestra/confirm-dialog';
+import { ContextMenuComponent } from '@ciag/orchestra/context-menu';
 import {
-  ConfirmPopupComponent,
-  ConfirmPopupService,
-} from './p2/p2-confirm-popup';
-import {
-  ContextMenuComponent,
-  PortalComponent,
   SplitterComponent,
   SplitterPanelContentDirective,
-} from './p2/p2-overlay-components';
-import {
-  ListboxComponent,
-  MultiSelectComponent,
-} from './p2/p2-form-components';
-import { ScrollTopComponent } from './p2/p2-primeng-gap-components';
-import { TypographyComponent } from './p2/p2-layout-components';
+} from '@ciag/orchestra/splitter';
+import { ListboxComponent } from '@ciag/orchestra/listbox';
+import { MultiSelectComponent } from '@ciag/orchestra/multi-select';
+import { TypographyComponent } from '@ciag/orchestra/typography';
 
 describe('P2 repair regressions', () => {
   it('uses Menu items when model is omitted and tracks nested activation', () => {
@@ -57,75 +49,6 @@ describe('P2 repair regressions', () => {
     target.remove();
   });
 
-  it('moves Portal content to and restores it from its target', () => {
-    @Component({
-      standalone: true,
-      imports: [PortalComponent],
-      template: `<div #target></div>
-        <orc-portal [target]="target"
-          ><span class="projected">Projected</span></orc-portal
-        >`,
-    })
-    class HostComponent {}
-    const fixture = TestBed.createComponent(HostComponent);
-    fixture.detectChanges();
-    const target = fixture.nativeElement.querySelector('div') as HTMLElement;
-    expect(target.querySelector('.projected')).toBeTruthy();
-    fixture.destroy();
-  });
-
-  it('constructs Portal mutation observation from its owner window', async () => {
-    @Component({
-      standalone: true,
-      imports: [PortalComponent],
-      template: `<div #target></div>
-        <orc-portal [target]="target"
-          ><span class="projected">Projected</span></orc-portal
-        >`,
-    })
-    class HostComponent {}
-    const frame = document.createElement('iframe');
-    document.body.appendChild(frame);
-    const frameDocument = frame.contentDocument;
-    const frameWindow = frame.contentWindow;
-    if (!frameDocument || !frameWindow)
-      throw new Error('same-origin iframe unavailable');
-    class FrameMutationObserver {
-      static instances: FrameMutationObserver[] = [];
-      constructor(_callback: MutationCallback) {
-        FrameMutationObserver.instances.push(this);
-      }
-      observe(_target: Node, _options?: MutationObserverInit): void {}
-      disconnect(): void {}
-      takeRecords(): MutationRecord[] {
-        return [];
-      }
-    }
-    const original = (frameWindow as unknown as { MutationObserver?: unknown })
-      .MutationObserver;
-    Object.defineProperty(frameWindow, 'MutationObserver', {
-      configurable: true,
-      value: FrameMutationObserver,
-    });
-    const fixture = TestBed.createComponent(HostComponent);
-    frameDocument.body.appendChild(
-      frameDocument.adoptNode(fixture.nativeElement),
-    );
-    try {
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
-      expect(FrameMutationObserver.instances.length).toBeGreaterThan(0);
-    } finally {
-      Object.defineProperty(frameWindow, 'MutationObserver', {
-        configurable: true,
-        value: original,
-      });
-      fixture.destroy();
-      frame.remove();
-    }
-  });
-
   it('renders splitter panel templates in their matching panel body', () => {
     @Component({
       standalone: true,
@@ -146,28 +69,6 @@ describe('P2 repair regressions', () => {
     expect(bodies[0].textContent).toContain('A');
     expect(bodies[0].textContent).not.toContain('B');
     expect(bodies[1].textContent).toContain('B');
-  });
-
-  it('observes parent scrolling in ScrollTop parent mode, including initial position', () => {
-    const parent = document.createElement('div');
-    Object.defineProperty(parent, 'scrollTop', {
-      configurable: true,
-      value: 240,
-      writable: true,
-    });
-    const host = document.createElement('div');
-    parent.appendChild(host);
-    document.body.appendChild(parent);
-    const fixture = TestBed.createComponent(ScrollTopComponent);
-    parent.appendChild(fixture.nativeElement);
-    fixture.componentRef.setInput('target', 'parent');
-    fixture.detectChanges();
-    expect(fixture.componentInstance.visible()).toBeTrue();
-    parent.scrollTop = 0;
-    parent.dispatchEvent(new Event('scroll'));
-    expect(fixture.componentInstance.visible()).toBeFalse();
-    fixture.destroy();
-    parent.remove();
   });
 
   it('starts Listbox keyboard navigation at the first enabled option', () => {
@@ -273,61 +174,6 @@ describe('P2 repair regressions', () => {
       'Delete this record permanently',
     );
   });
-
-  it('provides default popup actions and handles Escape', () => {
-    const service = TestBed.inject(ConfirmPopupService);
-    const fixture = TestBed.createComponent(ConfirmPopupComponent);
-    service.confirm({ message: 'Continue?' });
-    fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Accept');
-    expect(fixture.nativeElement.textContent).toContain('Reject');
-    (
-      fixture.nativeElement.querySelector('.popup') as HTMLElement
-    ).dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-    expect(service.request()).toBeNull();
-  });
-
-  it('gives a message-only ConfirmPopup an accessible name and preserves zero coordinates', () => {
-    const service = TestBed.inject(ConfirmPopupService);
-    const fixture = TestBed.createComponent(ConfirmPopupComponent);
-    service.confirm({ message: 'Continue?', x: 0, y: 0 });
-    fixture.detectChanges();
-    const popup = fixture.nativeElement.querySelector(
-      '[role="alertdialog"]',
-    ) as HTMLElement;
-    const message = fixture.nativeElement.querySelector('p') as HTMLElement;
-    expect(popup.getAttribute('aria-label')).toBe('Confirmation');
-    expect(popup.getAttribute('aria-describedby')).toBe(message.id);
-    expect(popup.style.left).toBe('0px');
-    expect(popup.style.top).toBe('0px');
-    expect(
-      fixture.nativeElement
-        .querySelectorAll('button')[0]
-        .getAttribute('aria-label'),
-    ).toBe('Reject');
-    expect(
-      fixture.nativeElement
-        .querySelectorAll('button')[1]
-        .getAttribute('aria-label'),
-    ).toBe('Accept');
-  });
-
-  it('restores ConfirmPopup opener focus after accept', fakeAsync(() => {
-    const opener = document.createElement('button');
-    document.body.appendChild(opener);
-    opener.focus();
-    const service = TestBed.inject(ConfirmPopupService);
-    const fixture = TestBed.createComponent(ConfirmPopupComponent);
-    service.confirm({ message: 'Continue?' });
-    fixture.detectChanges();
-    tick();
-    expect(document.activeElement).not.toBe(opener);
-    fixture.componentInstance.accept();
-    tick();
-    expect(document.activeElement).toBe(opener);
-    fixture.destroy();
-    opener.remove();
-  }));
 
   it('renders Typography using its requested semantic element', () => {
     const fixture = TestBed.createComponent(TypographyComponent);

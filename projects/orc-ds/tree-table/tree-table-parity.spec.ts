@@ -3,11 +3,11 @@ import {
   TreeTableComponent,
   HierarchyNode,
   TreeTableColumn,
-} from '@ciag/orchestra/p2';
+} from '@ciag/orchestra/tree-table';
 
 /**
  * Behavior-parity pins for the tree table family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('TreeTable behavior parity', () => {

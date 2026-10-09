@@ -10,14 +10,14 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { P2_SHARED_VARS, type P2Option } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS, type OrcOption } from '@ciag/orchestra/internal';
 import {
   crossedFocusBoundary,
   menuFocusTargets,
   stepMenuIndex,
 } from '@ciag/orchestra/internal';
 
-export interface MenubarItem extends P2Option<string> {
+export interface MenubarItem extends OrcOption<string> {
   shortcut?: string;
   /** One child level is supported for the menubar disclosure; deeper descendants are not rendered. */
   children?: MenubarItem[];
@@ -123,7 +123,7 @@ let menubarInstanceId = 0;
     </nav>
   `,
   styles: [
-    P2_SHARED_VARS +
+    ORC_SHARED_VARS +
       `
     .orc-p2-menubar { display: flex; gap: .2rem; align-items: center; padding: .25rem; border: 1px solid var(--orc-component-border); border-radius: .6rem; background: var(--orc-component-surface); }
     .menu-item { position: relative; }

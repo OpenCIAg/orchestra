@@ -1,15 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { MenuComponent, PrimeMenuItem } from './p2/p2-advanced-components';
-import { MenubarComponent, MenubarItem } from './p2/p2-data-components';
-import { MenubarComponent as FocusedMenubarComponent } from './p2/p2-menubar-component';
+import { MenuComponent } from '@ciag/orchestra/menu';
+import { PrimeMenuItem } from '@ciag/orchestra/internal';
+import { MenubarComponent, MenubarItem } from '@ciag/orchestra/menubar';
 import { focusElement } from '../../tools/quality/test-focus-events';
 
 describe('P2 Menu and Menubar contracts', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
-
-  it('keeps the focused Menubar module and compatibility barrel on one component identity', () => {
-    expect(MenubarComponent).toBe(FocusedMenubarComponent);
-  });
 
   it('renders the public Menu items alias and keeps nested activation active', () => {
     const fixture = TestBed.createComponent(MenuComponent);

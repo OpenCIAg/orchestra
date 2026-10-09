@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { InputColorComponent } from './p2/p2-input-more';
+import { InputColorComponent } from '@ciag/orchestra/input-color';
 
 @Component({
   standalone: true,

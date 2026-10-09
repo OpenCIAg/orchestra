@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { MeterGroupComponent } from '@ciag/orchestra/p2';
+import { MeterGroupComponent } from '@ciag/orchestra/meter-group';
 
 /**
  * Behavior-parity pins for the meter group family. The specs import the
- * component through the public `@ciag/orchestra/p2` surface and must pass
+ * component through the family entry point and must pass
  * unchanged while the family moves to its canonical directory.
  */
 describe('MeterGroup behavior parity', () => {

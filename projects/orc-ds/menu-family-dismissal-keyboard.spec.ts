@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  MegaMenuComponent,
-  TieredMenuComponent,
-} from './p2/p2-menu-family-components';
-import { ContextMenuComponent } from './p2/p2-overlay-components';
-import type { PrimeMenuItem } from './p2/p2-advanced-components';
+import { TieredMenuComponent } from '@ciag/orchestra/tiered-menu';
+import { ContextMenuComponent } from '@ciag/orchestra/context-menu';
+import type { PrimeMenuItem } from '@ciag/orchestra/internal';
 
 /**
  * Unified family behaviors: outside dismissal runs through the shared
@@ -112,36 +109,5 @@ describe('menu family shared dismissal and roving focus', () => {
     );
     fixture.detectChanges();
     expect(fixture.componentInstance.open()).toBeFalse();
-  });
-
-  it('wraps MegaMenu roving focus across the ends', () => {
-    const fixture = TestBed.createComponent(MegaMenuComponent);
-    fixture.componentRef.setInput('model', [
-      { label: 'Main', items: [{ label: 'First' }, { label: 'Second' }] },
-    ] satisfies PrimeMenuItem[]);
-    fixture.detectChanges();
-    const nav = fixture.nativeElement.querySelector('nav') as HTMLElement;
-    const buttons = Array.from(
-      nav.querySelectorAll<HTMLButtonElement>('[data-mega-item]'),
-    );
-    buttons[0].focus();
-    buttons[0].dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowRight',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    fixture.detectChanges();
-    expect(document.activeElement).toBe(buttons[1]);
-    buttons[1].dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowRight',
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
-    fixture.detectChanges();
-    expect(document.activeElement).toBe(buttons[0]);
   });
 });
