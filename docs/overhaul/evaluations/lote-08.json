@@ -1,0 +1,703 @@
+[
+  {
+    "id": "table",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 3
+    },
+    "rationale": "Única tabela usada pelo consumidor (7 orc-table, 31 orc-column) e a base certa: colunas declarativas, células por ng-template, signals, OnPush e o table-engine compartilhado. Mas expõe 103 inputs/26 outputs, dos quais ~27 inputs e 9 outputs são no-op deprecados, há aliases PrimeNG para quase tudo (value/data, sortField/sortColumn, rows/pageSize, paginator/paginated, onX/X) e três tabelas paralelas (data-table, tree-table) duplicam o motor. Vira A tabela composicional da biblioteca: absorve data-table e tree-table (modo árvore), ganha virtual scroll via @angular/cdk/scrolling e perde a configuração por paridade.",
+    "evidence": [
+      "projects/orc-ds/table/table.component.ts:86-87 — `data` e `value` (alias) para a mesma coisa",
+      "projects/orc-ds/table/table.component.ts:88-91,181-220,297-320 — frozenColumns, responsiveLayout, breakpoint, autoLayout, scrollDirection, virtualScroll*, resizable/reorderableColumns, stateKey/stateStorage, editMode, groupRowsBy, contextMenu*, filterDelay, metaKeySelection, paginatorDropdown*, sortMode, loadingIcon, showLoader: todos @deprecated no-op",
+      "projects/orc-ds/table/table.component.ts:326-344 — onContextMenuSelect, onColResize, onColReorder, onRowReorder, onEdit*, onStateSave/Restore: outputs nunca emitidos",
+      "projects/orc-ds/table/table.component.ts:112-117,150-151,240,322-325,340,345 — pares canônico/PrimeNG (rowSelect/onRowSelect, sortChange/onSort, onPage/onLazyLoad, selectAllChange/onHeaderCheckboxToggle) além de `selectedRows` já ser model()",
+      "projects/orc-ds/table/table.component.ts:121-147 — quatro models de ordenação (sortColumn, sortDirection, sortField, sortOrder) reconciliados por linkedSignal",
+      "projects/orc-ds/table/table.component.ts:258-281 — aliases de paginação: paginator/paginated, rows/pageSize, totalRecords/totalItems, rowsPerPageOptions/pageSizeOptions, first/currentPage",
+      "projects/orc-ds/table/table.component.ts:420-431 — rótulos padrão em inglês ('Filter rows', 'Select all rows', 'Data table')",
+      "projects/orc-ds/table/table.component.ts:783-814 — exportCSV() imperativo cria <a> e Blob dentro do componente",
+      "projects/orc-ds/table/table.component.html:57-70 — <th> com tabindex e (click) fazendo papel de botão de ordenação (sem <button>)",
+      "projects/orc-ds/table/table.component.html:229 — tabindex=0 em TODA linha, mesmo sem rowClick: N paradas de Tab",
+      "projects/orc-ds/table/table.component.html:283-298 — slot orcRowExpansion sem botão de expandir; só via ref + toggleRowExpansion()",
+      "projects/orc-ds/table/table-column.directive.ts:17 e table-cell-def.directive.ts:4,12 — seletores alias app-column/appCellDef/appHeaderCellDef",
+      "projects/orc-ds/table/table-behavior.spec.ts:83-1329 — 46 testes de comportamento (paginação remota, seleção, teclado, CSV, expansão)",
+      "/home/tesla/Workspaces/gestao-de-projetos-frontend/src/app/components/table/table.component.ts:52-84 — o consumidor mantém um app-table próprio (servidor, expansão, rowKey função, rowExpandable) usado em 8 páginas porque orc-table não cobria o caso; os orc-table aninhados em my-tasks/task-list.component.html:56 renderizam subtarefas dentro da expansão desse app-table (caso de árvore resolvido na mão)"
+    ],
+    "targetApi": {
+      "selector": "orc-table",
+      "inputs": [
+        "data",
+        "rowKey (string | (row) => unknown; substitui dataKey/rowKey/rowTrackBy/compareSelectionBy)",
+        "ariaLabel",
+        "rowLabel ((row) => string, nome acessível da linha)",
+        "selectionMode ('none' | 'single' | 'multiple')",
+        "rowSelectable",
+        "rowExpandable",
+        "childrenAccessor ((row) => T[] | undefined; liga o modo árvore com role=treegrid)",
+        "mode ('client' | 'server')",
+        "total (só no modo server)",
+        "pageSizeOptions",
+        "filterFields",
+        "loading",
+        "loadingRows",
+        "size",
+        "striped",
+        "bordered",
+        "stickyHeader",
+        "virtualScroll",
+        "rowHeight (obrigatório com virtualScroll)"
+      ],
+      "models": [
+        "selection (T[])",
+        "sort ({ key, direction } | null)",
+        "page (1-based)",
+        "pageSize (pageSize definido = paginação ligada)",
+        "filter (string; o campo de busca é do app)",
+        "expanded (readonly unknown[] de rowKeys)"
+      ],
+      "outputs": [
+        "rowClick",
+        "queryChange (modo server: { page, pageSize, sort, filter })"
+      ],
+      "slots": [
+        "orc-column (diretiva: key, header, sortable, width, align, sticky)",
+        "orcCellDef (ng-template, contexto { $implicit: row, value, index, column })",
+        "orcHeaderCellDef (ng-template)",
+        "orcFooterCellDef (ng-template por coluna; substitui footerValues do app-table)",
+        "orcRowExpansion (ng-template; a tabela renderiza o botão de expandir com aria-expanded)",
+        "orcTableEmpty (ng-template; padrão vem de provideOrcLabels)",
+        "orcTableToolbar (ng-content acima da tabela, para busca e ações)"
+      ],
+      "remove": [
+        "value (→ data)",
+        "dataKey, rowTrackBy, compareSelectionBy (→ rowKey)",
+        "id, style, styleClass, tableStyle, tableStyleClass, paginatorStyleClass (→ atributos/CSS no host e tokens)",
+        "hoverable, rowHover (→ hover só quando houver rowClick, via CSS)",
+        "stripedRows (→ striped)",
+        "showGridlines (→ bordered)",
+        "selectable (→ selectionMode)",
+        "selectedRows (→ selection)",
+        "selectionChange, rowSelect, rowUnselect, onRowSelect, onRowUnselect, selectAllChange, onHeaderCheckboxToggle (→ model selection)",
+        "selectionPageOnly (seleção em massa passa a valer sempre para a página visível)",
+        "selectAllAriaLabel, filterAriaLabel, filterPlaceholder (→ provideOrcLabels)",
+        "sortColumn, sortDirection, sortField, sortOrder, defaultSortOrder (→ model sort)",
+        "sortChange, onSort (→ model sort)",
+        "customSort, sortFunction (→ mode='server' ou ordenação no app)",
+        "sortMode, resetPageOnSort (sempre reseta), showInitialSortBadge",
+        "filterable e o <input> interno (→ [(filter)] + campo do app no slot orcTableToolbar)",
+        "globalFilterFields (→ filterFields)",
+        "filterLocale (→ LOCALE_ID)",
+        "filterDelay, filters, onFilter",
+        "serverDriven, lazy, lazyLoadOnInit (→ mode='server'; a primeira query é sempre emitida)",
+        "onLazyLoad, onPage (→ queryChange e models page/pageSize)",
+        "paginated, paginator (→ pageSize definido)",
+        "rows (→ pageSize)",
+        "first, currentPage (→ page)",
+        "totalItems, totalRecords (→ total)",
+        "rowsPerPageOptions (→ pageSizeOptions)",
+        "pageLinks, alwaysShowPaginator, paginatorPosition, currentPageReportTemplate, showCurrentPageReport, showJumpToPageDropdown, showJumpToPageInput, showFirstLastIcon, showPageLinks (→ para paginação customizada, deixa pageSize vazio e compõe orc-paginator fora com [(page)])",
+        "paginatorDropdownAppendTo, paginatorDropdownScrollHeight",
+        "emptyTitle, emptyMessage (→ slot orcTableEmpty)",
+        "loadingRowsCount (→ loadingRows)",
+        "scrollable, scrollHeight, scrollDirection, autoLayout, responsiveLayout, breakpoint (→ CSS no host; stickyHeader para cabeçalho fixo)",
+        "virtualScrollItemSize, virtualScrollOptions, virtualScrollDelay (→ virtualScroll + rowHeight sobre cdk-virtual-scroll-viewport)",
+        "frozenColumns, frozenValue (→ orc-column sticky)",
+        "resizableColumns, reorderableColumns, onColResize, onColReorder, onRowReorder",
+        "editMode, onEditInit, onEditComplete, onEditCancel",
+        "stateKey, stateStorage, onStateSave, onStateRestore",
+        "groupRowsBy, rowGroupMode",
+        "contextMenu, contextMenuSelection, contextMenuSelectionMode, onContextMenuSelect",
+        "metaKeySelection, loadingIcon, showLoader",
+        "rowExpandMode, onRowExpand, onRowCollapse (→ model expanded)",
+        "exportFilename, csvSeparator, exportHeader e o método exportCSV() (→ função pura tableToCsv(rows, columns, options) exportada por @ciag/orchestra/table; o download fica com o app)",
+        "métodos públicos applyFilter(), reset(), toggleRowSelect(), toggleSelectAll() (→ models)",
+        "seletores app-column, [appCellDef], [appHeaderCellDef]",
+        "columnsConfig (→ @for gerando <orc-column>)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/table/table.component.html:229 — tabindex=0 em todas as linhas cria uma parada de Tab por linha; deve ser roving tabindex (ou nenhuma, se não houver rowClick)",
+      "projects/orc-ds/table/table.component.html:57-70 — controle de ordenação é o próprio <th> com tabindex; leitores de tela não o anunciam como botão. Usar <button> dentro do th (como p2-data-table-component.ts:91 já faz)",
+      "projects/orc-ds/table/table.component.html:21 — região com tabindex=0 sempre, mesmo sem rolagem",
+      "projects/orc-ds/table/table.component.html:50,248 e table.component.ts:420-431 — textos padrão em inglês ('Selection', 'Select row', 'Select all rows', 'Filter rows', 'Data table')",
+      "projects/orc-ds/table/table.component.html:208 — título do vazio fixo em <h4>, quebra a hierarquia de headings da página",
+      "projects/orc-ds/table/table.component.html:283-298 — expansão sem controle visível nem aria-expanded/aria-controls",
+      "projects/orc-ds/table/table.component.ts:193-200 — virtualScroll anunciado na API e não implementado",
+      "projects/orc-ds/table/table.component.ts:654-656 — ngOnInit emite query remota mesmo sem paginação (risco 3 de docs/quality/table-contract-audit.md:83)"
+    ],
+    "consumerImpact": "7 <orc-table> e 31 <orc-column>. orc-column (key/header/sortable/width/align) e orcCellDef continuam iguais. Migração mecânica: [value]→[data] (7), dataKey→rowKey (7), remover [hoverable] (5); project-detail.component.html:410 [rows]+[pageSize]+[paginator] → [pageSize]=\"10\"; indicators.component.html:175,192 [columnsConfig] → @for de <orc-column>, [globalFilterFields]→[filterFields], [rowsPerPageOptions]→[pageSizeOptions], remover [filterable]/[scrollable], [tableStyle] min-width → classe CSS, e deviationTable.applyFilter($event) (linhas 171,188) → [(filter)]. Ganho extra: o app-table próprio (src/app/components/table, 8 páginas) pode ser substituído por orc-table mode='server' + orcRowExpansion + childrenAccessor, e as tabelas aninhadas de subtarefas viram modo árvore.",
+    "effort": "G",
+    "dependsOn": [
+      "infra: provideOrcLabels (rótulos pt-BR)",
+      "infra: @angular/cdk/scrolling (já é peerDependency, projects/orc-ds/package.json:53)",
+      "internal/table-engine.ts (único motor depois do merge de data-table e tree-table)",
+      "paginator (lote 06) com API enxuta",
+      "checkbox (lote 04)"
+    ]
+  },
+  {
+    "id": "data-table",
+    "verdict": "MERGE",
+    "mergeInto": "table",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Segunda tabela com o mesmo papel de orc-table, só que mais pobre: colunas só por config, sem slots de célula, paginação 0-based com botões próprios. O entry point é só um re-export do monólito p2, então importar @ciag/orchestra/data-table puxa o chunk p2 inteiro. Não tem uso no consumidor. O que presta (botão de ordenação dentro do th, <caption> sr-only, rádio na seleção única) migra para orc-table.",
+    "evidence": [
+      "projects/orc-ds/data-table/index.ts:1-2 — o entry é só re-export de '@ciag/orchestra/p2'; measurements.json: chunk deps ['p2'], 3 linhas de fonte",
+      "projects/orc-ds/p2/p2-data-table-component.ts:31-35,205 — colunas só por DataTableColumn[], sem ng-template de célula (linha 161 renderiza texto puro)",
+      "projects/orc-ds/p2/p2-data-table-component.ts:8,279 — usa o decorator @Input para o setter alias 'selection' ao lado de model `selected` (linha 251)",
+      "projects/orc-ds/p2/p2-data-table-component.ts:293-303 — onSort, onPage, onLazyLoad, onRowHover, onFilter, onHeaderCheckboxToggle (nomes PrimeNG)",
+      "projects/orc-ds/p2/p2-data-table-component.ts:168-191 — paginação própria (‹ ›), duplica orc-paginator",
+      "projects/orc-ds/p2/p2-data-table-component.ts:91-97 — ordenação por <button> dentro do th (melhor que orc-table)",
+      "projects/orc-ds/p2/p2-data-table-component.ts:65-69 — <caption> sr-only com o rótulo",
+      "docs/quality/table-contract-audit.md:105-119 — mesmo papel de orc-table; a consolidação parou no motor interno (linha 125)"
+    ],
+    "targetApi": {
+      "selector": "orc-table",
+      "inputs": ["(ver família table)"],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "entry @ciag/orchestra/data-table",
+        "DataTableComponent e DataTableColumn de @ciag/orchestra/p2 (p2/p2-data-table-component.ts)",
+        "estratégia tableProperty e tableTextComparator em internal/table-engine.ts, se ficarem sem consumidor",
+        "migra para table: <button> de ordenação dentro do <th>; <caption> sr-only a partir de ariaLabel; <input type=radio> com name único quando selectionMode='single'"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-data-table-component.ts:152 — rótulo padrão em inglês 'Select row'",
+      "projects/orc-ds/p2/p2-data-table-component.ts:134 — tabindex=0 em todas as linhas",
+      "projects/orc-ds/data-table/index.ts:1 — importar o entry arrasta o chunk p2 (~57 KB gzip conforme docs/quality/library-scope-decisions.md)"
+    ],
+    "consumerImpact": "nenhum (0 imports, 0 tags)",
+    "effort": "P",
+    "dependsOn": [
+      "table (KEEP-REDESIGN) precisa entregar o botão de ordenação e o caption antes da remoção"
+    ]
+  },
+  {
+    "id": "tree-table",
+    "verdict": "MERGE",
+    "mergeInto": "table",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "É uma terceira tabela com motor próprio de ordenação, filtro e paginação, paginador próprio e células só em texto. Tem 76 inputs, 28 deles no-op. O que é exclusivo dela é a hierarquia: treegrid, aria-level, propagação de seleção, paginação por raiz e setas. Isso cabe em orc-table com `childrenAccessor` + model `expanded`. Assim o modo árvore herda slots de célula, ordenação, modo server e virtual scroll de graça, e o consumidor (que hoje aninha orc-table dentro da expansão) ganha a árvore de verdade.",
+    "evidence": [
+      "projects/orc-ds/tree-table/tree-table.component.ts:63-66,82-85,106-127,129-164,167-172 — 28 inputs @deprecated no-op (frozen*, virtualScroll*, resizable*, pageLinks, showJumpToPageDropdown, customSort, dataKey…)",
+      "projects/orc-ds/tree-table/tree-table.component.ts:182-203 — onNodeSelect, onNodeUnselect, onFilter, onPage, onSort, onLazyLoad, onColResize… ao lado de nodeSelect/rowExpand/nodeExpand duplicados (178-193)",
+      "projects/orc-ds/tree-table/tree-table.component.ts:176 — `expanded` é signal interno, não model: o app não controla nem restaura a expansão",
+      "projects/orc-ds/tree-table/tree-table.component.ts:395-445 — ordenação própria, duplica internal/table-engine.ts",
+      "projects/orc-ds/tree-table/tree-table.component.html:123-160 — paginador próprio (nav + 4 botões), duplica orc-paginator",
+      "projects/orc-ds/tree-table/tree-table.component.html:110 — células só `{{ cellValue }}`, sem ng-template",
+      "projects/orc-ds/tree-table/tree-table.component.html:89-108 — rádio/checkbox de seleção renderizado sempre; selectionMode não tem 'none' (ts:54-56)",
+      "projects/orc-ds/tree-table/tree-table.component.ts:507-581 — teclado via querySelectorAll e getComputedStyle a cada tecla",
+      "projects/orc-ds/tree-table/tree-table.component.html:25,55-62 — role=treegrid com aria-level/expanded/selected (a parte boa, que migra)",
+      "measurements.json — alias de entry @ciag/orchestra/treetable"
+    ],
+    "targetApi": {
+      "selector": "orc-table",
+      "inputs": [
+        "childrenAccessor (liga o modo árvore)",
+        "(demais: ver família table)"
+      ],
+      "models": ["expanded"],
+      "outputs": [],
+      "slots": [
+        "a primeira orc-column recebe indentação e o botão expandir/recolher"
+      ],
+      "remove": [
+        "entry @ciag/orchestra/tree-table e alias @ciag/orchestra/treetable",
+        "TreeTableComponent, TreeTableColumn, TreeTableSortEvent",
+        "migra para table: role=treegrid + aria-level/aria-expanded/aria-posinset quando childrenAccessor existe; setas ←/→ expandem/recolhem e ↑/↓/Home/End navegam as linhas; seleção em cascata (vira input `selectionCascade` em table, só no modo árvore); paginação contando só as raízes; filtro mantendo os ancestrais dos nós encontrados (internal/tree-filter.ts)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tree-table/tree-table.component.ts:73-80,361 — textos padrão em inglês ('Filter', 'Top-level items per page', 'First page', '… of …')",
+      "projects/orc-ds/tree-table/tree-table.component.ts:176 — expansão não controlável",
+      "projects/orc-ds/tree-table/tree-table.component.ts:458 — lazy emite só a carga inicial (comentário na linha 97 admite contrato parcial)"
+    ],
+    "consumerImpact": "nenhum direto (0 uso). Indireto: my-tasks.component.html:56 e task-list.component.html:56 aninham orc-table na expansão do app-table para mostrar subtarefas; com o modo árvore de orc-table isso vira uma tabela só.",
+    "effort": "M",
+    "dependsOn": ["table (KEEP-REDESIGN)", "internal/tree-filter.ts"]
+  },
+  {
+    "id": "data-view",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Cópia do DataView do PrimeNG: lista ou grade de itens com paginação. Em Angular isso é um @for com CSS grid e um orc-paginator. Os 38 inputs são quase todos repasse de paginador e paridade (paginatorPosition, showJumpToPageDropdown, onChangeLayout). O template de item vem por input TemplateRef, não por slot, e há outputs duplicados. Não tem uso no consumidor.",
+    "evidence": [
+      "projects/orc-ds/data-view/data-view.component.ts:43-60 — 13 inputs só repassados ao orc-paginator",
+      "projects/orc-ds/data-view/data-view.component.ts:33 — itemTemplate como input TemplateRef em vez de ng-template marcado",
+      "projects/orc-ds/data-view/data-view.component.ts:92-93,234 — onLayoutChange e onChangeLayout emitem o mesmo valor",
+      "projects/orc-ds/data-view/data-view.component.ts:34-38,64 — style, styleClass, gridStyleClass, listStyleClass, loadingIcon",
+      "projects/orc-ds/data-view/data-view.component.ts:75 — rótulo padrão em inglês 'Data view'",
+      "projects/orc-ds/data-view/data-view-parity.spec.ts — 6 testes de paridade",
+      "measurements.json — 38 inputs, 5 outputs PrimeNG, alias @ciag/orchestra/dataview, 6.3 KB gzip"
+    ],
+    "targetApi": null,
+    "replacement": "Responsabilidade do app: `@for (item of page(); track item.id)` dentro de um contêiner com CSS grid (ou orc-grid do lote 07), mais orc-paginator com [(page)]. Para dados tabulares, orc-table. A docs ganha uma receita 'Lista em grade com paginação'.",
+    "defects": [
+      "projects/orc-ds/data-view/data-view.component.ts:92-93 — evento de layout emitido duas vezes com nomes diferentes"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["docs: receita de grade + paginador"]
+  },
+  {
+    "id": "list",
+    "verdict": "MERGE",
+    "mergeInto": "listbox",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "No modo selecionável é um listbox (role=listbox/option, seleção single/multiple, roving) e chega a se vestir como tal (`p-listbox`, data-pc-name='listbox'). No modo sem seleção é uma lista de botões, que é menu ou <ul> semântico. API pequena e bem testada, mas duplica orc-listbox (lote 02) e tem duas fontes de verdade para a seleção. As capacidades úteis (descrição por item, foco roving com wrap) migram para o listbox.",
+    "evidence": [
+      "projects/orc-ds/list/list.component.ts:33-36 — host class 'p-listbox p-component' e data-pc-name='listbox' (mimetismo PrimeNG)",
+      "projects/orc-ds/list/list.component.html:3,13 — role=listbox/option quando selecionável, igual a orc-listbox",
+      "projects/orc-ds/list/list.component.ts:23,46,56-61 — `item.selected` e model `selectedIds` disputam a verdade até a primeira interação",
+      "projects/orc-ds/list/list.component.ts:11-16 — já usa o núcleo internal/list-picker, o mesmo do listbox",
+      "projects/orc-ds/list/list.component.html:4 — rótulo padrão em inglês 'Options'",
+      "projects/orc-ds/list/list-behavior.spec.ts:29-158 — 6 testes de comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-listbox",
+      "inputs": ["(ver lote 02)"],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "entry @ciag/orchestra/list, ListComponent, ListItem",
+        "migra para listbox: linha secundária `description` por opção (ou slot de opção), roving tabindex com wrap",
+        "modo sem seleção (lista de ações) → orc-menu (lote 06) ou <ul> semântico com orc-button"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/list/list.component.ts:33-36 — classes PrimeNG no host",
+      "projects/orc-ds/list/list.component.ts:56-61 — seleção inicial via item.selected some quando selectedIds recebe valor"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "listbox sobrevive no lote 02 (núcleo de seleção); se não sobreviver, o veredito vira REMOVE com o mesmo substituto"
+    ]
+  },
+  {
+    "id": "tree",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Árvore com seleção (single/multiple/checkbox com cascata) é caso real: permissões, estrutura de projeto, categorias. orc-tree e orc-tree-view fazem a mesma coisa com modelos de nó diferentes (key vs id). orc-tree sobrevive por nome e por compartilhar HierarchyNode com tree-select/table, mas a implementação nova deve usar o padrão de orc-tree-view (role=group aninhado, roving tabindex, setsize/posinset, typeahead) ou CdkTree/TreeKeyManager do CDK. Saem os 13 no-ops, os outputs onX e o filtro embutido.",
+    "evidence": [
+      "projects/orc-ds/tree/tree.component.ts:58-105 — metaKeySelection, filterInputAutoFocus, loadingMode, loadingIcon, contextMenu, draggable*/droppable*, lazy, virtualScroll*, highlightOnSelect: @deprecated no-op",
+      "projects/orc-ds/tree/tree.component.ts:112-125 — onNodeSelect/onNodeUnselect/onNodeExpand/onNodeCollapse duplicam nodeSelect/…; onNodeDrop, onLazyLoad, onScrollIndexChange nunca emitidos",
+      "projects/orc-ds/tree/tree.component.ts:107 — `expanded` é signal privado de fato, sem model: o app não abre a árvore num nó",
+      "projects/orc-ds/tree/tree.component.ts:52-53 — `nodes` e `value` (alias)",
+      "projects/orc-ds/tree/tree.component.html:19-56 — lista plana com aria-activedescendant e aria-level, sem role=group nem aria-setsize/posinset",
+      "projects/orc-ds/tree/tree.component.html:57-82 — toggles com glifos de texto ▾ ▸ ·, sem orc-icon",
+      "projects/orc-ds/tree/tree.component.html:83-106 — sem slot de nó: o rótulo é sempre texto",
+      "projects/orc-ds/tree/tree.component.ts:134 — rótulo padrão 'Tree' em inglês",
+      "projects/orc-ds/tree/tree-parity.spec.ts — 5 testes de paridade"
+    ],
+    "targetApi": {
+      "selector": "orc-tree",
+      "inputs": [
+        "nodes (HierarchyNode<T>[]: key, label, data, children, disabled)",
+        "ariaLabel",
+        "selectionMode ('none' | 'single' | 'multiple' | 'checkbox')",
+        "selectionCascade (substitui propagateSelectionUp/Down)",
+        "indent"
+      ],
+      "models": [
+        "selection (string[] de keys; string | null no single)",
+        "expanded (string[] de keys)"
+      ],
+      "outputs": ["nodeActivate (Enter/duplo clique)"],
+      "slots": [
+        "orcTreeNode (ng-template; contexto { $implicit: node, level, expanded, selected })"
+      ],
+      "remove": [
+        "value (→ nodes)",
+        "label (→ ariaLabel)",
+        "ariaLabelledBy (→ atributo aria-labelledby no host)",
+        "selected (→ selection)",
+        "propagateSelectionUp, propagateSelectionDown (→ selectionCascade)",
+        "filter, filterPlaceholder, filterAriaLabel, filterValue, filterBy, filterMode, filterLocale, filterInputAutoFocus, onFilter (→ o app filtra `nodes`; helper puro filterTree exportado pelo entry)",
+        "emptyText, loading, loadingMessage, loadingMode, loadingIcon (→ app/orc-empty-state, orc-skeleton)",
+        "expandAriaLabel, collapseAriaLabel (→ provideOrcLabels)",
+        "style, styleClass, scrollHeight, onScroll (→ CSS no host)",
+        "metaKeySelection, highlightOnSelect",
+        "contextMenu, onNodeContextMenuSelect (→ orc-context-menu no app)",
+        "draggableScope, droppableScope, draggableNodes, droppableNodes, onNodeDrop",
+        "lazy, onLazyLoad, virtualScroll, virtualScrollItemSize, onScrollIndexChange",
+        "nodeSelect, nodeUnselect, nodeExpand, nodeCollapse, selectionChange (→ models selection/expanded)",
+        "onNodeSelect, onNodeUnselect, onNodeExpand, onNodeCollapse, onNodeDoubleClick (→ nodeActivate)",
+        "HierarchyNode.leaf (deprecado)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tree/tree.component.html:22-27 — tabindex=0 no contêiner com aria-activedescendant, mas há <button> internos com tabindex=-1 (83-89) recebendo clique, e o foco é desviado à mão em onTreeFocusIn (ts:322-334)",
+      "projects/orc-ds/tree/tree.component.html:2 e tree-view/tree-view.component.html:2 — as duas famílias usam a mesma classe raiz .orc-tree",
+      "projects/orc-ds/tree/tree.component.ts:107 — expansão não controlável"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "@angular/cdk/tree (CdkTree + TreeKeyManager), ou o padrão de tree-view internalizado",
+      "infra: provideOrcLabels",
+      "tree-select (lote 02) deve reaproveitar HierarchyNode e o renderer"
+    ]
+  },
+  {
+    "id": "tree-view",
+    "verdict": "MERGE",
+    "mergeInto": "tree",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 3,
+      "apiLean": 3,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "Faz o mesmo que orc-tree, mas com TreeNode{id} em vez de HierarchyNode{key}, sem seleção, sem expansão controlável e sem slot de nó. É a melhor implementação WAI-ARIA do lote: grupos aninhados, roving tabindex, setsize/posinset, typeahead e restauração de foco, com 17 testes. O renderer e o teclado viram a base do orc-tree redesenhado e o seletor sai.",
+    "evidence": [
+      "projects/orc-ds/tree-view/tree-view.component.ts:17-22 — modelo TreeNode{id,label,children,disabled} paralelo a HierarchyNode{key,…} de tree/tree.component.ts:17-25",
+      "projects/orc-ds/tree-view/tree-view.component.ts:50-55 — só nodes/label/expandLabel/collapseLabel + nodeSelect; expanded é signal interno",
+      "projects/orc-ds/tree-view/tree-view.component.html:16-20,59-62 — roving tabindex, aria-setsize/posinset, role=group aninhado",
+      "projects/orc-ds/tree-view/tree-view.component.ts:254-285 — typeahead",
+      "projects/orc-ds/tree-view/tree-view.component.ts:314-351 — focusNode com afterNextRender + setTimeout de reserva (hack de foco a simplificar com TreeKeyManager)",
+      "projects/orc-ds/tree-view/tree-view.component.html:6 — rótulo padrão 'Tree' em inglês",
+      "projects/orc-ds/tree-view/tree-view.component.spec.ts — 17 testes"
+    ],
+    "targetApi": {
+      "selector": "orc-tree",
+      "inputs": ["(ver família tree)"],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "entry @ciag/orchestra/tree-view, TreeViewComponent, TreeNode (→ HierarchyNode com key)",
+        "migra para tree: template recursivo com role=group, roving tabindex, aria-setsize/aria-posinset, typeahead, regra de foco ao recolher um ancestral do item ativo, e os 17 testes adaptados"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tree-view/tree-view.component.ts:343 — setTimeout de reserva para focar; frágil em zoneless/SSR"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["tree (KEEP-REDESIGN)"]
+  },
+  {
+    "id": "order-list",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Lista reordenável com botões subir/descer, réplica do OrderList do PrimeNG. O CDK já resolve reordenação (cdkDropList + moveItemInArray, com teclado via botões no app), e pick-list já tem reordenação dentro de cada painel. A API tem nomes PrimeNG (onReorder, onFilterEvent, onFocus, onBlur), um output `valueChangeEvent` ao lado do model `value` e o alias `selection`. Não tem uso no consumidor.",
+    "evidence": [
+      "projects/orc-ds/order-list/order-list.component.ts:60-63 — dragdrop e metaKeySelection @deprecated no-op: o arrastar anunciado não existe",
+      "projects/orc-ds/order-list/order-list.component.ts:44,68 — model `value` e output `valueChangeEvent` com o mesmo dado",
+      "projects/orc-ds/order-list/order-list.component.ts:67 — model `selected` publicado com alias 'selection'",
+      "projects/orc-ds/order-list/order-list.component.ts:69-73 — reorder/onReorder duplicados, onFilterEvent, onFocus, onBlur",
+      "projects/orc-ds/order-list/order-list.component.ts:48-55 — style, styleClass, listStyle, tabindex",
+      "projects/orc-ds/order-list/order-list.component.ts:36 — estende CvaControl (a parte idiomática)",
+      "projects/orc-ds/order-list/order-list-parity.spec.ts — 7 testes de paridade"
+    ],
+    "targetApi": null,
+    "replacement": "@angular/cdk/drag-drop (cdkDropList + cdkDrag + moveItemInArray) mais botões 'Mover para cima/baixo' do app para teclado. A docs ganha uma receita 'Lista reordenável acessível'. Para transferência entre listas, orc-pick-list (experimental).",
+    "defects": [
+      "projects/orc-ds/order-list/order-list.component.html — reordenação sem anúncio aria-live da nova posição",
+      "projects/orc-ds/order-list/order-list.component.ts:61 — dragdrop exposto como input e ignorado"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["docs: receita com cdk/drag-drop"]
+  },
+  {
+    "id": "pick-list",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Lista de transferência (origem para destino) tem caso corporativo real (atribuir papéis e permissões) e nada mais na biblioteca faz isso. Ainda assim é nicho, pesado (1.098 linhas, 8.4 KB gzip) e cheio de gerência manual de foco por querySelectorAll. Usa drag nativo de HTML5 em vez de cdk/drag-drop, não é CVA e tem textos padrão em inglês. Fica como experimental, com API reduzida e conserto do que está quebrado.",
+    "evidence": [
+      "projects/orc-ds/pick-list/pick-list.component.ts:563-700 — focusOption/scheduleFocusRecovery/restoreFocusToTransferredItem: foco via querySelectorAll, afterNextRender e queueMicrotask",
+      "projects/orc-ds/pick-list/pick-list.component.html:30,46-57,125,141-152 — drag-and-drop nativo de HTML5 (draggable, dragstart, dragover), sem cdk/drag-drop e sem alternativa de teclado anunciada",
+      "projects/orc-ds/pick-list/pick-list.component.ts:52-55 — 'Move selected to target' e outros rótulos padrão em inglês",
+      "projects/orc-ds/pick-list/pick-list.component.ts:83-96 — onMoveToTarget, onMoveToSource, onMoveAllToTarget, onMoveAllToSource, onSourceReorder, onTargetReorder",
+      "projects/orc-ds/pick-list/pick-list.component.ts:40-41,56-61,64-65 — style, styleClass, sourceStyle, targetStyle, stripedRows, breakpoint",
+      "projects/orc-ds/pick-list/pick-list.component.ts:34-35 — source/target são models, mas sem ControlValueAccessor",
+      "projects/orc-ds/pick-list/pick-list-parity.spec.ts + p2/pick-list-behavior.spec.ts — 7 testes"
+    ],
+    "targetApi": {
+      "selector": "orc-pick-list",
+      "inputs": [
+        "ariaLabel",
+        "sourceLabel",
+        "targetLabel",
+        "optionLabel",
+        "optionValue",
+        "disabled",
+        "reorderable"
+      ],
+      "models": ["source", "target (também via ControlValueAccessor)"],
+      "outputs": [
+        "transferred ({ items, direction: 'toTarget' | 'toSource' })"
+      ],
+      "slots": [
+        "orcPickListOption (ng-template)",
+        "orcPickListSourceHeader / orcPickListTargetHeader (ng-template, filtro opcional fica no app)"
+      ],
+      "remove": [
+        "label (→ ariaLabel)",
+        "sourceHeader, targetHeader (→ sourceLabel/targetLabel ou slots)",
+        "style, styleClass, sourceStyle, targetStyle, stripedRows, responsive, breakpoint (→ CSS/container query)",
+        "filterBy, filterLocale, filterMatchMode, sourceFilter, targetFilter, sourceFilterPlaceholder, targetFilterPlaceholder, ariaSourceFilterLabel, ariaTargetFilterLabel (→ filtro no app via slot de cabeçalho)",
+        "moveToTargetLabel, moveToSourceLabel, moveAllToTargetLabel, moveAllToSourceLabel, emptyText (→ provideOrcLabels)",
+        "dragdrop (→ cdk/drag-drop sempre ligado quando reorderable)",
+        "metaKeySelection",
+        "sourceSelected, targetSelected, selectionChange (estado interno)",
+        "transfer (→ transferred)",
+        "onMoveToTarget, onMoveToSource, onMoveAllToTarget, onMoveAllToSource (→ transferred)",
+        "onSourceReorder, onTargetReorder (→ models source/target)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/pick-list/pick-list.component.html:46-57 — arrastar só com mouse e HTML5 nativo, sem equivalente CDK",
+      "projects/orc-ds/pick-list/pick-list.component.html — transferências sem anúncio aria-live",
+      "projects/orc-ds/pick-list/pick-list.component.ts:52-55 — textos padrão em inglês",
+      "projects/orc-ds/pick-list/pick-list.component.ts:563-700 — recuperação de foco manual e frágil (três caminhos assíncronos distintos)"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "@angular/cdk/drag-drop",
+      "internal/cva-control.ts",
+      "infra: provideOrcLabels",
+      "catálogo: status 'experimental' + @experimental no JSDoc"
+    ]
+  },
+  {
+    "id": "virtual-scroller",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Reimplementa janelamento que o @angular/cdk/scrolling já resolve, e pior: só renderiza `itemLabel(item)` como texto, sem template de item, então não serve para conteúdo real. Tem dois seletores, o input alias itemSize e o output onLazyLoad. O princípio 2 diz para não reimplementar o CDK: virtual scroll vira opção de orc-table e o app usa cdk-virtual-scroll-viewport direto no resto.",
+    "evidence": [
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.ts:13 — seletor duplo 'orc-virtual-scroller, orc-scroller' (+ alias de entry @ciag/orchestra/scroller)",
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.ts:23 — itemSize = itemHeight (alias)",
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.ts:42-71 — cálculo de janela próprio (só altura fixa)",
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.html:24 — renderiza só `{{ itemLabel(item) }}`; nenhum ng-template de item",
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.html:16 — `track $index` recicla DOM por posição",
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.ts:26 — rótulo padrão 'Scrollable list' em inglês",
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.ts:33 — onLazyLoad",
+      "projects/orc-ds/package.json:53 — @angular/cdk já é peerDependency: o substituto não adiciona dependência"
+    ],
+    "targetApi": null,
+    "replacement": "@angular/cdk/scrolling (<cdk-virtual-scroll-viewport itemSize> + *cdkVirtualFor) direto no app; em tabelas, orc-table [virtualScroll] [rowHeight]. A docs ganha uma receita 'Listas longas'.",
+    "defects": [
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.html:24 — impossível renderizar algo além de texto",
+      "projects/orc-ds/virtual-scroller/virtual-scroller.component.ts:56-59 — viewportHeight em string com parseFloat: '50vh' vira 50px"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "table (virtualScroll via cdk/scrolling)",
+      "docs: receita cdk/scrolling"
+    ]
+  },
+  {
+    "id": "timeline",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Linha do tempo (histórico de tarefa, auditoria, marcos de projeto) é útil e não tem duplicata. Mas cada item é um <button> mesmo quando nada é clicável, um role=heading dentro do botão perde a semântica, não há slot de conteúdo e a família não tem nenhum spec. A API tem pares de alias (items/value, layout/orientation, itemSelect/onItemClick). Redesenho composicional: <orc-timeline> com filhos <orc-timeline-item>, e a interação fica a cargo do app.",
+    "evidence": [
+      "projects/orc-ds/timeline/timeline.component.ts:20-21 — items e value (alias)",
+      "projects/orc-ds/timeline/timeline.component.ts:23,26 — layout e orientation (alias)",
+      "projects/orc-ds/timeline/timeline.component.ts:29-30,42-43 — itemSelect e onItemClick emitidos juntos",
+      "projects/orc-ds/timeline/timeline.component.ts:24-25 — style, styleClass",
+      "projects/orc-ds/timeline/timeline.component.html:17 — todo item é <button>, mesmo sem handler",
+      "projects/orc-ds/timeline/timeline.component.html:33 — role=heading aria-level=3 dentro de <button> (conteúdo de botão é apresentacional, o heading some)",
+      "projects/orc-ds/timeline/timeline.types.ts — conteúdo só por title/description/date/icon (sem slot)",
+      "measurements.json — specFiles 0"
+    ],
+    "targetApi": {
+      "selector": "orc-timeline",
+      "inputs": [
+        "orientation ('vertical' | 'horizontal')",
+        "align ('start' | 'alternate' | 'end')",
+        "ariaLabel"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "orc-timeline-item (componente filho: status, date, icon; conteúdo por ng-content)",
+        "orcTimelineMarker (ng-template opcional no item, para marcador customizado)"
+      ],
+      "remove": [
+        "items, value e TimelineItem como fonte de dados (→ @for de <orc-timeline-item>)",
+        "layout (→ orientation)",
+        "style, styleClass",
+        "emptyMessage (→ @empty do app)",
+        "itemSelect, onItemClick (→ o app põe orc-button/link no conteúdo do item)",
+        "<button> por item; o item passa a ser <li> com aria-current='step' quando status='current'"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/timeline/timeline.component.html:17 — botões sem ação: paradas de Tab inúteis",
+      "projects/orc-ds/timeline/timeline.component.html:33 — heading dentro de botão",
+      "projects/orc-ds/timeline/ — nenhum spec"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["icon (lote 10) para marcadores"]
+  },
+  {
+    "id": "organization-chart",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 3,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "A decisão de produto nº 3 manda manter o OrgChart como experimental. A API é enxuta e idiomática (models selected/expanded, sem onX), mas o componente não desenha um organograma: é uma lista indentada por margin-left, ou seja, uma árvore com cartões. Declara role=tree sem a navegação por setas do padrão, deixa todo nó com tabindex=0 e usa textos em inglês. Corrigir layout (hierarquia de cima para baixo com conectores em CSS), teclado e slot de nó.",
+    "evidence": [
+      "projects/orc-ds/organization-chart/organization-chart.component.html:7 — `margin-left.rem = level * 2.2`: indentação vertical, não organograma",
+      "projects/orc-ds/organization-chart/organization-chart.component.html:1,8 — role=tree/treeitem",
+      "projects/orc-ds/organization-chart/organization-chart.component.ts:68-72 — teclado só Enter/Espaço; sem setas, Home/End nem expandir com →/←",
+      "projects/orc-ds/organization-chart/organization-chart.component.html:15 — tabindex=0 em todos os nós",
+      "projects/orc-ds/organization-chart/organization-chart.component.ts:65 — 'Collapse'/'Expand' em inglês",
+      "projects/orc-ds/organization-chart/organization-chart.component.ts:33-45 — 7 inputs, models selected/expanded, outputs sem prefixo on",
+      "projects/orc-ds/organization-chart/organization-chart-parity.spec.ts — 5 testes de paridade",
+      "docs/overhaul/README.md:11 — OrgChart listado como experimental"
+    ],
+    "targetApi": {
+      "selector": "orc-organization-chart",
+      "inputs": [
+        "nodes (HierarchyNode<T>[], o mesmo modelo de orc-tree)",
+        "ariaLabel",
+        "selectionMode ('none' | 'single' | 'multiple')",
+        "collapsible"
+      ],
+      "models": ["selection", "expanded"],
+      "outputs": ["nodeActivate"],
+      "slots": [
+        "orcOrgChartNode (ng-template; contexto { $implicit: node, expanded, selected })"
+      ],
+      "remove": [
+        "value (→ nodes)",
+        "OrganizationNode (→ HierarchyNode; subtitle/image vão para data e para o slot)",
+        "label (→ ariaLabel)",
+        "toggleChildrenLabel (→ provideOrcLabels)",
+        "selected (→ selection)",
+        "nodeSelect, nodeUnselect, nodeExpand, nodeCollapse, selectionChange (→ models)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/organization-chart/organization-chart.component.html:7 — não renderiza organograma",
+      "projects/orc-ds/organization-chart/organization-chart.component.ts:68-72 — role=tree sem o teclado do padrão",
+      "projects/orc-ds/organization-chart/organization-chart.component.html:15 — tabindex=0 em todos os nós",
+      "projects/orc-ds/organization-chart/organization-chart.component.ts:65 — rótulos em inglês"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "tree (HierarchyNode e keymanager compartilhados)",
+      "catálogo: status 'experimental' + @experimental no JSDoc",
+      "infra: provideOrcLabels"
+    ]
+  }
+]

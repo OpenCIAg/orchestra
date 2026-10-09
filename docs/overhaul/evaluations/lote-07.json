@@ -1,0 +1,919 @@
+[
+  {
+    "id": "box",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Primitiva estilo Chakra que só mapeia inputs para style inline num <div> extra; sem comportamento, sem a11y, sem tokens. Em Angular isso é uma regra CSS no elemento do app; o wrapper só adiciona DOM e um caminho paralelo a tokens. Superfície com identidade visual já é o orc-card.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:193-215 — 5 inputs (padding, margin, background, radius, width) que viram [style.*] num <div> interno; host + div extra",
+      "projects/orc-ds/box/index.ts:1 — entry de 1 linha que reexporta de @ciag/orchestra/p2 (dependência do bundle p2 inteiro)",
+      "projects/docs/src/app/catalog/box.catalog.ts — status beta; 0 specs (measurements.json: specLines 0)",
+      "docs/overhaul/measurements.json — consumer.tags vazio (0 usos no gestao-de-projetos)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-box (componente inteiro)",
+        "@ciag/orchestra/box (entry point)",
+        "export de BoxComponent em @ciag/orchestra/p2",
+        "projects/docs/src/app/catalog/box.catalog.ts, projects/docs/src/app/generated/component-api/box.generated.ts e exemplo em pages/components/component-doc/examples/box-example.component.ts"
+      ],
+      "substitute": "CSS do app no próprio elemento: `padding: var(--space-4); background: var(--orc-surface); border-radius: var(--radius-md)`. Superfície com borda/sombra → orc-card."
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:206 — `.orc-p2-box { width: 100% }` força largura total e o host (inline por padrão) fica sem display definido",
+      "projects/orc-ds/p2/p2-layout-components.ts:200,213 — background/radius aceitam string livre: contorna tokens (valores crus no template)"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": [
+      "styles/: tokens --space-* já existem em projects/orc-ds/styles/_tokens.scss; documentar receitas de layout CSS na docs (lote 10)"
+    ]
+  },
+  {
+    "id": "flex",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Tradução 1:1 de propriedades flex em inputs; duplica orc-stack e orc-space. Não há comportamento nem ganho de a11y, e o div interno quebra o layout do pai porque o host participa do flex/grid sem estilo. Substituível por CSS com tokens.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:112-145 — 5 inputs (direction, gap, align, justify, wrap) = 5 propriedades CSS 1:1",
+      "projects/orc-ds/flex/index.ts:1 — entry de 1 linha que reexporta de @ciag/orchestra/p2 (dependência do bundle p2 inteiro)",
+      "projects/docs/src/app/catalog/flex.catalog.ts — status beta; 0 specs (measurements.json: specLines 0)",
+      "docs/overhaul/measurements.json — consumer.tags vazio (0 usos no gestao-de-projetos)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-flex (componente inteiro)",
+        "@ciag/orchestra/flex (entry point)",
+        "export de FlexComponent em @ciag/orchestra/p2",
+        "projects/docs/src/app/catalog/flex.catalog.ts, projects/docs/src/app/generated/component-api/flex.generated.ts e exemplo em pages/components/component-doc/examples/flex-example.component.ts"
+      ],
+      "substitute": "CSS: `display:flex; gap: var(--space-4); align-items:center; justify-content:space-between; flex-wrap:wrap`."
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:125 — `width:100%` no div interno; host sem display, quebra flex/grid do pai (o filho real do layout do pai é o host vazio)",
+      "projects/orc-ds/p2/p2-layout-components.ts:132 — gap padrão '1rem' cru em vez de token --space-4"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": [
+      "styles/: tokens --space-* já existem em projects/orc-ds/styles/_tokens.scss; documentar receitas de layout CSS na docs (lote 10)"
+    ]
+  },
+  {
+    "id": "stack",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Subconjunto literal de orc-flex (mesmo template, menos opções). Três primitivas (flex/stack/space) para a mesma coisa violam 'uma forma de fazer'; nenhuma tem comportamento. Sai em favor de CSS com tokens --space-*.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:147-169 — 4 inputs (direction row|column, gap, align, justify) — subconjunto de orc-flex",
+      "projects/orc-ds/stack/index.ts:1 — entry de 1 linha que reexporta de @ciag/orchestra/p2 (dependência do bundle p2 inteiro)",
+      "projects/docs/src/app/catalog/stack.catalog.ts — status beta; 0 specs (measurements.json: specLines 0)",
+      "docs/overhaul/measurements.json — consumer.tags vazio (0 usos no gestao-de-projetos)",
+      "projects/docs/src/app/pages/components/component-doc/examples/stack-example.component.ts — único uso, na própria docs"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-stack (componente inteiro)",
+        "@ciag/orchestra/stack (entry point)",
+        "export de StackComponent em @ciag/orchestra/p2",
+        "projects/docs/src/app/catalog/stack.catalog.ts, projects/docs/src/app/generated/component-api/stack.generated.ts e exemplo em pages/components/component-doc/examples/stack-example.component.ts"
+      ],
+      "substitute": "CSS: `display:flex; flex-direction:column; gap: var(--space-4)`."
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:159 — mesmo problema de host sem display + div interno com width:100%"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": [
+      "styles/: tokens --space-* já existem em projects/orc-ds/styles/_tokens.scss; documentar receitas de layout CSS na docs (lote 10)"
+    ]
+  },
+  {
+    "id": "space",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Terceira variante de flex+gap (herança Ant Design), com alinhamento padrão diferente das outras duas. Sem comportamento; substituível por gap em CSS.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:171-191 — 3 inputs (size, direction, wrap) — Space do Ant Design; mesmo display:flex + gap",
+      "projects/orc-ds/space/index.ts:1 — entry de 1 linha que reexporta de @ciag/orchestra/p2 (dependência do bundle p2 inteiro)",
+      "projects/docs/src/app/catalog/space.catalog.ts — status beta; 0 specs (measurements.json: specLines 0)",
+      "docs/overhaul/measurements.json — consumer.tags vazio (0 usos no gestao-de-projetos)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-space (componente inteiro)",
+        "@ciag/orchestra/space (entry point)",
+        "export de SpaceComponent em @ciag/orchestra/p2",
+        "projects/docs/src/app/catalog/space.catalog.ts, projects/docs/src/app/generated/component-api/space.generated.ts e exemplo em pages/components/component-doc/examples/space-example.component.ts"
+      ],
+      "substitute": "CSS: `display:flex; align-items:center; gap: var(--space-2); flex-wrap:wrap`."
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:183 — align-items:center fixo, sem opção; diverge silenciosamente de flex/stack (stretch)"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": [
+      "styles/: tokens --space-* já existem em projects/orc-ds/styles/_tokens.scss; documentar receitas de layout CSS na docs (lote 10)"
+    ]
+  },
+  {
+    "id": "grid",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Único primitivo com alguma lógica (auto-fit/minmax), mas é uma linha de CSS que vira receita documentada. Não tem comportamento nem teclado; o wrapper só acrescenta DOM. Nome 'grid' ainda colide semanticamente com data-grid/tabela.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:36-66 — 5 inputs (columns, minColumnWidth, gap, alignItems, label); columnsStyle monta repeat(auto-fit, minmax(...))",
+      "projects/orc-ds/grid/index.ts:1 — entry de 1 linha que reexporta de @ciag/orchestra/p2 (dependência do bundle p2 inteiro)",
+      "projects/docs/src/app/catalog/grid.catalog.ts — status beta; 0 specs (measurements.json: specLines 0)",
+      "docs/overhaul/measurements.json — consumer.tags vazio (0 usos no gestao-de-projetos)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-grid (componente inteiro)",
+        "@ciag/orchestra/grid (entry point)",
+        "export de GridComponent em @ciag/orchestra/p2",
+        "projects/docs/src/app/catalog/grid.catalog.ts, projects/docs/src/app/generated/component-api/grid.generated.ts e exemplo em pages/components/component-doc/examples/grid-example.component.ts"
+      ],
+      "substitute": "CSS: `display:grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr))` (receita documentada na docs)."
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:44 — role=group só quando há label; a semântica de agrupamento cabe ao conteúdo, não ao layout",
+      "projects/orc-ds/p2/p2-layout-components.ts:49 — host sem display: o grid é o div interno; filhos projetados são filhos do div, mas o host quebra o grid/flex do pai"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": [
+      "styles/: tokens --space-* já existem em projects/orc-ds/styles/_tokens.scss; documentar receitas de layout CSS na docs (lote 10)"
+    ]
+  },
+  {
+    "id": "container",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Largura máxima de página é decisão do shell da aplicação, não do design system. Três propriedades CSS; zero comportamento e zero uso.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:89-110 — 3 inputs (maxWidth 72rem, padding, fluid)",
+      "projects/orc-ds/container/index.ts:1 — entry de 1 linha que reexporta de @ciag/orchestra/p2 (dependência do bundle p2 inteiro)",
+      "projects/docs/src/app/catalog/container.catalog.ts — status beta; 0 specs (measurements.json: specLines 0)",
+      "docs/overhaul/measurements.json — consumer.tags vazio (0 usos no gestao-de-projetos)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-container (componente inteiro)",
+        "@ciag/orchestra/container (entry point)",
+        "export de ContainerComponent em @ciag/orchestra/p2",
+        "projects/docs/src/app/catalog/container.catalog.ts, projects/docs/src/app/generated/component-api/container.generated.ts e exemplo em pages/components/component-doc/examples/container-example.component.ts"
+      ],
+      "substitute": "Responsabilidade do app (shell/layout raiz): `max-width: 72rem; margin-inline:auto; padding-inline: var(--space-4)`."
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:107-108 — larguras e padding crus (72rem, 1rem), sem token"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": [
+      "styles/: tokens --space-* já existem em projects/orc-ds/styles/_tokens.scss; documentar receitas de layout CSS na docs (lote 10)"
+    ]
+  },
+  {
+    "id": "aspect-ratio",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "A propriedade CSS `aspect-ratio` é nativa e universal; o componente só a repassa num div extra. Era necessário em bibliotecas React pré-2021 (hack de padding-top); hoje é resolvido pela plataforma.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:68-87 — 2 inputs (ratio, overflow) que viram [style.aspect-ratio]",
+      "projects/orc-ds/aspect-ratio/index.ts:1 — entry de 1 linha que reexporta de @ciag/orchestra/p2 (dependência do bundle p2 inteiro)",
+      "projects/docs/src/app/catalog/aspect-ratio.catalog.ts — status beta; 0 specs (measurements.json: specLines 0)",
+      "docs/overhaul/measurements.json — consumer.tags vazio (0 usos no gestao-de-projetos)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-aspect-ratio (componente inteiro)",
+        "@ciag/orchestra/aspect-ratio (entry point)",
+        "export de AspectRatioComponent em @ciag/orchestra/p2",
+        "projects/docs/src/app/catalog/aspect-ratio.catalog.ts, projects/docs/src/app/generated/component-api/aspect-ratio.generated.ts e exemplo em pages/components/component-doc/examples/aspect-ratio-example.component.ts"
+      ],
+      "substitute": "CSS nativo: `aspect-ratio: 16 / 9; overflow:hidden` (suporte universal nos browsers alvo)."
+    },
+    "defects": [],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": [
+      "styles/: tokens --space-* já existem em projects/orc-ds/styles/_tokens.scss; documentar receitas de layout CSS na docs (lote 10)"
+    ]
+  },
+  {
+    "id": "fluid",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 1,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Paridade pura com `p-fluid` do PrimeNG: um div com classes `p-fluid p-component` e flex column com gap. Aqui nem estica os controles (não há regra para filhos), só empilha. Largura total de controles deve ser o padrão (ou um input `fluid` no próprio controle, decidido no lote 03).",
+    "evidence": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:189-206 — template com classes PrimeNG `p-fluid p-component` (:193-194) e único input styleClass (:205)",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:200 — CSS só faz `display:flex; flex-direction:column; gap:1rem`; nenhuma regra que estenda os controles filhos (contradiz a descrição do catálogo)",
+      "projects/orc-ds/fluid/index.ts:1 — reexporta de @ciag/orchestra/p2",
+      "docs/overhaul/measurements.json — 0 specs, 0 usos no consumidor"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-fluid",
+        "@ciag/orchestra/fluid",
+        "FluidComponent em @ciag/orchestra/p2",
+        "classes p-fluid/p-component",
+        "projects/docs/src/app/catalog/fluid.catalog.ts e generated/component-api correspondente"
+      ],
+      "substitute": "Controles de formulário ocupam 100% da largura do contêiner por padrão (`width:100%` no host, regra de lote 03); empilhamento via CSS `display:flex; flex-direction:column; gap: var(--space-4)`."
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:200 — não cumpre o que promete (\"estende os controles para a largura disponível\"): não há seletor para filhos"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "lote 03: política de largura padrão dos controles de formulário"
+    ]
+  },
+  {
+    "id": "splitter",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Tem comportamento real (redimensionamento por ponteiro e teclado, minSize, normalização), que CSS não resolve; é o Resizable do shadcn. A API, porém, é configuração (array `panels` + diretiva casada por id), força um <header> em cada painel e tem quatro outputs PrimeNG com prefixo `on`. A semântica de separador está num <button>, o que é ARIA inválido.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-splitter-component.ts:88-92 — panels: SplitterPanel[] + sizes model: layout por configuração",
+      "projects/orc-ds/p2/p2-splitter-component.ts:17-21,108-114 — diretiva [orcSplitterPanel]=\"id\" casada por string; @ContentChildren/QueryList em vez de contentChildren()",
+      "projects/orc-ds/p2/p2-splitter-component.ts:93-97 — onResizeStart, onResizeEnd (só teclado), onPointerResizeEnd (só ponteiro), onResize",
+      "projects/orc-ds/p2/p2-splitter-component.ts:48 — <header> com label/id renderizado sempre em cada painel (chrome imposto)",
+      "projects/orc-ds/p2/p2-splitter-component.ts:56-59 — <button role=\"separator\">: role não permitida em <button> (ARIA in HTML)",
+      "projects/orc-ds/splitter-contract.spec.ts:43-266 — 6 testes de comportamento (ponteiro, teclado, minSize, cancelamento)"
+    ],
+    "targetApi": {
+      "selector": "orc-splitter",
+      "inputs": ["orientation ('horizontal'|'vertical')", "ariaLabel"],
+      "models": ["sizes (number[] em %)"],
+      "outputs": [
+        "resizeStart ({ index })",
+        "resizeEnd ({ sizes }) — único, para ponteiro e teclado"
+      ],
+      "slots": [
+        "orc-splitter-panel (filho; inputs: size, minSize, ariaLabel) — gutter inserido automaticamente entre painéis via contentChildren()"
+      ],
+      "remove": [
+        "panels (array de configuração → filhos orc-splitter-panel)",
+        "diretiva [orcSplitterPanel] casada por id",
+        "<header> automático por painel",
+        "onResizeStart → resizeStart",
+        "onResizeEnd + onPointerResizeEnd → resizeEnd",
+        "onResize (→ sizesChange do model)",
+        "resizeLabel (→ rótulo padrão pt-BR via provideOrcLabels)",
+        "CommonModule"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-splitter-component.ts:56-59 — role=separator em <button>; usar <div role=\"separator\" tabindex=\"0\"> com aria-controls apontando o painel primário (padrão Window Splitter)",
+      "projects/orc-ds/p2/p2-splitter-component.ts:231-243 — teclado sem Home/End (colapsar/expandir ao mínimo/máximo) nem Enter, previstos no padrão Window Splitter",
+      "projects/orc-ds/p2/p2-splitter-component.ts:66 — aria-valuenow com fração longa (ex.: 33.3333); arredondar",
+      "projects/orc-ds/p2/p2-splitter-component.ts:136 — rótulo padrão em inglês ('Resize … and …')",
+      "projects/orc-ds/p2/p2-splitter-component.ts:94-96 — fim de redimensionamento dividido em dois outputs conforme o dispositivo"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "infra: provideOrcLabels (rótulos pt-BR)",
+      "sair de p2/ para projects/orc-ds/splitter/ com implementação própria"
+    ]
+  },
+  {
+    "id": "scroll-panel",
+    "verdict": "MERGE",
+    "mergeInto": "scroll-area",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Mesma responsabilidade de orc-scroll-area (região rolável nomeada e focável) com menos recursos: só eixo vertical, sem sombras de affordance, com styleClass/style e o output PrimeNG onScroll. Ainda tem um entry alias (`scrollpanel`). Sai; scroll-area é o canônico.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-dock-scroll-components.ts:14-107 — orc-scroll-panel: div overflow:auto + role=region + tabindex=0, igual a scroll-area.component.html:27-35",
+      "projects/orc-ds/p2/p2-dock-scroll-components.ts:45-46,51 — styleClass, style, onScroll",
+      "projects/orc-ds/p2/p2-dock-scroll-components.ts:59-99 — reimplementa rolagem por teclado (o navegador já rola um contêiner focado)",
+      "projects/orc-ds/p2/p2-dock-scroll-components.ts:101-106 — refresh() despacha evento 'scroll' sintético (hack)",
+      "projects/orc-ds/scrollpanel/index.ts:1 — entry alias de nome duplicado",
+      "docs/overhaul/measurements.json — aliasEntryPoints ['@ciag/orchestra/scrollpanel'], 0 specs próprias, 0 usos"
+    ],
+    "targetApi": {
+      "selector": "orc-scroll-area",
+      "migrates": [
+        "maxHeight/height → maxHeight do scroll-area (aceitar também `height` se necessário)",
+        "scrollTop(value) → método público scrollTo(options) no scroll-area"
+      ],
+      "remove": [
+        "orc-scroll-panel",
+        "@ciag/orchestra/scroll-panel",
+        "@ciag/orchestra/scrollpanel (alias)",
+        "ScrollPanelComponent em p2",
+        "step",
+        "styleClass",
+        "style",
+        "contentId",
+        "onScroll (→ scrolled do scroll-area)",
+        "refresh()",
+        "projects/docs/src/app/catalog/scroll-panel.catalog.ts e generated/component-api/scroll-panel.generated.ts"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-dock-scroll-components.ts:25 — nome acessível padrão em inglês ('Scrollable content')",
+      "projects/orc-ds/p2/p2-dock-scroll-components.ts:36 — scroll-behavior:smooth fixo, ignora prefers-reduced-motion",
+      "projects/orc-ds/command-dock-contract.spec.ts:200 — dock depende da classe .orc-scroll-panel; ajustar no lote 06"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "scroll-area redesenhado",
+      "lote 06: dock usa .orc-scroll-panel no spec"
+    ]
+  },
+  {
+    "id": "scroll-area",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "Canônico para região rolável: nomeia a região, torna-a focável e mostra sombras de affordance nos dois eixos com ResizeObserver/MutationObserver. Precisa de ajustes pequenos: tirar a rolagem por teclado reimplementada (o navegador já faz isso num contêiner focado), mover o rótulo padrão para pt-BR via provider, remover sinais públicos mortos e trocar @HostListener por `host`.",
+    "evidence": [
+      "projects/orc-ds/scroll-area/scroll-area.component.ts:32-37 — API enxuta: orientation, maxHeight, maxWidth, alwaysShowScrollbar, label, scrolled",
+      "projects/orc-ds/scroll-area/scroll-area.component.ts:53-79 — ResizeObserver + MutationObserver para recalcular sombras",
+      "projects/orc-ds/scroll-area/scroll-area.component.ts:149-208 — @HostListener('keydown') reimplementa setas/PageUp/PageDown que o navegador já trata em contêiner rolável focado",
+      "projects/orc-ds/scroll-area/scroll-area.component.ts:38-39 — canScrollBack/canScrollForward públicos sem uso no template nem fora do arquivo",
+      "projects/orc-ds/scroll-area/scroll-area.component.spec.ts:20-330 — 6 testes de comportamento (eixos, sombras, teclado, mutação, nome padrão)"
+    ],
+    "targetApi": {
+      "selector": "orc-scroll-area",
+      "inputs": [
+        "orientation ('vertical'|'horizontal'|'both')",
+        "maxHeight",
+        "maxWidth",
+        "alwaysShowScrollbar",
+        "label (padrão pt-BR via provideOrcLabels: 'Conteúdo rolável')"
+      ],
+      "models": [],
+      "outputs": ["scrolled ({ top, left })"],
+      "slots": ["ng-content"],
+      "methods": [
+        "scrollTo(options: ScrollToOptions) — absorve scrollTop() do scroll-panel"
+      ],
+      "remove": [
+        "onKeydown/@HostListener (rolagem por teclado nativa)",
+        "canScrollBack/canScrollForward (sinais mortos)",
+        "fallback Renderer2 'resize' (ResizeObserver é universal nos alvos)",
+        "texto padrão em inglês"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/scroll-area/scroll-area.component.ts:36 e scroll-area.component.html:32 — rótulo padrão 'Scrollable content' em inglês",
+      "projects/orc-ds/scroll-area/scroll-area.component.html:33 — tabindex=0 mesmo sem overflow: gera parada de Tab inútil; aplicar só quando há conteúdo rolável (canScrollUp||Down||Left||Right ou scrollHeight>clientHeight)",
+      "projects/orc-ds/scroll-area/scroll-area.component.ts:81-83 — ngOnChanges só para remedir; com signals usar effect/afterRenderEffect"
+    ],
+    "consumerImpact": "nenhum (não usado); absorve scroll-panel",
+    "effort": "P",
+    "dependsOn": ["infra: provideOrcLabels"]
+  },
+  {
+    "id": "divider",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Canônico entre Divider e Separator: tem implementação própria, spec, variantes, rótulo e o modo semântico `decorative=false` que o próprio orc-separator manda usar. A API está quase certa; o problema é que no modo decorativo (padrão) um rótulo visível ('ou') fica escondido dos leitores de tela, e `label` e `ariaLabel` se sobrepõem. Também renderiza 3 spans mesmo sem rótulo.",
+    "evidence": [
+      "projects/orc-ds/divider/divider.component.ts:20-25 — orientation, variant, label, inset, decorative, ariaLabel",
+      "projects/orc-ds/divider/divider.component.html:3-6 — role=separator só com decorative=false; aria-hidden='true' quando decorativo",
+      "projects/orc-ds/divider/divider.component.html:8-10 — 2 linhas + span de rótulo sempre renderizados",
+      "projects/orc-ds/p2/p2-layout-components.ts:217-220 — orc-separator já @deprecated apontando para orc-divider",
+      "projects/orc-ds/divider/divider.component.spec.ts:18-61 — 3 testes (semântica decorativa/semântica, coerção, projeção)"
+    ],
+    "targetApi": {
+      "selector": "orc-divider",
+      "inputs": [
+        "orientation ('horizontal'|'vertical')",
+        "variant ('solid'|'dashed'|'dotted')",
+        "inset",
+        "decorative (padrão true)"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "ng-content (rótulo visível; quando presente o texto continua legível por AT)"
+      ],
+      "remove": [
+        "label (→ conteúdo projetado: uma forma de passar o rótulo)",
+        "ariaLabel (com decorative=false o nome vem do conteúdo; se vazio, aria-label só via atributo nativo no host)",
+        "spans de linha/rótulo quando não há rótulo (usar border no host)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/divider/divider.component.html:6,9 — no modo decorativo padrão o rótulo/conteúdo projetado recebe aria-hidden: texto visível ('ou', 'Seção X') some para leitores de tela",
+      "projects/orc-ds/divider/divider.component.ts:22,25 — label e ariaLabel duplicam a fonte do nome acessível"
+    ],
+    "consumerImpact": "nenhum (não usado)",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "separator",
+    "verdict": "MERGE",
+    "mergeInto": "divider",
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Duplicata de orc-divider, já marcada @deprecated no código e apontando para o divider. Decisão: `orc-divider` é o canônico (implementação própria, spec, variantes, rótulo); `orc-separator` sai.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:217-220 — @deprecated: \"Use DividerComponent … with [decorative]=false\"",
+      "projects/orc-ds/p2/p2-layout-components.ts:221-240 — div role=separator + aria-orientation + label (2 inputs)",
+      "projects/orc-ds/separator/index.ts:1 — reexporta de p2",
+      "projects/docs/src/app/catalog/divider.catalog.ts:10 — tags do divider já incluem 'separator'"
+    ],
+    "targetApi": {
+      "selector": "orc-divider",
+      "migrates": [
+        "orientation → orientation",
+        "label (nome acessível) → <orc-divider [decorative]=\"false\" aria-label=\"…\"> ou conteúdo projetado",
+        "separador semântico por padrão → decorative=false explícito"
+      ],
+      "remove": [
+        "orc-separator",
+        "@ciag/orchestra/separator",
+        "SeparatorComponent em p2",
+        "projects/docs/src/app/catalog/separator.catalog.ts, generated/component-api/separator.generated.ts, examples/separator-example.component.ts"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:233 — usa token de superfície (--orc-component-surface-subtle) como cor de linha em vez de token de borda"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["divider redesenhado"]
+  },
+  {
+    "id": "fieldset",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Agrupar campos com <fieldset>/<legend> tem semântica nativa útil (nome de grupo e `disabled` em cascata) que nenhum outro componente cobre. O 'fieldset recolhível' do PrimeNG duplica orc-collapsible, e style/styleClass/onBeforeToggle/onAfterToggle são paridade. Fica como componente fino de formulário, sem toggle.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:113-141 — usa <fieldset>/<legend> nativos (bom); classes PrimeNG p-fieldset p-component (:114-115) e data-pc-name (:120)",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:153-161 — legend, toggleable, collapsed (model), styleClass, style, ariaLabel, expandLabel, collapseLabel, onBeforeToggle, onAfterToggle",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:124-136 — botão de toggle dentro da <legend>: duplica orc-collapsible",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:163,166 — rótulos padrão em inglês ('Expand fieldset')",
+      "projects/orc-ds/p2-primeng-gap-layout-contract.spec.ts:115,151 — 2 testes (direção do espaçamento e nome pela legend)"
+    ],
+    "targetApi": {
+      "selector": "orc-fieldset",
+      "inputs": ["legend", "disabled (repassa ao <fieldset disabled> nativo)"],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "[orcFieldsetLegend] (legenda rica, alternativa a legend)",
+        "ng-content (campos)"
+      ],
+      "remove": [
+        "toggleable/collapsed/expand()/collapse()/toggle() (→ orc-collapsible em volta, se precisar)",
+        "expandLabel",
+        "collapseLabel",
+        "onBeforeToggle",
+        "onAfterToggle",
+        "styleClass",
+        "style",
+        "ariaLabel (o nome vem da <legend>)",
+        "classes p-fieldset/p-component e data-pc-name"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:119 — aria-labelledby apontando para a própria <legend> é redundante (o <fieldset> já é nomeado pela legend)",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:134 — ícones '＋'/'−' em caracteres fullwidth em vez de orc-icon (Material Symbols)"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "lote 03: decidir se fica no entry de form/form-field (padrão Field/FieldSet do shadcn) ou entry próprio",
+      "sair de p2/"
+    ]
+  },
+  {
+    "id": "panel",
+    "verdict": "MERGE",
+    "mergeInto": "collapsible",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Panel é Card com cabeçalho (estático) ou Collapsible com borda (toggleable): sobreposição completa com orc-card e orc-collapsible, mais a API de paridade PrimeNG (styleClass, style, legend deprecado, transitionOptions no-op, onBeforeToggle/onAfterToggle). O alvo é collapsible, que herda o slot de cabeçalho rico e a variante com borda; o uso estático migra para orc-card + orc-card-header.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:19-108 — orc-panel: <section> + <header> clicável + botão de toggle",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:73-79 — legend @deprecated e transitionOptions @deprecated (no-op)",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:76-77,84-85 — styleClass, style, onBeforeToggle, onAfterToggle",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:23-24,29 — classes p-panel p-component duplicadas no class estático e no [class]; data-pc-name",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:90,93 — 'Expand panel'/'Collapse panel' em inglês",
+      "projects/orc-ds/p2-primeng-gap-layout-contract.spec.ts:76,102 — 2 testes"
+    ],
+    "targetApi": {
+      "selector": "orc-collapsible",
+      "migrates": [
+        "header + [orcPanelHeader] → slot de gatilho [orcCollapsibleTrigger] no collapsible",
+        "toggleable=true + collapsed → orc-collapsible com [(open)] (inverso de collapsed)",
+        "aparência com borda/fundo de cabeçalho → variant='bordered' no collapsible",
+        "toggleable=false (painel estático) → orc-card com orc-card-header"
+      ],
+      "remove": [
+        "orc-panel",
+        "@ciag/orchestra/panel",
+        "PanelComponent em p2",
+        "legend",
+        "transitionOptions",
+        "styleClass",
+        "style",
+        "ariaLabel",
+        "expandLabel/collapseLabel",
+        "onBeforeToggle/onAfterToggle",
+        "projects/docs/src/app/catalog/panel.catalog.ts e generated/component-api/panel.generated.ts"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:35 — o <header> inteiro alterna com o mouse mas só o botão é alcançável por teclado (alvo de clique ≠ alvo acessível)",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:54 — glifos '＋'/'−' em vez de orc-icon"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["collapsible redesenhado (slot de gatilho + variant)"]
+  },
+  {
+    "id": "accordion",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 1
+    },
+    "rationale": "Padrão essencial e usado pelo consumidor, com semântica APG correta (heading + button + aria-expanded/controls + setas/Home/End). A API tem dois models para a mesma seleção (value e activeIndex), aliases (header/title, dois seletores de slot), inputs no-op e outputs PrimeNG (onOpen/onClose), além de três outputs redundantes no item. O registro por ngOnInit perde a ordem do DOM, e a animação em CSS nunca roda por causa do [hidden].",
+    "evidence": [
+      "projects/orc-ds/accordion/accordion.component.ts:28,41 — dois models (value e activeIndex) para a mesma seleção, reconciliados por effect com previousValue/selectionSource (:43-75)",
+      "projects/orc-ds/accordion/accordion.component.ts:29-39 — style, styleClass, id, expandIcon/collapseIcon (classes CSS), selectOnFocus (nunca lido), transitionOptions",
+      "projects/orc-ds/accordion/accordion.component.ts:79-81 — expandedChange (objeto de evento, não boolean) + onOpen + onClose",
+      "projects/orc-ds/accordion/accordion-item.component.ts:31-46 — id/value, title/header (alias), headerStyleClass, contentStyleClass, closable e cache @deprecated no-op, icon (classe CSS), iconPos, hideToggle",
+      "projects/orc-ds/accordion/accordion-item.component.ts:49-54 — expanded model + opened + closed + toggle (o model já emite expandedChange)",
+      "projects/orc-ds/accordion/accordion-item.component.html:33 — dois seletores para o mesmo slot: [accordion-header], [accordionHeader]",
+      "projects/orc-ds/accordion/accordion-item.component.html:27,35,57 — *ngIf/ngClass/CommonModule em vez de @if/class bindings",
+      "projects/orc-ds/accordion/accordion.component.ts:139-178 — setas/Home/End no padrão APG",
+      "projects/orc-ds/accordion/accordion-behavior.spec.ts:40-94 — 4 testes de comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-accordion",
+      "inputs": [
+        "multiple",
+        "variant ('default'|'separated'|'bordered')",
+        "headingLevel (padrão 3)"
+      ],
+      "models": ["value (string | string[] | null; padrão null = nada aberto)"],
+      "outputs": [],
+      "slots": [
+        "orc-accordion-item (filho; inputs: value (obrigatório), title, subtitle, disabled, headingLevel; model: expanded; outputs: opened, closed)",
+        "[orcAccordionHeader] (cabeçalho rico do item)",
+        "[orcAccordionIcon] (ícone inicial, via orc-icon)"
+      ],
+      "remove": [
+        "activeIndex (→ value)",
+        "style",
+        "styleClass",
+        "id (raiz)",
+        "expandIcon/collapseIcon (classe CSS → indicador fixo com orc-icon ou slot)",
+        "selectOnFocus (no-op)",
+        "transitionOptions",
+        "expandedChange (objeto) → valueChange do model",
+        "onOpen/onClose → opened/closed no item",
+        "item: id (→ value), header (alias de title), headerStyleClass, contentStyleClass, closable, cache, icon (string de classe), iconPos, hideToggle, toggle (→ expandedChange do model)",
+        "seletor de slot [accordion-header] (fica só [orcAccordionHeader])",
+        "CommonModule/*ngIf/ngClass",
+        "orc-accordion-item fora de orc-accordion (disclosure isolado = orc-collapsible)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/accordion/accordion.component.ts:28,41 — value=0 e activeIndex=0 por padrão: o primeiro item (value ?? index === 0) abre implicitamente sem o consumidor pedir",
+      "projects/orc-ds/accordion/accordion-item.component.ts:75-79 + accordion.component.ts:87-89 — registro em ngOnInit: ao reordenar/inserir itens com @for, a ordem dos índices e da navegação por setas deixa de seguir o DOM; usar contentChildren(AccordionItemComponent)",
+      "projects/orc-ds/accordion/accordion-item.component.scss:108-120 + accordion-item.component.html:83 — transição grid-template-rows anulada por [hidden]{display:none}: a animação nunca roda e transitionOptions vira no-op",
+      "projects/orc-ds/accordion/accordion.component.ts:38 — selectOnFocus declarado e nunca lido",
+      "projects/orc-ds/accordion/accordion.component.html:9 — role=region na raiz sem nome quando ariaLabel é vazio (landmark anônimo)",
+      "projects/orc-ds/accordion/accordion-item.component.html:81 — role=region em todo painel; o APG recomenda evitar com muitos painéis (gera excesso de landmarks)"
+    ],
+    "consumerImpact": "hourlog-warning.component.html:34-42 usa <orc-accordion [multiple]=\"true\"> + <orc-accordion-item [id]=\"day.date\" title=\"…\"> + span [accordion-header]. Migração: [id]→[value], atributo accordion-header→orcAccordionHeader. Atenção: hoje o value padrão 0 casa com o índice do primeiro item (item.value() ?? index, accordion.component.ts:68), então o primeiro dia abre sozinho; com value padrão null nada abre. Se o comportamento for desejado, o consumidor passa [value]=\"[days[0]?.date]\".",
+    "effort": "M",
+    "dependsOn": [
+      "orc-icon para o indicador",
+      "base compartilhada de disclosure com orc-collapsible (opcional)"
+    ]
+  },
+  {
+    "id": "collapsible",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "Primitivo de disclosure isolado (Collapsible do shadcn), bem testado e com signals. Fica como o único disclosure avulso e absorve orc-panel. Ajustes: gatilho rico por slot (hoje só strings title/summary), um único mecanismo lazy em vez de lazy + lazyContent, toggleChange redundante com o model, ícone por orc-icon e rótulo padrão pt-BR.",
+    "evidence": [
+      "projects/orc-ds/collapsible/collapsible.component.ts:27-39 — id, title, summary, open (model), disabled, lazy, lazyContent, toggleChange",
+      "projects/orc-ds/collapsible/collapsible.component.ts:37-38 — dois mecanismos de lazy (flag + TemplateRef via input)",
+      "projects/orc-ds/collapsible/collapsible.component.ts:39,59-60 — toggleChange duplica openChange do model",
+      "projects/orc-ds/collapsible/collapsible.component.ts:47-49 — fallback 'Collapsible section' em inglês",
+      "projects/orc-ds/collapsible/collapsible.component.html:16-22 — gatilho só com strings; chevron é o glifo '⌄'",
+      "projects/orc-ds/collapsible/collapsible.component.spec.ts:63-212 — 6 testes de contrato (nome, aria-controls, lazy, model externo, disabled)"
+    ],
+    "targetApi": {
+      "selector": "orc-collapsible",
+      "inputs": [
+        "title",
+        "summary",
+        "disabled",
+        "variant ('plain'|'bordered' — absorve o visual de orc-panel)"
+      ],
+      "models": ["open"],
+      "outputs": [],
+      "slots": [
+        "[orcCollapsibleTrigger] (conteúdo rico do gatilho; substitui header/[orcPanelHeader] do panel)",
+        "ng-template[orcCollapsibleContent] (conteúdo lazy, criado na primeira abertura)",
+        "ng-content (conteúdo eager)"
+      ],
+      "remove": [
+        "lazy + lazyContent (→ ng-template orcCollapsibleContent)",
+        "toggleChange (→ openChange)",
+        "id (ids gerados internamente)",
+        "glifo '⌄' (→ orc-icon expand_more)",
+        "texto padrão em inglês (→ provideOrcLabels)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/collapsible/collapsible.component.ts:48 — nome padrão do gatilho em inglês",
+      "projects/orc-ds/collapsible/collapsible.component.html:22 — glifo de texto em vez de orc-icon (decisão 5: Material Symbols)"
+    ],
+    "consumerImpact": "nenhum (não usado); recebe os usos de orc-panel toggleable",
+    "effort": "P",
+    "dependsOn": ["infra: provideOrcLabels", "orc-icon"]
+  },
+  {
+    "id": "card",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "É o componente de layout mais usado pelo consumidor (78 tags, 12 imports) e o padrão de ação primária com botão sobreposto e cliques aninhados preservados é bom. A API, porém, tem dois outputs para o mesmo clique (cardClick e onClickEvent), quatro inputs de espaçamento sobrepostos (flush, media, padding, clip), style/styleClass e dois jeitos de montar o cabeçalho (inputs header/subheader e orc-card-header). O cartão clicável sempre se anuncia como botão de alternância (aria-pressed) e não tem modo link, então o consumidor põe routerLink num botão.",
+    "evidence": [
+      "projects/orc-ds/card/card.component.ts:32-33 — cardClick (void) e onClickEvent (MouseEvent) para o mesmo evento",
+      "projects/orc-ds/card/card.component.ts:21-25 — variant, flush, media, padding, clip: quatro formas de mexer em padding/overflow",
+      "projects/orc-ds/card/card.component.ts:28-29 — styleClass, style",
+      "projects/orc-ds/card/card.component.html:24-33 + card-header.component.ts:3-10 — header/subheader por input e orc-card-header por slot: duas formas",
+      "projects/orc-ds/card/card.component.html:15-22 — <button> sobreposto como ação primária; card.component.ts:56-77 ignora cliques em elementos interativos aninhados",
+      "projects/orc-ds/card/card.component.ts:13 — CommonModule importado sem uso no template",
+      "projects/orc-ds/card/card.component.spec.ts:44-206 — 5 testes de comportamento (coerção, teclado, cliques aninhados, iframe)",
+      "gestao-de-projetos-frontend/src: 14x [style]=\"{ padding: '0' …}\" em orc-card, 6x (cardClick), 8x [clickable], 2x [routerLink] em card clicável (home.component.html:98,330)"
+    ],
+    "targetApi": {
+      "selector": "orc-card",
+      "inputs": [
+        "padding ('md'|'none'; 'none' cobre flush/media)",
+        "clickable",
+        "selected",
+        "ariaLabel"
+      ],
+      "models": [],
+      "outputs": ["activated (MouseEvent | KeyboardEvent)"],
+      "slots": [
+        "orc-card-header",
+        "orc-card-title",
+        "orc-card-description",
+        "orc-card-body",
+        "orc-card-footer",
+        "[orcCardLink] em <a> projetado (link primário 'stretched': a área do card navega via <a href>/routerLink, semântica de link)"
+      ],
+      "remove": [
+        "cardClick + onClickEvent (→ activated)",
+        "header/subheader (→ orc-card-header + orc-card-title/description)",
+        "flush, media (→ padding='none')",
+        "padding livre string|number (→ escala de tokens)",
+        "clip (→ overflow no CSS do app/host)",
+        "variant 'simple'|'dashboard' (layout horizontal é CSS do app)",
+        "styleClass",
+        "style (o [style] do consumidor passa a cair no host)",
+        "aria-pressed automático (só quando selected é usado, isto é, cartão selecionável)",
+        "CommonModule",
+        "div wrapper interno de card-header/body/footer (estilizar o host)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/card/card.component.html:20 — aria-pressed sempre presente quando clickable: todo card clicável vira 'botão de alternância' para AT, mesmo sem seleção",
+      "projects/orc-ds/card/card.component.html:19 — nome padrão 'Card action' em inglês",
+      "projects/orc-ds/card/card.component.html:11 — <article> com aria-label = header em todo card (78 no consumidor): ruído de leitura; o nome deve vir do título via aria-labelledby",
+      "projects/orc-ds/card/card.component.scss:2-3 — tokens com fallbacks de outra nomenclatura (var(--orc-surface, var(--bg-app))), sinal de duas camadas de tokens",
+      "projects/orc-ds/card/card.component.scss:16-19 — :focus-within contorna o card inteiro quando qualquer input interno recebe foco (cards usados como formulário/modal no consumidor ficam com contorno permanente)",
+      "sem modo link: gestao-de-projetos home.component.html:98,330 aplica routerLink no host de um card cujo alvo acessível é <button> (sem abrir em nova aba nem semântica de link)"
+    ],
+    "consumerImpact": "Alto volume (78 tags). Migração mecânica: [style]=\"{ padding: '0' }\" → padding=\"none\" (14x; overflow:'hidden' vai para a classe CSS do app); (cardClick) → (activated) (6x); [routerLink] em card clicável (2x) → <a orcCardLink [routerLink]> projetado; usos com role=dialog/aria-labelledby no host continuam funcionando (atributos nativos). 60 usos só com class= não mudam.",
+    "effort": "M",
+    "dependsOn": [
+      "infra: provideOrcLabels",
+      "decisão de tokens únicos (lote 10: styles/)"
+    ]
+  }
+]

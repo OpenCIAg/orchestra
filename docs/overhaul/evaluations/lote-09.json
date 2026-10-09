@@ -1,0 +1,992 @@
+[
+  {
+    "id": "avatar",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Primitivo básico de qualquer app com usuários (cabeçalho, listas de membros, responsáveis). A implementação usa signals/OnPush, mas carrega aliases (name/label/initials), modo clicável que reimplementa um botão e rótulos em inglês. O AvatarGroup fica na mesma família e no mesmo entry; o entry 'avatar-group' (lote 10) é alias puro e sai.",
+    "evidence": [
+      "projects/orc-ds/avatar/avatar.component.ts:30-49 — 16 inputs: name, label e initials disputam a mesma informação; id e styleClass são paridade",
+      "projects/orc-ds/avatar/avatar.component.ts:45-53,148-159 — clickable + avatarClick + role=button/tabindex manual: reimplementa <button>",
+      "projects/orc-ds/avatar/avatar.component.ts:121-140 — rótulos padrão em inglês ('Online', 'Busy', 'Away', 'User')",
+      "projects/orc-ds/avatar/avatar.component.html:3-5 — classes PrimeNG 'p-avatar p-component' e data-pc-name",
+      "projects/orc-ds/avatar/avatar-group.component.ts:26-34 — dois modos concorrentes (items[] vs ng-content) e excessCount manual",
+      "projects/orc-ds/avatar-group/index.ts:1-2 — entry 'avatar-group' só reexporta '@ciag/orchestra/avatar'",
+      "projects/orc-ds/avatar/avatar-behavior.spec.ts, avatar-group-contract.spec.ts — 142 linhas de spec comportamental"
+    ],
+    "targetApi": {
+      "selector": "orc-avatar (+ orc-avatar-group no mesmo entry)",
+      "inputs": [
+        "src",
+        "alt",
+        "name (gera iniciais e cor automática)",
+        "size ('xs'|'sm'|'md'|'lg'|'xl')",
+        "shape ('circle'|'square')",
+        "status ('online'|'offline'|'busy'|'away')",
+        "colorVariant",
+        "orc-avatar-group: max, size, label"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "ng-content em orc-avatar = fallback customizado (ícone/iniciais)",
+        "ng-content em orc-avatar-group = orc-avatar filhos (contados via contentChildren para calcular +N)"
+      ],
+      "remove": [
+        "label (→ name)",
+        "initials (→ name ou slot)",
+        "icon (→ slot com orc-icon)",
+        "statusLabel (→ provideOrcLabels)",
+        "statusPosition",
+        "bordered",
+        "clickable/avatarClick (→ envolver em orc-button/<a>)",
+        "imageError (fallback é automático)",
+        "id",
+        "styleClass",
+        "shape 'rounded' (dup de square com raio)",
+        "classes p-avatar/p-component/data-pc-name",
+        "orc-avatar-group: items, excessCount, excessColorVariant, bordered, styleClass",
+        "entry @ciag/orchestra/avatar-group"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/avatar/avatar-group.component.html:35 + avatar.component.ts:73 — o '+N' passa por initials, que é truncado em 3 caracteres: com 100+ excedentes aparece '+10'",
+      "projects/orc-ds/avatar/avatar-group.component.html:30 — <ng-content *ngIf> não controla a projeção (o conteúdo é sempre instanciado); os dois modos se misturam",
+      "projects/orc-ds/avatar/avatar.component.ts:121-140 — status e nome padrão em inglês ('Online', 'User')",
+      "projects/orc-ds/avatar/avatar.component.html:43-48 — icon é renderizado como texto cru, sem orc-icon/Material Symbols (decisão #5)",
+      "projects/orc-ds/avatar/avatar.component.html:3-4 — class estática + [class] concatenado duplicam a lista de classes"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "P",
+    "dependsOn": ["infra: provideOrcLabels", "icon (orc-icon)"]
+  },
+  {
+    "id": "badge",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 1
+    },
+    "rationale": "Decisão Tag/Chip/Badge: Badge vira o único rótulo estático (status, categoria, contador, ponto), como no shadcn/ui; Tag e OverlayBadge entram aqui. Chip fica com tudo que é interativo (selecionável/removível), então o modo dismissible do Badge sai. A API atual tem 17 inputs com aliases (status/severity, text/value/count), 12 'status' que misturam cor e domínio (pending, active, new, completed) e SVGs embutidos.",
+    "evidence": [
+      "projects/orc-ds/badge/badge.component.ts:22-48 — 17 inputs; status e severity são aliases (ts:54); text, value e count disputam o conteúdo (ts:55-64)",
+      "projects/orc-ds/badge/badge.types.ts:3-15 — status mistura cor (primary/danger) e domínio (pending/active/inactive/new/completed)",
+      "projects/orc-ds/badge/badge.component.html:47-149 — 5 SVGs embutidos via showDefaultIcon em vez de orc-icon",
+      "projects/orc-ds/badge/badge.component.ts:36-38,51 + html:161-181 — dismissible/dismiss duplica Chip removível e Tag removable",
+      "projects/orc-ds/chip-input/chip-input.component.html:29-39 — o chip-input usa orc-badge dismissible como token: precisa migrar para orc-chip",
+      "projects/orc-ds/badge/badge-behavior.spec.ts — 3 its, só live-region/role"
+    ],
+    "targetApi": {
+      "selector": "orc-badge (+ orc-overlay-badge no mesmo entry)",
+      "inputs": [
+        "severity ('neutral'|'primary'|'info'|'success'|'warning'|'danger')",
+        "variant ('soft'|'solid'|'outline')",
+        "size ('sm'|'md'|'lg')",
+        "pill",
+        "dot",
+        "count",
+        "max (padrão 99, exibe '99+')",
+        "icon (nome Material Symbol, via orc-icon)",
+        "ariaLabel",
+        "orc-overlay-badge: count, max, dot, severity (padrão 'danger'), ariaLabel"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "ng-content (texto do rótulo)",
+        "orc-overlay-badge: ng-content = elemento ancorado"
+      ],
+      "remove": [
+        "status (→ severity)",
+        "text e value (→ ng-content)",
+        "maxCount (→ max)",
+        "showDefaultIcon (→ icon)",
+        "dismissible, dismiss, removeAriaLabel (→ orc-chip removable)",
+        "liveRegion (→ o app envolve em região aria-live)",
+        "variant 'dot' e 'ghost' (→ input dot / variant outline)",
+        "severidades de domínio pending/active/inactive/new/completed (→ o app mapeia para severity)",
+        "slots [badge-icon-left]/[badgeIconLeft]/[badge-icon-right]/[badgeIconRight]",
+        "id",
+        "styleClass",
+        "data-pc-name/data-pc-severity"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/badge/badge.component.ts:61 — o overflow exibe '+99' em vez da convenção '99+'",
+      "projects/orc-ds/badge/badge.component.ts:87 — o nome padrão do ponto é '<status> status', em inglês e com o valor interno ('error status')",
+      "projects/orc-ds/badge/badge.component.html:166 — o rótulo padrão de remover é em inglês ('Remove ...')",
+      "projects/orc-ds/badge/badge.component.html:18 vs ts:66-78 — 'danger' vira 'error' em data-pc-severity, mas a classe continua --status-danger: dois vocabulários no mesmo componente"
+    ],
+    "consumerImpact": "orc-badge 2x ([text], status, [pill]) → <orc-badge severity=… pill>{{ texto }}</orc-badge>. Absorve as 26 tags do consumidor (ver 'tag').",
+    "effort": "M",
+    "dependsOn": [
+      "icon (orc-icon)",
+      "chip (receber o modo removível antes de tirar dismissible; chip-input migra para orc-chip)"
+    ]
+  },
+  {
+    "id": "overlay-badge",
+    "verdict": "MERGE",
+    "mergeInto": "badge",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 3,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "É um Badge (contador/ponto) posicionado sobre outro elemento, com lógica e cor próprias e hardcoded. Mora no monólito p2: importar o entry puxa o chunk p2 inteiro (~600 KB brutos). Migra para o entry badge como orc-overlay-badge, compondo um orc-badge interno (count/max/dot/severity) em vez de duplicar estilo.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:207-231 — componente inline no monólito p2 com P2_SHARED_STYLES",
+      "projects/orc-ds/overlay-badge/index.ts:1 — reexporta de '@ciag/orchestra/p2' (measurements: chunk.deps ['p2'])",
+      "projects/orc-ds/overlaybadge/index.ts:1 — entry alias 'overlaybadge'",
+      "docs/quality/library-scope-decisions.md:74 — chunk p2 com 599.902 bytes brutos / 57.190 gzip"
+    ],
+    "targetApi": {
+      "selector": "orc-overlay-badge (exportado de @ciag/orchestra/badge)",
+      "inputs": ["count", "max", "dot", "severity", "ariaLabel"],
+      "models": [],
+      "outputs": [],
+      "slots": ["ng-content (elemento ancorado)"],
+      "remove": [
+        "value (→ count/dot)",
+        "entries @ciag/orchestra/overlay-badge e @ciag/orchestra/overlaybadge",
+        "export em p2"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:215-216 — role=img com aria-label = só o número ('3'), sem contexto ('3 notificações')",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:223 — cor fixa var(--orc-component-danger) e sem max: '1000' estoura o círculo",
+      "projects/orc-ds/overlay-badge/index.ts:1 — o entry depende do chunk p2 inteiro (custo de performance)"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["badge (redesign)"]
+  },
+  {
+    "id": "tag",
+    "verdict": "MERGE",
+    "mergeInto": "badge",
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Tag (rótulo de status) e Badge são o mesmo componente com nomes diferentes; o próprio documento de escopo só 'documenta a diferença'. Pela regra 'uma forma de fazer cada coisa', Tag sai: as cores/severidades e o 'rounded' viram severity/pill do Badge, e o modo removível vai para Chip. É o maior impacto de migração do lote (26 usos), mas mecânico.",
+    "evidence": [
+      "projects/orc-ds/tag/tag.component.ts:9-17 vs badge/badge.types.ts:3-15 — mesmas cores semânticas",
+      "projects/orc-ds/tag/tag.component.ts:58-61 — label/value e variant/severity são aliases",
+      "projects/orc-ds/tag/tag.component.ts:68-69 — outputs duplicados removed + onRemove",
+      "projects/orc-ds/tag/tag.component.ts:41 — conteúdo só via input, sem ng-content",
+      "docs/quality/library-scope-decisions.md:23 — Tag, Badge e Chip 'se sobrepõem visualmente'"
+    ],
+    "targetApi": {
+      "selector": "→ orc-badge",
+      "inputs": [
+        "migra: variant/severity → severity; rounded → pill; icon → icon (orc-icon)"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": ["value/label → ng-content do orc-badge"],
+      "remove": [
+        "orc-tag",
+        "entry @ciag/orchestra/tag",
+        "removable/removed/onRemove/removeAriaLabel (→ orc-chip removable)",
+        "disabled (rótulo estático não tem estado desabilitado)",
+        "styleClass",
+        "classes orc-p2-tag*",
+        "reexport em p2/p2-data-components.ts"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tag/tag.component.ts:39 — icon é renderizado como texto cru (sem orc-icon/Material Symbols)",
+      "projects/orc-ds/tag/tag.component.ts:47 — rótulo padrão de remover em inglês ('Remove ...')",
+      "projects/orc-ds/tag/tag.component.ts:51 — glifo '×' como texto no botão de remover"
+    ],
+    "consumerImpact": "orc-tag 26x em 2 imports ([value] 26, severity 23, variant 3, [rounded] 4). Migração mecânica: <orc-tag [value]=\"x\" severity=\"danger\" [rounded]=\"true\"/> → <orc-badge severity=\"danger\" pill>{{ x }}</orc-badge>; import TagComponent → BadgeComponent de @ciag/orchestra/badge. Nenhum uso de removable.",
+    "effort": "P",
+    "dependsOn": ["badge (redesign)", "chip (recebe o modo removível)"]
+  },
+  {
+    "id": "chip",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Depois da decisão Tag/Badge, Chip é o token interativo: selecionável (filtro, aria-pressed) e/ou removível. Passa a ser também o token do chip-input/tags-input. A base é boa (model selected, botões nativos), mas carrega paridade PrimeNG (style, styleClass, removeIcon, onRemove).",
+    "evidence": [
+      "projects/orc-ds/chip/chip.component.ts:19-38 — 16 inputs, incluindo style, styleClass, id e removeIcon",
+      "projects/orc-ds/chip/chip.component.ts:37-38 — outputs duplicados removed + onRemove",
+      "projects/orc-ds/chip/chip.component.ts:36,44-47 — model selected com toggle (bom)",
+      "projects/orc-ds/chip/chip.component.html:1-3 — classes 'p-chip p-component' e data-pc-name",
+      "projects/orc-ds/chip-contract.spec.ts — contrato de 3 casos (fora do diretório; measurements conta 0 specs)"
+    ],
+    "targetApi": {
+      "selector": "orc-chip",
+      "inputs": [
+        "severity ('neutral'|'primary'|'success'|'warning'|'danger')",
+        "size ('sm'|'md'|'lg')",
+        "selectable",
+        "removable",
+        "disabled",
+        "icon (orc-icon)",
+        "removeAriaLabel (padrão de provideOrcLabels: 'Remover {rótulo}')"
+      ],
+      "models": ["selected"],
+      "outputs": ["removed"],
+      "slots": [
+        "ng-content (rótulo)",
+        "[orcChipAvatar] (orc-avatar ou img à esquerda)"
+      ],
+      "remove": [
+        "label (→ ng-content)",
+        "value (o app sabe qual chip removeu)",
+        "variant (→ severity)",
+        "image (→ slot orcChipAvatar)",
+        "removeIcon",
+        "style",
+        "styleClass",
+        "id",
+        "ariaLabel (o rótulo visível é o nome)",
+        "onRemove",
+        "classes p-chip/p-component/data-pc-name"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/chip/chip.component.ts:41 + html:17,25 — rótulos padrão em inglês ('Remove', 'Chip', 'Toggle selection')",
+      "projects/orc-ds/chip/chip.component.html:25 — aria-label do botão principal sobrescreve o rótulo visível (risco de label-in-name, WCAG 2.5.3)",
+      "projects/orc-ds/chip/chip.component.html:32 — icon renderizado como texto cru (sem orc-icon)",
+      "projects/orc-ds/chip/chip.component.html:54 — removeIcon '×' como texto"
+    ],
+    "consumerImpact": "nenhum direto; internamente o chip-input passa a usar orc-chip removable no lugar de orc-badge dismissible",
+    "effort": "P",
+    "dependsOn": ["infra: provideOrcLabels", "icon (orc-icon)"]
+  },
+  {
+    "id": "alert",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Componente de feedback inline mais usado do consumidor (29x). Alert vs Messages: Alert fica e Messages é absorvido; uma lista de mensagens é @for sobre orc-alert. A API atual tem aliases por todo lado (severity/status, message/text, dismissible/closable, onClose/closed, soft/subtle, warn/warning), o seletor alias orc-message, life (auto-dismiss, papel do toast) e um input 'title' que vaza tooltip nativo no host.",
+    "evidence": [
+      "projects/orc-ds/alert/alert.component.ts:17 — seletor duplicado 'orc-alert, orc-message'",
+      "projects/orc-ds/alert/alert.component.ts:31-44,52-57 — aliases severity/status, message/text, dismissible/closable",
+      "projects/orc-ds/alert/alert.component.ts:58-60,87-101 — life com setTimeout: auto-dismiss é responsabilidade do toast",
+      "projects/orc-ds/alert/alert.component.ts:78-81 — outputs duplicados onClose (prefixo on) + closed",
+      "projects/orc-ds/alert/alert.types.ts:1-5 — 'warn' alias de 'warning'; 'soft'/'solid' aliases de 'subtle'/'filled'",
+      "projects/orc-ds/alert/alert.component.html:101-125 — SVG de 'warn' duplicado do de 'warning'",
+      "projects/orc-ds/message/index.ts:1 — entry 'message' (lote 10) = AlertComponent renomeado + MessagesComponent do p2"
+    ],
+    "targetApi": {
+      "selector": "orc-alert",
+      "inputs": [
+        "severity ('info'|'success'|'warning'|'danger'|'neutral')",
+        "variant ('soft'|'solid'|'outline')",
+        "heading (substitui title)",
+        "icon (nome Material Symbol; padrão por severidade)",
+        "showIcon",
+        "dismissible"
+      ],
+      "models": [],
+      "outputs": ["dismissed"],
+      "slots": [
+        "ng-content (descrição)",
+        "[orcAlertActions]",
+        "[orcAlertIcon]"
+      ],
+      "remove": [
+        "seletor orc-message",
+        "status (→ severity)",
+        "title (→ heading; evita tooltip nativo)",
+        "message e text (→ ng-content)",
+        "closable (→ dismissible)",
+        "life (→ toast)",
+        "onClose e closed (→ dismissed)",
+        "role (calculado pela severidade)",
+        "ariaLabel",
+        "closeAriaLabel (→ provideOrcLabels 'Fechar')",
+        "styleClass",
+        "style",
+        "variants subtle/filled (→ soft/solid)",
+        "severidades warn/error/secondary/contrast (→ warning/danger/neutral)",
+        "slots [alert-icon]/[alert-title]/[alertTitle]/[alert-actions] (→ uma grafia orcAlert*)",
+        "visibilidade interna isVisible (o app controla com @if ao receber dismissed)",
+        "entry @ciag/orchestra/message"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/alert/alert.component.ts:40 — input 'title' homônimo do atributo global: title=\"…\" estático fica no host e gera tooltip nativo sobre o alerta inteiro (o consumidor usa title estático 6x)",
+      "projects/orc-ds/alert/alert.component.html:32-144 — severidades 'secondary' e 'contrast' não têm case no @switch: o contêiner de ícone renderiza vazio, mesmo com showIcon=true por padrão",
+      "projects/orc-ds/alert/alert.component.html:16-17 — role=alert + aria-live=assertive redundantes; aria-live em conteúdo que já nasce renderizado não anuncia",
+      "projects/orc-ds/alert/alert.component.html:173 — rótulo padrão do fechar em inglês ('Dismiss alert')",
+      "projects/orc-ds/alert/alert.component.html:25-28 — icon aplicado como [class] (padrão PrimeIcons), não orc-icon",
+      "projects/orc-ds/alert/alert.component.html:164-166 — o contêiner de ações renderiza vazio sempre"
+    ],
+    "consumerImpact": "orc-alert 29x em 6 imports (severity 29, [showIcon] 29, message/[message] 26, title/[title] 7). Migração: message → conteúdo projetado ({{ msg }}), title → heading, [showIcon]=\"true\" sai (padrão), severity 'error' → 'danger'. Todo mecânico; elimina o tooltip indevido atual.",
+    "effort": "M",
+    "dependsOn": ["infra: provideOrcLabels", "icon (orc-icon)"]
+  },
+  {
+    "id": "messages",
+    "verdict": "MERGE",
+    "mergeInto": "alert",
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "É o p-messages do PrimeNG: um @for de alertas guiado por array. Em Angular idiomático o app faz @for sobre orc-alert dismissible e remove o item no (dismissed). Visual e semântica de severidade duplicam o Alert com outro CSS, e o componente mora no monólito p2.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-message-components.ts:19-99 — MessagesComponent inline no p2 com P2_SHARED_STYLES",
+      "projects/orc-ds/p2/p2-message-components.ts:64-65 — CSS de severidade próprio, paralelo ao do alert.component.scss",
+      "projects/orc-ds/p2/p2-message-components.ts:11-17 — P2Message (summary/detail) = vocabulário PrimeNG",
+      "projects/orc-ds/messages/index.ts:1 → message/index.ts:2 → p2: cadeia de alias até o monólito"
+    ],
+    "targetApi": {
+      "selector": "→ orc-alert",
+      "inputs": [
+        "migra: message.severity → severity; summary → heading; detail → conteúdo; closable → dismissible"
+      ],
+      "models": [],
+      "outputs": [
+        "messageClose → dismissed por item (o app remove do próprio array)"
+      ],
+      "slots": [],
+      "remove": [
+        "orc-messages",
+        "P2Message/MessageItem",
+        "clear/clearMessages",
+        "ariaLive",
+        "entries @ciag/orchestra/messages e @ciag/orchestra/message",
+        "export em p2"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-message-components.ts:26,53 — rótulos padrão em inglês ('Messages', 'Dismiss message')",
+      "projects/orc-ds/p2/p2-message-components.ts:27,39 — role=alert dentro de section aria-live: anúncio duplicado",
+      "projects/orc-ds/p2/p2-message-components.ts:77,95-98 — output clear só dispara via método público, sem UI"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["alert (redesign)"]
+  },
+  {
+    "id": "empty-state",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Útil e muito usado (25x). A API é pequena, mas a ação vem por actionLabel + output em vez de slot com orc-button, o ícone é texto livre (o consumidor usa emojis), o input 'title' gera tooltip nativo, e cada estado vazio vira landmark region com h2 fixo. Estilos inline com cores hex de fallback fora dos tokens.",
+    "evidence": [
+      "projects/orc-ds/empty-state/empty-state.component.ts:14 — role=region: 25 estados vazios = 25 landmarks",
+      "projects/orc-ds/empty-state/empty-state.component.ts:21 — <h2> fixo, independente da hierarquia da página",
+      "projects/orc-ds/empty-state/empty-state.component.ts:26-34,46-51 — botão nativo sem estilo DS, via actionLabel/action",
+      "projects/orc-ds/empty-state/empty-state.component.ts:38 — cores de fallback #2563eb/#cbd5e1 inline",
+      "projects/orc-ds/empty-state/empty-state.component.ts:43 — input 'title' (mesmo vazamento de tooltip do alert)"
+    ],
+    "targetApi": {
+      "selector": "orc-empty-state",
+      "inputs": [
+        "heading",
+        "description",
+        "icon (nome Material Symbol via orc-icon; padrão 'inbox')",
+        "headingLevel (2–6, padrão 3)"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "[orcEmptyStateActions] (orc-button projetado)",
+        "[orcEmptyStateIcon] (ilustração customizada)",
+        "ng-content (conteúdo extra)"
+      ],
+      "remove": [
+        "title (→ heading)",
+        "actionLabel, actionAriaLabel, action (→ slot de ações)",
+        "ariaLabel (sem landmark, não precisa de nome)",
+        "role=region",
+        "fallback '∅' e cores hex inline (→ tokens)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/empty-state/empty-state.component.ts:43 — title estático (24 usos no consumidor) fica no host e gera tooltip nativo sobre o bloco inteiro",
+      "projects/orc-ds/empty-state/empty-state.component.ts:59 — nome padrão em inglês ('Empty state')",
+      "projects/orc-ds/empty-state/empty-state.component.ts:17-19 — ícone como texto cru: emojis/strings em vez de Material Symbols",
+      "projects/orc-ds/empty-state/empty-state.component.ts:14 — landmark region indevido para conteúdo não navegável"
+    ],
+    "consumerImpact": "orc-empty-state 25x em 6 imports (icon 25 com emojis, title 25, description 25, sem ação). Migração: title → heading; trocar emoji por nome Material Symbol (📋→'assignment', 👥→'group', 📂→'folder_open', ⏱️→'timer', ✅→'check_circle', 🛡️→'shield', 🔎→'search', 📭→'inbox', 🕸️→'hub').",
+    "effort": "P",
+    "dependsOn": ["icon (orc-icon)", "button"]
+  },
+  {
+    "id": "progress",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 3
+    },
+    "rationale": "Progress vs MeterGroup: Progress fica como família de medição (progressbar + meter) e absorve o MeterGroup como orc-meter; Spinner absorve orc-progress-spinner (indicador indeterminado). A barra tem 22 inputs, com 4 formas de cor (variant/color/customColor/customTrackColor), 3 de sufixo (unit/valuePrefix/valueSuffix), template '#content' PrimeNG e dois entries alias. Os specs são bons (472 linhas).",
+    "evidence": [
+      "projects/orc-ds/progress/progress-bar.component.ts:35-93 — 22 inputs; color vs customColor (ts:56,82), unit vs valueSuffix (ts:54,65,105-110)",
+      "projects/orc-ds/progress/progress-bar.component.ts:29-31 — @ContentChild('content') 'PrimeNG-compatible'",
+      "projects/orc-ds/progress/progress-bar.component.ts:99-103 — escala fixa 0–100, sem max",
+      "projects/orc-ds/progress/progress.types.ts:3-4 — 'error' e 'danger' duplicados",
+      "projects/orc-ds/progress/progress-spinner.component.ts:3-86 — terceiro spinner da biblioteca (orc-progress-spinner) dentro de progress",
+      "projects/orc-ds/progress/progress-circle.component.ts:44,99-101 — modo indeterminate do círculo = outro spinner",
+      "projects/orc-ds/progress-bar/index.ts:1, progress-spinner/index.ts:1-2 — entries alias (ProgressSpinner com segundo nome de classe)",
+      "projects/orc-ds/progress/progress-bar-behavior.spec.ts — 472 linhas comportamentais"
+    ],
+    "targetApi": {
+      "selector": "orc-progress-bar, orc-progress-circle, orc-meter (todos em @ciag/orchestra/progress)",
+      "inputs": [
+        "value",
+        "max (padrão 100)",
+        "indeterminate (só orc-progress-bar)",
+        "severity ('primary'|'neutral'|'success'|'warning'|'danger')",
+        "size ('sm'|'md'|'lg'|'xl')",
+        "label",
+        "showValue",
+        "valueText (texto visível + aria-valuetext)",
+        "ariaLabel",
+        "orc-meter: items (MeterItem[] {value,label,severity}), min, max, label, orientation, showLegend"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "mode (→ indeterminate)",
+        "variant (→ severity)",
+        "color, customColor, customTrackColor (→ tokens --orc-progress-*)",
+        "customHeight (→ size/tokens)",
+        "rounded",
+        "unit, valuePrefix, valueSuffix, ariaValueText (→ valueText)",
+        "segments, currentSegment (→ orc-meter ou stepper)",
+        "markers",
+        "styleClass, valueStyleClass, style",
+        "#content ContentChild (→ valueText)",
+        "orc-progress-circle: mode indeterminate, animation, animationDuration, fill, strokeWidth (→ orc-spinner/tokens)",
+        "orc-progress-spinner (→ orc-spinner)",
+        "variant 'error' (→ danger)",
+        "classes p-progressbar*/data-pc-*",
+        "entries @ciag/orchestra/progress-bar e @ciag/orchestra/progress-spinner"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/progress/progress-bar.component.ts:142 + progress-circle.component.ts:104 + progress-spinner.component.ts:19 — nomes padrão em inglês ('Progress', 'Loading')",
+      "projects/orc-ds/progress/progress-bar.component.html:2-3 — class estática com 'p-progressbar p-component' + [class] que não a repete; resultado depende da mesclagem do Ivy",
+      "projects/orc-ds/progress/progress-spinner.component.ts:18 — role=progressbar num SVG sem aria-valuenow e sem rótulo de contexto (duplica o role=status do orc-spinner)"
+    ],
+    "consumerImpact": "orc-progress-bar 15x (value, showValue, size, ariaLabel, variant 7, customColor 1); 3 imports por '@ciag/orchestra/progress-bar' → '@ciag/orchestra/progress'; variant → severity; customColor (1 caso) → token CSS --orc-progress-fill no seletor do app. Internos: stepper.component.html:116 e file-item.component.html:115 trocam variant por severity.",
+    "effort": "M",
+    "dependsOn": [
+      "spinner (receber progress-spinner)",
+      "infra: provideOrcLabels"
+    ]
+  },
+  {
+    "id": "meter-group",
+    "verdict": "MERGE",
+    "mergeInto": "progress",
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Medição multi-valor (ex.: uso de armazenamento por categoria) é variação de barra de progresso com role=meter. Vira orc-meter no entry progress, compartilhando trilha, tamanhos e tokens, sem entry próprio nem alias 'metergroup'. Hoje tem aliases values/value, cor hex fixa, rótulos por item só em title e cálculo de percentual que ignora min.",
+    "evidence": [
+      "projects/orc-ds/meter-group/meter-group.component.ts:22-23 — values e value são aliases",
+      "projects/orc-ds/meter-group/meter-group.component.ts:26 — cor padrão '#3b82f6' fora dos tokens",
+      "projects/orc-ds/meter-group/meter-group.component.ts:84-91 — percent divide por (max-min) sem subtrair min",
+      "projects/orc-ds/meter-group/meter-group.component.html:31 — rótulo de cada segmento só em title (inacessível)",
+      "projects/orc-ds/metergroup/index.ts:1 — entry alias"
+    ],
+    "targetApi": {
+      "selector": "→ orc-meter (em @ciag/orchestra/progress)",
+      "inputs": [
+        "migra: values → items (MeterItem com severity no lugar de color hex), min, max, label, orientation; legenda acessível (showLegend) substitui title"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-meter-group",
+        "value (alias)",
+        "color (→ tokens/severity)",
+        "labelPosition, labelOrientation",
+        "style, styleClass",
+        "entries @ciag/orchestra/meter-group e @ciag/orchestra/metergroup",
+        "reexport em p2"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/meter-group/meter-group.component.ts:84-91 — com min≠0 a largura visual diverge do aria-valuenow",
+      "projects/orc-ds/meter-group/meter-group.component.html:21 — nome padrão em inglês ('Meter')",
+      "projects/orc-ds/meter-group/meter-group.component.html:26-32 — segmentos sem legenda nem texto acessível por item",
+      "catálogo descreve 'barra ou círculo' (measurements.description), mas não existe modo círculo"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["progress (redesign)"]
+  },
+  {
+    "id": "skeleton",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 1
+    },
+    "rationale": "Necessário (usado pela tabela e pelo consumidor). Deveria ser um div quase sem lógica, mas tem 12 inputs com aliases (shape/variant, size/width/height), @HostBinding decorator, style/styleClass e anúncio de status por placeholder (cada skeleton rotulado vira uma região viva).",
+    "evidence": [
+      "projects/orc-ds/skeleton/skeleton.component.ts:22-37 — 12 inputs; shape duplica variant (ts:108-113); size duplica width/height (ts:61-92)",
+      "projects/orc-ds/skeleton/skeleton.component.ts:40-58 — @HostBinding em vez de host: {}",
+      "projects/orc-ds/skeleton/skeleton.types.ts:2 — 'wave' é alias de 'shimmer' (html:6-8)",
+      "projects/orc-ds/skeleton/skeleton.component.html:2,14,16 — classes p-skeleton/p-component e data-pc-name",
+      "projects/orc-ds/table/table.component.html:156-170 — uso interno com borderRadius e variant"
+    ],
+    "targetApi": {
+      "selector": "orc-skeleton",
+      "inputs": [
+        "variant ('text'|'circle'|'rect')",
+        "width",
+        "height",
+        "animation ('shimmer'|'pulse'|'none')"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "shape (→ variant)",
+        "size (→ width/height)",
+        "borderRadius (→ variant/token --orc-skeleton-radius)",
+        "fitContent, display",
+        "styleClass, style",
+        "ariaLabel (o contêiner que carrega usa aria-busy; o skeleton é sempre aria-hidden)",
+        "animation 'wave'",
+        "classes p-skeleton/p-component/data-pc-name"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/skeleton/skeleton.component.html:17-22 — com ariaLabel, o texto vai no aria-label e também no span .sr-only: leitura dupla; e cada placeholder vira role=status",
+      "projects/orc-ds/skeleton/skeleton.component.ts:49-55 — o host recebe width e o div interno também (largura aplicada duas vezes; com % o resultado compõe)"
+    ],
+    "consumerImpact": "orc-skeleton 1x (width, height, [borderRadius], [animation], [ariaLabel]) → retirar borderRadius/ariaLabel e marcar o contêiner com aria-busy",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "spinner",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 3
+    },
+    "rationale": "Indicador de carregamento canônico; absorve orc-progress-spinner. O modo fullScreen com backdrop é um bloqueador de tela (papel de block-ui/overlay) e traz listener global de Escape em toda instância. A classe se chama LoadingSpinnerComponent, mas o seletor é orc-spinner. Há inputs de baixo nível (fill, strokeWidth, customSize) em vez de tokens.",
+    "evidence": [
+      "projects/orc-ds/spinner/spinner.component.ts:25-27 — host '(document:keydown.escape)' em toda instância, inclusive inline",
+      "projects/orc-ds/spinner/spinner.component.ts:37-50 — fullScreen, closeOnEscape, fullScreenChange, backdrop: um overlay dentro do spinner",
+      "projects/orc-ds/spinner/spinner.component.ts:29 — LoadingSpinnerComponent ≠ seletor orc-spinner",
+      "projects/orc-ds/spinner/spinner.component.ts:51-54 — strokeWidth, fill, animation, styleClass de paridade",
+      "projects/orc-ds/spinner/spinner.component.html:4,8 — classes 'p-progressspinner' e data-pc-name='progressspinner'",
+      "docs/quality/library-scope-decisions.md:22 — ProgressSpinner e LoadingSpinner mantidos 'por enquanto'"
+    ],
+    "targetApi": {
+      "selector": "orc-spinner",
+      "inputs": [
+        "size ('sm'|'md'|'lg')",
+        "type ('ring'|'dots')",
+        "label (texto visível opcional)",
+        "labelPosition ('end'|'bottom')",
+        "ariaLabel (padrão de provideOrcLabels: 'Carregando')"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "fullScreen, backdrop, closeOnEscape, fullScreenChange (→ block-ui/overlay com orc-spinner dentro)",
+        "customSize (→ token --orc-spinner-size)",
+        "variant (→ currentColor + tokens)",
+        "type 'star'",
+        "strokeWidth, fill, animation (prefers-reduced-motion cobre)",
+        "text (→ label)",
+        "textPosition (→ labelPosition)",
+        "styleClass, id",
+        "classe LoadingSpinnerComponent (→ SpinnerComponent)",
+        "orc-progress-spinner (absorvido)",
+        "classes p-progressspinner/data-pc-name"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/spinner/spinner.component.html:73-79 — overlay fullScreen sem focus trap/inert: Tab continua alcançando a página 'bloqueada'",
+      "projects/orc-ds/spinner/spinner.component.ts:26 — N spinners = N listeners de keydown no document",
+      "projects/orc-ds/spinner/spinner.component.ts:69 — nome padrão em inglês ('Loading')",
+      "projects/orc-ds/spinner/spinner.component.html:10-12 — role=status + aria-live + aria-busy no próprio status: aria-busy suprime o anúncio que role=status deveria fazer"
+    ],
+    "consumerImpact": "orc-spinner 14x em 4 imports (ariaLabel 13, size 1, text 2). Migração: import LoadingSpinnerComponent → SpinnerComponent; text → label. Nenhum uso de fullScreen.",
+    "effort": "P",
+    "dependsOn": [
+      "block-ui (lote 05) recebe o caso tela cheia",
+      "infra: provideOrcLabels"
+    ]
+  },
+  {
+    "id": "image",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "Sem o preview, é um <img> com object-fit, loading e border-radius, coisas que CSS e NgOptimizedImage resolvem. O valor real é o lightbox de preview (zoom/rotação/restauração de foco), que é nicho e puxa o chunk do modal. Fica experimental, enxuto e focado no preview, sem os no-ops PrimeNG; deve compartilhar o lightbox com o galleria.",
+    "evidence": [
+      "projects/orc-ds/image/image.component.ts:32-63 — 27 inputs; 3 no-ops @deprecated (appendTo, show/hideTransitionOptions) em ts:58-63",
+      "projects/orc-ds/image/image.component.ts:77-80 — outputs error + onImageError (alias) + onShow/onHide",
+      "projects/orc-ds/image/image.component.ts:14,21 — importa ModalComponent (measurements: deps ['modal'])",
+      "projects/orc-ds/image/image-behavior.spec.ts — 666 linhas de spec comportamental"
+    ],
+    "targetApi": {
+      "selector": "orc-image",
+      "inputs": [
+        "src",
+        "srcset",
+        "sizes",
+        "alt",
+        "fallbackSrc",
+        "width",
+        "height",
+        "preview",
+        "previewSrc"
+      ],
+      "models": ["previewOpen"],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "appendTo, showTransitionOptions, hideTransitionOptions (no-ops)",
+        "onImageError, onShow, onHide, error (→ previewOpen model; erro tratado por fallbackSrc)",
+        "previewImageSrcSet, previewImageSizes",
+        "fit, radius, loading, imageClass, imageStyle, styleClass (→ CSS no host/tokens)",
+        "placeholder",
+        "zoom*/rotate*/closePreviewAriaLabel (→ provideOrcLabels)",
+        "ariaLabel (→ alt)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/image/image.component.ts:201-209 — setTimeout de restauração de foco não é limpo na destruição (sem ngOnDestroy)",
+      "projects/orc-ds/image/image.component.ts:188 — rótulo padrão em inglês ('Open image preview')",
+      "projects/orc-ds/image/image.component.ts:77-78 — output 'error' homônimo do evento DOM nativo"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "modal/dialog (lote 05)",
+      "infra: lightbox compartilhado com galleria",
+      "infra: provideOrcLabels"
+    ]
+  },
+  {
+    "id": "image-compare",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Nicho (antes/depois de imagem), mas pequeno e funcional: um input range nativo sobre duas imagens, com model position. Fica experimental, sem alias de entry, sem output com prefixo 'on' e sem o tab stop duplicado.",
+    "evidence": [
+      "projects/orc-ds/image-compare/image-compare.component.ts:28 — model position (bom)",
+      "projects/orc-ds/image-compare/image-compare.component.ts:35 — onSlide duplica positionChange do model",
+      "projects/orc-ds/image-compare/image-compare.component.ts:27 + html:6,13-21 — tabindex=0 no grupo + input range focável",
+      "projects/orc-ds/imagecompare/index.ts:1 — entry alias"
+    ],
+    "targetApi": {
+      "selector": "orc-image-compare",
+      "inputs": [
+        "before",
+        "after",
+        "beforeAlt",
+        "afterAlt",
+        "aspectRatio",
+        "ariaLabel"
+      ],
+      "models": ["position"],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "onSlide (→ positionChange)",
+        "tabindex",
+        "ariaLabelledBy",
+        "entry @ciag/orchestra/imagecompare",
+        "reexport em p2"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/image-compare/image-compare.component.html:6 — o grupo com tabindex=0 cria uma parada de Tab inútil antes do slider",
+      "projects/orc-ds/image-compare/image-compare.component.ts:33 — rótulo padrão em inglês ('Image comparison position')"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["infra: provideOrcLabels"]
+  },
+  {
+    "id": "galleria",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Experimental por decisão do produto (#3). Absorve o Carousel: vira a única família de 'slides', com template de item genérico e thumbnails/fullscreen opcionais. Precisa perder o seletor alias, os 4 no-ops, o listener global de clique e o focus trap caseiro (→ CDK).",
+    "evidence": [
+      "projects/orc-ds/galleria/galleria.component.ts:27 — seletor duplicado 'orc-galleria, orc-gallery'",
+      "projects/orc-ds/galleria/galleria.component.ts:103-110 — numVisible, responsiveOptions, show/hideTransitionOptions: no-ops @deprecated",
+      "projects/orc-ds/galleria/galleria.component.ts:60-100 — 31 inputs, com baseZIndex, maskClass, containerClass, containerStyle",
+      "projects/orc-ds/galleria/galleria.component.ts:137-142 — addEventListener('click', capture) no document em toda instância",
+      "projects/orc-ds/galleria/galleria.component.ts:311,340 — Tab trap e Escape manuais em vez de cdkTrapFocus/Overlay",
+      "projects/orc-ds/galleria/galleria.component.ts:20-25 — só GalleryImage fixo, sem template de item"
+    ],
+    "targetApi": {
+      "selector": "orc-galleria",
+      "inputs": [
+        "items",
+        "circular",
+        "autoplay",
+        "interval",
+        "showThumbnails",
+        "thumbnailsPosition",
+        "showIndicators",
+        "showNavigators",
+        "label"
+      ],
+      "models": ["activeIndex", "fullScreen"],
+      "outputs": [],
+      "slots": [
+        "orcGalleriaItem (ng-template, contexto { $implicit: item, index })",
+        "orcGalleriaThumbnail (ng-template)",
+        "orcGalleriaCaption (ng-template)"
+      ],
+      "remove": [
+        "seletor orc-gallery e entry @ciag/orchestra/gallery",
+        "numVisible, responsiveOptions, showTransitionOptions, hideTransitionOptions",
+        "visible (→ @if no app)",
+        "showItemNavigatorsOnHover, changeItemOnIndicatorHover, shouldStopAutoplayByClick, showIndicatorsOnItem, indicatorsPosition",
+        "baseZIndex, maskClass, containerClass, containerStyle",
+        "transitionInterval (→ interval)",
+        "autoPlay (→ autoplay)",
+        "images (→ items)",
+        "imageChange (→ activeIndexChange)",
+        "roleDescription, closeLabel, previousLabel, nextLabel, thumbnailLabel (→ provideOrcLabels)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/galleria/galleria.component.ts:137-142 — listener de clique global por instância, mesmo sem fullscreen",
+      "projects/orc-ds/galleria/galleria.component.ts:184-194 — autoplay sem controle visível de pausar (WCAG 2.2.2)",
+      "projects/orc-ds/galleria/galleria.component.ts:311-345 — focus trap manual; o fullscreen não usa CDK Overlay (z-index via baseZIndex)"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "G",
+    "dependsOn": [
+      "infra: overlay CDK",
+      "infra: cdkTrapFocus",
+      "infra: lightbox compartilhado com image",
+      "carousel (absorvido)"
+    ]
+  },
+  {
+    "id": "carousel",
+    "verdict": "MERGE",
+    "mergeInto": "galleria",
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "O carousel atual não é genérico: renderiza só um CarouselItem fixo (label/descrição/imagem), um slide por vez. Na prática é uma galleria sem thumbnails. Duas famílias de 'slides' violam 'uma forma'. Migram para a galleria o autoplay com pausa no hover, a navegação por teclado e o padrão tablist de indicadores; o caso genérico passa a ser o template orcGalleriaItem.",
+    "evidence": [
+      "projects/orc-ds/carousel/carousel.types.ts:3-10 — conteúdo fixo label/description/image, sem template",
+      "projects/orc-ds/carousel/carousel.component.html:11-41 — renderiza só activeItem; numVisible/numScroll só mudam a contagem de páginas",
+      "projects/orc-ds/carousel/carousel.component.ts:45 — responsiveOptions declarado e nunca lido",
+      "projects/orc-ds/carousel/carousel.component.ts:37-66 — pares de alias items/value, loop/circular, interval/autoplayInterval, showArrows/showNavigators",
+      "projects/orc-ds/carousel/carousel.component.ts:69-76 — outputs onPage, onPlay, onPause (prefixo on)",
+      "projects/orc-ds/carousel/carousel.component.spec.ts — 319 linhas"
+    ],
+    "targetApi": {
+      "selector": "→ orc-galleria [showThumbnails]=\"false\"",
+      "inputs": [
+        "migra: items, circular (loop), autoplay, interval, pauseOnHover, showNavigators (showArrows), showIndicators, orientation"
+      ],
+      "models": ["activeIndex"],
+      "outputs": [],
+      "slots": ["conteúdo do slide → orcGalleriaItem (ng-template)"],
+      "remove": [
+        "orc-carousel",
+        "entry @ciag/orchestra/carousel",
+        "CarouselItem",
+        "value, loop/circular duplicado, autoplayInterval, showArrows",
+        "page model, numVisible, numScroll, responsiveOptions",
+        "onPage, onPlay, onPause, slideChange (→ activeIndexChange)",
+        "emptyMessage, previousLabel, nextLabel, indicatorsLabel (→ provideOrcLabels)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/carousel/carousel.component.ts:155-166 — autoplay sem botão de pausar/reproduzir; só pausa no hover (WCAG 2.2.2)",
+      "projects/orc-ds/carousel/carousel.component.html:10 — aria-live=polite fixo, inclusive com autoplay (APG pede off durante a rotação)",
+      "projects/orc-ds/carousel/carousel.component.ts:204-207 — onPause dispara em todo mouseenter, mesmo sem autoplay",
+      "projects/orc-ds/carousel/carousel.component.html:4,56 — rótulos padrão em inglês ('Carousel', 'Previous slide')",
+      "projects/orc-ds/carousel/carousel.component.ts:254 — querySelectorAll no keydown em vez de ListKeyManager"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": ["galleria (redesign com template de item)"]
+  },
+  {
+    "id": "inplace",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "Clique-para-editar é nicho; muitos apps resolvem com @if + botão. Mas a gestão de foco (entrar, Escape, restaurar foco, IME) tem valor e 445 linhas de testes. Fica experimental, sai do monólito p2 para diretório próprio e perde os outputs duplicados com prefixo on.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-inplace-component.ts:19-277 — mora no p2; projects/orc-ds/inplace/index.ts:1 reexporta de '@ciag/orchestra/p2' (chunk.deps ['p2'])",
+      "projects/orc-ds/p2/p2-inplace-component.ts:77-80 — activated/deactivated + onActivate/onDeactivate duplicados",
+      "projects/orc-ds/p2/p2-inplace-component.ts:70 — model active (bom)",
+      "projects/orc-ds/p2/inplace-behavior.spec.ts — 445 linhas, 10 cenários de teclado/foco"
+    ],
+    "targetApi": {
+      "selector": "orc-inplace",
+      "inputs": ["disabled", "closable", "label"],
+      "models": ["active"],
+      "outputs": [],
+      "slots": [
+        "orcInplaceDisplay (ng-template)",
+        "orcInplaceContent (ng-template, instanciado só quando ativo)"
+      ],
+      "remove": [
+        "onActivate, onDeactivate, activated, deactivated (→ activeChange)",
+        "preventClick (→ disabled)",
+        "closeLabel (→ provideOrcLabels 'Fechar')",
+        "styleClass",
+        "slots por ng-content com atributo (→ ng-template)",
+        "export em p2"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-inplace-component.ts:35-37,49 — ng-content dentro de @if/@else: o conteúdo de edição é instanciado mesmo inativo (ex.: um input com validação roda sempre)",
+      "projects/orc-ds/p2/p2-inplace-component.ts:23-38 — o display é um <button> que envolve conteúdo projetado: conteúdo interativo fica aninhado em botão",
+      "projects/orc-ds/p2/p2-inplace-component.ts:45,82,84 — rótulos padrão em inglês ('Edit content', 'Edit', 'Close')",
+      "projects/orc-ds/p2/p2-inplace-component.ts:265-270 — busca manual de focáveis em vez de InteractivityChecker/FocusTrap do CDK",
+      "projects/orc-ds/inplace/index.ts:1 — o entry puxa o chunk p2 inteiro"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["infra: provideOrcLabels", "extração do p2"]
+  }
+]

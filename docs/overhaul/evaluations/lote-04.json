@@ -1,0 +1,827 @@
+[
+  {
+    "id": "date-picker",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 3,
+      "consumerUse": 3
+    },
+    "rationale": "Família mais usada do lote no gestao-de-projetos (22 tags) e o núcleo de datas está sólido: usa o calendar-engine compartilhado e a base CvaControl. A superfície pública, porém, é a do p-datepicker: 90 inputs e 13 outputs com prefixo `on`, valor tipado como `any` que oscila entre Date e string conforme `dataType`, inputs duplicados (`min`/`minDate`) e vários no-op. O redesign fixa o valor em string ISO, compõe `orc-calendar` dentro de um popover CDK e manda rótulos para `provideOrcLabels` (pt-BR, semana começando no domingo).",
+    "evidence": [
+      "projects/orc-ds/date-picker/date-picker.component.ts:74 — `value = model<any>('')`: o valor não tem tipo; vira Date ou string conforme `dataType` (linha 123)",
+      "projects/orc-ds/date-picker/date-picker.component.ts:76-77 e 101-102 — `min`/`max` (string) duplicados por `minDate`/`maxDate` (Date), resolvidos em `dateConstraint` (670-677)",
+      "projects/orc-ds/date-picker/date-picker.component.ts:111-122 — `panelStyleClass`, `panelStyle`, `style`, `styleClass`, `inputStyle`, `inputStyleClass`: paridade PrimeNG",
+      "projects/orc-ds/date-picker/date-picker.component.ts:128-132 — `appendTo`, `autoZIndex`, `baseZIndex`, `focusOnShow`, `focusTrap`: configuração de overlay estilo PrimeNG",
+      "projects/orc-ds/date-picker/date-picker.component.ts:143-162 — `mask`, `showTransitionOptions`, `hideTransitionOptions`, `iconDisplay` marcados @deprecated e sem efeito",
+      "projects/orc-ds/date-picker/date-picker.component.ts:165-177 — 13 inputs de rótulo (`previousHourLabel`, `toggleMeridiemLabel`…) que deveriam vir de `provideOrcLabels`",
+      "projects/orc-ds/date-picker/date-picker.component.ts:178-190 — 13 outputs com prefixo `on` (`onSelect`, `onShow`, `onClose`, `onMonthChange`…); `onClear` e `onClearClick` emitem juntos (685-686)",
+      "projects/orc-ds/date-picker/date-picker.component.ts:211-224 — `touchUI` aplica `position:fixed !important` direto no DOM do painel",
+      "projects/orc-ds/date-picker/date-picker.component.ts:229-260 — listener de clique externo duplicado: `listenForOutsideInteraction` e mais um `mousedown` capturado no document; overlay próprio (popover + registerOverlay), sem `@angular/cdk/overlay`",
+      "projects/orc-ds/date-picker/date-picker.component.ts:99 — `firstDayOfWeek` fixo em 0, enquanto `orc-calendar` deriva do locale (calendar.component.ts:99-101): as duas regras de início de semana divergem",
+      "projects/orc-ds/date-picker/date-picker.component.ts:45 — reexporta `DatePickerCalendarComponent` (`orc-date-picker-calendar`, date-picker-calendar.component.ts:35), segunda grade de calendário pública além de `orc-calendar`",
+      "projects/orc-ds/date-picker/date-picker.component.html:70,113,155-239,261,274 — rótulos padrão em inglês ('Choose date', 'Increase hour', 'Today', 'Clear', 'Toggle AM/PM')",
+      "projects/orc-ds/date-picker/*.spec.ts — 3 specs, 1496 linhas, cobrindo comportamento, overlay e formatos `yy-mm-dd`/`dd/mm/yy`",
+      "measurements.json — chunk de 18.572 B gzip (o maior do lote); alias `@ciag/orchestra/datepicker`"
+    ],
+    "targetApi": {
+      "selector": "orc-date-picker",
+      "inputs": [
+        "label",
+        "placeholder",
+        "helperText",
+        "error",
+        "required",
+        "disabled",
+        "readonly",
+        "min (string ISO | Date)",
+        "max (string ISO | Date)",
+        "disabledDates (string ISO[])",
+        "disabledDays (number[])",
+        "selectionMode ('single' | 'multiple' | 'range')",
+        "maxDateCount",
+        "numberOfMonths",
+        "view ('date' | 'month' | 'year')",
+        "captionLayout ('label' | 'dropdown'; anos derivados de min/max)",
+        "showTime",
+        "timeOnly",
+        "showSeconds",
+        "stepMinute",
+        "showButtonBar",
+        "showClear",
+        "displayFormat (tokens DatePipe; padrão vindo do locale: pt-BR 'dd/MM/yyyy')",
+        "locale (padrão LOCALE_ID / pt-BR)",
+        "firstDayOfWeek (padrão derivado do locale: pt-BR = 0, domingo)",
+        "size",
+        "variant",
+        "fluid",
+        "name",
+        "inputId",
+        "ariaLabel",
+        "ariaLabelledBy"
+      ],
+      "models": [
+        "value (string ISO 'yyyy-MM-dd' | 'yyyy-MM-ddTHH:mm[:ss]' | string[] para multiple/range; '' ou null = vazio)",
+        "open",
+        "month (string 'yyyy-MM', mês visível)"
+      ],
+      "outputs": ["opened", "closed"],
+      "slots": [
+        "orcDatePickerIcon (ng-template, ícone do gatilho)",
+        "orcCalendarDay (ng-template, repassado ao orc-calendar)",
+        "orcDatePickerFooter (ng-template, rodapé do painel)"
+      ],
+      "remove": [
+        "dataType (valor sempre string ISO; o app converte para Date se precisar)",
+        "dateFormat (→ displayFormat em tokens DatePipe; o valor não depende mais do formato)",
+        "minDate/maxDate (→ min/max aceitando Date | ISO)",
+        "inline (→ usar orc-calendar)",
+        "orc-date-picker-calendar como export público (→ orc-calendar)",
+        "defaultDate, defaultViewDate, viewDate (→ model month)",
+        "overlayVisible (→ model open)",
+        "appendTo",
+        "autoZIndex",
+        "baseZIndex",
+        "focusOnShow",
+        "focusTrap",
+        "touchUI",
+        "showOnFocus",
+        "keepInvalid",
+        "readonlyInput (→ readonly)",
+        "mask",
+        "showTransitionOptions",
+        "hideTransitionOptions",
+        "iconDisplay",
+        "icon (→ slot orcDatePickerIcon)",
+        "showIcon (gatilho sempre presente)",
+        "showWeek",
+        "hourFormat (24h, como no pt-BR)",
+        "stepHour",
+        "stepSecond",
+        "yearNavigator/monthNavigator/yearRange (→ captionLayout)",
+        "multipleSeparator",
+        "rangeSeparator",
+        "tabindex",
+        "autofocus",
+        "style",
+        "styleClass",
+        "panelStyle",
+        "panelStyleClass",
+        "inputStyle",
+        "inputStyleClass",
+        "clearButtonStyleClass",
+        "todayButtonStyleClass",
+        "iconAriaLabel, panelAriaLabel, previousMonthLabel, nextMonthLabel, timePickerAriaLabel, previous/next Hour/Minute/SecondLabel, toggleMeridiemLabel, todayLabel, clearLabel (→ provideOrcLabels)",
+        "onSelect, onInput (→ valueChange via model)",
+        "onClear, onClearClick (→ valueChange com '')",
+        "onTodayClick (→ valueChange)",
+        "onShow (→ opened)",
+        "onClose (→ closed)",
+        "onFocus, onBlur (→ (focusin)/(focusout) nativos no host)",
+        "onViewDateChange, onMonthChange, onYearChange (→ monthChange via model month)",
+        "onClickOutside",
+        "alias de entry point @ciag/orchestra/datepicker"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/date-picker/date-picker.component.ts:99 — início de semana fixo (0) ignora o locale; o orc-calendar usa calendarLocaleFirstDay. Com locale en-GB os dois componentes mostram semanas diferentes",
+      "projects/orc-ds/date-picker/date-picker.component.ts:249 — `mousedown` capturado no document soma-se a `listenForOutsideInteraction` (229): o fechamento externo roda duas vezes e `onClickOutside` pode emitir duas vezes",
+      "projects/orc-ds/date-picker/date-picker.component.html:54 — no modo `inline`, o input mantém `role=combobox` com `aria-expanded=true` sem popup",
+      "projects/orc-ds/date-picker/date-picker.component.html:70,113,155-274 — nomes acessíveis e textos padrão em inglês (viola a decisão #8)",
+      "projects/orc-ds/date-picker/date-picker.component.ts:182,185,685-686 — `onClear` e `onClearClick` disparam no mesmo clique",
+      "projects/orc-ds/date-picker/date-picker.component.ts:212-224 — `touchUI` remove o atributo `popover` e força estilos inline com !important, contornando o sistema de overlay"
+    ],
+    "consumerImpact": "Alto: 22 tags em 11 arquivos, importadas de `@ciag/orchestra/date-picker`. Hoje o app usa `dataType=\"string\"` (14×) e `dataType=\"date\"` (7×), `dateFormat=\"yy-mm-dd\"` (12×) e `\"dd/mm/yy\"` (10×), `iconDisplay=\"input\"` (13×, no-op), `styleClass=\"w-full\"` (8×), `inputStyleClass` (7×), `[fluid]`, `label`, `placeholder`, `inputId` e `formControlName`/`ngModel`. Migração: (1) apagar `dataType=\"string\"`, que vira o único comportamento; nos 7 `dataType=\"date\"`, converter na borda (o form passa a guardar 'yyyy-MM-dd'). Isso também evita o deslocamento de fuso ao serializar Date. (2) Apagar `dateFormat=\"dd/mm/yy\"`, que vira o padrão pt-BR; trocar `yy-mm-dd` por `displayFormat=\"yyyy-MM-dd\"` ou, de preferência, adotar o padrão dd/MM/yyyy. (3) Apagar `iconDisplay`. (4) Trocar `styleClass=\"w-full\"` por `fluid` ou `class`, e `inputStyleClass` por tokens CSS. Nenhum output `on*` é usado com o date-picker; só `(ngModelChange)`.",
+    "effort": "G",
+    "dependsOn": [
+      "infra: overlay CDK (@angular/cdk/overlay) compartilhado com select/popover",
+      "infra: provideOrcLabels (rótulos pt-BR)",
+      "calendar (orc-calendar redesenhado como grade única)",
+      "internal: calendar-engine (formatter em tokens DatePipe no lugar do padrão PrimeNG)",
+      "internal: CvaControl"
+    ]
+  },
+  {
+    "id": "calendar",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "Calendário inline, já sobre o calendar-engine e o CvaControl, com navegação de teclado em grade e testes bons. Hoje duplica a grade privada `orc-date-picker-calendar`. Seguindo o shadcn (Calendar como peça base e DatePicker = Popover + Calendar), `orc-calendar` vira a única grade: absorve multi-mês, semana, navegação mês/ano e rodapé, e o date-picker passa a compô-lo. Falta tirar os outputs `on*`, os inputs deprecados e os textos em inglês.",
+    "evidence": [
+      "projects/orc-ds/calendar/calendar.component.ts:63 — `extends CvaControl`, signals e OnPush: boa base",
+      "projects/orc-ds/calendar/calendar.component.ts:83-87 — `inline` e `dateFormat` @deprecated sem efeito",
+      "projects/orc-ds/calendar/calendar.component.ts:94-97 — `dateSelected`, `onSelect`, `onClear`, `onTodayClick`: quatro outputs para o que o model `value` já cobre",
+      "projects/orc-ds/calendar/calendar.component.ts:69-70 — `min`/`max` só aceitam string, enquanto date-input (date-input.component.ts:42-44) aceita `string | Date`; contratos divergentes",
+      "projects/orc-ds/calendar/calendar.component.ts:90 — `disabledDates` recebe `Date[]`, e o valor é string ISO: tipos misturados",
+      "projects/orc-ds/date-picker/date-picker-calendar.component.ts:35-70 — segunda grade (`orc-date-picker-calendar`) com showWeek, month/year view, navegadores e multi-mês, ausentes do orc-calendar",
+      "projects/orc-ds/calendar/calendar.component.html:11,20,77 — 'Previous month', 'Next month' e 'Time' em inglês",
+      "projects/orc-ds/calendar/calendar.component.html:57 — `aria-label` do dia é o ISO cru ('2026-10-09'); a grade do date-picker usa rótulo localizado (date-picker-calendar.component.html:107)",
+      "projects/orc-ds/calendar/calendar.component.html:86 — a barra de botões só aparece se `todayLabel`/`clearLabel` forem passados: `showButtonBar` sozinho não renderiza nada",
+      "projects/orc-ds/calendar/calendar-parity.spec.ts:161,282 — testa foco por setas/Home/End e a semana pt-BR começando no domingo"
+    ],
+    "targetApi": {
+      "selector": "orc-calendar",
+      "inputs": [
+        "min (string ISO | Date)",
+        "max (string ISO | Date)",
+        "disabledDates (string ISO[])",
+        "disabledDays (number[])",
+        "selectionMode ('single' | 'multiple' | 'range')",
+        "maxDateCount",
+        "numberOfMonths",
+        "view ('date' | 'month' | 'year')",
+        "captionLayout ('label' | 'dropdown')",
+        "showOtherMonths",
+        "selectOtherMonths",
+        "showWeek",
+        "showTime",
+        "locale (padrão LOCALE_ID / pt-BR)",
+        "firstDayOfWeek (padrão derivado do locale)",
+        "disabled",
+        "ariaLabel"
+      ],
+      "models": ["value (string ISO | string[])", "month (string 'yyyy-MM')"],
+      "outputs": [],
+      "slots": [
+        "orcCalendarDay (ng-template com o contexto do dia)",
+        "orcCalendarFooter (ng-template; substitui showButtonBar/todayLabel/clearLabel)"
+      ],
+      "remove": [
+        "inline (sem efeito)",
+        "dateFormat (sem efeito)",
+        "currentMonth (→ model month)",
+        "style",
+        "styleClass",
+        "inputId",
+        "previousMonthLabel, nextMonthLabel, todayLabel, clearLabel (→ provideOrcLabels)",
+        "showButtonBar (→ slot orcCalendarFooter)",
+        "dateSelected, onSelect (→ valueChange)",
+        "onClear, onTodayClick (→ ações no slot de rodapé)",
+        "componente orc-date-picker-calendar (absorvido aqui)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/calendar/calendar.component.html:57 — o leitor de tela anuncia o dia como '2026-10-09' em vez de '9 de outubro de 2026'",
+      "projects/orc-ds/calendar/calendar.component.html:11,20,77 — rótulos padrão em inglês",
+      "projects/orc-ds/calendar/calendar.component.html:86 — `showButtonBar` sem rótulos explícitos não renderiza nada (o padrão deveria vir de provideOrcLabels)",
+      "projects/orc-ds/calendar/calendar.component.ts:68 — `currentMonth` usa `new Date()` na construção e não é reavaliado: telas abertas na virada do mês ficam presas no mês anterior até a navegação"
+    ],
+    "consumerImpact": "nenhum (0 usos no gestao-de-projetos)",
+    "effort": "M",
+    "dependsOn": [
+      "internal: calendar-engine",
+      "infra: provideOrcLabels",
+      "internal: CvaControl"
+    ]
+  },
+  {
+    "id": "date-input",
+    "verdict": "MERGE",
+    "mergeInto": "date-picker",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "É um `<input type=date>` nativo envolto em label/helper/erro. O date-picker já aceita digitação com validação de limites, e o consumidor só usa o date-picker. Duas formas de pedir uma data violam o princípio 1, e o campo nativo exibe a data no formato do navegador, não no dd/MM/yyyy da identidade. O que vale migra para o date-picker; quem quiser o nativo usa `orc-input type=\"date\"`.",
+    "evidence": [
+      "projects/orc-ds/date-input/date-input.component.ts:22,38 — `orc-date-input` com `value = model('')` em ISO, a mesma semântica de valor proposta para o date-picker",
+      "projects/orc-ds/date-input/date-input.component.ts:76-90 — rejeita digitação fora de min/max e expõe `rangeInvalid`; é o comportamento a levar para o date-picker",
+      "projects/orc-ds/date-input/date-input.component.ts:42-44 — `min`/`max` aceitam `string | Date`, o contrato certo para o alvo",
+      "projects/orc-ds/date-input/date-input.component.ts:48 — mensagem padrão em inglês ('Date outside the allowed range')",
+      "projects/orc-ds/date-input/date-input.component.ts:55-58 — `styleClass`/`style`: paridade PrimeNG",
+      "measurements.json — consumer.imports = 0; chunk de 3.697 B gzip"
+    ],
+    "targetApi": {
+      "selector": "orc-date-picker (alvo)",
+      "inputs": [
+        "migram: min/max aceitando string ISO | Date; validação de digitação fora do intervalo sem gravar no model; estado de validade exposto (rangeInvalid → erro de validação do CVA via Validator)"
+      ],
+      "models": ["value (string ISO), mesma semântica"],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "entry point @ciag/orchestra/date-input",
+        "seletor orc-date-input",
+        "invalidRangeMessage (→ provideOrcLabels / mensagem do validador)",
+        "styleClass",
+        "style",
+        "tabindex"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/date-input/date-input.component.ts:48 — mensagem padrão em inglês",
+      "projects/orc-ds/date-input/date-input.component.ts:87 — valor fora do intervalo é descartado sem chamar `cvaOnChange`, então o form fica com o último valor válido e não acusa erro (falta implementar `Validator`)"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": [
+      "date-picker (redesign recebe min/max string|Date e a validação de intervalo)"
+    ]
+  },
+  {
+    "id": "color-picker",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 2
+    },
+    "rationale": "Tem uso real (cor de série em indicadores no consumidor) e o desenho trigger + swatch + presets é bom. A implementação foge dos princípios: CVA próprio fora do CvaControl, painel `role=dialog` sem overlay, sem Escape e sem gestão de foco, inputs no-op de paridade e outputs duplicados. Deve virar popover CDK com presets como radiogroup, valor sempre em hex e absorver `input-color`.",
+    "evidence": [
+      "projects/orc-ds/color-picker/color-picker.component.ts:58-60 — implementa `ControlValueAccessor` à mão em vez de estender `CvaControl`",
+      "projects/orc-ds/color-picker/color-picker.component.ts:69-70,87-90 — `appendTo`, `showTransitionOptions` e `hideTransitionOptions` @deprecated sem efeito",
+      "projects/orc-ds/color-picker/color-picker.component.ts:91-95 — `colorChange` e `onChange` duplicam o `valueChange` do model; `onShow`/`onHide`/`onClear` levam prefixo `on`",
+      "projects/orc-ds/color-picker/color-picker.component.ts:114-118 — cada instância mantém um listener de `click` no document, aberta ou não",
+      "projects/orc-ds/color-picker/color-picker.component.ts:125-128 — `writeValue(null)` é ignorado: `form.reset()` não limpa a cor",
+      "projects/orc-ds/color-picker/color-picker.component.ts:72 — valor padrão '#1C6AED' em vez de vazio: o campo nunca começa sem valor",
+      "projects/orc-ds/color-picker/color-picker.component.html:46-55 — o painel renderiza no fluxo (sem overlay, sujeito a corte por overflow) e `role=dialog` fica sem nome por padrão",
+      "projects/orc-ds/color-picker/color-picker.component.html:14-23 — o gatilho não tem `aria-haspopup`/`aria-controls`; não há tratamento de Escape nem devolução de foco",
+      "projects/orc-ds/color-picker/color-picker.component.html:79-88 — presets são botões sem `aria-pressed`/radio e o nome é o hex cru",
+      "projects/orc-ds/color-picker/color-picker.component.html:20,40 — 'Choose color' e 'Clear color' em inglês",
+      "projects/orc-ds/color-picker/color-picker-behavior.spec.ts — só 5 testes, focados em parsing e nome acessível; nada de abrir/fechar, teclado ou CVA"
+    ],
+    "targetApi": {
+      "selector": "orc-color-picker",
+      "inputs": [
+        "label",
+        "presets (string[] hex)",
+        "showInput",
+        "clearable",
+        "inline",
+        "disabled",
+        "size",
+        "inputId",
+        "ariaLabel"
+      ],
+      "models": ["value (string hex '#RRGGBB' ou '' para vazio)", "open"],
+      "outputs": ["opened", "closed"],
+      "slots": ["orcColorPickerPreset (ng-template, renderização do swatch)"],
+      "remove": [
+        "format (rgb/hsv/hsb: o valor é sempre hex; conversão é responsabilidade do app)",
+        "appendTo",
+        "showTransitionOptions",
+        "hideTransitionOptions",
+        "style",
+        "styleClass",
+        "panelStyleClass",
+        "id (→ inputId)",
+        "tabindex",
+        "clearAriaLabel, panelAriaLabel, nativeAriaLabel, inputAriaLabel, presetsAriaLabel (→ provideOrcLabels)",
+        "colorChange, onChange (→ valueChange)",
+        "onShow (→ opened)",
+        "onHide (→ closed)",
+        "onClear (→ valueChange com '')",
+        "alias de entry point @ciag/orchestra/colorpicker"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/color-picker/color-picker.component.ts:125-128 — `writeValue(null)` não limpa o valor (reset de formulário quebrado)",
+      "projects/orc-ds/color-picker/color-picker.component.html:46-91 — painel sem Escape, sem foco inicial/devolução e sem overlay (cortado dentro de containers com overflow)",
+      "projects/orc-ds/color-picker/color-picker.component.ts:159-169 — `clear()` emite `onHide` mesmo com o painel fechado",
+      "projects/orc-ds/color-picker/color-picker.component.html:62,70 — input nativo e campo de texto sem nome acessível padrão",
+      "projects/orc-ds/color-picker/color-picker.component.html:20,40 — textos padrão em inglês"
+    ],
+    "consumerImpact": "1 uso (indicator-editor.component.html:94) com `label`, `ariaLabel`, `[showInput]=\"false\"`, `[ngModel]` e `(ngModelChange)`. Todos sobrevivem; a migração é transparente, salvo pelo valor inicial, que deixa de ser '#1C6AED' quando o model vem vazio.",
+    "effort": "M",
+    "dependsOn": [
+      "infra: overlay CDK / popover",
+      "infra: provideOrcLabels",
+      "internal: CvaControl"
+    ]
+  },
+  {
+    "id": "input-color",
+    "verdict": "MERGE",
+    "mergeInto": "color-picker",
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Duplica o color-picker (input nativo de cor + campo hex) e mora no monólito `p2`: importar `@ciag/orchestra/input-color` arrasta o chunk p2 inteiro. A única diferença útil, o modo compacto sempre visível com campo nativo e texto lado a lado, vira `orc-color-picker [inline]` com `showInput`.",
+    "evidence": [
+      "projects/orc-ds/input-color/index.ts:1 — reexporta `InputColorComponent` de `@ciag/orchestra/p2`",
+      "projects/orc-ds/p2/p2-input-more.ts:33-49 — template inline com `<input type=color>` + `<input type=text>`, o mesmo par do painel do color-picker (color-picker.component.html:56-73)",
+      "projects/orc-ds/p2/p2-input-more.ts:56 — CVA próprio, fora do CvaControl",
+      "projects/orc-ds/p2/p2-input-more.ts:60 — `valueChangeEvent` duplica o `valueChange` do model",
+      "projects/orc-ds/p2/p2-input-more.ts:61-66 — rótulos 'Color picker'/'Color value' em inglês",
+      "measurements.json — chunk.deps = ['p2'] (o chunk p2 tem cerca de 600 KB raw, segundo docs/quality/library-scope-decisions.md:74)"
+    ],
+    "targetApi": {
+      "selector": "orc-color-picker (alvo)",
+      "inputs": [
+        "migra: modo `inline` com `showInput` cobrindo o layout compacto nativo + hex",
+        "migra: normalização de hex curto (#abc → #AABBCC) e manutenção do valor anterior em texto inválido"
+      ],
+      "models": ["value (hex)"],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "entry point @ciag/orchestra/input-color",
+        "seletor orc-input-color",
+        "InputColorComponent em p2",
+        "valueChangeEvent (→ valueChange)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-input-more.ts:62-65 — nomes acessíveis padrão em inglês",
+      "measurements.json input-color.chunk.deps — o entry depende do monólito p2 (custo de bundle desproporcional)"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": ["color-picker (redesign)"]
+  },
+  {
+    "id": "knob",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Controle de nicho, citado nominalmente na decisão #3 como fora do núcleo. A implementação é um `<input type=range>` linear sobreposto a um SVG circular: funciona e é acessível pelo nativo, mas a interação de arraste não é circular. Fica como experimental, com correções mínimas: base CvaControl, outputs sem `on`, `valueTemplate` como template de verdade e conversão numérica nos inputs.",
+    "evidence": [
+      "projects/orc-ds/knob/knob.component.ts:30 — CVA próprio, fora do CvaControl",
+      "projects/orc-ds/knob/knob.component.ts:32-34 — `min`/`max`/`step` sem `numberAttribute`: `min=\"10\"` estático chega como string e quebra a matemática de `dashOffset` (50-56)",
+      "projects/orc-ds/knob/knob.component.ts:44 — `valueTemplate` é uma string literal que substitui o valor inteiro (html:27), sem interpolação",
+      "projects/orc-ds/knob/knob.component.ts:45-46 — `valueChangeEvent` e `onChange` duplicam o `valueChange` do model",
+      "projects/orc-ds/knob/knob.component.html:30-48 — range nativo invisível por cima do SVG: arraste linear, não rotacional",
+      "projects/orc-ds/knob/knob.component.html:5 — `aria-label` em `<div>` sem role (redundante com o do input, linha 38)",
+      "projects/docs/src/app/catalog/knob.catalog.ts:9 — status 'beta'; deve passar a 'experimental'"
+    ],
+    "targetApi": {
+      "selector": "orc-knob",
+      "inputs": [
+        "min",
+        "max",
+        "step",
+        "size",
+        "strokeWidth",
+        "disabled",
+        "readonly",
+        "inputId",
+        "ariaLabel"
+      ],
+      "models": ["value (number)"],
+      "outputs": [],
+      "slots": ["orcKnobValue (ng-template com { $implicit: value })"],
+      "remove": [
+        "valueChangeEvent, onChange (→ valueChange)",
+        "onFocus, onBlur (→ eventos nativos)",
+        "valueTemplate string (→ slot orcKnobValue)",
+        "suffix (→ slot)",
+        "valueColor, rangeColor (→ tokens CSS --orc-knob-value / --orc-knob-range)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/knob/knob.component.ts:32-34 — inputs numéricos sem transform: atributo estático vira string e `this.max() - this.min()` concatena/coage",
+      "projects/orc-ds/knob/knob.component.html:30-48 — arraste circular não suportado (o ponteiro precisa mover na horizontal)",
+      "projects/orc-ds/knob/knob.component.ts:106 — `onInput` não restaura o valor do range nativo quando `readonly` bloqueia por toque (só mousedown/keydown são bloqueados, html:44-45)"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": [
+      "internal: CvaControl",
+      "catálogo: status 'experimental' + @experimental no JSDoc"
+    ]
+  },
+  {
+    "id": "slider",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 2
+    },
+    "rationale": "Primitivo de formulário útil (alocação percentual no consumidor), com suporte a range, vertical, teclado completo (setas, Page, Home/End) e drag por pointer events. A API acumula quatro outputs de mudança, tooltip configurável, classes `p-slider` e CVA próprio. Range sem rótulos deixa os thumbs sem nome.",
+    "evidence": [
+      "projects/orc-ds/slider/slider.component.ts:49-51 — CVA próprio (`implements ControlValueAccessor`), fora do CvaControl",
+      "projects/orc-ds/slider/slider.component.ts:109-112 — `sliderChange`, `sliderInput`, `onChange` e `onSlideEnd`: quatro outputs sobre o mesmo evento",
+      "projects/orc-ds/slider/slider.component.ts:69-72 — `styleClass`/`style`: paridade PrimeNG",
+      "projects/orc-ds/slider/slider.component.ts:93-95 — `showTooltip`, `tooltip` e `tooltipPosition`",
+      "projects/orc-ds/slider/slider.component.ts:389-411 — teclado com setas, PageUp/PageDown e Home/End (bom)",
+      "projects/orc-ds/slider/slider.component.html:2-3,10 — classes `p-slider p-component` e `data-pc-name`",
+      "projects/orc-ds/slider/slider.component.html:15 — `<label for>` aponta para um `div role=slider`, que não é rotulável (o nome só funciona pelo fallback em aria-label, linhas 123-125)",
+      "projects/orc-ds/slider/slider.component.html:89,123-125 — em `range`, o nome dos thumbs depende de `ariaLabelMin`/`ariaLabelMax`, sem padrão",
+      "projects/orc-ds/slider/slider.component.spec.ts:9-196 — 7 testes de comportamento (drag, vertical, normalização, autofocus)"
+    ],
+    "targetApi": {
+      "selector": "orc-slider",
+      "inputs": [
+        "min",
+        "max",
+        "step",
+        "range",
+        "orientation",
+        "disabled",
+        "size",
+        "label",
+        "helperText",
+        "marks",
+        "showTicks",
+        "showLabels",
+        "showValue ('auto' | 'always' | 'never'; substitui showTooltip)",
+        "valueFormatter",
+        "name",
+        "inputId",
+        "ariaLabel",
+        "ariaLabelledBy"
+      ],
+      "models": ["value (number | [number, number])"],
+      "outputs": [
+        "valueCommit (fim do arraste/teclado; substitui onSlideEnd/sliderChange)"
+      ],
+      "slots": [],
+      "remove": [
+        "sliderChange, onChange, sliderInput (→ valueChange do model)",
+        "onSlideEnd (→ valueCommit)",
+        "tooltip, tooltipPosition (→ showValue + formatter)",
+        "animate (→ transição por token CSS)",
+        "ariaLabelMin, ariaLabelMax (→ rótulos padrão de provideOrcLabels 'Valor mínimo'/'Valor máximo', sobrescrevíveis)",
+        "style",
+        "styleClass",
+        "id (→ inputId)",
+        "tabindex",
+        "autofocus",
+        "classes p-slider/p-component e data-pc-name"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/slider/slider.component.html:89,123-125 — em modo range, os thumbs ficam sem nome acessível quando `ariaLabelMin/Max` não são passados",
+      "projects/orc-ds/slider/slider.component.html:15 — `label for` aponta para elemento não rotulável",
+      "projects/orc-ds/slider/slider.component.html:101,138 — tooltip `role=tooltip` sem `aria-describedby` ligando ao thumb"
+    ],
+    "consumerImpact": "1 uso (team.component.html:263): `[min]`, `[max]`, `[(ngModel)]`, `(ngModelChange)` e `ariaLabel`. Tudo sobrevive; nenhuma mudança necessária.",
+    "effort": "M",
+    "dependsOn": ["internal: CvaControl", "infra: provideOrcLabels"]
+  },
+  {
+    "id": "rating",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "É nicho em app corporativa (avaliação/NPS), não existe no shadcn, não tem uso no consumidor e puxa o chunk de tooltip. A API é PrimeNG pura (`stars`/`max`, `cancel`/`clearable`, `iconOnClass`…), com decorators legados e um botão focável dentro de um `role=slider`. Fica como experimental, com API enxuta e o defeito de a11y corrigido.",
+    "evidence": [
+      "projects/orc-ds/rating/rating.component.ts:46-49 — `max` e `stars` são o mesmo conceito",
+      "projects/orc-ds/rating/rating.component.ts:51,69-70 — `clearable` e `cancel`/`cancelIcon` se sobrepõem",
+      "projects/orc-ds/rating/rating.component.ts:60-68 — `iconOnClass`, `iconOffClass`, `iconOnStyle` e `iconOffStyle`: paridade PrimeNG",
+      "projects/orc-ds/rating/rating.component.ts:77 — `@ContentChild('customIcon')` decorator, em vez de `contentChild()` com diretiva marcadora",
+      "projects/orc-ds/rating/rating.component.ts:214 — `@HostListener('keydown')` legado",
+      "projects/orc-ds/rating/rating.component.ts:40 — CVA próprio, fora do CvaControl",
+      "projects/orc-ds/rating/rating.component.ts:86-89 — `onRate`, `onCancel`, `onFocus`, `onBlur`",
+      "projects/orc-ds/rating/rating.component.html:10,22-31 — `<button>` focável dentro do elemento `role=slider` (filhos de slider são apresentacionais); sem `cancelAriaLabel`, o nome do botão é '×'",
+      "projects/orc-ds/rating/rating-behavior.spec.ts — 4 testes (100 linhas)",
+      "measurements.json — chunk.deps = ['tooltip'] só por causa de `tooltips`"
+    ],
+    "targetApi": {
+      "selector": "orc-rating",
+      "inputs": [
+        "max",
+        "allowHalf",
+        "clearable",
+        "readonly",
+        "disabled",
+        "itemLabels (string[], usados como aria-valuetext/title; substitui tooltips)",
+        "ariaLabel"
+      ],
+      "models": ["value (number)"],
+      "outputs": [],
+      "slots": ["orcRatingIcon (ng-template com { filled, index })"],
+      "remove": [
+        "stars (→ max)",
+        "cancel, cancelIcon (→ clearable; limpeza por teclado Esc/0 e clique na estrela atual)",
+        "numeric",
+        "iconOnClass, iconOffClass, iconOnStyle, iconOffStyle (→ slot orcRatingIcon + tokens CSS)",
+        "tooltips (→ itemLabels; elimina a dependência de tooltip)",
+        "cancelAriaLabel (→ provideOrcLabels)",
+        "style",
+        "styleClass",
+        "id",
+        "autofocus",
+        "onRate (→ valueChange)",
+        "onCancel (→ valueChange com 0)",
+        "onFocus, onBlur",
+        "@ContentChild('customIcon') (→ slot)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/rating/rating.component.html:22-31 — botão de cancelar focável aninhado em `role=slider`, sem nome acessível padrão",
+      "projects/orc-ds/rating/rating.component.ts:214 — o keydown do host também captura teclas vindas do botão de cancelar (Enter/Espaço no botão e setas misturam)",
+      "projects/orc-ds/rating/rating.component.html:15 — `aria-readonly='false'` sempre presente (ruído); `aria-valuetext` em pt-BR hard-coded sem provider"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": [
+      "internal: CvaControl",
+      "infra: provideOrcLabels",
+      "catálogo: status 'experimental' + @experimental no JSDoc"
+    ]
+  },
+  {
+    "id": "checkbox",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 2
+    },
+    "rationale": "Primitivo essencial, com bom núcleo: input nativo visualmente oculto, `indeterminate`, CvaControl e signals. Carrega o contrato PrimeNG `binary/trueValue/falseValue` e array-de-valores, `change` e `onChange` duplicados, dois spellings de `ariaLabelledBy`, classes `p-checkbox` e `*ngIf`/CommonModule. O redesign separa o valor booleano (padrão) do modo grupo.",
+    "evidence": [
+      "projects/orc-ds/checkbox/checkbox.component.ts:37 — `extends CvaControl` (bom)",
+      "projects/orc-ds/checkbox/checkbox.component.ts:49,51 — `ariaLabelledby` e `ariaLabelledBy`: alias de nome",
+      "projects/orc-ds/checkbox/checkbox.component.ts:54-56,241-250 — `binary`, `trueValue`, `falseValue` e o modo array: contrato PrimeNG; sem `binary`, o CVA alterna entre boolean e array",
+      "projects/orc-ds/checkbox/checkbox.component.ts:74-77 — `change` e `onChange` emitem o mesmo payload (185-186); `onFocus`/`onBlur` com prefixo",
+      "projects/orc-ds/checkbox/checkbox.component.ts:206-209 — `onLegacyBlur` mantido por compatibilidade",
+      "projects/orc-ds/checkbox/checkbox.component.html:2-3,12-14 — classes `p-checkbox p-component`, `p-checkbox-checked` e `data-pc-name`",
+      "projects/orc-ds/checkbox/checkbox.component.html:31 — `aria-checked` redundante num checkbox nativo (o nativo já expõe mixed via `indeterminate`)",
+      "projects/orc-ds/checkbox/checkbox.component.html:43,61,76,93 — `*ngIf` (CommonModule) em vez de `@if`; `<ng-content>` declarado em dois ramos (80, 94)",
+      "projects/orc-ds/checkbox/checkbox.component.spec.ts:37-148 — 8 testes, incluindo readonly, alvo de toque 24×24 e evento único"
+    ],
+    "targetApi": {
+      "selector": "orc-checkbox",
+      "inputs": [
+        "label",
+        "description",
+        "errorMessage",
+        "error",
+        "required",
+        "disabled",
+        "readonly",
+        "size",
+        "name",
+        "value (usado só dentro de orc-checkbox-group)",
+        "inputId",
+        "ariaLabel",
+        "ariaLabelledBy",
+        "ariaDescribedBy"
+      ],
+      "models": ["checked (boolean)", "indeterminate (boolean)"],
+      "outputs": [],
+      "slots": ["ng-content (rótulo rico)"],
+      "remove": [
+        "binary (o CVA passa a ser boolean por padrão)",
+        "trueValue, falseValue (responsabilidade do app; converter na borda)",
+        "modo array de valores no CVA (→ orc-checkbox-group com model value: T[], novo)",
+        "ariaLabelledby (→ ariaLabelledBy)",
+        "ariaDescribedby (→ ariaDescribedBy)",
+        "change, onChange (→ checkedChange via model)",
+        "onFocus, onBlur (→ eventos nativos)",
+        "onLegacyBlur",
+        "id (→ inputId; evita id duplicado no host)",
+        "variant (→ tokens)",
+        "autofocus",
+        "styleClass",
+        "classes p-checkbox/p-component e data-pc-name",
+        "CommonModule/*ngIf (→ @if)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/checkbox/checkbox.component.ts:39,91 + checkbox.component.html:22 — com `id=\"x\"` estático (padrão do consumidor), o atributo fica no host `<orc-checkbox>` e também no `<input>` interno: id duplicado, e `<label for=\"x\">` externo tende a apontar para o host, que não é rotulável",
+      "projects/orc-ds/checkbox/checkbox.component.ts:185-186,233-234 — `change` e `onChange` disparam no mesmo clique",
+      "projects/orc-ds/checkbox/checkbox.component.html:1 — o componente renderiza seu próprio `<label>`; dentro de um `<label>` do app (project-gantt-page.component.html:58-63) gera label aninhado (HTML inválido)"
+    ],
+    "consumerImpact": "8 tags em 2 arquivos. hourlog-filter (4×) usa `id` + `[(ngModel)]` + `[binary]=\"true\"` + `<label for>` externo: remover `[binary]` (boolean vira padrão), trocar `id`→`inputId` ou passar o texto para `label`. project-gantt (4×) usa `[checked]` + `(change)=\"…$event.checked\"` dentro de `<label>`: migrar para `[checked]` + `(checkedChange)=\"toggleProject(id, $event)\"` e mover o texto para `label`/ng-content, desfazendo o `<label>` externo.",
+    "effort": "M",
+    "dependsOn": [
+      "internal: CvaControl",
+      "novo orc-checkbox-group (modo array)"
+    ]
+  },
+  {
+    "id": "radio",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "O modelo grupo + item (`orc-radio-group` com CVA, `orc-radio-button` registrado por token) é o do shadcn e está bem testado, com roving tabindex e ordem do DOM. Sobram restos de PrimeNG: `binary` em rádio, `onClick`/`select` duplicados, `onChange` no grupo, classes `p-radiobutton`, registro global de rádios avulsos via Set de módulo, CVA próprio e alias de entry point. O redesign torna o grupo obrigatório para valor.",
+    "evidence": [
+      "projects/orc-ds/radio/radio-group.component.ts:44 — CVA próprio (`implements ControlValueAccessor`), fora do CvaControl",
+      "projects/orc-ds/radio/radio-group.component.ts:58 — `onChange` com prefixo duplica o `valueChange` do model (57)",
+      "projects/orc-ds/radio/radio-group.component.ts:48 — `layout` em vez de `orientation` (vocabulário do slider/WAI-ARIA)",
+      "projects/orc-ds/radio/radio-group.component.ts:125-154 — navegação por setas, que o rádio nativo de mesmo `name` já faz; reimplementada com `preventDefault`",
+      "projects/orc-ds/radio/radio-button.component.ts:46 — `binary` num rádio (PrimeNG), usado só em `onClick` (170)",
+      "projects/orc-ds/radio/radio-button.component.ts:58-61 — `select`, `onClick`, `onFocus` e `onBlur`",
+      "projects/orc-ds/radio/radio-button.component.ts:127,151-162 — rádios avulsos registrados num Set global de módulo para simular exclusão mútua",
+      "projects/orc-ds/radio/radio-button.component.html:2,9-11 — classes `p-radiobutton p-component` e `data-pc-name`; html:28-29 com `aria-checked`/`aria-disabled` redundantes no input nativo",
+      "projects/orc-ds/radio-button/index.ts:1-2 — alias de entry point mais o alias de símbolo `RadioButton`",
+      "projects/orc-ds/radio/radio-contract.spec.ts:149-331 — 12+ testes de contrato (roving, updateOn blur, reorder, form owner)"
+    ],
+    "targetApi": {
+      "selector": "orc-radio-group, orc-radio",
+      "inputs": [
+        "orc-radio-group: name, label, hint, errorMessage, error, required, disabled, orientation ('vertical' | 'horizontal'), ariaLabel",
+        "orc-radio: value, label, description, disabled, size, inputId, ariaLabel"
+      ],
+      "models": ["orc-radio-group: value (T | null)"],
+      "outputs": [],
+      "slots": [
+        "orc-radio-group: ng-content (orc-radio)",
+        "orc-radio: ng-content (rótulo rico)"
+      ],
+      "remove": [
+        "seletor orc-radio-button (→ orc-radio, item curto como no shadcn RadioGroupItem)",
+        "entry point @ciag/orchestra/radio-button e alias `RadioButton`",
+        "uso avulso de orc-radio sem grupo (Set global standaloneRadios)",
+        "binary",
+        "radio-button: select, onClick, onFocus, onBlur, name, id, tabindex, autofocus, ariaLabelledBy, error, variant",
+        "radio-group: onChange (→ valueChange), layout (→ orientation)",
+        "classes p-radiobutton/p-radiogroup/p-component e data-pc-name",
+        "CommonModule/*ngIf (→ @if)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/radio/radio-button.component.ts:127 — o Set de módulo `standaloneRadios` é estado global compartilhado entre apps/injectors (vaza entre testes e microfrontends)",
+      "projects/orc-ds/radio/radio-button.component.html:28-29 — `aria-checked`/`aria-disabled` em `<input type=radio>` conflitam com a semântica nativa",
+      "projects/orc-ds/radio/radio-group.component.html:15 — `aria-invalid` em `role=radiogroup` (não suportado nesse role)"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "M",
+    "dependsOn": ["internal: CvaControl"]
+  },
+  {
+    "id": "switch",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 2
+    },
+    "rationale": "O padrão está certo: `button role=switch` com `aria-checked`, readonly focável e rótulo/descrição ligados por aria. Mas são três seletores (`orc-switch`, `orc-toggle-switch`, `orc-toggle`) e três entry points extras de alias, CVA próprio sem CvaControl, `change` e `onChange` duplicados, dois spellings de `ariaLabelledBy` e nenhum spec dedicado. Converge para `orc-switch` com `checked` boolean.",
+    "evidence": [
+      "projects/orc-ds/switch/switch.component.ts:25 — `selector: 'orc-switch, orc-toggle-switch, orc-toggle'`: três nomes para o mesmo componente",
+      "projects/orc-ds/inputswitch/index.ts, projects/orc-ds/toggle-switch/index.ts, projects/orc-ds/toggle/toggle.component.ts:1 — entry points de alias (inclusive `ToggleComponent` como alias de símbolo)",
+      "projects/orc-ds/switch/switch.component.ts:39,122-141 — CVA escrito à mão, fora do CvaControl",
+      "projects/orc-ds/switch/switch.component.ts:58-59 — `ariaLabelledby` e `ariaLabelledBy`",
+      "projects/orc-ds/switch/switch.component.ts:69-72,155-164 — `change` e `onChange` com o mesmo payload; `onFocus`/`onBlur`",
+      "projects/orc-ds/switch/switch.component.ts:47-48,128 — `trueValue`/`falseValue` (PrimeNG)",
+      "projects/orc-ds/switch/switch.component.ts:51 — `size` com tipo próprio, sem `normalizeSize`, ao contrário de checkbox/radio",
+      "projects/orc-ds/switch/switch.component.html:2-3,12-14 — classes `p-toggleswitch p-component` e `data-pc-name`",
+      "projects/orc-ds/switch/switch.component.html:43-62 — `button role=switch` com `aria-checked`, `aria-readonly` e describedby (bom)",
+      "measurements.json — specFiles = 0; a cobertura existe só em projects/orc-ds/controls-repair.spec.ts:62-129 (3 testes)"
+    ],
+    "targetApi": {
+      "selector": "orc-switch",
+      "inputs": [
+        "label",
+        "description",
+        "errorMessage",
+        "error",
+        "labelPosition ('start' | 'end')",
+        "size",
+        "required",
+        "disabled",
+        "readonly",
+        "name",
+        "inputId",
+        "ariaLabel",
+        "ariaLabelledBy",
+        "ariaDescribedBy"
+      ],
+      "models": ["checked (boolean)"],
+      "outputs": [],
+      "slots": ["ng-content (rótulo rico)"],
+      "remove": [
+        "seletores orc-toggle-switch e orc-toggle",
+        "entry points @ciag/orchestra/inputswitch, @ciag/orchestra/toggle-switch e @ciag/orchestra/toggle (ToggleComponent)",
+        "trueValue, falseValue (CVA boolean; conversão é do app)",
+        "value",
+        "ariaLabelledby (→ ariaLabelledBy)",
+        "ariaDescribedby (→ ariaDescribedBy)",
+        "change, onChange (→ checkedChange)",
+        "onFocus, onBlur (→ eventos nativos)",
+        "id (→ inputId)",
+        "tabindex",
+        "autofocus",
+        "variant",
+        "styleClass",
+        "classes p-toggleswitch/p-component e data-pc-name",
+        "CommonModule/*ngIf (→ @if)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/switch/switch.component.html:25,77,95 — `<ng-content>` em três ramos condicionais; projeção frágil e conteúdo projetado não participa do `aria-labelledby` (só `label()` gera id, linha 100 do .ts)",
+      "projects/orc-ds/switch/switch.component.ts:155-164 — duas emissões por clique (`change` e `onChange`)",
+      "measurements.json switch.specFiles = 0 — sem spec próprio da família"
+    ],
+    "consumerImpact": "1 uso (project-edit-member.component.html:39): `size=\"lg\"`, `styleClass=\"leader-switch\"`, `ariaLabel` e `formControlName`. Trocar `styleClass` por `class` (ou token CSS); o resto sobrevive.",
+    "effort": "M",
+    "dependsOn": [
+      "internal: CvaControl",
+      "internal: normalizeSize",
+      "lote 10: remoção dos entry points toggle/inputswitch/toggle-switch"
+    ]
+  }
+]

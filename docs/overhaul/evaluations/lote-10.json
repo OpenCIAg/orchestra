@@ -1,0 +1,2279 @@
+[
+  {
+    "id": "text",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Primitiva tipográfica útil, mas duplica orc-typography e vive no monólito p2. Vira a única primitiva de texto (absorve typography), com escala ligada a tokens --orc-font-size-* e host inline (hoje o host herda display:block do P2_SHARED_STYLES e quebra texto corrido).",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:308-327 — orc-text com size/muted/truncate e tamanhos em rem fixos (.875rem/1rem/1.25rem), sem tokens",
+      "projects/orc-ds/internal/p2-shared.ts:130-132 — P2_SHARED_STYLES aplica ':host { display: block }' a orc-text, que deveria ser inline",
+      "projects/orc-ds/text/index.ts:1 — entry reexporta de @ciag/orchestra/p2 (chunk depende de p2)",
+      "projects/orc-ds/p2-layout-primitives-contract.spec.ts:228 — único teste: cria o componente; sem teste de a11y"
+    ],
+    "targetApi": {
+      "selector": "orc-text",
+      "inputs": [
+        "as ('span'|'p'|'div'|'label'|'strong'|'small'|'h1'..'h6', padrão 'span')",
+        "size ('xs'|'sm'|'md'|'lg'|'xl'|'2xl', mapeado a --orc-font-size-*)",
+        "weight ('regular'|'medium'|'semibold'|'bold')",
+        "tone ('default'|'secondary'|'muted'|'danger'|'success'|'warning')",
+        "truncate (boolean | número de linhas → line-clamp)"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": ["ng-content"],
+      "remove": [
+        "muted (→ tone='muted')",
+        "dependência de P2_SHARED_STYLES",
+        "host display:block (host passa a display:contents ou inline)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/internal/p2-shared.ts:131 — host display:block força quebra de linha ao usar <orc-text> dentro de parágrafo",
+      "projects/orc-ds/p2/p2-layout-components.ts:319 — classes genéricas .muted/.truncate sem prefixo"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "infra-styles: escala tipográfica --orc-font-size-*/--orc-font-weight-*",
+      "infra-p2: sair do monólito"
+    ]
+  },
+  {
+    "id": "typography",
+    "verdict": "MERGE",
+    "mergeInto": "text",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Duplica orc-text (mesma responsabilidade: escala, peso, truncamento). Os recursos úteis (as= com tags semânticas) migram para orc-text; 'color' livre e 'weight' numérico saem por não respeitarem tokens.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:254-306 — orc-typography com as/size/weight/color/truncate",
+      "projects/orc-ds/p2/p2-layout-components.ts:292 — semanticTag = computed(() => this.as()) é redundante",
+      "projects/orc-ds/p2/p2-layout-components.ts:295,303-305 — color livre aplicado como style inline (fura a paleta CIAg)",
+      "projects/orc-ds/typography-contract.spec.ts:15-46 — 3 testes de DOM"
+    ],
+    "targetApi": {
+      "selector": "orc-text",
+      "inputs": ["as", "size", "weight", "tone", "truncate"],
+      "models": [],
+      "outputs": [],
+      "slots": ["ng-content"],
+      "remove": [
+        "orc-typography (seletor)",
+        "@ciag/orchestra/typography (entry)",
+        "TypographyComponent",
+        "color (→ tone ou CSS do app)",
+        "weight numérico (→ weight nomeado)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:286 — host block + .orc-p2-typography display:inline: span inline dentro de host block"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["text"]
+  },
+  {
+    "id": "kbd",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Útil em docs/atalhos e barato. Mas o padrão '⌘ K' é arbitrário, aria-label em <kbd> é proibido (sem role) e o split por '+' impede representar a própria tecla '+'. Deve ser projeção de conteúdo como no shadcn (Kbd + KbdGroup).",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:347 — keys padrão '⌘ K'",
+      "projects/orc-ds/p2/p2-layout-components.ts:334 — [attr.aria-label] em <kbd> (elemento sem role; ARIA proíbe nome em genérico)",
+      "projects/orc-ds/p2/p2-layout-components.ts:355 — split(/\\s*(?:\\+|\\s)\\s*/) descarta a tecla '+'",
+      "projects/orc-ds/p2/p2-layout-components.ts:342 — font-family fixa ui-monospace em vez de var(--font-mono)"
+    ],
+    "targetApi": {
+      "selector": "orc-kbd",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "ng-content (uma tecla)",
+        "orc-kbd-group (agrupa teclas com separador visual '+')"
+      ],
+      "remove": ["keys", "ariaLabel", "valor padrão '⌘ K'"]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:334 — aria-label em <kbd> ignorado/proibido",
+      "projects/orc-ds/p2/p2-layout-components.ts:355 — tecla '+' não representável",
+      "sem nenhum spec para orc-kbd"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["infra-p2"]
+  },
+  {
+    "id": "link",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Toda app precisa de link com identidade visual, mas o atual não integra com o Router (o caso de uso dominante em Angular), usa href padrão '#' e emite um output 'activated' redundante ao click nativo. Mantém como componente (decisão 9) com suporte a routerLink e indicação acessível de link externo.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:385 — href padrão '#' (link morto quando o consumidor esquece href)",
+      "projects/orc-ds/p2/p2-layout-components.ts:363-377 — <a> interno sem RouterLink; navegação SPA força reload",
+      "projects/orc-ds/p2/p2-layout-components.ts:390 — output activated duplica (click)",
+      "projects/orc-ds/p2/p2-layout-components.ts:367 — rel só para _blank, sem aviso 'abre em nova aba' para leitor de tela"
+    ],
+    "targetApi": {
+      "selector": "orc-link",
+      "inputs": [
+        "href",
+        "routerLink (string | any[]; usa Router opcional via inject)",
+        "queryParams",
+        "fragment",
+        "target",
+        "external (boolean: target=_blank, rel, ícone e rótulo sr 'abre em nova aba' de provideOrcLabels)",
+        "underline ('hover'|'always'|'none')",
+        "disabled"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": ["ng-content"],
+      "remove": [
+        "activated (→ (click) nativo)",
+        "ariaLabel (→ aria-label nativo no host repassado)",
+        "href padrão '#'"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:385 — href='#' por padrão",
+      "projects/orc-ds/internal/p2-shared.ts:131 — host display:block quebra link em texto corrido",
+      "sem spec para orc-link"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": ["infra-i18n", "infra-p2"]
+  },
+  {
+    "id": "code",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Bloco de código com cópia é útil (docs, telas técnicas) e a implementação é enxuta e testada. Ajustes: rótulos em inglês viram provideOrcLabels, o output 'copiedEvent' ganha nome idiomático e o componente deixa de carregar a ponte P2_SHARED_VARS.",
+    "evidence": [
+      "projects/orc-ds/code/code.component.ts:22-24 — padrões 'Copy'/'Copied'/'Copy failed' em inglês",
+      "projects/orc-ds/code/code.component.html:4 — aria-label 'Language: '",
+      "projects/orc-ds/code/code.component.ts:25,27 — signal copied força output a se chamar copiedEvent",
+      "projects/orc-ds/code/code.component.ts:10,15 — P2_SHARED_VARS",
+      "projects/orc-ds/code/code-parity.spec.ts + code-overlay-contract.spec.ts — 10 testes de comportamento (clipboard, timers)"
+    ],
+    "targetApi": {
+      "selector": "orc-code",
+      "inputs": ["code", "language", "copyable (boolean, padrão true)"],
+      "models": [],
+      "outputs": ["copied (string)", "copyFailed (unknown)"],
+      "slots": [],
+      "remove": [
+        "copyLabel/copiedLabel/copyFailedLabel (→ provideOrcLabels: code.copy/code.copied/code.copyFailed)",
+        "copiedEvent (→ copied)",
+        "P2_SHARED_VARS"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/code/code.component.html:4 — aria-label em <span> sem role (ignorado)",
+      "projects/orc-ds/code/code.component.ts:22-24 — textos padrão em inglês"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["infra-i18n", "infra-styles"]
+  },
+  {
+    "id": "icon",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 3
+    },
+    "rationale": "Componente mais usado pelo consumidor (272 tags) e alinhado à decisão 5 (Material Symbols). Mas o stylesheet do componente baixa TRÊS famílias do Google Fonts com display=block, o que contradiz 'fonte carregada pelo app', viola CSP e esconde ícones até o download. A API tem eixos raramente usados (grade, opticalSize, family por instância).",
+    "evidence": [
+      "projects/orc-ds/icon/icon.component.scss:1-3 — @import de Material Symbols Outlined, Rounded e Sharp (3 fontes variáveis) com display=block",
+      "projects/orc-ds/icons/README.md:8-12 — documenta a carga automática do Google Fonts e exige liberar CSP",
+      "projects/orc-ds/icon/icon.component.ts:47-55 — 9 inputs (name, family, size, fill, weight, grade, opticalSize, ariaLabel, title)",
+      "projects/orc-ds/icon/icon.component.ts:73 — opticalSizing = computed(() => 'none') é constante",
+      "projects/orc-ds/icon/icon.component.spec.ts — 3 testes"
+    ],
+    "targetApi": {
+      "selector": "orc-icon",
+      "inputs": [
+        "name (obrigatório)",
+        "size ('xs'|'sm'|'md'|'lg'|'xl'|number)",
+        "filled (boolean)",
+        "weight (100–700)",
+        "label (nome acessível; sem label = aria-hidden)"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@import do Google Fonts no SCSS (app carrega a fonte; docs mostra <link> e opção self-host)",
+        "family por instância (→ provideOrcIcons({ family: 'rounded' }))",
+        "grade",
+        "opticalSize",
+        "title (→ atributo title nativo)",
+        "fill: 'outline'|'filled' (→ filled boolean)",
+        "name padrão 'circle'"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/icon/icon.component.scss:1-3 — 3 requisições de fonte de terceiros por app, display=block (FOIT)",
+      "projects/orc-ds/icon/icon.component.ts:47 — name padrão 'circle' mascara esquecimento do name"
+    ],
+    "consumerImpact": "272 <orc-icon name=...> continuam iguais. Migrar 1 uso de size='sm' (já compatível). O app precisa adicionar o <link> da fonte Material Symbols Rounded no index.html (hoje depende do @import interno); size e name inalterados.",
+    "effort": "M",
+    "dependsOn": ["infra-styles", "provideOrcIcons (novo, em icon/)"]
+  },
+  {
+    "id": "visually-hidden",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Primitiva de a11y legítima e enxuta. Hoje embrulha um span e leva o P2_SHARED_STYLES; o próprio host deve ser o elemento oculto, com variante 'focusable' para skip-links.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:242-252 — span interno com !important em todas as propriedades",
+      "projects/orc-ds/internal/p2-shared.ts:130-180 — P2_SHARED_STYLES (bridge de ~40 variáveis) carregado para um componente sem cor",
+      "projects/orc-ds/p2-layout-primitives-contract.spec.ts — teste de DOM apenas"
+    ],
+    "targetApi": {
+      "selector": "orc-visually-hidden",
+      "inputs": ["focusable (boolean: revela ao receber foco, para skip-link)"],
+      "models": [],
+      "outputs": [],
+      "slots": ["ng-content"],
+      "remove": ["span interno", "P2_SHARED_STYLES"]
+    },
+    "defects": [
+      "projects/orc-ds/internal/p2-shared.ts:131 — host display:block ocupa uma linha mesmo com conteúdo oculto"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "infra-p2",
+      "infra-styles: classe utilitária .orc-sr-only no CSS base"
+    ]
+  },
+  {
+    "id": "scroll-top",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Item de paridade PrimeNG (arquivo 'p2-primeng-gap-components'), raro em apps corporativas e trivial no app (orc-button fixo + window.scrollTo). Carrega classes p-scrolltop, styleClass/style e inputs deprecados no-op. Substituto: receita na docs com orc-button.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:248-296 — 12 inputs, 2 deprecados no-op (show/hideTransitionOptions:291-294), styleClass/style",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:255-259 — classes p-scrolltop/p-component e data-pc-name",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:289-290 — buttonAriaLabel e ariaLabel duplicados",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:347 — 'Scroll to top' em inglês",
+      "projects/orc-ds/scrolltop/ — entry alias com os specs"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "orc-scroll-top",
+        "ScrollTopComponent",
+        "@ciag/orchestra/scroll-top",
+        "@ciag/orchestra/scrolltop (alias)",
+        "substituto: receita na docs com <orc-button> + window.scrollTo({top:0, behavior})"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:291-294 — inputs deprecados no-op"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "terminal",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Nicho (decisão 3: fica como experimental). Implementação signal-first pequena e testada; precisa só remover o output duplicado onCommand, styleClass e textos em inglês.",
+    "evidence": [
+      "projects/orc-ds/terminal/terminal.component.ts:38-39 — commandRun e onCommand emitem o mesmo valor",
+      "projects/orc-ds/terminal/terminal.component.ts:33 — styleClass",
+      "projects/orc-ds/terminal/terminal.component.html:4,14,33 — 'Terminal', 'Terminal history', 'Terminal command' em inglês",
+      "projects/orc-ds/p2/terminal-behavior.spec.ts + terminal/terminal-parity.spec.ts — 10 testes",
+      "projects/orc-ds/p2/p2-terminal-component.ts:5 — p2 reexporta terminal (dependência circular de entries)"
+    ],
+    "targetApi": {
+      "selector": "orc-terminal",
+      "inputs": ["prompt", "welcomeMessage", "label"],
+      "models": ["command", "history"],
+      "outputs": ["commandRun"],
+      "slots": [],
+      "remove": [
+        "onCommand (→ commandRun)",
+        "styleClass",
+        "ariaLabel/commandAriaLabel (→ label + provideOrcLabels terminal.*)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/terminal/terminal.component.html:17-19 — cada linha antiga renderiza o prompt() atual; trocar o prompt reescreve o histórico (guardar o prompt em TerminalLine)",
+      "projects/orc-ds/terminal/terminal.component.html:4,14,33 — rótulos em inglês"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["infra-i18n", "marcar status: 'experimental' + @experimental"]
+  },
+  {
+    "id": "chart",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Decisão 3: fica experimental. É um SVG próprio (sem Chart.js) com teclado e rótulos por ponto, mas anuncia 8 tipos e só renderiza 4, mantém inputs de compatibilidade Chart.js no-op, duplica outputs (pointClick + onDataSelect), recalcula geometria por métodos no template e usa cor fixa fora da paleta.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:15-23 vs 226-231 — ChartType inclui scatter/bubble/polarArea/radar, mas isSupportedType só aceita 4",
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:163-168 — plugins e responsive deprecados no-op",
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:172-177 — pointClick e onDataSelect para o mesmo evento",
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:62,81,104 — bars()/lines()/pieSlices() chamados no template (recalcula a cada CD, não são computed)",
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:309-310 — cor padrão '#3b82f6' fora dos tokens CIAg",
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:49,150,349,359 — 'Chart', 'Unsupported chart type', 'Point', 'value', 'Dataset' em inglês",
+      "projects/orc-ds/chart-contract.spec.ts — 7 testes"
+    ],
+    "targetApi": {
+      "selector": "orc-chart",
+      "inputs": [
+        "type ('bar'|'line'|'pie'|'doughnut')",
+        "data (ChartData)",
+        "label (nome acessível)",
+        "height",
+        "showLegend"
+      ],
+      "models": [],
+      "outputs": ["pointSelect ({ index, datasetIndex })"],
+      "slots": [],
+      "remove": [
+        "scatter/bubble/polarArea/radar do tipo ChartType",
+        "plugins",
+        "responsive",
+        "styleClass",
+        "width (→ CSS do host)",
+        "onDataSelect e pointClick (→ pointSelect)",
+        "reinit/refresh/generateLegend (API Chart.js)",
+        "ariaLabel/ariaLabelledBy (→ label + aria-labelledby nativo)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:46 — preserveAspectRatio='none' com viewBox 100x60 achata pizza/rosca em elipse",
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:533-537 — legenda de barras multi-série usa labels coloridos pelo dataset[0], não as séries",
+      "projects/orc-ds/p2/p2-chart-editor-components.ts:15-23 — tipos anunciados e não suportados"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "infra-p2: mover para chart/",
+      "infra-styles: --orc-chart-1..8",
+      "infra-i18n"
+    ]
+  },
+  {
+    "id": "editor",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Decisão 3: experimental. Baseado em contenteditable + execCommand (API obsoleta), com camada de imitação do Quill (getQuill, onInit, onTextChange, 5 inputs no-op). Precisa de limpeza de API e de base CvaControl, não de reescrita completa.",
+    "evidence": [
+      "projects/orc-ds/editor/editor.component.ts:92-103 — formats/modules/bounds/scrollingContainer/debug deprecados no-op",
+      "projects/orc-ds/editor/editor.component.ts:108-120 — onInit/onTextChange/onSelectionChange (nomes PrimeNG/Quill)",
+      "projects/orc-ds/editor/editor.component.ts:211-254 — getQuill() simula API do Quill",
+      "projects/orc-ds/editor/editor.component.ts:197 — document.execCommand (obsoleto)",
+      "projects/orc-ds/editor/editor.component.html:35 — [innerHTML]=\"value()\" ligado ao mesmo model que (input) escreve (ts:171): risco de reescrever o DOM e perder o cursor a cada tecla",
+      "projects/orc-ds/editor/editor.component.html:9,30 — 'Text editor'/'formatting' em inglês",
+      "projects/orc-ds/editor-selection-contract.spec.ts — 15 testes de seleção"
+    ],
+    "targetApi": {
+      "selector": "orc-editor",
+      "inputs": [
+        "placeholder",
+        "readonly",
+        "disabled",
+        "label",
+        "actions (EditorAction[] com padrão pt-BR: negrito, itálico, sublinhado, listas)"
+      ],
+      "models": ["value (HTML sanitizado)"],
+      "outputs": ["selectionChange ({ index, length } | null)"],
+      "slots": ["orcEditorToolbar (ng-template para toolbar customizada)"],
+      "remove": [
+        "formats",
+        "modules",
+        "bounds",
+        "scrollingContainer",
+        "debug",
+        "styleClass",
+        "getQuill()",
+        "onInit",
+        "onTextChange (→ valueChange do model)",
+        "onSelectionChange (→ selectionChange)",
+        "blur output (→ (focusout) nativo / touched do CVA)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/editor/editor.component.html:35 — reescrita de innerHTML durante digitação",
+      "projects/orc-ds/editor/editor.component.html:21 — action.icon renderizado como texto, não orc-icon",
+      "projects/orc-ds/editor/editor.component.ts:75 — P2_SHARED_STYLES"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": ["infra-internal: CvaControl", "infra-i18n"]
+  },
+  {
+    "id": "file-upload",
+    "verdict": "MERGE",
+    "mergeInto": "file-uploader",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Não tem declaração própria: é entry alias (+ alias 'fileupload') e seletor duplicado 'orc-file-upload' no mesmo componente. Nada a migrar além de apagar o alias; o canônico é orc-file-uploader (usado 4x pelo consumidor).",
+    "evidence": [
+      "projects/orc-ds/file-upload/index.ts:1-2 — FileUploaderComponent exportado como FileUploadComponent e FileUpload",
+      "projects/orc-ds/fileupload/index.ts:1 — alias do alias",
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:26 — selector 'orc-file-uploader, orc-file-upload'"
+    ],
+    "targetApi": {
+      "selector": "orc-file-uploader",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/file-upload",
+        "@ciag/orchestra/fileupload",
+        "seletor orc-file-upload",
+        "símbolos FileUploadComponent e FileUpload"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["file-uploader"]
+  },
+  {
+    "id": "file-uploader",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 2
+    },
+    "rationale": "Caso de uso real (consumidor usa 4x) e bem testado, mas é um clone do p-fileUpload: 44 inputs, 11 outputs com prefixo 'on', camada HTTP própria (HttpClient, url, headers) e mensagens em inglês. Os 4 usos do consumidor só selecionam arquivo e fazem upload no app (customUpload ou sem url): o upload HTTP é responsabilidade do app.",
+    "evidence": [
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:44-95 — 44 inputs, incl. *StyleClass, style, *MessageSummary/Detail (PrimeNG)",
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:97-114 — onSelect/onRemove/onClear/onUpload/onError/onProgress/onBeforeUpload/onSend/onImageError/onRemoveUploadedFile",
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:19,120,264-350 — upload HTTP embutido via HttpClient",
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:52-57 — maxFiles e fileLimit duplicados",
+      "projects/orc-ds/file-uploader/file-uploader.component.html:3,6 — classes p-fileupload/p-component e data-pc-name",
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:274-275,335,386,400,478,488,532,556 — mensagens em inglês ('Duplicate file', 'Upload failed. Try again.', '0 Bytes')",
+      "projects/orc-ds/file-uploader/file-uploader-behavior.spec.ts — 23 testes"
+    ],
+    "targetApi": {
+      "selector": "orc-file-uploader",
+      "inputs": [
+        "accept",
+        "multiple",
+        "maxFiles",
+        "maxFileSize (bytes)",
+        "disabled",
+        "variant ('dropzone'|'button')",
+        "label",
+        "description"
+      ],
+      "models": [
+        "files (OrcFileItem[] = { file, status?, progress?, error? }; o app atualiza status/progresso do upload que ele faz)"
+      ],
+      "outputs": [
+        "filesSelected (File[])",
+        "fileRemoved (File)",
+        "rejected ({ file, reason: 'size'|'type'|'limit'|'duplicate' }[])"
+      ],
+      "slots": [
+        "orcFileUploaderEmpty (ng-template do estado vazio/dropzone)",
+        "orcFileItem (ng-template do item)"
+      ],
+      "remove": [
+        "url",
+        "method",
+        "headers",
+        "withCredentials",
+        "auto",
+        "customUpload",
+        "upload()/uploader() e botões upload/cancel (showUploadButton, showCancelButton, uploadLabel, cancelLabel, uploadIcon, cancelIcon)",
+        "fileLimit (→ maxFiles)",
+        "mode (→ variant)",
+        "styleClass",
+        "style",
+        "uploadStyleClass",
+        "cancelStyleClass",
+        "chooseStyleClass",
+        "removeStyleClass",
+        "chooseIcon (→ orc-icon interno)",
+        "invalidFile*MessageSummary/Detail (→ provideOrcLabels fileUpload.*)",
+        "chooseLabel/uploadingLabel/uploadedLabel/errorLabel/pendingLabel/removeAriaLabel/dropzoneAriaLabel (→ label + provideOrcLabels)",
+        "previewWidth",
+        "forceDragover",
+        "onSelect (→ filesSelected)",
+        "onRemove (→ fileRemoved)",
+        "onClear (→ filesChange via model)",
+        "onError (→ rejected)",
+        "onUpload",
+        "onProgress",
+        "onBeforeUpload",
+        "uploadHandler",
+        "onSend",
+        "onImageError",
+        "onRemoveUploadedFile",
+        "choose() (→ open())",
+        "seletor orc-file-upload",
+        "dependência de HttpClient"
+      ]
+    },
+    "defects": [
+      "/home/tesla/Workspaces/gestao-de-projetos-frontend/src/app/pages/guilds/new-guild/new-guild.component.html:43-48 — consumidor passa <ng-template #empty>, mas o componente não tem ContentChild (template ignorado em silêncio)",
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:492 — id via Math.random (colisão possível; usar contador)",
+      "projects/orc-ds/file-uploader/file-uploader.component.ts:166-172 — registerOnChange(fn: any); não usa a base CvaControl",
+      "projects/orc-ds/file-uploader/file-uploader.component.html:20-40 — modo 'basic' não tem região viva anunciando o arquivo escolhido (a lista com aria-live fica só no modo avançado, linha 93)"
+    ],
+    "consumerImpact": "4 usos (new-guild, guild-profile, project-files, profile): onSelect → filesSelected, onRemove → fileRemoved, onClear → filesChange, onError → rejected; mode='basic' → variant='button'; [customUpload]/[showUploadButton]/[showCancelButton]/styleClass saem; choose() → open(); <ng-template #empty> passa a funcionar como orcFileUploaderEmpty.",
+    "effort": "G",
+    "dependsOn": ["infra-internal: CvaControl", "infra-i18n", "icon"]
+  },
+  {
+    "id": "directive-defer",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Reimplementa o que o Angular já oferece com @defer (on viewport). Mantém seletor PrimeNG pDefer e output onLoad.",
+    "evidence": [
+      "projects/orc-ds/defer/defer.directive.ts:13 — selector '[orcDefer], [pDefer]'",
+      "projects/orc-ds/defer/defer.directive.ts:14 — output onLoad",
+      "projects/orc-ds/defer/defer.directive.ts:24-46 — IntersectionObserver manual"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "DeferDirective",
+        "[orcDefer]",
+        "[pDefer]",
+        "@ciag/orchestra/defer",
+        "substituto: @defer (on viewport) { ... } nativo do Angular"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-draggable",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Drag-and-drop HTML5 próprio duplica @angular/cdk/drag-drop (princípio: usar CDK). Inputs/outputs duplicados para aliases p* e prefixo 'on'. Nenhum componente da lib usa a diretiva.",
+    "evidence": [
+      "projects/orc-ds/drag-drop/drag-drop.directive.ts:38 — selector '[orcDraggable], [pDraggable]'",
+      "projects/orc-ds/drag-drop/drag-drop.directive.ts:40-55 — scope/pScope e disabled/pDisabled duplicados",
+      "projects/orc-ds/drag-drop/drag-drop.directive.ts:56-58 — onDragStart/onDragEnd/onDrag",
+      "grep orcDraggable: só a própria declaração (nenhum uso interno)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "DraggableDirective",
+        "[orcDraggable]",
+        "[pDraggable]",
+        "substituto: cdkDrag de @angular/cdk/drag-drop"
+      ]
+    },
+    "defects": ["HTML5 DnD sem suporte a teclado nem touch"],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-droppable",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Par do DraggableDirective; mesmo diagnóstico. O CDK cobre com cdkDropList/cdkDropListGroup. O único caso de drop de arquivo (file-uploader) já é tratado internamente.",
+    "evidence": [
+      "projects/orc-ds/drag-drop/drag-drop.directive.ts:104 — selector '[orcDroppable], [pDroppable]'",
+      "projects/orc-ds/drag-drop/drag-drop.directive.ts:121-123 — onDragEnter/onDragLeave/onDrop",
+      "projects/orc-ds/drag-drop/drag-drop.directive.ts:130-133 — aria-dropeffect (atributo obsoleto em ARIA 1.1)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "DroppableDirective",
+        "[orcDroppable]",
+        "[pDroppable]",
+        "@ciag/orchestra/drag-drop",
+        "@ciag/orchestra/dragdrop",
+        "substituto: cdkDropList de @angular/cdk/drag-drop"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/drag-drop/drag-drop.directive.ts:130 — aria-dropeffect obsoleto"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-input-mask",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "Máscara (CPF, CNPJ, telefone, CEP) é caso de uso real no Brasil, e o motor tem bons testes. Mas é diretiva sobre <input> nativo com 26 inputs que reproxiam atributos nativos (id, placeholder, title, aria-*) e 4 no-op, contra a decisão 9. O motor vira interno e a API pública passa a ser o input 'mask' de orc-input.",
+    "evidence": [
+      "projects/orc-ds/input-mask/input-mask.directive.ts:16-17 — selector '[orcInputMask],[pInputMask]'",
+      "projects/orc-ds/input-mask/input-mask.directive.ts:28-76 — 26 inputs; showClear/style/styleClass/keepBuffer deprecados no-op (33-50, 74)",
+      "projects/orc-ds/input-mask/input-mask.directive.ts:76-81 — onComplete/onFocus/onBlur/onInput/onKeydown/onClear",
+      "projects/orc-ds/input-mask/input-mask.directive.ts:87-117 — HostBindings que só repassam atributos nativos",
+      "projects/orc-ds/input-mask-contract.spec.ts + input-mask/input-mask-parity.spec.ts — 18 testes"
+    ],
+    "targetApi": {
+      "selector": "orc-input (input mask)",
+      "inputs": [
+        "mask (ex.: '999.999.999-99'; presets 'cpf'|'cnpj'|'telefone'|'cep')",
+        "maskSlotChar",
+        "unmask (valor do model sem máscara)"
+      ],
+      "models": ["value (do orc-input)"],
+      "outputs": ["maskComplete"],
+      "slots": [],
+      "remove": [
+        "InputMaskDirective pública",
+        "[orcInputMask]",
+        "[pInputMask]",
+        "@ciag/orchestra/input-mask",
+        "@ciag/orchestra/inputmask",
+        "type/inputId/placeholder/maxlength/tabindex/title/variant/ariaLabel/ariaLabelledBy/ariaRequired/name/required/autofocus/autocomplete (atributos nativos/do orc-input)",
+        "showClear",
+        "style",
+        "styleClass",
+        "keepBuffer",
+        "size",
+        "onFocus/onBlur/onInput/onKeydown/onClear",
+        "onComplete (→ maskComplete)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/input-mask/input-mask.directive.ts:33-50,74 — 4 inputs no-op"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "lote 03: input",
+      "infra-internal: mover motor para internal/mask-engine.ts"
+    ]
+  },
+  {
+    "id": "directive-key-filter",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Bloquear teclas é anti-padrão de acessibilidade (a pessoa não sabe por que nada aconteceu) e a implementação colide com o Angular: o input 'pattern' ativa o PatternValidator nativo e o output 'ngModelChange' sequestra o evento do ngModel. Substitutos: mask do orc-input, inputmode e Validators.pattern.",
+    "evidence": [
+      "projects/orc-ds/key-filter/key-filter.directive.ts:9 — selector '[orcKeyFilter],[pKeyFilter]'",
+      "projects/orc-ds/key-filter/key-filter.directive.ts:11 — input 'pattern': com ngModel/formControl ativa o PatternValidator do Angular (selector [pattern][ngModel]), que valida o valor inteiro contra '[0-9]' e o marca inválido com mais de 1 dígito",
+      "projects/orc-ds/key-filter/key-filter.directive.ts:12-15 — validateOnly exposto com alias 'pValidateOnly' (nome público PrimeNG)",
+      "projects/orc-ds/key-filter/key-filter.directive.ts:16,47 — output 'ngModelChange' emite valor cru e colide com [(ngModel)]"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "KeyFilterDirective",
+        "[orcKeyFilter]",
+        "[pKeyFilter]",
+        "@ciag/orchestra/key-filter",
+        "@ciag/orchestra/keyfilter",
+        "substituto: orc-input [mask] / inputmode='numeric' / Validators.pattern"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/key-filter/key-filter.directive.ts:11 — conflito com PatternValidator",
+      "projects/orc-ds/key-filter/key-filter.directive.ts:16 — output ngModelChange sequestra o ngModel"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-autofocus",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Foca o host (inútil em componentes orc-* cujo host não é focável) e, quando desabilitada, engole o Escape, quebrando o fechamento de diálogos pais. Os controles já têm input próprio de autofocus e overlays usam cdkFocusInitial.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-input-more.ts:122-148 — AutoFocusDirective",
+      "projects/orc-ds/p2/p2-input-more.ts:143-145 — keydown.escape com stopPropagation quando disabled",
+      "projects/orc-ds/p2/p2-input-more.ts:139 — host.focus() no host (não focável em orc-input)",
+      "consumidor: input-modal.component.html:29 usa 'autoFocus' do orc-input, não a diretiva"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "AutoFocusDirective",
+        "[orcAutoFocus]",
+        "@ciag/orchestra/autofocus",
+        "substituto: input autofocus dos controles orc-* e cdkFocusInitial dentro de overlays"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-input-more.ts:143-145 — Escape engolido quando disabled"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-splitter-panel",
+    "verdict": "KEEP",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 3,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 3,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Diretiva marcadora de slot (ng-template) do orc-splitter: exatamente o padrão de composição pedido no §2.3. Segue o veredito do splitter (lote 07) e sai do p2 junto.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-splitter-component.ts:17-21 — marcador com templateRef e id",
+      "projects/orc-ds/splitter-contract.spec.ts — coberta pelos testes do splitter"
+    ],
+    "targetApi": {
+      "selector": "[orcSplitterPanel] (ng-template)",
+      "inputs": ["orcSplitterPanel (id do painel)"],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": []
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["lote 07: splitter", "infra-p2"]
+  },
+  {
+    "id": "directive-ripple",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Efeito Material/PrimeNG que não faz parte da identidade CIAg (decisão 7). Nenhum componente da lib usa. Manipula DOM e estilos do host em tempo de clique.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-utility-directives.ts:15-187 — RippleDirective (170 linhas de manipulação de DOM)",
+      "grep orcRipple: nenhum uso interno"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "RippleDirective",
+        "[orcRipple]",
+        "@ciag/orchestra/ripple",
+        "substituto: estados :active/:hover por token CSS"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-style-class",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 1,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Paridade pStyleClass: alterna classes em elemento arbitrário via document.querySelector, o que é responsabilidade do app (signals + [class]) e frágil com SSR/shadow DOM.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-utility-directives.ts:189-288 — StyleClassDirective",
+      "projects/orc-ds/p2/p2-utility-directives.ts:236 — document.querySelector(selector) global"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "StyleClassDirective",
+        "[orcStyleClass]",
+        "@ciag/orchestra/style-class",
+        "@ciag/orchestra/styleclass",
+        "substituto: signal no app + [class.x]"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-use-style",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Duplica [style] nativo do Angular (que já aceita objeto). Paridade PrimeNG sem caso de uso.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-utility-more.ts:185-247 — UseStyleDirective reimplementa [style]"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "UseStyleDirective",
+        "[orcUseStyle]",
+        "@ciag/orchestra/use-style",
+        "@ciag/orchestra/usestyle",
+        "substituto: [style]=\"{...}\""
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-animate-on-scroll",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Animação de entrada por IntersectionObserver é decoração de landing page, fora do núcleo corporativo; resolvível com CSS (animation-timeline: view()) ou no app. Lança RangeError em runtime por threshold.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-utility-more.ts:16-64 — AnimateOnScrollDirective",
+      "projects/orc-ds/p2/p2-utility-more.ts:29-32 — throw RangeError em ngAfterViewInit",
+      "projects/orc-ds/p2/p2-utility-more.ts:18 — classe padrão 'orc-animate-visible' sem CSS correspondente no pacote"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "AnimateOnScrollDirective",
+        "[orcAnimateOnScroll]",
+        "@ciag/orchestra/animate-on-scroll",
+        "@ciag/orchestra/animateonscroll",
+        "substituto: CSS scroll-driven animations ou IntersectionObserver no app"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-utility-more.ts:29-32 — erro em runtime em vez de validação de tipo"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "directive-focus-trap",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Reimplementa cdkTrapFocus (@angular/cdk/a11y) com query manual de focáveis; o princípio §2.2 manda usar CDK. Só o confirm-dialog do p2 usa; ao migrar overlays para CDK a diretiva perde o último consumidor.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-utility-more.ts:66-183 — FocusTrapDirective com querySelectorAll de focáveis",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:16,74 — único uso interno",
+      "projects/orc-ds/focus-trap/focus-trap.directive.spec.ts — 5 testes"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "FocusTrapDirective",
+        "[orcFocusTrap]",
+        "@ciag/orchestra/focus-trap",
+        "@ciag/orchestra/focustrap",
+        "substituto: cdkTrapFocus / FocusTrapFactory de @angular/cdk/a11y"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-utility-more.ts:142 — seletor de focáveis ignora summary, audio[controls], iframe e [contenteditable=''] "
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["lote 05: confirm-dialog em CDK Dialog"]
+  },
+  {
+    "id": "directive-cell-def",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 3,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 3,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Marcador de ng-template de célula do orc-table: padrão correto de composição. Só precisa perder o seletor alias appCellDef.",
+    "evidence": [
+      "projects/orc-ds/table/table-cell-def.directive.ts:3-9 — selector '[orcCellDef], [appCellDef]'",
+      "consumidor: 26 usos de orcCellDef, 0 de appCellDef"
+    ],
+    "targetApi": {
+      "selector": "[orcCellDef] (ng-template)",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": ["[appCellDef]"]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum (usa orcCellDef)",
+    "effort": "P",
+    "dependsOn": ["lote 08: table"]
+  },
+  {
+    "id": "directive-header-cell-def",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 3,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 3,
+      "tests": 2,
+      "consumerUse": 1
+    },
+    "rationale": "Marcador de template de cabeçalho; idem CellDef: remover alias appHeaderCellDef.",
+    "evidence": [
+      "projects/orc-ds/table/table-cell-def.directive.ts:11-17 — selector '[orcHeaderCellDef], [appHeaderCellDef]'"
+    ],
+    "targetApi": {
+      "selector": "[orcHeaderCellDef] (ng-template)",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": ["[appHeaderCellDef]"]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["lote 08: table"]
+  },
+  {
+    "id": "directive-column",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 3,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 3,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Declaração de coluna por elemento (orc-column) é a API certa para tabela. O alias app-column (com TODO no código) sai.",
+    "evidence": [
+      "projects/orc-ds/table/table-column.directive.ts:13-19 — selector 'orc-column, app-column' com TODO(orchestra-overhaul #2)",
+      "consumidor: 13 usos de <app-column> no table.component.html"
+    ],
+    "targetApi": {
+      "selector": "orc-column",
+      "inputs": ["key", "header", "sortable", "width", "align"],
+      "models": [],
+      "outputs": [],
+      "slots": ["orcCellDef", "orcHeaderCellDef"],
+      "remove": ["app-column"]
+    },
+    "defects": [],
+    "consumerImpact": "Renomear 13 <app-column> para <orc-column> (troca mecânica).",
+    "effort": "P",
+    "dependsOn": ["lote 08: table"]
+  },
+  {
+    "id": "directive-table-footer",
+    "verdict": "KEEP",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 3,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 3,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Marcador de slot de rodapé da tabela, sem inputs. Correto.",
+    "evidence": [
+      "projects/orc-ds/table/table-slots.directive.ts:3-6 — [orcTableFooter]"
+    ],
+    "targetApi": {
+      "selector": "[orcTableFooter] (ng-template)",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": []
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["lote 08: table"]
+  },
+  {
+    "id": "directive-row-expansion",
+    "verdict": "KEEP",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 3,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 3,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Marcador de slot de linha expandida. Correto; o nome do seletor pode ficar orcRowExpansion.",
+    "evidence": [
+      "projects/orc-ds/table/table-slots.directive.ts:8-11 — [orcRowExpansion]"
+    ],
+    "targetApi": {
+      "selector": "[orcRowExpansion] (ng-template)",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": []
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["lote 08: table"]
+  },
+  {
+    "id": "directive-toolbar-item",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Marca itens para o roving tabindex do orc-toolbar; útil. Mas usa ngOnChanges + output 'stateChange' só para avisar o pai e escreve tabindex direto no DOM; deveria expor disabled como signal lido pelo toolbar (FocusKeyManager do CDK).",
+    "evidence": [
+      "projects/orc-ds/toolbar/toolbar.component.ts:20-40 — ToolbarItemDirective com ngOnChanges e setAttribute('tabindex')",
+      "projects/orc-ds/toolbar/toolbar.component.ts:32 — output stateChange usado como canal interno"
+    ],
+    "targetApi": {
+      "selector": "[orcToolbarItem]",
+      "inputs": ["disabled"],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "stateChange (→ toolbar lê o signal disabled via contentChildren)",
+        "manipulação direta de tabindex (→ FocusKeyManager)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["lote 06: toolbar", "CDK FocusKeyManager"]
+  },
+  {
+    "id": "directive-tooltip",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 1
+    },
+    "rationale": "Tooltip é núcleo e como diretiva de atributo é a forma natural (exceção pontual à decisão 9; confirmar no lote 05). Hoje tem 24 inputs com aliases appTooltip/uiTooltip, pares duplicados (showDelay/tooltipShowDelay, position/tooltipPosition) e appendTo/styleClass.",
+    "evidence": [
+      "projects/orc-ds/tooltip/tooltip.directive.ts:37-41 — inputs appTooltip e uiTooltip além de orcTooltip",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:49-51,92 — tooltipShowDelay e showDelay duplicados",
+      "inventory.json: 24 inputs (tooltipStyleClass, styleClass, appendTo, tooltipOptions, escape, life, positionStyle...)",
+      "consumidor: table.component.html:51 usa tooltipPosition='top' num <div> sem orcTooltip (atributo morto)"
+    ],
+    "targetApi": {
+      "selector": "[orcTooltip]",
+      "inputs": [
+        "orcTooltip (texto ou TemplateRef)",
+        "tooltipPosition ('top'|'bottom'|'left'|'right')",
+        "tooltipDisabled",
+        "tooltipShowDelay",
+        "tooltipHideDelay"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "appTooltip",
+        "uiTooltip",
+        "showDelay/hideDelay (→ tooltip*)",
+        "position (→ tooltipPosition)",
+        "content",
+        "tooltipOptions",
+        "tooltipTheme",
+        "tooltipEvent",
+        "positionStyle",
+        "tooltipStyleClass",
+        "styleClass",
+        "tooltipZIndex",
+        "appendTo",
+        "escape",
+        "life",
+        "fitContent",
+        "autoHide",
+        "hideOnEscape (sempre true)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "Remover import morto de TooltipDirective e o atributo tooltipPosition órfão em components/table/table.component.html:51.",
+    "effort": "M",
+    "dependsOn": ["lote 05: tooltip", "CDK Overlay"]
+  },
+  {
+    "id": "service-confirmation",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Confirmação imperativa é caso de uso de toda app. Mas a API é o ConfirmationService do PrimeNG (callbacks accept/reject, *ButtonStyleClass, key deprecado) e existe um segundo serviço quase idêntico para o popup. Unificar num serviço baseado em Promise que atende diálogo e popup ancorado.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:20-35 — ConfirmationService com request signal e callbacks",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:36-53 — ConfirmationRequest com acceptButtonStyleClass/rejectButtonStyleClass/key deprecado",
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:34-48 — ConfirmPopupService com a mesma lógica"
+    ],
+    "targetApi": {
+      "selector": "OrcConfirmService (providedIn root)",
+      "inputs": [
+        "confirm(options: { title?, message, acceptLabel?, rejectLabel?, tone?: 'default'|'danger', target?: HTMLElement }): Promise<boolean>"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "accept/reject callbacks (→ Promise<boolean>)",
+        "acceptButtonStyleClass/rejectButtonStyleClass",
+        "acceptIcon/rejectIcon",
+        "acceptVisible/rejectVisible",
+        "key",
+        "request signal público",
+        "ConfirmPopupService (fundido aqui; target ⇒ popup ancorado)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "lote 05: confirm-dialog/confirm-popup",
+      "infra-i18n (confirm.accept/confirm.reject)"
+    ]
+  },
+  {
+    "id": "service-confirm-popup",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Duplica o ConfirmationService (mesma implementação de slot único com cancelamento do anterior). Funde no OrcConfirmService via option 'target'.",
+    "evidence": [
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:34-48 — corpo idêntico ao ConfirmationService (p2/p2-confirm-dialog-component.ts:20-35)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "ConfirmPopupService",
+        "PopupConfirmation (→ options de OrcConfirmService com target)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["service-confirmation"]
+  },
+  {
+    "id": "service-modal",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 1
+    },
+    "rationale": "Abrir modal por componente é núcleo. Mas exige que o componente aberto contenha <orc-modal [isOpen]=true> (inversão estranha) e cria/anexa a view manualmente no body em vez de usar CDK Dialog, que já resolve foco, scroll e pilha.",
+    "evidence": [
+      "projects/orc-ds/modal/modal.service.ts:35-39 — JSDoc: 'O componente injetado DEVE conter a tag <orc-modal> com [isOpen]=true'",
+      "projects/orc-ds/modal/modal.service.ts:40-60 — createComponent + attach manual no body",
+      "projects/orc-ds/modal/modal-ref.ts:8,42,47 — três formas para o mesmo resultado: afterClosed$, afterClosed() síncrono e afterClosedPromise()"
+    ],
+    "targetApi": {
+      "selector": "OrcModalService",
+      "inputs": [
+        "open<C, D, R>(component, { data?, size?, label?, dismissible? }): OrcModalRef<R>"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "exigência de <orc-modal> dentro do componente aberto",
+        "afterClosed() e afterClosedPromise() (→ só closed: Observable<R | undefined>, convertível com firstValueFrom)",
+        "inputs por Partial<Record<keyof C, unknown>> sem tipo (→ data + inject(ORC_MODAL_DATA))"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": ["lote 05: modal", "CDK Dialog"]
+  },
+  {
+    "id": "service-toast",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 1
+    },
+    "rationale": "Serviço de toast é núcleo e bem estruturado (signals, container dinâmico). A API mistura dois vocabulários (PrimeNG severity/summary/detail/life/sticky/key e o próprio type/title/message/duration) e configuração global por setters mutáveis.",
+    "evidence": [
+      "projects/orc-ds/toast/toast.types.ts:22-28 — 'PrimeNG message aliases' (key, severity, summary, detail, life, sticky) ao lado de type/title/message/duration",
+      "projects/orc-ds/toast/toast.service.ts:113-127 — setDefaultPosition/setDefaultDuration/setPreventDuplicates/setPreventOpenDuplicates",
+      "projects/orc-ds/toast/toast.service.ts:190-196 — add/addAll (nomes PrimeNG) ao lado de show"
+    ],
+    "targetApi": {
+      "selector": "OrcToastService",
+      "inputs": [
+        "show(options): string",
+        "success|info|warning|error|loading(message, options?)",
+        "dismiss(id)",
+        "clear()",
+        "provideOrcToast({ position, duration, preventDuplicates })"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "severity/summary/detail/life/sticky/key",
+        "add/addAll (→ show)",
+        "remove (→ dismiss)",
+        "notification (→ info)",
+        "setDefault*/setPrevent* (→ provideOrcToast)",
+        "registerContainer/isContainerOwner públicos (→ internos)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "O consumidor tem seu próprio ToastService (src/app/services/toast) e 1 <orc-toast-container>; migra só se o wrapper usar add()/severity.",
+    "effort": "M",
+    "dependsOn": ["lote 05: toast"]
+  },
+  {
+    "id": "entry-avatar-group",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry point alias sem declaração própria (princípio §2.1: uma forma de fazer cada coisa). Substituto: AvatarGroupComponent em @ciag/orchestra/avatar.",
+    "evidence": [
+      "projects/orc-ds/avatar-group/index.ts:1-2 — reexporta AvatarGroupComponent e AvatarItem de @ciag/orchestra/avatar",
+      "projects/orc-ds/avatar/index.ts:2 — o mesmo símbolo já sai por avatar"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/avatar-group",
+        "substituto: AvatarGroupComponent em @ciag/orchestra/avatar"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-input-group-addon",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry point alias sem declaração própria (princípio §2.1: uma forma de fazer cada coisa). Substituto: InputGroupAddonComponent exportado por @ciag/orchestra/input-group (uma entry por família).",
+    "evidence": [
+      "projects/orc-ds/input-group-addon/input-group-addon.component.ts:4-12 — componente sem inputs que só embrulha ng-content com P2_SHARED_STYLES",
+      "projects/orc-ds/input-group/index.ts:1 — family input-group não exporta o addon"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/input-group-addon",
+        "mover input-group-addon.component.* para input-group/",
+        "alias @ciag/orchestra/inputgroupaddon",
+        "substituto: InputGroupAddonComponent exportado por @ciag/orchestra/input-group (uma entry por família)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-message",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry point alias sem declaração própria (princípio §2.1: uma forma de fazer cada coisa). Substituto: @ciag/orchestra/alert (orc-alert) e @ciag/orchestra/messages (lote 09).",
+    "evidence": [
+      "projects/orc-ds/message/index.ts:1-3 — AlertComponent reexportado como MessageComponent + MessagesComponent do p2 + P2Message como MessageItem",
+      "projects/orc-ds/messages/index.ts:1 — messages reexporta message (cadeia de aliases)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/message",
+        "MessageComponent",
+        "MessageItem",
+        "substituto: @ciag/orchestra/alert (orc-alert) e @ciag/orchestra/messages (lote 09)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-pagination",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry point alias sem declaração própria (princípio §2.1: uma forma de fazer cada coisa). Substituto: @ciag/orchestra/paginator (orc-paginator).",
+    "evidence": [
+      "projects/orc-ds/pagination/index.ts:1-2 — PaginatorComponent como PaginationComponent e PageChangeEvent como PaginationPageEvent"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/pagination",
+        "PaginationComponent",
+        "PaginationPageEvent",
+        "substituto: @ciag/orchestra/paginator (orc-paginator)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-sidebar",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry point alias sem declaração própria (princípio §2.1: uma forma de fazer cada coisa). Substituto: @ciag/orchestra/drawer (orc-drawer).",
+    "evidence": [
+      "projects/orc-ds/sidebar/index.ts:1-2 — DrawerComponent como SidebarComponent (nome PrimeNG p-sidebar)"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/sidebar",
+        "SidebarComponent",
+        "SidebarPosition",
+        "substituto: @ciag/orchestra/drawer (orc-drawer)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-text-input",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry point alias sem declaração própria (princípio §2.1: uma forma de fazer cada coisa). Substituto: @ciag/orchestra/input (orc-input).",
+    "evidence": [
+      "projects/orc-ds/text-input/text-input.component.ts:1 — InputComponent reexportado como TextInputComponent"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/text-input",
+        "TextInputComponent",
+        "substituto: @ciag/orchestra/input (orc-input)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-toggle",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry point alias sem declaração própria (princípio §2.1: uma forma de fazer cada coisa). Substituto: @ciag/orchestra/switch (orc-switch).",
+    "evidence": [
+      "projects/orc-ds/toggle/toggle.component.ts:1 — SwitchComponent reexportado como ToggleComponent"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/toggle",
+        "ToggleComponent",
+        "substituto: @ciag/orchestra/switch (orc-switch)"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-defer",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Entry da DeferDirective (ver directive-defer). Substituto: @defer (on viewport).",
+    "evidence": ["projects/orc-ds/defer/index.ts:1"],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": ["@ciag/orchestra/defer"]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["directive-defer"]
+  },
+  {
+    "id": "entry-drag-drop",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Entry das diretivas Draggable/Droppable (ver directive-draggable/droppable). Substituto: @angular/cdk/drag-drop.",
+    "evidence": [
+      "projects/orc-ds/drag-drop/index.ts:1",
+      "projects/orc-ds/dragdrop/index.ts:1 — alias do alias"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": ["@ciag/orchestra/drag-drop", "@ciag/orchestra/dragdrop"]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-input-mask",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "A entry some; o motor de máscara vira interno e a API pública passa a ser orc-input [mask] (ver directive-input-mask).",
+    "evidence": [
+      "projects/orc-ds/input-mask/index.ts:1",
+      "projects/orc-ds/inputmask/index.ts:1 — alias"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/input-mask",
+        "@ciag/orchestra/inputmask",
+        "substituto: @ciag/orchestra/input (orc-input [mask])"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["directive-input-mask"]
+  },
+  {
+    "id": "entry-key-filter",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Entry da KeyFilterDirective (ver directive-key-filter).",
+    "evidence": [
+      "projects/orc-ds/key-filter/index.ts:1",
+      "projects/orc-ds/keyfilter/index.ts:1 — alias"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/key-filter",
+        "@ciag/orchestra/keyfilter",
+        "substituto: orc-input [mask] / Validators.pattern"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "entry-icons",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 0,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Catálogo de metadados do Material Symbols (2 MB de TS + 3,4 MB de JSON) publicado no pacote, mas usado só pela docs (busca de ícones). Pertence ao app de docs; o pacote não deve carregar isso.",
+    "evidence": [
+      "projects/orc-ds/icons/icon-catalog.ts — 2.025.556 bytes",
+      "projects/orc-ds/icons/manifest.json — 3.474.926 bytes",
+      "projects/orc-ds/icons/README.md:8-12 — afirma que a fonte é carregada pelo componente (contradiz decisão 5)",
+      "projects/docs/src/app/pages/components/component-doc/icon-catalog-preview.component.ts — único consumidor"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/icons",
+        "ORC_MATERIAL_SYMBOLS / ORC_MATERIAL_SYMBOL_CATALOG",
+        "substituto: mover icon-catalog.ts para projects/docs/src/app/data/ e tools/material-symbols/generate.mjs passa a gerar lá"
+      ]
+    },
+    "defects": [],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "infra-styles",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Os tokens e as cores CIAg existem (azul elétrico #1c6aed, Poppins, temas light/dark com @layer), e a identidade fica (decisão 7). Mas o pacote só publica .scss (o consumidor precisa de Sass, contra a decisão 6), há quatro camadas de nomes para a mesma cor, o reset global vaza para o app e os fallbacks hex embutidos nos componentes são Tailwind (slate/#2563eb), não CIAg.",
+    "evidence": [
+      "projects/orc-ds/package.json:20-51 — style/sass/exports apontam só para styles/*.scss (inclusive a condição 'default')",
+      "projects/orc-ds/ng-package.json:8-11 — assets copiam styles/**/*.scss; nenhum CSS compilado é gerado",
+      "/home/tesla/Workspaces/gestao-de-projetos-frontend/src/styles.css:6 — consumidor faz @import do index.scss a partir de um .css",
+      "projects/orc-ds/styles/_tokens.scss:3-8 vs 13-28 — tokens --orc-color-* convivem com nomes sem prefixo (--space-*, --radius-*, --font-sans, --shadow-*, --z-*, --color-success)",
+      "projects/orc-ds/styles/themes/_semantics.scss:2-55 — 3ª camada: --bg-app/--text-primary/--border-default aliasando --orc-bg/--orc-font-main e de volta para --orc-surface/--orc-text",
+      "projects/orc-ds/internal/p2-shared.ts:28-73 — 4ª camada --orc-component-* com fallbacks #2563eb/#0f172a/#e2e8f0 (Tailwind), divergentes do --orc-interactive #1c6aed de styles/themes/_light.scss:46",
+      "projects/orc-ds/styles/reset.scss:2-46 — reset global (* {margin:0; padding:0}, scroll-behavior, scrollbars, :focus-visible) incluído por padrão via index.scss:2",
+      "projects/orc-ds/styles/_mixins.scss:1 — mixin usa --color-accent (preto #141414 no light) para anel de foco; reset.scss:39 idem — foco preto em vez do azul de interação",
+      "projects/orc-ds/styles/theme-contract.spec.ts, spacing-contract.spec.ts — contratos existentes de tema"
+    ],
+    "targetApi": {
+      "selector": "@ciag/orchestra/styles (CSS)",
+      "inputs": [
+        "styles/orchestra.css (tokens + temas + base de componentes, em @layer orchestra.tokens, orchestra.base, orchestra.components)",
+        "styles/tokens.css (só variáveis, para quem quer só a paleta)",
+        "styles/reset.css (opt-in, não incluído por padrão)",
+        "styles/*.scss mantidos só como fonte interna de build (não exportados)",
+        "tema: [data-theme='dark'|'light'] + prefers-color-scheme",
+        "nomenclatura única: --orc-color-* (primitivos CIAg), --orc-{surface,text,border,interactive,status-*}-* (semânticos), --orc-font-*, --orc-space-*, --orc-radius-*, --orc-shadow-*, --orc-z-*, --orc-chart-1..8"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "exports .scss para consumidor (package.json exports './styles/*' → .css)",
+        "nomes sem prefixo: --space-*, --radius-*, --shadow-*, --z-*, --font-sans/--font-mono, --transition-*, --color-*",
+        "camada de aliases --bg-*/--text-*/--border-* e --color-zinc-*/--highlight-cinzaclaro (_semantics.scss)",
+        "bridge --orc-component-* (P2_SHARED_VARS/P2_PANEL_VARS/P2_SHARED_STYLES) — componentes leem os semânticos direto",
+        "fallbacks hex Tailwind nos componentes",
+        "reset global no index (vira reset.css opt-in)",
+        "_mixins.scss público"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/internal/p2-shared.ts:43 — fallback --orc-interactive #2563eb ≠ #1c6aed CIAg",
+      "projects/orc-ds/styles/reset.scss:39-42 + _light.scss:22 — anel de foco usa --color-accent (#141414); em superfícies escuras do light (overlay #141414) o foco some",
+      "projects/orc-ds/styles/reset.scss:3-8 — reset global zera margin/padding de todo o app ao importar o index",
+      "projects/orc-ds/package.json:3 — versão da lib ainda 22.3.0 (RC é 22.4.0-rc.0)"
+    ],
+    "consumerImpact": "Trocar o @import do index.scss em styles.css por @import '@ciag/orchestra/styles/orchestra.css' (ou entrada em angular.json); se o app depende do reset, importar reset.css explicitamente. Usos de --bg-app/--text-primary no CSS do app migram para --orc-surface/--orc-text (tabela de equivalência na docs).",
+    "effort": "G",
+    "dependsOn": [
+      "infra-tooling: build que compila SCSS→CSS e verifica dist/styles/*.css"
+    ]
+  },
+  {
+    "id": "infra-p2",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "p2/ é o monólito da migração PrimeNG: ~10,8 mil linhas, 35 famílias ainda declaradas lá e 34 entries cujo chunk depende dele; além disso p2 reexporta famílias canônicas (terminal, editor, password, meter-group), criando dependência circular entre entries. O destino é zerar p2: cada família vai para o seu diretório (ou sai, conforme os lotes) e o entry @ciag/orchestra/p2 é apagado.",
+    "evidence": [
+      "projects/orc-ds/p2/index.ts:1-22 — 22 barris reexportando tudo",
+      "projects/orc-ds/p2/p2-terminal-component.ts:5, p2/p2-editor-component.ts:5, p2/p2-primeng-gap-components.ts:238-246 — p2 reexporta famílias canônicas (ciclo p2 ↔ família)",
+      "projects/orc-ds/text/index.ts:1, kbd/index.ts:1, chart/index.ts:1 etc. — famílias canônicas reexportam de p2",
+      "docs/overhaul/measurements.json — 35 famílias com declaração em projects/orc-ds/p2/ e 34 com chunk.deps contendo 'p2'",
+      "projects/orc-ds/p2/p2-shared.ts:6-7 — o próprio p2-shared já é só reexport de internal",
+      "projects/orc-ds/p2/p2-primeng-gap-components.ts:255-259 — classes p-*/data-pc-name herdadas do PrimeNG"
+    ],
+    "targetApi": {
+      "selector": null,
+      "inputs": [
+        "destino por arquivo: cada componente vai para projects/orc-ds/<família>/ (text, kbd, link, visually-hidden, chart, splitter, …) ou é removido conforme o veredito do lote",
+        "specs de p2/*.spec.ts seguem o componente"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "@ciag/orchestra/p2",
+        "projects/orc-ds/p2/",
+        "P2Option/P2Size/P2Orientation (→ tipos da família ou CanonicalSize)",
+        "prefixo de classe .orc-p2-* (→ .orc-<família>)",
+        "classes p-*/data-pc-name em todos os templates",
+        "todos os 110 entry points alias (scrolltop, fileupload, dragdrop, inputmask, keyfilter, focustrap, styleclass, usestyle, animateonscroll, …)",
+        "root barrel @ciag/orchestra (public-api.ts:1-164 reexporta 163 entries, incluindo aliases) — vira vazio ou só tipos/providers"
+      ]
+    },
+    "defects": [
+      "dependência circular de entries p2 ↔ terminal/editor/password/meter-group",
+      "projects/orc-ds/public-api.ts — barril raiz importa tudo, anulando o ganho de entries secundários para quem importa '@ciag/orchestra'"
+    ],
+    "consumerImpact": "nenhum (o consumidor não importa @ciag/orchestra/p2 nem aliases)",
+    "effort": "G",
+    "dependsOn": [
+      "lotes 01–09: veredito de cada família hoje em p2",
+      "infra-tooling: verify:no-p2 e orçamento de bundle"
+    ]
+  },
+  {
+    "id": "infra-internal",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Ter uma camada interna compartilhada é correto (CVA base, list-picker, calendar/table engines). Problemas: é entry público sem marcação, metade dos controles não usa a base CvaControl, carrega a ponte de estilo P2 e reimplementa overlay/isolamento de modal que o CDK já resolve.",
+    "evidence": [
+      "projects/orc-ds/internal/index.ts:1-15 — 'not a public component API', mas é @ciag/orchestra/internal publicado",
+      "projects/orc-ds/internal/cva-control.ts:10-39 — base CVA; só 15 de 32 classes com NG_VALUE_ACCESSOR estendem CvaControl (grep), ex.: editor/editor.component.ts:86 e file-uploader/file-uploader.component.ts:40 reimplementam",
+      "projects/orc-ds/internal/overlay-lifecycle.ts (241 linhas), modal-isolation.ts (133), overlay-position.ts (79), anchored-popup.ts (158) — pilha de overlays, inert e scroll lock próprios; só 7 arquivos da lib importam @angular/cdk",
+      "projects/orc-ds/internal/p2-shared.ts:28-181 — ponte de variáveis + estilos globais de button/input",
+      "projects/orc-ds/internal/size.ts:9-16 — SizeInput ainda aceita 'small'|'large' (gate 23)",
+      "projects/orc-ds/internal/menu-item.ts:7 — PrimeMenuItem (nome PrimeNG)"
+    ],
+    "targetApi": {
+      "selector": "@ciag/orchestra/internal (privado: símbolos com prefixo ɵ, fora da docs e do llms.txt)",
+      "inputs": [
+        "CvaControl (obrigatória para todo controle de formulário)",
+        "list-picker, calendar-engine, table-engine, tree-filter, menu-keyboard (mantidos)",
+        "mask-engine (novo, extraído de input-mask)",
+        "labels.ts com ORC_LABELS/injectOrcLabels (ver infra-i18n)",
+        "overlay: wrappers finos sobre @angular/cdk/overlay e @angular/cdk/a11y"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "p2-shared.ts (P2_SHARED_STYLES/P2_SHARED_VARS/P2_PANEL_VARS → tokens CSS do infra-styles)",
+        "SizeInput com 'small'|'large' (→ CanonicalSize)",
+        "PrimeMenuItem (→ OrcMenuItem)",
+        "modal-isolation/overlay-lifecycle próprios onde CDK Overlay/Dialog cobre (avaliar caso de <dialog> nativo no lote 05)"
+      ]
+    },
+    "defects": [
+      "17 controles com CVA próprio fora da base CvaControl (inconsistência de disabled/touched)",
+      "projects/orc-ds/internal/p2-shared.ts:175-180 — estilos de button/input/[tabindex] repetidos em 34 componentes via P2_SHARED_STYLES"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "G",
+    "dependsOn": ["lote 05: overlays em CDK", "infra-styles"]
+  },
+  {
+    "id": "infra-tooling",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Parte do tooling continua valiosa depois da compatibilidade PrimeNG (verify:package, verify:ssr, temas, API/llms da docs, changesets). Outra parte só existe para administrar o período de aliases/deprecações rumo ao 'gate 23', que o RC 22.4.0 antecipa: alias-parity, gate-manifest, deprecation-guard e score de compatibilidade PrimeNG viram burocracia. Faltam os gates que medem os princípios novos: orçamento de bundle, ausência de p2/aliases, rótulos fora do provider, outputs on* e regras de a11y desligadas.",
+    "evidence": [
+      "package.json:36-37 — generate/verify:alias-parity (tools/quality/generate-alias-parity.mjs, 496 linhas) + projects/orc-ds/alias-parity.generated.spec.ts (1.301 linhas, 122 testes)",
+      "package.json:38-40 — gate-manifest e deprecation-guard (tools/release/gate-manifest-lib.mjs 1.366 linhas; docs/quality/gate-23-manifest.json com 820 entradas: 245 outputs PrimeNG, 196 aliases, 245 membros deprecados)",
+      "package.json:53 — score:compatibility lê compatibility/primeng-v19.md",
+      "eslint.config.mjs:182 — @angular-eslint/no-output-on-prefix desligado (286 outputs on*)",
+      "eslint.config.mjs:196-203 — 5 regras de a11y de template desligadas (214 achados), justificadas por 'axe-based jasmine suites', mas só 7 specs usam axe (grep 'axe' em *.spec.ts)",
+      "tools/overhaul/measure-families.mjs — mede chunk gzip por entry, mas nada falha no CI",
+      "package.json:49 — verify:docs encadeia verify:gate-manifest"
+    ],
+    "targetApi": {
+      "selector": "scripts npm pós-RC",
+      "inputs": [
+        "MANTER: lint, format:check, test:lib, test:docs, test:browser:interactions, test:themes:ci",
+        "MANTER: verify:package e verify:package:minimum (consumidor isolado; ajustar para validar CSS puro em dist/styles/*.css sem Sass)",
+        "MANTER: verify:ssr",
+        "MANTER: docs:generate-api/verify:docs-api, docs:generate-agent-reference/verify:docs-agent-reference (llms.txt), docs:generate-sitemap/verify:docs-sitemap, verify:docs-coverage, verify:docs-integrity",
+        "MANTER simplificado: verify:inventory (alimenta docs-coverage e measure-families)",
+        "MANTER: changeset, changeset:version, publish-guard, verify:changelog-coverage, verify:compatibility (topologia dos ramos congelados v19–v21)",
+        "PROMOVER: tools/overhaul/measure-families.mjs → verify:bundle-budget (falha se chunk gzip de uma entry passar do orçamento por categoria, ex.: primitivas ≤ 2 kB, controles ≤ 12 kB, data ≤ 25 kB; e se alguma entry depender de outra que não seja internal/icon/button)",
+        "NOVO: verify:no-legacy (falha com entry alias, seletor/input com alias p*/app*/ui*, classe p-*, data-pc-name, @deprecated na lib, import de @ciag/orchestra/p2)",
+        "NOVO: verify:labels (falha com string literal visível/aria em template fora de ORC_LABELS; whitelist para exemplos)",
+        "NOVO: religar @angular-eslint/no-output-on-prefix, no-input-rename, no-output-native e as regras de a11y de template no projeto orc-ds",
+        "NOVO: a11y com axe por família (jasmine-axe já é devDependency) como critério de pronto",
+        "MOVER: tools/material-symbols/generate.mjs para gerar o catálogo dentro da docs"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "generate:alias-parity / verify:alias-parity + alias-parity.generated.spec.ts + component-aliases.spec.ts",
+        "generate:gate-manifest / verify:gate-manifest + tools/release/gate-manifest-lib.mjs + docs/quality/gate-23-manifest.json/gate-23-migration.md (usar o manifesto UMA vez como checklist de remoção do RC e apagar)",
+        "verify:deprecation-guard + deprecation-guard-lib.mjs (sem janela de deprecação: breaking liberado)",
+        "score:compatibility + compatibility/primeng-v19.md",
+        "specs de 'parity' com PrimeNG (*-parity.spec.ts, p2-primeng-gap-*.spec.ts) → reescrever como specs de comportamento da API nova",
+        "docs/quality/public-binding-alias-audit.md, library-scope-decisions.md e demais ledgers de compatibilidade (arquivar)"
+      ]
+    },
+    "defects": [
+      "eslint.config.mjs:182,196-203 — regras que mediriam os princípios do overhaul estão desligadas",
+      "nenhum gate de tamanho de bundle apesar de §2.4 exigir custo por entry medido"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": ["infra-p2", "infra-i18n", "infra-styles"]
+  },
+  {
+    "id": "infra-i18n",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 0,
+      "consumerUse": 2
+    },
+    "rationale": "Não existe provider de rótulos: ~80 textos padrão estão espalhados como literais, quase todos em inglês, alguns em pt-BR misturados no mesmo componente (paginator: 'Anterior' visível e 'Previous page' no aria). Proposta: token ORC_LABELS com padrão pt-BR completo, provideOrcLabels(parcial) para sobrescrever/traduzir, e inputs por instância apenas onde o texto depende do contexto (ex.: label do controle).",
+    "evidence": [
+      "projects/orc-ds/paginator/paginator.component.ts:26-27 vs 38-41 — 'Anterior'/'Próximo' ao lado de 'First page'/'Previous page'/'Next page'/'Last page'",
+      "projects/orc-ds/select/select.component.ts:309,312,359,360 — 'Filter options', 'Clear selection', 'No results found', 'No options available'",
+      "projects/orc-ds/spinner/spinner.component.ts:69, progress/progress-spinner.component.ts:19, data-view/data-view.component.ts:84 — 'Loading'",
+      "projects/orc-ds/p2/p2-overlay-components.ts:62, p2/p2-inplace-component.ts:84 — 'Close'",
+      "projects/orc-ds/table/table.component.ts:250 — 'Nenhum dado encontrado' (único pt-BR) vs table.component.ts:421,424 'Filter rows'/'Select all rows'",
+      "grep InjectionToken em projects/orc-ds: nenhum token de rótulos/locale"
+    ],
+    "targetApi": {
+      "selector": "provideOrcLabels(overrides?: DeepPartial<OrcLabels>): EnvironmentProviders; injectOrcLabels(): Signal<OrcLabels> (em @ciag/orchestra/core ou internal reexportado por cada família)",
+      "inputs": [
+        "common: close='Fechar', clear='Limpar', loading='Carregando', noResults='Nenhum resultado encontrado', noOptions='Nenhuma opção disponível', noData='Nenhum dado encontrado', empty='Sem conteúdo', remove=(item)=>`Remover ${item}`, moreOptions='Mais opções', expand='Expandir', collapse='Recolher', dismiss='Dispensar', toggleSelection='Alternar seleção', select='Selecione'",
+        "filter: options='Filtrar opções', rows='Filtrar linhas', items='Filtrar itens', table='Filtrar tabela'",
+        "selection: clear='Limpar seleção', selectAll='Selecionar todas as linhas', selectRow=(n)=>`Selecionar linha ${n}`",
+        "pagination: label='Paginação', first='Primeira página', previous='Página anterior', next='Próxima página', last='Última página', page='Número da página', previousShort='Anterior', nextShort='Próximo'",
+        "calendar: previousMonth='Mês anterior', nextMonth='Próximo mês', previousYear='Ano anterior', nextYear='Próximo ano', today='Hoje', clear='Limpar', toggleMeridiem='Alternar AM/PM'",
+        "password: show='Mostrar senha', hide='Ocultar senha'",
+        "input: clear='Limpar campo'; numberInput: clear='Limpar valor'; colorPicker: clear='Limpar cor'",
+        "confirm: title='Confirmação', accept='Confirmar', reject='Cancelar'",
+        "fileUpload: choose='Escolher arquivos', dropzone='Arraste arquivos ou clique para escolher', remove=(n)=>`Remover ${n}`, pending='Pendente', uploading='Enviando', uploaded='Enviado', failed='Falha no envio', duplicate='Arquivo duplicado', invalidType=(accept)=>`Tipo de arquivo deve ser ${accept}`, tooLarge=(max)=>`Arquivo excede ${max}`, limit=(n)=>`Máximo de ${n} arquivos`, sizeUnits=['bytes','KB','MB','GB']",
+        "carousel: label='Carrossel', slides='Slides', previous='Slide anterior', next='Próximo slide', slide=(i,n)=>`Slide ${i} de ${n}`; galleria: previous='Imagem anterior', next='Próxima imagem'; tabs: scrollPrevious='Abas anteriores', scrollNext='Próximas abas'",
+        "tree: expand=(n)=>`Expandir ${n}`, collapse=(n)=>`Recolher ${n}`; panel: expand='Expandir painel', collapse='Recolher painel'",
+        "alert: dismiss='Fechar alerta'; message: dismiss='Fechar mensagem'; emptyState: label='Estado vazio'; commandMenu: search='Buscar comandos'",
+        "code: copy='Copiar', copied='Copiado', copyFailed='Falha ao copiar', language=(l)=>`Linguagem: ${l}`",
+        "chart: label='Gráfico', point=(serie,label,valor)=>`${serie}, ${label}, valor ${valor}`, series=(i)=>`Série ${i}`",
+        "terminal: label='Terminal', history='Histórico do terminal', command='Comando do terminal'; editor: label='Editor de texto', toolbar='Formatação', bold='Negrito', italic='Itálico', underline='Sublinhado', bulletList='Lista com marcadores', orderedList='Lista numerada'",
+        "link: external='(abre em nova aba)'"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "literais de texto visível/aria nos templates e .ts da lib (lista abaixo)",
+        "inputs que só existem para trocar rótulo padrão sem contexto: copyLabel/copiedLabel/copyFailedLabel (code), uploadingLabel/uploadedLabel/errorLabel/pendingLabel/invalidFile*Message* (file-uploader), commandAriaLabel (terminal), buttonAriaLabel (scroll-top) etc."
+      ]
+    },
+    "defects": [
+      "Inglês hoje (arquivo:linha): 'Close' p2/p2-overlay-components.ts:62, p2/p2-inplace-component.ts:84; 'Loading' spinner/spinner.component.ts:69, progress/progress-spinner.component.ts:19, data-view/data-view.component.ts:84; 'Loading…' autocomplete/autocomplete.component.ts:96, multi-select/multi-select.component.html:86; 'Loading options' select/select.component.html:175,232",
+      "'No results found' select/select.component.ts:359, tree-select/tree-select.component.html:195; 'No options available' select/select.component.ts:360; 'No results' autocomplete/autocomplete.component.html:117",
+      "'Clear selection' select/select.component.ts:312, p2/p2-cascade-select-component.ts:59, dropdown/dropdown.component.html:35, autocomplete/autocomplete.component.html:58 (+2); 'Filter options' listbox/listbox.component.ts:131, select/select.component.ts:309, p2/p2-cascade-select-component.ts:75, dropdown/dropdown.component.html:63",
+      "'First/Previous/Next/Last page' paginator/paginator.component.ts:38-41, tree-table/tree-table.component.ts:77-80, p2/p2-data-table-component.ts:274,277; 'Pagination' paginator/paginator.component.ts:32, data-view/data-view.component.ts:81, p2/p2-data-table-component.ts:271; 'Page number' paginator/paginator.component.ts:35",
+      "'Show/Hide password' input/input.component.ts:182,185, password/password.component.ts:76-77,121,124; 'Clear input' input/input.component.ts:179; 'Clear value' number-input/number-input.component.html:97; 'Clear color' color-picker/color-picker.component.html:40",
+      "'Previous/Next month' date-picker/date-picker-calendar.component.html:15,63, calendar/calendar.component.html:11,20; 'Previous/Next year' date-picker/date-picker-calendar.component.html:15,63; 'Today' date-picker/date-picker.component.html:261; 'Clear' date-picker/date-picker.component.html:274; 'Toggle AM/PM' date-picker/date-picker.component.html:239",
+      "'Expand'/'Collapse' organization-chart/organization-chart.component.ts:65, tree-select/tree-select.component.ts:204,207, tree/tree.component.html:68-69, tree-table/tree-table.component.html:77, tree-view/tree-view.component.html:44; 'Expand/Collapse panel' p2/p2-primeng-gap-components.ts:90,93; 'Expand/Collapse fieldset' p2/p2-primeng-gap-components.ts:163,166",
+      "'Confirmation'/'Accept'/'Reject' p2/p2-confirm-dialog-component.ts:82,206,209 e confirm-popup/confirm-popup.component.ts:61,360,363",
+      "'Select all rows' table/table.component.ts:424, p2/p2-data-table-component.ts:265; 'Select row' table/table.component.html:248; 'Filter rows' table/table.component.ts:421; 'Filter table' p2/p2-data-table-component.ts:262; 'Filter items' data-view/data-view.component.ts:78; 'Filter' tree-table/tree-table.component.ts:73",
+      "'Carousel'/'Slides'/'Previous slide'/'Next slide'/'Slide ' carousel/carousel.component.html:4,76,56,65,22,89; 'Previous/Next image' galleria/galleria.component.html:142,174; 'Previous/Next tabs' tabs/tab-group.component.html:30,192",
+      "'Dismiss alert' alert/alert.component.html:173; 'Dismiss message' p2/p2-message-components.ts:53; 'Empty state' empty-state/empty-state.component.ts:59; 'More options' split-button/split-button.component.ts:71; 'Toggle selection' chip/chip.component.html:25; 'Remove ' select/select.component.html:78, tag/tag.component.ts:47, badge/badge.component.html:166, file-uploader/file-item/file-item.component.html:78; 'Search commands' p2/p2-command-components.ts:35; 'Select an option' p2/p2-cascade-select-component.ts:41",
+      "Lote 10: 'Copy'/'Copied'/'Copy failed' code/code.component.ts:22-24; 'Language: ' code/code.component.html:4; 'Chart'/'Unsupported chart type'/'Point'/'value'/'Dataset' p2/p2-chart-editor-components.ts:49,150,349,360,359; 'Terminal'/'Terminal history'/'Terminal command' terminal/terminal.component.html:4,14,33; 'Text editor'/' formatting' editor/editor.component.html:9,30; 'Scroll to top/bottom' p2/p2-primeng-gap-components.ts:347; 'Choose files'/'Upload'/'Cancel' file-uploader/file-uploader.component.html:27,38,53,82,127,144; 'Upload failed' file-uploader/file-item/file-item.component.html:135; 'Duplicate file'/'Invalid file'/'Upload failed. Try again.'/'Configure an upload URL…'/'File exceeds'/'File type must match'/'Maximum of N files allowed'/'Bytes' file-uploader/file-uploader.component.ts:386,400,335,274,478,488,532,556-559",
+      "Mistura pt-BR/inglês: paginator/paginator.component.ts:26-27 ('Anterior'/'Próximo') com 38-41 em inglês; table/table.component.ts:250 'Nenhum dado encontrado' com 421/424 em inglês"
+    ],
+    "consumerImpact": "Padrão já em pt-BR: o consumidor pode remover rótulos repetidos (ex.: ariaLabel='Salvar' continua; 'Filtro' em table.component.html:47 passa a ser opcional). Nada quebra.",
+    "effort": "M",
+    "dependsOn": [
+      "infra-internal (ORC_LABELS em internal/labels.ts)",
+      "verify:labels em infra-tooling"
+    ]
+  }
+]

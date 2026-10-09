@@ -1,0 +1,824 @@
+[
+  {
+    "id": "menu",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Vira o primitivo único de menu da biblioteca, construído sobre @angular/cdk/menu (CdkMenu/CdkMenuItem/CdkMenuTrigger/CdkContextMenuTrigger/CdkMenuBar), e absorve tiered-menu, context-menu, menubar, o modo de ações do dropdown (lote 02) e o menu do split-button (lote 01). Hoje a implementação mora no monólito p2, tem popup sem âncora/posicionamento, `model`+`items` duplicados, saídas com prefixo `on` e foco/teclado reimplementados à mão. A API passa a ser por composição (itens declarados no template), eliminando os 5 modelos de item paralelos (PrimeMenuItem, ContextMenuItem, MenubarItem, DropdownItem, CommandItem).",
+    "evidence": [
+      "projects/orc-ds/menu/index.ts:1 — entry `menu` só reexporta `@ciag/orchestra/p2`; o chunk de 148 B gzip depende do monólito p2 (~57 KB gzip, measurements.json)",
+      "projects/orc-ds/p2/p2-advanced-components.ts:179-180 — `model` e `items` são dois inputs para a mesma coisa (`effectiveModel()` em :228)",
+      "projects/orc-ds/p2/p2-advanced-components.ts:186-193 — `appendTo`, `showTransitionOptions`, `hideTransitionOptions` deprecados no-op; `autoZIndex`/`baseZIndex`/`style`/`styleClass` são paridade PrimeNG",
+      "projects/orc-ds/p2/p2-advanced-components.ts:198-203 — `itemSelect` e `onItemClick` emitem o mesmo evento (:370-371); `onShow`/`onHide`/`onFocus`/`onBlur` com prefixo `on`",
+      "projects/orc-ds/p2/p2-advanced-components.ts:145-153 — `popup` só alterna `@if`; não há overlay CDK, âncora, flip nem z-index gerenciado (`[style.z-index]` manual)",
+      "projects/orc-ds/p2/p2-advanced-components.ts:402-418 — listener `pointerdown` manual no document para dismiss, em vez de overlay CDK",
+      "projects/orc-ds/p2/p2-advanced-components.ts:456-560 — navegação por teclado reimplementada com querySelectorAll (CDK Menu já resolve, inclusive typeahead que falta aqui)",
+      "projects/orc-ds/internal/menu-item.ts:7-20 — `PrimeMenuItem` (nome PrimeNG; `command`, `url`, `target`, `badge`, `separator`, `visible`) compartilhado por menu/tiered/panel/mega",
+      "projects/orc-ds/p2/p2-advanced-contract.spec.ts:15-230 — specs de comportamento (foco, submenus, popup) existem, mas no arquivo de contrato do p2, não na família"
+    ],
+    "targetApi": {
+      "selector": "orc-menu",
+      "inputs": ["ariaLabel", "disabled"],
+      "models": [],
+      "outputs": ["closed"],
+      "slots": [
+        "orc-menu-item (componente: inputs `disabled`, `variant: 'default'|'danger'`, `icon`, `shortcut`, `href`, `routerLink`; output `triggered`; slot de conteúdo para o rótulo) — hostDirective CdkMenuItem",
+        "orc-menu-item com `[submenu]=\"tpl\"` (TemplateRef de outro `orc-menu`) — submenu recursivo via CdkMenuTrigger, sem limite de profundidade",
+        "orc-menu-checkbox-item / orc-menu-radio-group + orc-menu-radio-item (models `checked` / `value`) — CdkMenuItemCheckbox/Radio",
+        "orc-menu-group (input `label`) e orc-menu-separator (role=separator)",
+        "orc-menu-trigger (componente invólucro: input `menu: TemplateRef`, projeta o botão; aplica CdkMenuTrigger com posição `side`/`align`) — substitui `popup`/`visible`/`toggle()`",
+        "orc-context-menu (componente invólucro: input `menu: TemplateRef`, projeta a área alvo; aplica CdkContextMenuTrigger)",
+        "orc-menubar (componente; filhos orc-menubar-item com `[submenu]`) — CdkMenuBar"
+      ],
+      "remove": [
+        "items / model (array PrimeMenuItem) → itens por composição com @for no template do app",
+        "PrimeMenuItem (tipo) → removido; `command` → output `triggered` do orc-menu-item; `url`/`target` → inputs `href`/`routerLink` do item",
+        "popup / visible / show() / hide() / toggle() → orc-menu-trigger",
+        "id, style, styleClass, tabindex, autoZIndex, baseZIndex",
+        "appendTo, showTransitionOptions, hideTransitionOptions (no-op)",
+        "ariaLabelledBy (usar ariaLabel ou o rótulo do trigger que o CDK associa)",
+        "itemSelect, onItemClick → `triggered` no item",
+        "onShow, onHide → `opened`/`closed` no orc-menu-trigger",
+        "onFocus, onBlur",
+        "reexport via @ciag/orchestra/p2 → implementação própria em projects/orc-ds/menu"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-advanced-components.ts:146-153 — `<nav role=\"menu\">` sobrescreve o landmark nav; menu de ações não é navegação",
+      "projects/orc-ds/p2/p2-advanced-components.ts:125-139 — `<ul role=\"menu\">` com filhos `<div class=\"menu-entry\">` (HTML inválido: ul só aceita li)",
+      "projects/orc-ds/p2/p2-advanced-components.ts:50-52 — separador é `<hr />` sem `role=\"separator\"` explícito dentro de role=menu",
+      "projects/orc-ds/p2/p2-advanced-components.ts:73-75 — `menu-item-icon` renderiza o texto do ícone em span cru (não usa orc-icon/Material Symbols) e reserva espaço mesmo sem ícone",
+      "projects/orc-ds/p2/p2-advanced-components.ts:174 — submenu `position:absolute` à direita fixo, sem flip em borda de viewport",
+      "Sem typeahead (APG Menu exige foco por caractere)"
+    ],
+    "consumerImpact": "Nenhum uso direto de orc-menu no gestao-de-projetos. Indireto: o orc-context-menu que o consumidor usa passa a ser o invólucro deste primitivo (ver context-menu).",
+    "effort": "G",
+    "dependsOn": [
+      "infra: @angular/cdk/menu",
+      "infra: provideOrcLabels (pt-BR)",
+      "lote 01: split-button reutiliza orc-menu",
+      "lote 02: modo ações do dropdown migra para orc-menu-trigger + orc-menu",
+      "orc-icon (lote 10)"
+    ]
+  },
+  {
+    "id": "menubar",
+    "verdict": "MERGE",
+    "mergeInto": "menu",
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Reimplementa o padrão menubar com modelo de item próprio (`MenubarItem` com `children` e só 1 nível) e teclado escrito à mão. Com o primitivo sobre CDK Menu, `orc-menubar` é só o invólucro de CdkMenuBar no entry `menu`, reaproveitando orc-menu-item e submenus recursivos. O seletor `orc-menubar` sobrevive dentro de `@ciag/orchestra/menu`; o entry `menubar` sai.",
+    "evidence": [
+      "projects/orc-ds/menubar/menubar.component.ts:20-26 — terceiro modelo de item (`MenubarItem extends P2Option`, com `children` em vez de `items`); 1 nível só (:22)",
+      "projects/orc-ds/menubar/menubar.component.ts:142-143 — `items` + `model` duplicados",
+      "projects/orc-ds/menubar/menubar.component.ts:145-152 — `style`, `styleClass`, `autoZIndex`, `baseZIndex`, `tabindex` (paridade PrimeNG)",
+      "projects/orc-ds/menubar/menubar.component.ts:159-161 — outputs `onFocus`/`onBlur` com prefixo `on` e `menuKeydown` (vaza evento de teclado)",
+      "projects/orc-ds/menubar/menubar.component.ts:384-477 — 90 linhas de teclado manual que CdkMenuBar fornece",
+      "projects/orc-ds/menubar/menubar-parity.spec.ts — 4 its de paridade"
+    ],
+    "targetApi": {
+      "selector": "orc-menubar (no entry @ciag/orchestra/menu)",
+      "inputs": ["ariaLabel", "disabled"],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "orc-menubar-item (input `submenu: TemplateRef<orc-menu>`, `disabled`, `icon`; output `triggered`)"
+      ],
+      "remove": [
+        "entry @ciag/orchestra/menubar e reexport em p2/p2-menubar-component.ts",
+        "MenubarItem / items / model → composição",
+        "label (renomear para ariaLabel, coerente com o resto)",
+        "style, styleClass, id, tabindex, autoZIndex, baseZIndex, loop",
+        "onFocus, onBlur, menuKeydown",
+        "itemSelect → `triggered` no item"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/menubar/menubar.component.ts:34-41 — `<nav role=\"menubar\">` anula o landmark nav",
+      "projects/orc-ds/menubar/menubar.component.ts:421-423 — ArrowLeft/Right dentro de submenu move o foco para o item raiz vizinho mas não abre o submenu dele (APG Menubar espera abrir)",
+      "projects/orc-ds/menubar/menubar.component.ts:134 — submenu `position:absolute; top:100%` sem overlay: é cortado por ancestrais com overflow:hidden",
+      "projects/orc-ds/menubar/menubar.component.ts:369 — item raiz sem filhos emite `itemSelect` mas não há `command`/navegação; o app precisa mapear por `value`"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["menu (primitivo CDK)"]
+  },
+  {
+    "id": "tiered-menu",
+    "verdict": "MERGE",
+    "mergeInto": "menu",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "É o mesmo menu com submenus, só que pior: suporta apenas 1 nível de filhos enquanto orc-menu já é recursivo. Não há nada a migrar além do posicionamento de submenu em cascata, que o CDK Menu entrega. O entry `tiered-menu` e o alias `tieredmenu` saem.",
+    "evidence": [
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:228 — 'Root items and one child level are rendered; recursive grandchildren remain unsupported'",
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:229-230 — `items` + `model` duplicados",
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:233-244 — 5 inputs deprecados no-op (`appendTo`, `breakpoint`, `autoDisplay`, `showTransitionOptions`, `hideTransitionOptions`)",
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:256-261 — `itemSelect` + `onItemClick` duplicados; `onShow`/`onHide`/`onFocus`/`onBlur`",
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:34-49 — `getOwnedActiveHTMLElement` copiado literalmente de p2-advanced-components.ts:25-40",
+      "projects/orc-ds/dropdown/dropdown.types.ts:10-16 — o dropdown manda usar TieredMenu para submenus: mais um sinal de que a família de menus está fragmentada"
+    ],
+    "targetApi": {
+      "selector": "orc-menu (submenu via orc-menu-item [submenu])",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "entry @ciag/orchestra/tiered-menu e alias @ciag/orchestra/tieredmenu",
+        "orc-tiered-menu (seletor)",
+        "todos os inputs/outputs (ver remove de menu)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:223 — submenu `top:2rem` fixo: abre desalinhado do item pai para qualquer item que não seja o primeiro",
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:143-150 — submenus ocultos ficam no DOM com `visibility:hidden` (todas as subárvores sempre renderizadas)",
+      "projects/orc-ds/tiered-menu/tiered-menu.component.ts:58-65 — `<nav role=\"menu\">` (mesmo problema do menu)"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["menu (primitivo CDK)"]
+  },
+  {
+    "id": "context-menu",
+    "verdict": "MERGE",
+    "mergeInto": "menu",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 2
+    },
+    "rationale": "Menu de clique direito com modelo de item próprio (`ContextMenuItem`, sem submenus nem `command`), posicionamento `fixed` manual e dismiss por listeners. No alvo, `orc-context-menu` vira o invólucro de CdkContextMenuTrigger dentro do entry `menu`, abrindo um `orc-menu` com submenus, separadores e variante `danger`. O seletor sobrevive; o entry `context-menu` e o alias `contextmenu` saem.",
+    "evidence": [
+      "projects/orc-ds/context-menu/context-menu.component.ts:28-33 — quarto modelo de item (`ContextMenuItem extends P2Option` com `danger`, `shortcut`, `badge`)",
+      "projects/orc-ds/context-menu/context-menu.component.ts:91-94 — `items` + `model` duplicados e `visible` como alias de `open`",
+      "projects/orc-ds/context-menu/context-menu.component.ts:95-106 — `popup`, `appendTo`, `breakpoint` deprecados no-op; `style`/`styleClass`/`autoZIndex`/`baseZIndex`",
+      "projects/orc-ds/context-menu/context-menu.component.ts:113-115 — `opened` convive com `onShow`/`onHide`",
+      "projects/orc-ds/context-menu/context-menu.component.ts:84 — `position:fixed` com `left/top` do clique, sem flip na borda da viewport e quebrando dentro de ancestrais com transform",
+      "projects/orc-ds/context-menu/context-menu.component.ts:294-320 — cálculo manual de coordenadas atravessando iframes (o CDK Overlay resolve)",
+      "projects/orc-ds/context-menu/context-menu-parity.spec.ts:36-106 — 3 its de comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-context-menu (no entry @ciag/orchestra/menu)",
+      "inputs": ["menu (TemplateRef do orc-menu)", "disabled"],
+      "models": [],
+      "outputs": ["opened", "closed"],
+      "slots": [
+        "conteúdo projetado = área alvo do clique direito",
+        "o orc-menu do template recebe orc-menu-item (variant='danger', shortcut) e orc-menu-separator"
+      ],
+      "remove": [
+        "entry @ciag/orchestra/context-menu e alias @ciag/orchestra/contextmenu",
+        "ContextMenuItem / items / model → composição com orc-menu-item",
+        "open / visible (model) / show() / hide() / toggle() → controlados pelo CdkContextMenuTrigger",
+        "target (seletor/elemento externo) → envolver a área com orc-context-menu",
+        "popup, appendTo, breakpoint (no-op)",
+        "style, styleClass, id, tabindex, autoZIndex, baseZIndex, ariaLabelledBy",
+        "itemSelect → `triggered` em cada orc-menu-item",
+        "onShow, onHide → opened/closed"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/context-menu/context-menu.component.ts:210-214 — `activate` não chama comando nenhum; o app precisa despachar por `item.value`",
+      "projects/orc-ds/context-menu/context-menu.component.ts:58-78 — sem separadores, grupos ou submenus",
+      "projects/orc-ds/context-menu/context-menu.component.ts:84 — `.orc-p2-context-menu-host { min-height: 2rem }` altera o layout do conteúdo envolvido",
+      "projects/orc-ds/context-menu/context-menu.component.ts:173-182 — não há abertura por teclado (Shift+F10 / tecla ContextMenu) na área alvo; o CdkContextMenuTrigger cobre",
+      "Sem typeahead"
+    ],
+    "consumerImpact": "gestao-de-projetos usa 1 vez (src/app/pages/projects/project-files/project-files.component.html:1): `<orc-context-menu [items]=\"contextMenuItems\" ariaLabel=\"Ações do arquivo\" (itemSelect)=\"onContextMenuSelect($event)\">` envolvendo a página inteira, com 4 itens `{label, value, danger}` (project-files.component.ts:67-72) e despacho por `item.value` (:131-138). Migração: trocar o import para `@ciag/orchestra/menu`, declarar `<ng-template #acoesArquivo><orc-menu ariaLabel=\"Ações do arquivo\">` com 4 `<orc-menu-item (triggered)=\"...\">` (Excluir com variant=\"danger\") e passar `[menu]=\"acoesArquivo\"`. O `onRightClick` que guarda o arquivo continua igual. Esforço baixo.",
+    "effort": "M",
+    "dependsOn": ["menu (primitivo CDK)", "infra: overlay CDK"]
+  },
+  {
+    "id": "mega-menu",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Não é um mega menu: não abre painel nenhum, só renderiza uma grade estática de grupos de links/botões com `role=\"menubar\"`, o que gera ARIA inválido. Um mega menu de verdade é um painel de navegação específico do site, ou seja, responsabilidade do app. O substituto é `orc-menubar` + `orc-menu` com `orc-menu-group` (ações) ou o próprio app compondo links dentro de um `orc-popover` (navegação).",
+    "evidence": [
+      "projects/orc-ds/mega-menu/mega-menu.component.ts:24-110 — template é `<nav role=\"menubar\">` com `<section role=\"group\"><h3>` e itens; não há trigger, painel nem estado aberto/fechado",
+      "projects/orc-ds/mega-menu/mega-menu.component.ts:42-43 — `<h3>` dentro de role=menubar (filhos permitidos: menuitem/group/separator)",
+      "projects/orc-ds/mega-menu/mega-menu.component.ts:167-188 — só setas no eixo da orientação; ArrowDown/Up não fazem nada no horizontal",
+      "projects/orc-ds/mega-menu/mega-menu.component.ts:118-131 — `items`+`model`, `style`/`styleClass`, `itemSelect`+`onItemClick` duplicados, `onFocus`/`onBlur`",
+      "projects/orc-ds/mega-menu/mega-menu-parity.spec.ts — 4 its de paridade"
+    ],
+    "targetApi": null,
+    "defects": [
+      "projects/orc-ds/mega-menu/mega-menu.component.ts:35 — role=menubar aplicado a uma grade de links de navegação: leitor de tela anuncia 'barra de menus' para navegação comum",
+      "projects/orc-ds/mega-menu/mega-menu.component.ts:46-77 — links (`url`) com role=menuitem perdem a semântica de link"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "panel-menu",
+    "verdict": "MERGE",
+    "mergeInto": "navigation",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "É uma navegação lateral com grupos recolhíveis (uso típico: sidebar de app), modelada como `role=tree` sobre PrimeMenuItem e com só 1 nível. O lugar certo é a família navigation, que já é a sidebar da biblioteca: os grupos recolhíveis viram `orc-navigation-group` (disclosure com `aria-expanded`, não tree). O entry `panel-menu` e o alias `panelmenu` saem.",
+    "evidence": [
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:207 — 'Root items and one child level are rendered'",
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:30 — `role=\"tree\"` para o que é navegação por disclosure",
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:221-225 — outputs duplicados: `onItemExpand`/`onNodeExpand`, `onItemCollapse`/`onNodeCollapse`, `itemSelect`/`onNodeSelect`",
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:213-214 — `transitionOptions` deprecado no-op",
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:208-209 — `items` + `model` duplicados",
+      "projects/orc-ds/panel-menu/panel-menu-parity.spec.ts e p2/p2-advanced-contract.spec.ts:451-760 — comportamento de teclado testado"
+    ],
+    "targetApi": {
+      "selector": "orc-navigation-group (no entry @ciag/orchestra/navigation)",
+      "inputs": ["label", "icon", "disabled"],
+      "models": ["expanded"],
+      "outputs": [],
+      "slots": [
+        "conteúdo: orc-navigation-item filhos (aninhamento recursivo permitido)"
+      ],
+      "remove": [
+        "entry @ciag/orchestra/panel-menu e alias @ciag/orchestra/panelmenu",
+        "orc-panel-menu, PrimeMenuItem/items/model",
+        "multiple (acordeão exclusivo vira responsabilidade do app via `expanded`)",
+        "open (Set de itens) → `expanded` por grupo",
+        "onItemExpand, onItemCollapse, onNodeExpand, onNodeCollapse, onNodeSelect, itemSelect",
+        "style, styleClass, id, tabindex, transitionOptions"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:40,125 — `<hr role=\"separator\">` como filho de role=tree/group (não permitido)",
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:92-96 — `aria-owns` + `aria-controls` apontando para o mesmo grupo, que já é irmão no DOM",
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:115-121 — o grupo de filhos não fica dentro do treeitem pai (estrutura de tree incorreta)",
+      "projects/orc-ds/panel-menu/panel-menu.component.ts:43-69 — links de navegação sem `aria-current`, sem suporte a routerLink"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": ["navigation (KEEP-REDESIGN)"]
+  },
+  {
+    "id": "tab-menu",
+    "verdict": "MERGE",
+    "mergeInto": "tabs",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Abas que são links de rota. Isso é uma variação de tabs, como o tab-nav-bar do Material, e não justifica uma família à parte com modelo de item próprio. Migra para `tabs` como `orc-tab-nav` + `orc-tab-link` (routerLink/href, ativo via RouterLinkActive, `aria-current=\"page\"`), mantendo o visual e os tokens das abas. O entry `tab-menu` e o alias `tabmenu` saem.",
+    "evidence": [
+      "projects/orc-ds/tab-menu/tab-menu.component.ts:14-22 — modelo `TabMenuItem` com index signature `[key: string]: unknown` (tipagem aberta)",
+      "projects/orc-ds/tab-menu/tab-menu.component.ts:36-57 — links de rota marcados `role=\"tab\"` em `role=\"tablist\"` sem tabpanel associado",
+      "projects/orc-ds/tab-menu/tab-menu.component.ts:157-161 — `popup` deprecado no-op",
+      "projects/orc-ds/tab-menu/tab-menu.component.ts:125,147-151 — ativo é `activeItem` manual; não segue a rota (sem RouterLinkActive)",
+      "projects/orc-ds/tab-menu/tab-menu.component.ts:136 — rótulo padrão em inglês 'Tab menu'",
+      "projects/orc-ds/tab-menu/tab-menu.component.spec.ts — 10 its de comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-tab-nav (no entry @ciag/orchestra/tabs)",
+      "inputs": ["ariaLabel", "variant", "size"],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "orc-tab-link (inputs `routerLink`, `href`, `active` (opcional; padrão via RouterLinkActive), `disabled`, `icon`; conteúdo = rótulo)"
+      ],
+      "remove": [
+        "entry @ciag/orchestra/tab-menu e alias @ciag/orchestra/tabmenu",
+        "orc-tab-menu, TabMenuItem, model",
+        "activeItem → ativo derivado da rota (ou input `active` no orc-tab-link)",
+        "itemSelect, command → (click) do app no orc-tab-link",
+        "popup (no-op), scrollable (vai para orc-tab-nav herdando o rolamento de orc-tab-group), style, styleClass"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tab-menu/tab-menu.component.ts:216-217 — setas disparam `click()` no link vizinho: navegar com o teclado troca de rota a cada tecla",
+      "projects/orc-ds/tab-menu/tab-menu.component.ts:36 — semântica tablist para navegação entre páginas: o leitor anuncia abas sem painel; o correto é `nav` + `aria-current=\"page\"`"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["tabs (KEEP-REDESIGN)", "@angular/router (já é peer)"]
+  },
+  {
+    "id": "command-menu",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Paleta de comandos com filtro (o Command do shadcn) tem valor real e não duplica o menu, porque é busca mais lista de ações. Hoje mora no monólito p2, declara `role=dialog` sem ser diálogo, não tem grupos nem modo modal (Ctrl+K) e usa rótulos padrão em inglês. O redesenho tira a implementação do p2, faz composição (`orc-command-group`/`orc-command-item`), usa ActiveDescendantKeyManager do CDK e ganha um modo diálogo composto com orc-modal.",
+    "evidence": [
+      "projects/orc-ds/command-menu/index.ts:1 — reexporta de `@ciag/orchestra/p2` (puxa o monólito p2 inteiro)",
+      "projects/orc-ds/p2/p2-command-components.ts:26-30 — `<section role=\"dialog\">` renderizado inline, sem modal, sem foco preso",
+      "projects/orc-ds/p2/p2-command-components.ts:28,35 — padrões 'Command menu' e 'Search commands' em inglês",
+      "projects/orc-ds/p2/p2-command-components.ts:11-18 — `CommandItem` (quinto modelo de item) sem grupo e sem `value`",
+      "projects/orc-ds/p2/p2-command-components.ts:134-172 — roving por índice manual (CDK ActiveDescendantKeyManager resolve)",
+      "projects/orc-ds/command-dock-contract.spec.ts — único spec; sem spec na pasta da família"
+    ],
+    "targetApi": {
+      "selector": "orc-command",
+      "inputs": [
+        "placeholder",
+        "ariaLabel",
+        "filter (função de match opcional; padrão: label + keywords, sem acento e sem caixa)"
+      ],
+      "models": ["query"],
+      "outputs": [],
+      "slots": [
+        "orc-command-group (input `label`)",
+        "orc-command-item (inputs `value`, `keywords`, `disabled`, `icon`, `shortcut`; output `triggered`; conteúdo = rótulo)",
+        "orc-command-empty (conteúdo exibido sem resultados; padrão de provideOrcLabels: 'Nenhum resultado')",
+        "orc-command-dialog (invólucro sobre orc-modal com input/model `open` e atalho opcional `hotkey`, ex.: 'mod+k')"
+      ],
+      "remove": [
+        "orc-command-menu → orc-command (nome curto, alinhado ao shadcn)",
+        "items / CommandItem → composição",
+        "activeIndex (model público) → estado interno do KeyManager",
+        "label / searchAriaLabel → ariaLabel (input) e rótulo pt-BR padrão",
+        "emptyText → slot orc-command-empty",
+        "itemSelect → `triggered` no item",
+        "reexport via p2 → implementação em projects/orc-ds/command-menu (renomear dir para command)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-command-components.ts:29 — role=dialog sem aria-modal e sem gestão de foco: ARIA enganosa",
+      "projects/orc-ds/p2/p2-command-components.ts:50 — `aria-selected` acompanha o item ativo (selection ≠ active); padrão de combobox prefere só aria-activedescendant",
+      "projects/orc-ds/p2/p2-command-components.ts:92-97 — filtro sensível a acento ('acao' não encontra 'Ação'), ruim para pt-BR",
+      "projects/orc-ds/p2/p2-command-components.ts:66 — item vazio `<li class=\"empty\">` dentro de role=listbox sem role (filho inválido)"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "infra: provideOrcLabels",
+      "lote 05: orc-modal (modo diálogo)",
+      "@angular/cdk/a11y ActiveDescendantKeyManager"
+    ]
+  },
+  {
+    "id": "dock",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Imitação do dock do macOS, barra fixa de ícones no topo ou no rodapé, sem caso de uso em app corporativa Angular e presente só por paridade com o PrimeNG. Como é posicionada com `position:fixed` global, decide layout pelo app. O substituto é `orc-toolbar` com `orc-button` variante ícone, posicionado pelo CSS do app.",
+    "evidence": [
+      "projects/orc-ds/dock/dock.component.ts:49 — `.orc-dock{position:fixed;z-index:20;left:50%...}`: o componente impõe layout global",
+      "projects/orc-ds/dock/dock.component.ts:23-29 — `<nav role=\"toolbar\">` duplica orc-toolbar (mesmo roving por setas em :75-109)",
+      "projects/orc-ds/dock/dock.component.ts:27,35,41 — padrões em inglês ('Dock toolbar', 'Dock item') e glifo '•' como ícone fallback",
+      "projects/orc-ds/dock/dock.component.ts:15-17 — mais um modelo de item (`DockItem`)"
+    ],
+    "targetApi": null,
+    "defects": [
+      "projects/orc-ds/dock/dock.component.ts:28 — role=toolbar em `<nav>` anula o landmark",
+      "projects/orc-ds/dock/dock.component.ts:35-42 — `aria-label` do botão duplica o `<small>` visível; o texto do ícone não usa orc-icon"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "navigation",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "A sidebar de navegação do app (shell + itens) é núcleo de qualquer app corporativa e o único lugar sensato para navegação lateral. Hoje o item só aceita `href` (recarrega a página numa SPA), `NavigationItem.children` é declarado e ignorado, o drawer móvel não prende foco e os rótulos padrão estão em inglês. O redesenho adiciona routerLink com ativo automático, grupos recolhíveis (absorvendo panel-menu), item por composição e drawer móvel reaproveitando orc-drawer.",
+    "evidence": [
+      "projects/orc-ds/navigation/navigation-shell.component.ts:111-112 — padrões 'Primary navigation' e 'Close navigation' em inglês",
+      "projects/orc-ds/navigation/navigation-shell.component.ts:141-148 — `<a [attr.href]>` sem RouterLink: navegação com reload completo em SPA",
+      "projects/orc-ds/navigation/navigation.types.ts:1-9 — `children` e `id` existem no tipo mas nenhum template os usa",
+      "projects/orc-ds/navigation/navigation-shell.component.ts:115-134 — listener de keydown no document sempre ligado (mesmo fechado/desktop)",
+      "projects/orc-ds/navigation/navigation-shell.component.ts:66-90 — drawer móvel por CSS, sem foco preso e sem `inert` no conteúdo de fundo (o lote 05 já tem orc-drawer)",
+      "projects/orc-ds/navigation-toolbar-contract.spec.ts:64-74 — único teste fica fora da pasta; measurements registra specLines=0 na família",
+      "projects/orc-ds/sidebar/index.ts:1 — entry `sidebar` é alias de drawer (lote 10): o nome 'sidebar' deveria ficar para esta família ou sair"
+    ],
+    "targetApi": {
+      "selector": "orc-navigation",
+      "inputs": [
+        "ariaLabel (padrão pt-BR 'Navegação principal')",
+        "collapsed (modo rail)"
+      ],
+      "models": ["mobileOpen"],
+      "outputs": [],
+      "slots": [
+        "[orcNavigationHeader] / [orcNavigationFooter] (marcadores de slot; substituem [navigation-logo]/[navigation-footer])",
+        "orc-navigation-item (inputs `routerLink`, `href`, `icon`, `badge`, `disabled`, `exact`; conteúdo = rótulo; ativo via RouterLinkActive com aria-current='page')",
+        "orc-navigation-group (absorvido de panel-menu: `label`, `icon`, model `expanded`; aninha orc-navigation-item)"
+      ],
+      "remove": [
+        "orc-navigation-shell → orc-navigation",
+        "open (input) + requestClose (output) → model `mobileOpen`",
+        "rail → collapsed",
+        "closeAriaLabel → provideOrcLabels",
+        "NavigationItem (objeto em [item]) → inputs diretos no orc-navigation-item",
+        "active (input manual) → derivado da rota (mantém override opcional)",
+        "activated → (click) nativo",
+        "listener global de Escape → orc-drawer/CDK no modo móvel"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/navigation/navigation-shell.component.ts:19-25 — backdrop é um `<button>` de tela cheia que entra na ordem de tabulação",
+      "projects/orc-ds/navigation/navigation-shell.component.ts:60-62 — modo rail só estreita a largura: os rótulos ficam truncados com ellipsis, sem tooltip nem esconder texto",
+      "projects/orc-ds/navigation/navigation-shell.component.ts:49-51 — tokens com fallback hex hard-coded (#fff, #e2e8f0) fora do sistema de tokens"
+    ],
+    "consumerImpact": "nenhum (o gestao-de-projetos tem sidebar própria; candidato a adotar orc-navigation na migração, mas fora do escopo obrigatório)",
+    "effort": "M",
+    "dependsOn": [
+      "lote 05: drawer (modo móvel)",
+      "infra: provideOrcLabels",
+      "@angular/router RouterLinkActive"
+    ]
+  },
+  {
+    "id": "breadcrumb",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Breadcrumb é núcleo, mas hoje há duas formas de usar (array `items`/`model`+`home` e projeção de `orc-breadcrumb-item`) com comportamentos diferentes: o modo projeção não renderiza separadores e perde conteúdo projetado. Os ícones só funcionam para 'home' (SVG fixo) e há rótulos em inglês. Fica uma forma só, por composição (estilo shadcn): `orc-breadcrumb` > `orc-breadcrumb-item` + `orc-breadcrumb-ellipsis`, separador por CSS e ícones via orc-icon.",
+    "evidence": [
+      "projects/orc-ds/breadcrumb/breadcrumb.component.ts:36-38 — `items`, `model` e `home` (três entradas para a mesma lista)",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.ts:52-53 — `itemClick` + `onItemClick` duplicados",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.html:41-50,72-81,104-113,144-153 — ícone só renderiza se `icon === 'home'` (SVG inline); qualquer outro nome fica vazio",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.html:25 — 'Expand breadcrumb' em inglês",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.html:167-206 — separadores só no ramo data-driven; no modo projeção (:211-213) não há separador nenhum",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.ts:40-41 — `style` (via ngStyle) e `styleClass`; classes PrimeNG `p-breadcrumb p-component` e `data-pc-name` (html:4-6)",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.spec.ts — 5 its"
+    ],
+    "targetApi": {
+      "selector": "orc-breadcrumb",
+      "inputs": [
+        "ariaLabel (padrão pt-BR 'Trilha de navegação')",
+        "separator ('chevron'|'slash')"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "orc-breadcrumb-item (inputs `routerLink`, `href`, `icon`, `current`; conteúdo = rótulo; `current` → aria-current='page')",
+        "orc-breadcrumb-ellipsis (botão de expansão/colapso; o app decide quais itens esconder)",
+        "orc-breadcrumb-separator (opcional, para separador customizado)"
+      ],
+      "remove": [
+        "items, model, home → composição com @for",
+        "maxItems, itemsBeforeCollapse, itemsAfterCollapse, expandAriaLabel → orc-breadcrumb-ellipsis + rótulo de provideOrcLabels",
+        "homeAriaLabel → ariaLabel",
+        "variant ('underlined') → token CSS",
+        "separator 'arrow' e string livre → slot orc-breadcrumb-separator",
+        "style, styleClass, id",
+        "itemClick, onItemClick → (click) nativo no item",
+        "orc-breadcrumb-item: active → current; disabled (item de breadcrumb desabilitado não é padrão); itemClick",
+        "classes p-breadcrumb/p-component e data-pc-name; SVG 'home' inline → orc-icon"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/breadcrumb/breadcrumb-item.component.html:23,48,68,98 — quatro `<ng-content>` sem select em ramos *ngIf distintos: o Angular projeta o conteúdo em um só, então o conteúdo some nos outros ramos (ex.: item com routerLink)",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.html:119-138 — item sem link vira `<span role=\"button\" tabindex=\"0\">`, em vez de <button> nativo",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.html:167 — separador como `<li aria-hidden>` conta como item da lista para alguns leitores; melhor via CSS ::before",
+      "projects/orc-ds/breadcrumb/breadcrumb.component.ts:3 — `homeAriaLabel` é usado como aria-label do nav (html:3), semântica trocada"
+    ],
+    "consumerImpact": "nenhum (o gestao-de-projetos tem breadcrumb próprio em project-files: `breadcrumbs: Breadcrumb[]`, project-files.component.ts:64; candidato a adotar orc-breadcrumb)",
+    "effort": "M",
+    "dependsOn": ["orc-icon", "infra: provideOrcLabels"]
+  },
+  {
+    "id": "tabs",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 3,
+      "consumerUse": 2
+    },
+    "rationale": "Família núcleo e usada pelo consumidor. O teclado e os specs são bons, mas a API tem dois models de seleção (`selectedIndex` e `value`) que se sobrescrevem, outputs duplicados com prefixo `on`, inputs de paridade PrimeNG e ícones que só funcionam para 3 nomes com SVG embutido. Mantém `orc-tab-group`/`orc-tab` e absorve `orc-tab-nav`/`orc-tab-link` do tab-menu.",
+    "evidence": [
+      "projects/orc-ds/tabs/tab-group.component.ts:34-37 — `selectedIndex` e `value` (model com alias redundante 'value') como duas fontes de verdade",
+      "projects/orc-ds/tabs/tab-group.component.ts:296-297 — `selectTab` grava o ÍNDICE em `value`, quebrando quem usa `[(value)]` com o `id` da aba",
+      "projects/orc-ds/tabs/tab-group.component.ts:58-65 — `tabChange` + `onChange` duplicados; `onClose` com prefixo",
+      "projects/orc-ds/tabs/tab-group.component.ts:49-54 — `style`, `styleClass`, `tabindex`, `id`",
+      "projects/orc-ds/tabs/tab.component.ts:35-40 — `tooltip`, `tooltipPosition` (vira `title`, html:74), `headerStyle`, `headerStyleClass`",
+      "projects/orc-ds/tabs/tab-group.component.html:88-130,157-165 — ícone só existe para 'home'|'settings'|'warning' (SVG inline); no fim (end) só 'home'. Viola a decisão 5 (Material Symbols)",
+      "projects/orc-ds/tabs/tab-group.component.html:7-9 — classes PrimeNG `p-tabview p-component` e `data-pc-name`",
+      "projects/orc-ds/tabs/tab-group.component.html:30,175,192 — 'Previous tabs', 'Close ', 'Next tabs' em inglês",
+      "projects/orc-ds/tabs/tab-group.component.spec.ts — 17 its de comportamento (teclado, fechar, foco)"
+    ],
+    "targetApi": {
+      "selector": "orc-tab-group",
+      "inputs": [
+        "variant ('line'|'filled')",
+        "size",
+        "fullWidth",
+        "scrollable",
+        "activation ('automatic'|'manual'; substitui selectOnFocus)",
+        "lazy",
+        "ariaLabel"
+      ],
+      "models": [
+        "value (id da aba; padrão = índice quando a aba não tem `value`)"
+      ],
+      "outputs": ["closed ({ value, index })"],
+      "slots": [
+        "orc-tab (inputs `value`, `label`, `icon` via orc-icon, `iconPosition`, `badge`, `disabled`, `closable`)",
+        "orcTabLabel (ng-template marcador para rótulo rico; substitui [tab-label]/[tabLabel])",
+        "orcTabContent (ng-template marcador para conteúdo lazy explícito)",
+        "orc-tab-nav + orc-tab-link (absorvidos de tab-menu)"
+      ],
+      "remove": [
+        "selectedIndex (model) → value",
+        "onChange, tabChange → valueChange (via model)",
+        "tabFocus",
+        "onClose → closed",
+        "controlClose → o app remove a aba do template no handler de `closed` (sempre controlado)",
+        "showNavigators, autoHideButtons, nextButtonAriaLabel, prevButtonAriaLabel → setas automáticas quando `scrollable`, rótulos via provideOrcLabels",
+        "style, styleClass, tabindex, id",
+        "selectOnFocus → activation",
+        "orc-tab: tooltip, tooltipPosition, headerStyle, headerStyleClass, selected, cache, closeAriaLabel, id → value",
+        "entry alias @ciag/orchestra/tabview",
+        "classes p-tabview/p-component, data-pc-name, SVGs inline"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tabs/tab-group.component.ts:296-297 — `value` recebe o índice numérico ao clicar (bug de two-way binding)",
+      "projects/orc-ds/tabs/tab-group.component.html:212-216 — com `lazy=false` o conteúdo das abas não visitadas também não é renderizado (só entra em `loadedTabs` ao ativar), então `lazy` não tem efeito real",
+      "projects/orc-ds/tabs/tab-group.component.ts:333-341 — ArrowDown/Up navegam numa tablist horizontal (APG: só Left/Right)",
+      "projects/orc-ds/tabs/tab-group.component.html:2-4 — slot coletor com `aria-hidden=\"true\"` envolve o ng-content; frágil se algo projetado escapar do ng-template",
+      "projects/orc-ds/tabs/tab-group.component.ts:163-176 — MutationObserver em subtree+attributes+characterData no header para recalcular setas: custo alto para o problema"
+    ],
+    "consumerImpact": "gestao-de-projetos usa em hourlog-warning.component.html:3-10: `<orc-tab-group class=\"warning-tabs\" [selectedIndex]=\"... ? 1 : 0\">` com 2 `<orc-tab label=\"...\">`. Migração: `[selectedIndex]` → `[value]` (sem `value` nas abas, o padrão por índice mantém `[value]=\"... ? 1 : 0\"`). Esforço trivial.",
+    "effort": "M",
+    "dependsOn": ["orc-icon", "infra: provideOrcLabels"]
+  },
+  {
+    "id": "stepper",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Indicador de etapas é comum em fluxos corporativos (cadastros, wizards). A API tem dois models para a etapa atual sincronizados por effect, dois inputs para a lista, seletor alias `orc-steps` e outputs duplicados. Os botões ficam `disabled` quando não clicáveis, o que tira a etapa atual da árvore de foco no modo readonly. Mantém como indicador (sem painéis); conteúdo por etapa fica com o app ou com @switch.",
+    "evidence": [
+      "projects/orc-ds/stepper/stepper.component.ts:24 — `selector: 'orc-stepper, orc-steps'` (alias de seletor)",
+      "projects/orc-ds/stepper/stepper.component.ts:38-40 — `currentStep` e `activeIndex` (models gêmeos) + `steps`/`model` (inputs gêmeos)",
+      "projects/orc-ds/stepper/stepper.component.ts:96-127 — effect de 30 linhas só para reconciliar os aliases",
+      "projects/orc-ds/stepper/stepper.component.ts:42-43 — `exact` deprecado no-op; :44-46 `id`/`style`/`styleClass`",
+      "projects/orc-ds/stepper/stepper.component.ts:73-74 — `stepChange` + `onChange` duplicados",
+      "projects/orc-ds/stepper/stepper.component.html:11 — padrão 'Steps' em inglês; :3-6 classes `p-steps p-component` e `data-pc-name`",
+      "projects/orc-ds/stepper/stepper.component.spec.ts — 9 its"
+    ],
+    "targetApi": {
+      "selector": "orc-stepper",
+      "inputs": [
+        "steps (StepItem[]: id, title, description, icon, status, disabled)",
+        "orientation",
+        "linear",
+        "readonly",
+        "ariaLabel (padrão pt-BR 'Etapas')"
+      ],
+      "models": ["value (índice da etapa atual)"],
+      "outputs": ["completed"],
+      "slots": [
+        "orcStepIndicator (ng-template marcador para o marcador customizado)",
+        "orcStepLabel (ng-template para título/descrição ricos)"
+      ],
+      "remove": [
+        "orc-steps (seletor alias) e entry @ciag/orchestra/steps",
+        "currentStep, activeIndex → value",
+        "model → steps",
+        "stepChange, onChange → valueChange (via model)",
+        "clickable → !readonly",
+        "selectOnFocus",
+        "type ('numeric'|'icon') → derivado de `icon` presente no StepItem",
+        "StepItem.subtitle (duplica description), StepItem.progress (barra embutida → slot orcStepLabel)",
+        "exact (no-op), id, style, styleClass",
+        "dependência do entry progress (deps: ['progress']) para uma barra opcional"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/stepper/stepper.component.html:45-46 — botão não clicável fica `disabled`: com `readonly` todas as etapas, inclusive a atual (aria-current='step'), saem do foco e alguns leitores as pulam",
+      "projects/orc-ds/stepper/stepper.component.html:51-52 — `aria-posinset`/`aria-setsize` em <button> (não suportado nesse role; a posição já vem do <ol>/<li>)",
+      "projects/orc-ds/stepper/stepper.component.ts:135-142 — status 'completed'/'error' só aparece em classe CSS, sem texto para leitor de tela (ex.: 'concluída')",
+      "projects/orc-ds/stepper/stepper.component.ts:165 — `completed` dispara ao clicar na última etapa, não ao concluí-la"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": ["infra: provideOrcLabels", "orc-icon"]
+  },
+  {
+    "id": "paginator",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 3,
+      "consumerUse": 3
+    },
+    "rationale": "Núcleo e o componente desta família mais usado pelo consumidor (3 telas). Tem 44 inputs: cinco formas de dizer a página (`currentPage`, `page`, `pageIndex`, `first`, `jumpPageInput`), duas para total, tamanho e opções, um effect de 80 linhas reconciliando aliases, 5 inputs deprecados no-op e tabela de rótulos EN/PT embutida. O redesenho mantém exatamente os nomes que o consumidor já usa e corta o resto. O entry `pagination` (lote 10) e o seletor `orc-pagination` são aliases puros e saem.",
+    "evidence": [
+      "projects/orc-ds/paginator/paginator.component.ts:45 — `selector: 'orc-paginator, orc-pagination'` (alias de seletor)",
+      "projects/orc-ds/pagination/index.ts:1-2 — entry `pagination` só reexporta PaginatorComponent como PaginationComponent: alias de entry point",
+      "projects/orc-ds/paginator/paginator.component.ts:55-76 — `totalItems`/`totalRecords`, `pageSize`/`rows`, `first`, `currentPage`/`page`/`pageIndex`",
+      "projects/orc-ds/paginator/paginator.component.ts:79-82,93,104-107,155-157 — `rowsPerPageOptions`, `showFirstLastIcon`, `showCurrentPageReport`, `pageLinkSize`: aliases PrimeNG",
+      "projects/orc-ds/paginator/paginator.component.ts:115-141 — `dropdownAppendTo`, `appendTo`, `dropdownScrollHeight`, `templateLeft`, `templateRight` deprecados no-op",
+      "projects/orc-ds/paginator/paginator.component.ts:198-199 — `pageChange` + `onPageChange` duplicados",
+      "projects/orc-ds/paginator/paginator.component.ts:222-300 — effect de reconciliação entre 6 fontes de estado (escrita em models dentro de effect)",
+      "projects/orc-ds/paginator/paginator.component.ts:18-42,114,181-185 — rótulos PT/EN embutidos e escolhidos por `locale` (deveria vir de provideOrcLabels)",
+      "projects/orc-ds/paginator/paginator.types.ts:1-18 — PageChangeEvent carrega `first`/`rows` só por compatibilidade PrimeNG",
+      "projects/orc-ds/paginator/paginator-behavior.spec.ts — 17 its de comportamento (696 linhas)"
+    ],
+    "targetApi": {
+      "selector": "orc-paginator",
+      "inputs": [
+        "totalItems",
+        "pageSizeOptions",
+        "showPageSizeSelector",
+        "showFirstLastButtons",
+        "showTotalInfo",
+        "showJumpToPage",
+        "alwaysShow",
+        "maxVisiblePages",
+        "disabled",
+        "size",
+        "ariaLabel"
+      ],
+      "models": ["currentPage", "pageSize"],
+      "outputs": [
+        "pageChange (PageChangeEvent { page, pageSize, totalPages, startIndex, endIndex, totalItems })"
+      ],
+      "slots": [
+        "orcPaginatorTotal (ng-template marcador com contexto {start, end, total} para customizar o texto de total)"
+      ],
+      "remove": [
+        "orc-pagination (seletor alias) e entry @ciag/orchestra/pagination",
+        "totalRecords → totalItems",
+        "rows (input e alias de pageSize) → pageSize",
+        "first (model) → derivável: (currentPage-1)*pageSize",
+        "page, pageIndex → currentPage",
+        "rowsPerPageOptions → pageSizeOptions",
+        "showFirstLastIcon → showFirstLastButtons",
+        "showCurrentPageReport, currentPageReportTemplate → showTotalInfo + slot orcPaginatorTotal",
+        "showPrevNextButtons (sempre visíveis), showPageLinks",
+        "showJumpToPageDropdown, showJumpToPageInput, jumpPageInput (model) → showJumpToPage",
+        "pageLinkSize → maxVisiblePages",
+        "locale, previousLabel, nextLabel, firstLabel, lastLabel, itemsPerPageLabel, jumpAriaLabel, pageAriaLabel, pageNumberAriaLabel, pageSizeAriaLabel → provideOrcLabels",
+        "dropdownAppendTo, appendTo, dropdownScrollHeight, templateLeft, templateRight (no-op)",
+        "style, styleClass",
+        "onPageChange → pageChange",
+        "PageChangeEvent.first, PageChangeEvent.rows"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/paginator/paginator.component.ts:294-295 — o effect escreve em `currentPage`/`first` (models) reagindo a eles mesmos: risco de ciclo e de emissões duplicadas de two-way",
+      "projects/orc-ds/paginator/paginator.component.html:30-31 — `[disabled]` e `[attr.aria-disabled]` redundantes no mesmo <button> (e `title` duplicando o aria-label em :36)",
+      "projects/orc-ds/paginator/paginator.component.ts:394-397 — separador 'de'/'of' por locale hard-coded"
+    ],
+    "consumerImpact": "gestao-de-projetos usa em 3 telas (components/table/table.component.html:177, pages/team/team.component.html:237, pages/projects/project-list/project-list.component.html:197) com `currentPage`, `pageSize`, `totalItems`, `pageSizeOptions`, `showPageSizeSelector`, `showFirstLastButtons`, `showTotalInfo`, `alwaysShow`, `disabled`, `ariaLabel` e `(pageChange)` lendo `event.page`/`event.pageSize` (table.component.ts:232-238). Todos sobrevivem com o mesmo nome: migração zero.",
+    "effort": "M",
+    "dependsOn": ["infra: provideOrcLabels"]
+  },
+  {
+    "id": "toolbar",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Toolbar com roving tabindex (APG) é útil e única (absorve o caso do dock). A implementação é pré-signals (`@ContentChildren`/`QueryList`, `@HostListener`, `ngOnChanges`, rxjs `Subscription`) e mexe em `tabindex` por `setAttribute`, quando FocusKeyManager do CDK faz isso. Redesenho pequeno: manter a API, trocar por `contentChildren()` + FocusKeyManager e garantir que o item marcado funcione sobre `orc-button`.",
+    "evidence": [
+      "projects/orc-ds/toolbar/toolbar.component.ts:62-63 — `@ContentChildren` + `QueryList` em vez de `contentChildren()`",
+      "projects/orc-ds/toolbar/toolbar.component.ts:174-181 — `@HostListener` (decorators antigos)",
+      "projects/orc-ds/toolbar/toolbar.component.ts:34-41 — `ngOnChanges` + `setAttribute('tabindex')` manual; :127-135 roving manual",
+      "projects/orc-ds/toolbar/toolbar.component.ts:24-25 — `[attr.disabled]` aplicado ao host do item mesmo quando não é <button> (ex.: orc-button), sem efeito real",
+      "projects/orc-ds/toolbar/toolbar.component.ts:66 — `styleClass`",
+      "projects/orc-ds/navigation-toolbar-contract.spec.ts:208 — teste de roving/RTL existe, mas fora da pasta da família"
+    ],
+    "targetApi": {
+      "selector": "orc-toolbar",
+      "inputs": ["ariaLabel", "orientation", "loop"],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "orcToolbarItem (diretiva marcadora no item focável, input `disabled`; deve resolver o elemento focável interno quando aplicada em orc-button)",
+        "orc-toolbar-separator (role=separator)",
+        "orc-toolbar-group (agrupamento visual com role=group)"
+      ],
+      "remove": [
+        "label → ariaLabel (coerência com a biblioteca)",
+        "ariaLabelledBy (manter só se houver caso; senão sai)",
+        "styleClass",
+        "ToolbarItemDirective.stateChange (output interno exposto)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/toolbar/toolbar.component.ts:130-133 — com `orcToolbarItem` em `<orc-button>`, o tabindex vai para o host e o foco não chega ao <button> interno (foco duplo ou perdido)",
+      "projects/orc-ds/toolbar/toolbar.component.ts:93 — itens desabilitados saem do roving; APG recomenda manter itens desabilitados focáveis na toolbar"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "@angular/cdk/a11y FocusKeyManager",
+      "lote 01: orc-button expor elemento focável"
+    ]
+  }
+]

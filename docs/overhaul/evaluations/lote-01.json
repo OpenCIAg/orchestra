@@ -1,0 +1,450 @@
+[
+  {
+    "id": "button",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 3
+    },
+    "rationale": "Componente base indispensável (223 usos no consumidor), já com signals/OnPush e specs de comportamento sólidas. Porém a API tem 31 inputs com paridade PrimeNG (severity duplica variant; text/outlined/raised/rounded/plain/link duplicam variantes; fluid duplica fullWidth; style/styleClass; icon/iconPos/iconLeft/iconRight/loadingIcon como strings de classe ou SVG), outputs com prefixo on e um segundo componente (orc-icon-button) que duplica iconOnly. A string-SVG obriga o pacote inteiro a depender de DOMPurify em runtime.",
+    "evidence": [
+      "projects/orc-ds/button/button.component.ts:25-63 — 31 inputs; severity (26) duplica variant (25); text/outlined/raised/rounded/plain/link (37-43) duplicam variantes ghost/outline/link; fluid (42) duplica fullWidth (34)",
+      "projects/orc-ds/button/button.component.ts:53-56 — styleClass/style (paridade PrimeNG)",
+      "projects/orc-ds/button/button.component.ts:44-46,59-60 — icon/iconPos('top'|'bottom')/loadingIcon/iconLeft/iconRight como string de classe ou SVG; renderizado como <i [class]> (button.component.html:65,110), padrão PrimeIcons, não Material Symbols",
+      "projects/orc-ds/button/safe-icon.ts:2,26-38 — DOMPurify só para sanitizar SVG-string; projects/orc-ds/package.json:63 o declara como dependency do pacote inteiro",
+      "projects/orc-ds/button/button.component.ts:74-76 — output click com alias 'clicked' (duplica o click nativo que já borbulha) e onFocus/onBlur com prefixo on",
+      "projects/orc-ds/button/button.component.html:13 — data-pc-name='button' (mimetismo PrimeNG)",
+      "projects/orc-ds/button/button.component.html:93-96 + button.types.ts:2 — variant 'close' é um componente disfarçado de variante, com fallback 'Close' em inglês",
+      "projects/orc-ds/button/icon-button.component.ts:16-30 — orc-icon-button duplica orc-button [iconOnly] (button-behavior.spec.ts:102 já cobre nome acessível por conteúdo); consumidor usa [iconOnly] 21x e orc-icon-button 0x",
+      "projects/orc-ds/button/button-behavior.spec.ts:24-102, button-input-contract.spec.ts:19-131 — specs de comportamento reais (layout, loading, sanitização, axe)"
+    ],
+    "targetApi": {
+      "selector": "orc-button",
+      "inputs": [
+        "variant: 'primary'|'secondary'|'outline'|'ghost'|'link'|'danger'",
+        "size: 'sm'|'md'|'lg'",
+        "type: 'button'|'submit'|'reset'",
+        "disabled",
+        "loading",
+        "iconOnly",
+        "fullWidth",
+        "form",
+        "ariaLabel",
+        "ariaExpanded",
+        "ariaControls"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "conteúdo padrão (rótulo; em iconOnly vira nome acessível visualmente oculto)",
+        "[iconStart] (ex.: <orc-icon iconStart name=\"add\"/>)",
+        "[iconEnd]"
+      ],
+      "remove": [
+        "severity (→ variant)",
+        "text, outlined, raised, rounded, plain, link (→ variant)",
+        "fluid (→ fullWidth)",
+        "icon, iconPos, iconLeft, iconRight, loadingIcon (→ slots com orc-icon)",
+        "badge, badgeClass (→ compor com orc-badge)",
+        "style, styleClass (→ class/tokens CSS no host)",
+        "id, tabindex, ariaLabelledBy (atributos nativos no host/derivar do conteúdo)",
+        "variant 'close' (→ orc-button iconOnly + <orc-icon name=\"close\"/> com rótulo 'Fechar' de provideOrcLabels)",
+        "output clicked (→ (click) nativo)",
+        "onFocus/onBlur (→ (focusin)/(focusout) nativos)",
+        "data-pc-name",
+        "safe-icon.ts e a dependency dompurify do package.json",
+        "orc-icon-button / IconButtonComponent (→ orc-button iconOnly)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/button/button.component.html:95 — fallback do nome acessível de variant='close' em inglês ('Close'); deveria vir de provideOrcLabels ('Fechar')",
+      "projects/orc-ds/button/button.component.html:4 — loading aplica disabled nativo: o foco é perdido no meio da ação (o botão clicado some da ordem de tabulação); preferir aria-disabled + bloqueio do clique enquanto loading",
+      "projects/orc-ds/button/button.component.html:69-71,114-116 — spans de ícone vazios sempre renderizados quando nada é projetado (DOM extra em 223 instâncias)",
+      "Consumidor: <orc-button routerLink=...> (5x, ex.: gestao-de-projetos-frontend/src/app/pages/guilds/guilds.component.html:12) — RouterLink no host não-âncora cria segundo tab stop e semântica de botão para navegação; falta um caminho de 'ação como link' (ver dependsOn)"
+    ],
+    "consumerImpact": "Usa variant (primary/secondary/ghost/danger/outline/link), type, (click) nativo, disabled, size, ariaLabel, iconOnly, loading, fullWidth, form, class e projeta <orc-icon> como conteúdo — tudo sobrevive. Nenhum uso de icon/iconPos/severity/badge/clicked. Migração: apenas os 5 <orc-button routerLink> passam para o caminho de link com aparência de botão.",
+    "effort": "M",
+    "dependsOn": [
+      "infra: provideOrcLabels (rótulo 'Fechar')",
+      "lote 10: orc-link com aparência de botão (variant) para navegação via routerLink/href",
+      "lote 05: overlays internos (modal, toast, drawer) passam a usar orc-button iconOnly no lugar de variant='close'"
+    ]
+  },
+  {
+    "id": "button-group",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 3,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Primitivo pequeno e útil (agrupar ações, base do split button por composição), API já enxuta (orientation, attached, label). Problemas são de implementação: mora no monólito p2, injeta P2_SHARED_STYLES (seletores globais) e arredonda cantos via ::ng-deep button, o que atinge qualquer <button> descendente, inclusive internos de componentes aninhados. Tem alias de entry point (buttongroup).",
+    "evidence": [
+      "projects/orc-ds/p2/p2-layout-components.ts:12-35 — implementação no monólito p2; button-group/index.ts reexporta de @ciag/orchestra/p2 (chunk depende de p2)",
+      "projects/orc-ds/p2/p2-layout-components.ts:24-26 — P2_SHARED_STYLES + '::ng-deep button' para cantos: vaza para qualquer botão descendente",
+      "projects/orc-ds/p2/p2-layout-components.ts:31-33 — 3 inputs coerentes",
+      "projects/orc-ds/buttongroup/index.ts:1 — alias de entry point duplicado",
+      "projects/orc-ds/p2-layout-primitives-contract.spec.ts:44 — um spec de comportamento (rótulo, vertical, attached)"
+    ],
+    "targetApi": {
+      "selector": "orc-button-group",
+      "inputs": [
+        "orientation: 'horizontal'|'vertical'",
+        "attached",
+        "ariaLabel"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "conteúdo padrão (orc-button, orc-toggle-button, orc-segmented-control…)"
+      ],
+      "remove": [
+        "entry point alias @ciag/orchestra/buttongroup",
+        "dependência do chunk p2 / P2_SHARED_STYLES",
+        "::ng-deep button (→ orc-button expõe tokens --orc-button-radius-start/end lidos via :host do grupo)",
+        "label (→ ariaLabel, nome consistente com o resto da lib)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-layout-components.ts:26 — ::ng-deep button zera border-radius de botões internos de qualquer componente projetado (ex.: o gatilho de um menu ou um input-group dentro do grupo)"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": [
+      "button: tokens de raio por canto no orc-button",
+      "lote 10: desmontagem de p2/"
+    ]
+  },
+  {
+    "id": "split-button",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Cópia da API PrimeNG (model, appendTo no-op, tooltip, menuStyle/menuStyleClass, severity string livre, outputs duplicados onClick/onDropdownClick/onMenuShow/onMenuHide) com um menu reimplementado à mão: posicionamento absoluto sem CDK (cortado por overflow), listeners globais em document e glifos de texto ('⌄', '…'). No espírito shadcn o split button é composição: orc-button-group attached + orc-button + o menu de ações canônico com gatilho. Zero uso no consumidor.",
+    "evidence": [
+      "projects/orc-ds/split-button/split-button.component.ts:131 — appendTo @deprecated no-op",
+      "projects/orc-ds/split-button/split-button.component.ts:126-129,133 — style/styleClass/menuStyle/menuStyleClass/tooltip (paridade PrimeNG)",
+      "projects/orc-ds/split-button/split-button.component.ts:151-156 — primaryClick+onClick e dropdownClick+onDropdownClick emitidos em dobro; onMenuShow/onMenuHide com prefixo on",
+      "projects/orc-ds/split-button/split-button.component.ts:75-83,106 — menu position:absolute inline, sem CDK Overlay; z-index:3 fixo",
+      "projects/orc-ds/split-button/split-button.component.ts:167-172 — addEventListener manual em document para pointerdown/keydown",
+      "projects/orc-ds/split-button/split-button.component.ts:49,73 — glifos '…' e '⌄' como texto em vez de spinner/orc-icon",
+      "projects/orc-ds/split-button/split-button.component.ts:71 — rótulo padrão em inglês 'More options'",
+      "projects/orc-ds/split-button/split-button.component.ts:24-106 — template e ~1,7 kB de CSS inline em string"
+    ],
+    "targetApi": null,
+    "replacement": "Composição documentada: <orc-button-group attached> com <orc-button> (ação principal) + <orc-button iconOnly aria-label='Mais opções'> como gatilho do menu de ações canônico do lote 06 (CDK Menu/Overlay). Receita na página do button-group.",
+    "defects": [
+      "projects/orc-ds/split-button/split-button.component.ts:220-229 — clicar na seta abre o menu mas não move o foco para o primeiro item (só ArrowDown, 231-245)",
+      "projects/orc-ds/split-button/split-button.component.ts:71 — 'More options' em inglês",
+      "projects/orc-ds/split-button/split-button.component.ts:76 — menu clipado por ancestrais com overflow:hidden (sem portal)"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": [
+      "lote 06: menu de ações popup com gatilho projetado (CDK Menu)",
+      "button-group KEEP-REDESIGN"
+    ]
+  },
+  {
+    "id": "toggle-button",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Botão com aria-pressed (o 'Toggle' do shadcn) é distinto de switch e de segmented-control e cabe em barras de ferramentas. Mas a API é PrimeNG (onLabel/offLabel/onIcon/offIcon como strings, allowEmpty, change+onChange), traz classes p-togglebutton/data-pc-name, e tem um bug de comportamento: com o padrão allowEmpty=false o botão, uma vez pressionado, não volta a soltar — e o spec cimenta esse bug. Não tem spec próprio.",
+    "evidence": [
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:76-84 — toggle() retorna cedo se checked && !allowEmpty; allowEmpty padrão false (55) ⇒ não despressiona",
+      "projects/orc-ds/select-button/select-button-parity.spec.ts:167-171 — spec afirma 'allowEmpty=false keeps the button pressed' (cimenta o defeito)",
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:36-39 + toggle-button.component.html:21-22 — onLabel/offLabel/onIcon/offIcon; ícones renderizados como texto cru",
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:58-60 — change + onChange duplicados, onBlur com prefixo on",
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:53-54 + template:3-4,17 — style/styleClass, classes p-togglebutton p-component e data-pc-name",
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:23 — P2_SHARED_STYLES (seletores globais)",
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:34-75 — CVA implementado à mão em vez da base interna compartilhada"
+    ],
+    "targetApi": {
+      "selector": "orc-toggle-button",
+      "inputs": [
+        "variant: 'ghost'|'outline'",
+        "size: 'sm'|'md'|'lg'",
+        "disabled",
+        "iconOnly",
+        "ariaLabel"
+      ],
+      "models": ["pressed"],
+      "outputs": [],
+      "slots": [
+        "conteúdo padrão (rótulo e/ou <orc-icon>; troca de ícone por estado via @if no template do app)"
+      ],
+      "remove": [
+        "checked (→ pressed)",
+        "onLabel, offLabel, onIcon, offIcon (→ conteúdo projetado)",
+        "allowEmpty (toggle sempre alterna)",
+        "change, onChange, onBlur (→ pressedChange via model; focusout nativo)",
+        "style, styleClass, inputId, tabindex, autofocus, fluid, ariaLabelledBy",
+        "classes p-togglebutton/p-component e data-pc-name",
+        "P2_SHARED_STYLES",
+        "entry point alias @ciag/orchestra/togglebutton",
+        "CVA manual (→ base CVA interna)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:80 — com o padrão, o botão não pode ser despressionado pelo usuário",
+      "projects/orc-ds/toggle-button/toggle-button.component.ts:83-84 — ramo allowEmpty&&checked e update() fazem a mesma coisa (lógica confusa)",
+      "projects/orc-ds/toggle-button/toggle-button.component.html:21 — ícone string renderizado como texto sem orc-icon (Material Symbols só funciona com a classe da fonte)"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": [
+      "infra: base CVA interna compartilhada",
+      "lote 10: remover o alias 'toggle' (= switch) para não confundir com toggle-button"
+    ]
+  },
+  {
+    "id": "segmented-control",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 3,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 3
+    },
+    "rationale": "Melhor implementação do trio de seleção por botões: radiogroup com roving tabindex, RTL, readonly e CVA, com 7 specs de comportamento, e 15 usos no consumidor. Deve virar o canônico e absorver select-button (modo multiple). Precisa perder o lastro PrimeNG: três outputs que duplicam o model (change, onChange, valueChangeEvent), styleClass/style/tabindex, classes p-selectbutton/p-button e fallbacks de cor fora da identidade CIAg.",
+    "evidence": [
+      "projects/orc-ds/segmented-control/segmented-control.component.ts:43,53-56 — model value + change + onChange + valueChangeEvent: quatro formas do mesmo evento",
+      "projects/orc-ds/segmented-control/segmented-control.component.ts:46-50 — tabindex, styleClass, style",
+      "projects/orc-ds/segmented-control/segmented-control.component.html:3,12,18 — classes 'p-selectbutton p-buttonset p-component orc-p2-segmented', 'p-button p-component' e data-pc-name='selectbutton'",
+      "projects/orc-ds/segmented-control/segmented-control.component.html:30-31 — option.icon renderizado como texto num span sem orc-icon",
+      "projects/orc-ds/segmented-control/segmented-control.component.scss:31,39 — fallback #2563eb (azul Tailwind), não o azul CIAg #1c6aed",
+      "projects/orc-ds/segmented-control/segmented-control.component.ts:102-138 — teclado completo (setas, Home/End, RTL) com roving tabindex",
+      "projects/orc-ds/segmented-control/segmented-control-behavior.spec.ts:39-124 — specs de foco, disabled, readonly, forms e RTL"
+    ],
+    "targetApi": {
+      "selector": "orc-segmented-control",
+      "inputs": [
+        "options: { label: string; value: T; icon?: string; disabled?: boolean }[]",
+        "ariaLabel",
+        "multiple",
+        "size: 'sm'|'md'|'lg'",
+        "disabled",
+        "readonly",
+        "fullWidth"
+      ],
+      "models": ["value"],
+      "outputs": [],
+      "slots": [
+        "orcSegmentedOption (ng-template com option/selected) para conteúdo customizado"
+      ],
+      "remove": [
+        "change, onChange, valueChangeEvent (→ valueChange via model)",
+        "label (→ ariaLabel; é nome acessível, não rótulo visível)",
+        "inputId, tabindex, style, styleClass",
+        "classes p-selectbutton/p-buttonset/p-component/p-button/orc-p2-segmented, classe 'selected' e data-pc-name",
+        "reexport em @ciag/orchestra/p2 (p2-selection-components.ts:2)",
+        "CVA manual (→ base CVA interna)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/segmented-control/segmented-control.component.html:30-31 — ícone sai como texto literal (ex.: 'home') em vez de glifo; usar <orc-icon [name]>",
+      "projects/orc-ds/segmented-control/segmented-control.component.html:14 — 'track option.value' quebra com valores duplicados/objetos recriados; preferir track $index ou chave estável",
+      "projects/orc-ds/segmented-control/segmented-control.component.scss:31 — cor selecionada com fallback fora da paleta CIAg",
+      "Consumidor usa o controle como troca de abas/seções ('Seções do projeto', 'Seções da subtarefa' — gestao-de-projetos-frontend/src/app/pages/projects/project-detail/project-detail.component.html:65): semântica radiogroup não equivale a tablist"
+    ],
+    "consumerImpact": "15 usos com [options], label, [value], (valueChange), class e 1 [ngModel] — sobrevivem; renomear label→ariaLabel (busca/substituição). Os usos de navegação entre seções (project-detail, task-modal, subtask-form-modal, edition-project, indicators) deveriam migrar para orc-tabs (lote 06) por semântica.",
+    "effort": "M",
+    "dependsOn": [
+      "infra: base CVA interna compartilhada",
+      "lote 06: orc-tabs para os usos de navegação de seções"
+    ]
+  },
+  {
+    "id": "select-button",
+    "verdict": "MERGE",
+    "mergeInto": "segmented-control",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "É o SelectButton do PrimeNG portado: mesma função do segmented-control (escolher entre opções exibidas como botões), com API de paridade (optionLabel/optionValue/optionDisabled/dataKey/unselectable/allowEmpty/autofocus, onOptionClick/onChange/onFocus/onBlur/valueChangeEvent) e a11y inferior (role=group com aria-pressed, todos os botões são tab stop, sem setas). O único recurso que falta no alvo é seleção múltipla.",
+    "evidence": [
+      "projects/orc-ds/select-button/select-button.component.ts:40-63 — 17 inputs (options:any[], optionLabel/optionValue/optionDisabled, dataKey, unselectable, allowEmpty, autofocus, style, styleClass)",
+      "projects/orc-ds/select-button/select-button.component.ts:64-72 — valueChangeEvent, onOptionClick, onChange, onFocus, onBlur além do model value",
+      "projects/orc-ds/select-button/select-button.component.html:17 — [attr.tabindex] igual em todos os botões; sem navegação por setas",
+      "projects/orc-ds/select-button/select-button.component.html:2-3,10 — classes p-selectbutton p-component duplicadas no class e [class]; data-pc-name",
+      "projects/orc-ds/select-button/select-button.component.ts:25 — P2_SHARED_STYLES",
+      "projects/orc-ds/selectbutton/index.ts:1 — alias de entry point"
+    ],
+    "targetApi": null,
+    "migrates": "Para orc-segmented-control: input multiple (value vira T[]; botões com aria-pressed em role=group; em modo único mantém radiogroup) e size. Não migram: optionLabel/optionValue/optionDisabled/dataKey (app mapeia para {label,value,disabled}), unselectable/allowEmpty, autofocus, style/styleClass e os outputs on*.",
+    "defects": [
+      "projects/orc-ds/select-button/select-button.component.ts:150-151 — em modo único, clicar na opção selecionada a desmarca por padrão (allowEmpty=true), comportamento inesperado para escolha exclusiva",
+      "projects/orc-ds/select-button/select-button.component.ts:112 — sameValue com dataKey falha para valores falsy (0, '')"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": ["segmented-control KEEP-REDESIGN (modo multiple)"]
+  },
+  {
+    "id": "close-button",
+    "verdict": "MERGE",
+    "mergeInto": "button",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Já está @deprecated no próprio código em favor de orc-button variant='close'. Duplica o botão com ícone, usa '×' como texto e rótulo padrão em inglês, e vive no monólito p2. No RC o fechamento é orc-button iconOnly com <orc-icon name=\"close\"> e rótulo 'Fechar' do provider de rótulos; até variant='close' sai do button.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-overlay-components.ts:50-53 (@deprecated na linha 51) — @deprecated 'Use ButtonComponent ... variant=\"close\"'",
+      "projects/orc-ds/p2/p2-overlay-components.ts:62 — aria-label padrão 'Close' (inglês)",
+      "projects/orc-ds/p2/p2-overlay-components.ts:65,75 — glifo '×' como texto em vez de orc-icon",
+      "projects/orc-ds/p2/p2-overlay-components.ts:78 — output 'close' (nome de evento genérico; o (click) nativo já basta)",
+      "projects/orc-ds/close-button/index.ts:1 — entry point reexporta do chunk p2"
+    ],
+    "targetApi": null,
+    "migrates": "Nada de API. O rótulo padrão 'Fechar' vai para provideOrcLabels, usado pelos botões de fechar internos de modal/drawer/toast/alert (que passam a usar orc-button iconOnly + orc-icon 'close').",
+    "defects": [
+      "projects/orc-ds/p2/p2-overlay-components.ts:62 — nome acessível padrão em inglês"
+    ],
+    "consumerImpact": "nenhum (0 usos; o consumidor já faz <orc-button iconOnly><orc-icon name=\"close\"/></orc-button>, 14 ocorrências de orc-icon 'close' em botões)",
+    "effort": "P",
+    "dependsOn": ["button KEEP-REDESIGN", "infra: provideOrcLabels"]
+  },
+  {
+    "id": "floating-action-button",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Padrão Material mobile sem espaço em app corporativa desktop; o componente é só um <button> arredondado com sombra e nem faz o 'flutuante' (sem position fixed). Tudo é resolvido por orc-button + CSS do app. Rótulo padrão em inglês e glifos de texto.",
+    "evidence": [
+      "projects/orc-ds/p2/p2-overlay-components.ts:12-48 — botão estilizado; CSS não posiciona (sem position:fixed), logo não 'flutua'",
+      "projects/orc-ds/p2/p2-overlay-components.ts:21 — aria-label padrão 'Create' (inglês)",
+      "projects/orc-ds/p2/p2-overlay-components.ts:27-28,42 — loading como '…' e ícone '+' como texto",
+      "projects/orc-ds/floating-action-button/index.ts:1 — entry point reexporta do chunk p2"
+    ],
+    "targetApi": null,
+    "replacement": "orc-button (iconOnly ou com rótulo) + CSS do app para posição fixa/sombra; responsabilidade do app.",
+    "defects": [
+      "projects/orc-ds/p2/p2-overlay-components.ts:21 — nome acessível padrão em inglês e genérico ('Create')"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "speed-dial",
+    "verdict": "EXPERIMENTAL",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Nicho mobile/Material com geometria PrimeNG (linear/circle/semi-circle/quarter-circle), fora do núcleo: fica como experimental, conforme a decisão 3. Funciona e tem roving e Escape, mas a API duplica entradas (actions vs model) e saídas (open model + visibleChange + onVisibleChange + onShow/onHide/onClick), usa glifos de texto e listener manual em document. Corrigir o que estiver quebrado e enxugar sem investir em design.",
+    "evidence": [
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:105-106 — actions e model são o mesmo dado (effectiveActions:156-158)",
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:119,125-129 — model open + visibleChange + onVisibleChange + onShow + onHide + onClick",
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:62,87,121 — '+'/'×' e action.icon como texto em vez de orc-icon",
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:76 — action.color aplicado como background inline (fora dos tokens)",
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:131-143 — addEventListener manual em document (mousedown)",
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:188-193 — gatilho só trata Escape; abrir só com clique",
+      "projects/orc-ds/speed-dial/speed-dial-parity.spec.ts:30-106 — 4 specs de comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-speed-dial",
+      "inputs": [
+        "actions: { label: string; value: string; icon: string; disabled?: boolean }[]",
+        "direction",
+        "type: 'linear'|'circle'|'semi-circle'|'quarter-circle'",
+        "radius",
+        "mask",
+        "disabled",
+        "ariaLabel",
+        "icon"
+      ],
+      "models": ["open"],
+      "outputs": ["actionSelect"],
+      "slots": [],
+      "remove": [
+        "model (→ actions)",
+        "visibleChange, onVisibleChange, onShow, onHide (→ openChange via model)",
+        "onClick (→ (click) nativo/openChange)",
+        "transitionDelay, hideOnClickOutside (sempre fecha fora)",
+        "styleClass, buttonClass",
+        "openLabel/closeLabel (→ provideOrcLabels 'Abrir ações'/'Fechar ações')",
+        "action.color",
+        "entry point alias @ciag/orchestra/speeddial"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:57 — sem openLabel/ariaLabel o gatilho fica sem nome acessível (conteúdo é '+' de texto)",
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:80 — ações só têm aria-label; usuário vidente não vê rótulo (sem tooltip)",
+      "projects/orc-ds/speed-dial/speed-dial.component.ts:164-171 — ao abrir, o foco fica no gatilho; ArrowUp/Down no gatilho não entram no menu"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "M",
+    "dependsOn": [
+      "infra: provideOrcLabels",
+      "catálogo: status 'experimental' + @experimental no JSDoc"
+    ]
+  }
+]

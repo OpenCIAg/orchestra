@@ -1,0 +1,498 @@
+[
+  {
+    "id": "input",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Controle mais usado do consumidor (orc-input 67x, orc-textarea 12x) e base sólida: signals, OnPush, CvaControl compartilhado, linkedSignal para não perder digitação. Mas acumula responsabilidades de outras famílias (rótulo/ajuda/erro, prefixo/sufixo em texto, type=number, máscara, senha) e carrega paridade PrimeNG (styleClass, style, variant, fluid, classes p-*). Vira o controle de texto canônico: absorve input-group, icon-field e password via slots orcPrefix/orcSuffix e type=password; rótulo/ajuda/erro saem para orc-form-field; números vão para orc-number-input.",
+    "evidence": [
+      "projects/orc-ds/input/input.component.ts:25 — seletor duplicado 'orc-input, orc-input-text' (mais entry points alias input-text, input-textarea, textarea e text-input)",
+      "projects/orc-ds/input/input.component.ts:47-48 — id e inputId fazem a mesma coisa",
+      "projects/orc-ds/input/input.component.ts:55-57 — label, helperText e errorMessage embutidos duplicam orc-form-field",
+      "projects/orc-ds/input/input.component.ts:72-74 — min/max/step só existem para type=number, que duplica orc-number-input",
+      "projects/orc-ds/input/input.component.ts:76-77 — prefixText/suffixText duplicam os slots [prefix]/[orcPrefix] (input.component.html:42) e [suffix]/[orcSuffix] (html:149)",
+      "projects/orc-ds/input/input.component.ts:80-85 — styleClass, style, variant e fluid são paridade PrimeNG",
+      "projects/orc-ds/input/input.component.ts:99 — output inputChange duplica valueChange do model value (ts:96)",
+      "projects/orc-ds/input/input.component.ts:100-101 — outputs 'blur'/'focus' com nomes de eventos DOM nativos",
+      "projects/orc-ds/input/input.component.ts:124-129,158-160 — alternância de senha já existe aqui (duplica orc-password)",
+      "projects/orc-ds/input/input.component.ts:178-186 — rótulos padrão em inglês ('Clear input', 'Show password', 'Hide password')",
+      "projects/orc-ds/input/input.component.html:2-3,10,75 — classes 'p-inputtext p-component' e data-pc-name='inputtext' (mimetismo PrimeNG)",
+      "projects/orc-ds/input/input.component.html:68-70 — aria-invalid só deriva de status/errorMessage, nunca do estado do NgControl",
+      "projects/orc-ds/input/textarea.component.ts:25,63,79-84,95 — textarea repete o mesmo padrão (seletor alias, cols, styleClass/style/variant/fluid, inputChange)",
+      "projects/orc-ds/input/input.component.spec.ts:93 — teste de a11y (axe) e integração Reactive/template forms (spec:101-190): base de testes boa",
+      "projects/orc-ds/label/index.ts:1 e projects/orc-ds/text-input/text-input.component.ts:1 — reexports com outro nome (aliases a remover)",
+      "docs/overhaul/measurements.json → input: 65 inputs, 7 outputs, 11.6 kB gzip; consumer orc-input 67, orc-textarea 12"
+    ],
+    "targetApi": {
+      "selector": "orc-input (e orc-textarea no mesmo entry point @ciag/orchestra/input)",
+      "inputs": [
+        "type ('text' | 'email' | 'password' | 'search' | 'tel' | 'url')",
+        "id",
+        "name",
+        "placeholder",
+        "size ('sm' | 'md' | 'lg')",
+        "disabled",
+        "readonly",
+        "required",
+        "invalid (opcional; padrão vem do orc-form-field/NgControl)",
+        "clearable",
+        "mask",
+        "unmask",
+        "maxLength",
+        "minLength",
+        "showCharCount",
+        "autocomplete",
+        "ariaLabel",
+        "orc-textarea: rows, autoResize, resize ('none' | 'vertical'), maxLength, minLength, showCharCount + os comuns (id, name, placeholder, size, disabled, readonly, required, invalid, ariaLabel)"
+      ],
+      "models": ["value"],
+      "outputs": ["cleared"],
+      "slots": [
+        "[orcPrefix] (ícone orc-icon, texto 'R$', botão)",
+        "[orcSuffix] (ícone, unidade '%', botão)"
+      ],
+      "remove": [
+        "seletores orc-input-text e orc-input-textarea; entry points input-text, input-textarea, textarea, text-input",
+        "inputId (→ id)",
+        "label, helperText, errorMessage (→ orc-form-field label/hint/error)",
+        "status (→ invalid, derivado automaticamente do NgControl via orc-form-field; 'success' sai)",
+        "type 'number', min, max, step (→ orc-number-input)",
+        "prefixText, suffixText (→ slots [orcPrefix]/[orcSuffix])",
+        "seletores de slot [prefix]/[suffix] (→ [orcPrefix]/[orcSuffix])",
+        "styleClass, style, variant, fluid (largura 100% por padrão; customização por tokens CSS)",
+        "autofocus (responsabilidade do app / cdkFocusInitial)",
+        "ariaLabelledBy, ariaDescribedby (→ contexto do orc-form-field; ariaLabel continua para campo sem rótulo visível)",
+        "clearAriaLabel, showPasswordAriaLabel, hidePasswordAriaLabel (→ provideOrcLabels, pt-BR)",
+        "inputChange (→ valueChange)",
+        "focus, blur (→ eventos nativos focusin/focusout no host)",
+        "clear (→ cleared)",
+        "textarea: cols, inputChange, focus, blur, styleClass, style, variant, fluid, label, helperText, errorMessage, status, inputId, autofocus",
+        "classes p-inputtext/p-inputtextarea/p-component e data-pc-name"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/input/input.component.ts:178-186 — textos padrão em inglês; deve vir de provideOrcLabels em pt-BR ('Limpar', 'Mostrar senha', 'Ocultar senha')",
+      "projects/orc-ds/input/input.component.html:68-70 — campo inválido no Reactive Forms não recebe aria-invalid nem estilo de erro; o consumidor recalcula na mão (gestao-de-projetos-frontend/src/app/components/components-new-project/info-new-project/info-new-project.component.html:39)",
+      "projects/orc-ds/input/input.component.ts:131-145 — com máscara, charCount/maxLength contam os literais da máscara, não os caracteres digitados",
+      "projects/orc-ds/input/input-mask.util.ts:1-74 e projects/orc-ds/input-mask/input-mask.directive.ts:16-80 — duas implementações de máscara concorrentes (a diretiva é do lote 10)",
+      "consumidor: autoFocus em gestao-de-projetos-frontend/src/app/components/input-modal/input-modal.component.html:29 e pages/guilds/guild-profile/guild-profile.component.html:106 não é input do componente (no-op silencioso)"
+    ],
+    "consumerImpact": "Alto e mecânico. 67 orc-input + 12 orc-textarea em 30 arquivos. [fluid] (79x) some, pois a largura padrão passa a ser 100%. label (11x) e [errorMessage] (13x) migram para <orc-form-field label=… [error]=…>. type=\"number\" (18x, com min/max/step) e os 4 campos de horas com appDotToComma (hourlog-*.html) migram para orc-number-input com locale pt-BR, e a diretiva do app pode ser apagada. <orc-icon prefix> (4x) vira <orc-icon orcPrefix>. inputId (13x) vira id. type=password (2x) continua igual. Validadores required/pattern/maxlength/email do Angular continuam funcionando no host.",
+    "effort": "G",
+    "dependsOn": [
+      "form-field (contexto ORC_FORM_FIELD: id, aria-describedby, invalid)",
+      "infra: provideOrcLabels",
+      "number-input (alvo do type=number)",
+      "lote 10: remoção de input-mask, key-filter, text-input, input-group-addon"
+    ]
+  },
+  {
+    "id": "input-group",
+    "verdict": "MERGE",
+    "mergeInto": "input",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "É uma segunda forma de pôr prefixo/sufixo num campo, e o orc-input já tem slots para isso. Só aceita texto em prefix/suffix (não aceita ícone nem botão) e estiliza o controle projetado com ::ng-deep, removendo o outline de foco. O que tem valor (adorno visual de prefixo/sufixo com fundo) migra para os slots [orcPrefix]/[orcSuffix] do orc-input e do orc-number-input.",
+    "evidence": [
+      "projects/orc-ds/input-group/input-group.component.ts:13-15 — label/prefix/suffix só como string",
+      "projects/orc-ds/input-group/input-group.component.html:3-4 — role=group só quando label existe",
+      "projects/orc-ds/input-group/input-group.component.scss:30-39 — ::ng-deep em input/textarea/select projetados com outline: 0",
+      "projects/orc-ds/input-group/input-group.component.ts:8 — injeta P2_SHARED_STYLES (estilos herdados do monólito p2)",
+      "projects/orc-ds/input/input.component.html:42,149 — orc-input já tem slots de prefixo/sufixo",
+      "projects/orc-ds/input-group/input-group-parity.spec.ts:19-117 — um spec de 'paridade' cobre input-group, addon, icon-field, ifta-label e float-label juntos"
+    ],
+    "targetApi": null,
+    "migrates": "Aparência de 'addon' (fundo surface-subtle e separador) vira variante visual dos slots [orcPrefix]/[orcSuffix] no orc-input (por exemplo, o atributo orcPrefix com classe/tokens de addon). Texto: <span orcPrefix>R$</span>.",
+    "defects": [
+      "projects/orc-ds/input-group/input-group.component.scss:35 — outline: 0 no input projetado, e o grupo não tem :focus-within: o foco fica invisível (falha WCAG 2.4.7)",
+      "projects/orc-ds/input-group/input-group.component.html:6,8 — spans de prefixo/sufixo sempre renderizados, ocultos por classe .empty"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": ["input (slots orcPrefix/orcSuffix)"]
+  },
+  {
+    "id": "icon-field",
+    "verdict": "MERGE",
+    "mergeInto": "input",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Ícone dentro do campo é exatamente o que o consumidor já faz com <orc-icon prefix name=\"search\"> dentro do orc-input. O wrapper usa um glifo de texto ('⌕') em vez de Material Symbols, posiciona com absolute e altera o padding do input via ::ng-deep. Sai em favor do slot [orcPrefix]/[orcSuffix] com orc-icon.",
+    "evidence": [
+      "projects/orc-ds/icon-field/icon-field.component.ts:16 — ícone padrão é o caractere '⌕', fora da decisão 5 (Material Symbols)",
+      "projects/orc-ds/icon-field/icon-field.component.ts:8 — <span> com texto do ícone e não orc-icon",
+      "projects/orc-ds/icon-field/icon-field.component.scss:15-17 — ::ng-deep input { padding-inline-start: 2rem } acopla ao DOM do filho",
+      "gestao-de-projetos-frontend/src — <orc-icon prefix name=\"search\"> usado 4x dentro de orc-input (padrão já adotado)"
+    ],
+    "targetApi": null,
+    "migrates": "Nada além do padrão de uso: <orc-input><orc-icon orcPrefix name=\"search\" /></orc-input>. O alinhamento e a cor muted do ícone viram estilo do slot no orc-input.",
+    "defects": [
+      "projects/orc-ds/icon-field/icon-field.component.scss:15-17 — o padding só vale para <input> nativo; com orc-input/orc-select projetado o ícone fica sobre o texto"
+    ],
+    "consumerImpact": "nenhum (0 usos); o consumidor já usa o padrão-alvo",
+    "effort": "P",
+    "dependsOn": ["input (slots orcPrefix/orcSuffix)"]
+  },
+  {
+    "id": "ifta-label",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "É mais uma convenção concorrente de rótulo (PrimeNG IftaLabel) e é praticamente igual ao float-label variant='in'. Só posiciona um <label> projetado via ::ng-deep, sem garantir associação com o controle. Pelo modelo único de campo, o rótulo é sempre o do orc-form-field, acima do controle, que é a identidade CIAg atual.",
+    "evidence": [
+      "projects/orc-ds/ifta-label/ifta-label.component.ts:7,12 — componente sem API: <div><ng-content/></div>",
+      "projects/orc-ds/ifta-label/ifta-label.component.scss:6-14 — ::ng-deep > label posicionado absolute",
+      "projects/orc-ds/float-label/float-label.component.scss:32-40 — variant='in' do float-label reproduz o mesmo visual"
+    ],
+    "targetApi": null,
+    "replacement": "orc-form-field (label acima do controle). Não há variante de rótulo interno.",
+    "defects": [
+      "projects/orc-ds/ifta-label/ifta-label.component.scss:6 — se o <label> não tiver for/id, o controle fica sem nome acessível; o componente não verifica isso"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": ["form-field"]
+  },
+  {
+    "id": "float-label",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 0,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Terceira convenção de rótulo (in/over/on) herdada do PrimeNG, sem uso no consumidor. A implementação vaza CSS global e lê o DOM na mão. O estado 'preenchido' fica desatualizado quando o valor muda por Reactive Forms. Rótulo flutuante não faz parte da identidade CIAg; o rótulo único vem do orc-form-field.",
+    "evidence": [
+      "projects/orc-ds/float-label/float-label.component.ts:17-19 — P2_SHARED_STYLES com ViewEncapsulation.None",
+      "projects/orc-ds/internal/p2-shared.ts:175,178,180 — regras sem escopo (*, button:disabled, button/input:focus-visible) que, com encapsulation None, viram CSS global da página",
+      "projects/orc-ds/float-label/float-label.component.ts:28-30,41-46 — filled sincronizado só no ngAfterViewInit via querySelector",
+      "projects/orc-ds/float-label/float-label.component.html:13 — depois disso, só o evento (input) do usuário atualiza filled",
+      "projects/orc-ds/float-label/float-label.component.ts:24 — styleClass (paridade PrimeNG)"
+    ],
+    "targetApi": null,
+    "replacement": "orc-form-field (label acima do controle).",
+    "defects": [
+      "projects/orc-ds/float-label/float-label.component.ts:17-19 — ao instanciar um orc-float-label, todos os botões desabilitados da página ganham opacity .55 e todos os inputs ganham font: inherit (vazamento global)",
+      "projects/orc-ds/float-label/float-label.component.ts:28-30 — patchValue/reset de um FormControl não atualiza filled; o rótulo fica sobre o valor"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": ["form-field"]
+  },
+  {
+    "id": "form-field",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Vira o modelo único de campo da biblioteca: rótulo, dica, erro e obrigatório, para qualquer controle orc-* (input, textarea, number-input, select, date-picker…). Hoje usa fieldset/legend para um único controle, não associa o rótulo ao controle e põe aria-describedby no fieldset, onde não chega ao controle. Também concorre com label/helperText/errorMessage embutidos em cada controle. No redesign, fornece um contexto via DI que os controles consomem para id, aria-describedby e aria-invalid, e deriva 'inválido' do NgControl projetado.",
+    "evidence": [
+      "projects/orc-ds/form-field/form-field.component.html:1,8 — <fieldset>/<legend> para um único campo (semântica de grupo)",
+      "projects/orc-ds/form-field/form-field.component.html:5 — aria-describedby no fieldset, que não descreve o controle focado",
+      "projects/orc-ds/form-field/form-field.component.ts:26-40 — getters em vez de computed; nenhum contexto exposto aos controles projetados",
+      "projects/orc-ds/form-field/form-field.component.ts:20-21 — helperText/error repetem input.component.ts:55-57 e number-input.component.ts:42-45",
+      "projects/orc-ds/label/index.ts:1 — entry point alias exporta FormFieldComponent como LabelComponent",
+      "docs/overhaul/measurements.json → form-field: specLines 0",
+      "gestao-de-projetos-frontend/src/app/components/components-new-project/members-card/members-card.component.html:12-13 — <label>Alocação</label> sem associação ao orc-input (o problema que o campo único resolve)"
+    ],
+    "targetApi": {
+      "selector": "orc-form-field",
+      "inputs": [
+        "label",
+        "hint",
+        "error",
+        "required",
+        "id (base estável para SSR; opcional)"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [
+        "conteúdo padrão: exatamente um controle orc-* (orc-input, orc-textarea, orc-number-input, orc-select, orc-date-picker, orc-otp-input…)"
+      ],
+      "remove": [
+        "<fieldset>/<legend> (→ <div> + <label [for]>; grupos de radio/checkbox cuidam da própria semântica de grupo)",
+        "helperText (→ hint)",
+        "aria-describedby no wrapper (→ aplicado no elemento nativo do controle via contexto ORC_FORM_FIELD)",
+        "entry point alias @ciag/orchestra/label (LabelComponent)"
+      ],
+      "behavior": "Fornece o token ORC_FORM_FIELD { controlId, describedBy, invalid } como signals. Lê contentChild(NgControl, { descendants: true }): invalid = error não vazio || (control.invalid && (touched || form submetido)). Os controles injetam o token (opcional) e aplicam id, aria-describedby e aria-invalid no elemento nativo. O erro tem id próprio e entra em aria-describedby; o 'role=alert' fica só na transição para inválido."
+    },
+    "defects": [
+      "projects/orc-ds/form-field/form-field.component.html:8 — <legend> não rotula o input do orc-input projetado; leitores de tela anunciam o grupo e não o campo",
+      "projects/orc-ds/form-field/form-field.component.html:5 — hint/erro não ficam ligados ao controle por aria-describedby",
+      "projects/orc-ds/form-field/form-field.component.scss — sem spec nenhum (measurements: specLines 0)"
+    ],
+    "consumerImpact": "Nenhum uso hoje, mas é o destino da migração de label (11x) e [errorMessage] (13x) do orc-input e dos ~124 <label> manuais do consumidor que ficam ao lado de controles orc-*.",
+    "effort": "M",
+    "dependsOn": [
+      "infra: token ORC_FORM_FIELD consumido por todos os controles de formulário (lotes 02, 03 e 04)",
+      "input, number-input, textarea (remover label/helperText/errorMessage embutidos)"
+    ]
+  },
+  {
+    "id": "form",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 0,
+      "consumerUse": 0
+    },
+    "rationale": "Envolve o <form> nativo e calcula 'valid' com checkValidity(), ignorando a validade do FormGroup/NgForm do Angular. Por isso o valor emitido é enganoso para quem usa Reactive Forms. Submit, reset e layout de formulário são responsabilidade do app: <form [formGroup] (ngSubmit)> mais CSS/grid. O desabilitar-tudo por <fieldset> é o único recurso útil e o Angular já resolve com form.disable().",
+    "evidence": [
+      "projects/orc-ds/form/form.component.ts:41 — valid = form.checkValidity() (validação nativa, não do Angular)",
+      "projects/orc-ds/form/form.component.ts:65-68 — @HostListener em vez de host binding, para bloquear Enter",
+      "projects/orc-ds/form/form.component.html:7 — aria-label padrão 'Formulário' em todo formulário",
+      "projects/orc-ds/form/form.component.html:12 — <fieldset> extra sem legend em volta de todo o conteúdo",
+      "docs/overhaul/measurements.json → form: specLines 0, consumer 0"
+    ],
+    "targetApi": null,
+    "replacement": "Responsabilidade do app: <form [formGroup]=\"form\" (ngSubmit)=\"salvar()\"> com form.disable()/form.reset() do Angular; layout por CSS (grid/stack do lote 07).",
+    "defects": [
+      "projects/orc-ds/form/form.component.html:7 — aria-label sempre presente transforma cada orc-form em landmark 'form' chamado 'Formulário'; páginas com vários formulários ficam com landmarks repetidos e sem distinção",
+      "projects/orc-ds/form/form.component.ts:41,50 — formSubmit emite valid=true mesmo com FormGroup inválido quando os validadores são do Angular e não atributos nativos"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "number-input",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "A entrada numérica é necessária: o consumidor tem 18 orc-input type=number e 4 campos de horas que dependem de uma diretiva própria (appDotToComma) para aceitar vírgula. Vira o único caminho para números, com valor number|null, formatação Intl e pt-BR. A API tem 55 inputs, com duplicatas (showControls/showButtons, blur/onBlur), outputs PrimeNG e muita customização por classe. O parser trata '.' sempre como decimal e reformata e limita (clamp) o valor a cada tecla, o que quebra a digitação em pt-BR.",
+    "evidence": [
+      "projects/orc-ds/number-input/number-input.component.ts:23 — seletor alias 'orc-input-number' (e entry point input-number)",
+      "projects/orc-ds/number-input/number-input.component.ts:72-73 — showControls e showButtons fazem a mesma coisa",
+      "projects/orc-ds/number-input/number-input.component.ts:78-89 — styleClass, style, inputStyle, inputStyleClass, increment/decrementButtonClass/Icon",
+      "projects/orc-ds/number-input/number-input.component.ts:117-122 — blur e onBlur duplicados; onInput, onFocus, onKeyDown e onClear com prefixo 'on'",
+      "projects/orc-ds/number-input/number-input.component.ts:97 — locale undefined: usa o locale do navegador, não pt-BR/LOCALE_ID",
+      "projects/orc-ds/number-input/number-input.component.ts:180-186 — normalização trata '.' como decimal e faz clamp por tecla",
+      "projects/orc-ds/number-input/number-input.component.html:61 — [value]=displayValue() reformata durante a digitação",
+      "projects/orc-ds/number-input/number-input.component.html:45,75,97,114 — rótulos padrão em inglês ('Decrease value', 'Number input', 'Clear value', 'Increase value')",
+      "projects/orc-ds/number-input/number-input.component.spec.ts:163 — teste de clamp/step/precision; spec de 336 linhas com comportamento real"
+    ],
+    "targetApi": {
+      "selector": "orc-number-input",
+      "inputs": [
+        "id",
+        "name",
+        "placeholder",
+        "size ('sm' | 'md' | 'lg')",
+        "min",
+        "max",
+        "step",
+        "minFractionDigits",
+        "maxFractionDigits",
+        "mode ('decimal' | 'currency' | 'percent')",
+        "currency",
+        "locale (padrão: LOCALE_ID / pt-BR)",
+        "useGrouping",
+        "showButtons",
+        "clearable",
+        "disabled",
+        "readonly",
+        "required",
+        "invalid",
+        "ariaLabel"
+      ],
+      "models": ["value (number | null)"],
+      "outputs": ["cleared"],
+      "slots": ["[orcPrefix]", "[orcSuffix]"],
+      "remove": [
+        "seletor orc-input-number e entry point input-number",
+        "label, helperText, errorMessage, status (→ orc-form-field)",
+        "prefix, suffix string (→ slots [orcPrefix]/[orcSuffix])",
+        "showControls (duplica showButtons)",
+        "buttonLayout (layout único)",
+        "styleClass, style, inputStyle, inputStyleClass, incrementButtonClass, decrementButtonClass, incrementButtonIcon, decrementButtonIcon, variant, fluid",
+        "precision (→ min/maxFractionDigits)",
+        "format (sempre formata ao sair do campo)",
+        "allowEmpty (null é sempre permitido; obrigatoriedade é do Validators.required)",
+        "inputId (→ id), tabindex, title, maxlength, autocomplete, autofocus",
+        "ariaLabelledBy, ariaDescribedBy, ariaRequired (→ contexto do orc-form-field / required)",
+        "localeMatcher, currencyDisplay",
+        "clearAriaLabel, incrementButtonAriaLabel, decrementButtonAriaLabel (→ provideOrcLabels)",
+        "blur, onInput, onFocus, onBlur, onKeyDown, onClear (→ valueChange, cleared e eventos nativos focusin/focusout)",
+        "classes p-inputnumber*, data-pc-name"
+      ],
+      "behavior": "Parse com os separadores do locale (Intl.NumberFormat.formatToParts); durante a digitação o texto do usuário é preservado. Formatação e clamp só no blur/Enter. Teclado WAI-ARIA spinbutton: ↑/↓ step, PageUp/PageDown 10×step, Home/End = min/max."
+    },
+    "defects": [
+      "projects/orc-ds/number-input/number-input.component.ts:180-184 — em pt-BR, '1.234' (agrupado) vira 1.234 e '1.234,5' vira 1.2345: o separador de milhar é tratado como decimal",
+      "projects/orc-ds/number-input/number-input.component.ts:186 + html:61 — reformatação e clamp a cada tecla: com min=10 não dá para digitar '15', porque '1' vira 10 na hora; com agrupamento, o texto muda e o cursor pula para o fim",
+      "projects/orc-ds/number-input/number-input.component.html:63-64 — min/max em input type=text não têm efeito",
+      "projects/orc-ds/number-input/number-input.component.ts:198-208 — faltam Home/End/PageUp/PageDown do padrão spinbutton",
+      "projects/orc-ds/number-input/number-input.component.html:82 — ariaDescribedBy substitui o id de ajuda/erro em vez de somar"
+    ],
+    "consumerImpact": "Não é importado hoje, mas recebe os 18 <orc-input type=\"number\" min max step> (team, user-form, info-new-project, members-card…) e os 4 orc-input appDotToComma de horas (hourlog-classic-table.html:119,158; hourlog-form.html:118; hourlog-table.html:116). Atenção: o modelo passa de string para number|null; revisar conversões no componente do app e apagar DotToCommaDirective.",
+    "effort": "M",
+    "dependsOn": [
+      "form-field",
+      "infra: provideOrcLabels",
+      "input (slots orcPrefix/orcSuffix compartilhados)"
+    ]
+  },
+  {
+    "id": "password",
+    "verdict": "MERGE",
+    "mergeInto": "input",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "O orc-input type=\"password\" já tem a alternância de visibilidade, e é ele que o consumidor usa (2x). O orc-password repete o controle com CVA próprio (fora do CvaControl), *ngIf, outputs com prefixo 'on', 3 inputs deprecados no-op e glifos de texto. A parte exclusiva é o medidor de força por regex, que é política de senha do app e não primitivo de UI.",
+    "evidence": [
+      "projects/orc-ds/password/password.component.ts:37,96-98,126-137 — implementa ControlValueAccessor na mão em vez de estender CvaControl",
+      "projects/orc-ds/password/password.component.ts:78-83 — appendTo, showTransitionOptions e hideTransitionOptions deprecados no-op",
+      "projects/orc-ds/password/password.component.ts:84-91 — promptLabel, weak/medium/strongLabel, mediumRegex, strongRegex (política de senha embutida)",
+      "projects/orc-ds/password/password.component.ts:92-94 — onFocus, onBlur, onClear",
+      "projects/orc-ds/password/password.component.ts:76-77 — 'Hide password'/'Show password' em inglês",
+      "projects/orc-ds/password/password.component.html:13 — *ngIf (sintaxe legada) ao lado de @if",
+      "projects/orc-ds/password/password.component.html:56 — ícone do toggle é '◉'/'○' em vez de orc-icon",
+      "projects/orc-ds/input/input.component.ts:124-129,158-160 — alvo já implementa type=password com toggle"
+    ],
+    "targetApi": null,
+    "migrates": "Para o orc-input: só a alternância de visibilidade, que já existe (com rótulos via provideOrcLabels e aria-pressed no botão). O medidor de força não migra; o app mostra a força no hint/erro do orc-form-field ou com um orc-progress do lote 09.",
+    "defects": [
+      "projects/orc-ds/password/password.component.html:35 — o botão de limpar só aparece se clearAriaLabel for informado; showClear sozinho não faz nada",
+      "projects/orc-ds/password/password.component.html:46-56 — o toggle não tem aria-pressed nem aria-controls",
+      "projects/orc-ds/password/password.component.html:65 — feedback de força com aria-live, mas sem ligação ao input por aria-describedby",
+      "projects/orc-ds/password/password.component.ts:99-109 — new RegExp a cada mudança de valor"
+    ],
+    "consumerImpact": "nenhum (0 usos de orc-password; reset-password.component.html:16 já usa orc-input type=\"password\")",
+    "effort": "P",
+    "dependsOn": ["input", "infra: provideOrcLabels"]
+  },
+  {
+    "id": "otp-input",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "É uma família única, com caso de uso real (2FA, códigos de verificação) e boa base: colar, IME, Backspace, setas, touched só ao sair do grupo e autocomplete='one-time-code'. Mas exporta subcomponentes (slot/group/separator/context) que o consumidor não consegue compor, porque o template é fixo em duas metades. Também tem outputs PrimeNG, CVA próprio, dois effects redundantes e rótulos em inglês.",
+    "evidence": [
+      "projects/orc-ds/otp-input/otp-input.component.ts:25 — seletor alias 'orc-input-otp' (e entry point input-otp)",
+      "projects/orc-ds/otp-input/otp-input.component.ts:63-68 — tabindex, styleClass, integerOnly (duplica inputMode numeric) e variant",
+      "projects/orc-ds/otp-input/otp-input.component.ts:95-97 — onChange, onFocus, onBlur",
+      "projects/orc-ds/otp-input/otp-input.component.ts:48-49,101,109-110 — CVA próprio em vez de CvaControl",
+      "projects/orc-ds/otp-input/otp-input.component.ts:112-134 — dois effects sincronizando value → inputValues (o primeiro torna o segundo redundante)",
+      "projects/orc-ds/otp-input/otp-input.component.ts:225-226 — onSlotFocus deprecado no-op",
+      "projects/orc-ds/otp-input/otp-input.component.html:4 e otp-slot.component.ts:67 — 'One-time password' e 'OTP digit N' em inglês",
+      "projects/orc-ds/otp-input/index.ts:2-5 — exporta OtpSlot/OtpGroup/OtpSeparator/ORC_OTP_INPUT, mas o template (otp-input.component.html:12-34) é fixo",
+      "projects/orc-ds/otp-input/otp-input-contract.spec.ts:54-275 — 10 testes de comportamento (touched, readonly, IME, setas, Backspace)"
+    ],
+    "targetApi": {
+      "selector": "orc-otp-input",
+      "inputs": [
+        "length",
+        "mask",
+        "inputMode ('numeric' | 'text')",
+        "size ('sm' | 'md' | 'lg')",
+        "disabled",
+        "readonly",
+        "invalid",
+        "ariaLabel"
+      ],
+      "models": ["value"],
+      "outputs": ["completed"],
+      "slots": [],
+      "remove": [
+        "seletor orc-input-otp e entry point input-otp",
+        "integerOnly (→ inputMode='numeric')",
+        "placeholder, tabindex, styleClass, variant, autofocus",
+        "aliases legados de size (small/large)",
+        "onChange (→ valueChange), onFocus/onBlur (→ focusin/focusout nativos)",
+        "exports públicos OtpSlotComponent, OtpGroupComponent, OtpSeparatorComponent, ORC_OTP_INPUT, OtpInputContext (viram internos)",
+        "onSlotFocus (no-op deprecado)"
+      ],
+      "behavior": "Estender CvaControl; um único effect (ou linkedSignal) para value → slots. Usar tabindex móvel (roving): só um slot no Tab, setas navegam. Rótulos 'Código de verificação' e 'Dígito N de M' via provideOrcLabels."
+    },
+    "defects": [
+      "projects/orc-ds/otp-input/otp-slot.component.html:10 — todos os slots têm tabindex 0: o Tab passa por 6 paradas dentro de um único campo",
+      "projects/orc-ds/otp-input/otp-input.component.html:23 — separador sempre renderizado, mesmo com length=4 ou length ímpar",
+      "projects/orc-ds/otp-input/otp-input.component.ts:165-167 — com inputMode='text', integerOnly=false aceita qualquer caractere, inclusive espaço",
+      "projects/orc-ds/otp-input/otp-input.component.ts:267-269 — completed é emitido de novo a cada edição enquanto o código continuar completo"
+    ],
+    "consumerImpact": "nenhum (0 usos)",
+    "effort": "M",
+    "dependsOn": ["infra: provideOrcLabels", "form-field"]
+  }
+]

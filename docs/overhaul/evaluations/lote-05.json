@@ -1,0 +1,805 @@
+[
+  {
+    "id": "infra-overlay",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Hoje convivem pelo menos cinco mecanismos de overlay: o CDK Overlay (família select, via list-picker), o registro caseiro de camadas e o isolamento por `inert` em internal/, o <dialog> nativo em top layer (modal), o posicionamento manual por getBoundingClientRect (que existe em três cópias: overlay-panel, tooltip e confirm-popup) e backdrops com z-index fixo (confirm-dialog/drawer). O top layer do <dialog showModal()> obriga cada popup a se re-parentear para dentro do dialog e deixa toasts por baixo. A proposta é UMA infraestrutura interna sobre @angular/cdk/overlay, @angular/cdk/dialog e @angular/cdk/a11y, que já é peerDependency (package.json:53).",
+    "evidence": [
+      "projects/orc-ds/internal/overlay-lifecycle.ts:38 — registerOverlay: pilha de camadas própria por WeakMap<Document> (reimplementa o OverlayKeyboardDispatcher/OverlayOutsideClickDispatcher do CDK)",
+      "projects/orc-ds/internal/overlay-lifecycle.ts:99 — lockDocumentScroll manual (body.style.overflow); o CDK tem BlockScrollStrategy",
+      "projects/orc-ds/internal/overlay-lifecycle.ts:205-241 — focusInitialElement/trapTabKey caseiros (o CDK tem FocusTrapFactory/cdkTrapFocus)",
+      "projects/orc-ds/internal/overlay-lifecycle.ts:151 — listenForOutsideInteraction com triagem de gesto pointerdown/click (hack para backdrops destacados)",
+      "projects/orc-ds/internal/overlay-attachment.ts:31-50 — overlayAttachmentTarget força o popup para dentro do <dialog> modal nativo para fugir da inércia",
+      "projects/orc-ds/internal/anchored-popup.ts:10-52 — terceiro caminho, via Popover API (showPopover manual)",
+      "projects/orc-ds/internal/list-picker.ts:474-500 — select/multi-select/etc. já usam o CDK Overlay + TemplatePortal, mas sobrepõem o registro caseiro (linha 531)",
+      "projects/orc-ds/dropdown/dropdown.component.ts:306-312 — já usa withPopoverLocation({type:'parent', element: modal}) do CDK 22 para contornar o <dialog> nativo",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:363-400, projects/orc-ds/tooltip/tooltip.directive.ts:351-421, projects/orc-ds/confirm-popup/confirm-popup.component.ts:239-302 — três motores de posicionamento diferentes",
+      "gestao-de-projetos-frontend/src/app/services/toast/dialog-aware-toast-container.service.ts:44-69 — o consumidor move o orc-toast-container para dentro do <dialog> aberto via MutationObserver, porque o toast fica atrás do top layer",
+      "node_modules/@angular/cdk/types/_overlay-module-chunk.d.ts:291 — CDK 22.1.2 oferece OverlayConfig.usePopover e createOverlayRef/createGlobalPositionStrategy (funções sem DI de classe)"
+    ],
+    "targetApi": {
+      "selector": "(interno, sem seletor público) @ciag/orchestra/internal → OrcOverlayService / OrcDialogService",
+      "inputs": [],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "internal/overlay-lifecycle.ts: registerOverlay, isTopOverlay, isolateModalBackground, lockDocumentScroll, listenForOutsideInteraction, focusableElements, focusInitialElement, trapTabKey",
+        "internal/modal-isolation.ts (isolamento por inert via MutationObserver)",
+        "internal/overlay-attachment.ts (nativeModalFor/overlayAttachmentTarget deixam de ser necessários sem <dialog> nativo)",
+        "internal/anchored-popup.ts e internal/overlay-position.ts (substituídos por FlexibleConnectedPositionStrategy)",
+        "overlay-panel/overlay-panel-position.ts",
+        "todo input público appendTo/autoZIndex/baseZIndex/zIndex de overlay"
+      ]
+    },
+    "infra": {
+      "pacotes": [
+        "@angular/cdk/overlay",
+        "@angular/cdk/dialog",
+        "@angular/cdk/a11y",
+        "@angular/cdk/portal"
+      ],
+      "camadas": [
+        "1) Modal (modal, drawer, confirmação): Dialog do @angular/cdk/dialog com container próprio (OrcDialogContainer extends CdkDialogContainer). O CDK resolve FocusTrap (autoFocus 'first-tabbable' | 'dialog'), restoreFocus para o elemento de origem, aria-modal com aria-hidden nos irmãos do overlay container, Escape e clique no backdrop via disableClose e closePredicate, scroll block por scrollStrategies.block(), e a pilha de vários dialogs com o Escape fechando só o do topo. O drawer é o mesmo dialog com GlobalPositionStrategy ancorada numa borda e a animação em CSS.",
+        "2) Ancorado (popover, tooltip, futuramente menus/select): createOverlayRef + FlexibleConnectedPositionStrategy (flip/push/viewportMargin), scrollStrategies.reposition() e overlayOutsideClick/keydownEvents. O tooltip usa hasBackdrop:false e panelClass sem pointer-events só na seta.",
+        "3) Região de notificações (toast): overlay global criado sob demanda, com panelClass orc-toast-layer e z-index acima da faixa de dialogs.",
+        "Empilhamento: um único cdk-overlay-container. A ordem de attach no DOM define a pilha, e o OverlayKeyboardDispatcher entrega o Escape só ao overlay do topo. Acaba o <dialog showModal()> com top layer e, com ele, o re-parenting para dentro do dialog e o workaround de toast do consumidor. Se o top layer for mesmo necessário (ex.: popover dentro de elemento com transform), use usePopover:true de forma consistente em TODAS as camadas, nunca misturado.",
+        "Foco de retorno: sempre o elemento que tinha foco no open (o CDK captura). O hack de 'pointerOpener' para Safari (modal.component.ts:71-88) só fica se um teste e2e WebKit provar que ainda é necessário.",
+        "Rótulos: 'Fechar', 'Fechar diálogo' etc. vêm de provideOrcLabels (pt-BR).",
+        "SSR: o CDK já trata ambiente sem DOM; nada de document.addEventListener no constructor."
+      ],
+      "apiInterna": {
+        "OrcDialogService": "open<C,D,R>(component|TemplateRef, {data, size, role:'dialog'|'alertdialog', closeOnEscape, closeOnBackdropClick, ariaLabel, ariaLabelledBy}) → OrcDialogRef<R> {close(result), closed: Observable<R|undefined>, componentInstance}; confirm({title, message, confirmLabel, cancelLabel, tone:'neutral'|'danger'}) → Promise<boolean>",
+        "ORC_DIALOG_DATA": "InjectionToken (substitui ORC_MODAL_DATA)",
+        "OrcAnchoredOverlay": "attach(anchor, TemplatePortal|ComponentPortal, {placement, align, offset, closeOnOutside, closeOnEscape, restoreFocus, trapFocus}) → handle {reposition(), dispose(), outsideClick$, detach$}",
+        "OrcToastLayer": "host único para a região de toasts, acima dos dialogs"
+      }
+    },
+    "defects": [
+      "projects/orc-ds/modal/modal.component.ts:202,218 — toda instância de orc-modal, mesmo fechada, registra listeners de captura de click/pointerdown no document desde o constructor (o consumidor tem 14 orc-modal → 28 listeners globais permanentes)",
+      "projects/orc-ds/internal/overlay-attachment.ts:49-50 — overlays com appendTo='body' são silenciosamente redirecionados para o <dialog>, então o contrato do input mente",
+      "projects/orc-ds/toast/toast.service.ts:174 — o container de toast vai para o body e fica atrás do top layer de qualquer orc-modal aberto (o consumidor contornou em dialog-aware-toast-container.service.ts)",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:144 e projects/orc-ds/confirm-popup/confirm-popup.component.ts:94 — z-index:100 fixo, fora do registro de camadas, então abertos a partir de um orc-modal ficam atrás e inertes"
+    ],
+    "consumerImpact": "Invisível na API de template. O consumidor apaga dialog-aware-toast-container.service.ts, porque os toasts passam a ficar acima dos dialogs nativamente.",
+    "effort": "G",
+    "dependsOn": [
+      "provideOrcLabels (lote 10)",
+      "decisão sobre a família select/menus (lotes 02 e 06) para migrar list-picker para a mesma infra"
+    ]
+  },
+  {
+    "id": "modal",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 3,
+      "consumerUse": 3
+    },
+    "rationale": "É a família de overlay mais usada pelo consumidor (14 orc-modal) e precisa ficar, mas a API tem 49 inputs/models, 11 deles no-op deprecados, dois models de visibilidade (isOpen/visible) e três seletores. A implementação gasta cerca de 300 linhas reconciliando estado entre os dois models e o <dialog> nativo. O ModalService exige que o componente aberto contenha outro <orc-modal [isOpen]=true>. Deve ser reescrito sobre o OrcDialogService (infra-overlay), com um único model `open` e slots de cabeçalho e rodapé.",
+    "evidence": [
+      "projects/orc-ds/modal/modal.component.ts:35 — selector 'orc-modal, orc-dialog, orc-dynamic-dialog' (aliases); entry points @ciag/orchestra/dialog e dynamic-dialog (measurements aliasEntryPoints)",
+      "projects/orc-ds/modal/modal.component.ts:93-95 — dois models de visibilidade isOpen + visible ('PrimeNG Dialog-compatible')",
+      "projects/orc-ds/modal/modal.component.ts:101-185 — draggable, resizable, maskStyle, maskStyleClass, appendTo, breakpoints, keepInViewport, minX, minY, transitionOptions e rtl deprecados como no-op",
+      "projects/orc-ds/modal/modal.component.ts:97-100,160-165 — duplicatas: dismissableMask×closeOnBackdropClick, closable×showCloseButton; zIndex×baseZIndex×autoZIndex (169-173)",
+      "projects/orc-ds/modal/modal.component.ts:189-191 — outputs PrimeNG onShow/onHide/onMaximize",
+      "projects/orc-ds/modal/modal.component.ts:225-315 — syncDialogState: máquina de estados manual com lastIsOpen/lastVisible/managedOpen/openNotificationPending",
+      "projects/orc-ds/modal/modal.component.ts:46,90 — @ViewChild de decorator misturado com signals; afterEveryRender por instância (203) para medir o título",
+      "projects/orc-ds/modal/modal.service.ts:36-40 — o componente aberto via serviço PRECISA conter <orc-modal [isOpen]=\"true\"> internamente",
+      "projects/orc-ds/modal/modal-ref.ts:41-49 — três APIs de resultado (afterClosed$, afterClosed() síncrono, afterClosedPromise)",
+      "projects/orc-ds/modal/modal.component.html:4 — classes 'p-dialog p-component' (mimetismo PrimeNG)",
+      "projects/orc-ds/modal/modal.component.html:20,44,59-60 — rótulos padrão em inglês ('Dialog', 'Close dialog', 'Maximize dialog')",
+      "specs: 5 arquivos, 54 it() (modal.component.spec, lifecycle, keyboard, popup-integration, service) — bons, testam comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-modal",
+      "inputs": [
+        "header",
+        "size ('sm'|'md'|'lg'|'xl'|'full')",
+        "status ('neutral'|'danger')",
+        "role ('dialog'|'alertdialog')",
+        "closeOnEscape",
+        "closeOnBackdropClick",
+        "showCloseButton",
+        "ariaLabel",
+        "ariaDescribedBy"
+      ],
+      "models": ["open"],
+      "outputs": ["opened", "closed"],
+      "slots": [
+        "[modal-header] (substitui o header texto quando presente)",
+        "conteúdo padrão (corpo)",
+        "[modal-footer]"
+      ],
+      "service": "OrcDialogService.open(Component, {data}) → OrcDialogRef (close(result), closed: Observable) + ORC_DIALOG_DATA; OrcDialogService.confirm(...) → Promise<boolean> (absorve confirm-dialog). O componente aberto pelo serviço NÃO precisa conter <orc-modal>; usa <orc-modal-shell> interno ou as diretivas de slot.",
+      "remove": [
+        "isOpen (→ open)",
+        "visible (→ open)",
+        "seletores orc-dialog e orc-dynamic-dialog",
+        "entry points @ciag/orchestra/dialog e @ciag/orchestra/dynamic-dialog",
+        "modal (modo não-modal)",
+        "inline",
+        "dismissableMask (→ closeOnBackdropClick)",
+        "closable (→ showCloseButton)",
+        "showHeader (o cabeçalho passa a ser derivado de header/[modal-header])",
+        "draggable",
+        "resizable",
+        "maximizable, maximized, onMaximize, minimizeIcon, maximizeIcon, restoreAriaLabel, maximizeAriaLabel (→ size='full')",
+        "focusOnShow",
+        "focusTrap",
+        "blockScroll",
+        "autoZIndex",
+        "baseZIndex",
+        "zIndex",
+        "position (→ orc-drawer para bordas)",
+        "style",
+        "styleClass",
+        "maskStyle",
+        "maskStyleClass",
+        "contentStyle",
+        "contentStyleClass",
+        "appendTo",
+        "closeIcon",
+        "closeAriaLabel (→ provideOrcLabels)",
+        "closeTabindex",
+        "breakpoints",
+        "id",
+        "ariaLabelledBy (derivado do header)",
+        "keepInViewport",
+        "minX",
+        "minY",
+        "transitionOptions",
+        "rtl",
+        "onShow (→ opened)",
+        "onHide (→ closed)",
+        "slot [modal-body] (→ conteúdo padrão)",
+        "ModalRef.afterClosed() síncrono e afterClosedPromise (→ closed Observable)",
+        "ORC_MODAL_DATA (→ ORC_DIALOG_DATA)",
+        "size 'fullScreen'/'custom' (→ 'full'/CSS var)",
+        "classes p-dialog/p-component"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/modal/modal.component.ts:202,218 — listeners de captura no document por instância desde a construção, inclusive com o modal fechado",
+      "projects/orc-ds/modal/modal.component.ts:203-207 — afterEveryRender por instância roda em toda renderização da aplicação para checar textContent do header",
+      "projects/orc-ds/modal/modal.component.html:20 — aria-label padrão 'Dialog' em inglês (viola decisão 8)",
+      "projects/orc-ds/modal/modal.service.ts:138 — host anexado ao body, mas o modal interno usa showModal e fica no top layer; toasts e popovers fora dele ficam inertes",
+      "projects/orc-ds/modal/modal-ref.ts:30 — close() destrói o host de forma síncrona, sem animação de saída nem foco de retorno coordenado com o <dialog>"
+    ],
+    "consumerImpact": "14 orc-modal em 5 imports. Migração mecânica: [(isOpen)]→[(open)] e [isOpen]→[open]; remover [showHeader]=\"false\", porque o cabeçalho passa a ser derivado; size/header/status/closeOnBackdropClick/ariaLabel/(closed) continuam; o atributo modal-body pode ficar ou ser removido (passa a ser o conteúdo padrão). Os modais de confirmação próprios (confirm-action-modal, delete-confirm-modal, pendingConfirmation com status='danger') podem migrar para OrcDialogService.confirm(), o que é opcional.",
+    "effort": "G",
+    "dependsOn": [
+      "infra-overlay",
+      "provideOrcLabels (lote 10)",
+      "orc-button (lote 01)"
+    ]
+  },
+  {
+    "id": "confirm-dialog",
+    "verdict": "MERGE",
+    "mergeInto": "modal",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Diálogo de confirmação dirigido por serviço, com padrão PrimeNG (ConfirmationService.confirm + callbacks accept/reject), focus trap próprio, backdrop com z-index fixo e botões crus. Duplica o modal e não funciona por cima de um orc-modal aberto. A capacidade útil (confirmação programática com alertdialog) passa a ser OrcDialogService.confirm() no modal.",
+    "evidence": [
+      "projects/orc-ds/confirm-dialog/index.ts:1-5 — entry que só re-exporta de @ciag/orchestra/p2",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:20-36 — ConfirmationService com signal único de request e callbacks accept/reject",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:37-54 — ConfirmationRequest com acceptIcon/rejectIcon/acceptButtonStyleClass/rejectButtonStyleClass/key (no-op, linha 51)",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:63-70,144 — backdrop próprio position:fixed z-index:100, fora do registro de camadas",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:113-136 — <button> nativos estilizados inline em vez de orc-button",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:163-165 — defaultFocus='accept' (foco inicial na ação destrutiva)",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:166-168 — outputs onHide/onAccept/onReject",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:205-210 — rótulos 'Accept'/'Reject' e aria-label 'Confirmation' (82) em inglês"
+    ],
+    "targetApi": null,
+    "migratesToTarget": "OrcDialogService.confirm({title, message, confirmLabel, cancelLabel, tone:'neutral'|'danger', role:'alertdialog'}) → Promise<boolean>; renderizado com orc-modal + orc-button; foco inicial no botão de cancelar (WAI-ARIA alertdialog); a política de 'request mais recente substitui e rejeita o anterior' (p2-confirm-dialog-component.ts:28-32) vira fila ou rejeição explícita documentada.",
+    "remove": [
+      "orc-confirm-dialog",
+      "ConfirmationService",
+      "ConfirmationRequest",
+      "entry @ciag/orchestra/confirm-dialog",
+      "alias @ciag/orchestra/confirmdialog",
+      "export em p2"
+    ],
+    "defects": [
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:144 — z-index:100 fixo: aberto de dentro de um orc-modal (top layer), fica atrás e inerte",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:90 — Escape só funciona com o foco dentro da section (keydown local)",
+      "projects/orc-ds/p2/p2-confirm-dialog-component.ts:163 — foco padrão na ação 'accept' contraria a recomendação de alertdialog para ações destrutivas"
+    ],
+    "consumerImpact": "nenhum (0 uso). O consumidor tem confirmações próprias sobre orc-modal, que podem passar a usar OrcDialogService.confirm().",
+    "effort": "P",
+    "dependsOn": ["modal", "infra-overlay"]
+  },
+  {
+    "id": "confirm-popup",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Popup de confirmação ancorado, por paridade com PrimeNG. Tem 400 linhas com o próprio motor de posicionamento, o próprio outside-click e o próprio foco de retorno, além de ser singleton global por serviço. O mesmo resultado sai da composição orc-popover + orc-button ou de OrcDialogService.confirm(). Não há uso no consumidor.",
+    "evidence": [
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:34-50 — ConfirmPopupService singleton com request global; várias instâncias de <orc-confirm-popup> renderizam o mesmo request",
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:239-302 — terceiro motor de posicionamento manual (flip/clamp)",
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:164-210 — outside pointer, resize e scroll próprios",
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:94 — position:fixed z-index:100 fora do registro de camadas",
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:151 — foco inicial no botão accept",
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:61,359-364 — 'Confirmation'/'Accept'/'Reject' em inglês",
+      "chunk 4553 B gzip (measurements) para uma composição trivial"
+    ],
+    "targetApi": null,
+    "substitute": "orc-popover com conteúdo de confirmação composto (texto + 2 orc-button) para confirmação inline; OrcDialogService.confirm() para confirmação bloqueante.",
+    "remove": [
+      "orc-confirm-popup",
+      "ConfirmPopupService",
+      "PopupConfirmation",
+      "entry @ciag/orchestra/confirm-popup",
+      "alias @ciag/orchestra/confirmpopup",
+      "re-export p2/p2-confirm-popup.ts"
+    ],
+    "defects": [
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:56-91 — role alertdialog sem focus trap nem aria-modal: Tab sai do popup sem fechá-lo",
+      "projects/orc-ds/confirm-popup/confirm-popup.component.ts:66 — Escape só com foco dentro do aside"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["popover", "modal"]
+  },
+  {
+    "id": "drawer",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Painel lateral é padrão em apps corporativas (filtros, detalhes) e o código é relativamente limpo, com effects e onCleanup. Mas renderiza no lugar, sem portal: fica preso a ancestrais com transform e não sobe acima de um orc-modal. Também carrega o alias orc-sidebar, o model duplo open/visible e inputs duplicados. Deve virar uma variante posicional do OrcDialog da infra.",
+    "evidence": [
+      "projects/orc-ds/drawer/drawer.component.ts:28 — selector 'orc-drawer, orc-sidebar' (alias); projects/orc-ds/sidebar/index.ts:1-2 — entry alias SidebarComponent/SidebarPosition",
+      "projects/orc-ds/drawer/drawer.component.ts:35-37 — open + visible ('PrimeNG-compatible visibility alias')",
+      "projects/orc-ds/drawer/drawer.component.ts:39-48 — duplicatas: label×ariaLabel, closeOnBackdrop×dismissible, closable×showCloseIcon",
+      "projects/orc-ds/drawer/drawer.component.ts:50-52 — styleClass, style, baseZIndex",
+      "projects/orc-ds/drawer/drawer.component.ts:54-55 — onShow/onHide",
+      "projects/orc-ds/drawer/drawer.component.html:1-11 — renderizado inline com z-index (baseZIndex-1), sem portal/overlay",
+      "projects/orc-ds/drawer/drawer.component.html:5,15 — classes p-drawer-mask/p-drawer/p-component",
+      "projects/orc-ds/drawer/drawer.component.html:25,38 — 'Drawer'/'Close drawer' em inglês",
+      "specs: drawer-behavior.spec.ts (3 it) + drawer-modal-isolation.spec.ts (4 it)"
+    ],
+    "targetApi": {
+      "selector": "orc-drawer",
+      "inputs": [
+        "placement ('left'|'right'|'top'|'bottom')",
+        "size ('sm'|'md'|'lg'|'full')",
+        "header",
+        "modal",
+        "closeOnEscape",
+        "closeOnBackdropClick",
+        "showCloseButton",
+        "ariaLabel"
+      ],
+      "models": ["open"],
+      "outputs": ["opened", "closed"],
+      "slots": ["[drawer-header]", "conteúdo padrão", "[drawer-footer]"],
+      "remove": [
+        "visible (→ open)",
+        "seletor orc-sidebar",
+        "entry @ciag/orchestra/sidebar (SidebarComponent/SidebarPosition)",
+        "label (→ ariaLabel)",
+        "dismissible (→ closeOnBackdropClick)",
+        "closeOnBackdrop (renomeado closeOnBackdropClick, igual ao modal)",
+        "closable (→ showCloseButton)",
+        "showCloseIcon (→ showCloseButton)",
+        "closeAriaLabel (→ provideOrcLabels)",
+        "styleClass",
+        "style",
+        "baseZIndex",
+        "id",
+        "ariaLabelledBy (derivado do header)",
+        "onShow (→ opened)",
+        "onHide (→ closed)",
+        "slot [drawer-title] (→ [drawer-header])",
+        "slot [drawer-actions] (→ [drawer-footer])",
+        "classes p-drawer*"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/drawer/drawer.component.html:1-30 — sem portal, então dentro de container com transform/overflow o position:fixed quebra; aberto a partir de um orc-modal fica abaixo do top layer",
+      "projects/orc-ds/drawer/drawer.component.ts:92 — keydown no document por instância aberta, com arbitragem manual via isTopOverlay",
+      "projects/orc-ds/drawer/drawer.component.html:25 — aria-label padrão 'Drawer' em inglês"
+    ],
+    "consumerImpact": "nenhum (0 uso; o 'sidebar' do consumidor é componente próprio do app)",
+    "effort": "M",
+    "dependsOn": ["infra-overlay", "provideOrcLabels (lote 10)"]
+  },
+  {
+    "id": "popover",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "O consumidor usa orc-popover 8 vezes (menus de usuário, ações de comentário, indicador de feriado em células de tabela, seletor de humor). Hoje o entry popover é só um re-export de overlay-panel, cuja classe é subclasse de OverlayPanelComponent, com 24 inputs que misturam PrimeNG e no-ops. Popover vira a implementação canônica sobre a infra (posicionamento CDK, conteúdo lazy) e absorve overlay-panel e hover-card, ganhando trigger='hover'.",
+    "evidence": [
+      "projects/orc-ds/popover/popover.component.ts:1-5 — entry só re-exporta PopoverComponent de @ciag/orchestra/overlay-panel",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:434-443 — PopoverComponent extends OverlayPanelComponent (só muda componentKind)",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:49,77 — visible + open (dois models)",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:60-69 — style, styleClass, appendTo, autoZIndex, baseZIndex, showTransitionOptions, hideTransitionOptions",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:52-59 — closable×showCloseIcon, closeLabel×ariaCloseLabel, label×ariaLabel",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:70-72 — onShow/onHide/onClick",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:132 — afterEveryRender(syncView) por instância, que escreve atributos ARIA no DOM a cada renderização da app",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:363-400 — posicionamento manual com getBoundingClientRect e correções de offsetParent",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.html:8-56 — o painel e o conteúdo projetado ficam sempre instanciados (só [hidden]/inert), sem lazy",
+      "gestao-de-projetos-frontend/src/app/components/discussion/discussion-comment.component.html:80-82 — o consumidor implementa hover manual (mouseenter/mouseleave/focusin/focusout) num orc-popover, o que mostra que falta trigger='hover'",
+      "gestao-de-projetos-frontend/src/app/components/hourlog/hourlog-table/hourlog-table.component.html:46 — popover por célula de feriado em tabela (custo do afterEveryRender × N)"
+    ],
+    "targetApi": {
+      "selector": "orc-popover",
+      "inputs": [
+        "placement ('top'|'right'|'bottom'|'left')",
+        "align ('start'|'center'|'end')",
+        "trigger ('click'|'hover')",
+        "openDelay",
+        "closeDelay",
+        "offset",
+        "ariaLabel",
+        "disabled"
+      ],
+      "models": ["open"],
+      "outputs": ["opened", "closed"],
+      "slots": [
+        "[popover-trigger] (elemento que abre; recebe aria-expanded/aria-controls/aria-haspopup)",
+        "<ng-template orcPopoverContent> (conteúdo lazy, renderizado só quando aberto)"
+      ],
+      "remove": [
+        "visible (→ open)",
+        "herança OverlayPanelComponent / componentKind",
+        "modal (→ orc-modal)",
+        "dismissable (sempre fecha fora)",
+        "closeOnEscape (sempre)",
+        "closable, showCloseIcon, closeLabel, ariaCloseLabel (compor botão no conteúdo)",
+        "header (compor no conteúdo)",
+        "label (→ ariaLabel)",
+        "id",
+        "ariaLabelledBy",
+        "style",
+        "styleClass",
+        "appendTo",
+        "autoZIndex",
+        "baseZIndex",
+        "focusOnShow",
+        "showTransitionOptions",
+        "hideTransitionOptions",
+        "onShow (→ opened)",
+        "onHide (→ closed)",
+        "onClick",
+        "métodos show(event,target)/hide() (→ open model; mantém toggle())",
+        "conteúdo por ng-content padrão (→ orcPopoverContent)",
+        "classes p-popover/p-overlaypanel/orc-p2-*",
+        "data-pc-name"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:132,220-264 — afterEveryRender em cada instância faz querySelector e setAttribute no gatilho a cada renderização global",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:92-97 — rótulos padrão 'Popover'/'Close popover' em inglês",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:240-243 — sem controle focável projetado, o span vira role=button com aria-haspopup=dialog, mesmo quando o conteúdo é só informativo",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:301-302 — listener de scroll em captura no document por popover aberto, que reposiciona com leitura síncrona de layout"
+    ],
+    "consumerImpact": "8 orc-popover em 4 componentes. [(open)], placement, align, ariaLabel e [popover-trigger] continuam. Breaking: o conteúdo precisa ir para <ng-template orcPopoverContent>; [style] em sidebar.component.html:133 sai (usar classe CSS/offset); o hover manual de discussion-comment vira trigger='hover'.",
+    "effort": "G",
+    "dependsOn": ["infra-overlay", "provideOrcLabels (lote 10)"]
+  },
+  {
+    "id": "overlay-panel",
+    "verdict": "MERGE",
+    "mergeInto": "popover",
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "OverlayPanel é o nome PrimeNG do Popover, com a mesma classe, template e stylesheet. Só existe por paridade. A implementação passa a morar em popover/ e o entry overlay-panel sai.",
+    "evidence": [
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:40-48 — orc-overlay-panel com componentKind 'overlaypanel' como única diferença",
+      "projects/orc-ds/overlay-panel/overlay-panel.component.ts:98-101 — classes p-overlaypanel/orc-p2-overlay-panel calculadas por tipo",
+      "projects/orc-ds/overlay-panel/overlay-panel-position.ts:1-5 — só re-exporta internal",
+      "projects/orc-ds/p2/p2-overlay-components.ts:89 — re-export em p2",
+      "docs/quality/library-scope-decisions.md:16 — registra a consolidação 'OverlayPanel e Popover compartilham controller, template e stylesheet'",
+      "measurements: consumer.tags orc-popover=8 está contado nesta família porque o seletor vive aqui; orc-overlay-panel não tem uso"
+    ],
+    "targetApi": null,
+    "migratesToTarget": "Todo o controller (gatilho projetado, aria-expanded/controls no gatilho, foco de retorno, outside click, Escape, reposicionamento) migra para orc-popover sobre a infra-overlay; o spec overlay-panel-behavior.spec.ts (8 it) é portado para popover.",
+    "remove": [
+      "orc-overlay-panel",
+      "OverlayPanelComponent",
+      "OverlayPanelPlacement/OverlayPanelAlign (→ PopoverPlacement/PopoverAlign definidos em popover)",
+      "entry @ciag/orchestra/overlay-panel",
+      "overlay-panel-position.ts",
+      "re-export em p2"
+    ],
+    "defects": ["herda todos os defeitos listados em popover"],
+    "consumerImpact": "nenhum direto (o consumidor importa de @ciag/orchestra/popover)",
+    "effort": "P",
+    "dependsOn": ["popover"]
+  },
+  {
+    "id": "overlay",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 0,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "orc-overlay é uma <section [hidden]> com Escape e z-index 1000. Dos 12 inputs, 9 são no-op deprecados (target, appendTo, autoZIndex, transições...). Não posiciona, não faz portal e não gerencia foco. Equivale a um @if do app. Também não tem docs, demo nem uso.",
+    "evidence": [
+      "projects/orc-ds/overlay/index.ts:1 — entry só re-exporta de p2",
+      "projects/orc-ds/p2/p2-overlay-components.ts:94-103 — template = section [hidden] role=presentation com (keydown.escape)",
+      "projects/orc-ds/p2/p2-overlay-components.ts:114-133 — mode, contentStyle, contentStyleClass, target, appendTo, autoZIndex, baseZIndex, showTransitionOptions, hideTransitionOptions: todos '@deprecated Compatibility-only'",
+      "projects/orc-ds/p2/p2-overlay-components.ts:134-135 — onShow/onHide",
+      "projects/orc-ds/p2/p2-overlay-components.ts:99 — role=presentation num contêiner que recebe Escape: nenhuma semântica de overlay",
+      "docs/quality/library-scope-decisions.md:36 — sem docs, demo nem catálogo; mantido só por janela de compatibilidade (encerrada pelo mandato de breaking do RC)"
+    ],
+    "targetApi": null,
+    "substitute": "@if/[hidden] no app para visibilidade inline; orc-popover para conteúdo ancorado; orc-modal/orc-drawer para camadas modais.",
+    "remove": [
+      "orc-overlay",
+      "OverlayComponent",
+      "entry @ciag/orchestra/overlay",
+      "export em p2"
+    ],
+    "defects": [
+      "projects/orc-ds/p2/p2-overlay-components.ts:170-172 — Escape fecha sem checar camada de topo nem defaultPrevented"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "hover-card",
+    "verdict": "MERGE",
+    "mergeInto": "popover",
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "O hover card é um popover aberto por hover/foco, mas renderizado inline (position:absolute, cortado por overflow), sem delay de abertura nem de fechamento e sem posicionamento. A única capacidade própria é o gatilho por hover, que vira trigger='hover' no orc-popover. O consumidor já precisa disso e faz à mão.",
+    "evidence": [
+      "projects/orc-ds/hover-card/hover-card.component.ts:22-24 — API: open, label, id",
+      "projects/orc-ds/hover-card/hover-card.component.ts:110-129 — wrapper com mouseenter/mouseleave/focusin/focusout e conteúdo @if inline",
+      "projects/orc-ds/hover-card/hover-card.component.scss:9 — conteúdo position:absolute no próprio host (sem portal)",
+      "projects/orc-ds/hover-card/hover-card.component.ts:41-51 — aria-controls só é setado se o consumidor passar id",
+      "projects/orc-ds/hover-card/hover-card.component.ts:17 — styles P2_SHARED_VARS (legado p2)",
+      "gestao-de-projetos-frontend/src/app/components/discussion/discussion-comment.component.html:80-82 — hover manual sobre orc-popover no consumidor"
+    ],
+    "targetApi": null,
+    "migratesToTarget": "orc-popover ganha trigger='hover' com openDelay/closeDelay (padrão 300/200 ms), abertura por foco no gatilho, fechamento ao sair de gatilho e painel (com área de tolerância) e Escape com retorno de foco (hover-card.component.ts:90-106). Os specs de hover-card-parity.spec.ts (5 it) são portados.",
+    "remove": [
+      "orc-hover-card",
+      "HoverCardComponent",
+      "slot [hover-card-trigger] (→ [popover-trigger])",
+      "entry @ciag/orchestra/hover-card"
+    ],
+    "defects": [
+      "projects/orc-ds/hover-card/hover-card.component.html:21-28 — role=dialog para conteúdo aberto por hover, sem foco gerenciado",
+      "projects/orc-ds/hover-card/hover-card.component.ts:30-34 — effect lê id/open e faz querySelector no host a cada mudança (DOM manual via Renderer2)",
+      "sem delay: abre instantaneamente em qualquer mouseenter de passagem"
+    ],
+    "consumerImpact": "nenhum direto. Ganho: discussion-comment.component.html troca o hover manual por trigger='hover'.",
+    "effort": "P",
+    "dependsOn": ["popover"]
+  },
+  {
+    "id": "tooltip",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 1
+    },
+    "rationale": "Toda app usa tooltip, e a forma diretiva [orcTooltip] é a correta para um comportamento anexado a qualquer elemento. Não é uma 'migração para diretiva' vetada pela decisão 9, porque já é diretiva hoje e não tem host próprio. Mas há 24 inputs com três aliases de texto, pares duplicados de delay/posição/classe e um no-op. O componente é criado no ViewContainerRef e movido à mão para o body, com posicionamento manual. O tooltip também não é hoverable (WCAG 1.4.13). Deve ser reescrito sobre createOverlayRef da infra.",
+    "evidence": [
+      "projects/orc-ds/tooltip/tooltip.directive.ts:37-45 — appTooltip, uiTooltip e orcTooltip (três aliases do mesmo texto) + content (66)",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:47-56 — tooltipShowDelay×showDelay, tooltipHideDelay×hideDelay; position×tooltipPosition (74)",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:59,78 — tooltipStyleClass×styleClass; escape×hideOnEscape (61,76)",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:67-73 — tooltipOptions @deprecated no-op; projects/orc-ds/tooltip/tooltip.types.ts:4-14 TooltipConfig deprecado",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:58,60,62,79 — positionStyle, tooltipZIndex, life, appendTo",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:216-234 — createComponent no ViewContainerRef e appendChild manual no alvo",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:351-421 — posicionamento/flip manual",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:143-181 — @HostListener em vez de host:{}",
+      "projects/orc-ds/tooltip/tooltip.component.ts:11-18 — TooltipComponent público marcado @deprecated/interno",
+      "gestao-de-projetos-frontend/src/app/components/table/table.component.ts:23 — o consumidor importa TooltipDirective, mas o template só tem tooltipPosition=\"top\" num div sem orcTooltip (table.component.html:51), ou seja, import morto"
+    ],
+    "targetApi": {
+      "selector": "[orcTooltip]",
+      "inputs": [
+        "orcTooltip (texto)",
+        "orcTooltipPosition ('top'|'right'|'bottom'|'left')",
+        "orcTooltipDisabled",
+        "orcTooltipShowDelay",
+        "orcTooltipHideDelay"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "remove": [
+        "appTooltip",
+        "uiTooltip",
+        "content",
+        "tooltipPosition (→ orcTooltipPosition)",
+        "position",
+        "tooltipShowDelay/showDelay (→ orcTooltipShowDelay)",
+        "tooltipHideDelay/hideDelay (→ orcTooltipHideDelay)",
+        "tooltipDisabled (→ orcTooltipDisabled)",
+        "tooltipTheme (tema por token CSS)",
+        "tooltipEvent (sempre hover+foco, exigência WCAG)",
+        "positionStyle",
+        "tooltipStyleClass",
+        "styleClass",
+        "tooltipZIndex",
+        "escape",
+        "hideOnEscape (sempre)",
+        "life",
+        "fitContent",
+        "tooltipOptions",
+        "autoHide",
+        "appendTo",
+        "export público TooltipComponent/orc-tooltip-overlay",
+        "TooltipConfig",
+        "TooltipTheme"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tooltip/tooltip.component.scss:4 — pointer-events:none no tooltip: o ponteiro não consegue entrar no tooltip sem que ele suma (WCAG 1.4.13 'hoverable')",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:177-181 — Escape só fecha se o foco estiver no host; aberto por hover, Escape não dispensa (WCAG 1.4.13 'dismissible')",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:236-240 — registerOverlay(interactive:false) + appendChild manual: dentro de um orc-modal depende do redirecionamento overlayAttachmentTarget",
+      "projects/orc-ds/tooltip/tooltip.directive.ts:294-297 — setTimeout de 150 ms fixo para destruir após o fade, desacoplado da duração CSS"
+    ],
+    "consumerImpact": "Na prática nenhum: remover o import morto de TooltipDirective em table.component.ts:23 e o atributo solto tooltipPosition=\"top\" em table.component.html:51.",
+    "effort": "M",
+    "dependsOn": ["infra-overlay"]
+  },
+  {
+    "id": "block-ui",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 2,
+      "angularFit": 1,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "BlockUI é paridade PrimeNG. O núcleo útil (inert + aria-busy + véu) é uma linha de template com o atributo nativo `inert` e um orc-spinner. O modo 'target externo' acompanha o retângulo de outro elemento com ResizeObserver, MutationObserver e scroll/resize globais, o que é DOM manual pesado para um caso raro. Não há uso.",
+    "evidence": [
+      "projects/orc-ds/block-ui/index.ts:1-2 — entry só re-exporta de p2",
+      "projects/orc-ds/p2/p2-block-ui-component.ts:30-48 — template: div display:contents [attr.inert] + véu com mensagem",
+      "projects/orc-ds/p2/p2-block-ui-component.ts:20-25,200-225 — target aceita HTMLElement | ElementRef | {getBlockableElement()} | string (API PrimeNG)",
+      "projects/orc-ds/p2/p2-block-ui-component.ts:236-263 — ResizeObserver + MutationObserver + listeners globais para seguir o alvo",
+      "projects/orc-ds/p2/p2-block-ui-component.ts:60-66 — autoZIndex, baseZIndex, style, styleClass, onBlock/onUnblock",
+      "projects/orc-ds/p2/p2-block-ui-component.ts:52 — z-index:20 fixo"
+    ],
+    "targetApi": null,
+    "substitute": "Atributo nativo `inert` + `aria-busy` no contêiner do app, com orc-spinner (lote 09) sobreposto por CSS. Documentar a receita 'Bloquear área durante carregamento' na docs.",
+    "remove": [
+      "orc-block-ui",
+      "BlockUiComponent",
+      "BlockUiTarget",
+      "entry @ciag/orchestra/block-ui",
+      "alias @ciag/orchestra/blockui",
+      "export em p2"
+    ],
+    "defects": [
+      "projects/orc-ds/p2/p2-block-ui-component.ts:45 — mensagem no véu sem role=status/aria-live: leitor de tela não anuncia o bloqueio"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["spinner (lote 09)"]
+  },
+  {
+    "id": "toast",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 3,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "O consumidor usa toast em toda parte (via wrapper próprio e orc-toast-container no app.component). O serviço com signals é bom, mas mistura duas vocabulários de opções (PrimeNG severity/summary/detail/life/sticky/key e Orchestra type/title/message/duration), tem métodos alias (add/addAll/remove), dois modos de montagem (auto e declarativo) e cinco inputs no-op no container. A região fica atrás do top layer dos modais, o que obrigou o consumidor a escrever um workaround com MutationObserver.",
+    "evidence": [
+      "projects/orc-ds/toast/toast.types.ts:21-28 — 'PrimeNG message aliases': key, severity, summary, detail, life, sticky ao lado de type/title/message/duration (31-38)",
+      "projects/orc-ds/toast/toast.service.ts:263-271 — add/addAll/remove como aliases de show/dismiss",
+      "projects/orc-ds/toast/toast.service.ts:117-183 — dois modos de container (registerContainer declarativo × ensureContainer automático com import dinâmico); catch vazio em 178",
+      "projects/orc-ds/toast/toast.service.ts:186-199 — setDefaultPosition/Duration/PreventDuplicates/PreventOpenDuplicates mutáveis em vez de provider",
+      "projects/orc-ds/toast/toast-container.component.ts:34,48-51 — styleClass, showTransformOptions, hideTransformOptions, showTransitionOptions, hideTransitionOptions: nenhum é lido no template (toast-container.component.html:1-15)",
+      "projects/orc-ds/toast/toast-container.component.ts:32-33 — modo toasts input + dismiss output paralelo ao serviço",
+      "projects/orc-ds/toast/toast.component.ts:42-46 — outputs onClose/onClick (prefixo on)",
+      "projects/orc-ds/toast/toast.component.html — 8 <svg> inline para ícones em vez de orc-icon/Material Symbols (decisão 5)",
+      "gestao-de-projetos-frontend/src/app/services/toast/dialog-aware-toast-container.service.ts:44-69 — workaround do consumidor para o toast aparecer acima de <dialog> aberto",
+      "gestao-de-projetos-frontend/src/app/services/toast/toast.service.ts:10-15 — o consumidor usa add({severity, summary, detail})",
+      "measurements.json conta consumer.imports=0 para toast, mas o consumidor importa @ciag/orchestra/toast em app.component.ts:2 e services/toast/toast.service.ts:2 (subcontagem da medição)"
+    ],
+    "targetApi": {
+      "selector": "orc-toast-container",
+      "inputs": [
+        "position (padrão do provider)",
+        "ariaLabel (padrão 'Notificações' via provideOrcLabels)"
+      ],
+      "models": [],
+      "outputs": [],
+      "slots": [],
+      "service": "ToastService: show({type, title, message, duration, action, dismissible, id}) → id; success/info/warning/error/loading(message, opts?) → id; update(id, patch) (loading→success); dismiss(id); clear(); toasts (signal readonly). Configuração global por provideOrcToast({position, duration, maxVisible, dedupe}).",
+      "remove": [
+        "opções severity, summary, detail, life, sticky, key (→ type/title/message/duration; duration:0 = persistente)",
+        "add/addAll/remove (→ show/dismiss)",
+        "notification (→ info)",
+        "setDefaultPosition/setDefaultDuration/setPreventDuplicates/setPreventOpenDuplicates (→ provideOrcToast)",
+        "montagem automática ensureContainer (um único caminho: <orc-toast-container> no root)",
+        "input toasts + output dismiss do container (modo declarativo paralelo)",
+        "styleClass, showTransformOptions, hideTransformOptions, showTransitionOptions, hideTransitionOptions, preventDuplicates, preventOpenDuplicates do container",
+        "orc-toast público e seus outputs onClose/onClick/actionClick/dismiss (vira interno)",
+        "opções por toast role/ariaLive/ariaLabel/closeAriaLabel/showIcon/showProgressBar/pauseOnHover (política fixa e acessível)",
+        "position por toast",
+        "ícones SVG inline (→ orc-icon)",
+        "classes p-toast/p-component"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/toast/toast-container.component.html:6-8 + projects/orc-ds/toast/toast.component.html:17-18 — live regions aninhadas (aria-live=polite na pilha + role=alert/aria-live=assertive em cada item inserido): anúncio duplicado ou perdido dependendo do leitor",
+      "projects/orc-ds/toast/toast.component.html:208 — 'Dismiss notification' em inglês",
+      "projects/orc-ds/toast/toast.service.ts:174 — container anexado ao body fica atrás do top layer de orc-modal",
+      "projects/orc-ds/toast/toast.service.ts:178-180 — erro de criação engolido em silêncio"
+    ],
+    "consumerImpact": "O wrapper services/toast/toast.service.ts (1 arquivo) troca add({severity, summary, detail}) por success/error/info/warning(detail, {title: summary}). <orc-toast-container> no app.component continua. dialog-aware-toast-container.service.ts é apagado.",
+    "effort": "M",
+    "dependsOn": [
+      "infra-overlay",
+      "provideOrcLabels (lote 10)",
+      "icon (lote 10)"
+    ]
+  },
+  {
+    "id": "portal",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 3,
+      "implQuality": 0,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "orc-portal move os nós projetados à mão para outro elemento e vigia o documento inteiro com MutationObserver até o seletor existir. Isso duplica o @angular/cdk/portal, que já é peer, quebra a premissa de posse de view do Angular e é responsabilidade da infra interna, não do consumidor. Não tem uso nem docs.",
+    "evidence": [
+      "projects/orc-ds/portal/index.ts:1 — entry só re-exporta de p2",
+      "projects/orc-ds/p2/p2-portal-component.ts:69-82 — move(): appendChild manual de childNodes projetados",
+      "projects/orc-ds/p2/p2-portal-component.ts:97-115 — MutationObserver em ownerDocument {childList, subtree} enquanto o seletor não resolve",
+      "projects/orc-ds/p2/p2-portal-component.ts:133-146 — segundo MutationObserver para acompanhar nós adicionados e removidos",
+      "projects/orc-ds/p2/p2-portal-component.ts:175-181 — no destroy devolve os nós ao host que está sendo destruído"
+    ],
+    "targetApi": null,
+    "substitute": "@angular/cdk/portal (CdkPortal/CdkPortalOutlet/DomPortalOutlet) quando o app precisar; dentro da biblioteca, a infra-overlay usa TemplatePortal/ComponentPortal.",
+    "remove": [
+      "orc-portal",
+      "PortalComponent",
+      "entry @ciag/orchestra/portal",
+      "export em p2"
+    ],
+    "defects": [
+      "projects/orc-ds/p2/p2-portal-component.ts:112 — observer de subtree no documento inteiro: custo O(mutações da app) enquanto o alvo não existe",
+      "projects/orc-ds/p2/p2-portal-component.ts:78-81 — nós movidos para fora da árvore lógica não herdam contexto CSS/injeção esperado e não são removidos se o alvo for destruído antes"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": []
+  },
+  {
+    "id": "sidebar",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 0,
+      "uniqueness": 0,
+      "angularFit": 0,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Comentário de apoio ao lote 10: @ciag/orchestra/sidebar é um alias puro de drawer (SidebarComponent = DrawerComponent, SidebarPosition = DrawerPlacement), somado ao seletor alias orc-sidebar no próprio drawer. Viola 'uma forma de fazer cada coisa'.",
+    "evidence": [
+      "projects/orc-ds/sidebar/index.ts:1-2 — export { DrawerComponent as SidebarComponent }; DrawerPlacement as SidebarPosition",
+      "projects/orc-ds/drawer/drawer.component.ts:28 — selector 'orc-drawer, orc-sidebar'"
+    ],
+    "targetApi": null,
+    "substitute": "orc-drawer (@ciag/orchestra/drawer)",
+    "remove": [
+      "entry @ciag/orchestra/sidebar",
+      "SidebarComponent",
+      "SidebarPosition",
+      "seletor orc-sidebar"
+    ],
+    "defects": [],
+    "consumerImpact": "nenhum (o consumidor não usa orc-sidebar; o 'sidebar' dele é componente próprio)",
+    "effort": "P",
+    "dependsOn": ["drawer"],
+    "note": "Entry alias pertencente ao lote 10; incluído aqui só como comentário de apoio."
+  }
+]

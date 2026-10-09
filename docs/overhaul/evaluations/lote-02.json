@@ -1,0 +1,786 @@
+[
+  {
+    "id": "select",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 3
+    },
+    "rationale": "Controle de seleção mais usado do consumidor (45 orc-select e 24 orc-option, importado em 23 arquivos). Já tem signals, CVA pela base interna e overlay CDK, mas a API tem 85 inputs e 17 outputs: 18 inputs deprecados no-op, aliases em pares (filter/searchable, showClear/clearable, filterPlaceholder/searchPlaceholder, id/inputId) e três outputs para a mesma mudança (valueChange, selectionChange, onChange). Também já suporta `multiple`, então duplica multi-select e o modo de formulário do dropdown. Passa a ser o seletor canônico (simples e múltiplo) do núcleo de seleção comum.",
+    "evidence": [
+      "projects/orc-ds/select/select.component.ts:116-221 — 78 inputs; bloco PrimeNG ('PrimeNG Select public inputs') com overlayOptions, autofocusFilter, editable, checkmark, optionGroup*, autoDisplayFirst, group, virtualScroll*, itemSize, selectOnFocus, showTransitionOptions/hideTransitionOptions e tooltip*, todos @deprecated no-op",
+      "projects/orc-ds/select/select.component.ts:108-114,120-129,144-145 — aliases: searchable×filter, searchPlaceholder×filterPlaceholder, searchEmptyText×emptyFilterMessage, clearable×showClear, filterBy×filterFields, id×inputId (l.261)",
+      "projects/orc-ds/select/select.component.ts:232-251 — value model + selectionChange + onChange + onOptionSelect/onOptionUnselect; opened×onShow, closed×onHide, focus×onFocus, blur×onBlur; onClick e onFilter",
+      "projects/orc-ds/select/select.component.ts:595-599 — onLazyLoad emite uma única faixa 0..N ao abrir; é lazy de fachada",
+      "projects/orc-ds/select/select.component.ts:107,425-450,669-697 — modo `multiple` completo (chips no gatilho e toggle), mesma responsabilidade de orc-multi-select",
+      "projects/orc-ds/select/select.component.ts:309,312,359-360 e select.component.html:78,175,232 — textos padrão em inglês ('Filter options', 'Clear selection', 'No results found', 'No options available', 'Loading options', 'Remove ')",
+      "projects/orc-ds/select/select.component.ts:815-839 — teclado próprio via stepListPickerActive/listPickerSkipDisabled; sem ListKeyManager, sem Home/End nem typeahead",
+      "projects/orc-ds/select/select.component.html:236 — `track $index` no modo de dados; filtrar recria os nós",
+      "projects/orc-ds/select/option.component.ts:75-105 — nome acessível calculado com querySelector/textContent e setAttribute manual",
+      "projects/orc-ds/select/select-option.model.ts:1 e select/select.types.ts:21 — SelectOption e SelectOptionItem são o mesmo tipo duplicado",
+      "projects/orc-ds/select/select-repair.spec.ts:126-615 — 19 specs de comportamento (aria-activedescendant, foco composto, dataKey, estados vazio e carregando)"
+    ],
+    "targetApi": {
+      "selector": "orc-select (+ orc-option, orc-option-group)",
+      "inputs": [
+        "options",
+        "optionLabel",
+        "optionValue",
+        "optionDisabled",
+        "compareWith",
+        "multiple",
+        "selectionLimit",
+        "showToggleAll",
+        "placeholder",
+        "label",
+        "helperText",
+        "errorMessage",
+        "disabled",
+        "readonly",
+        "required",
+        "name",
+        "id",
+        "size",
+        "fluid",
+        "filter",
+        "filterBy (string | string[])",
+        "showClear",
+        "loading",
+        "emptyMessage",
+        "ariaLabel",
+        "ariaLabelledBy"
+      ],
+      "models": ["value", "open", "filterValue"],
+      "outputs": ["opened", "closed"],
+      "slots": [
+        "<orc-option [value]> projetado (listas estáticas; o modo `options` renderiza o mesmo orc-option internamente, então há um único caminho de código)",
+        "ng-template orcSelectOption (let-option, let-selected)",
+        "ng-template orcSelectValue (exibição no gatilho; substitui [orcSelectTrigger]/[selectTrigger])",
+        "[orcSelectHeader]",
+        "[orcSelectFooter]",
+        "ng-template orcSelectEmpty"
+      ],
+      "remove": [
+        "searchable (→ filter)",
+        "clearable (→ showClear)",
+        "searchPlaceholder, filterPlaceholder, ariaFilterLabel, clearAriaLabel, removeOptionAriaLabel, searchEmptyText, emptyFilterMessage, loadingMessage (→ provideOrcLabels, padrão pt-BR)",
+        "inputId (→ id)",
+        "filterFields (→ filterBy)",
+        "filterMatchMode, filterLocale (contains + locale do LOCALE_ID)",
+        "dataKey (→ compareWith)",
+        "status (→ errorMessage)",
+        "variant",
+        "style",
+        "styleClass",
+        "panelStyle",
+        "panelStyleClass",
+        "appendTo",
+        "overlayOptions",
+        "autoZIndex",
+        "baseZIndex",
+        "tabindex",
+        "autofocus",
+        "autofocusFilter",
+        "editable",
+        "checkmark",
+        "dropdownIcon",
+        "loadingIcon",
+        "optionGroupLabel",
+        "optionGroupChildren (→ orc-option-group)",
+        "group",
+        "autoDisplayFirst",
+        "lazy",
+        "virtualScroll",
+        "virtualScrollItemSize",
+        "virtualScrollOptions",
+        "itemSize",
+        "focusOnHover",
+        "selectOnFocus",
+        "autoOptionFocus",
+        "maxlength",
+        "showTransitionOptions",
+        "hideTransitionOptions",
+        "resetFilterOnHide (sempre reseta)",
+        "tooltip",
+        "tooltipPosition",
+        "tooltipPositionStyle",
+        "tooltipStyleClass",
+        "scrollHeight (→ token CSS --orc-select-panel-max-height)",
+        "ariaDescribedby (gerado de helperText/errorMessage)",
+        "selectionChange",
+        "onChange (→ valueChange via model)",
+        "onFilter (→ filterValueChange)",
+        "onShow (→ opened)",
+        "onHide (→ closed)",
+        "onClear",
+        "onOptionSelect",
+        "onOptionUnselect",
+        "onClick",
+        "onFocus",
+        "onBlur",
+        "focus",
+        "blur",
+        "onLazyLoad",
+        "searchChange (→ filterValueChange)",
+        "[selectTrigger] (alias de [orcSelectTrigger])",
+        "SelectOptionItem (tipo duplicado)",
+        "SelectSize 'small'|'large'",
+        "ícones por classe <i [class]> (→ orc-icon com Material Symbols)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/select/select.component.html:194-223 — o painel com role=listbox contém o input de filtro e os slots header/footer; listbox só pode conter option/group",
+      "projects/orc-ds/select/select.component.html:211-221 — com o filtro aberto o foco fica no input de busca, que não tem role=combobox nem aria-activedescendant (só o gatilho tem, l.38), e o leitor de tela não anuncia a opção ativa",
+      "projects/orc-ds/select/select.component.html:65-69,100-105,253-257 — ícones renderizados como <i [class]> (fonte de terceiros), fora da decisão Material Symbols/orc-icon",
+      "projects/orc-ds/select/select.component.ts:595-599 — onLazyLoad promete lazy loading que não existe",
+      "projects/orc-ds/select/option.component.ts:89 — nome acessível de fallback 'Option' em inglês",
+      "projects/orc-ds/select/select.component.html:236 — `track $index` em lista filtrável"
+    ],
+    "consumerImpact": "Alto, mas mecânico. São 45 orc-select e 24 orc-option. Mantêm-se options, optionLabel, optionValue, placeholder, label, fluid, filter, filterBy, showClear, disabled, required, name, loading, errorMessage, ariaLabel e ngModel/formControlName. Migram: (onChange) ×6 e (selectionChange) ×3 → (valueChange) ou (ngModelChange); styleClass ×6 → class; inputId ×5 → id. O único uso de [multiple] continua igual.",
+    "effort": "G",
+    "dependsOn": [
+      "infra: núcleo de seleção comum em internal (ActiveDescendantKeyManager + SelectionModel do CDK + compareWith + orc-option compartilhado)",
+      "infra: provideOrcLabels (lote 10)",
+      "infra: overlay CDK conectado (substituir attachListPickerOverlay por um helper com cdkConnectedOverlay)",
+      "multi-select (MERGE neste lote)",
+      "dropdown modo formulário (sai neste lote)"
+    ]
+  },
+  {
+    "id": "multi-select",
+    "verdict": "MERGE",
+    "mergeInto": "select",
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 2
+    },
+    "rationale": "Duplica orc-select [multiple], que já faz seleção múltipla com chips e toggle (select.component.ts:669-697). Tem 71 inputs (25 deprecados no-op), classes `p-multiselect` e saídas PrimeNG. O que tem de útil (selectionLimit, select-all, contagem resumida no gatilho) migra para o select como `multiple`. O consumidor usa 12 instâncias, e a troca é de tag.",
+    "evidence": [
+      "projects/orc-ds/multi-select/multi-select.component.ts:84-199 — 25 inputs @deprecated no-op (emptyText, name, variant, overlayOptions, optionGroup*, group, lazy, virtualScroll*, autofocus, focusOnHover, selectOnFocus, autoOptionFocus, dropdownIcon, chipIcon, display, autocomplete, size, tooltip*)",
+      "projects/orc-ds/multi-select/multi-select.component.ts:206-218 — optionSelected + onChange + onFilter + onSelectAllChange + onFocus/onBlur/onClear/onPanelShow/onPanelHide/onRemove (9 nomes PrimeNG)",
+      "projects/orc-ds/multi-select/multi-select.component.ts:283 — igualdade 'both-sides', diferente da 'extract' do select (select.component.ts:420): o mesmo dataKey compara de jeito diferente nos dois componentes",
+      "projects/orc-ds/multi-select/multi-select.component.ts:297 — '{0} items selected' em inglês",
+      "projects/orc-ds/multi-select/multi-select.component.html:2-7,77-78 — classes p-multiselect/p-component e data-pc-name, herança visual do PrimeNG",
+      "projects/orc-ds/projects/orc-ds/multiselect/index.ts:1 — entry point alias @ciag/orchestra/multiselect",
+      "projects/orc-ds/multi-select/multi-select-parity.spec.ts:50-242 — 8 specs de comportamento (limite, toggle-all, filtro, Escape)"
+    ],
+    "targetApi": {
+      "mergeInto": "select",
+      "migra": [
+        "selectionLimit",
+        "showToggleAll (select-all; hoje o botão só aparece se selectAllLabel for passado)",
+        "resumo 'N selecionados' no gatilho quando a seleção passa da largura (via provideOrcLabels, sem maxSelectedLabels/selectedItemsLabel)",
+        "model open"
+      ],
+      "remove": [
+        "orc-multi-select",
+        "@ciag/orchestra/multi-select",
+        "@ciag/orchestra/multiselect",
+        "MultiSelectOption (P2Option)",
+        "showHeader",
+        "maxSelectedLabels",
+        "selectedItemsLabel",
+        "selectAllLabel",
+        "clearAllLabel",
+        "todos os on* outputs"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/multi-select/multi-select.component.html:51-56 — toggle-all só renderiza com selectAllLabel/clearAllLabel definidos; o padrão (showToggleAll=true) não mostra nada",
+      "projects/orc-ds/multi-select/multi-select.component.html:66-74 — o input de filtro não tem (keydown): setas não navegam a partir dele, e [autofocus] num nó inserido dinamicamente não move o foco",
+      "projects/orc-ds/multi-select/multi-select.component.html:40,86 — 'Clear selection' e 'Loading…' em inglês",
+      "projects/orc-ds/multi-select/multi-select.component.ts:93-96,189 — name, variant e size aceitos e ignorados"
+    ],
+    "consumerImpact": "São 12 tags em 5 arquivos (kanban, task-detail-modal, subtask-form-modal, task-subtask-modal-members/sprints). <orc-multi-select …> vira <orc-select multiple …>, e o import MultiSelectComponent vira SelectComponent. Mantêm-se options, optionLabel, optionValue, placeholder, filter, loading, disabled, showToggleAll, emptyMessage e [value]/(valueChange). Migram: (onFilter) ×2 → (filterValueChange); filterPlaceholder e emptyFilterMessage ×2 → provideOrcLabels; showHeader ×2 é removido.",
+    "effort": "M",
+    "dependsOn": ["select (KEEP-REDESIGN neste lote)"]
+  },
+  {
+    "id": "combobox",
+    "verdict": "MERGE",
+    "mergeInto": "autocomplete",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 2,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "É um input editável com lista filtrada e valor restrito às opções, o mesmo padrão WAI-ARIA combobox de orc-autocomplete em modo forceSelection. A API é enxuta, mas traz classes p-autocomplete, compara só com Object.is e não tem helper/erro/required. Não há uso no consumidor. O comportamento de clamp no teclado e o sync valor→query migram para o autocomplete.",
+    "evidence": [
+      "projects/orc-ds/combobox/combobox.component.html:2,10,50,56 — classes p-autocomplete/p-autocomplete-panel/p-autocomplete-option e data-pc-name='autocomplete': é o autocomplete do PrimeNG com outro nome",
+      "projects/orc-ds/combobox/combobox.component.ts:105-118,147-157 — sincroniza value→query com Object.is, sem optionLabel/optionValue/compareWith",
+      "projects/orc-ds/combobox/combobox.component.ts:131-137 — filtro 'contains' fixo no label",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:111,280-284,339-348 — forceSelection cobre a semântica de valor restrito do combobox",
+      "projects/orc-ds/combobox/combobox-parity.spec.ts:44-188 — 7 specs de comportamento"
+    ],
+    "targetApi": {
+      "mergeInto": "autocomplete",
+      "migra": [
+        "forceSelection=true reproduz o valor restrito do combobox",
+        "clamp no teclado em vez de wrap (comportamento único do núcleo comum)",
+        "sync do rótulo da opção selecionada para o texto do input quando o valor muda por fora"
+      ],
+      "remove": [
+        "orc-combobox",
+        "@ciag/orchestra/combobox",
+        "emptyText",
+        "clearAriaLabel (botão limpar só existia se o rótulo fosse passado)",
+        "optionSelected",
+        "style",
+        "styleClass"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/combobox/combobox.component.html:29 — o botão limpar só aparece se clearAriaLabel for passado; sem padrão",
+      "projects/orc-ds/combobox/combobox.component.html:72 — a lista vazia não mostra nada sem emptyText",
+      "projects/orc-ds/combobox/combobox.component.html:49-53 — listbox sem nome acessível",
+      "projects/orc-ds/combobox/combobox.component.ts:60 — inputId é campo gerado, não input; não aceita id externo"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": ["autocomplete (KEEP-REDESIGN neste lote)"]
+  },
+  {
+    "id": "autocomplete",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 3,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 3,
+      "consumerUse": 0
+    },
+    "rationale": "É o melhor combobox editável do lote: trata IME/composição, Home/End, delay, loading, forceSelection e verifica o overlay do topo. Tem a melhor suíte (25 specs). Mas o valor é só string, não emite a consulta para busca assíncrona quando forceSelection está ligado, reimplementa CVA fora da base comum e tem aliases (suggestions/options, minChars/minLength, clearable/showClear, id/inputId) e outputs on*. Fica como o canônico de entrada com sugestões e absorve combobox.",
+    "evidence": [
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:83-92,76-77 — aliases suggestions×options, minLength×minChars, showClear×clearable, inputId×id",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:116,166-174 — value: string|null; o filtro casa label e value com toLowerCase e não aceita objetos",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:280-289 — com forceSelection o texto digitado não emite nada, então busca server-side é impossível",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:50-51,183-243 — CVA próprio em vez de CvaControl (internal/cva-control.ts:10)",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:121-127 — onChange/onClear/onShow/onHide/onFocusEvent/onBlurEvent",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:428-461 — roving de teclado reimplementado à mão em vez de ActiveDescendantKeyManager",
+      "projects/orc-ds/autocomplete/autocomplete.component.spec.ts — 25 specs de comportamento (IME, forceSelection, Home/End, overlay do topo)"
+    ],
+    "targetApi": {
+      "selector": "orc-autocomplete",
+      "inputs": [
+        "options",
+        "optionLabel",
+        "optionValue",
+        "optionDisabled",
+        "compareWith",
+        "placeholder",
+        "label",
+        "helperText",
+        "errorMessage",
+        "disabled",
+        "readonly",
+        "required",
+        "name",
+        "id",
+        "minLength",
+        "delay",
+        "loading",
+        "forceSelection",
+        "showClear",
+        "dropdown",
+        "ariaLabel"
+      ],
+      "models": ["value", "query"],
+      "outputs": ["opened", "closed"],
+      "slots": [
+        "ng-template orcAutocompleteOption (let-option)",
+        "ng-template orcAutocompleteEmpty"
+      ],
+      "remove": [
+        "suggestions (→ options)",
+        "minChars (→ minLength)",
+        "clearable (→ showClear)",
+        "inputId (→ id)",
+        "emptyMessage, loadingMessage, clearAriaLabel, dropdownAriaLabel (→ provideOrcLabels)",
+        "showEmptyMessage",
+        "autoHighlight (destaca a primeira opção quando forceSelection)",
+        "closeOnEscape (Escape sempre fecha)",
+        "style",
+        "styleClass",
+        "panelStyle",
+        "panelStyleClass",
+        "appendTo",
+        "onChange (→ valueChange)",
+        "onClear",
+        "onShow (→ opened)",
+        "onHide (→ closed)",
+        "onFocusEvent",
+        "onBlurEvent",
+        "optionSelected (→ valueChange)",
+        "AutocompleteOption (→ tipo de opção comum)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/autocomplete/autocomplete.component.html:93,116 — <li role=status> dentro de role=listbox; filho inválido de listbox",
+      "projects/orc-ds/autocomplete/autocomplete.component.html:30,58,70,90,117 e .ts:96 — padrões em inglês ('Autocomplete', 'Clear selection', 'Show options', 'Options', 'No results', 'Loading…')",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:280-289 — forceSelection impede a emissão da consulta digitada",
+      "projects/orc-ds/autocomplete/autocomplete.component.ts:351-354 — fecha por setTimeout de 120 ms no blur"
+    ],
+    "consumerImpact": "nenhum (0 usos); recebe os usuários de orc-combobox, que também tem 0 usos",
+    "effort": "M",
+    "dependsOn": [
+      "infra: núcleo de seleção comum (ActiveDescendantKeyManager, compareWith, opção comum)",
+      "infra: provideOrcLabels",
+      "infra: CvaControl"
+    ]
+  },
+  {
+    "id": "listbox",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 2,
+      "angularFit": 2,
+      "a11y": 1,
+      "apiLean": 0,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Uma lista de seleção inline (simples ou múltipla) tem lugar próprio: filtros laterais, painéis de permissão e base de pick-list/order-list. É a peça que o select deveria reutilizar dentro do painel. Mas 16 dos 46 inputs e 3 outputs são no-op declarados, e o padrão WAI-ARIA de listbox múltipla está incompleto: falta Space, Home/End e typeahead.",
+    "evidence": [
+      "projects/orc-ds/listbox/listbox.component.ts:61-106 — 16 inputs @deprecated no-op (selectOnFocus, autoOptionFocus, searchMessage, selectionMessage, striped, checkbox, checkmark, highlightOnSelect, showToggleAll, group, lazy, virtualScroll*, optionGroup*)",
+      "projects/orc-ds/listbox/listbox.component.ts:141-149 — outputs no-op onSelectAllChange, onLazyLoad e onDrop",
+      "projects/orc-ds/listbox/listbox.component.ts:134-140 — optionSelected + onChange + onClick + onDblClick + onFilter + onFocus/onBlur",
+      "projects/orc-ds/listbox/listbox.component.ts:240-262 — onKeydown trata só setas e Enter",
+      "projects/orc-ds/listbox/listbox.component.ts:210 — terceiro modo de igualdade por dataKey ('objects')",
+      "projects/orc-ds/listbox/listbox-parity.spec.ts:36-255 — 8 specs de comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-listbox",
+      "inputs": [
+        "options",
+        "optionLabel",
+        "optionValue",
+        "optionDisabled",
+        "compareWith",
+        "multiple",
+        "label",
+        "ariaLabel",
+        "ariaLabelledBy",
+        "disabled",
+        "readonly",
+        "filter",
+        "id"
+      ],
+      "models": ["value", "filterValue"],
+      "outputs": [],
+      "slots": [
+        "<orc-option> projetado",
+        "ng-template orcListboxOption (let-option, let-selected)",
+        "ng-template orcListboxEmpty"
+      ],
+      "remove": [
+        "os 16 inputs deprecados",
+        "onSelectAllChange",
+        "onLazyLoad",
+        "onDrop",
+        "onChange (→ valueChange)",
+        "onClick",
+        "onDblClick",
+        "onFilter (→ filterValueChange)",
+        "onFocus",
+        "onBlur",
+        "optionSelected",
+        "dataKey (→ compareWith)",
+        "filterBy/filterFields/filterMatchMode/filterLocale (→ filtro do núcleo comum, filterBy opcional)",
+        "filterPlaceholder, ariaFilterLabel, emptyText, emptyFilterMessage (→ provideOrcLabels / slot)",
+        "focusOnHover",
+        "tabindex",
+        "style",
+        "styleClass",
+        "listStyle",
+        "listStyleClass",
+        "scrollHeight (→ token CSS)"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/listbox/listbox.component.ts:240-262 — sem Space para alternar em multiple, sem Home/End, sem typeahead (exigidos pelo padrão de listbox)",
+      "projects/orc-ds/listbox/listbox.component.html:28 — tabindex continua 0 com disabled; o listbox desabilitado entra na ordem de Tab",
+      "projects/orc-ds/listbox/listbox.component.html:11-16 — o input de filtro não navega as opções nem controla o listbox (sem aria-controls)",
+      "projects/orc-ds/listbox/listbox.component.ts:57,131 — padrões 'Listbox' e 'Filter options' em inglês"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "infra: núcleo de seleção comum",
+      "lote 08: pick-list/order-list podem compor orc-listbox"
+    ]
+  },
+  {
+    "id": "cascade-select",
+    "verdict": "REMOVE",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 1,
+      "uniqueness": 1,
+      "angularFit": 0,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 1,
+      "consumerUse": 0
+    },
+    "rationale": "Paridade com PrimeNG ainda dentro do monólito p2. Importar o entry puxa o chunk p2 inteiro (~600 KB raw / 57 KB gzip). Não usa overlay CDK: o painel é absolute com z-index:5 e é cortado em modais e contêineres com overflow. CVA é próprio, o valor é só string e os textos estão em inglês. A seleção hierárquica já é coberta por orc-tree-select (modo single) e não há uso no consumidor.",
+    "evidence": [
+      "projects/orc-ds/cascade-select/index.ts:1 — reexporta de @ciag/orchestra/p2; measurements.json: chunk 169 B com deps ['p2'] (p2 = 599.902 raw / 57.190 gzip, docs/quality/library-scope-decisions.md:74)",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:136 — `.levels{position:absolute;z-index:5}` sem overlay CDK",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:147,168-169,399-407 — ControlValueAccessor próprio",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:154,368-371 — valor sempre convertido para String",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:41,83-88,95 — 'Select an option', 'Loading options', 'No results found', 'Options, level' em inglês",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:201-214 — o filtro só filtra os níveis abertos, sem achar folhas profundas",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:322-342 — foco por querySelector/CSS.escape no DOM",
+      "projects/orc-ds/cascadeselect/index.ts:1 — entry alias @ciag/orchestra/cascadeselect",
+      "projects/orc-ds/p2-expansion.spec.ts:896-1121 — specs existem só no spec do monólito p2"
+    ],
+    "targetApi": {
+      "substituto": "orc-tree-select (selectionMode='single', com filtro que acha descendentes)",
+      "remove": [
+        "orc-cascade-select",
+        "@ciag/orchestra/cascade-select",
+        "@ciag/orchestra/cascadeselect",
+        "CascadeOption",
+        "p2/p2-cascade-select-component.ts"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:136 — o painel é cortado por overflow:hidden e por diálogos",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:251-263 — pointerdown global manual em vez de overlay CDK",
+      "projects/orc-ds/p2/p2-cascade-select-component.ts:43 — [autofocus] binding sem efeito após render"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "tree-select (KEEP-REDESIGN neste lote)",
+      "lote 10: esvaziamento de p2/"
+    ]
+  },
+  {
+    "id": "tree-select",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 2,
+      "a11y": 2,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Seleção hierárquica (unidades, centros de custo, categorias) é caso corporativo real, e o componente já usa overlay CDK, CVA comum e role=tree com aria-activedescendant. Mas reimplementa por inteiro a árvore e a propagação de seleção que já existem em orc-tree, com padrões divergentes, e tem custo O(n²) por render no modo checkbox. Deve compor orc-tree dentro do painel do núcleo de seleção.",
+    "evidence": [
+      "projects/orc-ds/tree-select/tree-select.component.ts:264-286,437-529,613-715 — achatamento, expansão, seleção em cascata e teclado de árvore reimplementados",
+      "projects/orc-ds/tree/tree.component.ts:57-61 — orc-tree já tem selectionMode single|multiple|checkbox e propagateSelectionUp/Down com padrão false; tree-select usa padrão true (tree-select.component.ts:150-154)",
+      "projects/orc-ds/tree-select/tree-select.component.html:113-123 — nodeCheckState (varre descendentes) chamado 4× por linha: O(n²) por ciclo de CD",
+      "projects/orc-ds/tree-select/tree-select.component.ts:111-112 — panelClass e panelStyleClass duplicados (fundidos em panelClasses, l.209-217)",
+      "projects/orc-ds/tree-select/tree-select.component.ts:95,119,144,155-169 — display, overlayOptions, filterInputAutoFocus, virtualScroll*, autofocus e metaKeySelection deprecados no-op",
+      "projects/orc-ds/tree-select/tree-select.component.ts:172-185 — onChange/onShow/onHide/onClear/onFilter/onFocus/onBlur/onNodeExpand/onNodeCollapse",
+      "projects/orc-ds/treeselect/index.ts:1 — entry alias @ciag/orchestra/treeselect"
+    ],
+    "targetApi": {
+      "selector": "orc-tree-select",
+      "inputs": [
+        "nodes",
+        "selectionMode ('single'|'multiple'|'checkbox')",
+        "propagateSelection (um booleano, mesmo padrão de orc-tree)",
+        "placeholder",
+        "label",
+        "helperText",
+        "errorMessage",
+        "disabled",
+        "readonly",
+        "required",
+        "id",
+        "size",
+        "fluid",
+        "filter",
+        "showClear",
+        "loading",
+        "ariaLabel",
+        "ariaLabelledBy"
+      ],
+      "models": ["value", "open", "expandedKeys"],
+      "outputs": ["opened", "closed"],
+      "slots": [
+        "ng-template orcTreeSelectNode (let-node)",
+        "ng-template orcTreeSelectValue"
+      ],
+      "remove": [
+        "propagateSelectionUp/propagateSelectionDown (→ propagateSelection)",
+        "filterBy, filterMode, filterLocale",
+        "filterPlaceholder, filterAriaLabel, clearAriaLabel, expandAriaLabel, collapseAriaLabel, emptyMessage (→ provideOrcLabels)",
+        "filterValue model (estado interno)",
+        "resetFilterOnHide",
+        "variant",
+        "display",
+        "style",
+        "styleClass",
+        "panelStyle",
+        "panelStyleClass",
+        "panelClass",
+        "appendTo",
+        "overlayOptions",
+        "tabindex",
+        "scrollHeight (→ token CSS)",
+        "filterInputAutoFocus",
+        "virtualScroll*",
+        "autofocus",
+        "metaKeySelection",
+        "nodeSelect, nodeUnselect, onChange (→ valueChange)",
+        "onShow",
+        "onHide",
+        "onClear",
+        "onFilter",
+        "onFocus",
+        "onBlur",
+        "onNodeExpand/onNodeCollapse (→ expandedKeysChange)",
+        "@ciag/orchestra/treeselect"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tree-select/tree-select.component.html:113-123 — custo quadrático com árvores grandes no modo checkbox",
+      "projects/orc-ds/tree-select/tree-select.component.html:85,195 e .ts:198-207 — 'Loading options', 'No results found', 'No options available', 'Filter options', 'Clear selection', 'Expand', 'Collapse' em inglês",
+      "projects/orc-ds/tree-select/tree-select.component.ts:84,292-302 — valor só string/string[], sem compareWith/objeto",
+      "projects/orc-ds/tree-select/tree-select.component.html:169-175 — checkbox desenhado com caracteres Unicode (☐ ☑ ◩) em vez do orc-checkbox/ícone",
+      "projects/orc-ds/tree-select/tree-select.component.ts:150-154 vs tree/tree.component.ts:60-61 — padrões de propagação opostos entre tree e tree-select"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "lote 08: tree (orc-tree como renderizador do painel)",
+      "infra: overlay/núcleo de seleção comum",
+      "infra: provideOrcLabels"
+    ]
+  },
+  {
+    "id": "dropdown",
+    "verdict": "MERGE",
+    "mergeInto": "menu",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 1,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "São dois produtos num seletor só: um menu de ações (padrão) e um select PrimeNG 'compatível' ligado quando há `options`. O modo formulário é cópia empobrecida do select e sai sem substituto novo. O modo menu (itens com ícone, atalho, danger e divider em overlay CDK) é o popup do menu e vai para `menu` (lote 06), que é o alvo sobrevivente das ações ancoradas num gatilho. Não há uso no consumidor.",
+    "evidence": [
+      "projects/orc-ds/dropdown/dropdown.component.ts:66-67,113 — 'PrimeNG Dropdown/Select-compatible form mode' ligado por options !== undefined",
+      "projects/orc-ds/dropdown/dropdown.component.html:1-44,46-125 — dois templates e dois papéis ARIA (menu vs listbox) no mesmo componente",
+      "projects/orc-ds/dropdown/dropdown.component.html:111 — ícone do item via [innerHTML] (string HTML), fora da decisão orc-icon/Material Symbols",
+      "projects/orc-ds/dropdown/dropdown.component.ts:177-188,276-302,378-381 — foco e roving por querySelector em vez de FocusKeyManager",
+      "projects/orc-ds/dropdown/dropdown.types.ts:16 — children deprecado e ignorado (aponta para TieredMenu)",
+      "projects/orc-ds/dropdown/dropdown.component.ts:90-97 — itemSelect, onChange, onShow, onHide, onClear, onFocus, onBlur, filterChange",
+      "projects/orc-ds/p2/p2-advanced-components.ts:43,181-182 — orc-menu já tem popup + visible; os dois se sobrepõem",
+      "projects/orc-ds/dropdown/dropdown-behavior.spec.ts:45-523 — 13 specs de comportamento (bom material para portar ao menu)"
+    ],
+    "targetApi": {
+      "mergeInto": "menu (lote 06) para o modo ações; select para o modo formulário",
+      "migra": [
+        "overlay CDK ancorado com placement (bottom-start|bottom-end|top-start|top-end) para o popup do menu",
+        "campos de item shortcut, danger e divider no modelo de item do menu",
+        "Home/End/setas com restauração de foco no gatilho (fornecidos pelo CdkMenu/CdkMenuTrigger)"
+      ],
+      "remove": [
+        "orc-dropdown",
+        "@ciag/orchestra/dropdown",
+        "DropdownItem",
+        "modo formulário inteiro (options, optionLabel, optionValue, optionDisabled, placeholder, loading, showClear, filter, filterPlaceholder, filterBy, emptyMessage, clearAriaLabel, filterAriaLabel, optionsAriaLabel, loadingMessage, scrollHeight, resetFilterOnHide, label, value, CVA) → orc-select",
+        "style",
+        "styleClass",
+        "inputId",
+        "onChange",
+        "onShow",
+        "onHide",
+        "onClear",
+        "onFocus",
+        "onBlur",
+        "filterChange"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/dropdown/dropdown.component.html:42-44 — no modo menu o gatilho é projetado sem aria-haspopup/aria-expanded/aria-controls geridos pelo componente",
+      "projects/orc-ds/dropdown/dropdown.component.html:111 — [innerHTML] para ícone",
+      "projects/orc-ds/dropdown/dropdown.component.ts:133 — selectedLabel compara com === e ignora objetos",
+      "projects/orc-ds/dropdown/dropdown.component.html:35,52,63,72 — 'Clear selection', 'Actions', 'Filter options', 'Options' em inglês"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "lote 06: menu KEEP-REDESIGN sobre @angular/cdk/menu (CdkMenuTrigger dá a âncora e o teclado), já previsto em lote-06.json como absorvendo o modo de ações do dropdown",
+      "select (KEEP-REDESIGN neste lote)"
+    ]
+  },
+  {
+    "id": "chip-input",
+    "verdict": "MERGE",
+    "mergeInto": "tags-input",
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 0,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Mesma responsabilidade de tags-input (lista de strings com separadores, colar, duplicatas, máximo e sugestões), com duas implementações paralelas. O `value` é signal, não model, então não aceita [(value)]. Tem aliases (allowDuplicate/allowDuplicates, max/maxChips, separator/separatorKeyCodes) e lista de sugestões sem teclado. O que tem de bom migra para tags-input: compõe orc-input (label/helper/erro/size) e anuncia adição/remoção.",
+    "evidence": [
+      "projects/orc-ds/chip-input/chip-input.component.ts:79 — value = signal, não model; sem two-way binding",
+      "projects/orc-ds/chip-input/chip-input.component.ts:45-57,64 — aliases allowDuplicates×allowDuplicate, maxChips×max, separator×separatorKeyCodes",
+      "projects/orc-ds/chip-input/chip-input.component.html:46-57 — role=listbox de sugestões sem aria-activedescendant, sem setas e sem ligação com o input",
+      "projects/orc-ds/chip-input/chip-input.component.html:29-39 — chips renderizados com orc-badge dismissible em vez de orc-chip (lote 09)",
+      "projects/orc-ds/chip-input/chip-input.component.ts:32 — CVA próprio em vez de CvaControl",
+      "projects/orc-ds/tags-input/tags-input.component.ts:33-293 — implementação paralela da mesma família"
+    ],
+    "targetApi": {
+      "mergeInto": "tags-input",
+      "migra": [
+        "composição com orc-input (label, helperText, errorMessage, size e estados) em vez do markup próprio do tags-input",
+        "região aria-live anunciando adição/remoção com textos de provideOrcLabels (no lugar de addAnnouncement/removeAnnouncement)",
+        "maxReached (output)"
+      ],
+      "remove": [
+        "orc-chip-input",
+        "@ciag/orchestra/chip-input",
+        "allowDuplicates",
+        "maxChips",
+        "separatorKeyCodes",
+        "chipsChange",
+        "addAnnouncement",
+        "removeAnnouncement",
+        "style",
+        "styleClass",
+        "id/inputId duplicados"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/chip-input/chip-input.component.html:46-57 — sugestões inacessíveis por teclado",
+      "projects/orc-ds/chip-input/chip-input.component.scss:48,61 — painel absolute com z-index:1000, fora do overlay CDK",
+      "projects/orc-ds/chip-input/chip-input.component.html:28 — `track $index` faz chips iguais/reordenados reaproveitarem o nó errado"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "P",
+    "dependsOn": [
+      "tags-input (KEEP-REDESIGN neste lote)",
+      "lote 09: chip",
+      "lote 03: input"
+    ]
+  },
+  {
+    "id": "tags-input",
+    "verdict": "KEEP-REDESIGN",
+    "mergeInto": null,
+    "scores": {
+      "useCase": 2,
+      "uniqueness": 1,
+      "angularFit": 1,
+      "a11y": 1,
+      "apiLean": 1,
+      "implQuality": 2,
+      "tests": 2,
+      "consumerUse": 0
+    },
+    "rationale": "Entrada de lista livre de strings (e-mails, palavras-chave, tags) é caso real. É a mais completa das duas implementações: model `value`, RegExp como separador, maxLength e sugestões navegáveis. Mas expõe três seletores-alias e um entry alias, duplica outputs (tagAdded/onAdd, tagRemoved/onRemove) e por padrão esconde o botão de remover. Fica como canônico e absorve chip-input.",
+    "evidence": [
+      "projects/orc-ds/tags-input/tags-input.component.ts:19 — selector 'orc-tags-input, orc-chips, orc-input-chips' (3 nomes)",
+      "projects/orc-ds/chips/index.ts:1 — entry alias @ciag/orchestra/chips exportando ChipsComponent a partir de p2",
+      "projects/orc-ds/tags-input/tags-input.component.ts:41-42 — maxTags × max (este com alias: 'max' redundante)",
+      "projects/orc-ds/tags-input/tags-input.component.ts:69-80 — tagAdded×onAdd, tagRemoved×onRemove, mais onFocus/onBlur/onChipClick/onClear",
+      "projects/orc-ds/tags-input/tags-input.component.ts:33,111-123 — CVA próprio em vez de CvaControl",
+      "projects/orc-ds/tags-input/tags-input.component.html:2-5,12,17,57,67 — classes p-chips*/p-component e data-pc-name",
+      "projects/orc-ds/tags-input/tags-input-parity.spec.ts:51-226 — 8 specs de comportamento"
+    ],
+    "targetApi": {
+      "selector": "orc-tags-input",
+      "inputs": [
+        "label",
+        "placeholder",
+        "helperText",
+        "errorMessage",
+        "disabled",
+        "readonly",
+        "required",
+        "id",
+        "size",
+        "suggestions",
+        "max",
+        "maxLength",
+        "allowDuplicate",
+        "separator (string | RegExp)",
+        "addOnBlur",
+        "showClear"
+      ],
+      "models": ["value"],
+      "outputs": ["added", "removed", "maxReached"],
+      "slots": ["ng-template orcTagsInputTag (let-tag, let-remove)"],
+      "remove": [
+        "orc-chips",
+        "orc-input-chips",
+        "@ciag/orchestra/chips",
+        "maxTags (→ max)",
+        "caseSensitiveDuplication (comparação sempre case-insensitive)",
+        "addOnTab",
+        "removeAriaLabel, clearAriaLabel (→ provideOrcLabels com padrão pt-BR)",
+        "inputId (→ id)",
+        "style",
+        "styleClass",
+        "tagAdded/onAdd (→ added)",
+        "tagRemoved/onRemove (→ removed)",
+        "onFocus",
+        "onBlur",
+        "onChipClick",
+        "onClear"
+      ]
+    },
+    "defects": [
+      "projects/orc-ds/tags-input/tags-input.component.html:26-35 — o botão remover só renderiza com removeAriaLabel; por padrão o mouse não consegue remover tags",
+      "projects/orc-ds/tags-input/tags-input.component.html:79 — o botão limpar exige clearAriaLabel",
+      "projects/orc-ds/tags-input/tags-input.component.html:38-47 — input com aria-expanded/aria-activedescendant mas sem role=combobox/aria-autocomplete",
+      "projects/orc-ds/tags-input/tags-input.component.html:70 — aria-selected usado para indicar opção ativa, não selecionada",
+      "projects/orc-ds/tags-input/tags-input.component.scss:54-55 — sugestões absolute z-index:2, fora do overlay CDK (cortadas em modais)",
+      "projects/orc-ds/tags-input/tags-input.component.html:15-25 — chips sem orc-chip e sem errorMessage/required"
+    ],
+    "consumerImpact": "nenhum",
+    "effort": "M",
+    "dependsOn": [
+      "lote 09: chip (renderização das tags)",
+      "lote 03: input/form-field (label/helper/erro)",
+      "infra: provideOrcLabels",
+      "infra: overlay CDK para sugestões"
+    ]
+  }
+]
