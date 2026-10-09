@@ -26,87 +26,80 @@
           </div>
         </section>
 
-        @if (entry.id !== 'scroll-top' && entry.id !== 'speed-dial') {
-          <section class="section" id="preview">
-            <div class="section-heading">
-              <div>
-                <h2 class="section-subtitle">Demonstração interativa</h2>
-                <p class="section-text">
-                  Explore os estados que fazem parte do contrato visual de
-                  {{ entry.name }}.
-                </p>
+        <section class="section" id="preview">
+          <div class="section-heading">
+            <div>
+              <h2 class="section-subtitle">Demonstração interativa</h2>
+              <p class="section-text">
+                Explore os estados que fazem parte do contrato visual de
+                {{ entry.name }}.
+              </p>
+            </div>
+            <span class="section-index">01 / 03</span>
+          </div>
+
+          <div class="playground-grid">
+            <div class="panel panel--preview">
+              <div class="panel__header">
+                <span>Prévia</span>
+                <span class="panel__hint">Estado real do componente</span>
               </div>
-              <span class="section-index">01 / 03</span>
-            </div>
-
-            <div class="playground-grid">
-              @if (entry.id === 'speed-dial') {
-                <div #exampleHost></div>
-              } @else {
-                <div class="panel panel--preview">
-                  <div class="panel__header">
-                    <span>Prévia</span>
-                    <span class="panel__hint">Estado real do componente</span>
+              <div class="panel__body preview-surface">
+                @if (exampleLoad() === 'loading') {
+                  <div class="empty-preview" aria-live="polite">
+                    <p>Carregando exemplo…</p>
                   </div>
-                  <div class="panel__body preview-surface">
-                    @if (exampleLoad() === 'loading') {
-                      <div class="empty-preview" aria-live="polite">
-                        <p>Carregando exemplo…</p>
-                      </div>
-                    } @else if (exampleLoad() === 'none') {
-                      <div class="empty-preview" aria-live="polite">
-                        <orc-icon
-                          class="empty-preview__icon"
-                          name="star"
-                          size="lg"
-                          aria-hidden="true"
-                        />
-                        <p>
-                          Exemplo ao vivo ainda não autorado para
-                          {{ entry.name }}. A referência abaixo cobre a API
-                          pública.
-                        </p>
-                      </div>
-                    }
-                    <div
-                      #exampleHost
-                      class="example-host"
-                      [class.example-host--hidden]="exampleLoad() !== 'ready'"
-                    ></div>
-                  </div>
-                </div>
-              }
-
-              <aside class="panel panel--inspector" aria-label="Estado atual">
-                <div class="panel__header">
-                  <span>Estado ao vivo</span>
-                  <span class="panel__hint">Somente leitura</span>
-                </div>
-                <div class="panel__body inspector-body">
-                  <p class="inspector-copy">
-                    Valores emitidos pelo preview atual.
-                  </p>
-                  @if (liveState(); as state) {
-                    <pre><code>{{ state | json }}</code></pre>
-                  } @else {
-                    <p class="inspector-copy">
-                      Interaja com o exemplo para emitir estado.
+                } @else if (exampleLoad() === 'none') {
+                  <div class="empty-preview" aria-live="polite">
+                    <orc-icon
+                      class="empty-preview__icon"
+                      name="star"
+                      size="lg"
+                      aria-hidden="true"
+                    />
+                    <p>
+                      Exemplo ao vivo ainda não autorado para
+                      {{ entry.name }}. A referência abaixo cobre a API pública.
                     </p>
-                  }
-                  <div class="inspector-list">
-                    <div>
-                      <span>Pacote</span><code>{{ packagePath() }}</code>
-                    </div>
-                    <div>
-                      <span>Detecção de mudanças</span><code>OnPush</code>
-                    </div>
-                    <div><span>Importação</span><code>standalone</code></div>
                   </div>
-                </div>
-              </aside>
+                }
+                <div
+                  #exampleHost
+                  class="example-host"
+                  [class.example-host--hidden]="exampleLoad() !== 'ready'"
+                ></div>
+              </div>
             </div>
-          </section>
-        }
+
+            <aside class="panel panel--inspector" aria-label="Estado atual">
+              <div class="panel__header">
+                <span>Estado ao vivo</span>
+                <span class="panel__hint">Somente leitura</span>
+              </div>
+              <div class="panel__body inspector-body">
+                <p class="inspector-copy">
+                  Valores emitidos pelo preview atual.
+                </p>
+                @if (liveState(); as state) {
+                  <pre><code>{{ state | json }}</code></pre>
+                } @else {
+                  <p class="inspector-copy">
+                    Interaja com o exemplo para emitir estado.
+                  </p>
+                }
+                <div class="inspector-list">
+                  <div>
+                    <span>Pacote</span><code>{{ packagePath() }}</code>
+                  </div>
+                  <div>
+                    <span>Detecção de mudanças</span><code>OnPush</code>
+                  </div>
+                  <div><span>Importação</span><code>standalone</code></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
 
         @if (usageDoc(); as usage) {
           <section class="section" id="states">
@@ -256,19 +249,13 @@
   <app-footer />
 
   @if (entry()?.id === 'scroll-top') {
-    <orc-scroll-top
-      target="window"
-      [threshold]="200"
-      direction="up"
-      icon="arrow_upward"
-    ></orc-scroll-top>
-
+    <!-- Live demo on the page itself: the preview above scrolls a contained box. -->
+    <orc-scroll-top target="window" [threshold]="200" />
     <orc-scroll-top
       target="window"
       [threshold]="200"
       direction="down"
-      icon="arrow_downward"
       [style]="{ bottom: 'auto', top: '5rem', right: '1.25rem' }"
-    ></orc-scroll-top>
+    />
   }
 </div>

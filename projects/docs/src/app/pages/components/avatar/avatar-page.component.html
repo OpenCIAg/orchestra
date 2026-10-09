@@ -423,6 +423,56 @@
         </div>
       </section>
 
+      <!-- ── CÓDIGO FONTE E EXEMPLOS DE USO ──────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos de código</h2>
+        <div class="code-blocks">
+          <div class="code-card">
+            <div class="code-card__title">
+              1. Uso individual com imagem e status
+            </div>
+            <pre
+              class="code-card__snippet"
+            ><code>&lt;!-- Avatar com foto e indicador de status online --&gt;
+&lt;orc-avatar
+  src="https://exemplo.com/foto.jpg"
+  name="Juliana Lima"
+  status="online"
+  size="lg"
+/&gt;
+
+&lt;!-- Formato arredondado com fallback automático para iniciais --&gt;
+&lt;orc-avatar
+  name="Bruno Ramos"
+  shape="rounded"
+  size="md"
+/&gt;</code></pre>
+          </div>
+
+          <div class="code-card">
+            <div class="code-card__title">
+              2. Grupo de avatares com sobreposição e contador excedente
+            </div>
+            <pre
+              class="code-card__snippet"
+            ><code>&lt;!-- Grupo automático com lista e contador excedente --&gt;
+&lt;orc-avatar-group
+  size="md"
+  [items]="teamMembers"
+  [max]="4"
+/&gt;
+
+&lt;!-- Grupo via projeção de conteúdo manual --&gt;
+&lt;orc-avatar-group size="md"&gt;
+  &lt;orc-avatar initials="AS" colorVariant="primary" /&gt;
+  &lt;orc-avatar initials="CL" colorVariant="royal" /&gt;
+  &lt;orc-avatar initials="MS" colorVariant="orange" /&gt;
+  &lt;orc-avatar initials="+5" colorVariant="default" /&gt;
+&lt;/orc-avatar-group&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
       <!-- ── TABELA DE API ───────────────────────────────────── -->
       <section class="section">
         <h2 class="section-subtitle">Referência de API (inputs e outputs)</h2>

@@ -258,11 +258,6 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'components/separator',
-    redirectTo: 'components/divider',
-    pathMatch: 'full',
-  },
-  {
     path: 'components/slider',
     loadComponent: () =>
       import('./pages/components/slider/slider-page.component').then(

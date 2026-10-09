@@ -545,6 +545,61 @@
           </div>
         </div>
       </section>
+
+      <!-- ── EXEMPLOS DE CÓDIGO ────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-subtitle">Exemplos de código</h2>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            Exemplo de uso com Angular Standalone & Reactive Forms
+          </div>
+          <pre
+            class="code-block"
+          ><code>import &#123; Component &#125; from '&#64;angular/core';
+import &#123; ReactiveFormsModule, FormControl, FormGroup &#125; from '&#64;angular/forms';
+import &#123; SliderComponent &#125; from '&#64;orc/ds';
+
+&#64;Component(&#123;
+  standalone: true,
+  imports: [ReactiveFormsModule, SliderComponent],
+  template: `
+    &lt;form [formGroup]="filterForm"&gt;
+      &lt;!-- Slider de Valor Único --&gt;
+      &lt;orc-slider
+        formControlName="volume"
+        label="Volume"
+        [min]="0"
+        [max]="100"
+        [step]="5"
+        showTooltip="auto"
+      /&gt;
+
+      &lt;!-- Slider de Faixa de Preço (Dual Range) --&gt;
+      &lt;orc-slider
+        formControlName="priceRange"
+        label="Faixa de Preço"
+        [range]="true"
+        [min]="0"
+        [max]="1000"
+        [step]="50"
+        [valueFormatter]="formatCurrency"
+      /&gt;
+    &lt;/form&gt;
+  `
+&#125;)
+export class FiltroProdutosComponent &#123;
+  filterForm = new FormGroup(&#123;
+    volume: new FormControl(70),
+    priceRange: new FormControl&lt;[number, number]&gt;([100, 500]),
+  &#125;);
+
+  formatCurrency(val: number): string &#123;
+    return 'R$ ' + val.toLocaleString('pt-BR');
+  &#125;
+&#125;</code></pre>
+        </div>
+      </section>
     </main>
   </div>
 
