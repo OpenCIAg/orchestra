@@ -4,7 +4,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { LinkComponent } from '@ciag/orchestra/p2-doc-components';
+import { LinkComponent } from '@ciag/orchestra/link';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

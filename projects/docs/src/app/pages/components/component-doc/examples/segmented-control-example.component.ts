@@ -5,10 +5,8 @@ import {
   output,
   signal,
 } from '@angular/core';
-import {
-  SegmentedControlComponent,
-  P2Option,
-} from '@ciag/orchestra/p2-doc-components';
+import { SegmentedControlComponent } from '@ciag/orchestra/segmented-control';
+import { OrcOption } from '@ciag/orchestra/internal';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
@@ -36,7 +34,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
 })
 export class SegmentedControlExampleComponent implements OnInit {
   readonly stateChange = output<Record<string, unknown>>();
-  readonly options: P2Option<string>[] = [
+  readonly options: OrcOption<string>[] = [
     { value: 'all', label: 'Todos' },
     { value: 'active', label: 'Ativos' },
     { value: 'archived', label: 'Arquivados' },

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TextComponent } from '@ciag/orchestra/p2-doc-components';
+import { TextComponent } from '@ciag/orchestra/text';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

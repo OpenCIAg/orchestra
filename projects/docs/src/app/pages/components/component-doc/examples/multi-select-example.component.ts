@@ -5,10 +5,8 @@ import {
   output,
   signal,
 } from '@angular/core';
-import {
-  MultiSelectComponent,
-  P2Option,
-} from '@ciag/orchestra/p2-doc-components';
+import { MultiSelectComponent } from '@ciag/orchestra/multi-select';
+import { OrcOption } from '@ciag/orchestra/internal';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
@@ -34,7 +32,7 @@ import { EXAMPLE_STYLES } from './example-shared.styles';
 })
 export class MultiSelectExampleComponent implements OnInit {
   readonly stateChange = output<Record<string, unknown>>();
-  readonly options: P2Option<string>[] = [
+  readonly options: OrcOption<string>[] = [
     { value: 'angular', label: 'Angular', description: 'Framework principal' },
     { value: 'react', label: 'React', description: 'Ecossistema de UI' },
     { value: 'vue', label: 'Vue', description: 'Aplicações progressivas' },

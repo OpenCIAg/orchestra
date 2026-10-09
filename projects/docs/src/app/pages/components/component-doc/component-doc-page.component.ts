@@ -25,7 +25,6 @@ import { COMPONENT_EXAMPLES } from './examples';
 import type { ComponentApiMember } from '../../../models/component-api.model';
 import type { ComponentEntry } from '../../../models/component-entry.model';
 import type { ComponentUsageDoc } from '../../../models/component-doc.model';
-import { ScrollTopComponent } from '@ciag/orchestra/scroll-top';
 
 type ExampleLoad = 'none' | 'loading' | 'ready';
 
@@ -60,13 +59,7 @@ const STATUS_LABELS: Record<ComponentEntry['status'], string> = {
 @Component({
   selector: 'app-component-doc-page',
   standalone: true,
-  imports: [
-    JsonPipe,
-    RouterModule,
-    FooterComponent,
-    IconComponent,
-    ScrollTopComponent,
-  ],
+  imports: [JsonPipe, RouterModule, FooterComponent, IconComponent],
   templateUrl: './component-doc-page.component.html',
   styleUrl: './component-doc-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

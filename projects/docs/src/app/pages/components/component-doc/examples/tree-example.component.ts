@@ -6,10 +6,8 @@ import {
   signal,
 } from '@angular/core';
 import { JsonPipe } from '@angular/common';
-import {
-  TreeComponent,
-  HierarchyNode,
-} from '@ciag/orchestra/p2-doc-components';
+import { TreeComponent } from '@ciag/orchestra/tree';
+import { HierarchyNode } from '@ciag/orchestra/tree-table';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

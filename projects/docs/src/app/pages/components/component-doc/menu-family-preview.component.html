@@ -33,37 +33,6 @@
         </div>
       </div>
     }
-    @case ('mega-menu') {
-      <div class="example-stack">
-        <div class="example example--centered">
-          <span class="example__label">Grouped navigation</span>
-          <div class="button-row">
-            <button
-              class="doc-button"
-              type="button"
-              [attr.aria-pressed]="megaMenuOrientation() === 'horizontal'"
-              (click)="megaMenuOrientation.set('horizontal')"
-            >
-              Horizontal
-            </button>
-            <button
-              class="doc-button doc-button--secondary"
-              type="button"
-              [attr.aria-pressed]="megaMenuOrientation() === 'vertical'"
-              (click)="megaMenuOrientation.set('vertical')"
-            >
-              Vertical
-            </button>
-          </div>
-          <orc-mega-menu
-            [items]="megaMenuItems"
-            [orientation]="megaMenuOrientation()"
-            ariaLabel="Navegação principal do projeto"
-            (itemSelect)="onMegaMenuItem($event)"
-          />
-        </div>
-      </div>
-    }
     @case ('command-menu') {
       <div class="example-stack">
         <div class="example">

@@ -19,7 +19,6 @@ import {
 } from '../../services/component-catalog.service';
 import { ComponentEntry } from '../../models/component-entry.model';
 import { FooterComponent } from '../../shared/footer/footer.component';
-import { ScrollTopComponent } from '@ciag/orchestra/scroll-top';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +30,6 @@ import { ScrollTopComponent } from '@ciag/orchestra/scroll-top';
     ButtonComponent,
     KbdComponent,
     IconComponent,
-    ScrollTopComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

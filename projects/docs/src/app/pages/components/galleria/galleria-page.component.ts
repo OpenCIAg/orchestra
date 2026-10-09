@@ -5,8 +5,8 @@ import {
   signal,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { GalleriaComponent } from '@ciag/orchestra/p2';
-import type { GalleryImage } from '@ciag/orchestra/p2';
+import { GalleriaComponent } from '@ciag/orchestra/galleria';
+import type { GalleryImage } from '@ciag/orchestra/galleria';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { IconComponent } from '@ciag/orchestra/icon';
 

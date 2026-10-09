@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
-import { VisuallyHiddenComponent } from '@ciag/orchestra/p2-doc-components';
+import { VisuallyHiddenComponent } from '@ciag/orchestra/visually-hidden';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

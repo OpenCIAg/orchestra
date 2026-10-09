@@ -5,10 +5,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import {
-  SplitterComponent,
-  SplitterPanel,
-} from '@ciag/orchestra/p2-doc-components';
+import { SplitterComponent, SplitterPanel } from '@ciag/orchestra/splitter';
 import { ButtonComponent } from '@ciag/orchestra/button';
 import { IconComponent } from '@ciag/orchestra/icon';
 import { EXAMPLE_STYLES } from './example-shared.styles';

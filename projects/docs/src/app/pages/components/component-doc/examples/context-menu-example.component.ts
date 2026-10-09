@@ -7,7 +7,7 @@ import {
 import {
   ContextMenuComponent,
   ContextMenuItem,
-} from '@ciag/orchestra/p2-doc-components';
+} from '@ciag/orchestra/context-menu';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

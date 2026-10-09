@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
-import { CodeComponent } from '@ciag/orchestra/p2-doc-components';
+import { CodeComponent } from '@ciag/orchestra/code';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 const CODE_EXAMPLE = `const selected = signal('angular');

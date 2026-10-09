@@ -205,14 +205,6 @@ export const routes: Routes = [
     title: 'PickList — Orchestra',
   },
   {
-    path: 'components/order-list',
-    loadComponent: () =>
-      import('./pages/components/order-list/order-list-page.component').then(
-        (m) => m.OrderListPageComponent,
-      ),
-    title: 'OrderList — Orchestra',
-  },
-  {
     path: 'components/galleria',
     loadComponent: () =>
       import('./pages/components/galleria/galleria-page.component').then(

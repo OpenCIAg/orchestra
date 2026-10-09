@@ -14,7 +14,7 @@ export const TREE_CATALOG_ENTRY: ComponentEntry = {
 };
 
 export const TREE_USAGE_DOC: ComponentUsageDoc = {
-  packagePath: '@ciag/orchestra/p2',
+  packagePath: '@ciag/orchestra/tree',
   usage: `<orc-tree
   [nodes]="nodes"
   [(selected)]="selected"

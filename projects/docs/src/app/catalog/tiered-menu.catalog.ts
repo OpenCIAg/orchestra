@@ -14,7 +14,7 @@ export const TIERED_MENU_CATALOG_ENTRY: ComponentEntry = {
 };
 
 export const TIERED_MENU_USAGE_DOC: ComponentUsageDoc = {
-  packagePath: '@ciag/orchestra/p2',
+  packagePath: '@ciag/orchestra/tiered-menu',
   usage: `<orc-tiered-menu
   [items]="items"
   ariaLabel="Navegação do projeto"

@@ -5,7 +5,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { DateInputComponent } from '@ciag/orchestra/p2-doc-components';
+import { DateInputComponent } from '@ciag/orchestra/date-input';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

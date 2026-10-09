@@ -4,7 +4,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ButtonGroupComponent } from '@ciag/orchestra/p2-doc-components';
+import { ButtonGroupComponent } from '@ciag/orchestra/button-group';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

@@ -4,7 +4,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CloseButtonComponent } from '@ciag/orchestra/p2-doc-components';
+import { CloseButtonComponent } from '@ciag/orchestra/close-button';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
-import { EmptyStateComponent } from '@ciag/orchestra/p2-doc-components';
+import { EmptyStateComponent } from '@ciag/orchestra/empty-state';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

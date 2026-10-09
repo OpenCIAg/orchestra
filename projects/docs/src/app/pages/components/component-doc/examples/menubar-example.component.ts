@@ -4,10 +4,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import {
-  MenubarComponent,
-  MenubarItem,
-} from '@ciag/orchestra/p2-doc-components';
+import { MenubarComponent, MenubarItem } from '@ciag/orchestra/menubar';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

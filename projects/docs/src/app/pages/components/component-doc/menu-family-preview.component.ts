@@ -7,28 +7,19 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CommandMenuComponent } from '@ciag/orchestra/p2-command-components';
-import {
-  MegaMenuComponent,
-  PanelMenuComponent,
-  TieredMenuComponent,
-} from '@ciag/orchestra/p2-menu-family-components';
-import type { CommandItem } from '@ciag/orchestra/p2-command-components';
-import type { PrimeMenuItem } from '@ciag/orchestra/p2';
+import { CommandMenuComponent } from '@ciag/orchestra/command-menu';
+import type { CommandItem } from '@ciag/orchestra/command-menu';
+import type { MenuItem as PrimeMenuItem } from '@ciag/orchestra/menu';
+import { PanelMenuComponent } from '@ciag/orchestra/panel-menu';
+import { TieredMenuComponent } from '@ciag/orchestra/tiered-menu';
 import { EXAMPLE_STYLES } from './examples/example-shared.styles';
 
-export type MenuFamilyId =
-  'tiered-menu' | 'panel-menu' | 'mega-menu' | 'command-menu';
+export type MenuFamilyId = 'tiered-menu' | 'panel-menu' | 'command-menu';
 
 @Component({
   selector: 'app-menu-family-preview',
   standalone: true,
-  imports: [
-    TieredMenuComponent,
-    PanelMenuComponent,
-    MegaMenuComponent,
-    CommandMenuComponent,
-  ],
+  imports: [TieredMenuComponent, PanelMenuComponent, CommandMenuComponent],
   templateUrl: './menu-family-preview.component.html',
   styles: [
     EXAMPLE_STYLES +
@@ -81,23 +72,6 @@ export class MenuFamilyPreviewComponent {
     },
   ];
 
-  readonly megaMenuItems: PrimeMenuItem[] = [
-    {
-      label: 'Produto',
-      items: [
-        { label: 'Visão geral', value: 'overview' },
-        { label: 'Roadmap', value: 'roadmap' },
-      ],
-    },
-    {
-      label: 'Recursos',
-      items: [
-        { label: 'Componentes', value: 'components' },
-        { label: 'Tokens', value: 'tokens' },
-      ],
-    },
-  ];
-
   readonly commandMenuItems: CommandItem[] = [
     { label: 'Abrir documentação', shortcut: 'G D', keywords: ['docs'] },
     { label: 'Criar projeto', shortcut: 'N P', keywords: ['new'] },
@@ -105,17 +79,12 @@ export class MenuFamilyPreviewComponent {
     { label: 'Excluir projeto', disabled: true, keywords: ['delete'] },
   ];
 
-  readonly megaMenuOrientation = signal<'horizontal' | 'vertical'>(
-    'horizontal',
-  );
   readonly commandMenuQuery = signal('');
   readonly actionMessage = signal('');
 
   readonly liveState = computed<Readonly<Record<string, unknown>>>(() => {
     const state = this.actionMessage() || 'keyboard-ready';
     switch (this.componentId()) {
-      case 'mega-menu':
-        return { orientation: this.megaMenuOrientation(), state };
       case 'command-menu':
         return { query: this.commandMenuQuery(), state };
       default:
@@ -133,10 +102,6 @@ export class MenuFamilyPreviewComponent {
 
   onPanelMenuItem(item: PrimeMenuItem): void {
     this.actionMessage.set(`PanelMenu: ${item.label}`);
-  }
-
-  onMegaMenuItem(item: PrimeMenuItem): void {
-    this.actionMessage.set(`MegaMenu: ${item.label}`);
   }
 
   onCommandMenuItem(item: CommandItem): void {

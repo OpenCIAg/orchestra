@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SeparatorComponent } from '@ciag/orchestra/p2-doc-components';
+import { SeparatorComponent } from '@ciag/orchestra/separator';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

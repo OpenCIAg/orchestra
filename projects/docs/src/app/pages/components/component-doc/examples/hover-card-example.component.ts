@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { HoverCardComponent } from '@ciag/orchestra/p2-doc-components';
+import { HoverCardComponent } from '@ciag/orchestra/hover-card';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { InputGroupComponent } from '@ciag/orchestra/p2-doc-components';
+import { InputGroupComponent } from '@ciag/orchestra/input-group';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

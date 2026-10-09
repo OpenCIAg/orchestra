@@ -14,7 +14,7 @@ export const TREE_TABLE_CATALOG_ENTRY: ComponentEntry = {
 };
 
 export const TREE_TABLE_USAGE_DOC: ComponentUsageDoc = {
-  packagePath: '@ciag/orchestra/p2',
+  packagePath: '@ciag/orchestra/tree-table',
   usage: `<orc-tree-table
   [value]="nodes"
   [columns]="columns"

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { KbdComponent } from '@ciag/orchestra/p2-doc-components';
+import { KbdComponent } from '@ciag/orchestra/kbd';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

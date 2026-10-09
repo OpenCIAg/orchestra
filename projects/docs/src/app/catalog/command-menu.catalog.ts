@@ -14,7 +14,7 @@ export const COMMAND_MENU_CATALOG_ENTRY: ComponentEntry = {
 };
 
 export const COMMAND_MENU_USAGE_DOC: ComponentUsageDoc = {
-  packagePath: '@ciag/orchestra/p2',
+  packagePath: '@ciag/orchestra/command-menu',
   usage: `<orc-command-menu
   [items]="commands"
   label="Ações do projeto"

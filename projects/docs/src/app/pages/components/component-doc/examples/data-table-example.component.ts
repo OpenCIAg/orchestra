@@ -8,7 +8,7 @@ import {
 import {
   DataTableComponent,
   DataTableColumn,
-} from '@ciag/orchestra/p2-doc-components';
+} from '@ciag/orchestra/data-table';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({
@@ -55,12 +55,6 @@ export class DataTableExampleComponent implements OnInit {
       status: 'Ready',
     },
     { id: 'combobox', name: 'Combobox', category: 'Inputs', status: 'Beta' },
-    {
-      id: 'cascade-select',
-      name: 'Cascade Select',
-      category: 'Inputs',
-      status: 'Beta',
-    },
     {
       id: 'data-table',
       name: 'Data Table',

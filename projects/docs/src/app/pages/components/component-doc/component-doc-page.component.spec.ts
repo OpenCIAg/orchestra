@@ -338,48 +338,6 @@ describe('Menu documentation', () => {
   });
 });
 
-describe('Cascade Select documentation', () => {
-  it('documents the supported hierarchy, keyboard, and public inputs', async () => {
-    const { fixture, root } = await renderDoc('cascade-select');
-
-    expect(root.querySelector('h1')?.textContent).toContain('Cascade Select');
-    expect(root.querySelector('orc-cascade-select')).not.toBeNull();
-    expect(root.textContent).toContain('@ciag/orchestra/cascade-select');
-    expect(root.textContent).toContain('optionSelect');
-    expect(root.textContent).toContain('ArrowRight');
-    fixture.destroy();
-  });
-
-  it('renders levels and updates the documented value when a leaf is selected', async () => {
-    const { fixture, root } = await renderDoc('cascade-select');
-    const trigger = root.querySelector(
-      'orc-cascade-select .trigger',
-    ) as HTMLButtonElement;
-
-    trigger.click();
-    fixture.detectChanges();
-    const platform = Array.from(
-      root.querySelectorAll<HTMLButtonElement>('button[role="option"]'),
-    ).find((button) => button.textContent?.includes('Platform'));
-    expect(platform).toBeDefined();
-    platform!.click();
-    fixture.detectChanges();
-
-    const web = Array.from(
-      root.querySelectorAll<HTMLButtonElement>('button[role="option"]'),
-    ).find((button) => button.textContent?.includes('Web'));
-    expect(web).toBeDefined();
-    web!.click();
-    fixture.detectChanges();
-
-    expect(
-      root.querySelector('[data-testid="cascade-selection-state"]')
-        ?.textContent,
-    ).toContain('web');
-    fixture.destroy();
-  });
-});
-
 describe('Navigation documentation', () => {
   it('discovers the navigation package and renders a real shell preview', async () => {
     const { fixture, root } = await renderDoc('navigation');
@@ -509,54 +467,6 @@ describe('TreeTable documentation', () => {
   });
 });
 
-describe('DataView documentation', () => {
-  it('discovers DataView and documents the local/lazy boundary', async () => {
-    const { fixture, root } = await renderDoc('data-view');
-    const text = root.textContent ?? '';
-
-    expect(root.querySelector('h1')?.textContent).toContain('DataView');
-    expect(root.querySelector('orc-data-view')).not.toBeNull();
-    expect(root.querySelector('orc-data-view orc-paginator')).not.toBeNull();
-    expect(text).toContain('onLazyLoad');
-    expect(text).toContain('totalRecords');
-    expect(text).toContain('ordenação remota');
-    fixture.destroy();
-  });
-
-  it('updates local sorting, layout and pagination through the preview controls', async () => {
-    const { fixture, root } = await renderDoc('data-view');
-
-    const sortDescending = Array.from(root.querySelectorAll('button')).find(
-      (button) => button.textContent?.includes('Nome Z–A'),
-    ) as HTMLButtonElement;
-    sortDescending.click();
-    fixture.detectChanges();
-    fixture.detectChanges();
-    expect(root.querySelector('orc-data-view article')?.textContent).toContain(
-      'Tree',
-    );
-    expect(root.textContent).toContain('sort = name / -1');
-
-    const listButton = Array.from(root.querySelectorAll('button')).find(
-      (button) => button.textContent?.trim() === 'Lista',
-    ) as HTMLButtonElement;
-    listButton.click();
-    fixture.detectChanges();
-    expect(root.querySelector('orc-data-view .content')?.classList).toContain(
-      'list',
-    );
-
-    const next = root.querySelector(
-      'orc-data-view .orc-paginator__btn--next',
-    ) as HTMLButtonElement;
-    next.click();
-    fixture.detectChanges();
-    expect(root.textContent).toContain('first = 2');
-    expect(root.textContent).toContain('DataView: página a partir de 3');
-    fixture.destroy();
-  });
-});
-
 describe('Menu family previews', () => {
   it('opens a tiered submenu and reports a selected child', async () => {
     const { fixture, root } = await renderDoc('tiered-menu');
@@ -586,23 +496,6 @@ describe('Menu family previews', () => {
     (menu.querySelector('.children [role="treeitem"]') as HTMLElement).click();
     fixture.detectChanges();
     expect(root.textContent).toContain('PanelMenu: Design System');
-    fixture.destroy();
-  });
-
-  it('switches orientation and reports a selected item', async () => {
-    const { fixture, root } = await renderDoc('mega-menu');
-    const vertical = Array.from(root.querySelectorAll('button')).find(
-      (button) => button.textContent?.includes('Vertical'),
-    ) as HTMLButtonElement;
-    vertical.click();
-    fixture.detectChanges();
-    const menu = root.querySelector(
-      'orc-mega-menu nav[role="menubar"]',
-    ) as HTMLElement;
-    expect(menu.classList).toContain('vertical');
-    (menu.querySelector('[data-mega-item]') as HTMLElement).click();
-    fixture.detectChanges();
-    expect(root.textContent).toContain('MegaMenu: Visão geral');
     fixture.destroy();
   });
 

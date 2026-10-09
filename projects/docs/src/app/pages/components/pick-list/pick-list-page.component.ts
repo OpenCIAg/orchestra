@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PickListComponent } from '@ciag/orchestra/p2';
-import type { P2Option } from '@ciag/orchestra/p2';
+import { PickListComponent } from '@ciag/orchestra/pick-list';
+import type { OrcOption } from '@ciag/orchestra/internal';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { IconComponent } from '@ciag/orchestra/icon';
 
-type PickListItem = P2Option<string>;
+type PickListItem = OrcOption<string>;
 type TransferEvent = {
   items: PickListItem[];
   source: PickListItem[];

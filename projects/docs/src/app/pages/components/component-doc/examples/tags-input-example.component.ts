@@ -5,7 +5,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { TagsInputComponent } from '@ciag/orchestra/p2-doc-components';
+import { TagsInputComponent } from '@ciag/orchestra/tags-input';
 import { EXAMPLE_STYLES } from './example-shared.styles';
 
 @Component({

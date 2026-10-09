@@ -20,17 +20,9 @@ function example<T>(type: Type<T>, inputs?: Readonly<Record<string, unknown>>) {
 export const COMPONENT_EXAMPLES: Readonly<
   Record<string, ComponentExampleLoader>
 > = {
-  'aspect-ratio': () =>
-    import('./aspect-ratio-example.component').then((m) =>
-      example(m.AspectRatioExampleComponent)(),
-    ),
   autocomplete: () =>
     import('./autocomplete-example.component').then((m) =>
       example(m.AutocompleteExampleComponent)(),
-    ),
-  box: () =>
-    import('./box-example.component').then((m) =>
-      example(m.BoxExampleComponent)(),
     ),
   'button-group': () =>
     import('./button-group-example.component').then((m) =>
@@ -43,10 +35,6 @@ export const COMPONENT_EXAMPLES: Readonly<
   carousel: () =>
     import('./carousel-example.component').then((m) =>
       example(m.CarouselExampleComponent)(),
-    ),
-  'cascade-select': () =>
-    import('./cascade-select-example.component').then((m) =>
-      example(m.CascadeSelectExampleComponent)(),
     ),
   chart: () =>
     import('./chart-example.component').then((m) =>
@@ -76,10 +64,6 @@ export const COMPONENT_EXAMPLES: Readonly<
     import('../menu-family-preview.component').then((m) =>
       example(m.MenuFamilyPreviewComponent, { componentId: 'command-menu' })(),
     ),
-  container: () =>
-    import('./container-example.component').then((m) =>
-      example(m.ContainerExampleComponent)(),
-    ),
   'context-menu': () =>
     import('./context-menu-example.component').then((m) =>
       example(m.ContextMenuExampleComponent)(),
@@ -87,10 +71,6 @@ export const COMPONENT_EXAMPLES: Readonly<
   'data-table': () =>
     import('./data-table-example.component').then((m) =>
       example(m.DataTableExampleComponent)(),
-    ),
-  'data-view': () =>
-    import('./data-view-example.component').then((m) =>
-      example(m.DataViewExampleComponent)(),
     ),
   'date-input': () =>
     import('./date-input-example.component').then((m) =>
@@ -124,29 +104,9 @@ export const COMPONENT_EXAMPLES: Readonly<
     import('./empty-state-example.component').then((m) =>
       example(m.EmptyStateExampleComponent)(),
     ),
-  'file-upload': () =>
-    import('./file-upload-example.component').then((m) =>
-      example(m.FileUploadExampleComponent)(),
-    ),
-  flex: () =>
-    import('./flex-example.component').then((m) =>
-      example(m.FlexExampleComponent)(),
-    ),
-  'floating-action-button': () =>
-    import('./floating-action-button-example.component').then((m) =>
-      example(m.FloatingActionButtonExampleComponent)(),
-    ),
-  form: () =>
-    import('./form-example.component').then((m) =>
-      example(m.FormExampleComponent)(),
-    ),
   'form-field': () =>
     import('./form-field-example.component').then((m) =>
       example(m.FormFieldExampleComponent)(),
-    ),
-  grid: () =>
-    import('./grid-example.component').then((m) =>
-      example(m.GridExampleComponent)(),
     ),
   'hover-card': () =>
     import('./hover-card-example.component').then((m) =>
@@ -180,10 +140,6 @@ export const COMPONENT_EXAMPLES: Readonly<
     import('./listbox-example.component').then((m) =>
       example(m.ListboxExampleComponent)(),
     ),
-  'mega-menu': () =>
-    import('../menu-family-preview.component').then((m) =>
-      example(m.MenuFamilyPreviewComponent, { componentId: 'mega-menu' })(),
-    ),
   menu: () =>
     import('./menu-example.component').then((m) =>
       example(m.MenuExampleComponent)(),
@@ -212,10 +168,6 @@ export const COMPONENT_EXAMPLES: Readonly<
     import('./popover-example.component').then((m) =>
       example(m.PopoverExampleComponent)(),
     ),
-  portal: () =>
-    import('./portal-example.component').then((m) =>
-      example(m.PortalExampleComponent)(),
-    ),
   'scroll-area': () =>
     import('./scroll-area-example.component').then((m) =>
       example(m.ScrollAreaExampleComponent)(),
@@ -228,10 +180,6 @@ export const COMPONENT_EXAMPLES: Readonly<
     import('./separator-example.component').then((m) =>
       example(m.SeparatorExampleComponent)(),
     ),
-  space: () =>
-    import('./space-example.component').then((m) =>
-      example(m.SpaceExampleComponent)(),
-    ),
   'speed-dial': () =>
     import('./speed-dial-example.component').then((m) =>
       example(m.SpeedDialExampleComponent)(),
@@ -239,10 +187,6 @@ export const COMPONENT_EXAMPLES: Readonly<
   splitter: () =>
     import('./splitter-example.component').then((m) =>
       example(m.SplitterExampleComponent)(),
-    ),
-  stack: () =>
-    import('./stack-example.component').then((m) =>
-      example(m.StackExampleComponent)(),
     ),
   'tab-menu': () =>
     import('./tab-menu-example.component').then((m) =>
@@ -297,10 +241,6 @@ export const COMPONENT_EXAMPLES: Readonly<
       example(m.MenuFamilyPreviewComponent, {
         componentId: 'tiered-menu',
       })(),
-    ),
-  'virtual-scroller': () =>
-    import('./virtual-scroller-example.component').then((m) =>
-      example(m.VirtualScrollerExampleComponent)(),
     ),
   'visually-hidden': () =>
     import('./visually-hidden-example.component').then((m) =>

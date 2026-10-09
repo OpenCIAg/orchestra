@@ -14,7 +14,7 @@ export const PANEL_MENU_CATALOG_ENTRY: ComponentEntry = {
 };
 
 export const PANEL_MENU_USAGE_DOC: ComponentUsageDoc = {
-  packagePath: '@ciag/orchestra/p2',
+  packagePath: '@ciag/orchestra/panel-menu',
   usage: `<orc-panel-menu
   [items]="items"
   ariaLabel="Seções do projeto"
