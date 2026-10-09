@@ -33,8 +33,8 @@
                   [type]="playgroundType()"
                   [text]="playgroundText()"
                   [textPosition]="playgroundTextPosition()"
-                  [fullScreen]="playgroundFullScreen()"
-                  (fullScreenChange)="playgroundFullScreen.set($event)"
+                  [(fullScreen)]="playgroundFullScreen"
+                  closeOnEscape
                 ></orc-spinner>
               </div>
 
@@ -217,7 +217,7 @@
                         playgroundFullScreen.set($any($event.target).checked)
                       "
                     />
-                    Modo tela cheia (fullScreen)
+                    Modo tela cheia (fullScreen) — Esc sai
                   </label>
                 </div>
               </div>
