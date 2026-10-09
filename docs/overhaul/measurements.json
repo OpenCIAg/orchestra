@@ -1,0 +1,5061 @@
+{
+  "summary": {
+    "generatedAt": "2026-10-09T03:55:38.530Z",
+    "families": 127,
+    "entryPoints": 223,
+    "aliasEntryPoints": 110,
+    "consumerImports": {
+      "select": 10,
+      "button": 6,
+      "icon": 3,
+      "input": 5,
+      "spinner": 4,
+      "date-picker": 2,
+      "checkbox": 2,
+      "card": 12,
+      "alert": 6,
+      "progress-bar": 3,
+      "popover": 2,
+      "tooltip": 1,
+      "modal": 5,
+      "tag": 2,
+      "empty-state": 6,
+      "file-uploader": 4,
+      "badge": 1,
+      "color-picker": 1,
+      "table": 2,
+      "segmented-control": 2,
+      "switch": 1,
+      "context-menu": 1
+    },
+    "consumerTags": {
+      "orc-toast-container": 1,
+      "orc-icon": 272,
+      "orc-select": 45,
+      "orc-option": 24,
+      "orc-spinner": 14,
+      "orc-input": 67,
+      "orc-textarea": 12,
+      "orc-date-picker": 22,
+      "orc-button": 223,
+      "orc-card": 78,
+      "orc-tag": 26,
+      "orc-badge": 2,
+      "orc-alert": 29,
+      "orc-popover": 8,
+      "orc-modal": 14,
+      "orc-checkbox": 8,
+      "orc-tab-group": 1,
+      "orc-tab": 2,
+      "orc-accordion": 1,
+      "orc-accordion-item": 1,
+      "orc-empty-state": 25,
+      "orc-progress-bar": 15,
+      "orc-skeleton": 1,
+      "orc-paginator": 3,
+      "orc-multi-select": 12,
+      "orc-segmented-control": 15,
+      "orc-file-uploader": 4,
+      "orc-color-picker": 1,
+      "orc-table": 7,
+      "orc-column": 31,
+      "orc-switch": 1,
+      "orc-context-menu": 1,
+      "orc-slider": 1
+    },
+    "unmappedEntries": [
+      "@ciag/orchestra/avatar-group",
+      "@ciag/orchestra/defer",
+      "@ciag/orchestra/drag-drop",
+      "@ciag/orchestra/icons",
+      "@ciag/orchestra/input-group-addon",
+      "@ciag/orchestra/input-mask",
+      "@ciag/orchestra/internal",
+      "@ciag/orchestra/key-filter",
+      "@ciag/orchestra/message",
+      "@ciag/orchestra/p2",
+      "@ciag/orchestra/pagination",
+      "@ciag/orchestra/sidebar",
+      "@ciag/orchestra/text-input",
+      "@ciag/orchestra/toggle"
+    ]
+  },
+  "families": [
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "category": "Layout",
+      "status": "stable",
+      "description": "Seções expansíveis/colapsáveis para organização hierárquica.",
+      "dir": "accordion",
+      "declarations": [
+        {
+          "name": "AccordionItemComponent",
+          "kind": "Component",
+          "selector": "orc-accordion-item",
+          "file": "projects/orc-ds/accordion/accordion-item.component.ts",
+          "inputs": 15,
+          "outputs": 3
+        },
+        {
+          "name": "AccordionComponent",
+          "kind": "Component",
+          "selector": "orc-accordion",
+          "file": "projects/orc-ds/accordion/accordion.component.ts",
+          "inputs": 13,
+          "outputs": 3
+        }
+      ],
+      "inputs": 28,
+      "outputs": 6,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 2,
+      "srcLines": 585,
+      "specLines": 151,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 33906,
+        "gzip": 5809,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-accordion-item": 1,
+          "orc-accordion": 1
+        }
+      }
+    },
+    {
+      "id": "alert",
+      "name": "Alert",
+      "category": "Feedback",
+      "status": "stable",
+      "description": "Mensagem inline de feedback com variantes de severidade.",
+      "dir": "alert",
+      "declarations": [
+        {
+          "name": "AlertComponent",
+          "kind": "Component",
+          "selector": "orc-alert, orc-message",
+          "file": "projects/orc-ds/alert/alert.component.ts",
+          "inputs": 16,
+          "outputs": 2
+        }
+      ],
+      "inputs": 16,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 613,
+      "specLines": 75,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 36134,
+        "gzip": 4788,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 6,
+        "tags": {
+          "orc-alert": 29
+        }
+      }
+    },
+    {
+      "id": "aspect-ratio",
+      "name": "Aspect Ratio",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Mantém uma proporção previsível para conteúdo responsivo.",
+      "dir": "aspect-ratio",
+      "declarations": [
+        {
+          "name": "AspectRatioComponent",
+          "kind": "Component",
+          "selector": "orc-aspect-ratio",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 2,
+          "outputs": 0
+        }
+      ],
+      "inputs": 2,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 165,
+        "gzip": 157,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "autocomplete",
+      "name": "Autocomplete",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Seleção assistida com filtragem, teclado e estados de lista.",
+      "dir": "autocomplete",
+      "declarations": [
+        {
+          "name": "AutocompleteComponent",
+          "kind": "Component",
+          "selector": "orc-autocomplete",
+          "file": "projects/orc-ds/autocomplete/autocomplete.component.ts",
+          "inputs": 34,
+          "outputs": 7
+        }
+      ],
+      "inputs": 34,
+      "outputs": 7,
+      "primengOutputs": 6,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 863,
+      "specLines": 844,
+      "specFiles": 1,
+      "usesCdk": true,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 55664,
+        "gzip": 9009,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "category": "Data Display",
+      "status": "stable",
+      "description": "Representação visual de usuário com imagem, iniciais ou ícone.",
+      "dir": "avatar",
+      "declarations": [
+        {
+          "name": "AvatarGroupComponent",
+          "kind": "Component",
+          "selector": "orc-avatar-group",
+          "file": "projects/orc-ds/avatar/avatar-group.component.ts",
+          "inputs": 9,
+          "outputs": 0
+        },
+        {
+          "name": "AvatarComponent",
+          "kind": "Component",
+          "selector": "orc-avatar",
+          "file": "projects/orc-ds/avatar/avatar.component.ts",
+          "inputs": 16,
+          "outputs": 2
+        }
+      ],
+      "inputs": 25,
+      "outputs": 2,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 669,
+      "specLines": 144,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 36346,
+        "gzip": 5469,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "category": "Feedback",
+      "status": "stable",
+      "description": "Rótulo visual compacto para status, contadores e categorias.",
+      "dir": "badge",
+      "declarations": [
+        {
+          "name": "BadgeComponent",
+          "kind": "Component",
+          "selector": "orc-badge",
+          "file": "projects/orc-ds/badge/badge.component.ts",
+          "inputs": 17,
+          "outputs": 1
+        }
+      ],
+      "inputs": 17,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 666,
+      "specLines": 61,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 37778,
+        "gzip": 4685,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 1,
+        "tags": {
+          "orc-badge": 2
+        }
+      }
+    },
+    {
+      "id": "block-ui",
+      "name": "Block UI",
+      "category": "Overlay",
+      "status": "beta",
+      "dir": "block-ui",
+      "declarations": [
+        {
+          "name": "BlockUiComponent",
+          "kind": "Component",
+          "selector": "orc-block-ui",
+          "file": "projects/orc-ds/p2/p2-block-ui-component.ts",
+          "inputs": 7,
+          "outputs": 2
+        }
+      ],
+      "inputs": 7,
+      "outputs": 2,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 157,
+        "gzip": 154,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/blockui"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "box",
+      "name": "Box",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Primitiva de superfície para padding, margem, fundo e raio.",
+      "dir": "box",
+      "declarations": [
+        {
+          "name": "BoxComponent",
+          "kind": "Component",
+          "selector": "orc-box",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 5,
+          "outputs": 0
+        }
+      ],
+      "inputs": 5,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 148,
+        "gzip": 147,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "category": "Navigation",
+      "status": "stable",
+      "description": "Trilha de navegação hierárquica para orientação do usuário.",
+      "dir": "breadcrumb",
+      "declarations": [
+        {
+          "name": "BreadcrumbItemComponent",
+          "kind": "Component",
+          "selector": "orc-breadcrumb-item",
+          "file": "projects/orc-ds/breadcrumb/breadcrumb-item.component.ts",
+          "inputs": 6,
+          "outputs": 1
+        },
+        {
+          "name": "BreadcrumbComponent",
+          "kind": "Component",
+          "selector": "orc-breadcrumb",
+          "file": "projects/orc-ds/breadcrumb/breadcrumb.component.ts",
+          "inputs": 14,
+          "outputs": 2
+        }
+      ],
+      "inputs": 20,
+      "outputs": 3,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 750,
+      "specLines": 194,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 44981,
+        "gzip": 5470,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "button-group",
+      "name": "Button Group",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Agrupa ações relacionadas em uma composição acessível.",
+      "dir": "button-group",
+      "declarations": [
+        {
+          "name": "ButtonGroupComponent",
+          "kind": "Component",
+          "selector": "orc-button-group",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 3,
+          "outputs": 0
+        }
+      ],
+      "inputs": 3,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 165,
+        "gzip": 157,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/buttongroup"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "category": "Inputs",
+      "status": "stable",
+      "dir": "button",
+      "declarations": [
+        {
+          "name": "ButtonComponent",
+          "kind": "Component",
+          "selector": "orc-button",
+          "file": "projects/orc-ds/button/button.component.ts",
+          "inputs": 31,
+          "outputs": 3
+        },
+        {
+          "name": "IconButtonComponent",
+          "kind": "Component",
+          "selector": "orc-icon-button",
+          "file": "projects/orc-ds/button/icon-button.component.ts",
+          "inputs": 6,
+          "outputs": 1
+        }
+      ],
+      "inputs": 37,
+      "outputs": 4,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 1163,
+      "specLines": 609,
+      "specFiles": 5,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 61270,
+        "gzip": 7297,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 6,
+        "tags": {
+          "orc-button": 223
+        }
+      }
+    },
+    {
+      "id": "calendar",
+      "name": "Calendar",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Calendário controlado para seleção e navegação por datas.",
+      "dir": "calendar",
+      "declarations": [
+        {
+          "name": "CalendarComponent",
+          "kind": "Component",
+          "selector": "orc-calendar",
+          "file": "projects/orc-ds/calendar/calendar.component.ts",
+          "inputs": 23,
+          "outputs": 4
+        }
+      ],
+      "inputs": 23,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 2,
+      "srcLines": 598,
+      "specLines": 348,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 39506,
+        "gzip": 6891,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "category": "Data Display",
+      "status": "stable",
+      "description": "Container de conteúdo com cabeçalho, corpo, rodapé e ações.",
+      "dir": "card",
+      "declarations": [
+        {
+          "name": "CardBodyComponent",
+          "kind": "Component",
+          "selector": "orc-card-body",
+          "file": "projects/orc-ds/card/card-body.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "CardFooterComponent",
+          "kind": "Component",
+          "selector": "orc-card-footer",
+          "file": "projects/orc-ds/card/card-footer.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "CardHeaderComponent",
+          "kind": "Component",
+          "selector": "orc-card-header",
+          "file": "projects/orc-ds/card/card-header.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "CardComponent",
+          "kind": "Component",
+          "selector": "orc-card",
+          "file": "projects/orc-ds/card/card.component.ts",
+          "inputs": 12,
+          "outputs": 2
+        }
+      ],
+      "inputs": 12,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 270,
+      "specLines": 224,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 15483,
+        "gzip": 2743,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 12,
+        "tags": {
+          "orc-card": 78
+        }
+      }
+    },
+    {
+      "id": "carousel",
+      "name": "Carousel",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Slides navegáveis com indicadores, loop e suporte a teclado.",
+      "dir": "carousel",
+      "declarations": [
+        {
+          "name": "CarouselComponent",
+          "kind": "Component",
+          "selector": "orc-carousel",
+          "file": "projects/orc-ds/carousel/carousel.component.ts",
+          "inputs": 22,
+          "outputs": 4
+        }
+      ],
+      "inputs": 22,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 564,
+      "specLines": 320,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 31411,
+        "gzip": 5346,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "cascade-select",
+      "name": "Cascade Select",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Ajusta a densidade do acionador e das opções.",
+      "dir": "cascade-select",
+      "declarations": [
+        {
+          "name": "CascadeSelectComponent",
+          "kind": "Component",
+          "selector": "orc-cascade-select",
+          "file": "projects/orc-ds/p2/p2-cascade-select-component.ts",
+          "inputs": 26,
+          "outputs": 5
+        }
+      ],
+      "inputs": 26,
+      "outputs": 5,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 169,
+        "gzip": 158,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/cascadeselect"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "chart",
+      "name": "Chart",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Compara valores categóricos em uma ou mais séries.",
+      "dir": "chart",
+      "declarations": [
+        {
+          "name": "ChartComponent",
+          "kind": "Component",
+          "selector": "orc-chart",
+          "file": "projects/orc-ds/p2/p2-chart-editor-components.ts",
+          "inputs": 9,
+          "outputs": 2
+        }
+      ],
+      "inputs": 9,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 152,
+        "gzip": 150,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "category": "Inputs",
+      "status": "stable",
+      "dir": "checkbox",
+      "declarations": [
+        {
+          "name": "CheckboxComponent",
+          "kind": "Component",
+          "selector": "orc-checkbox",
+          "file": "projects/orc-ds/checkbox/checkbox.component.ts",
+          "inputs": 24,
+          "outputs": 4
+        }
+      ],
+      "inputs": 24,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 617,
+      "specLines": 170,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 34672,
+        "gzip": 5722,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 2,
+        "tags": {
+          "orc-checkbox": 8
+        }
+      }
+    },
+    {
+      "id": "chip-input",
+      "name": "Chip Input",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Campo de entrada com tags (chips) integradas e autocompletar.",
+      "dir": "chip-input",
+      "declarations": [
+        {
+          "name": "ChipInputComponent",
+          "kind": "Component",
+          "selector": "orc-chip-input",
+          "file": "projects/orc-ds/chip-input/chip-input.component.ts",
+          "inputs": 22,
+          "outputs": 2
+        }
+      ],
+      "inputs": 22,
+      "outputs": 2,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 416,
+      "specLines": 203,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 24748,
+        "gzip": 4800,
+        "deps": ["input", "badge"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "chip",
+      "name": "Chip",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Variantes para conteúdo neutro ou ativo.",
+      "dir": "chip",
+      "declarations": [
+        {
+          "name": "ChipComponent",
+          "kind": "Component",
+          "selector": "orc-chip",
+          "file": "projects/orc-ds/chip/chip.component.ts",
+          "inputs": 16,
+          "outputs": 2
+        }
+      ],
+      "inputs": 16,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 245,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 14674,
+        "gzip": 2556,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "close-button",
+      "name": "Close Button",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Ação compacta e nomeada para fechar overlays e mensagens.",
+      "dir": "close-button",
+      "declarations": [
+        {
+          "name": "CloseButtonComponent",
+          "kind": "Component",
+          "selector": "orc-close-button",
+          "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+          "inputs": 4,
+          "outputs": 1
+        }
+      ],
+      "inputs": 4,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 165,
+        "gzip": 157,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "code",
+      "name": "Code",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Bloco de código com linguagem, cópia e leitura preservada.",
+      "dir": "code",
+      "declarations": [
+        {
+          "name": "CodeComponent",
+          "kind": "Component",
+          "selector": "orc-code",
+          "file": "projects/orc-ds/code/code.component.ts",
+          "inputs": 5,
+          "outputs": 2
+        }
+      ],
+      "inputs": 5,
+      "outputs": 2,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 155,
+      "specLines": 102,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 14054,
+        "gzip": 2757,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "collapsible",
+      "name": "Collapsible",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Conteúdo progressivo com região nomeada e estado controlado.",
+      "dir": "collapsible",
+      "declarations": [
+        {
+          "name": "CollapsibleComponent",
+          "kind": "Component",
+          "selector": "orc-collapsible",
+          "file": "projects/orc-ds/collapsible/collapsible.component.ts",
+          "inputs": 7,
+          "outputs": 1
+        }
+      ],
+      "inputs": 7,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 168,
+      "specLines": 246,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 10512,
+        "gzip": 2385,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "color-picker",
+      "name": "Color Picker",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Trigger com swatch, valor e presets.",
+      "dir": "color-picker",
+      "declarations": [
+        {
+          "name": "ColorPickerComponent",
+          "kind": "Component",
+          "selector": "orc-color-picker",
+          "file": "projects/orc-ds/color-picker/color-picker.component.ts",
+          "inputs": 24,
+          "outputs": 5
+        }
+      ],
+      "inputs": 24,
+      "outputs": 5,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 3,
+      "srcLines": 547,
+      "specLines": 102,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 31022,
+        "gzip": 5499,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/colorpicker"],
+      "consumer": {
+        "imports": 1,
+        "tags": {
+          "orc-color-picker": 1
+        }
+      }
+    },
+    {
+      "id": "combobox",
+      "name": "Combobox",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Entrada pesquisável com seleção, teclado e estados vazios.",
+      "dir": "combobox",
+      "declarations": [
+        {
+          "name": "ComboboxComponent",
+          "kind": "Component",
+          "selector": "orc-combobox",
+          "file": "projects/orc-ds/combobox/combobox.component.ts",
+          "inputs": 12,
+          "outputs": 1
+        }
+      ],
+      "inputs": 12,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 498,
+      "specLines": 397,
+      "specFiles": 2,
+      "usesCdk": true,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 36039,
+        "gzip": 5713,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "command-menu",
+      "name": "CommandMenu",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Filtra comandos por texto e keywords.",
+      "dir": "command-menu",
+      "declarations": [
+        {
+          "name": "CommandMenuComponent",
+          "kind": "Component",
+          "selector": "orc-command-menu",
+          "file": "projects/orc-ds/p2/p2-command-components.ts",
+          "inputs": 7,
+          "outputs": 1
+        }
+      ],
+      "inputs": 7,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 165,
+        "gzip": 157,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "confirm-dialog",
+      "name": "Confirm Dialog",
+      "category": "Overlay",
+      "status": "beta",
+      "dir": "confirm-dialog",
+      "declarations": [
+        {
+          "name": "ConfirmDialogComponent",
+          "kind": "Component",
+          "selector": "orc-confirm-dialog",
+          "file": "projects/orc-ds/p2/p2-confirm-dialog-component.ts",
+          "inputs": 12,
+          "outputs": 3
+        }
+      ],
+      "inputs": 12,
+      "outputs": 3,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 6,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 190,
+        "gzip": 170,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/confirmdialog"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "confirm-popup",
+      "name": "Confirm Popup",
+      "category": "Overlay",
+      "status": "beta",
+      "dir": "confirm-popup",
+      "declarations": [
+        {
+          "name": "ConfirmPopupService",
+          "kind": "Injectable",
+          "selector": "",
+          "file": "projects/orc-ds/confirm-popup/confirm-popup.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "ConfirmPopupComponent",
+          "kind": "Component",
+          "selector": "orc-confirm-popup",
+          "file": "projects/orc-ds/confirm-popup/confirm-popup.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        }
+      ],
+      "inputs": 0,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 402,
+      "specLines": 125,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 23766,
+        "gzip": 4553,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/confirmpopup"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "container",
+      "name": "Container",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Container centralizado com largura máxima e padding.",
+      "dir": "container",
+      "declarations": [
+        {
+          "name": "ContainerComponent",
+          "kind": "Component",
+          "selector": "orc-container",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 3,
+          "outputs": 0
+        }
+      ],
+      "inputs": 3,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 160,
+        "gzip": 152,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "context-menu",
+      "name": "Context Menu",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Menu acionado pelo botão direito com posição contextual.",
+      "dir": "context-menu",
+      "declarations": [
+        {
+          "name": "ContextMenuComponent",
+          "kind": "Component",
+          "selector": "orc-context-menu",
+          "file": "projects/orc-ds/context-menu/context-menu.component.ts",
+          "inputs": 15,
+          "outputs": 4
+        }
+      ],
+      "inputs": 15,
+      "outputs": 4,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 3,
+      "srcLines": 350,
+      "specLines": 133,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 25368,
+        "gzip": 4804,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/contextmenu"],
+      "consumer": {
+        "imports": 1,
+        "tags": {
+          "orc-context-menu": 1
+        }
+      }
+    },
+    {
+      "id": "data-table",
+      "name": "Data Table",
+      "category": "Data Display",
+      "status": "beta",
+      "dir": "data-table",
+      "declarations": [
+        {
+          "name": "DataTableComponent",
+          "kind": "Component",
+          "selector": "orc-data-table",
+          "file": "projects/orc-ds/p2/p2-data-table-component.ts",
+          "inputs": 41,
+          "outputs": 11
+        }
+      ],
+      "inputs": 41,
+      "outputs": 11,
+      "primengOutputs": 6,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 161,
+        "gzip": 155,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "data-view",
+      "name": "DataView",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Cards em grade responsiva.",
+      "dir": "data-view",
+      "declarations": [
+        {
+          "name": "DataViewComponent",
+          "kind": "Component",
+          "selector": "orc-data-view",
+          "file": "projects/orc-ds/data-view/data-view.component.ts",
+          "inputs": 38,
+          "outputs": 5
+        }
+      ],
+      "inputs": 38,
+      "outputs": 5,
+      "primengOutputs": 5,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 421,
+      "specLines": 120,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 39550,
+        "gzip": 6302,
+        "deps": ["paginator"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/dataview"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "date-input",
+      "name": "Date Input",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Campo de data nativo com limites e integração a formulários.",
+      "dir": "date-input",
+      "declarations": [
+        {
+          "name": "DateInputComponent",
+          "kind": "Component",
+          "selector": "orc-date-input",
+          "file": "projects/orc-ds/date-input/date-input.component.ts",
+          "inputs": 19,
+          "outputs": 0
+        }
+      ],
+      "inputs": 19,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 177,
+      "specLines": 225,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 21217,
+        "gzip": 3697,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "date-picker",
+      "name": "Date Picker",
+      "category": "Inputs",
+      "status": "stable",
+      "description": "Seleção de datas em popover com validação e formulários.",
+      "dir": "date-picker",
+      "declarations": [
+        {
+          "name": "DatePickerCalendarComponent",
+          "kind": "Component",
+          "selector": "orc-date-picker-calendar",
+          "file": "projects/orc-ds/date-picker/date-picker-calendar.component.ts",
+          "inputs": 23,
+          "outputs": 2
+        },
+        {
+          "name": "DatePickerComponent",
+          "kind": "Component",
+          "selector": "orc-date-picker",
+          "file": "projects/orc-ds/date-picker/date-picker.component.ts",
+          "inputs": 90,
+          "outputs": 13
+        }
+      ],
+      "inputs": 113,
+      "outputs": 15,
+      "primengOutputs": 13,
+      "deprecatedInputsApprox": 4,
+      "srcLines": 1881,
+      "specLines": 1496,
+      "specFiles": 3,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 127661,
+        "gzip": 18572,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/datepicker"],
+      "consumer": {
+        "imports": 2,
+        "tags": {
+          "orc-date-picker": 22
+        }
+      }
+    },
+    {
+      "id": "divider",
+      "name": "Divider",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Separador horizontal ou vertical com rótulo opcional.",
+      "dir": "divider",
+      "declarations": [
+        {
+          "name": "DividerComponent",
+          "kind": "Component",
+          "selector": "orc-divider",
+          "file": "projects/orc-ds/divider/divider.component.ts",
+          "inputs": 6,
+          "outputs": 0
+        }
+      ],
+      "inputs": 6,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 104,
+      "specLines": 85,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 6594,
+        "gzip": 1463,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "dock",
+      "name": "Dock",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Barra de atalhos no estilo dock com posicionamento flexível.",
+      "dir": "dock",
+      "declarations": [
+        {
+          "name": "DockComponent",
+          "kind": "Component",
+          "selector": "orc-dock",
+          "file": "projects/orc-ds/dock/dock.component.ts",
+          "inputs": 3,
+          "outputs": 0
+        }
+      ],
+      "inputs": 3,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 126,
+      "specLines": 90,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 13484,
+        "gzip": 2729,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "drawer",
+      "name": "Drawer",
+      "category": "Overlay",
+      "status": "stable",
+      "description": "Painel lateral ou vertical com backdrop e dismiss.",
+      "dir": "drawer",
+      "declarations": [
+        {
+          "name": "DrawerComponent",
+          "kind": "Component",
+          "selector": "orc-drawer, orc-sidebar",
+          "file": "projects/orc-ds/drawer/drawer.component.ts",
+          "inputs": 17,
+          "outputs": 3
+        }
+      ],
+      "inputs": 17,
+      "outputs": 3,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 326,
+      "specLines": 259,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 18593,
+        "gzip": 3593,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "dropdown",
+      "name": "Dropdown",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Menu de ações posicionado junto ao gatilho.",
+      "dir": "dropdown",
+      "declarations": [
+        {
+          "name": "DropdownComponent",
+          "kind": "Component",
+          "selector": "orc-dropdown",
+          "file": "projects/orc-ds/dropdown/dropdown.component.ts",
+          "inputs": 26,
+          "outputs": 8
+        }
+      ],
+      "inputs": 26,
+      "outputs": 8,
+      "primengOutputs": 6,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 681,
+      "specLines": 677,
+      "specFiles": 2,
+      "usesCdk": true,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 36065,
+        "gzip": 6133,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "editor",
+      "name": "Editor",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Renderiza conteúdo HTML sanitizado com marcação permitida.",
+      "dir": "editor",
+      "declarations": [
+        {
+          "name": "EditorComponent",
+          "kind": "Component",
+          "selector": "orc-editor",
+          "file": "projects/orc-ds/editor/editor.component.ts",
+          "inputs": 11,
+          "outputs": 4
+        }
+      ],
+      "inputs": 11,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 5,
+      "srcLines": 635,
+      "specLines": 170,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 32253,
+        "gzip": 6304,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "empty-state",
+      "name": "Empty State",
+      "category": "Feedback",
+      "status": "beta",
+      "description": "Mensagem de ausência de dados com ação opcional.",
+      "dir": "empty-state",
+      "declarations": [
+        {
+          "name": "EmptyStateComponent",
+          "kind": "Component",
+          "selector": "orc-empty-state",
+          "file": "projects/orc-ds/empty-state/empty-state.component.ts",
+          "inputs": 6,
+          "outputs": 1
+        }
+      ],
+      "inputs": 6,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 71,
+      "specLines": 89,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 6728,
+        "gzip": 1562,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 6,
+        "tags": {
+          "orc-empty-state": 25
+        }
+      }
+    },
+    {
+      "id": "fieldset",
+      "name": "Fieldset",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Agrupamento de campos com legenda, opcionalmente recolhível.",
+      "dir": "fieldset",
+      "declarations": [
+        {
+          "name": "FieldsetComponent",
+          "kind": "Component",
+          "selector": "orc-fieldset",
+          "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+          "inputs": 8,
+          "outputs": 2
+        }
+      ],
+      "inputs": 8,
+      "outputs": 2,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 158,
+        "gzip": 152,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "file-upload",
+      "name": "File Upload",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Alias canônico para upload com seleção e drag-and-drop.",
+      "dir": "file-upload",
+      "declarations": [],
+      "inputs": 0,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 236,
+        "gzip": 170,
+        "deps": ["file-uploader"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/fileupload"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "file-uploader",
+      "name": "File Uploader",
+      "category": "Inputs",
+      "status": "stable",
+      "dir": "file-uploader",
+      "declarations": [
+        {
+          "name": "FileItemComponent",
+          "kind": "Component",
+          "selector": "orc-file-item",
+          "file": "projects/orc-ds/file-uploader/file-item/file-item.component.ts",
+          "inputs": 9,
+          "outputs": 2
+        },
+        {
+          "name": "FileUploaderComponent",
+          "kind": "Component",
+          "selector": "orc-file-uploader, orc-file-upload",
+          "file": "projects/orc-ds/file-uploader/file-uploader.component.ts",
+          "inputs": 44,
+          "outputs": 11
+        }
+      ],
+      "inputs": 53,
+      "outputs": 13,
+      "primengOutputs": 10,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 1245,
+      "specLines": 566,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 76296,
+        "gzip": 11811,
+        "deps": ["progress", "button"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/file-upload"],
+      "consumer": {
+        "imports": 4,
+        "tags": {
+          "orc-file-uploader": 4
+        }
+      }
+    },
+    {
+      "id": "flex",
+      "name": "Flex",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Primitiva flexível para direção, alinhamento, gap e wrapping.",
+      "dir": "flex",
+      "declarations": [
+        {
+          "name": "FlexComponent",
+          "kind": "Component",
+          "selector": "orc-flex",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 5,
+          "outputs": 0
+        }
+      ],
+      "inputs": 5,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 150,
+        "gzip": 150,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "float-label",
+      "name": "Float Label",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Wrapper que flutua o rótulo do campo conforme o preenchimento.",
+      "dir": "float-label",
+      "declarations": [
+        {
+          "name": "FloatLabelComponent",
+          "kind": "Component",
+          "selector": "orc-float-label",
+          "file": "projects/orc-ds/float-label/float-label.component.ts",
+          "inputs": 2,
+          "outputs": 0
+        }
+      ],
+      "inputs": 2,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 113,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 12052,
+        "gzip": 2266,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/floatlabel"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "floating-action-button",
+      "name": "Floating Action Button",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Ação primária flutuante com estado estendido e loading.",
+      "dir": "floating-action-button",
+      "declarations": [
+        {
+          "name": "FloatingActionButtonComponent",
+          "kind": "Component",
+          "selector": "orc-floating-action-button",
+          "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+          "inputs": 6,
+          "outputs": 1
+        }
+      ],
+      "inputs": 6,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 184,
+        "gzip": 166,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "fluid",
+      "name": "Fluid",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Wrapper que estende os controles para a largura disponível.",
+      "dir": "fluid",
+      "declarations": [
+        {
+          "name": "FluidComponent",
+          "kind": "Component",
+          "selector": "orc-fluid",
+          "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+          "inputs": 1,
+          "outputs": 0
+        }
+      ],
+      "inputs": 1,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 152,
+        "gzip": 150,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "form-field",
+      "name": "Form Field",
+      "category": "Inputs",
+      "status": "stable",
+      "description": "Composição de rótulo, controle, ajuda e erro.",
+      "dir": "form-field",
+      "declarations": [
+        {
+          "name": "FormFieldComponent",
+          "kind": "Component",
+          "selector": "orc-form-field",
+          "file": "projects/orc-ds/form-field/form-field.component.ts",
+          "inputs": 5,
+          "outputs": 0
+        }
+      ],
+      "inputs": 5,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 95,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 5718,
+        "gzip": 1485,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/label"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "form",
+      "name": "Form",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Wrapper de formulário com validação, submit e reset tipados.",
+      "dir": "form",
+      "declarations": [
+        {
+          "name": "FormComponent",
+          "kind": "Component",
+          "selector": "orc-form",
+          "file": "projects/orc-ds/form/form.component.ts",
+          "inputs": 5,
+          "outputs": 2
+        }
+      ],
+      "inputs": 5,
+      "outputs": 2,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 109,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 6102,
+        "gzip": 1772,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "galleria",
+      "name": "Galleria",
+      "category": "Data Display",
+      "status": "beta",
+      "dir": "galleria",
+      "declarations": [
+        {
+          "name": "GalleriaComponent",
+          "kind": "Component",
+          "selector": "orc-galleria, orc-gallery",
+          "file": "projects/orc-ds/galleria/galleria.component.ts",
+          "inputs": 31,
+          "outputs": 1
+        }
+      ],
+      "inputs": 31,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 4,
+      "srcLines": 763,
+      "specLines": 136,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 51885,
+        "gzip": 7214,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "grid",
+      "name": "Grid",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Layout responsivo em colunas com largura mínima configurável.",
+      "dir": "grid",
+      "declarations": [
+        {
+          "name": "GridComponent",
+          "kind": "Component",
+          "selector": "orc-grid",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 5,
+          "outputs": 0
+        }
+      ],
+      "inputs": 5,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 150,
+        "gzip": 149,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "hover-card",
+      "name": "Hover Card",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Conteúdo contextual aberto por hover ou foco.",
+      "dir": "hover-card",
+      "declarations": [
+        {
+          "name": "HoverCardComponent",
+          "kind": "Component",
+          "selector": "orc-hover-card",
+          "file": "projects/orc-ds/hover-card/hover-card.component.ts",
+          "inputs": 3,
+          "outputs": 0
+        }
+      ],
+      "inputs": 3,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 154,
+      "specLines": 112,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 12552,
+        "gzip": 2587,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "icon-field",
+      "name": "Icon Field",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Associa um ícone decorativo a um campo de entrada.",
+      "dir": "icon-field",
+      "declarations": [
+        {
+          "name": "IconFieldComponent",
+          "kind": "Component",
+          "selector": "orc-icon-field",
+          "file": "projects/orc-ds/icon-field/icon-field.component.ts",
+          "inputs": 1,
+          "outputs": 0
+        }
+      ],
+      "inputs": 1,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 38,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 8974,
+        "gzip": 1791,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/iconfield"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "icon",
+      "name": "Icon",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Ícones SVG acessíveis com nomes e tamanhos consistentes.",
+      "dir": "icon",
+      "declarations": [
+        {
+          "name": "IconComponent",
+          "kind": "Component",
+          "selector": "orc-icon",
+          "file": "projects/orc-ds/icon/icon.component.ts",
+          "inputs": 9,
+          "outputs": 0
+        }
+      ],
+      "inputs": 9,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 146,
+      "specLines": 50,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 8735,
+        "gzip": 2009,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 3,
+        "tags": {
+          "orc-icon": 272
+        }
+      }
+    },
+    {
+      "id": "ifta-label",
+      "name": "Ifta Label",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Rótulo inline que flutua sobre o campo quando preenchido.",
+      "dir": "ifta-label",
+      "declarations": [
+        {
+          "name": "IftaLabelComponent",
+          "kind": "Component",
+          "selector": "orc-ifta-label",
+          "file": "projects/orc-ds/ifta-label/ifta-label.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        }
+      ],
+      "inputs": 0,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 30,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 8394,
+        "gzip": 1518,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/iftalabel"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "image-compare",
+      "name": "Image Compare",
+      "category": "Data Display",
+      "status": "beta",
+      "dir": "image-compare",
+      "declarations": [
+        {
+          "name": "ImageCompareComponent",
+          "kind": "Component",
+          "selector": "orc-image-compare",
+          "file": "projects/orc-ds/image-compare/image-compare.component.ts",
+          "inputs": 9,
+          "outputs": 1
+        }
+      ],
+      "inputs": 9,
+      "outputs": 1,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 100,
+      "specLines": 83,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 13659,
+        "gzip": 2452,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/imagecompare"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "image",
+      "name": "Image",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Preenche a caixa cortando o excesso.",
+      "dir": "image",
+      "declarations": [
+        {
+          "name": "ImageComponent",
+          "kind": "Component",
+          "selector": "orc-image",
+          "file": "projects/orc-ds/image/image.component.ts",
+          "inputs": 27,
+          "outputs": 5
+        }
+      ],
+      "inputs": 27,
+      "outputs": 5,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 3,
+      "srcLines": 503,
+      "specLines": 667,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 32723,
+        "gzip": 5256,
+        "deps": ["modal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "inplace",
+      "name": "Inplace",
+      "category": "Data Display",
+      "status": "beta",
+      "dir": "inplace",
+      "declarations": [
+        {
+          "name": "InplaceComponent",
+          "kind": "Component",
+          "selector": "orc-inplace",
+          "file": "projects/orc-ds/p2/p2-inplace-component.ts",
+          "inputs": 7,
+          "outputs": 4
+        }
+      ],
+      "inputs": 7,
+      "outputs": 4,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 156,
+        "gzip": 151,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "input-color",
+      "name": "Input Color",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Entrada de cor com valor hexadecimal controlado.",
+      "dir": "input-color",
+      "declarations": [
+        {
+          "name": "InputColorComponent",
+          "kind": "Component",
+          "selector": "orc-input-color",
+          "file": "projects/orc-ds/p2/p2-input-more.ts",
+          "inputs": 3,
+          "outputs": 1
+        }
+      ],
+      "inputs": 3,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 183,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 163,
+        "gzip": 156,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "input-group",
+      "name": "Input Group",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Composição de controle com prefixo e sufixo semântico.",
+      "dir": "input-group",
+      "declarations": [
+        {
+          "name": "InputGroupComponent",
+          "kind": "Component",
+          "selector": "orc-input-group",
+          "file": "projects/orc-ds/input-group/input-group.component.ts",
+          "inputs": 3,
+          "outputs": 0
+        }
+      ],
+      "inputs": 3,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 69,
+      "specLines": 118,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 10896,
+        "gzip": 2029,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/inputgroup"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "category": "Inputs",
+      "status": "stable",
+      "dir": "input",
+      "declarations": [
+        {
+          "name": "InputComponent",
+          "kind": "Component",
+          "selector": "orc-input, orc-input-text",
+          "file": "projects/orc-ds/input/input.component.ts",
+          "inputs": 37,
+          "outputs": 4
+        },
+        {
+          "name": "TextareaComponent",
+          "kind": "Component",
+          "selector": "orc-textarea, orc-input-textarea",
+          "file": "projects/orc-ds/input/textarea.component.ts",
+          "inputs": 28,
+          "outputs": 3
+        }
+      ],
+      "inputs": 65,
+      "outputs": 7,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 1431,
+      "specLines": 621,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 87352,
+        "gzip": 11584,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [
+        "@ciag/orchestra/input-text",
+        "@ciag/orchestra/input-textarea",
+        "@ciag/orchestra/textarea"
+      ],
+      "consumer": {
+        "imports": 5,
+        "tags": {
+          "orc-input": 67,
+          "orc-textarea": 12
+        }
+      }
+    },
+    {
+      "id": "kbd",
+      "name": "Kbd",
+      "category": "Typography",
+      "status": "beta",
+      "description": "Representação visual de teclas e atalhos.",
+      "dir": "kbd",
+      "declarations": [
+        {
+          "name": "KbdComponent",
+          "kind": "Component",
+          "selector": "orc-kbd",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 2,
+          "outputs": 0
+        }
+      ],
+      "inputs": 2,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 148,
+        "gzip": 149,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "knob",
+      "name": "Knob",
+      "category": "Inputs",
+      "status": "beta",
+      "dir": "knob",
+      "declarations": [
+        {
+          "name": "KnobComponent",
+          "kind": "Component",
+          "selector": "orc-knob",
+          "file": "projects/orc-ds/knob/knob.component.ts",
+          "inputs": 14,
+          "outputs": 4
+        }
+      ],
+      "inputs": 14,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 208,
+      "specLines": 117,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 20104,
+        "gzip": 3631,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "link",
+      "name": "Link",
+      "category": "Typography",
+      "status": "beta",
+      "description": "Link semântico com estados de foco, desabilitado e externo.",
+      "dir": "link",
+      "declarations": [
+        {
+          "name": "LinkComponent",
+          "kind": "Component",
+          "selector": "orc-link",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 5,
+          "outputs": 1
+        }
+      ],
+      "inputs": 5,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 150,
+        "gzip": 149,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "list",
+      "name": "List",
+      "category": "Data Display",
+      "status": "stable",
+      "description": "Lista acessível com estados de seleção e vazio.",
+      "dir": "list",
+      "declarations": [
+        {
+          "name": "ListComponent",
+          "kind": "Component",
+          "selector": "orc-list",
+          "file": "projects/orc-ds/list/list.component.ts",
+          "inputs": 7,
+          "outputs": 1
+        }
+      ],
+      "inputs": 7,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 233,
+      "specLines": 166,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 12674,
+        "gzip": 2759,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "listbox",
+      "name": "Listbox",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Lista selecionável com modo simples ou múltiplo e teclado.",
+      "dir": "listbox",
+      "declarations": [
+        {
+          "name": "ListboxComponent",
+          "kind": "Component",
+          "selector": "orc-listbox",
+          "file": "projects/orc-ds/listbox/listbox.component.ts",
+          "inputs": 46,
+          "outputs": 10
+        }
+      ],
+      "inputs": 46,
+      "outputs": 10,
+      "primengOutputs": 9,
+      "deprecatedInputsApprox": 16,
+      "srcLines": 385,
+      "specLines": 359,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 40285,
+        "gzip": 6055,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "mega-menu",
+      "name": "MegaMenu",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Grupos em colunas e navegação lateral.",
+      "dir": "mega-menu",
+      "declarations": [
+        {
+          "name": "MegaMenuComponent",
+          "kind": "Component",
+          "selector": "orc-mega-menu",
+          "file": "projects/orc-ds/mega-menu/mega-menu.component.ts",
+          "inputs": 10,
+          "outputs": 4
+        }
+      ],
+      "inputs": 10,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 216,
+      "specLines": 153,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 21962,
+        "gzip": 3577,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/megamenu"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "menu",
+      "name": "Menu",
+      "category": "Navigation",
+      "status": "stable",
+      "description": "Lista de ações renderizada no fluxo da página.",
+      "dir": "menu",
+      "declarations": [
+        {
+          "name": "MenuComponent",
+          "kind": "Component",
+          "selector": "orc-menu",
+          "file": "projects/orc-ds/p2/p2-advanced-components.ts",
+          "inputs": 16,
+          "outputs": 6
+        }
+      ],
+      "inputs": 16,
+      "outputs": 6,
+      "primengOutputs": 5,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 150,
+        "gzip": 148,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "menubar",
+      "name": "Menubar",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Barra de menus com navegação por setas e atalhos.",
+      "dir": "menubar",
+      "declarations": [
+        {
+          "name": "MenubarComponent",
+          "kind": "Component",
+          "selector": "orc-menubar",
+          "file": "projects/orc-ds/menubar/menubar.component.ts",
+          "inputs": 12,
+          "outputs": 4
+        }
+      ],
+      "inputs": 12,
+      "outputs": 4,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 482,
+      "specLines": 124,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 32200,
+        "gzip": 5095,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "messages",
+      "name": "Messages",
+      "category": "Feedback",
+      "status": "beta",
+      "description": "Lista de mensagens por severidade com ação de fechar.",
+      "dir": "messages",
+      "declarations": [
+        {
+          "name": "MessagesComponent",
+          "kind": "Component",
+          "selector": "orc-messages",
+          "file": "projects/orc-ds/p2/p2-message-components.ts",
+          "inputs": 6,
+          "outputs": 2
+        }
+      ],
+      "inputs": 6,
+      "outputs": 2,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 143,
+        "gzip": 139,
+        "deps": ["message"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "meter-group",
+      "name": "Meter Group",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Grupo de medidores para comparar valores em barra ou círculo.",
+      "dir": "meter-group",
+      "declarations": [
+        {
+          "name": "MeterGroupComponent",
+          "kind": "Component",
+          "selector": "orc-meter-group",
+          "file": "projects/orc-ds/meter-group/meter-group.component.ts",
+          "inputs": 12,
+          "outputs": 0
+        }
+      ],
+      "inputs": 12,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 187,
+      "specLines": 101,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 17812,
+        "gzip": 2986,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/metergroup"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "modal",
+      "name": "Modal / Dialog",
+      "category": "Overlay",
+      "status": "stable",
+      "dir": "modal",
+      "declarations": [
+        {
+          "name": "ModalComponent",
+          "kind": "Component",
+          "selector": "orc-modal, orc-dialog, orc-dynamic-dialog",
+          "file": "projects/orc-ds/modal/modal.component.ts",
+          "inputs": 49,
+          "outputs": 4
+        },
+        {
+          "name": "ModalService",
+          "kind": "Injectable",
+          "selector": "",
+          "file": "projects/orc-ds/modal/modal.service.ts",
+          "inputs": 0,
+          "outputs": 0
+        }
+      ],
+      "inputs": 49,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 11,
+      "srcLines": 1088,
+      "specLines": 1407,
+      "specFiles": 5,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 57872,
+        "gzip": 10945,
+        "deps": ["button", "internal"]
+      },
+      "aliasEntryPoints": [
+        "@ciag/orchestra/dialog",
+        "@ciag/orchestra/dynamic-dialog"
+      ],
+      "consumer": {
+        "imports": 5,
+        "tags": {
+          "orc-modal": 14
+        }
+      }
+    },
+    {
+      "id": "multi-select",
+      "name": "Multi Select",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Seleção múltipla com lista de opções e valores controlados.",
+      "dir": "multi-select",
+      "declarations": [
+        {
+          "name": "MultiSelectComponent",
+          "kind": "Component",
+          "selector": "orc-multi-select",
+          "file": "projects/orc-ds/multi-select/multi-select.component.ts",
+          "inputs": 71,
+          "outputs": 10
+        }
+      ],
+      "inputs": 71,
+      "outputs": 10,
+      "primengOutputs": 9,
+      "deprecatedInputsApprox": 25,
+      "srcLines": 685,
+      "specLines": 601,
+      "specFiles": 3,
+      "usesCdk": true,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 67413,
+        "gzip": 9606,
+        "deps": ["icon", "internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/multiselect"],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-multi-select": 12
+        }
+      }
+    },
+    {
+      "id": "navigation",
+      "name": "Navigation Shell",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Shell aberto em viewport estreita.",
+      "dir": "navigation",
+      "declarations": [
+        {
+          "name": "NavigationShellComponent",
+          "kind": "Component",
+          "selector": "orc-navigation-shell",
+          "file": "projects/orc-ds/navigation/navigation-shell.component.ts",
+          "inputs": 4,
+          "outputs": 1
+        },
+        {
+          "name": "NavigationItemComponent",
+          "kind": "Component",
+          "selector": "orc-navigation-item",
+          "file": "projects/orc-ds/navigation/navigation-shell.component.ts",
+          "inputs": 2,
+          "outputs": 1
+        }
+      ],
+      "inputs": 6,
+      "outputs": 2,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 247,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 13107,
+        "gzip": 2609,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "number-input",
+      "name": "Number Input",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Entrada numérica com incremento, limites e precisão.",
+      "dir": "number-input",
+      "declarations": [
+        {
+          "name": "NumberInputComponent",
+          "kind": "Component",
+          "selector": "orc-number-input, orc-input-number",
+          "file": "projects/orc-ds/number-input/number-input.component.ts",
+          "inputs": 55,
+          "outputs": 6
+        }
+      ],
+      "inputs": 55,
+      "outputs": 6,
+      "primengOutputs": 5,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 530,
+      "specLines": 337,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 43261,
+        "gzip": 6182,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/input-number"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "order-list",
+      "name": "OrderList",
+      "category": "Data Display",
+      "status": "beta",
+      "dir": "order-list",
+      "declarations": [
+        {
+          "name": "OrderListComponent",
+          "kind": "Component",
+          "selector": "orc-order-list",
+          "file": "projects/orc-ds/order-list/order-list.component.ts",
+          "inputs": 22,
+          "outputs": 6
+        }
+      ],
+      "inputs": 22,
+      "outputs": 6,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 2,
+      "srcLines": 446,
+      "specLines": 178,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 31960,
+        "gzip": 5518,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/orderlist"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "organization-chart",
+      "name": "Organization Chart",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Organograma hierárquico com seleção e nós recolhíveis.",
+      "dir": "organization-chart",
+      "declarations": [
+        {
+          "name": "OrganizationChartComponent",
+          "kind": "Component",
+          "selector": "orc-organization-chart",
+          "file": "projects/orc-ds/organization-chart/organization-chart.component.ts",
+          "inputs": 7,
+          "outputs": 5
+        }
+      ],
+      "inputs": 7,
+      "outputs": 5,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 210,
+      "specLines": 127,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 18026,
+        "gzip": 3370,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/organizationchart"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "otp-input",
+      "name": "OTP Input",
+      "category": "Inputs",
+      "status": "stable",
+      "dir": "otp-input",
+      "declarations": [
+        {
+          "name": "OtpGroupComponent",
+          "kind": "Component",
+          "selector": "orc-otp-group",
+          "file": "projects/orc-ds/otp-input/otp-group.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "OtpInputComponent",
+          "kind": "Component",
+          "selector": "orc-otp-input, orc-input-otp",
+          "file": "projects/orc-ds/otp-input/otp-input.component.ts",
+          "inputs": 14,
+          "outputs": 4
+        },
+        {
+          "name": "OtpSeparatorComponent",
+          "kind": "Component",
+          "selector": "orc-otp-separator",
+          "file": "projects/orc-ds/otp-input/otp-separator.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "OtpSlotComponent",
+          "kind": "Component",
+          "selector": "orc-otp-slot",
+          "file": "projects/orc-ds/otp-input/otp-slot.component.ts",
+          "inputs": 5,
+          "outputs": 0
+        }
+      ],
+      "inputs": 19,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 620,
+      "specLines": 295,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 30652,
+        "gzip": 5479,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/input-otp"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "overlay-badge",
+      "name": "Overlay Badge",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Selo posicionado sobre o conteúdo com valor legível.",
+      "dir": "overlay-badge",
+      "declarations": [
+        {
+          "name": "OverlayBadgeComponent",
+          "kind": "Component",
+          "selector": "orc-overlay-badge",
+          "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+          "inputs": 2,
+          "outputs": 0
+        }
+      ],
+      "inputs": 2,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 167,
+        "gzip": 159,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/overlaybadge"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "overlay-panel",
+      "name": "Overlay Panel",
+      "category": "Overlay",
+      "status": "stable",
+      "description": "Painel overlay com fechamento por interação externa e teclado.",
+      "dir": "overlay-panel",
+      "declarations": [
+        {
+          "name": "OverlayPanelComponent",
+          "kind": "Component",
+          "selector": "orc-overlay-panel",
+          "file": "projects/orc-ds/overlay-panel/overlay-panel.component.ts",
+          "inputs": 24,
+          "outputs": 3
+        },
+        {
+          "name": "PopoverComponent",
+          "kind": "Component",
+          "selector": "orc-popover",
+          "file": "projects/orc-ds/overlay-panel/overlay-panel.component.ts",
+          "inputs": 24,
+          "outputs": 0
+        }
+      ],
+      "inputs": 48,
+      "outputs": 3,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 584,
+      "specLines": 221,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 38540,
+        "gzip": 6253,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-popover": 8
+        }
+      }
+    },
+    {
+      "id": "overlay",
+      "name": "Overlay",
+      "category": "Overlay",
+      "status": "beta",
+      "description": "Superfície overlay genérica controlada por visibilidade.",
+      "dir": "overlay",
+      "declarations": [
+        {
+          "name": "OverlayComponent",
+          "kind": "Component",
+          "selector": "orc-overlay",
+          "file": "projects/orc-ds/p2/p2-overlay-components.ts",
+          "inputs": 12,
+          "outputs": 2
+        }
+      ],
+      "inputs": 12,
+      "outputs": 2,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 156,
+        "gzip": 152,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "paginator",
+      "name": "Paginator",
+      "category": "Navigation",
+      "status": "stable",
+      "dir": "paginator",
+      "declarations": [
+        {
+          "name": "PaginatorComponent",
+          "kind": "Component",
+          "selector": "orc-paginator, orc-pagination",
+          "file": "projects/orc-ds/paginator/paginator.component.ts",
+          "inputs": 44,
+          "outputs": 2
+        }
+      ],
+      "inputs": 44,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 5,
+      "srcLines": 1158,
+      "specLines": 696,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 66918,
+        "gzip": 9854,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-paginator": 3
+        }
+      }
+    },
+    {
+      "id": "panel-menu",
+      "name": "PanelMenu",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "O padrão fecha o painel anterior ao abrir outro.",
+      "dir": "panel-menu",
+      "declarations": [
+        {
+          "name": "PanelMenuComponent",
+          "kind": "Component",
+          "selector": "orc-panel-menu",
+          "file": "projects/orc-ds/panel-menu/panel-menu.component.ts",
+          "inputs": 11,
+          "outputs": 6
+        }
+      ],
+      "inputs": 11,
+      "outputs": 6,
+      "primengOutputs": 5,
+      "deprecatedInputsApprox": 1,
+      "srcLines": 486,
+      "specLines": 157,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 36285,
+        "gzip": 5122,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/panelmenu"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "panel",
+      "name": "Panel",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Contêiner com cabeçalho e corpo, opcionalmente recolhível.",
+      "dir": "panel",
+      "declarations": [
+        {
+          "name": "PanelComponent",
+          "kind": "Component",
+          "selector": "orc-panel",
+          "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+          "inputs": 10,
+          "outputs": 2
+        }
+      ],
+      "inputs": 10,
+      "outputs": 2,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 152,
+        "gzip": 150,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "password",
+      "name": "Password",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Campo de senha com alternância de visibilidade da máscara.",
+      "dir": "password",
+      "declarations": [
+        {
+          "name": "PasswordComponent",
+          "kind": "Component",
+          "selector": "orc-password, orc-input-password",
+          "file": "projects/orc-ds/password/password.component.ts",
+          "inputs": 36,
+          "outputs": 3
+        }
+      ],
+      "inputs": 36,
+      "outputs": 3,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 3,
+      "srcLines": 317,
+      "specLines": 139,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 33636,
+        "gzip": 5269,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "pick-list",
+      "name": "PickList",
+      "category": "Data Display",
+      "status": "beta",
+      "dir": "pick-list",
+      "declarations": [
+        {
+          "name": "PickListComponent",
+          "kind": "Component",
+          "selector": "orc-pick-list",
+          "file": "projects/orc-ds/pick-list/pick-list.component.ts",
+          "inputs": 31,
+          "outputs": 8
+        }
+      ],
+      "inputs": 31,
+      "outputs": 8,
+      "primengOutputs": 6,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 1098,
+      "specLines": 163,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 59929,
+        "gzip": 8363,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/picklist"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "popover",
+      "name": "Popover",
+      "category": "Overlay",
+      "status": "stable",
+      "description": "Conteúdo contextual posicionado junto ao gatilho.",
+      "dir": "popover",
+      "declarations": [],
+      "inputs": 0,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 8,
+      "specLines": 311,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 167,
+        "gzip": 158,
+        "deps": ["overlay-panel"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 2,
+        "tags": {}
+      }
+    },
+    {
+      "id": "portal",
+      "name": "Portal",
+      "category": "Utility",
+      "status": "beta",
+      "dir": "portal",
+      "declarations": [
+        {
+          "name": "PortalComponent",
+          "kind": "Component",
+          "selector": "orc-portal",
+          "file": "projects/orc-ds/p2/p2-portal-component.ts",
+          "inputs": 1,
+          "outputs": 0
+        }
+      ],
+      "inputs": 1,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 154,
+        "gzip": 151,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "progress",
+      "name": "Progress",
+      "category": "Feedback",
+      "status": "stable",
+      "dir": "progress",
+      "declarations": [
+        {
+          "name": "ProgressBarComponent",
+          "kind": "Component",
+          "selector": "orc-progress-bar",
+          "file": "projects/orc-ds/progress/progress-bar.component.ts",
+          "inputs": 22,
+          "outputs": 0
+        },
+        {
+          "name": "ProgressCircleComponent",
+          "kind": "Component",
+          "selector": "orc-progress-circle",
+          "file": "projects/orc-ds/progress/progress-circle.component.ts",
+          "inputs": 19,
+          "outputs": 0
+        },
+        {
+          "name": "ProgressSpinnerComponent",
+          "kind": "Component",
+          "selector": "orc-progress-spinner",
+          "file": "projects/orc-ds/progress/progress-spinner.component.ts",
+          "inputs": 9,
+          "outputs": 0
+        }
+      ],
+      "inputs": 50,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 976,
+      "specLines": 506,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 62097,
+        "gzip": 7941,
+        "deps": []
+      },
+      "aliasEntryPoints": [
+        "@ciag/orchestra/progress-bar",
+        "@ciag/orchestra/progress-spinner"
+      ],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-progress-bar": 15
+        }
+      }
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "category": "Inputs",
+      "status": "stable",
+      "description": "Seleção exclusiva entre opções de um grupo.",
+      "dir": "radio",
+      "declarations": [
+        {
+          "name": "RadioButtonComponent",
+          "kind": "Component",
+          "selector": "orc-radio-button",
+          "file": "projects/orc-ds/radio/radio-button.component.ts",
+          "inputs": 15,
+          "outputs": 4
+        },
+        {
+          "name": "RadioGroupComponent",
+          "kind": "Component",
+          "selector": "orc-radio-group",
+          "file": "projects/orc-ds/radio/radio-group.component.ts",
+          "inputs": 9,
+          "outputs": 1
+        }
+      ],
+      "inputs": 24,
+      "outputs": 5,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 786,
+      "specLines": 400,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 37448,
+        "gzip": 5992,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/radio-button"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "rating",
+      "name": "Rating",
+      "category": "Inputs",
+      "status": "stable",
+      "dir": "rating",
+      "declarations": [
+        {
+          "name": "RatingComponent",
+          "kind": "Component",
+          "selector": "orc-rating",
+          "file": "projects/orc-ds/rating/rating.component.ts",
+          "inputs": 21,
+          "outputs": 4
+        }
+      ],
+      "inputs": 21,
+      "outputs": 4,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 528,
+      "specLines": 100,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 30237,
+        "gzip": 5282,
+        "deps": ["tooltip"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "scroll-area",
+      "name": "Scroll Area",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Rolagem e sombras no eixo vertical.",
+      "dir": "scroll-area",
+      "declarations": [
+        {
+          "name": "ScrollAreaComponent",
+          "kind": "Component",
+          "selector": "orc-scroll-area",
+          "file": "projects/orc-ds/scroll-area/scroll-area.component.ts",
+          "inputs": 5,
+          "outputs": 1
+        }
+      ],
+      "inputs": 5,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 349,
+      "specLines": 341,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 16328,
+        "gzip": 3153,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "scroll-panel",
+      "name": "Scroll Panel",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Painel com rolagem própria e altura controlada.",
+      "dir": "scroll-panel",
+      "declarations": [
+        {
+          "name": "ScrollPanelComponent",
+          "kind": "Component",
+          "selector": "orc-scroll-panel",
+          "file": "projects/orc-ds/p2/p2-dock-scroll-components.ts",
+          "inputs": 7,
+          "outputs": 1
+        }
+      ],
+      "inputs": 7,
+      "outputs": 1,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 165,
+        "gzip": 158,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/scrollpanel"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "scroll-top",
+      "name": "Scroll Top",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Botão flutuante que retorna ao topo após um limite de rolagem.",
+      "dir": "scroll-top",
+      "declarations": [
+        {
+          "name": "ScrollTopComponent",
+          "kind": "Component",
+          "selector": "orc-scroll-top",
+          "file": "projects/orc-ds/p2/p2-primeng-gap-components.ts",
+          "inputs": 12,
+          "outputs": 1
+        }
+      ],
+      "inputs": 12,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 161,
+        "gzip": 156,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/scrolltop"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "segmented-control",
+      "name": "Segmented Control",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Seleção compacta entre opções mutuamente exclusivas.",
+      "dir": "segmented-control",
+      "declarations": [
+        {
+          "name": "SegmentedControlComponent",
+          "kind": "Component",
+          "selector": "orc-segmented-control",
+          "file": "projects/orc-ds/segmented-control/segmented-control.component.ts",
+          "inputs": 9,
+          "outputs": 3
+        }
+      ],
+      "inputs": 9,
+      "outputs": 3,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 256,
+      "specLines": 139,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 13930,
+        "gzip": 3107,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 2,
+        "tags": {
+          "orc-segmented-control": 15
+        }
+      }
+    },
+    {
+      "id": "select-button",
+      "name": "Select Button",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Seleção única ou múltipla apresentada como grupo de botões.",
+      "dir": "select-button",
+      "declarations": [
+        {
+          "name": "SelectButtonComponent",
+          "kind": "Component",
+          "selector": "orc-select-button",
+          "file": "projects/orc-ds/select-button/select-button.component.ts",
+          "inputs": 17,
+          "outputs": 5
+        }
+      ],
+      "inputs": 17,
+      "outputs": 5,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 221,
+      "specLines": 204,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 22164,
+        "gzip": 4018,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/selectbutton"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "category": "Inputs",
+      "status": "stable",
+      "description": "Dropdown para seleção de uma ou múltiplas opções de uma lista.",
+      "dir": "select",
+      "declarations": [
+        {
+          "name": "OptionComponent",
+          "kind": "Component",
+          "selector": "orc-option",
+          "file": "projects/orc-ds/select/option.component.ts",
+          "inputs": 7,
+          "outputs": 0
+        },
+        {
+          "name": "SelectComponent",
+          "kind": "Component",
+          "selector": "orc-select",
+          "file": "projects/orc-ds/select/select.component.ts",
+          "inputs": 78,
+          "outputs": 17
+        }
+      ],
+      "inputs": 85,
+      "outputs": 17,
+      "primengOutputs": 11,
+      "deprecatedInputsApprox": 18,
+      "srcLines": 2000,
+      "specLines": 1344,
+      "specFiles": 3,
+      "usesCdk": true,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 118606,
+        "gzip": 17441,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 10,
+        "tags": {
+          "orc-option": 24,
+          "orc-select": 45
+        }
+      }
+    },
+    {
+      "id": "separator",
+      "name": "Separator",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Separador visual e semântico para seções de conteúdo.",
+      "dir": "separator",
+      "declarations": [
+        {
+          "name": "SeparatorComponent",
+          "kind": "Component",
+          "selector": "orc-separator",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 2,
+          "outputs": 0
+        }
+      ],
+      "inputs": 2,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 160,
+        "gzip": 152,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "category": "Feedback",
+      "status": "stable",
+      "description": "Placeholders animados para indicar conteúdo em carregamento.",
+      "dir": "skeleton",
+      "declarations": [
+        {
+          "name": "SkeletonComponent",
+          "kind": "Component",
+          "selector": "orc-skeleton",
+          "file": "projects/orc-ds/skeleton/skeleton.component.ts",
+          "inputs": 12,
+          "outputs": 0
+        }
+      ],
+      "inputs": 12,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 251,
+      "specLines": 44,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 13386,
+        "gzip": 2491,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-skeleton": 1
+        }
+      }
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "category": "Inputs",
+      "status": "stable",
+      "dir": "slider",
+      "declarations": [
+        {
+          "name": "SliderComponent",
+          "kind": "Component",
+          "selector": "orc-slider",
+          "file": "projects/orc-ds/slider/slider.component.ts",
+          "inputs": 29,
+          "outputs": 4
+        }
+      ],
+      "inputs": 29,
+      "outputs": 4,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 1033,
+      "specLines": 221,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 53817,
+        "gzip": 8412,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-slider": 1
+        }
+      }
+    },
+    {
+      "id": "space",
+      "name": "Space",
+      "category": "Layout",
+      "status": "beta",
+      "description": "Utilitário de espaçamento em linha ou coluna.",
+      "dir": "space",
+      "declarations": [
+        {
+          "name": "SpaceComponent",
+          "kind": "Component",
+          "selector": "orc-space",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 3,
+          "outputs": 0
+        }
+      ],
+      "inputs": 3,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 152,
+        "gzip": 150,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "speed-dial",
+      "name": "Speed Dial",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Ações secundárias agrupadas a partir de um gatilho flutuante.",
+      "dir": "speed-dial",
+      "declarations": [
+        {
+          "name": "SpeedDialComponent",
+          "kind": "Component",
+          "selector": "orc-speed-dial",
+          "file": "projects/orc-ds/speed-dial/speed-dial.component.ts",
+          "inputs": 16,
+          "outputs": 6
+        }
+      ],
+      "inputs": 16,
+      "outputs": 6,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 388,
+      "specLines": 122,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 29807,
+        "gzip": 5149,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/speeddial"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "spinner",
+      "name": "Spinner / Loading",
+      "category": "Feedback",
+      "status": "stable",
+      "description": "Indicador de carregamento animado para estados assíncronos.",
+      "dir": "spinner",
+      "declarations": [
+        {
+          "name": "LoadingSpinnerComponent",
+          "kind": "Component",
+          "selector": "orc-spinner",
+          "file": "projects/orc-ds/spinner/spinner.component.ts",
+          "inputs": 15,
+          "outputs": 1
+        }
+      ],
+      "inputs": 15,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 396,
+      "specLines": 53,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 21338,
+        "gzip": 3623,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 4,
+        "tags": {
+          "orc-spinner": 14
+        }
+      }
+    },
+    {
+      "id": "split-button",
+      "name": "Split Button",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Botão de ação com menu de ações secundárias acoplado.",
+      "dir": "split-button",
+      "declarations": [
+        {
+          "name": "SplitButtonComponent",
+          "kind": "Component",
+          "selector": "orc-split-button",
+          "file": "projects/orc-ds/split-button/split-button.component.ts",
+          "inputs": 22,
+          "outputs": 6
+        }
+      ],
+      "inputs": 22,
+      "outputs": 6,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 1,
+      "srcLines": 318,
+      "specLines": 175,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 30320,
+        "gzip": 5039,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/splitbutton"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "splitter",
+      "name": "Splitter",
+      "category": "Layout",
+      "status": "beta",
+      "dir": "splitter",
+      "declarations": [
+        {
+          "name": "SplitterComponent",
+          "kind": "Component",
+          "selector": "orc-splitter",
+          "file": "projects/orc-ds/p2/p2-splitter-component.ts",
+          "inputs": 5,
+          "outputs": 4
+        }
+      ],
+      "inputs": 5,
+      "outputs": 4,
+      "primengOutputs": 4,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 3,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 158,
+        "gzip": 151,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "stack",
+      "name": "Stack",
+      "category": "Layout",
+      "status": "beta",
+      "dir": "stack",
+      "declarations": [
+        {
+          "name": "StackComponent",
+          "kind": "Component",
+          "selector": "orc-stack",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 4,
+          "outputs": 0
+        }
+      ],
+      "inputs": 4,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 152,
+        "gzip": 150,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "stepper",
+      "name": "Stepper",
+      "category": "Navigation",
+      "status": "beta",
+      "dir": "stepper",
+      "declarations": [
+        {
+          "name": "StepperComponent",
+          "kind": "Component",
+          "selector": "orc-stepper, orc-steps",
+          "file": "projects/orc-ds/stepper/stepper.component.ts",
+          "inputs": 15,
+          "outputs": 3
+        }
+      ],
+      "inputs": 15,
+      "outputs": 3,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 1,
+      "srcLines": 710,
+      "specLines": 305,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 38232,
+        "gzip": 5906,
+        "deps": ["progress"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/steps"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "switch",
+      "name": "Switch / Toggle",
+      "category": "Inputs",
+      "status": "stable",
+      "description": "Alternância de estado binário (on/off) com animação fluida.",
+      "dir": "switch",
+      "declarations": [
+        {
+          "name": "SwitchComponent",
+          "kind": "Component",
+          "selector": "orc-switch, orc-toggle-switch, orc-toggle",
+          "file": "projects/orc-ds/switch/switch.component.ts",
+          "inputs": 24,
+          "outputs": 4
+        }
+      ],
+      "inputs": 24,
+      "outputs": 4,
+      "primengOutputs": 3,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 538,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 31401,
+        "gzip": 4675,
+        "deps": []
+      },
+      "aliasEntryPoints": [
+        "@ciag/orchestra/inputswitch",
+        "@ciag/orchestra/toggle-switch"
+      ],
+      "consumer": {
+        "imports": 1,
+        "tags": {
+          "orc-switch": 1
+        }
+      }
+    },
+    {
+      "id": "tab-menu",
+      "name": "Tab Menu",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "activeItem acompanha o estado selecionado.",
+      "dir": "tab-menu",
+      "declarations": [
+        {
+          "name": "TabMenuComponent",
+          "kind": "Component",
+          "selector": "orc-tab-menu",
+          "file": "projects/orc-ds/tab-menu/tab-menu.component.ts",
+          "inputs": 8,
+          "outputs": 1
+        }
+      ],
+      "inputs": 8,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 1,
+      "srcLines": 237,
+      "specLines": 227,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 13364,
+        "gzip": 3076,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/tabmenu"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "category": "Data Display",
+      "status": "stable",
+      "description": "Tabela de dados com ordenação, seleção e paginação integrada.",
+      "dir": "table",
+      "declarations": [
+        {
+          "name": "CellDefDirective",
+          "kind": "Directive",
+          "selector": "[orcCellDef], [appCellDef]",
+          "file": "projects/orc-ds/table/table-cell-def.directive.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "HeaderCellDefDirective",
+          "kind": "Directive",
+          "selector": "[orcHeaderCellDef], [appHeaderCellDef]",
+          "file": "projects/orc-ds/table/table-cell-def.directive.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "ColumnDirective",
+          "kind": "Directive",
+          "selector": "orc-column, app-column",
+          "file": "projects/orc-ds/table/table-column.directive.ts",
+          "inputs": 5,
+          "outputs": 0
+        },
+        {
+          "name": "TableFooterDirective",
+          "kind": "Directive",
+          "selector": "[orcTableFooter]",
+          "file": "projects/orc-ds/table/table-slots.directive.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "TableRowExpansionDirective",
+          "kind": "Directive",
+          "selector": "[orcRowExpansion]",
+          "file": "projects/orc-ds/table/table-slots.directive.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "TableComponent",
+          "kind": "Component",
+          "selector": "orc-table",
+          "file": "projects/orc-ds/table/table.component.ts",
+          "inputs": 103,
+          "outputs": 26
+        }
+      ],
+      "inputs": 108,
+      "outputs": 26,
+      "primengOutputs": 18,
+      "deprecatedInputsApprox": 27,
+      "srcLines": 1738,
+      "specLines": 1330,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 123366,
+        "gzip": 18880,
+        "deps": ["checkbox", "paginator", "skeleton", "internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 2,
+        "tags": {
+          "orc-column": 31,
+          "orc-table": 7
+        }
+      }
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "category": "Navigation",
+      "status": "stable",
+      "description": "Organização de conteúdo em abas com animação de indicador.",
+      "dir": "tabs",
+      "declarations": [
+        {
+          "name": "TabGroupComponent",
+          "kind": "Component",
+          "selector": "orc-tab-group",
+          "file": "projects/orc-ds/tabs/tab-group.component.ts",
+          "inputs": 18,
+          "outputs": 4
+        },
+        {
+          "name": "TabComponent",
+          "kind": "Component",
+          "selector": "orc-tab",
+          "file": "projects/orc-ds/tabs/tab.component.ts",
+          "inputs": 15,
+          "outputs": 0
+        }
+      ],
+      "inputs": 33,
+      "outputs": 4,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 1087,
+      "specLines": 556,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 61912,
+        "gzip": 9259,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/tabview"],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-tab-group": 1,
+          "orc-tab": 2
+        }
+      }
+    },
+    {
+      "id": "tag",
+      "name": "Tag",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Rótulo semântico removível para entidades e filtros.",
+      "dir": "tag",
+      "declarations": [
+        {
+          "name": "TagComponent",
+          "kind": "Component",
+          "selector": "orc-tag",
+          "file": "projects/orc-ds/tag/tag.component.ts",
+          "inputs": 10,
+          "outputs": 2
+        }
+      ],
+      "inputs": 10,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 164,
+      "specLines": 91,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 9788,
+        "gzip": 1997,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 2,
+        "tags": {
+          "orc-tag": 26
+        }
+      }
+    },
+    {
+      "id": "tags-input",
+      "name": "Tags Input",
+      "category": "Inputs",
+      "status": "beta",
+      "dir": "tags-input",
+      "declarations": [
+        {
+          "name": "TagsInputComponent",
+          "kind": "Component",
+          "selector": "orc-tags-input, orc-chips, orc-input-chips",
+          "file": "projects/orc-ds/tags-input/tags-input.component.ts",
+          "inputs": 21,
+          "outputs": 8
+        }
+      ],
+      "inputs": 21,
+      "outputs": 8,
+      "primengOutputs": 6,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 463,
+      "specLines": 236,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 33883,
+        "gzip": 5819,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "terminal",
+      "name": "Terminal",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Mensagem de boas-vindas e prompt fornecidos pelo app.",
+      "dir": "terminal",
+      "declarations": [
+        {
+          "name": "TerminalComponent",
+          "kind": "Component",
+          "selector": "orc-terminal",
+          "file": "projects/orc-ds/terminal/terminal.component.ts",
+          "inputs": 7,
+          "outputs": 2
+        }
+      ],
+      "inputs": 7,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 154,
+      "specLines": 80,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 14661,
+        "gzip": 2825,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "text",
+      "name": "Text",
+      "category": "Typography",
+      "status": "beta",
+      "description": "Primitiva textual com escala, tom muted e truncamento.",
+      "dir": "text",
+      "declarations": [
+        {
+          "name": "TextComponent",
+          "kind": "Component",
+          "selector": "orc-text",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 3,
+          "outputs": 0
+        }
+      ],
+      "inputs": 3,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 150,
+        "gzip": 149,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "tiered-menu",
+      "name": "TieredMenu",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Menu visível com hierarquia e foco roving.",
+      "dir": "tiered-menu",
+      "declarations": [
+        {
+          "name": "TieredMenuComponent",
+          "kind": "Component",
+          "selector": "orc-tiered-menu",
+          "file": "projects/orc-ds/tiered-menu/tiered-menu.component.ts",
+          "inputs": 18,
+          "outputs": 6
+        }
+      ],
+      "inputs": 18,
+      "outputs": 6,
+      "primengOutputs": 5,
+      "deprecatedInputsApprox": 5,
+      "srcLines": 601,
+      "specLines": 150,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 43289,
+        "gzip": 6345,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/tieredmenu"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Eventos sequenciais com estados, datas e orientação adaptável.",
+      "dir": "timeline",
+      "declarations": [
+        {
+          "name": "TimelineComponent",
+          "kind": "Component",
+          "selector": "orc-timeline",
+          "file": "projects/orc-ds/timeline/timeline.component.ts",
+          "inputs": 9,
+          "outputs": 2
+        }
+      ],
+      "inputs": 9,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 276,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 16944,
+        "gzip": 2752,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "toast",
+      "name": "Toast / Notifications",
+      "category": "Feedback",
+      "status": "stable",
+      "dir": "toast",
+      "declarations": [
+        {
+          "name": "ToastContainerComponent",
+          "kind": "Component",
+          "selector": "orc-toast-container",
+          "file": "projects/orc-ds/toast/toast-container.component.ts",
+          "inputs": 10,
+          "outputs": 1
+        },
+        {
+          "name": "ToastComponent",
+          "kind": "Component",
+          "selector": "orc-toast",
+          "file": "projects/orc-ds/toast/toast.component.ts",
+          "inputs": 1,
+          "outputs": 4
+        },
+        {
+          "name": "ToastService",
+          "kind": "Injectable",
+          "selector": "",
+          "file": "projects/orc-ds/toast/toast.service.ts",
+          "inputs": 0,
+          "outputs": 0
+        }
+      ],
+      "inputs": 11,
+      "outputs": 5,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 1302,
+      "specLines": 210,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 53612,
+        "gzip": 8556,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {
+          "orc-toast-container": 1
+        }
+      }
+    },
+    {
+      "id": "toggle-button",
+      "name": "Toggle Button",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Botão com estado pressionado e rótulos alternáveis.",
+      "dir": "toggle-button",
+      "declarations": [
+        {
+          "name": "ToggleButtonComponent",
+          "kind": "Component",
+          "selector": "orc-toggle-button",
+          "file": "projects/orc-ds/toggle-button/toggle-button.component.ts",
+          "inputs": 16,
+          "outputs": 3
+        }
+      ],
+      "inputs": 16,
+      "outputs": 3,
+      "primengOutputs": 2,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 140,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 18695,
+        "gzip": 3273,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/togglebutton"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "toolbar",
+      "name": "Toolbar",
+      "category": "Navigation",
+      "status": "beta",
+      "description": "Ações agrupadas com navegação roving por teclado.",
+      "dir": "toolbar",
+      "declarations": [
+        {
+          "name": "ToolbarItemDirective",
+          "kind": "Directive",
+          "selector": "[orcToolbarItem]",
+          "file": "projects/orc-ds/toolbar/toolbar.component.ts",
+          "inputs": 1,
+          "outputs": 1
+        },
+        {
+          "name": "ToolbarComponent",
+          "kind": "Component",
+          "selector": "orc-toolbar",
+          "file": "projects/orc-ds/toolbar/toolbar.component.ts",
+          "inputs": 5,
+          "outputs": 0
+        }
+      ],
+      "inputs": 6,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 234,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 11681,
+        "gzip": 2786,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "category": "Overlay",
+      "status": "stable",
+      "description": "Dica contextual flutuante ativada por hover ou foco.",
+      "dir": "tooltip",
+      "declarations": [
+        {
+          "name": "TooltipComponent",
+          "kind": "Component",
+          "selector": "orc-tooltip-overlay",
+          "file": "projects/orc-ds/tooltip/tooltip.component.ts",
+          "inputs": 0,
+          "outputs": 0
+        },
+        {
+          "name": "TooltipDirective",
+          "kind": "Directive",
+          "selector": "[orcTooltip]",
+          "file": "projects/orc-ds/tooltip/tooltip.directive.ts",
+          "inputs": 24,
+          "outputs": 0
+        }
+      ],
+      "inputs": 24,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 1,
+      "srcLines": 662,
+      "specLines": 211,
+      "specFiles": 2,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 31655,
+        "gzip": 5837,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 1,
+        "tags": {}
+      }
+    },
+    {
+      "id": "tree-select",
+      "name": "Tree Select",
+      "category": "Inputs",
+      "status": "beta",
+      "description": "Seleção em uma hierarquia expansível.",
+      "dir": "tree-select",
+      "declarations": [
+        {
+          "name": "TreeSelectComponent",
+          "kind": "Component",
+          "selector": "orc-tree-select",
+          "file": "projects/orc-ds/tree-select/tree-select.component.ts",
+          "inputs": 46,
+          "outputs": 11
+        }
+      ],
+      "inputs": 46,
+      "outputs": 11,
+      "primengOutputs": 9,
+      "deprecatedInputsApprox": 8,
+      "srcLines": 1063,
+      "specLines": 443,
+      "specFiles": 2,
+      "usesCdk": true,
+      "implementsCva": true,
+      "chunk": {
+        "raw": 76241,
+        "gzip": 11050,
+        "deps": ["icon", "internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/treeselect"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "tree-table",
+      "name": "TreeTable",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Linhas expandidas preservam aria-level e aria-expanded.",
+      "dir": "tree-table",
+      "declarations": [
+        {
+          "name": "TreeTableComponent",
+          "kind": "Component",
+          "selector": "orc-tree-table",
+          "file": "projects/orc-ds/tree-table/tree-table.component.ts",
+          "inputs": 76,
+          "outputs": 18
+        }
+      ],
+      "inputs": 76,
+      "outputs": 18,
+      "primengOutputs": 10,
+      "deprecatedInputsApprox": 28,
+      "srcLines": 888,
+      "specLines": 161,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 74244,
+        "gzip": 11016,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/treetable"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "tree-view",
+      "name": "Tree View",
+      "category": "Data Display",
+      "status": "stable",
+      "description": "Hierarquia expansível com navegação por teclado.",
+      "dir": "tree-view",
+      "declarations": [
+        {
+          "name": "TreeViewComponent",
+          "kind": "Component",
+          "selector": "orc-tree-view",
+          "file": "projects/orc-ds/tree-view/tree-view.component.ts",
+          "inputs": 4,
+          "outputs": 1
+        }
+      ],
+      "inputs": 4,
+      "outputs": 1,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 501,
+      "specLines": 384,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 23143,
+        "gzip": 4821,
+        "deps": []
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "tree",
+      "name": "Tree",
+      "category": "Data Display",
+      "status": "beta",
+      "description": "Seleciona um nó por vez.",
+      "dir": "tree",
+      "declarations": [
+        {
+          "name": "TreeComponent",
+          "kind": "Component",
+          "selector": "orc-tree",
+          "file": "projects/orc-ds/tree/tree.component.ts",
+          "inputs": 39,
+          "outputs": 16
+        }
+      ],
+      "inputs": 39,
+      "outputs": 16,
+      "primengOutputs": 11,
+      "deprecatedInputsApprox": 13,
+      "srcLines": 539,
+      "specLines": 156,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 47609,
+        "gzip": 7358,
+        "deps": ["internal"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "typography",
+      "name": "Typography",
+      "category": "Typography",
+      "status": "beta",
+      "description": "Primitiva tipográfica com escala, peso e truncamento.",
+      "dir": "typography",
+      "declarations": [
+        {
+          "name": "TypographyComponent",
+          "kind": "Component",
+          "selector": "orc-typography",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 5,
+          "outputs": 0
+        }
+      ],
+      "inputs": 5,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 162,
+        "gzip": 153,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "virtual-scroller",
+      "name": "Virtual Scroller",
+      "category": "Utility",
+      "status": "beta",
+      "description": "Viewport eficiente para listas grandes com overscan e range.",
+      "dir": "virtual-scroller",
+      "declarations": [
+        {
+          "name": "VirtualScrollerComponent",
+          "kind": "Component",
+          "selector": "orc-virtual-scroller, orc-scroller",
+          "file": "projects/orc-ds/virtual-scroller/virtual-scroller.component.ts",
+          "inputs": 9,
+          "outputs": 2
+        }
+      ],
+      "inputs": 9,
+      "outputs": 2,
+      "primengOutputs": 1,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 147,
+      "specLines": 116,
+      "specFiles": 1,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 16352,
+        "gzip": 2882,
+        "deps": []
+      },
+      "aliasEntryPoints": ["@ciag/orchestra/scroller"],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "visually-hidden",
+      "name": "Visually Hidden",
+      "category": "Utility",
+      "status": "beta",
+      "dir": "visually-hidden",
+      "declarations": [
+        {
+          "name": "VisuallyHiddenComponent",
+          "kind": "Component",
+          "selector": "orc-visually-hidden",
+          "file": "projects/orc-ds/p2/p2-layout-components.ts",
+          "inputs": 0,
+          "outputs": 0
+        }
+      ],
+      "inputs": 0,
+      "outputs": 0,
+      "primengOutputs": 0,
+      "deprecatedInputsApprox": 0,
+      "srcLines": 2,
+      "specLines": 0,
+      "specFiles": 0,
+      "usesCdk": false,
+      "implementsCva": false,
+      "chunk": {
+        "raw": 171,
+        "gzip": 161,
+        "deps": ["p2"]
+      },
+      "aliasEntryPoints": [],
+      "consumer": {
+        "imports": 0,
+        "tags": {}
+      }
+    }
+  ]
+}
