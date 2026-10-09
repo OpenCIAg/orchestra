@@ -11,15 +11,15 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { P2_SHARED_STYLES } from '@ciag/orchestra/internal';
+import { ORC_SHARED_STYLES } from '@ciag/orchestra/internal';
 
 let nextTagsInputId = 0;
 
 @Component({
-  selector: 'orc-tags-input, orc-chips, orc-input-chips',
+  selector: 'orc-tags-input',
   standalone: true,
   templateUrl: './tags-input.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './tags-input.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

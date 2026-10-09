@@ -13,15 +13,15 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   normalizeSize,
-  P2_SHARED_STYLES,
+  ORC_SHARED_STYLES,
   SizeInput,
 } from '@ciag/orchestra/internal';
 
 @Component({
-  selector: 'orc-password, orc-input-password',
+  selector: 'orc-password',
   standalone: true,
   templateUrl: './password.component.html',
-  styles: [P2_SHARED_STYLES],
+  styles: [ORC_SHARED_STYLES],
   styleUrl: './password.component.scss',
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,

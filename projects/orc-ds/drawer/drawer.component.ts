@@ -25,7 +25,7 @@ import {
 export type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 
 @Component({
-  selector: 'orc-drawer, orc-sidebar',
+  selector: 'orc-drawer',
   standalone: true,
   templateUrl: './drawer.component.html',
   styleUrl: './drawer.component.scss',

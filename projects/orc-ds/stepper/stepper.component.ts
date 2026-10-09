@@ -21,7 +21,7 @@ import {
 } from './stepper.types';
 
 @Component({
-  selector: 'orc-stepper, orc-steps',
+  selector: 'orc-stepper',
   standalone: true,
   imports: [CommonModule, ProgressBarComponent],
   templateUrl: './stepper.component.html',

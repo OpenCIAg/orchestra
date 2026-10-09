@@ -32,7 +32,7 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'fullScreen' | 'custom';
 export type ModalStatus = 'neutral' | 'danger';
 
 @Component({
-  selector: 'orc-modal, orc-dialog, orc-dynamic-dialog',
+  selector: 'orc-modal',
   standalone: true,
   imports: [CommonModule, ButtonComponent],
   templateUrl: './modal.component.html',

@@ -1,7 +1,7 @@
 import { Directive, TemplateRef, inject } from '@angular/core';
 
 @Directive({
-  selector: '[orcCellDef], [appCellDef]',
+  selector: '[orcCellDef]',
   standalone: true,
 })
 export class CellDefDirective {
@@ -9,7 +9,7 @@ export class CellDefDirective {
 }
 
 @Directive({
-  selector: '[orcHeaderCellDef], [appHeaderCellDef]',
+  selector: '[orcHeaderCellDef]',
   standalone: true,
 })
 export class HeaderCellDefDirective {

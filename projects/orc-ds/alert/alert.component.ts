@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import { AlertSeverity, AlertVariant } from './alert.types';
 
 @Component({
-  selector: 'orc-alert, orc-message',
+  selector: 'orc-alert',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './alert.component.html',

@@ -15,7 +15,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { P2_SHARED_VARS } from '@ciag/orchestra/internal';
+import { ORC_SHARED_VARS } from '@ciag/orchestra/internal';
 
 export interface GalleryImage {
   src: string;
@@ -24,10 +24,10 @@ export interface GalleryImage {
   title?: string;
 }
 @Component({
-  selector: 'orc-galleria, orc-gallery',
+  selector: 'orc-galleria',
   standalone: true,
   templateUrl: './galleria.component.html',
-  styles: [P2_SHARED_VARS],
+  styles: [ORC_SHARED_VARS],
   styleUrl: './galleria.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -11,10 +11,8 @@ import {
 } from './table-cell-def.directive';
 
 @Directive({
-  // `app-column` is a kept public binding alias.
-  // TODO(orchestra-overhaul #2): drop the alias when the overhaul retires it.
   // eslint-disable-next-line @angular-eslint/directive-selector
-  selector: 'orc-column, app-column',
+  selector: 'orc-column',
   standalone: true,
 })
 export class ColumnDirective {

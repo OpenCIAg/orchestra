@@ -42,7 +42,7 @@ const ENGLISH_LABELS = {
 };
 
 @Component({
-  selector: 'orc-paginator, orc-pagination',
+  selector: 'orc-paginator',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './paginator.component.html',

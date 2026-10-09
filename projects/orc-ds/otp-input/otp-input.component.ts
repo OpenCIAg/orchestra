@@ -22,7 +22,7 @@ import { OtpSeparatorComponent } from './otp-separator.component';
 import { OtpGroupComponent } from './otp-group.component';
 
 @Component({
-  selector: 'orc-otp-input, orc-input-otp',
+  selector: 'orc-otp-input',
   standalone: true,
   imports: [
     CommonModule,

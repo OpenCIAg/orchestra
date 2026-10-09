@@ -22,7 +22,7 @@ import { applyMask, cleanMask } from './input-mask.util';
 let nextInputUniqueId = 0;
 
 @Component({
-  selector: 'orc-input, orc-input-text',
+  selector: 'orc-input',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './input.component.html',
