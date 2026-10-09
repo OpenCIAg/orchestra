@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
-  CATALOG_ID_FAMILY_ALIASES,
   buildFamilyIndex,
   deriveFamilyId,
   evaluateCoverage,
@@ -38,25 +37,14 @@ test('deriveFamilyId resolves nested sub-component directories to the family roo
   );
 });
 
-test('deriveFamilyId joins sub-component selectors to their documented family', () => {
+test('deriveFamilyId joins sub-components that live in the family directory', () => {
   assert.equal(
     deriveFamilyId({
       name: 'InputGroupAddonComponent',
-      file: 'projects/orc-ds/p2/p2-input-gap-components.ts',
+      file: 'projects/orc-ds/input-group/input-group-addon.component.ts',
       selector: 'orc-input-group-addon',
     }),
     'input-group',
-  );
-});
-
-test('deriveFamilyId uses the first selector for p2 monolith components', () => {
-  assert.equal(
-    deriveFamilyId({
-      name: 'KnobComponent',
-      file: 'projects/orc-ds/p2/p2-org-knob-components.ts',
-      selector: 'orc-knob, orc-dial',
-    }),
-    'knob',
   );
 });
 
@@ -94,7 +82,7 @@ test('buildFamilyIndex groups every inventoried declaration by family', () => {
     },
     {
       name: 'KnobComponent',
-      file: 'projects/orc-ds/p2/p2-org-knob-components.ts',
+      file: 'projects/orc-ds/knob/knob.component.ts',
       selector: 'orc-knob',
     },
   ]);
@@ -115,7 +103,7 @@ test('evaluateCoverage reports families without catalog entries', () => {
       },
       {
         name: 'KnobComponent',
-        file: 'projects/orc-ds/p2/p2-org-knob-components.ts',
+        file: 'projects/orc-ds/knob/knob.component.ts',
         selector: 'orc-knob',
       },
     ],
@@ -125,31 +113,6 @@ test('evaluateCoverage reports families without catalog entries', () => {
   assert.deepEqual(result.missingCatalog, ['knob']);
   assert.equal(result.coveredComponents, 1);
   assert.equal(result.totalComponents, 2);
-});
-
-test('evaluateCoverage accepts catalog ids that alias a documented family', () => {
-  const declarations = [
-    {
-      name: 'FileUploaderComponent',
-      file: 'projects/orc-ds/file-uploader/file-uploader.component.ts',
-      selector: 'orc-file-uploader, orc-file-upload',
-    },
-  ];
-  const result = evaluateCoverage({
-    declarations,
-    catalogEntries: [
-      { id: 'file-uploader', route: '/components/file-uploader' },
-      { id: 'file-upload', route: '/components/file-upload' },
-    ],
-    routePaths: [
-      'components/file-uploader',
-      'components/file-upload',
-      'components/:componentId',
-    ],
-  });
-  assert.ok(CATALOG_ID_FAMILY_ALIASES['file-upload'] === 'file-uploader');
-  assert.deepEqual(result.missingCatalog, []);
-  assert.equal(result.coveredComponents, 1);
 });
 
 test('evaluateCoverage reports duplicate catalog ids and unmatched ids', () => {
@@ -219,7 +182,7 @@ test('evaluateCoverage reports zero problems for a fully covered fixture', () =>
       },
       {
         name: 'KnobComponent',
-        file: 'projects/orc-ds/p2/p2-org-knob-components.ts',
+        file: 'projects/orc-ds/knob/knob.component.ts',
         selector: 'orc-knob',
       },
     ],

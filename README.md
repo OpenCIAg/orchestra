@@ -2,7 +2,7 @@
 
 Enterprise Angular Component Framework and Design System built with Angular 19+, native Signals, ARIA semantics, visible focus, keyboard navigation, and tree-shakeable secondary entry points.
 
-Package versions follow strict semver with the Angular major as the semver major: `22.y.z`. Breaking changes land only at Angular-major boundaries (next: `23.0.0`).
+Package versions use the Angular major as the semver major: `22.y.z`. `22.4.0-rc.0` is a breaking release candidate of the Angular 22 line: it removes the compatibility surface (alias entry points, the `p2` tier and the removed families listed in [`docs/overhaul/DECISOES.md`](docs/overhaul/DECISOES.md)).
 
 The canonical documentation home is <https://orchestra.ciag.org.br> (component catalog, design guide, and the machine-readable [`llms.txt`](https://orchestra.ciag.org.br/llms.txt) / [`llms.md`](https://orchestra.ciag.org.br/llms.md) agent reference). The GitHub Pages deployment mirrors the same artifact.
 
@@ -100,17 +100,13 @@ export class ExampleComponent {
 | **General**      | Button, Icon Button                                                                                                                     | `@ciag/orchestra/button`                                                                                                                                                                                                                                                                                                                      |
 | **Data Entry**   | Input, Textarea, Select, Option, Checkbox, Radio, Switch, Slider, Rating, OTP Input, Chip Input, File Uploader, Date Picker, Form Field | `@ciag/orchestra/input`, `@ciag/orchestra/select`, `@ciag/orchestra/checkbox`, `@ciag/orchestra/radio`, `@ciag/orchestra/switch`, `@ciag/orchestra/slider`, `@ciag/orchestra/rating`, `@ciag/orchestra/otp-input`, `@ciag/orchestra/chip-input`, `@ciag/orchestra/file-uploader`, `@ciag/orchestra/date-picker`, `@ciag/orchestra/form-field` |
 | **Feedback**     | Alert, Toast, Spinner, Skeleton, Progress (Bar/Circle)                                                                                  | `@ciag/orchestra/alert`, `@ciag/orchestra/toast`, `@ciag/orchestra/spinner`, `@ciag/orchestra/skeleton`, `@ciag/orchestra/progress`                                                                                                                                                                                                           |
-| **Navigation**   | Breadcrumb, Stepper, Tabs, Paginator/Pagination, Dropdown/Menu                                                                          | `@ciag/orchestra/breadcrumb`, `@ciag/orchestra/stepper`, `@ciag/orchestra/tabs`, `@ciag/orchestra/paginator`, `@ciag/orchestra/pagination`, `@ciag/orchestra/dropdown`, `@ciag/orchestra/menu`                                                                                                                                                |
-| **Overlays**     | Modal/Dialog, Tooltip, Drawer, Popover                                                                                                  | `@ciag/orchestra/modal`, `@ciag/orchestra/dialog`, `@ciag/orchestra/tooltip`, `@ciag/orchestra/drawer`, `@ciag/orchestra/popover`                                                                                                                                                                                                             |
+| **Navigation**   | Breadcrumb, Stepper, Tabs, Paginator, Dropdown/Menu                                                                                     | `@ciag/orchestra/breadcrumb`, `@ciag/orchestra/stepper`, `@ciag/orchestra/tabs`, `@ciag/orchestra/paginator`, `@ciag/orchestra/dropdown`, `@ciag/orchestra/menu`                                                                                                                                                                              |
+| **Overlays**     | Modal, Tooltip, Drawer, Popover                                                                                                         | `@ciag/orchestra/modal`, `@ciag/orchestra/tooltip`, `@ciag/orchestra/drawer`, `@ciag/orchestra/popover`                                                                                                                                                                                                                                       |
 | **Data Display** | Table, Card, Avatar, Badge, Accordion, List, Tree View                                                                                  | `@ciag/orchestra/table`, `@ciag/orchestra/card`, `@ciag/orchestra/avatar`, `@ciag/orchestra/badge`, `@ciag/orchestra/accordion`, `@ciag/orchestra/list`, `@ciag/orchestra/tree-view`                                                                                                                                                          |
 
-### P0 Foundation coverage
+### Entry points
 
-The milestone tracker’s 28 P0 items are available. Existing APIs remain compatible while canonical aliases are also exported: `DialogComponent` maps to Modal and `PaginationComponent` maps to Paginator. `MenuComponent` has its own model/popup menu contract alongside Dropdown. New P0 primitives use semantic CSS variables and inherit `light`, `dark`, or system mode without component-specific theme configuration. The docs app exposes each P0 component on its own route, for example `/components/date-picker`, `/components/menu`, and `/components/tree-view`.
-
-### P1 Core coverage
-
-P1 adds the recurring composite controls from the milestone tracker: Autocomplete, Carousel, Chip, Collapsible, Color Picker, Divider, Form, Icon, Image, Number Input, Scroll Area, Timeline, Toolbar, plus canonical Text Input and Toggle entry points. Existing Progress, Rating, Stepper, Textarea, and Modal APIs remain compatible. The docs app documents each control independently, including its states and API, for example `/components/autocomplete`, `/components/carousel`, and `/components/toolbar`.
+Every family is imported from its own secondary entry point (`@ciag/orchestra/<family>`). There are no alias entry points, and the root `@ciag/orchestra` entry exports only the core surface (`@ciag/orchestra/core`).
 
 ### Material Symbols
 
@@ -120,11 +116,7 @@ P1 adds the recurring composite controls from the milestone tracker: Autocomplet
 <orc-icon name="pin" family="rounded" fill="filled" size="md" ariaLabel="Fixar" />
 ```
 
-Use `weight`, `grade`, and `opticalSize` for the remaining Material Symbols axes. The full generated name/search catalog is available from `@ciag/orchestra/icons` as `ORC_MATERIAL_SYMBOLS`. Because the font is remote, production CSPs must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are provided by Google under the [Apache License 2.0](https://developers.google.com/fonts/docs/material_symbols).
-
-### P2 Expansion coverage
-
-P2 adds the enterprise/data-heavy and advanced-layout components from the tracker as tree-shakeable secondary entry points: Button Group, Calendar, Code, Combobox, Dropdown, File Upload, Grid, Kbd, Link, Menubar, Splitter, Tag, Typography, Aspect Ratio, Container, Floating Action Button, Hover Card, Portal, Segmented Control, Separator, Stack, Visually Hidden, Box, Close Button, Context Menu, Data Table, Date Input, Empty State, Flex, Input Group, Listbox, Multi Select, Space, Speed Dial, Tags Input, Text, Tree Select, and Virtual Scroller. Existing OTP Input, Progress Bar/Circle, Radio, and file-uploader APIs remain compatible; the docs app exposes the new controls through `/components/p2-expansion` and individual `/components/<id>` routes.
+Use `weight`, `grade`, and `opticalSize` for the remaining Material Symbols axes. Because the font is remote, production CSPs must allow `fonts.googleapis.com` and `fonts.gstatic.com`. Material Symbols are provided by Google under the [Apache License 2.0](https://developers.google.com/fonts/docs/material_symbols).
 
 ---
 

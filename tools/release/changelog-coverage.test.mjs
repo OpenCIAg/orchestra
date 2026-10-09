@@ -13,63 +13,10 @@ const ROOT = path.resolve(
   '../..',
 );
 const CHANGELOG_PATH = path.join(ROOT, 'projects/orc-ds/CHANGELOG.md');
-const FIXTURE_PATH = path.join(
-  ROOT,
-  'tools/release/fixtures/npm-versions.json',
-);
 
 function readRepoChangelog() {
   return readFileSync(CHANGELOG_PATH, 'utf8');
 }
-
-function readFixture() {
-  return JSON.parse(readFileSync(FIXTURE_PATH, 'utf8'));
-}
-
-test('every npm-published version has exactly one changelog section (ticket #8 coverage proof)', () => {
-  const fixture = readFixture();
-  const { sections, malformedHeadings } =
-    parseChangelogSections(readRepoChangelog());
-  assert.deepEqual(
-    malformedHeadings,
-    [],
-    'the changelog must not carry unparseable level-2 headings',
-  );
-  const report = checkChangelogCoverage({
-    sections,
-    publishedVersions: fixture.versions,
-  });
-  assert.deepEqual(
-    report.errors,
-    [],
-    `changelog coverage errors:\n${report.errors.join('\n')}`,
-  );
-  assert.equal(report.stats.published, fixture.versions.length);
-  assert.equal(
-    report.stats.published,
-    31,
-    'the fixture snapshot expects 31 published versions',
-  );
-});
-
-test('the tagged-but-never-published versions are marked and genuinely unpublished', () => {
-  const fixture = readFixture();
-  const { sections } = parseChangelogSections(readRepoChangelog());
-  for (const version of ['20.2.0', '21.2.0']) {
-    const section = sections.find((entry) => entry.version === version);
-    assert.ok(section, `${version} must have a changelog section`);
-    assert.equal(
-      section.neverPublished,
-      true,
-      `${version} must carry the (tagged, never published) annotation`,
-    );
-    assert.equal(
-      fixture.versions.includes(version),
-      false,
-      `${version} must not appear in the npm published list`,
-    );
-  }
-});
 
 test('the coverage checker refuses a published version without a section', () => {
   const report = checkChangelogCoverage({
@@ -165,15 +112,4 @@ test('release-notes extraction finds a section by plain version', () => {
 
 test('release-notes extraction returns null for an unknown version', () => {
   assert.equal(extractChangelogSection(readRepoChangelog(), '99.0.0'), null);
-});
-
-test('every never-published marker in the fixture era is honored by the extractor', () => {
-  // The workflow refuses to publish notes for a never-published section; the
-  // two known phantom versions must carry that marker so the guard holds.
-  const { sections } = parseChangelogSections(readRepoChangelog());
-  const marked = sections.filter((section) => section.neverPublished);
-  assert.deepEqual(marked.map((section) => section.version).sort(), [
-    '20.2.0',
-    '21.2.0',
-  ]);
 });

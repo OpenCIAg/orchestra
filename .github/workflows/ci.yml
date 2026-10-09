@@ -37,17 +37,11 @@ jobs:
       - name: Test release tooling
         run: npm run test:tools
 
-      - name: Guard the 23.0.0 removal surface
-        run: npm run verify:deprecation-guard
-
       - name: Verify Angular compatibility line
         run: npm run verify:compatibility
 
       - name: Verify component inventory and documentation links
         run: npm run verify:docs
-
-      - name: Verify generated alias parity spec
-        run: npm run verify:alias-parity
 
       - name: Run library tests
         run: |

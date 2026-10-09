@@ -32,14 +32,12 @@ export default defineConfig([
     // Generated files — do not hand-edit or lint (regenerate instead):
     // icon catalog + manifest (tools/material-symbols/generate.mjs),
     // lifecycle spec (tools/quality/generate-lifecycle-tests.mjs),
-    // alias-parity spec (npm run generate:alias-parity),
     // docs component-api modules (npm run docs:generate-api).
     // NOTE: projects/docs/src/app/catalog/*.catalog.ts is HAND-WRITTEN and
     // stays linted.
-    'projects/orc-ds/icons/icon-catalog.ts',
-    'projects/orc-ds/icons/manifest.json',
+    'projects/docs/src/app/data/icon-catalog.ts',
+    'projects/docs/src/app/data/material-symbols.manifest.json',
     'projects/orc-ds/all-components-lifecycle.spec.ts',
-    'projects/orc-ds/alias-parity.generated.spec.ts',
     'projects/docs/src/app/generated/**',
   ]),
 

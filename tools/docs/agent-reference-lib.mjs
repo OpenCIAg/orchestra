@@ -91,20 +91,6 @@ export function entryPointDir(entryPoint) {
   return segments.join('/');
 }
 
-const REEXPORT_PATTERN = /export\s+(?:\*|\{[^}]*\})\s*from\s*'([^']+)'/;
-
-/** Classifies an entry point as a re-export alias (`{ target }`) or null. */
-export function aliasTarget(entryPoint) {
-  const match = entryPoint.exports.match(REEXPORT_PATTERN);
-  if (!match) return null;
-  const target = match[1];
-  if (target.startsWith('@ciag/orchestra/')) {
-    return target.slice('@ciag/orchestra/'.length);
-  }
-  if (target === '../p2') return 'p2';
-  return null;
-}
-
 /**
  * Resolves the documentation route id for an entry point: the catalog id when
  * one matches directly, otherwise the family id of the entry point's own
@@ -126,7 +112,7 @@ export function resolveSymbolFamily(symbolName, context) {
   try {
     return deriveFamilyId(declaration);
   } catch {
-    // Services and selector-less p2 declarations have no docs page.
+    // Services and selector-less declarations have no docs page.
     return null;
   }
 }
@@ -203,34 +189,8 @@ function renderApiSummary(members) {
 
 function renderEntryPointRow(entryPoint, context) {
   const name = entryPoint.name.replace(/^@ciag\/orchestra\//, '');
-  const target = aliasTarget(entryPoint);
-  if (target) {
-    // Re-export alias: name the target and link the canonical docs page when
-    // one of the re-exported symbols maps to a documented family.
-    const symbols = [...entryPoint.exports.matchAll(/export\s*\{([^}]*)\}/g)]
-      .flatMap((match) => match[1].split(','))
-      .map((symbol) => symbol.split(' as ').pop().trim())
-      .filter(Boolean);
-    const familyId = symbols
-      .map((symbol) => resolveSymbolFamily(symbol, context))
-      .find((family) => family !== null && family !== undefined);
-    const docs = docsUrl(context, familyId);
-    return {
-      name,
-      detail: `alias of \`${target}\`${symbols.length ? ` (${symbols.map((s) => `\`${s}\``).join(', ')})` : ''}`,
-      docs,
-    };
-  }
   const dir = entryPointDir(entryPoint);
   const declarations = dir ? (context.declarationsByDir.get(dir) ?? []) : [];
-  if (dir === 'p2') {
-    return {
-      name,
-      detail:
-        'every P2 expansion component; prefer the per-family entry points listed below',
-      docs: null,
-    };
-  }
   const selectors = declarations
     .filter(
       (declaration) => declaration.kind === 'Component' && declaration.selector,
@@ -253,7 +213,7 @@ function renderEntryPointRow(entryPoint, context) {
 const P2_OPTION_SHAPE = `The shared generic option shape is:
 
 \`\`\`ts
-export interface P2Option<T = string> {
+export interface OrcOption<T = string> {
   value: T;
   label: string;
   description?: string;

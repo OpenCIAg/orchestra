@@ -7,7 +7,7 @@ This document is the machine-oriented companion to [`llms.txt`](./llms.txt). It 
 ## 1. Operating rules for coding agents
 
 1. Search this reference and the interactive catalog before creating a new control. If a matching `orc-*` component exists, use it.
-2. Import the narrowest secondary entry point. Importing from `@ciag/orchestra/p2` is correct for the P2 primitives; importing from the component-specific entry point is preferred for stable components. The root `@ciag/orchestra` export is available when convenience is more important than bundle granularity.
+2. Import each family from its own secondary entry point (`@ciag/orchestra/<family>`). There are no alias entry points, and the root `@ciag/orchestra` entry exports only the core surface, not the families.
 3. Every consumer should be a standalone Angular component. Put library components and directives in the consumer component's `imports` array.
 4. Do not treat a component's public signal as a normal property. `input()` is read by the component; `model()` supports two-way binding; `output()` is an event. In templates use `[property]`, `[(property)]`, and `(eventName)` respectively.
 5. Keep the component's label and accessible name when adding custom visuals. A decorative icon is not a replacement for `label`, `ariaLabel`, `ariaLabelledby`, or `ariaDescribedby`.

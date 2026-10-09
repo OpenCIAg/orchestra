@@ -2,46 +2,23 @@
  * Docs coverage model shared by the CI gate (check-docs-coverage.mjs).
  *
  * A documentation "family" is the unit the docs app publishes per route:
- * the canonical component directory (button, card, progress) or, for the
- * p2 monolith files, the first selector token of the declaration. Every
+ * the canonical component directory (button, card, progress). Every
  * inventoried component class belongs to exactly one family, and every
  * family needs a catalog entry plus a resolvable documentation route.
  */
 
 /** Catalog ids that intentionally duplicate another family's entry. */
-export const CATALOG_ID_FAMILY_ALIASES = {
-  // FileUploaderComponent answers for both selectors; both routes stay.
-  'file-upload': 'file-uploader',
-};
+export const CATALOG_ID_FAMILY_ALIASES = {};
 
 /**
  * Declarations that share a directory with another public family.
  * Keyed by declaration name so future moves are caught by the gate.
  */
-const DECLARATION_FAMILY_OVERRIDES = new Map([
-  ['PopoverComponent', 'popover'],
-  // Addon is documented as part of the input-group family page.
-  ['InputGroupAddonComponent', 'input-group'],
-]);
-
-const kebabCase = (value) =>
-  value
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/[\s_]+/g, '-')
-    .toLowerCase();
+const DECLARATION_FAMILY_OVERRIDES = new Map([['PopoverComponent', 'popover']]);
 
 export function deriveFamilyId(declaration) {
   const overridden = DECLARATION_FAMILY_OVERRIDES.get(declaration.name);
   if (overridden) return overridden;
-  const firstSelector = (declaration.selector ?? '').split(',')[0].trim();
-  if (declaration.file.startsWith('projects/orc-ds/p2/')) {
-    if (!firstSelector) {
-      throw new Error(
-        `p2 declaration ${declaration.name} has no selector to derive a family id from`,
-      );
-    }
-    return kebabCase(firstSelector.replace(/^orc-/, ''));
-  }
   // Canonical components are grouped by their root library directory:
   // sub-components (card-header, file-item, otp-slot...) join the family.
   const segments = declaration.file.split('/');

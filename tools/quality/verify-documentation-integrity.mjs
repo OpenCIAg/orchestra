@@ -25,7 +25,6 @@ const unresolved = [];
 let qualityLocalLinks = 0;
 let publicGuideLocalLinks = 0;
 let sourceAnchors = 0;
-let p2SourceAnchors = 0;
 const linkPattern = /\[[^\]]*\]\((<[^>]+>|[^)]+)\)/g;
 
 for (const file of [...qualityFiles, publicGuide]) {
@@ -70,7 +69,6 @@ for (const file of [...qualityFiles, publicGuide]) {
         `${path.relative(root, file)} -> ${raw} (line out of range)`,
       );
     }
-    if (decodedPath.includes('/p2/')) p2SourceAnchors++;
   }
 }
 
@@ -248,7 +246,6 @@ const result = {
   localMarkdownLinks: qualityLocalLinks,
   publicLlmsLocalLinks: publicGuideLocalLinks,
   sourceAnchors,
-  p2SourceAnchors,
   ledgerRows: ledgerRows.length,
   inventoryComponents: components.length,
   directiveServiceLedgerRows: directiveServiceLedgerRows.length,

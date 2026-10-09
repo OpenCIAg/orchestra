@@ -99,8 +99,9 @@ space (see Historical notes).
 - Older backport lines receive fixes and security backports only, until their
   Angular major reaches end of life; then the line is retired (branch kept,
   dist-tag left pointing at its last release).
-- Breaking changes only at Angular-major boundaries; the `23.0.0` gate
-  retires the compatibility scaffolding with migration notes.
+- Breaking changes only at Angular-major boundaries, except the
+  `22.4.0-rc.0` overhaul, which already removed the compatibility scaffolding
+  (see `docs/overhaul/DECISOES.md`).
 - Consumers pin a line via the dist-tags: `latest` (current),
   `angular19`…`angular22` (backports). `npm view @ciag/orchestra dist-tags`
   shows the live map; `node tools/release/publish-guard.mjs --dry-run` prints

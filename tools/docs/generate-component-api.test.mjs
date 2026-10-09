@@ -139,7 +139,7 @@ const fixtureInventory = {
       name: 'KnobComponent',
       kind: 'Component',
       selector: 'orc-knob',
-      file: 'projects/orc-ds/p2/p2-org-knob-components.ts',
+      file: 'projects/orc-ds/knob/knob.component.ts',
       line: 40,
       inputs: [
         {

@@ -283,8 +283,8 @@ const inventory = {
   entryPoints,
   sourceFiles: sources.map(relative),
   generatedCatalogs: [
-    'projects/orc-ds/icons/icon-catalog.ts',
-    'projects/orc-ds/icons/manifest.json',
+    'projects/docs/src/app/data/icon-catalog.ts',
+    'projects/docs/src/app/data/material-symbols.manifest.json',
   ],
   staleDeclarations: files
     .filter((file) => file.endsWith('.d.ts'))
@@ -327,7 +327,7 @@ const markdown = [
   '',
   '## Secondary entry points',
   '',
-  'Aliases retain import compatibility; they do not each represent a distinct implementation.',
+  'One secondary entry point per family; the root `@ciag/orchestra` entry exports only `core`.',
   '',
   '| Entry point | Exports |',
   '| --- | --- |',

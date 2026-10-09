@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
-  aliasTarget,
   buildReferenceContext,
   docsUrl,
   entryPointDir,
@@ -37,15 +36,9 @@ const inventory = {
         "export * from './button.component';\nexport * from './icon-button.component';",
     },
     {
-      name: '@ciag/orchestra/toggle',
-      file: 'projects/orc-ds/toggle/index.ts',
-      exports:
-        "export { SwitchComponent as ToggleComponent } from '@ciag/orchestra/switch';",
-    },
-    {
-      name: '@ciag/orchestra/p2',
-      file: 'projects/orc-ds/p2/index.ts',
-      exports: "export * from './p2-form-components';",
+      name: '@ciag/orchestra/switch',
+      file: 'projects/orc-ds/switch/index.ts',
+      exports: "export * from './switch.component';",
     },
   ],
   declarations: [
@@ -103,17 +96,6 @@ test('entryPointDir extracts the library directory of an entry point', () => {
   assert.equal(entryPointDir({ file: 'other/place/index.ts' }), null);
 });
 
-test('aliasTarget detects package re-exports and p2 relative re-exports', () => {
-  assert.equal(aliasTarget(inventory.entryPoints[1]), 'switch');
-  assert.equal(
-    aliasTarget({
-      exports: "export { AspectRatioComponent } from '../p2';",
-    }),
-    'p2',
-  );
-  assert.equal(aliasTarget(inventory.entryPoints[0]), null);
-});
-
 test('resolveEntryPointFamily prefers the catalog id, then declarations', () => {
   const context = buildContext();
   assert.equal(
@@ -167,12 +149,12 @@ test('renderAgentReference renders hand-written narrative and generated bodies',
   assert.match(md, /^# Header/);
   assert.match(md, /Version 9\.9\.9 prose\./);
   assert.match(md, /## 4\. Complete package and entry-point map/);
-  assert.match(md, /exposes 3 secondary entry points/);
+  assert.match(md, /exposes 2 secondary entry points/);
   assert.match(
     md,
     /\| `button` \| `orc-button` \| \[interactive docs\]\(https:\/\/orchestra\.example\/components\/button\) \|/,
   );
-  assert.match(md, /\| `toggle` \| alias of `switch` \(`ToggleComponent`\) \|/);
+  assert.match(md, /\| `switch` \| `orc-switch` \|/);
   assert.match(md, /## 5\. Component reference/);
   assert.match(md, /### Button — `@ciag\/orchestra\/button`/);
   assert.match(md, /Hand-written button guidance\./);
