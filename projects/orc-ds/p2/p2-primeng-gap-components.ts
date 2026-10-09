@@ -181,8 +181,10 @@ export class FieldsetComponent {
 }
 
 /**
+ * Compatibility surface: FloatLabelComponent lives in the canonical
  * `float-label` directory; these re-exports keep every p2 entry symbol unchanged.
  */
+export { FloatLabelComponent } from '@ciag/orchestra/float-label';
 
 @Component({
   selector: 'orc-fluid',
@@ -259,7 +261,13 @@ export { SplitButtonComponent } from './p2-split-button-component';
       (blur)="onButtonBlur()"
       (click)="scroll()"
     >
-      <orc-icon [name]="icon()" />
+      @if (icon()) {
+        {{ icon() }}
+      } @else {
+        <orc-icon
+          [name]="direction() === 'up' ? 'arrow_upward' : 'arrow_downward'"
+        />
+      }
     </button>
   }`,
   styles: [
@@ -271,9 +279,11 @@ export { SplitButtonComponent } from './p2-split-button-component';
 export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
   readonly threshold = input(200);
   readonly target = input<'window' | 'parent'>('window');
+  /** `down` jumps to the end of the target and shows while there is content below. */
   readonly direction = input<'up' | 'down'>('up');
   readonly behavior = input<'auto' | 'smooth'>('smooth');
-  readonly icon = input('arrow_upward');
+  /** Custom glyph rendered as text; when empty, a Material arrow matching `direction`. */
+  readonly icon = input('');
   readonly styleClass = input('');
   readonly style = input<Record<string, any> | null | undefined>(undefined);
   readonly buttonAriaLabel = input<string | undefined>(undefined);
@@ -334,7 +344,7 @@ export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
     return (
       this.buttonAriaLabel()?.trim() ||
       this.ariaLabel()?.trim() ||
-      'Scroll to top'
+      (this.direction() === 'up' ? 'Scroll to top' : 'Scroll to bottom')
     );
   }
   ngOnDestroy(): void {
@@ -396,9 +406,9 @@ export class ScrollTopComponent implements AfterViewInit, OnChanges, OnDestroy {
   scroll(): void {
     const isUp = this.direction() === 'up';
     if (this.target() === 'parent') {
-      const p = this.host.nativeElement.parentElement;
-      const top = isUp ? 0 : p?.scrollHeight;
-      p?.scrollTo?.({
+      const parent = this.host.nativeElement.parentElement;
+      const top = isUp ? 0 : parent?.scrollHeight;
+      parent?.scrollTo?.({
         top,
         behavior: this.effectiveScrollBehavior(),
       });
