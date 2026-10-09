@@ -72,8 +72,8 @@
   }
 
   <!-- Content -->
-  @if (variant() === 'close' && !safeIconLeft() && !safeIconRight()) {
-    <span class="orc-button__icon" aria-hidden="true">
+  @if (showCloseGlyph()) {
+    <span class="orc-button__icon orc-button__close-glyph" aria-hidden="true">
       <svg
         viewBox="0 0 24 24"
         width="1em"
@@ -88,8 +88,11 @@
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </span>
-  } @else {
-    <span class="orc-button__text"><ng-content></ng-content></span>
+  }
+  <span class="orc-button__text"><ng-content></ng-content></span>
+  @if (variant() === 'close') {
+    <!-- Accessible-name fallback, displayed (to assistive tech only) when nothing is projected. -->
+    <span class="orc-button__close-fallback">Close</span>
   }
   @if (badge() !== undefined) {
     <span class="orc-button__badge {{ badgeClass() }}">{{ badge() }}</span>
