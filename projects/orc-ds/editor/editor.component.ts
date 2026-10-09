@@ -103,11 +103,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
   readonly debug = input<string | undefined>(undefined);
 
   readonly ariaLabel = input<string | undefined>(undefined);
-  readonly actions = input<EditorAction[]>([
-    { command: 'bold', label: 'Negrito', icon: 'B' },
-    { command: 'italic', label: 'Itálico', icon: 'I' },
-    { command: 'underline', label: 'Sublinhado', icon: 'U' },
-  ]);
+  readonly actions = input<EditorAction[]>([]);
   readonly blur = output<string>();
   readonly onInit = output<unknown>();
   readonly onTextChange = output<{
@@ -145,8 +141,9 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
 
   private updateActiveFormats(): void {
     const ownerDocument = this.editorSurface()?.nativeElement.ownerDocument;
-    if (!ownerDocument || typeof ownerDocument.queryCommandState !== 'function') return;
-    
+    if (!ownerDocument || typeof ownerDocument.queryCommandState !== 'function')
+      return;
+
     const formats = new Set<string>();
     for (const action of this.actions()) {
       try {
@@ -154,7 +151,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit {
           formats.add(action.command);
         }
       } catch {
-        // Ignored
+        // Commands without a toggle state (e.g. insertImage) throw in some engines.
       }
     }
     this.activeFormats.set(formats);
