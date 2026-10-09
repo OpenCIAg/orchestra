@@ -140,20 +140,20 @@ try {
     const entries = ${JSON.stringify(entries)};
     for (const entry of entries) await import(entry);
     const root = await import(${JSON.stringify(manifest.name)});
-    for (const [alias, canonical, name] of [
-      ['tag', 'p2', 'TagComponent'], ['empty-state', 'p2', 'EmptyStateComponent'],
-      ['segmented-control', 'p2', 'SegmentedControlComponent'], ['popover', 'p2', 'PopoverComponent'],
-      ['overlay-panel', 'overlaypanel', 'OverlayPanelComponent'], ['multi-select', 'p2', 'MultiSelectComponent'],
-      ['tree-select', 'p2', 'TreeSelectComponent'], ['data-table', 'p2', 'DataTableComponent'],
-      ['splitter', 'p2', 'SplitterComponent'], ['portal', 'p2', 'PortalComponent']
+    // 22.4: the root entry is only the core surface (DECISOES §3.2), and each
+    // family lives in exactly one entry point (no aliases).
+    if (!root.provideOrcLabels || !root.injectOrcLabels || !root.ORCHESTRA_VERSION)
+      throw new Error('Root entry must re-export @ciag/orchestra/core');
+    if (root.ButtonComponent || root.ModalComponent)
+      throw new Error('Root entry must not re-export component families');
+    for (const [entry, name] of [
+      ['button', 'ButtonComponent'], ['date-picker', 'DatePickerComponent'],
+      ['modal', 'ModalComponent'], ['select', 'SelectComponent'],
     ]) {
-      const first = await import(${JSON.stringify(manifest.name)} + '/' + alias);
-      const second = await import(${JSON.stringify(manifest.name)} + '/' + canonical);
-      if (!first[name] || first[name] !== second[name]) throw new Error('Alias identity mismatch: ' + name);
+      const module = await import(${JSON.stringify(manifest.name)} + '/' + entry);
+      if (!module[name]) throw new Error('Missing ' + name + ' in ' + entry);
     }
-    if (!root.ButtonComponent || !root.DatePickerComponent || !root.ModalComponent)
-      throw new Error('Expected primary component exports are missing');
-    console.log('Validated ' + entries.length + ' JavaScript entry points and consolidated aliases in an isolated npm consumer.');
+    console.log('Validated ' + entries.length + ' JavaScript entry points, the core-only root and family entries in an isolated npm consumer.');
   `,
   );
   execFileSync(process.execPath, ['imports.mjs'], {
