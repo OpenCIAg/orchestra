@@ -50,7 +50,7 @@ const availableIcons = sourceMetadata.icons
 
 if (!availableIcons.length) throw new Error(`No icons found for ${family}`);
 
-const output = path.join(root, 'projects/orc-ds/icons');
+const output = path.join(root, 'projects/docs/src/app/data');
 const metadata = availableIcons
   .map(
     (icon) => `  {
@@ -81,11 +81,7 @@ export const ORC_MATERIAL_SYMBOL_CATALOG: Readonly<Record<string, OrcMaterialSym
 );
 
 fs.writeFileSync(
-  path.join(output, 'index.ts'),
-  `export * from './icon-catalog';\n`,
-);
-fs.writeFileSync(
-  path.join(output, 'manifest.json'),
+  path.join(output, 'material-symbols.manifest.json'),
   JSON.stringify(
     {
       source: 'Google Material Symbols metadata',

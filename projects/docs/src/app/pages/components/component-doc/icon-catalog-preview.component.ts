@@ -5,7 +5,7 @@ import {
   signal,
 } from '@angular/core';
 import { IconComponent, type IconFamily } from '@ciag/orchestra/icon';
-import { ORC_MATERIAL_SYMBOLS } from '@ciag/orchestra/icons';
+import { ORC_MATERIAL_SYMBOLS } from '../../../data/icon-catalog';
 import { EXAMPLE_STYLES } from './examples/example-shared.styles';
 
 @Component({
