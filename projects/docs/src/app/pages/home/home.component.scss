@@ -150,18 +150,18 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--orc-interactive);
+    outline: 2px solid var(--orc-primary, var(--orc-interactive));
     outline-offset: 2px;
   }
 }
 
 .hero__cta--primary {
-  border-color: var(--orc-interactive);
-  background: var(--orc-interactive);
-  color: var(--orc-on-interactive);
+  border-color: var(--orc-primary, var(--orc-interactive));
+  background: var(--orc-primary, var(--orc-interactive));
+  color: var(--orc-on-primary, var(--orc-on-interactive));
 
   &:hover {
-    background: var(--orc-interactive-hover);
+    background: var(--orc-primary-hover, var(--orc-interactive-hover));
   }
 }
 
@@ -185,7 +185,7 @@
 }
 
 .principles__icon {
-  color: var(--orc-interactive);
+  color: var(--orc-primary, var(--orc-interactive));
 }
 
 .principles__title {

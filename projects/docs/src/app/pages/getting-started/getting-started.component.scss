@@ -49,8 +49,8 @@
 .since {
   padding: 0.125rem 0.5rem;
   border-radius: 999px;
-  background: var(--orc-interactive-soft);
-  color: var(--orc-interactive);
+  background: var(--orc-primary-subtle, var(--orc-interactive-soft));
+  color: var(--orc-primary, var(--orc-interactive));
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -92,7 +92,7 @@
 }
 
 .principles__icon {
-  color: var(--orc-interactive);
+  color: var(--orc-primary, var(--orc-interactive));
 }
 
 .principles__title {
@@ -137,7 +137,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--orc-interactive);
+    outline: 2px solid var(--orc-primary, var(--orc-interactive));
     outline-offset: 2px;
     border-radius: 0.25rem;
   }

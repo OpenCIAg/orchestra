@@ -187,5 +187,5 @@ test('renderLlmsTxt links the canonical surfaces', () => {
   const txt = renderLlmsTxt({ canonicalBase: 'https://orchestra.example' });
   assert.match(txt, /\(https:\/\/orchestra\.example\/llms\.md\)/);
   assert.match(txt, /\(https:\/\/orchestra\.example\/docs\)/);
-  assert.match(txt, /@import '@ciag\/orchestra\/styles\.css';/);
+  assert.match(txt, /@use '@ciag\/orchestra\/styles\/index';/);
 });
