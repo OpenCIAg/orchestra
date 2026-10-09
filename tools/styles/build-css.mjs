@@ -1,8 +1,11 @@
 // Compiles the library's Sass style sources into the plain CSS files the
-// package exports (`@ciag/orchestra/styles.css` and `@ciag/orchestra/reset.css`).
+// package exports (`@ciag/orchestra/styles.css` and `@ciag/orchestra/reset.css`)
+// and writes the opt-in icon font entry (`@ciag/orchestra/icons.css` plus
+// `fonts/material-symbols-rounded.woff2`).
 // Runs after `ng build orc-ds`, which recreates dist/orc-ds from scratch.
 import { spawn } from 'node:child_process';
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
@@ -54,7 +57,41 @@ export function compileStyles(outDir = defaultOut) {
     writeFileSync(path.join(outDir, output), css);
     written.push(output);
   }
+  written.push(...writeIconFont(outDir, version));
   return written;
+}
+
+/**
+ * Bundled Material Symbols Rounded (weight 400, FILL 0..1 — the axes Orchestra
+ * uses), self-hosted so apps need no Google Fonts `<link>` and icons work
+ * offline. Apps that need other families or weights skip `icons.css` and load
+ * the font themselves.
+ */
+export const ICON_FONT = {
+  source: 'fonts/material-symbols-rounded.woff2',
+  css: 'icons.css',
+};
+
+export function iconFontCss(version) {
+  return `/*! @ciag/orchestra ${version} | ${ICON_FONT.css} | Material Symbols Rounded (Apache-2.0) */
+@font-face {
+  font-family: 'Material Symbols Rounded';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./${ICON_FONT.source}') format('woff2');
+}
+`;
+}
+
+function writeIconFont(outDir, version) {
+  mkdirSync(path.join(outDir, 'fonts'), { recursive: true });
+  copyFileSync(
+    path.join(sources, ICON_FONT.source),
+    path.join(outDir, ICON_FONT.source),
+  );
+  writeFileSync(path.join(outDir, ICON_FONT.css), iconFontCss(version));
+  return [ICON_FONT.css, ICON_FONT.source];
 }
 
 // `--watch`: run `ng build orc-ds --watch` and recompile the CSS whenever

@@ -7,7 +7,7 @@
 
 This document is the machine-oriented companion to [`llms.txt`](./llms.txt). It describes the current workspace package `@ciag/orchestra` and is intentionally explicit: an agent should be able to choose a component, import it, compose it, and wire its state without guessing.
 
-> Version context: Angular 22, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `22.4.0-rc.0`.
+> Version context: Angular 22, standalone components, native Signals API, strict TypeScript, tree-shakeable secondary entry points, design tokens, and WCAG 2.1 AA as the design target. The published package version in this workspace is `22.4.0-rc.1`.
 
 ## 1. Operating rules for coding agents
 
@@ -39,13 +39,15 @@ Load the token layer before local application styles. The token layer supplies t
 ```css
 /* src/styles.css (plain CSS, no Sass needed) */
 @import '@ciag/orchestra/styles.css';
+/* orc-icon font: bundled Material Symbols Rounded */
+@import '@ciag/orchestra/icons.css';
 /* optional global reset */
 @import '@ciag/orchestra/reset.css';
 
 /* local overrides: unlayered app CSS always wins over @layer orc */
 ```
 
-The theme follows system preference by default. A consumer may set `data-theme="dark"` on `html` (or any subtree) when its shell owns theme selection. The docs app also exposes a manual theme toggle. `orc-icon` does not load fonts: add the Material Symbols `<link>` to `index.html`.
+The theme follows system preference by default. A consumer may set `data-theme="dark"` on `html` (or any subtree) when its shell owns theme selection. The docs app also exposes a manual theme toggle. `orc-icon` uses the Material Symbols Rounded font bundled in `@ciag/orchestra/icons.css` (no Google Fonts request); only apps that need other icon families or weights load the font themselves.
 
 Important tokens (full table in `@ciag/orchestra/styles/TOKENS.md`):
 

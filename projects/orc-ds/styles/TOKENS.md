@@ -12,6 +12,7 @@ O pacote publica CSS pronto; **não é preciso Sass**.
 ```css
 /* src/styles.css do app */
 @import '@ciag/orchestra/styles.css'; /* tokens + temas + base dos componentes */
+@import '@ciag/orchestra/icons.css'; /* fonte do orc-icon, embutida */
 @import '@ciag/orchestra/reset.css'; /* opcional: reset global */
 ```
 
@@ -20,6 +21,7 @@ Ou no `angular.json`:
 ```json
 "styles": [
   "@ciag/orchestra/styles.css",
+  "@ciag/orchestra/icons.css",
   "src/styles.css"
 ]
 ```
@@ -30,15 +32,11 @@ Ou no `angular.json`:
 - **`reset.css`** (opcional): reset global (`margin`/`padding` zerados,
   fonte e cores do `body`, scrollbar, `:focus-visible`, `::selection`).
   Importe só se o app não tiver reset próprio.
-- **Fonte de ícones**: a lib não baixa fontes. O app carrega Material Symbols
-  (por exemplo, no `index.html`):
-
-  ```html
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
-  ```
-
-  Inclua `Outlined`/`Sharp` na mesma URL se usar `family` diferente de
-  `rounded`. Poppins e JetBrains Mono também são responsabilidade do app.
+- **`icons.css`**: fonte do `orc-icon`, Material Symbols Rounded (peso 400,
+  com preenchido/vazado, ~540 KB) embutida no pacote. Sem chamada ao Google
+  e funciona offline. Quem precisar de `family` diferente de `rounded` ou de
+  outros pesos não importa `icons.css` e carrega a fonte do Google. Poppins e
+  JetBrains Mono continuam responsabilidade do app.
 
 ### Camadas (`@layer`)
 

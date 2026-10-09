@@ -1,6 +1,8 @@
 /*
  * A docs consome a Orchestra como qualquer app: CSS puro, sem Sass.
  * reset.css é opcional; a docs o usa para manter o visual histórico.
+ * icons.css traz a fonte do orc-icon (Material Symbols Rounded embutida).
  */
 @import '@ciag/orchestra/reset.css';
 @import '@ciag/orchestra/styles.css';
+@import '@ciag/orchestra/icons.css';

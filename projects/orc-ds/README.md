@@ -18,6 +18,8 @@ Orchestra ships plain CSS, no Sass required. In the app's `styles.css`:
 
 ```css
 @import '@ciag/orchestra/styles.css';
+/* orc-icon font (bundled Material Symbols Rounded, no Google request): */
+@import '@ciag/orchestra/icons.css';
 /* optional global reset: */
 @import '@ciag/orchestra/reset.css';
 ```
@@ -25,8 +27,9 @@ Orchestra ships plain CSS, no Sass required. In the app's `styles.css`:
 or in `angular.json` `"styles": ["@ciag/orchestra/styles.css", "src/styles.css"]`.
 `styles.css` contains the `--orc-*` tokens, the light/dark themes and a base
 scoped to component subtrees, all inside `@layer orc`. Token reference:
-`styles/TOKENS.md`. `orc-icon` does not load fonts; the app loads Material
-Symbols (for example with a Google Fonts `<link>` in `index.html`).
+`styles/TOKENS.md`. `icons.css` self-hosts the Material Symbols Rounded font
+used by `orc-icon` (weight 400 with the fill axis, ~540 KB); apps that need
+other families or weights skip it and load the font from Google Fonts.
 
 ## Theming
 

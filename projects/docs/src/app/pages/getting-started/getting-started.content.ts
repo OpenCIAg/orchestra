@@ -94,7 +94,7 @@ const PT_BR: GettingStartedContent = {
           code: {
             file: 'src/styles.css',
             source:
-              "@import '@ciag/orchestra/styles.css'; /* tokens, temas e base */\n@import '@ciag/orchestra/reset.css'; /* opcional: reset global */",
+              "@import '@ciag/orchestra/styles.css'; /* tokens, temas e base */\n@import '@ciag/orchestra/icons.css'; /* fonte do orc-icon */\n@import '@ciag/orchestra/reset.css'; /* opcional: reset global */",
           },
         },
         {
@@ -108,16 +108,13 @@ const PT_BR: GettingStartedContent = {
     {
       id: 'icones',
       title: 'Ícones',
+      since: '22.4',
       blocks: [
         {
-          text: 'O `orc-icon` usa a fonte Material Symbols, e a biblioteca não baixa fontes: o app carrega a fonte. Com o Google Fonts, adicione o link no `index.html` (ou hospede a fonte junto com o app). Se o app usar só a família padrão (`rounded`), basta carregar essa.',
+          text: 'O `orc-icon` usa a fonte Material Symbols Rounded, embutida no pacote: o `@import` de `@ciag/orchestra/icons.css` acima basta. Não há chamada ao Google Fonts e os ícones funcionam offline (inclusive com service worker).',
         },
         {
-          code: {
-            file: 'src/index.html',
-            source:
-              '<link\n  rel="stylesheet"\n  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"\n/>',
-          },
+          text: 'A fonte embutida tem peso 400 e as versões vazada e preenchida (`fill`), cerca de 540 KB, baixados uma vez e guardados em cache. Se o app precisar de outra família (`outlined`, `sharp`) ou de outros pesos, não importe `icons.css` e carregue a fonte do Google Fonts no `index.html`.',
         },
       ],
     },

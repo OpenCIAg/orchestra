@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -18,7 +18,27 @@ const out = mkdtempSync(path.join(tmpdir(), 'orc-styles-'));
 compileStyles(out);
 const stylesCss = readFileSync(path.join(out, 'styles.css'), 'utf8');
 const resetCss = readFileSync(path.join(out, 'reset.css'), 'utf8');
+const iconsCss = readFileSync(path.join(out, 'icons.css'), 'utf8');
+const fontBytes = statSync(
+  path.join(out, 'fonts/material-symbols-rounded.woff2'),
+).size;
 rmSync(out, { recursive: true, force: true });
+
+test('icons.css self-hosts Material Symbols Rounded next to the CSS', () => {
+  assert.match(iconsCss, /font-family: 'Material Symbols Rounded';/);
+  assert.match(
+    iconsCss,
+    /src: url\('\.\/fonts\/material-symbols-rounded\.woff2'\) format\('woff2'\);/,
+  );
+  assert.match(iconsCss, /font-display: block;/);
+  assert.ok(!iconsCss.includes('googleapis'), 'icons.css must not call Google');
+  // Rounded, weight 400, FILL 0..1: ~0.5 MB. Guard against shipping the full
+  // variable font (5+ MB) by accident.
+  assert.ok(
+    fontBytes > 300_000 && fontBytes < 800_000,
+    `font is ${fontBytes} bytes`,
+  );
+});
 
 test('styles.css is plain CSS that opens with the Orchestra layer order', () => {
   const firstRule = stylesCss.split('\n').find((line) => line.startsWith('@'));

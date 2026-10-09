@@ -200,7 +200,7 @@ try {
   const cssEntries = Object.keys(manifest.exports).filter((entry) =>
     entry.endsWith('.css'),
   );
-  for (const entry of ['./styles.css', './reset.css'])
+  for (const entry of ['./styles.css', './reset.css', './icons.css'])
     if (!cssEntries.includes(entry))
       throw new Error(`Package does not export ${entry}`);
   const require = createRequire(path.join(consumer, 'package.json'));
@@ -209,6 +209,16 @@ try {
     const css = readFileSync(require.resolve(specifier), 'utf8');
     if (/(^|\s)@(use|forward|mixin|include)\b|#\{/.test(css))
       throw new Error(`Sass syntax leaked into ${specifier}`);
+    if (entry === './icons.css') {
+      // The font file must ship next to icons.css and resolve from its url().
+      const font = css.match(/url\('([^']+)'\)/)?.[1];
+      const fontPath = font
+        ? path.resolve(path.dirname(require.resolve(specifier)), font)
+        : null;
+      if (!fontPath || !existsSync(fontPath))
+        throw new Error(`icons.css points at a missing font file (${font})`);
+      continue;
+    }
     if (!css.includes('@layer orc.reset, orc.tokens, orc.base, orc.components'))
       throw new Error(`Missing Orchestra layer order in ${specifier}`);
   }

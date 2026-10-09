@@ -159,6 +159,7 @@
             "styles": [
               "@ciag/orchestra/reset.css",
               "@ciag/orchestra/styles.css",
+              "@ciag/orchestra/icons.css",
               "projects/template/src/styles.css"
             ],
             "scripts": []

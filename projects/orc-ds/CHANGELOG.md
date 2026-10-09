@@ -1,5 +1,11 @@
 # @ciag/orchestra
 
+## 22.4.0-rc.1 (release candidate, dist-tag `next`)
+
+### Minor Changes
+
+- New `@ciag/orchestra/icons.css`: the Material Symbols Rounded font used by `orc-icon` (weight 400 with the fill axis, ~540 KB woff2) ships inside the package. Apps add `@import '@ciag/orchestra/icons.css';` next to `styles.css` and drop the Google Fonts `<link>`; no third-party request and icons work offline. For reference, 21.x downloaded three full variable families (~12.9 MB). Apps that need other families or weights skip `icons.css` and load the font from Google Fonts.
+
 ## 22.4.0-rc.0 (release candidate, dist-tag `next`)
 
 ### Major Changes
@@ -8,7 +14,7 @@
 - The root entry `@ciag/orchestra` exports only `@ciag/orchestra/core` (pt-BR labels via `provideOrcLabels`/`injectOrcLabels`, shared types, `orcId`, `ORCHESTRA_VERSION`). Import each family from its own entry point, e.g. `@ciag/orchestra/button`.
 - Removed families, directives and alias entry points listed in DECISOES.md §1 (layout primitives, split-button, cascade-select, float/ifta-label, form, overlay, block-ui, portal, mega-menu, dock, data-view, order-list, virtual-scroller, scroll-top, the PrimeNG-era directives, `ConfirmPopupService`, `p2/` and every alias entry point).
 - New internal infrastructure in `@ciag/orchestra/internal` (CDK overlay layers, shared ControlValueAccessor base, field context); families adopt it in the next release candidates.
-- Styles ship as plain CSS: `@import '@ciag/orchestra/styles.css'` (optional `@ciag/orchestra/reset.css`). `orc-icon` no longer loads Material Symbols; the app adds the font `<link>`.
+- Styles ship as plain CSS: `@import '@ciag/orchestra/styles.css'` (optional `@ciag/orchestra/reset.css`). `orc-icon` no longer loads Material Symbols from Google Fonts (see 22.4.0-rc.1 for the bundled `icons.css`).
 - Install: `npm install @ciag/orchestra@next` (or `@22.4.0-rc.0`). Caret ranges such as `^22.3.0` do not resolve to a prerelease, so existing consumers are unaffected.
 
 ## 22.3.0
