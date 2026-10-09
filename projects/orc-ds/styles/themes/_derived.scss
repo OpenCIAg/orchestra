@@ -1,0 +1,32 @@
+// Tokens derivados de outros tokens de tema. `var()` em propriedade
+// customizada resolve no elemento que a declara, então estes são redeclarados
+// em toda fronteira de tema; senão um subtree escuro herdaria valores claros.
+@mixin derived {
+  --orc-focus-ring-color: var(--orc-primary);
+  --orc-shadow-overlay: var(--orc-shadow-lg);
+  --orc-neutral-border: color-mix(
+    in srgb,
+    var(--orc-neutral-fg) 30%,
+    var(--orc-neutral-bg)
+  );
+  --orc-info-border: color-mix(
+    in srgb,
+    var(--orc-info-fg) 55%,
+    var(--orc-info-bg)
+  );
+  --orc-success-border: color-mix(
+    in srgb,
+    var(--orc-success-fg) 55%,
+    var(--orc-success-bg)
+  );
+  --orc-warning-border: color-mix(
+    in srgb,
+    var(--orc-warning-fg) 55%,
+    var(--orc-warning-bg)
+  );
+  --orc-danger-border: color-mix(
+    in srgb,
+    var(--orc-danger-fg) 55%,
+    var(--orc-danger-bg)
+  );
+}

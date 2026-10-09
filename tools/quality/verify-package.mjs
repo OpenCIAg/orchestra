@@ -7,9 +7,9 @@ import {
   writeFileSync,
   mkdirSync,
 } from 'node:fs';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { compileString, NodePackageImporter } from 'sass';
 
 const distribution = path.resolve('dist/orc-ds');
 const manifest = JSON.parse(
@@ -195,27 +195,30 @@ try {
     { cwd: consumer, stdio: 'inherit' },
   );
   console.log('Validated public type declarations without skipLibCheck.');
-  const sassEntries = Object.entries(manifest.exports)
-    .filter(
-      ([entry, conditions]) =>
-        !entry.includes('*') &&
-        typeof conditions === 'object' &&
-        conditions.sass,
-    )
-    .map(([entry]) => manifest.name + entry.slice(1));
-  for (const entry of sassEntries) {
-    const result = compileString(`@use "pkg:${entry}";`, {
-      importers: [new NodePackageImporter(consumer)],
-      logger: {
-        warn: (message) => {
-          throw new Error(`Sass warning in ${entry}: ${message}`);
-        },
-      },
-    });
-    if (!result.css.includes('--orc-interactive'))
-      throw new Error(`Missing semantic styles in ${entry}`);
+  // The stylesheet entries are plain CSS: resolve them through the installed
+  // package's export map and reject anything a CSS-only consumer cannot load.
+  const cssEntries = Object.keys(manifest.exports).filter((entry) =>
+    entry.endsWith('.css'),
+  );
+  for (const entry of ['./styles.css', './reset.css'])
+    if (!cssEntries.includes(entry))
+      throw new Error(`Package does not export ${entry}`);
+  const require = createRequire(path.join(consumer, 'package.json'));
+  for (const entry of cssEntries) {
+    const specifier = manifest.name + entry.slice(1);
+    const css = readFileSync(require.resolve(specifier), 'utf8');
+    if (/(^|\s)@(use|forward|mixin|include)\b|#\{/.test(css))
+      throw new Error(`Sass syntax leaked into ${specifier}`);
+    if (!css.includes('@layer orc.reset, orc.tokens, orc.base, orc.components'))
+      throw new Error(`Missing Orchestra layer order in ${specifier}`);
   }
-  console.log(`Validated ${sassEntries.length} packed Sass entry points.`);
+  const stylesCss = readFileSync(
+    require.resolve(`${manifest.name}/styles.css`),
+    'utf8',
+  );
+  if (!stylesCss.includes('--orc-primary:'))
+    throw new Error('styles.css is missing the semantic tokens');
+  console.log(`Validated ${cssEntries.length} packed CSS entry points.`);
   passed = true;
 } finally {
   if (passed) rmSync(work, { recursive: true, force: true });

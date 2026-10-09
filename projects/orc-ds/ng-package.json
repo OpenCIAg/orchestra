@@ -7,8 +7,7 @@
   },
   "assets": [
     "./README.md",
-    "./styles/**/*.scss",
-    "./styles/**/*.css",
+    "./styles/TOKENS.md",
     "./THIRD_PARTY_NOTICES.md",
     "./CHANGELOG.md"
   ],

@@ -1,69 +1,60 @@
-@use './semantics';
-
+// Valores do tema escuro. Só valores literais aqui; tokens derivados ficam em
+// _derived.scss e são redeclarados em cada fronteira de tema.
 @mixin values {
   color-scheme: dark;
-  --orc-bg: #1f1f1f;
-  --orc-font-main: #ffffff;
-  --orc-secondary-bg: #424242;
-  --orc-font-secondary: #f8f8f8;
-  --orc-border: #333333;
-  --orc-fill-input: #1a1a1a;
-  --orc-th: #2a2a2a;
-  --orc-fill-modal: #1f1f1f;
-  --orc-highlight-cinza-claro: #535353;
-  --orc-opposite-bw: #141414;
-  --orc-overlay-surface: #333333;
-  --orc-overlay-text: #ffffff;
-  --color-accent: #ffffff;
-  --color-accent-hover: #f8f8f8;
-  --color-accent-fg: #141414;
-  --color-success: #34d399;
-  --color-warning: #fbbf24;
-  --color-error: #f87171;
-  --color-info: #70a9ff;
-  --color-warning-text: #fbbf24;
-  --text-muted: #888888;
-  --status-neutral-soft-bg: #3a3a3a;
-  --status-neutral-soft-fg: #ffffff;
-  --status-info-soft-bg: rgba(43, 127, 255, 0.15);
-  --status-info-soft-fg: #70a9ff;
-  --status-success-soft-bg: rgba(0, 111, 74, 0.2);
-  --status-success-soft-fg: #34d399;
-  --status-warning-soft-bg: rgba(254, 154, 0, 0.15);
-  --status-warning-soft-fg: #fbbf24;
-  --status-danger-soft-bg: rgba(251, 44, 54, 0.15);
-  --status-danger-soft-fg: #f87171;
-  --skeleton-base: #2a2a2a;
-  --skeleton-highlight: #424242;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  --orc-interactive: #60a5fa;
-  --orc-interactive-hover: #93c5fd;
-  --orc-interactive-soft: #2a3b55;
-  --orc-on-interactive: #0f172a;
-  --orc-on-danger: #171717;
-  --orc-on-dark: #ffffff;
+
+  // Superfícies.
+  --orc-surface: #1f1f1f;
+  --orc-surface-raised: #1f1f1f;
+  --orc-surface-subtle: #2a2a2a;
+  --orc-surface-muted: #535353;
+  --orc-surface-control: #1a1a1a;
+  --orc-surface-inverse: #333333;
   --orc-scrim: rgb(0 0 0 / 0.68);
-  --orc-shadow-color: rgb(0 0 0 / 0.52);
-  --orc-interactive-shadow: rgb(0 0 0 / 0.5);
+
+  // Texto.
+  --orc-text: #ffffff;
+  --orc-text-secondary: #f8f8f8;
+  --orc-text-muted: #888888;
+  --orc-on-primary: #0f172a;
+  --orc-on-danger: #171717;
+  --orc-on-inverse: #ffffff;
+
+  // Bordas.
+  --orc-border: #333333;
+  --orc-border-strong: #424242;
+
+  // Primária (interação).
+  --orc-primary: #60a5fa;
+  --orc-primary-hover: #93c5fd;
+  --orc-primary-subtle: #2a3b55;
+  --orc-primary-shadow: rgb(0 0 0 / 0.5);
+
+  // Tons de feedback.
+  --orc-neutral-fg: #ffffff;
+  --orc-neutral-bg: #3a3a3a;
+  --orc-info: #70a9ff;
+  --orc-info-fg: #70a9ff;
+  --orc-info-bg: rgba(43, 127, 255, 0.15);
+  --orc-success: #34d399;
+  --orc-success-fg: #34d399;
+  --orc-success-bg: rgba(0, 111, 74, 0.2);
+  --orc-warning: #fbbf24;
+  --orc-warning-fg: #fbbf24;
+  --orc-warning-bg: rgba(254, 154, 0, 0.15);
   --orc-danger: #fb7185;
-  @include semantics.aliases;
-}
+  --orc-danger-fg: #f87171;
+  --orc-danger-bg: rgba(251, 44, 54, 0.15);
 
-@layer orchestra.tokens {
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme='light']):not([data-theme='dark']):not(
-        .theme-light
-      ):not(.theme-dark) {
-      @include values;
-    }
-  }
+  // Sombras.
+  --orc-shadow-color: rgb(0 0 0 / 0.52);
+  --orc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --orc-shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --orc-shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 
-  [data-theme='dark'],
-  .theme-dark:not([data-theme='light']) {
-    @include values;
-  }
+  // Skeleton.
+  --orc-skeleton-base: #2a2a2a;
+  --orc-skeleton-highlight: #424242;
 }

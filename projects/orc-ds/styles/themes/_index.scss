@@ -1,0 +1,38 @@
+@use './light';
+@use './dark';
+@use './derived';
+
+// Fronteiras de tema. Tema claro é o padrão; `data-theme` é o seletor
+// canônico e as classes `.theme-light`/`.theme-dark` continuam aceitas com a
+// mesma precedência. `@content(light|dark)` recebe o tema de cada fronteira.
+@mixin scopes {
+  :root,
+  [data-theme='light'],
+  .theme-light:not([data-theme='dark']) {
+    @content (light);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']):not([data-theme='dark']):not(
+        .theme-light
+      ):not(.theme-dark) {
+      @content (dark);
+    }
+  }
+
+  [data-theme='dark'],
+  .theme-dark:not([data-theme='light']) {
+    @content (dark);
+  }
+}
+
+@layer orc.tokens {
+  @include scopes using ($theme) {
+    @if $theme == light {
+      @include light.values;
+    } @else {
+      @include dark.values;
+    }
+    @include derived.derived;
+  }
+}

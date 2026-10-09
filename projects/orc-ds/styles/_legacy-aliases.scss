@@ -1,0 +1,125 @@
+// =============================================================================
+// LEGACY-ALIASES — NÃO É API PÚBLICA. ARQUIVO TEMPORÁRIO DA MIGRAÇÃO 22.4.
+//
+// Nomes antigos de tokens (camadas duplicadas `--bg-*`, `--text-*`,
+// `--border-*`, `--color-*`, `--status-*`, `--space-*`, `--radius-*`,
+// `--shadow-*`, `--z-*`, `--transition-*`, `--font-sans`, `--orc-bg`,
+// `--orc-font-main`, `--orc-interactive*`...) mapeados para o vocabulário
+// único `--orc-*` (ver TOKENS.md). Existem só para os componentes continuarem
+// compilando e com a mesma aparência durante a onda B; cada família migra
+// para os nomes novos e este arquivo é apagado no fim da 22.4 (remova também
+// o `@use 'legacy-aliases'` em orchestra.scss).
+//
+// Não use estes nomes em código novo nem em apps.
+// =============================================================================
+@use './themes';
+
+// Aliases cujos alvos variam com o tema: redeclarados em cada fronteira de
+// tema, como os próprios tokens, para não herdar valores do tema externo.
+@mixin themed($theme) {
+  --bg: var(--orc-surface);
+  --bg-app: var(--orc-surface);
+  --orc-bg: var(--orc-surface);
+  --bg-subtle: var(--orc-surface-subtle);
+  --orc-th: var(--orc-surface-subtle);
+  --bg-muted: var(--orc-surface-muted);
+  --orc-highlight-cinza-claro: var(--orc-surface-muted);
+  --highlight-cinzaclaro: var(--orc-surface-muted);
+  --color-zinc-200: var(--orc-surface-muted);
+  --fill-input: var(--orc-surface-control);
+  --orc-fill-input: var(--orc-surface-control);
+  --orc-control-surface: var(--orc-surface-control);
+  --fill-modal: var(--orc-surface-raised);
+  --orc-fill-modal: var(--orc-surface-raised);
+  --orc-overlay-surface: var(--orc-surface-inverse);
+  --bg-inverse: var(--orc-text);
+  --border-inverse: var(--orc-text);
+  --text-inverse: var(--orc-surface);
+
+  --text-primary: var(--orc-text);
+  --orc-font-main: var(--orc-text);
+  --color-accent: var(--orc-text);
+  --text-secondary: var(--orc-text-secondary);
+  --orc-font-secondary: var(--orc-text-secondary);
+  --text-muted: var(--orc-text-muted);
+  --text-tertiary: var(--orc-text-muted);
+  --orc-overlay-text: var(--orc-on-inverse);
+  --orc-on-dark: var(--orc-on-inverse);
+  --orc-on-interactive: var(--orc-on-primary);
+
+  --border-default: var(--orc-border);
+  --orc-border-default: var(--orc-border);
+  --border-strong: var(--orc-border-strong);
+  --orc-secondary-bg: var(--orc-border-strong);
+  --color-zinc-400: var(--orc-border-strong);
+
+  --orc-interactive: var(--orc-primary);
+  --orc-interactive-hover: var(--orc-primary-hover);
+  --orc-interactive-soft: var(--orc-primary-subtle);
+  --orc-interactive-shadow: var(--orc-primary-shadow);
+
+  --color-info: var(--orc-info);
+  --color-success: var(--orc-success);
+  --color-warning: var(--orc-warning);
+  @each $tone in neutral, info, success, warning, danger {
+    --status-#{$tone}-soft-bg: var(--orc-#{$tone}-bg);
+    --status-#{$tone}-soft-fg: var(--orc-#{$tone}-fg);
+    --orc-status-#{$tone}-bg: var(--orc-#{$tone}-bg);
+    --orc-status-#{$tone}-fg: var(--orc-#{$tone}-fg);
+  }
+  @each $tone in success, warning, danger {
+    --orc-status-#{$tone}-border: var(--orc-#{$tone}-border);
+  }
+
+  --skeleton-base: var(--orc-skeleton-base);
+  --skeleton-highlight: var(--orc-skeleton-highlight);
+  --shadow-sm: var(--orc-shadow-sm);
+  --shadow-md: var(--orc-shadow-md);
+  --shadow-lg: var(--orc-shadow-lg);
+
+  // Valores sem equivalente no vocabulário novo, mantidos literais para não
+  // mudar a aparência. A família que os usa migra para o tom indicado.
+  @if $theme == light {
+    --color-error: #fb2c36; // → --orc-danger / --orc-danger-fg
+    --color-warning-text: #8b4c00; // → --orc-warning-fg
+    --color-accent-hover: #2a2a2a;
+    --color-accent-fg: #ffffff;
+    --orc-opposite-bw: #ffffff;
+  } @else {
+    --color-error: #f87171;
+    --color-warning-text: #fbbf24;
+    --color-accent-hover: #f8f8f8;
+    --color-accent-fg: #141414;
+    --orc-opposite-bw: #141414;
+  }
+}
+
+@layer orc.tokens {
+  :root {
+    --font-sans: var(--orc-font-sans);
+    --font-mono: var(--orc-font-mono);
+
+    @each $step in 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20 {
+      --space-#{$step}: var(--orc-space-#{$step});
+    }
+
+    @each $size in sm, md, lg, xl, full {
+      --radius-#{$size}: var(--orc-radius-#{$size});
+    }
+
+    --transition-fast: var(--orc-transition-fast);
+    --transition-base: var(--orc-transition-base);
+    --transition-normal: var(--orc-transition-base);
+    --transition-slow: var(--orc-transition-slow);
+
+    @each $layer in dropdown, sticky, fixed, modal-backdrop, modal, popover,
+      tooltip, toast
+    {
+      --z-#{$layer}: var(--orc-z-#{$layer});
+    }
+  }
+
+  @include themes.scopes using ($theme) {
+    @include themed($theme);
+  }
+}

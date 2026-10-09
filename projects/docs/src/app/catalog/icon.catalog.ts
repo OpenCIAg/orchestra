@@ -21,7 +21,7 @@ export const ICON_USAGE_DOC: ComponentUsageDoc = {
   size="md"
   ariaLabel="Concluído"
 />`,
-  guidance: `Ícones decorativos devem permanecer sem ariaLabel. Quando o ícone comunica uma ação ou estado sem texto, forneça um nome acessível. O componente carrega a fonte diretamente do Google Fonts; permita fonts.googleapis.com e fonts.gstatic.com na CSP.`,
+  guidance: `Ícones decorativos devem permanecer sem ariaLabel. Quando o ícone comunica uma ação ou estado sem texto, forneça um nome acessível. A lib não carrega fontes: o app inclui a fonte Material Symbols (link do Google Fonts no index.html ou self-host).`,
   variations: [
     {
       label: 'Catalog',

@@ -1,0 +1,6 @@
+/*
+ * A docs consome a Orchestra como qualquer app: CSS puro, sem Sass.
+ * reset.css é opcional; a docs o usa para manter o visual histórico.
+ */
+@import '@ciag/orchestra/reset.css';
+@import '@ciag/orchestra/styles.css';

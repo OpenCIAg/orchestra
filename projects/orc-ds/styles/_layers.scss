@@ -1,1 +1,5 @@
-@layer orchestra.tokens, orchestra.base, orchestra.components;
+// Ordem das camadas da Orchestra. Tudo fica sob a camada `orc`, então o app
+// pode posicioná-la em relação às próprias camadas (`@layer orc, app;`).
+// `orc.reset` vem primeiro para que o reset opcional (reset.css) nunca vença a
+// base dos componentes, qualquer que seja a ordem de importação dos arquivos.
+@layer orc.reset, orc.tokens, orc.base, orc.components;

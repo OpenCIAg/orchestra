@@ -1,0 +1,15 @@
+// Camada base mínima: só afeta a árvore dos próprios componentes (`.orc-*`).
+// Nada aqui toca elementos do app; quem quer reset global importa reset.css.
+@layer orc.base {
+  // A geometria dos componentes não pode depender do app ter um reset.
+  :where([class^='orc-'], [class*=' orc-']) {
+    &,
+    &::before,
+    &::after,
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+  }
+}

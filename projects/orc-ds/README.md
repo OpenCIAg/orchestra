@@ -14,19 +14,19 @@ npm install @ciag/orchestra @angular/cdk
 
 ## Styles
 
-Include the design tokens, CSS layers, and themes in your application's
-`styles.scss`:
+Orchestra ships plain CSS, no Sass required. In the app's `styles.css`:
 
-```scss
-@use '@ciag/orchestra/styles/index';
+```css
+@import '@ciag/orchestra/styles.css';
+/* optional global reset: */
+@import '@ciag/orchestra/reset.css';
 ```
 
-Applications that own their CSS reset can load the tokens and themes without
-Orchestra's global reset:
-
-```scss
-@use '@ciag/orchestra/styles/core';
-```
+or in `angular.json` `"styles": ["@ciag/orchestra/styles.css", "src/styles.css"]`.
+`styles.css` contains the `--orc-*` tokens, the light/dark themes and a base
+scoped to component subtrees, all inside `@layer orc`. Token reference:
+`styles/TOKENS.md`. `orc-icon` does not load fonts; the app loads Material
+Symbols (for example with a Google Fonts `<link>` in `index.html`).
 
 ## Theming
 
